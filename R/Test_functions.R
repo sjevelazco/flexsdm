@@ -79,6 +79,8 @@ load('./Data/spp.RData')
 load('./Data/somevar.RData')
 
 res(somevar)*1000
+ini <- Sys.time()
+plot(somevar)
 part <- block_partition_pa(
   env_layer = somevar,
   occ_data = spp,
@@ -93,6 +95,7 @@ part <- block_partition_pa(
   save_part_raster = TRUE,
   dir_save = getwd() #Write the directory path to save results
 )
+Sys.time()-ini
 
 dim(part)
 
