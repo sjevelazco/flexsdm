@@ -4,7 +4,6 @@
 #                                                          #
 ##%######################################################%##
 
-
 require(ENMTML)
 require(raster)
 require(dplyr)
@@ -140,10 +139,16 @@ spp2 <- tibble(spp='Abies magnifica', spp2) # Function require a columns with sp
 env.stack <- brick('C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/Predictors/BCM1981_2010_CFP_Stack.grd') # this database is 
 # in Brook's folder https://drive.google.com/drive/u/1/folders/1WDW4ryl1N29aK6Jmf3VK8XDi3NeYw_mG
 
+env.stack <- homogenize_na(env.stack)
+
 
 # Previews plot to check if raster data and occurrence overlap
 plot(env.stack[[1]])
 points(spp2 %>% dplyr::select(ends_with('coords')), cex=0.5, pch=19)
+
+# I strongly recommend that you homogenize all NAs between raster layers.
+# For this you can use homogenize_na just available in our repository.
+
 
 env.stack <- homogenize_na(env.stack)
 plot(env.stack[[1]])

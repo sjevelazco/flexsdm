@@ -95,15 +95,15 @@ block_partition_pa <- function(env_layer,
   
   
   #Start Cluster
-  if (Sys.getenv("RSTUDIO") == "1" &&
-      !nzchar(Sys.getenv("RSTUDIO_TERM")) &&
-      Sys.info()["sysname"] == "Darwin" &&
-      as.numeric(gsub('[.]', '', getRversion())) >= 360) {
-    cl <-
-      parallel::makeCluster(cores, outfile = "", setup_strategy = "sequential")
-  } else{
+  # if (Sys.getenv("RSTUDIO") == "1" &&
+  #     !nzchar(Sys.getenv("RSTUDIO_TERM")) &&
+  #     Sys.info()["sysname"] == "Darwin" &&
+  #     as.numeric(gsub('[.]', '', getRversion())) >= 360) {
+  #   cl <-
+  #     parallel::makeCluster(cores, outfile = "", setup_strategy = "sequential")
+  # } else{
     cl <- parallel::makeCluster(cores, outfile = "")
-  }
+  # }
   doParallel::registerDoParallel(cl)
   
   # LOOP----
