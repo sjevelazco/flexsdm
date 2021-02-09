@@ -53,6 +53,18 @@ block_partition_pa <- function(env_layer,
   occ_data <- occ_data[,c(sp, pr_ab, x, y)]
   colnames(occ_data) <- c('sp', 'pr_ab', 'x', 'y')
   occ_data <- data.frame(occ_data)
+  
+  # Eliminate those records with NA
+  
+  filt <- raster::extract(env_layer, occ_data[,c('x', 'y')])
+  filt <- complete.cases(filt)
+  if(any(!filt)){
+    message(sum(!filt), ' records were excluded because they have no environmental values\n')
+  }
+  
+  occ_data <- occ_data[filt, ]
+  
+  # covert occ_data to list
   occ_data <- split(occ_data[,-1], occ_data[,'sp'])
   
   #Vector with grid cell-size used 
@@ -78,6 +90,9 @@ block_partition_pa <- function(env_layer,
   
   # Loop for each species-----
   SpNames <- names(occ_data)
+  
+  
+  
   
   #Start Cluster
   if (Sys.getenv("RSTUDIO") == "1" &&
