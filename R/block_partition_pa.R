@@ -102,8 +102,9 @@ block_partition_pa <- function(env_layer,
   #   cl <-
   #     parallel::makeCluster(cores, outfile = "", setup_strategy = "sequential")
   # } else{
-    cl <- parallel::makeCluster(cores, outfile = "")
+    # cl <- parallel::makeCluster(cores, outfile = "")
   # }
+  cl <- parallel::makeCluster(cores, outfile = "")
   doParallel::registerDoParallel(cl)
   
   # LOOP----
