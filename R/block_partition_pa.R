@@ -123,7 +123,7 @@ block_partition_pa <- function(env_layer,
       
       # Eliminate any recrods wity NA
       presences2 <- occ_data[[s]]
-      filt <- raster::extract(env_layer, presences2[,c(x, y)])
+      filt <- raster::extract(env_layer, presences2[,c("x", "y")])
       filt <- complete.cases(filt)
       presences2 <- presences2[filt,]
       presences2 <- occ_data[[s]]
