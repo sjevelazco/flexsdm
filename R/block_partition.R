@@ -44,7 +44,7 @@ block_partition_pa <- function(env_layer,
   # num_grids: numeric. Number of grid to be tested between 2x(raster resolution) and max_res_mult*(raster resolution), default 30
   
   # occ_data: matrix or data frame with presences records
-  # n_part: 2 (dafault). integer  Number of group for data  partitioning
+  # n_part: 2 (default). integer  Number of group for data  partitioning
   # env_layer: raster. Raster stack or brick with environmental variable. This will be used to evaluate spatial autocorrelation and environmental similarity between training and testing partition
   
   dir.create(file.path(dir_save, 'block'))
