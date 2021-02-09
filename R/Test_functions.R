@@ -102,3 +102,67 @@ dim(part)
 part %>% group_by(sp, pr_ab, partition) %>% count
 
 
+
+##%######################################################%##
+#                                                          #
+#### Second version to test block_partition_pa function ####
+#                                                          #
+##%######################################################%##
+
+# Packages
+require(raster)
+require(dplyr)
+
+# Import function
+source('https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/R/block_partition.R')
+
+
+### Two occurrences databases
+# 1-Virtual species 
+URL <- "https://github.com/sjevelazco/spatial_sp_traits/blob/main/Data/spp.RData?raw=true"
+load(url(URL))
+spp
+
+# 2-Real species 
+spp2 <- vroom::vroom("C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/1-PresencesOnlySDMs/BlockCrossValidation//test_sp_pres_abs.gz")
+spp2 %>% dplyr::select(ends_with('coords')) %>% plot
+spp2 %>% dplyr::select(CADE27) %>% table # "I assume that the column with presences-absences data is CADE27"
+spp2 %>% tail
+spp2 <- tibble(spp='Abies magnifica', spp2) # Function require a columns with species names I will assume that it is speceis database for Abies magnifica :)
+
+
+### Load environmental variables
+# URL <- "https://github.com/sjevelazco/spatial_sp_traits/raw/main/Data/somevar.RData"
+# td <- tempdir()
+# download.file(URL, file.path(td, 'somevar.RData'))
+# load(file.path(td, 'somevar.RData')) # some env. variables. created by Brooke for CFP
+
+env.stack <- brick('C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/Predictors/BCM1981_2010_CFP_Stack.grd') # this database is 
+# in Brook's folder https://drive.google.com/drive/u/1/folders/1WDW4ryl1N29aK6Jmf3VK8XDi3NeYw_mG
+
+
+# Previews plot to check if raster data and occurrence overlap
+plot(env.stack[[1]])
+points(spp2 %>% dplyr::select(ends_with('coords')), cex=0.5, pch=19)
+
+env.stack <- homogenize_na(env.stack)
+plot(env.stack[[1]])
+
+part2 <- block_partition_pa(
+  env_layer = env.stack,
+  occ_data = spp, 
+  sp = 'species', 
+  x = 'x', 
+  y = 'y', 
+  pr_ab = 'pr_ab', 
+  max_res_mult = 500, 
+  num_grids = 30, 
+  n_part = 2, 
+  cores = 3, 
+  save_part_raster = TRUE, 
+  dir_save = getwd()
+)
+
+part2 %>% 
+  dplyr::group_by(sp, partition, pr_ab) %>% 
+  count 
