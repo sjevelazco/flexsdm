@@ -4,7 +4,6 @@
 #                                                          #
 ##%######################################################%##
 
-require(ENMTML)
 require(raster)
 require(dplyr)
 require(sf)
@@ -27,7 +26,12 @@ require(sf)
 # save(somevar, file=file.path(here::here('Data', 'somevar.RData')), compress = 'bzip2')
 # load(here::here('Data', 'somevar.RData'))
 
-# Create a presences absences database 
+##%######################################################%##
+#                                                          #
+####       Create a presences absences database         ####
+#                                                          #
+##%######################################################%##
+
 load(here::here('Data', 'somevar.RData'))
 
 
@@ -79,12 +83,15 @@ rm(sp_db); rm(sp_db2); rm(sp_db3)
      # file = file.path(here::here('Data', 'spp.RData')))
 
 
+
 # Save Rdata a real occurrence database
 spp_real <- vroom::vroom("C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/1-PresencesOnlySDMs/BlockCrossValidation/study_plots.gz")
-spp_real <- rename(spp_real, pres_abs=ABMA, x=x_tran, y=y_tran)
+spp_real <- rename(spp_real, pr_ab=ABMA, x=x_tran, y=y_tran)
 spp_real <- spp_real %>% dplyr::select(-c(new_id:geometry))
 
-# save(spp, file = file.path(here::here('Data', 'spp_real.RData')))
+# save(spp_real, file = file.path(here::here('Data', 'spp_real.RData')))
+rm(spp_real)
+
 
 
 ##%######################################################%##
@@ -92,10 +99,10 @@ spp_real <- spp_real %>% dplyr::select(-c(new_id:geometry))
 ####                  Teste function 1                  ####
 #                                                          #
 ##%######################################################%##
-
-source('./R/block_partition.R')
+source('./R/block_partition_pa.R')
 load('./Data/spp.RData')
 load('./Data/somevar.RData')
+env.stack <- brick('C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/Predictors/BCM1981_2010_CFP_Stack_2v.grd')
 
 res(somevar)*1000
 ini <- Sys.time()
@@ -109,7 +116,7 @@ part <- block_partition_pa(
   pr_ab = 'pr_ab',
   max_res_mult = 500,
   num_grids = 30,
-  n_part = 4,
+  n_part = 2,
   cores = 3,
   save_part_raster = TRUE,
   dir_save = getwd() #Write the directory path to save results
@@ -132,54 +139,28 @@ part %>% group_by(sp, pr_ab, partition) %>% count
 require(raster)
 require(dplyr)
 
-# Import function
-source('https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/R/block_partition.R')
-
-
-### Two occurrences databases
-# 1-Virtual species 
-URL <- "https://github.com/sjevelazco/spatial_sp_traits/blob/main/Data/spp.RData?raw=true"
-load(url(URL))
-spp
-
-# 2-Real species 
-spp2 <- vroom::vroom("C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/1-PresencesOnlySDMs/BlockCrossValidation//test_sp_pres_abs.gz")
-spp2 %>% dplyr::select(ends_with('coords')) %>% plot
-spp2 %>% dplyr::select(CADE27) %>% table # "I assume that the column with presences-absences data is CADE27"
-spp2 %>% tail
-spp2 <- tibble(spp='Abies magnifica', spp2) # Function require a columns with species names I will assume that it is speceis database for Abies magnifica :)
-
+# Import function and occurrence database 
+source('./R/block_partition_pa.R')
+load('./Data/spp_real.RData')
 
 ### Load environmental variables
-# URL <- "https://github.com/sjevelazco/spatial_sp_traits/raw/main/Data/somevar.RData"
-# td <- tempdir()
-# download.file(URL, file.path(td, 'somevar.RData'))
-# load(file.path(td, 'somevar.RData')) # some env. variables. created by Brooke for CFP
+env_stack <- brick('C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/Predictors/BCM1981_2010_CFP_Stack_2v.grd')
 
-env.stack <- brick('C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/Predictors/BCM1981_2010_CFP_Stack.grd') # this database is 
-# in Brook's folder https://drive.google.com/drive/u/1/folders/1WDW4ryl1N29aK6Jmf3VK8XDi3NeYw_mG
+# Filtering record placed in the same cell 
+ncell <- raster::cellFromXY(env_stack, spp_real %>% dplyr::select(x, y) %>% data.frame)
+spp_real <- tibble(ncell, spp_real) %>% arrange(ncell, desc(pr_ab))
+spp_real <- spp_real %>% dplyr::filter(!duplicated(ncell))  
+spp_real %>% count(pr_ab)
 
-env.stack <- homogenize_na(env.stack)
-
-
-# Previews plot to check if raster data and occurrence overlap
-plot(env.stack[[1]])
-points(spp2 %>% dplyr::select(ends_with('coords')), cex=0.5, pch=19)
-
-# I strongly recommend that you homogenize all NAs between raster layers.
-# For this you can use homogenize_na just available in our repository.
-
-
-env.stack <- homogenize_na(env.stack)
-plot(env.stack[[1]])
-
+ini <- Sys.time()
 part2 <- block_partition_pa(
-  env_layer = env.stack,
-  occ_data = spp, 
+  env_layer = env_stack,
+  occ_data = spp_real, 
   sp = 'species', 
   x = 'x', 
   y = 'y', 
-  pr_ab = 'pr_ab', 
+  pr_ab = 'pr_ab',
+  min_res_mult = 10, 
   max_res_mult = 500, 
   num_grids = 30, 
   n_part = 2, 
@@ -187,7 +168,11 @@ part2 <- block_partition_pa(
   save_part_raster = TRUE, 
   dir_save = getwd()
 )
+Sys.time()-ini
 
 part2 %>% 
   dplyr::group_by(sp, partition, pr_ab) %>% 
+  count 
+part2 %>% 
+  dplyr::group_by(sp, partition) %>% 
   count 

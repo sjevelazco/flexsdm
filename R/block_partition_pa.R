@@ -10,6 +10,7 @@
 #' @param pr_ab 
 #' @param dir_save 
 #' @param cores 
+#' @param min_res_mult 
 #' @param max_res_mult 
 #' @param num_grids 
 #' @param n_part 
@@ -25,6 +26,7 @@ block_partition_pa <- function(env_layer,
                                x,
                                y,
                                pr_ab,
+                               min_res_mult=2,
                                max_res_mult=200,
                                num_grids=30,
                                n_part = 2, 
@@ -47,6 +49,10 @@ block_partition_pa <- function(env_layer,
   # n_part: 2 (default). integer  Number of group for data  partitioning
   # env_layer: raster. Raster stack or brick with environmental variable. This will be used to evaluate spatial autocorrelation and environmental similarity between training and testing partition
   
+  if(n_part!=2){
+    stop("The use of n_part values other than 2 has not yet been implemented.")
+  }
+  
   dir.create(file.path(dir_save, 'block'))
   
   # Transform occ_data to data.frame and list
@@ -55,20 +61,26 @@ block_partition_pa <- function(env_layer,
   occ_data <- data.frame(occ_data)
   
   # Eliminate those records with NA
-  
   filt <- raster::extract(env_layer, occ_data[,c('x', 'y')])
   filt <- complete.cases(filt)
   if(any(!filt)){
     message(sum(!filt), ' records were excluded because they have no environmental values\n')
+    occ_data <- occ_data[filt, ]
   }
   
-  occ_data <- occ_data[filt, ]
+  if (any(!unique(occ_data[, 'pr_ab']) %in% c(0, 1))) {
+    stop(
+      "values in pr_ab column did not match with 0 and 1:
+unique list values in pr_ab column are: ",
+paste(unique(occ_data[, 'pr_ab']), collapse = " ")
+    )
+  }
   
-  # covert occ_data to list
+  # convert occ_data to list
   occ_data <- split(occ_data[,-1], occ_data[,'sp'])
   
   #Vector with grid cell-size used 
-  cellSize = seq(res(env_layer[[1]])[1] * 2, 
+  cellSize = seq(res(env_layer[[1]])[1] * min_res_mult, 
                  res(env_layer[[1]])[1] * max_res_mult, 
                  length.out = num_grids)
   
@@ -92,8 +104,6 @@ block_partition_pa <- function(env_layer,
   SpNames <- names(occ_data)
   
   
-  
-  
   #Start Cluster
   # if (Sys.getenv("RSTUDIO") == "1" &&
   #     !nzchar(Sys.getenv("RSTUDIO_TERM")) &&
@@ -114,7 +124,7 @@ block_partition_pa <- function(env_layer,
   results <-
     foreach(
       s = 1:length(occ_data),
-      .packages = c("raster", "ape", "dismo", "flexclust", "sp")
+      .packages = c("raster", "ape", "dismo", "flexclust", "sp", "dplyr")
     ) %dopar% {
       
       # Extract coordinates----
@@ -221,6 +231,12 @@ block_partition_pa <- function(env_layer,
       names(part) <- names(which(pp == TRUE))
       
       
+      # Ncell
+      ncell <- data.frame(matrix(0, nrow(presences2@data),
+                                 length(grid)))
+      for (i in 1:length(grid)) {
+        ncell[, i] <- raster::cellFromXY(grid[[i]], presences2)
+      }
       
       # Performance of cells ----
       # SD of number of records per cell size-----
@@ -247,34 +263,53 @@ block_partition_pa <- function(env_layer,
         rm(Env.P2)
       }
       
+      
       # I moran-----
       Imoran.Grid <- rep(NA, length(grid))
+      
+      dist <- flexclust::dist2(presences2@data[, c('x', 'y')], 
+                    presences2@data[, c('x', 'y')])
+      dist <- 1 / dist
+      diag(dist) <- 0
+      dist[which(dist == Inf)] <- 0
+      
       species2 <-
         cbind(presences2@data, raster::extract(env_layer, presences2))
+      
       for (p in 1:length(grid)) {
-        part3 <- part[,p]
-          odd <- which((part3 == 1))
-          even <- which((part3 == 2))
-          dist <- as.matrix(dist(presences2@data[,c('x', 'y')]))
-          dist <- 1 / dist
-          diag(dist) <- 0
-          dist[which(dist == Inf)] <- 0
-          dist[odd, odd] <- 0
-          dist[even, even] <- 0
-          mins <- apply(dist, 2, max)
-          for (i in 1:length(mins)) {
-            dist[, i] <- ifelse(dist[, i] == mins[i], mins[i], 0)
-          }
+        print(p)
+        ncell3 <- ncell[,p]
+        part3 <- c(part[,p])
+        filt <- data.frame(
+          nrow = 1:length(ncell3),
+          ncell = ncell3,
+          group = part3,
+          pr_ab = presences2@data[c('pr_ab')]
+        ) %>%
+          dplyr::group_by(ncell, group, pr_ab) %>% 
+          slice_sample(n = 1) %>%
+          dplyr::pull(nrow) %>% 
+          sort()
+        odd <- which((part3[filt] == 1))
+        even <- which((part3[filt] == 2))
+        dist2 <- dist[filt, filt]
+        dist2[odd, odd] <- 0
+        dist2[even, even] <- 0
+        
+        mins <- apply(dist2, 2, function(x) max(x, na.rm = TRUE))
+        for (i in 1:length(mins)) {
+          dist2[, i] <- ifelse(dist2[, i] == mins[i], mins[i], 0)
+        }
         
         if (nrow(species2) < 3) {
           Imoran.Grid[p] <- NA
         } else{
-          im <- sapply(species2[, names(env_layer)],
+          im <- sapply(species2[filt, names(env_layer)],
                        function(x)
                          ape::Moran.I(x,
-                                      dist,
-                                      na.rm = T,
-                                      scaled = T)$observed)
+                                      dist2,
+                                      na.rm = TRUE,
+                                      scaled = TRUE)$observed)
           Imoran.Grid[p] <- mean(im)
         }
       }
