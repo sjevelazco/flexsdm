@@ -9,7 +9,12 @@ require(raster)
 require(dplyr)
 require(sf)
 
-# Basic layer database
+##%######################################################%##
+#                                                          #
+####                Basic layer database                ####
+#                                                          #
+##%######################################################%##
+
 # r_base <- "C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/StudyAreaRaster.tif" %>%
 #   raster::raster()
 # dir.create("./Data")
@@ -72,6 +77,21 @@ rm(sp_db); rm(sp_db2); rm(sp_db3)
 
 # save(spp,
      # file = file.path(here::here('Data', 'spp.RData')))
+
+
+# Save Rdata a real occurrence database
+spp_real <- vroom::vroom("C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/1-PresencesOnlySDMs/BlockCrossValidation/study_plots.gz")
+spp_real <- rename(spp_real, pres_abs=ABMA, x=x_tran, y=y_tran)
+spp_real <- spp_real %>% dplyr::select(-c(new_id:geometry))
+
+# save(spp, file = file.path(here::here('Data', 'spp_real.RData')))
+
+
+##%######################################################%##
+#                                                          #
+####                  Teste function 1                  ####
+#                                                          #
+##%######################################################%##
 
 source('./R/block_partition.R')
 load('./Data/spp.RData')
