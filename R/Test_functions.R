@@ -176,3 +176,33 @@ part2 %>%
 part2 %>% 
   dplyr::group_by(sp, partition) %>% 
   count 
+
+
+##%######################################################%##
+#                                                          #
+####          Test function second Brooke bug          ####
+#                                                          #
+##%######################################################%##
+tibble(pa_data[[1]])
+
+source('https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/R/block_partition_pa.R')
+spat_part <- block_partition_pa(
+  env_layer = env_stack,
+  occ_data = pa_data[[1]], #
+  sp = 'species',
+  x = 'x_tran',
+  y = 'y_tran',
+  pr_ab = 'sp_pa',
+  min_res_mult=2, # I recommend set this parameter with higher values maybe 3 or 4 
+  max_res_mult = 500, # you can use a higher value here
+  num_grids = 5, # when really use this function for your data set higher number here maybe > 30 
+  n_part = 2,
+  cores = 3, # don't need multiple cores for single species
+  save_part_raster = TRUE,
+  dir_save = getwd()
+)
+
+
+# A way to visualize how looks like a raster setting a given value in the max_res_mult parameter 
+source('https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/R/plot_max_res.R')
+plot_max_res(env_stack[[1]], max_res_mult = 800)
