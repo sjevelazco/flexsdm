@@ -56,6 +56,7 @@ block_partition_pa <- function(env_layer,
   dir.create(file.path(dir_save, 'block'))
   
   # Transform occ_data to data.frame and list
+  occ_data <- data.frame(occ_data)
   occ_data <- occ_data[,c(sp, pr_ab, x, y)]
   colnames(occ_data) <- c('sp', 'pr_ab', 'x', 'y')
   occ_data <- data.frame(occ_data)
