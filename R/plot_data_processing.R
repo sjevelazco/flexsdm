@@ -613,10 +613,16 @@ all_calflora2 <- dplyr::bind_rows(all_calflora) %>%
 
 nrow(all_calflora) - nrow(all_calflora2) # How many plots with low or NA location quality & before 1980?
 
-# trying to search for non-wild observations, but I don't think there are any
-# non_wild <- all_calflora2[grep("park", all_calflora2$location_description), ] 
+# removing observations in zoos and botanical gardens
+non_wild <- c('botanic', 'Botanic', 'botanical', 'Botanical', 'Zoo', 'zoo')
 
-all_calflora <- all_calflora2
+non_wild_df <- all_calflora2[grepl(paste(non_wild,collapse="|"), 
+                          all_calflora2$location_description),]
+
+all_calflora3 <- all_calflora2[!grepl(paste(non_wild,collapse="|"), 
+                                    all_calflora2$location_description),]
+
+all_calflora <- all_calflora3
 
 pres_abs <- splist2presabs(
   all_calflora,
