@@ -206,3 +206,16 @@ spat_part <- block_partition_pa(
 # A way to visualize how looks like a raster setting a given value in the max_res_mult parameter 
 source('https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/R/plot_max_res.R')
 plot_max_res(env_stack[[1]], max_res_mult = 800)
+
+
+##%######################################################%##
+#                                                          #
+####           Detection of outliers recoreds           ####
+####       based on environmental characteristics       ####
+#                                                          #
+##%######################################################%##
+
+source("https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/R/env_outliers.R")
+load('./Data/spp_real.RData')
+spp_real$species %>% unique
+
