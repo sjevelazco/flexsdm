@@ -215,12 +215,12 @@ plot_max_res(env_stack[[1]], max_res_mult = 800)
 #                                                          #
 ##%######################################################%##
 
-# Pres pseudoabsences database
+# Pres pseudo-absences database
 URL <- "https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/Data/spp_pres_psabs.RData?raw=true"
 load(url(URL))
 spp_pres_psabs
 
-# 
+# environmental variables
 URL <- "https://github.com/sjevelazco/spatial_sp_traits/raw/main/Data/somevar.RData"
 td <- tempdir()
 download.file(URL, file.path(td, 'somevar.RData'))
