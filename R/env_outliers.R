@@ -53,7 +53,7 @@ env_outliers <- function(da, species, x, y, pr_ab, id, envr){
       tibble(id = occ_sp_01$id, pr_ab = occ_sp_01$pr_ab, .)
     sp_env_1 <- sp_env_01 %>% dplyr::filter(pr_ab == 1)
     
-    occ_sp_01 <- occ_sp_01 %>% select(-x, -y, -pr_ab)
+    occ_sp_01 <- occ_sp_01 %>% dplyr::select(-x, -y, -pr_ab)
     
     if(nrow(sp_env_1)>6){
       #### Method based on Boxplot and Reverse Jackknife ####

@@ -210,12 +210,47 @@ plot_max_res(env_stack[[1]], max_res_mult = 800)
 
 ##%######################################################%##
 #                                                          #
-####           Detection of outliers recoreds           ####
+####           Detection of outliers records            ####
 ####       based on environmental characteristics       ####
 #                                                          #
 ##%######################################################%##
 
+# Pres pseudoabsences database
+URL <- "https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/Data/spp_pres_psabs.RData?raw=true"
+load(url(URL))
+spp_pres_psabs
+
+# 
+URL <- "https://github.com/sjevelazco/spatial_sp_traits/raw/main/Data/somevar.RData"
+td <- tempdir()
+download.file(URL, file.path(td, 'somevar.RData'))
+load(file.path(td, 'somevar.RData')) # some env. vari
+somevar
+
+
+# Function
 source("https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/R/env_outliers.R")
-load('./Data/spp_real.RData')
-spp_real$species %>% unique
+
+
+somevar # raster stack
+
+spp <- spp_pres_psabs$search_name %>% unique
+table(spp_pres_psabs$search_name)
+spp_pres_psabs2 <- spp_pres_psabs %>% dplyr::filter(search_name%in%spp[1:3]) # filter database to get smaller database
+
+out <- env_outliers(da = spp_pres_psabs2,
+                    species = 'search_name',
+                    x = 'longitude_m',
+                    y = 'latitude_m',
+                    pr_ab = 'pr_ab',
+                    envr = somevar,
+                    id = 'IDr')
+
+head(out)
+
+nrow(spp_pres_psabs2)
+spp_pres_psabs3 <- left_join(spp_pres_psabs2, out, by=c('IDr' = 'id')) 
+
+
+
 
