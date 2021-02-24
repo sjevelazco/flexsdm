@@ -1,5 +1,12 @@
 #' Detection of outliers in the environmental space 
-#' asdfasdf
+#'
+#' @param da 
+#' @param species 
+#' @param x 
+#' @param y 
+#' @param pr_ab 
+#' @param id 
+#' @param envr 
 
 env_outliers <- function(da, species, x, y, pr_ab, id, envr){
   # Packages
