@@ -614,24 +614,29 @@ all_calflora2 <- dplyr::bind_rows(all_calflora) %>%
 nrow(all_calflora) - nrow(all_calflora2) # How many plots with low or NA location quality & before 1980?
 
 # removing observations in zoos and botanical gardens
-non_wild <- c('botanic', 'Botanic', 'botanical', 'Botanical', 'Zoo', 'zoo')
+non_wild <- c('botanic',
+              'botanical',
+              'zoo',
+              'campus',
+              'cultivated',
+              'nursery',
+              'garden')
 
-non_wild_df <- all_calflora2[grepl(paste(non_wild,collapse="|"), 
-                          all_calflora2$location_description),]
+filt <- grepl(paste(non_wild,collapse="|"),  
+              tolower(all_calflora2$location_description))
+table(filt) 
 
-all_calflora3 <- all_calflora2[!grepl(paste(non_wild,collapse="|"), 
-                                    all_calflora2$location_description),]
+all_calflora2 <- all_calflora2 %>% dplyr::mutate(wild=!filt)
 
-all_calflora <- all_calflora3
 
 pres_abs <- splist2presabs(
-  all_calflora,
+  all_calflora2,
   sites.col = "id",
   sp.col = "taxon",
   keep.n = FALSE
 )
 
-cf_pa <- left_join(all_calflora, pres_abs, by ='id')
+cf_pa <- left_join(all_calflora2, pres_abs, by ='id')
 
 cf_sf <- st_as_sf(cf_pa, coords = c("longitude", "latitude"), remove = FALSE) %>%
   st_set_crs(4008) %>%
@@ -668,6 +673,7 @@ thorne_rapids <- data.table::fread(paste0(wd$data, 'plots/Thorne_rapids_sp_names
 names(thorne_rapids) <- gsub(x = names(thorne_rapids), pattern = "\\.", replacement = " ") 
 
 cfw_plots <- data.table::fread(paste0(wd$data, 'plots/cfw_sp_names_cfp_cleaned.gz')) %>% tibble
+names(cf_plots) <- gsub(x = names(cfw_plots), pattern = "\\.", replacement = " ") 
 
 cf_plots <- data.table::fread(paste0(wd$data, 'plots/calflora_sp_names_cfp_cleaned.gz')) %>% tibble
 names(cf_plots) <- gsub(x = names(cf_plots), pattern = "\\.", replacement = " ") 
@@ -675,7 +681,8 @@ names(cf_plots) <- gsub(x = names(cf_plots), pattern = "\\.", replacement = " ")
 
 # all data
 all_data <- dplyr::bind_rows(cf_plots, cfw_plots, thorne_rapids, thorne_releves) %>%
-  st_as_sf(coords = c('x_albers', 'y_albers'), crs = crs(env_stack), remove = FALSE)
+  st_as_sf(coords = c('x_albers', 'y_albers'), crs = crs(env_stack), remove = FALSE) %>%
+  tibble::rowid_to_column("ID")
 
 
 ggplot() +
@@ -695,7 +702,7 @@ data.table::fwrite(all_data, paste0(wd$data, 'plots/all_data_cfp_sp_names.gz'))
 #                                                          #
 ####                  Model data frame                  ####
 #                                                          #
-##%######################################################%##
+##%######################################################%## 
 
 # columns with study species names
 study_cols <- unique(grep(paste(study_sp_names,collapse="|"), 
@@ -704,6 +711,7 @@ study_cols <- unique(grep(paste(study_sp_names,collapse="|"),
 # data frame with study species and plot identifiers
 study_df <- all_data %>%
   dplyr::select(
+    ID,
     id,
     wypt_id,
     new_id,
@@ -713,9 +721,10 @@ study_df <- all_data %>%
     source,
     JEP_REG,
     survey,
+    wild,
     geometry,
     all_of(study_cols)
-  )
+    )
 
 sp_extract <- raster::extract(x = env_stack, y = study_df, df = TRUE, sp = TRUE, cellnumbers = TRUE)
 
