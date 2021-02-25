@@ -252,5 +252,4 @@ nrow(spp_pres_psabs2)
 spp_pres_psabs3 <- left_join(spp_pres_psabs2, out, by=c('IDr' = 'id')) 
 
 
-
-
+**
