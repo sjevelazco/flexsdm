@@ -16,7 +16,7 @@
 #' @export
 #'
 #' @examples
-pretty_map <- function(plot_area, # shapefile/polygon for main extent of plot
+pretty_map_fun <- function(plot_area, # shapefile/polygon for main extent of plot
                        occ_data, # plot location data (with a presence absence column)
                        x, # x column 
                        y, # y column
