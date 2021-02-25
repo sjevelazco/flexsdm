@@ -97,7 +97,7 @@ env_filtering <- function(coord, variables, nbins, plot=TRUE){
             pch = 19,
             col = "red")
     plot (coord, pch = 19, col = "grey50")
-    map(add = T)
+    # map(add = T)
     points (coord_filter, pch = 19, col = "red")
     par (mfrow = c(1, 1), mar = c(4, 4, 0, 0.5))
   }

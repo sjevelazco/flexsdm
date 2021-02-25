@@ -252,4 +252,15 @@ nrow(spp_pres_psabs2)
 spp_pres_psabs3 <- left_join(spp_pres_psabs2, out, by=c('IDr' = 'id')) 
 
 
-**
+##%######################################################%##
+#                                                          #
+####            Test  env_filtering function            ####
+#                                                          #
+##%######################################################%##
+require(dplyr)
+require(raster)
+source('./R/env_filtering.R')
+load('./Data/somevar.RData')
+load('./Data/spp.RData')
+somevar %>% plot
+occ_filtered <- env_filtering(coord = spp[2:3], variables = somevar, nbins = 20, plot = TRUE)
