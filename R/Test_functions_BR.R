@@ -40,9 +40,9 @@ cfp <- st_read(paste0(wd$data,'shapefiles/CFP/CFP_GIS_California.shp')) %>%
 #                                                          #
 ##%######################################################%##
 
-source('./R/map_plot_function.R')
+source('./R/pretty_map_fun.R')
 
-test_pa_map <- pretty_map(plot_area = cfp,
+test_pa_map <- pretty_map_fun(plot_area = cfp,
                        occ_data = sp_data %>% dplyr::filter(species == 'Abies magnifica'),
                        x = 'x_albers',
                        y = 'y_albers',
@@ -57,7 +57,7 @@ test_pa_map <- pretty_map(plot_area = cfp,
                        ))
 
 
-test_source_map <- pretty_map(plot_area = cfp,
+test_source_map <- pretty_map_fun(plot_area = cfp,
                           occ_data = sp_data %>% dplyr::filter(species == 'Abies magnifica'),
                           x = 'x_albers',
                           y = 'y_albers',
@@ -74,7 +74,7 @@ test_source_map <- pretty_map(plot_area = cfp,
 )
 
 # testing with no titles, does not work
-no_titles_map <- pretty_map(plot_area = cfp,
+no_titles_map <- pretty_map_fun(plot_area = cfp,
                           occ_data = sp_data %>% dplyr::filter(species == 'Abies magnifica'),
                           x = 'x_albers',
                           y = 'y_albers',
