@@ -5,34 +5,35 @@
 #' @param nbins numeric. A number of classes used to split each environmental condition.
 #' @param plot logical. Plot filtering procedure.
 env_filtering <- function(coord, variables, nbins, plot=TRUE){
-  library(maps)
+  # require(maps)
+  require(raster)
   
-  filters <- as.list(variables)
+  variables <- raster::extract(variables, coord)
+  # filters <- as.list(variables)
+  # rm(filters)
+  res <- (maxValue(variables) - minValue(variables)) / nbins
   
-  res  <- lapply(filters, function(x) {
-    (max(x) - min(x)) / nbins
-  })
   
-  n <- length(filters)
-  pot_p <- list ()
+  n <- raster::nlayers(variables)
+  classes <- list()
   for (i in 1:n) {
-    k <- filters [[i]] [!is.na(filters[[i]])]
-    ext1 <- range (k)
+    k <- variables[[i]][] %>% na.omit() %>% c()
+    ext1 <- range(k)
     ext1[1] <- ext1[1] - 1
     x <- seq(ext1[1], ext1[2], by = res[[i]])
-    pot_p[[i]] <- x
+    classes[[i]] <- x
   }
-  pot_p <- expand.grid(pot_p)
+  classes <- expand.grid(classes)
   
   ends <- NULL
   for (i in 1:n) {
-    f <- pot_p[, i] + res[[i]]
+    f <- classes[, i] + res[[i]]
     ends <- cbind (ends, f)
   }
   
-  pot_pp <- data.frame(pot_p, ends)
-  pot_pp <- data.frame(pot_pp, groupID = c(1:nrow(pot_pp)))
-  rows <- length(filters[[1]])
+  classes2 <- data.frame(classes, ends)
+  classes2 <- data.frame(classes2, groupID = c(1:nrow(classes2)))
+  rows <- ncell(variables[[1]])
   # filter <- data.frame(matrix(unlist(filters), nrow = rows))
   real_p <- data.frame(coord, variables)
   
@@ -48,32 +49,32 @@ env_filtering <- function(coord, variables, nbins, plot=TRUE){
   }
   
   names(real_p) <- names_real
-  names(pot_pp) <- c(names_pot_st, names_pot_end, "groupID")
+  names(classes2) <- c(names_pot_st, names_pot_end, "groupID")
   
   filt <- names(real_p)[-c(1:2)]
   real_p$groupID <- NA
   selection_NA <- list()
   
   if (length(res) == 2) {
-    for (l in 1:nrow(pot_pp)) {
+    for (l in 1:nrow(classes2)) {
       flt <-
-        real_p$filter1 <= pot_pp$end_f1[l] &
-        real_p$filter1 > pot_pp$start_f1[l] &
-        real_p$filter2 <= pot_pp$end_f2[l] &
-        real_p$filter2 > pot_pp$start_f2[l]
-      real_p$groupID[flt] <- pot_pp$groupID[l]
+        real_p$filter1 <= classes2$end_f1[l] &
+        real_p$filter1 > classes2$start_f1[l] &
+        real_p$filter2 <= classes2$end_f2[l] &
+        real_p$filter2 > classes2$start_f2[l]
+      real_p$groupID[flt] <- classes2$groupID[l]
     }
   }
   if(length(res)==3) {
-    for (l in 1:nrow(pot_pp)) {
+    for (l in 1:nrow(classes2)) {
       flt <-
-        real_p$filter1 <= pot_pp$end_f1[l] &
-        real_p$filter1 > pot_pp$start_f1[l] &
-        real_p$filter2 <= pot_pp$end_f2[l] &
-        real_p$filter2 > pot_pp$start_f2[l] &
-        real_p$filter3 <= pot_pp$end_f3[l] &
-        real_p$filter3 > pot_pp$start_f3[l]
-      real_p$groupID[flt] <- pot_pp$groupID[l]
+        real_p$filter1 <= classes2$end_f1[l] &
+        real_p$filter1 > classes2$start_f1[l] &
+        real_p$filter2 <= classes2$end_f2[l] &
+        real_p$filter2 > classes2$start_f2[l] &
+        real_p$filter3 <= classes2$end_f3[l] &
+        real_p$filter3 > classes2$start_f3[l]
+      real_p$groupID[flt] <- classes2$groupID[l]
     }
   }
   
