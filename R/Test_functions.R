@@ -262,5 +262,21 @@ require(raster)
 source('./R/env_filtering.R')
 load('./Data/somevar.RData')
 load('./Data/spp.RData')
-somevar %>% plot
-occ_filtered <- env_filtering(coord = spp[2:3], variables = somevar, nbins = 20, plot = TRUE)
+# somevar %>% plot
+spp <- spp %>% dplyr::mutate(ID=as.character(1:nrow(spp))) %>% 
+  dplyr::rename(lon=x, lat=y) %>% tibble()
+somevar <- raster::brick(somevar)
+
+sppnames <- spp$species %>% unique()
+occ_filtered <-
+  env_filtering(
+    da = spp %>% dplyr::filter(species == "sp1"),
+    x = 'lon',
+    y = 'lat',
+    id = 'ID',
+    variables = somevar,
+    nbins = 15,
+    plot = TRUE
+  )
+dim(occ_filtered)
+dim(spp)
