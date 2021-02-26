@@ -14,10 +14,16 @@ env_filtering <- function(da, x, y, id, variables, nbins, plot=TRUE){
   coord <- da[c(x, y)]
   
   message("Extracting values from raster ... ")
-  variables <- raster::extract(variables, coord)
-  res <- (apply(variables, 2, max) - apply(variables, 2, min)) / nbins
+  variables <- raster::extract(variables, data.frame(coord))
   
+  filt <- complete.cases(variables)
+  da <- da[filt,]
+  coord <- coord[filt, ]
+  
+  variables <- variables[filt, ]
   n <- ncol(variables)
+  res <- (apply(variables, 2, max) - apply(variables, 2, min)) / nbins
+
   classes <- list()
   for (i in 1:n) {
     ext1 <- range(variables[,i])

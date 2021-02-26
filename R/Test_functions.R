@@ -267,16 +267,20 @@ spp <- spp %>% dplyr::mutate(ID=as.character(1:nrow(spp))) %>%
   dplyr::rename(lon=x, lat=y) %>% tibble()
 somevar <- raster::brick(somevar)
 
-sppnames <- spp$species %>% unique()
+# env_variables <- raster::brick('C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/Predictors/BCM1981_2010_CA_CFP.grd') # if you read or transform a raster stack to brick, the raster::extract() function will work considerably faster.
+table(spp$species)
 occ_filtered <-
   env_filtering(
-    da = spp %>% dplyr::filter(species == "sp1"),
+    da = spp %>% dplyr::filter(species == "sp3"),
     x = 'lon',
     y = 'lat',
     id = 'ID',
-    variables = somevar,
-    nbins = 15,
+    variables = env_variables,
+    nbins = 5,
     plot = TRUE
   )
 dim(occ_filtered)
 dim(spp)
+
+
+
