@@ -61,19 +61,12 @@ results <- microbenchmark(
   times = 25)
 
 
+require(ggplot2)
 
-for (p in 1:length(grid)) {
-  ncell3 <- ncell[,p]
-  part3 <- c(part[,p])
-  filt <- data.frame(
-    nrow = 1:length(ncell3),
-    ncell = ncell3,
-    group = part3,
-    pr_ab = presences2@data[c('pr_ab')]
-  ) %>%
-    dplyr::group_by(ncell, group, pr_ab) %>% 
-    dplyr::slice_sample(n = 1) %>%
-    dplyr::pull(nrow) %>% 
-    sort()
-  print(paste(p, length(filt)))
-}
+results <- microbenchmark(
+  braquets = variables[[i]][] %>% na.omit() %>% c(),
+  getvalues = raster::getValues(variables[[i]]) %>% na.omit() %>% c(),
+  times = 10)
+autoplot(results)
+results %>% class
+results[[1]]
