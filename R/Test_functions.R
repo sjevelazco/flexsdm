@@ -259,6 +259,7 @@ spp_pres_psabs3 <- left_join(spp_pres_psabs2, out, by=c('IDr' = 'id'))
 ##%######################################################%##
 require(dplyr)
 require(raster)
+require()
 source('./R/env_filtering.R')
 load('./Data/somevar.RData')
 load('./Data/spp.RData')
@@ -271,13 +272,13 @@ somevar <- raster::brick(somevar)
 table(spp$species)
 occ_filtered <-
   env_filtering(
-    da = spp %>% dplyr::filter(species == "sp3"),
+    da = spp %>% dplyr::filter(species == "sp3") %>% data.frame,
     x = 'lon',
     y = 'lat',
     id = 'ID',
-    variables = env_variables,
-    nbins = 5,
-    plot = TRUE
+    variables = somevar,
+    nbins = 10,
+    plot = T
   )
 dim(occ_filtered)
 dim(spp)

@@ -65,7 +65,7 @@ env_filtering <- function(da, x, y, id, variables, nbins, plot=TRUE){
   pb <- progress_bar$new(total = nrow(real_p))
   for(l in 1:nrow(real_p)) {
     pb$tick()
-    real_p2 <- real_p[l,] %>% select(starts_with('f'))
+    real_p2 <- real_p[l,] %>% dplyr::select(starts_with('f'))
     flt <- list()
     for (ll in 1:length(cnames)) {
       vf <- real_p2 %>% dplyr::pull(cnames[ll])
