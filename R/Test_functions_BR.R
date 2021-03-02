@@ -34,6 +34,12 @@ sp_data <- data.table::fread(paste0(wd$output, 'pres_abs_data.gz')) %>% tibble #
 cfp <- st_read(paste0(wd$data,'shapefiles/CFP/CFP_GIS_California.shp')) %>%
   st_transform(crs = crs(env_stack)) # California portion of CFP
 
+study_sp <- data.table::fread(paste0(wd$data, 'plots/study_species.csv')) %>% tibble()
+study_sp <- study_sp %>% janitor::clean_names() %>% na.omit()
+pres_abs_sp <- study_sp %>% dplyr::filter(model_type == 'presence-absence')
+study_sp_names <- pres_abs_sp$species_name
+study_sp_names <- gsub(x = study_sp_names, pattern = "\\.", replacement = " ")
+
 ##%######################################################%##
 #                                                          #
 ####                 Map Plot Function                  ####
@@ -82,5 +88,35 @@ no_titles_map <- pretty_map_fun(plot_area = cfp,
                           fill_att = "pr_ab")
 
 
+##%######################################################%##
+#                                                          #
+####           Outlier Detection Function               ####
+#                                                          #
+##%######################################################%##
 
+# Outlier Function
+source("https://raw.githubusercontent.com/sjevelazco/spatial_sp_traits/main/R/env_outliers.R")
 
+pa_data <- list()
+
+# P/A datasets (by species)
+for (i in 1:length(study_sp_names)) {
+  pa_data[[i]] <- data.table::fread(paste0(wd$output,
+                                           study_sp_names[i],
+                                           '/pres_abs_for_modeling.gz')) %>% tibble()
+  print(study_sp_names[i])
+}
+
+outliers <- list()
+
+for(i in 1:length(pa_data)){
+outliers[[i]] <- env_outliers(da = pa_data[[i]],
+                        species = 'species',
+                        x = 'x_albers',
+                        y = 'y_albers',
+                        pr_ab = 'pr_ab',
+                        envr = env_stack,
+                        id = 'ID')
+}
+
+# R Session timed-out March 2, 2021 (I will come back to this problem later )
