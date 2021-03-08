@@ -542,7 +542,7 @@ sdms <- function(df, # full data set
         label = round(AUC, 3),
         fill = model
       )) +
-      geom_point(size = 5) + geom_label(size = 7) +
+      geom_point(size = 3) + geom_label(size = 5) +
       labs(
         title = paste0(species_name, ": AUC Comparison"),
         x = "Model Type",
@@ -578,7 +578,8 @@ sdms <- function(df, # full data set
       levelplot(
         sens_spec,
         main = paste0(species_name, ": Current distribution with sens=spec threshold"),
-        par.settings = myTheme
+        par.settings = myTheme,
+        layout=c(3, 3)
       ) +
       layer(sp.polygons(cfp.pol, fill = 'transparent', col = 1))
     
