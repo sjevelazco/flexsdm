@@ -502,6 +502,99 @@ sdms <- function(df, # full data set
   writeRaster(
     sens_spec,
     filename = file.path(dir_save, 'models/sens_spec_maps.grd'),
-    overwrite = TRUE
-  )
+    overwrite = TRUE)
+    
+    
+    ##### PDF Output #####
+    auc_final_df <- as.data.frame(auc_final) %>%
+      dplyr::rename(mean = ensemble_mean,
+                    w_average = ensemble_weighted_avg) %>%
+      pivot_longer(cols = 1:8,
+                   names_to = "Model",
+                   values_to = "AUC")  %>%
+      mutate(model = 'final')
+    
+    auc_eval_df <- as.data.frame(auc) %>%
+      dplyr::mutate(mean = NA,
+                    w_average = NA) %>%
+      pivot_longer(cols = 1:8,
+                   names_to = "Model",
+                   values_to = "AUC") %>%
+      mutate(model = 'eval')
+    
+    auc_df <- bind_rows(auc_final_df, auc_eval_df)
+    
+    auc_plot <-
+      ggplot(auc_df, aes(
+        x = Model,
+        y = AUC,
+        label = round(AUC, 3),
+        fill = model
+      )) +
+      geom_point(size = 5) + geom_label(size = 7) +
+      labs(
+        title = paste0(species_name, ": AUC Comparison"),
+        x = "Model Type",
+        y = "AUC"
+      ) +
+      theme(text = element_text(size = 25, family = "serif"),
+            axis.title.x = element_text(vjust = .25))
+    
+    presence <- spatial_df %>%
+      filter(pr_ab == 1)
+    
+    absence <- spatial_df %>%
+      filter(pr_ab == 0)
+    
+    p.points <- as(presence, 'Spatial')
+    a.points <- as(absence, 'Spatial')
+    cfp.pol <- as(sp_area, 'Spatial')
+    
+    myTheme <- rasterTheme(region = rev(terrain.colors(7)))
+    
+    
+    raw_maps <-
+      levelplot(
+        all_raw,
+        main = paste0(species_name, ": Current distribution"),
+        par.settings = myTheme
+      ) +
+      layer(sp.polygons(cfp.pol, fill = 'transparent', col = 1)) +
+      layer(sp.points(
+        p.points,
+        col = 'darkgreen',
+        pch = 1,
+        alpha = .15
+      ))
+    
+    
+    threshold_maps <-
+      levelplot(
+        sens_spec,
+        main = paste0(species_name, ": Current distribution with sens=spec threshold"),
+        par.settings = myTheme
+      ) +
+      layer(sp.polygons(cfp.pol, fill = 'transparent', col = 1))
+    
+    pdf(
+      paste0(
+        wd$output,
+        test_species[[i]],
+        '/',
+        test_species[[i]],
+        '_sdm_outputs.pdf'
+      )
+    )
+    print(auc_plot)
+    print(raw_maps)
+    print(threshold_maps)
+    print(threshold)
+    print(summary(glm_final))
+    print(summary(gam_final))
+    print(summary(rf_final))
+    print(summary(brt_final))
+    print(summary(svm_final))
+    print(summary(nnet_final))
+    dev.off()
+    
 }
