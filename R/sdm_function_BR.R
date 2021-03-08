@@ -47,6 +47,8 @@ sdms <- function(df, # full data set
   require(MASS)
   require(biomod2)
   require(caret)
+  require(doParallel)
+  require(parallel)
   devtools::install_github("babaknaimi/sdm")
   require(sdm)
   
@@ -76,8 +78,8 @@ sdms <- function(df, # full data set
   )
   
   message('Number of cores: ', detectCores())
-  message('Cores used: ', n_cores)
-  cl <- makeCluster(n_cores)
+  message('Cores used: ', detectCores()-1)
+  cl <- makeCluster(detectCores()-1)
   registerDoParallel(cl)
   
   ### GLM ###
