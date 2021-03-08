@@ -320,7 +320,7 @@ sdms <- function(df, # full data set
   
   
   # model prediction on all data
-  full_pred_svm <- predict(svm_train, df_clean, type = 'prob')[, 2]
+  full_pred_svm <- predict(svm_final, df_clean, type = 'prob')[, 2]
   
   # model evaluation for model built using all data
   full_eval_svm <- evaluates(x = df_clean$pr_ab, p = full_pred_svm)
@@ -548,7 +548,7 @@ sdms <- function(df, # full data set
         x = "Model Type",
         y = "AUC"
       ) +
-      theme(text = element_text(size = 25, family = "serif"),
+      theme(text = element_text(size = 15, family = "serif"),
             axis.title.x = element_text(vjust = .25))
     
     presence <- spatial_df %>%
@@ -568,15 +568,10 @@ sdms <- function(df, # full data set
       levelplot(
         all_raw,
         main = paste0(species_name, ": Current distribution"),
-        par.settings = myTheme
+        par.settings = myTheme,
+        layout=c(3, 3)
       ) +
-      layer(sp.polygons(cfp.pol, fill = 'transparent', col = 1)) +
-      layer(sp.points(
-        p.points,
-        col = 'darkgreen',
-        pch = 1,
-        alpha = .15
-      ))
+      layer(sp.polygons(cfp.pol, fill = 'transparent', col = 1))
     
     
     threshold_maps <-
@@ -588,7 +583,7 @@ sdms <- function(df, # full data set
       layer(sp.polygons(cfp.pol, fill = 'transparent', col = 1))
     
     pdf(
-      file.path(dir_save, 'models/',
+      file = paste0(dir_save[[i]], 'models/',
         species_name,
         '_sdm_outputs.pdf'
       )
@@ -596,13 +591,7 @@ sdms <- function(df, # full data set
     print(auc_plot)
     print(raw_maps)
     print(threshold_maps)
-    print(threshold)
-    print(summary(glm_final))
-    print(summary(gam_final))
-    print(summary(rf_final))
-    print(summary(brt_final))
-    print(summary(svm_final))
-    print(summary(nnet_final))
+    print(varImpPlot(rf_final))
     dev.off()
     
 }
