@@ -583,7 +583,7 @@ sdms <- function(df, # full data set
       layer(sp.polygons(cfp.pol, fill = 'transparent', col = 1))
     
     pdf(
-      file = paste0(dir_save[[i]], 'models/',
+      file = paste0(dir_save, 'models/',
         species_name,
         '_sdm_outputs.pdf'
       )
