@@ -44,6 +44,9 @@ sdms <- function(df, # full data set
   require(sf)
   require(gam)
   require(randomForest)
+  require(MASS)
+  require(biomod2)
+  require(caret)
   devtools::install_github("babaknaimi/sdm")
   require(sdm)
   
@@ -71,6 +74,11 @@ sdms <- function(df, # full data set
     crs = crs(pred_mask),
     remove = FALSE
   )
+  
+  message('Number of cores: ', detectCores())
+  message('Cores used: ', n_cores)
+  cl <- makeCluster(n_cores)
+  registerDoParallel(cl)
   
   ### GLM ###
   
@@ -358,6 +366,8 @@ sdms <- function(df, # full data set
   # model evaluation for model built on evaluation data
   full_eval_nnet <- evaluates(x = df_clean$pr_ab, p = full_pred_nnet)
   
+  stopCluster(cl)
+  
   ## post-processing
   
   ### AUC based on evaluation model
@@ -398,12 +408,9 @@ sdms <- function(df, # full data set
       clusterR(raw_preds, fun = weighted.mean, args = list(w=unlist(auc))),
       clusterR(raw_preds, fun = calc, args = list(fun = sd)))
   
-  mean_sdm <- calc(raw_preds, fun = mean) # mean ensemble
-  w_ave_sdm <- raster::weighted.mean(raw_preds, w = unlist(auc)) # AUC-weighted ensemble
-  sd_sdm <- calc(raw_preds, fun = sd) # standard deviation of raw models
-  ensemble <- raster::brick(mean_sdm, w_ave_sdm, sd_sdm)
   names(ensemble) <- c('mean', 'weighted average', 'standard deviation')
   
+  endCluster()
   
   ensemble_extract <- raster::extract(ensemble, spatial_df, df = TRUE, sp = TRUE)
   
@@ -577,11 +584,8 @@ sdms <- function(df, # full data set
       layer(sp.polygons(cfp.pol, fill = 'transparent', col = 1))
     
     pdf(
-      paste0(
-        wd$output,
-        test_species[[i]],
-        '/',
-        test_species[[i]],
+      file.path(dir_save, 'models/',
+        species_name,
         '_sdm_outputs.pdf'
       )
     )
