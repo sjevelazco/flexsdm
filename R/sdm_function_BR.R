@@ -49,6 +49,8 @@ sdms <- function(df, # full data set
   require(caret)
   require(doParallel)
   require(parallel)
+  require(nnet)
+  require(rasterVis)
   devtools::install_github("babaknaimi/sdm")
   require(sdm)
   
@@ -450,7 +452,7 @@ sdms <- function(df, # full data set
   ## all rasters
   all_raw <- raster::stack(raw_preds, ensemble)
   
-  writeRaster(all_raw, filename = file.path(dir_save, 'models/raw_pred_maps.grd'))
+  writeRaster(all_raw, filename = file.path(dir_save, 'models/raw_pred_maps.grd'), overwrite = TRUE)
   
   ### Thresholds for based on final models
   
