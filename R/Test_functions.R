@@ -259,7 +259,6 @@ spp_pres_psabs3 <- left_join(spp_pres_psabs2, out, by=c('IDr' = 'id'))
 ##%######################################################%##
 require(dplyr)
 require(raster)
-require()
 source('./R/env_filtering.R')
 load('./Data/somevar.RData')
 load('./Data/spp.RData')
@@ -277,7 +276,8 @@ occ_filtered <-
     y = 'lat',
     id = 'ID',
     variables = somevar,
-    nbins = 10,
+    nbins = 20,
+    cores = 3,
     plot = T
   )
 dim(occ_filtered)

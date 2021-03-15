@@ -4,11 +4,13 @@
 #' @param variables data.frame. A data.frame with environmental conditions. It is possible use two or three variables.  
 #' @param nbins numeric. A number of classes used to split each environmental condition.
 #' @param plot logical. Plot filtering procedure.
-env_filtering <- function(da, x, y, id, variables, nbins, plot=TRUE){
+env_filtering <- function(da, x, y, id, variables, nbins, cores=1, plot=TRUE){
   # require(maps)
   require(raster)
   require(progress)
   require(dplyr)
+  require(parallel)
+  require(doParallel)
   
   da <- da[c(x, y, id)]
   coord <- da[c(x, y)]
@@ -62,9 +64,25 @@ env_filtering <- function(da, x, y, id, variables, nbins, plot=TRUE){
   
   cnames <- real_p %>% dplyr::select(starts_with('f')) %>% names
   
-  pb <- progress_bar$new(total = nrow(real_p))
-  for(l in 1:nrow(real_p)) {
-    pb$tick()
+  # pb <- progress_bar$new(total = nrow(real_p))
+  # for(l in 1:nrow(real_p)) {
+  #   pb$tick()
+  #   real_p2 <- real_p[l,] %>% dplyr::select(starts_with('f'))
+  #   flt <- list()
+  #   for (ll in 1:length(cnames)) {
+  #     vf <- real_p2 %>% dplyr::pull(cnames[ll])
+  #     flt[[ll]] <-
+  #       vf <= (classes %>% dplyr::pull(paste0('end_', cnames[ll]))) &
+  #       vf > (classes %>% dplyr::pull(paste0('start_', cnames[ll])))
+  #   }
+  #   flt <- do.call('cbind', flt) %>% apply(., 1, all) %>% which()
+  #   real_p$groupID[l] <- classes$groupID[flt]
+  # }
+  
+  cl <- parallel::makeCluster(cores, outfile = "")
+  doParallel::registerDoParallel(cl)
+  
+  groupID = foreach(l = 1:nrow(real_p), .packages = c("dplyr"), .final = unlist) %dopar% {
     real_p2 <- real_p[l,] %>% dplyr::select(starts_with('f'))
     flt <- list()
     for (ll in 1:length(cnames)) {
@@ -75,7 +93,10 @@ env_filtering <- function(da, x, y, id, variables, nbins, plot=TRUE){
     }
     flt <- do.call('cbind', flt) %>% apply(., 1, all) %>% which()
     real_p$groupID[l] <- classes$groupID[flt]
+    real_p$groupID[l]
   }
+  real_p$groupID <- groupID
+  stopCluster(cl)
   
   final_points <- real_p[!duplicated(real_p$groupID), cnames]
   coord_filter<- da[!duplicated(real_p$groupID), c(id, x, y)]
