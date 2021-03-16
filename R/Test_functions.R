@@ -284,4 +284,59 @@ dim(occ_filtered)
 dim(spp)
 
 
+##%######################################################%##
+#                                                          #
+####            Test tuning Brooke function             ####
+#                                                          #
+##%######################################################%##
+load('./Data/spp_pres_psabs.RData')
+env <- raster::brick('C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/Predictors/BCM1981_2010_CA_CFP.grd')
 
+require(raster)
+require(dplyr)
+require(data.table)
+require(ENMTML)
+require(ecospat)
+require(e1071)
+require(tidyverse)
+require(dismo)
+require(sf)
+require(gam)
+require(randomForest)
+require(MASS)
+require(biomod2)
+require(caret)
+require(doParallel)
+require(parallel)
+require(nnet)
+require(rasterVis)
+
+require(caret)
+
+require(velox)
+velox(env)
+envext <- raster::extract(env, spp_pres_psabs %>% dplyr::select(longitude_m, latitude_m))
+env_preds <- colnames(envext)
+df <- data.frame(spp_pres_psabs, envext)
+head(df)
+df <- split(df,df$pr_ab)
+set.seed(123)
+train0 <- dplyr::slice_sample(df$`0`, prop = 0.7)
+set.seed(123)
+train1 <- dplyr::slice_sample(df$`1`, prop = 0.7)
+test0 <- anti_join(df$`0`, train0)
+test1 <- anti_join(df$`1`, train1)
+
+calib <- bind_rows(train0, train1)
+eval <- bind_rows(test0, test1)
+dim(calib)
+dim(eval)
+
+
+glm.formula <-
+  makeFormula("pr_ab", calib[, env_preds],
+              "quadratic", interaction.level = 0)
+
+glm.formula <-
+  makeFormula("pr_ab", calib[, env_preds],
+              "quadratic", interaction.level = 1)

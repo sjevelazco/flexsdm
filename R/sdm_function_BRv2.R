@@ -51,11 +51,10 @@ sdms <- function(df, # full data set
   require(parallel)
   require(nnet)
   require(rasterVis)
-  devtools::install_github("babaknaimi/sdm")
-  require(sdm)
-  
+  if (!"devtools"%in%installed.packages()){devtools::install_github("babaknaimi/sdm")}  
   if (!"devtools"%in%installed.packages()){install.packages("devtools")}  
   devtools::install_github("andrefaa/ENMTML") 
+  require(sdm)
   require('ENMTML')
   
   if(!dir.exists(paste0(dir_save, 'models/', sep = ''))) {
@@ -87,20 +86,13 @@ sdms <- function(df, # full data set
   ### GLM ###
   
   # training model with forward and backward model selection
+  glm.formula <-
+    makeFormula("pr_ab", calib[, env_preds],
+                "quadratic", interaction.level = 1)
   glm_train <-
-    stepAIC(
-      glmStart <- glm(pr_ab ~ 1,
+      glmStart <- glm(glm.formula,
                       data = calib,
-                      family = binomial),
-      glm.formula <-
-        makeFormula("pr_ab", calib[, env_preds],
-                    "quadratic", interaction.level = 1),
-      data = calib,
-      direction = "both",
-      trace = FALSE,
-      k = 2,
-      control = glm.control(maxit = 100)
-    )
+                      family = binomial)
   
   saveRDS(glm_train, file = file.path(dir_save, 'models/glm_train.rda'))
   
@@ -108,7 +100,7 @@ sdms <- function(df, # full data set
   test_pred_glm <- predict(glm_train, eval, type = "response")
   
   # model evaluation on test (eval) data
-  test_eval_glm <- evaluates(x = eval$pr_ab, p = test_pred_glm)
+  test_eval_glm <- sdm::evaluates(x = eval$pr_ab, p = test_pred_glm)
   
   # variable importance
   varImp_glm <- varImp(glm_train, scale = FALSE)
