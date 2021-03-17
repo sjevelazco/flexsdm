@@ -103,23 +103,13 @@ sdms <- function(df, # full data set
   test_eval_glm <- sdm::evaluates(x = eval$pr_ab, p = test_pred_glm)
   
   # variable importance
-  varImp_glm <- varImp(glm_train, scale = FALSE)
+  varImp_glm <- caret::varImp(glm_train, scale = FALSE)
   
   # final model built with all data
   glm_final <-
-    stepAIC(
-      glmStart <- glm(pr_ab ~ 1,
+      glmStart <- glm(glm.formula,
                       data = df_clean,
-                      family = binomial),
-      glm.formula <-
-        makeFormula("pr_ab", df_clean[, env_preds],
-                    "quadratic", interaction.level = 1),
-      data = df_clean,
-      direction = "both",
-      trace = FALSE,
-      k = 2,
-      control = glm.control(maxit = 100)
-    )
+                      family = binomial)
   
   saveRDS(glm_final, file = file.path(dir_save, 'models/glm_final.rda'))
   
@@ -127,13 +117,15 @@ sdms <- function(df, # full data set
   full_pred_glm <- predict(glm_final, df_clean, type = "response")
   
   # model evaluation on model built using all data
-  full_eval_glm <- evaluates(x = df_clean$pr_ab, p = full_pred_glm)
+  full_eval_glm <- sdm::evaluates(x = df_clean$pr_ab, p = full_pred_glm)
   
   # variable importance
   varImp_full_glm <- varImp(glm_final, scale = FALSE)
   
   ### GAM ###
-  gam_train <- gam(
+  # gam.formula <- paste("s(", env_preds, ")",sep="") #",k=3)",
+  
+  gam_train <- gam::gam(
     pr_ab ~ s(cwd) + s(aet) + s(tmin) + s(ppt_djf) + s(ppt_jja) +
       s(pH) + s(awc) + s(depth) + s(percent_clay) + landform,
     data = calib,
@@ -171,30 +163,43 @@ sdms <- function(df, # full data set
   varImp_full_gam <- varImp(gam_final, scale = FALSE)
   
   ### Random Forest ###
-  rf_train <- randomForest(
-    x = calib[, env_preds],
-    y = as.factor(calib$pr_ab),
-    ntree = 1000,
-    importance = TRUE
-  )
   
-  saveRDS(rf_train, file = file.path(dir_save, 'models/rf_train.rda'))
+  # Find best parameters for final model
+  fit_control <- caret::trainControl(
+    method = "repeatedcv",## 10-fold CV
+    number = 10, ## number of folds
+    repeats = 5, ## for repeating fold CV 
+    selectionFunction = "best",
+    classProbs = TRUE, ## Estimate class probabilities
+    summaryFunction = caret::twoClassSummary,
+  ) 
   
-  # model prediction on evaluation data
-  test_pred_rf <- predict(rf_train, eval, type = "prob")[, 2]
   
-  # model evaluation for model built using evaluation data
-  test_eval_rf <- evaluates(x = eval$pr_ab, p = test_pred_rf)
+  tune_grid <- expand.grid(mtry = seq(2, length(env_preds), 1))
   
-  # variable importance
-  varImp_eval_rf <- varImp(rf_train, scale = FALSE)
+  set.seed(123)
+  betst_tune <- caret::train(pr_ab ~ ., 
+                            data = dplyr::mutate(df_clean, 
+                                                 pr_ab=
+                                                   as.factor(ifelse(pr_ab==1, 'Pres', 'Abs'))), 
+                          method = "rf", 
+                          type='classification',
+                          verbose = FALSE,
+                          metric = "ROC",
+                          trControl = fit_control,
+                          tuneGrid = tune_grid
+                          )
+  # ggplot(rf_final2)
+  betst_tune
   
   # model built with all data
-  rf_final <- randomForest(
-    x = df_clean[, env_preds],
-    y = as.factor(df_clean$pr_ab),
+  set.seed(123)
+  rf_final <- randomForest::randomForest(
+    pr_ab ~ ., data = dplyr::mutate(df_clean, pr_ab=as.factor(pr_ab)),
     ntree = 1000,
-    importance = TRUE
+    importance = TRUE, 
+    type='classification',
+    mtry=betst_tune$bestTune$mtry
   )
   
   saveRDS(rf_final, file = file.path(dir_save, 'models/rf_final.rda'))
@@ -208,62 +213,148 @@ sdms <- function(df, # full data set
   # variable importance
   varImp_full_rf <- varImp(rf_final, scale = FALSE)
   
-  ### Boosted Regression Tree ###
-  brt_train <-
-    gbm(
-      pr_ab ~ cwd + tmin + aet + ppt_djf + ppt_jja + pH + awc + depth +
-        percent_clay + landform,
-      data = calib,
-      distribution = "bernoulli",
-      n.trees = 10000,
-      interaction.depth = 3,
-      shrinkage = 0.01,
-      cv.folds = 5
-      
-    )
+  # Evalute model with best tuning 
+  set.seed(123)
+  rf_train <- randomForest(
+    x = calib[, env_preds],
+    y = as.factor(calib$pr_ab),
+    ntree = 1000,
+    importance = TRUE, 
+    type='classification',
+    mtry=betst_tune$bestTune$mtry
+  )
   
-  saveRDS(brt_train, file = file.path(dir_save, 'models/brt_train.rda'))
-  
-  # number of trees to use in predictions
-  brt_train_tune = gbm.perf(brt_train, method = "cv", plot.it = F)
+  # saveRDS(rf_train, file = file.path(dir_save, 'models/rf_train.rda'))
   
   # model prediction on evaluation data
-  test_pred_brt <- predict(brt_train, eval, type = "response", n.trees = brt_train_tune)
+  test_pred_rf <- predict(rf_train, eval, type = "prob")[, 2]
   
   # model evaluation for model built using evaluation data
-  test_eval_brt <- evaluates(x = eval$pr_ab, p = test_pred_brt)
+  test_eval_rf <- evaluates(x = eval$pr_ab, p = test_pred_rf)
   
   # variable importance
-  varImp_test_brt <- varImp(brt_train, scale = FALSE, numTrees = brt_train_tune)
+  # varImp_eval_rf <- varImp(rf_train, scale = FALSE)
   
+  
+  
+  ### Boosted Regression Tree ###
+  
+  # Find best parameters for final model
+  fit_control <- caret::trainControl(
+    method = "repeatedcv",## 10-fold CV
+    number = 10, ## number of folds
+    repeats = 5, ## for repeating fold CV 
+    selectionFunction = "best",
+    classProbs = TRUE, ## Estimate class probabilities
+    summaryFunction = caret::twoClassSummary,
+  ) 
+  
+  
+  tune_grid <- expand.grid(
+    interaction.depth = seq(2, 10, 2),
+    n.trees = c(100, 200, 500, 1000, 2000, 3000),
+    shrinkage = 0.1,
+    n.minobsinnode = 20
+  )
+  
+  set.seed(123)
+  betst_tune <- caret::train(pr_ab ~ ., 
+                             data = 
+                             dplyr::mutate(df_clean, 
+                                          pr_ab=
+                                            as.factor(ifelse(pr_ab==1, 'Pres', 'Abs'))), 
+                             method = "gbm", 
+                             verbose = FALSE,
+                             metric = "ROC",
+                             trControl = fit_control,
+                             tuneGrid = tune_grid
+                             )
+  
+  ggplot(betst_tune)
+  betst_tune$bestTune
+  set.seed(123)
   brt_final <-
-    gbm(
-      pr_ab ~ cwd + tmin + aet + ppt_djf + ppt_jja + pH + awc + depth +
-        percent_clay + landform,
+    gbm(pr_ab ~ .,
       data = df_clean,
       distribution = "bernoulli",
-      n.trees = 10000,
-      interaction.depth = 3,
-      shrinkage = 0.01,
-      cv.folds = 5
-      
+      n.trees = betst_tune$bestTune$n.trees,
+      interaction.depth = betst_tune$bestTune$interaction.depth,
+      shrinkage = betst_tune$bestTune$shrinkage,
+      n.minobsinnode = betst_tune$bestTune$n.minobsinnode
     )
   
   saveRDS(brt_final, file = file.path(dir_save, 'models/brt_final.rda'))
   
-  brt_final_tune = gbm.perf(brt_final, method = "cv", plot.it = F)
+  # brt_final_tune = gbm.perf(brt_final, method = "cv", plot.it = F)
   
   # model prediction on all data
-  full_pred_brt <- predict(brt_final, df_clean, type = "response", n.trees = brt_final_tune)
+  # full_pred_brt <- predict(brt_final, df_clean, type = "response", n.trees = brt_final_tune)
   
   # model evaluation for model built using all data
   full_eval_brt <- evaluates(x = df_clean$pr_ab, p = full_pred_brt)
   
   # variable importance
-  varImp_full_brt <- varImp(brt_final, scale = FALSE, numTrees = brt_final_tune)
+  varImp_full_brt <- varImp(brt_final, scale = FALSE, 
+                            numTrees = betst_tune$bestTune$n.trees)
+  
+  # Validate this model
+  brt_train <-
+    gbm(pr_ab ~ .,
+        data = calib,
+        distribution = "bernoulli",
+        n.trees = betst_tune$bestTune$n.trees,
+        interaction.depth = betst_tune$bestTune$interaction.depth,
+        shrinkage = betst_tune$bestTune$shrinkage,
+        n.minobsinnode = betst_tune$bestTune$n.minobsinnode
+    )
+  
+  
+  # saveRDS(brt_train, file = file.path(dir_save, 'models/brt_train.rda'))
+  
+  # number of trees to use in predictions
+  # brt_train_tune = gbm.perf(brt_train, method = "cv", plot.it = F)
+  
+  # model prediction on evaluation data
+  test_pred_brt <- predict(brt_train, eval, type = "response")
+  
+  # model evaluation for model built using evaluation data
+  test_eval_brt <- evaluates(x = eval$pr_ab, p = test_pred_brt)
+  
+  # variable importance
+  # varImp_test_brt <- varImp(brt_train, scale = FALSE, numTrees = brt_train_tune)
+  
   
   
   ### Support Vector Machines
+  
+  # final model
+  svm_tune_final <- tune(
+    svm,
+    pr_ab ~ .,
+    data = df_clean,
+    ranges = list(gamma = 2 ^ (-1:1), cost = 2 ^ (2:4)),
+    tunecontrol = tune.control(sampling = "fix")
+  )
+  
+  svm_final<- kernlab::ksvm(
+    pr_ab ~ .,
+    data = df_clean,
+    type = "C-svc",
+    kernel = "rbfdot",
+    C = svm_tune_final[[2]],
+    prob.model = TRUE
+  )
+  
+  saveRDS(svm_final, file = file.path(dir_save, 'models/svm_final.rda'))
+  
+  
+  # model prediction on all data
+  full_pred_svm <- predict(svm_final, df_clean, type = 'prob')[, 2]
+  
+  # model evaluation for model built using all data
+  full_eval_svm <- evaluates(x = df_clean$pr_ab, p = full_pred_svm)
+  
+  
   svm_tune_train <- tune(
     svm,
     pr_ab ~ .,
@@ -290,32 +381,7 @@ sdms <- function(df, # full data set
   # model evaluation for model built using evaluation data
   test_eval_svm <- evaluates(x = eval$pr_ab, p = test_pred_svm)
   
-  # final model
-  svm_tune_final <- tune(
-    svm,
-    pr_ab ~ .,
-    data = df_clean,
-    ranges = list(gamma = 2 ^ (-1:1), cost = 2 ^ (2:4)),
-    tunecontrol = tune.control(sampling = "fix")
-  )
   
-  svm_final<- kernlab::ksvm(
-    pr_ab ~ cwd + tmin + aet + ppt_djf + ppt_jja + pH + awc + depth + landform,
-    data = df_clean,
-    type = "C-svc",
-    kernel = "rbfdot",
-    C = svm_tune_final[[2]],
-    prob.model = TRUE
-  )
-  
-  saveRDS(svm_final, file = file.path(dir_save, 'models/svm_final.rda'))
-  
-  
-  # model prediction on all data
-  full_pred_svm <- predict(svm_final, df_clean, type = 'prob')[, 2]
-  
-  # model evaluation for model built using all data
-  full_eval_svm <- evaluates(x = df_clean$pr_ab, p = full_pred_svm)
   
   ### Artificial Neural Networks ###
   
