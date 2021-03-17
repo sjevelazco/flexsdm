@@ -610,7 +610,9 @@ data.table::fwrite(cfw_cfp, paste0(wd$data, 'plots/cfw_sp_names_cleaned.gz'))
 all_calflora <-
   list.files(paste0(wd$data, 'CalFlora'),
              full.names = T)  %>%
-  lapply(., vroom::vroom)
+  lapply(., data.table::fread, colClasses = c(Date = 'character')) %>%
+  lapply(., tibble)
+
 
 all_calflora <- dplyr::bind_rows(all_calflora) #Error: Can't combine `Date` <date> and `Date` <character>.
 
@@ -654,18 +656,17 @@ cf_sf <- st_as_sf(cf_pa, coords = c("longitude", "latitude"), remove = FALSE) %>
   st_transform(crs(env_stack)) %>%
   st_intersection(st_make_valid(us_shp)) %>%
   dplyr::mutate(x_albers = sf::st_coordinates(.)[,1],
-                y_albers = sf::st_coordinates(.)[,2]) %>%
-  relocate(AREA_SQ_MI:y_albers, .before = Abies.bracteata)
+                y_albers = sf::st_coordinates(.)[,2]) 
 
 
 ggplot() +
   geom_sf(data = cfp_trans) +
   geom_sf(data = cf_sf) +
-  labs(title = paste('CalFlora plots in CFP', nrow(cf_sf)))
+  labs(title = paste('CalFlora plots', nrow(cf_sf)))
 
-ggsave(paste0(wd$data, 'plots/calflora_cfp_plot_map.jpeg'))
+ggsave(paste0(wd$data, 'plots/calflora_plot_map.jpeg'))
 
-data.table::fwrite(cf_sf, paste0(wd$data, 'plots/calflora_sp_names_cfp_cleaned.gz'))
+data.table::fwrite(cf_sf, paste0(wd$data, 'plots/calflora_sp_names_cleaned.gz'))
 
 ##%######################################################%##
 #                                                          #
@@ -686,11 +687,11 @@ thorne_rapids <- data.table::fread(paste0(wd$data, 'plots/Thorne_rapids_sp_names
 colnames(thorne_rapids)[colnames(thorne_rapids) == 'ABCO'] <- "Abies.concolor"
 names(thorne_rapids) <- gsub(x = names(thorne_rapids), pattern = "\\.", replacement = " ") 
 
-cfw_plots <- data.table::fread(paste0(wd$data, 'plots/cfw_sp_names_cfp_cleaned.gz')) %>% tibble
+cfw_plots <- data.table::fread(paste0(wd$data, 'plots/cfw_sp_names_cleaned.gz')) %>% tibble
 colnames(cfw_plots)[colnames(cfw_plots) == 'ABCO'] <- "Abies.concolor"
 names(cfw_plots) <- gsub(x = names(cfw_plots), pattern = "\\.", replacement = " ") 
 
-cf_plots <- data.table::fread(paste0(wd$data, 'plots/calflora_sp_names_cfp_cleaned.gz')) %>% tibble
+cf_plots <- data.table::fread(paste0(wd$data, 'plots/calflora_sp_names_cleaned.gz')) %>% tibble
 names(cf_plots) <- gsub(x = names(cf_plots), pattern = "\\.", replacement = " ") 
 
 
@@ -703,14 +704,14 @@ all_data <- dplyr::bind_rows(cf_plots, cfw_plots, thorne_rapids, thorne_releves)
 ggplot() +
   geom_sf(data = cfp_trans, fill = "antiquewhite") +
   geom_sf(data = all_data, aes(color = survey), alpha = .5) +
-  labs(title = paste("All plots in the CFP:", paste(nrow(all_data)))) +
+  labs(title = paste("All plots:", paste(nrow(all_data)))) +
   theme(title = element_text(color = 'black', size = 12, family = "serif"),
         text = element_text(size = 12, family = "serif", color = 'black')) +
   facet_wrap(~source)
 
-ggsave(paste0(wd$data, 'plots/all_plots_map.jpeg'))
+ggsave(paste0(wd$data, 'plots/all_plots_map_March17_2021.jpeg'))
 
-data.table::fwrite(all_data, paste0(wd$data, 'plots/all_data_cfp_sp_names.gz'))
+data.table::fwrite(all_data, paste0(wd$data, 'plots/all_data_sp_names.gz'))
 
 
 ##%######################################################%##
