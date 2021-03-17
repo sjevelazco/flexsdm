@@ -329,8 +329,16 @@ test1 <- anti_join(df$`1`, train1)
 
 calib <- bind_rows(train0, train1)
 eval <- bind_rows(test0, test1)
+df <- bind_rows(df)
+df_clean <- df %>% dplyr::select(all_of(env_preds), pr_ab)
+
 dim(calib)
+calib <- calib[c('pr_ab', env_preds)]
+eval <- eval[c('pr_ab', env_preds)]
 dim(eval)
+
+caret::getModelInfo(model = "gam", regex = FALSE)$gam$fit
+modelLookup(model='gbm') 
 
 
 glm.formula <-
