@@ -15,6 +15,7 @@
 #' @param pred_rasters 
 #' @param species_name 
 #' @param dir_save 
+#' @param cores 
 #'
 #' @return
 #' @export
@@ -30,7 +31,8 @@ sdms <- function(df, # full data set
                  sp_area, # polygon for delineating prediction area
                  pred_rasters, # prediction rasters
                  species_name, # character of species name
-                 dir_save) # directory for saving model objects and spatial predictions
+                 dir_save,
+                 cores=1) # directory for saving model objects and spatial predictions
 { 
   
   require(raster)
@@ -79,33 +81,30 @@ sdms <- function(df, # full data set
   )
   
   message('Number of cores: ', detectCores())
-  message('Cores used: ', detectCores()-1)
-  cl <- makeCluster(detectCores()-1)
+  message('Cores used: ', cores)
+  # cl <- makePSOCKcluster(cores)
+  cl <- makeCluster(cores)
   registerDoParallel(cl)
   
-  ### GLM ###
   
-  # training model with forward and backward model selection
-  glm.formula <-
-    makeFormula("pr_ab", calib[, env_preds],
-                "quadratic", interaction.level = 1)
-  glm_train <-
-      glmStart <- glm(glm.formula,
-                      data = calib,
-                      family = binomial)
+  # seting trainControl function for tuning models with caret
+  fit_control <- caret::trainControl(
+    method = "repeatedcv",## 10-fold CV
+    number = 10, ## number of folds
+    repeats = 5, ## for repeating fold CV 
+    selectionFunction = "best",
+    classProbs = TRUE, ## Estimate class probabilities
+    summaryFunction = caret::twoClassSummary,
+  ) 
   
-  saveRDS(glm_train, file = file.path(dir_save, 'models/glm_train.rda'))
   
-  # model prediction on evaluation data
-  test_pred_glm <- predict(glm_train, eval, type = "response")
   
-  # model evaluation on test (eval) data
-  test_eval_glm <- sdm::evaluates(x = eval$pr_ab, p = test_pred_glm)
-  
-  # variable importance
-  varImp_glm <- caret::varImp(glm_train, scale = FALSE)
-  
-  # final model built with all data
+##%######################################################%##
+#                                                          #
+####             Generalized Linear Models              ####
+#                                                          #
+##%######################################################%##
+  #### Final model built with all data
   glm_final <-
       glmStart <- glm(glm.formula,
                       data = df_clean,
@@ -122,28 +121,40 @@ sdms <- function(df, # full data set
   # variable importance
   varImp_full_glm <- varImp(glm_final, scale = FALSE)
   
-  ### GAM ###
-  # gam.formula <- paste("s(", env_preds, ")",sep="") #",k=3)",
   
-  gam_train <- gam::gam(
-    pr_ab ~ s(cwd) + s(aet) + s(tmin) + s(ppt_djf) + s(ppt_jja) +
-      s(pH) + s(awc) + s(depth) + s(percent_clay) + landform,
-    data = calib,
-    family = "binomial"
-  )
   
-  saveRDS(gam_train, file = file.path(dir_save, 'models/gam_train.rda'))
+  #### Training and testing model
+  glm.formula <-
+    makeFormula("pr_ab", calib[, env_preds],
+                "quadratic", interaction.level = 1)
+  glm_train <-
+    glmStart <- glm(glm.formula,
+                    data = calib,
+                    family = binomial)
+  
+  # saveRDS(glm_train, file = file.path(dir_save, 'models/glm_train.rda'))
   
   # model prediction on evaluation data
-  test_pred_gam <- predict(gam_train, eval, type = "response")
+  test_pred_glm <- predict(glm_train, eval, type = "response")
   
   # model evaluation on test (eval) data
-  test_eval_gam <- evaluates(x = eval$pr_ab, p = test_pred_gam)
+  test_eval_glm <- sdm::evaluates(x = eval$pr_ab, p = test_pred_glm)
   
   # variable importance
-  varImp_eval_gam <- varImp(gam_train, scale = FALSE)
+  #### I think it is not necessary calculate variable importance for a model used only for testing. Calculate variable 
+  #### importance with the model constructed with all data is enough :^)
+  # varImp_glm <- caret::varImp(glm_train, scale = FALSE)
   
-  # final model built with all data
+
+##%######################################################%##
+#                                                          #
+####            Generalized Additive Models             ####
+#                                                          #
+##%######################################################%##
+  #### Final model built with all data
+  # gam.formula <- paste("s(", env_preds, ")",sep="") #",k=3)",
+  # WE NEED TO FIND A WAY TO CREAT THE FORMULA AUTOMATICALLY without writing variable names
+  
   gam_final <- gam(
     pr_ab ~ s(cwd) + s(aet) + s(tmin) + s(ppt_djf) + s(ppt_jja) +
       s(pH) + s(awc) + s(depth) + s(percent_clay) + landform,
@@ -162,44 +173,64 @@ sdms <- function(df, # full data set
   # variable importance
   varImp_full_gam <- varImp(gam_final, scale = FALSE)
   
-  ### Random Forest ###
   
+  #### Training and testing model
+  gam_train <- gam::gam(
+    pr_ab ~ s(cwd) + s(aet) + s(tmin) + s(ppt_djf) + s(ppt_jja) +
+      s(pH) + s(awc) + s(depth) + s(percent_clay) + landform,
+    data = calib,
+    family = "binomial"
+  )
+  
+  # saveRDS(gam_train, file = file.path(dir_save, 'models/gam_train.rda'))
+  
+  # model prediction on evaluation data
+  test_pred_gam <- predict(gam_train, eval, type = "response")
+  
+  # model evaluation on test (eval) data
+  test_eval_gam <- evaluates(x = eval$pr_ab, p = test_pred_gam)
+  
+  # variable importance
+  # varImp_eval_gam <- varImp(gam_train, scale = FALSE)
+  
+  
+##%######################################################%##
+#                                                          #
+####                   Random Forest                    ####
+#                                                          #
+##%######################################################%##
+  
+  #### Final model built with all data
   # Find best parameters for final model
-  fit_control <- caret::trainControl(
-    method = "repeatedcv",## 10-fold CV
-    number = 10, ## number of folds
-    repeats = 5, ## for repeating fold CV 
-    selectionFunction = "best",
-    classProbs = TRUE, ## Estimate class probabilities
-    summaryFunction = caret::twoClassSummary,
-  ) 
-  
   
   tune_grid <- expand.grid(mtry = seq(2, length(env_preds), 1))
   
   set.seed(123)
-  betst_tune <- caret::train(pr_ab ~ ., 
-                            data = dplyr::mutate(df_clean, 
-                                                 pr_ab=
-                                                   as.factor(ifelse(pr_ab==1, 'Pres', 'Abs'))), 
-                          method = "rf", 
-                          type='classification',
-                          verbose = FALSE,
-                          metric = "ROC",
-                          trControl = fit_control,
-                          tuneGrid = tune_grid
-                          )
-  # ggplot(rf_final2)
-  betst_tune
+  betst_tune <- caret::train(
+    pr_ab ~ .,
+    data = dplyr::mutate(df_clean,
+                         pr_ab =
+                           as.factor(ifelse(
+                             pr_ab == 1, 'Pres', 'Abs'
+                           ))),
+    method = "rf",
+    type = 'classification',
+    verbose = FALSE,
+    metric = "ROC",
+    trControl = fit_control,
+    tuneGrid = tune_grid
+  )
+  # ggplot(betst_tune)
   
   # model built with all data
   set.seed(123)
   rf_final <- randomForest::randomForest(
-    pr_ab ~ ., data = dplyr::mutate(df_clean, pr_ab=as.factor(pr_ab)),
+    pr_ab ~ .,
+    data = dplyr::mutate(df_clean, pr_ab = as.factor(pr_ab)),
     ntree = 1000,
-    importance = TRUE, 
-    type='classification',
-    mtry=betst_tune$bestTune$mtry
+    importance = TRUE,
+    type = 'classification',
+    mtry = betst_tune$bestTune$mtry
   )
   
   saveRDS(rf_final, file = file.path(dir_save, 'models/rf_final.rda'))
@@ -212,8 +243,12 @@ sdms <- function(df, # full data set
   
   # variable importance
   varImp_full_rf <- varImp(rf_final, scale = FALSE)
+  # varImpPlot(rf_final)
+  varImp_full_rf <- randomForest::importance(rf_final)
   
-  # Evalute model with best tuning 
+  
+  #### Training and testing model
+  # with best tuning 
   set.seed(123)
   rf_train <- randomForest(
     x = calib[, env_preds],
@@ -236,20 +271,13 @@ sdms <- function(df, # full data set
   # varImp_eval_rf <- varImp(rf_train, scale = FALSE)
   
   
-  
-  ### Boosted Regression Tree ###
-  
+##%######################################################%##
+#                                                          #
+####              Boosted Regression Tree               ####
+#                                                          #
+##%######################################################%##
+  #### Final model built with all data
   # Find best parameters for final model
-  fit_control <- caret::trainControl(
-    method = "repeatedcv",## 10-fold CV
-    number = 10, ## number of folds
-    repeats = 5, ## for repeating fold CV 
-    selectionFunction = "best",
-    classProbs = TRUE, ## Estimate class probabilities
-    summaryFunction = caret::twoClassSummary,
-  ) 
-  
-  
   tune_grid <- expand.grid(
     interaction.depth = seq(2, 10, 2),
     n.trees = c(100, 200, 500, 1000, 2000, 3000),
@@ -258,23 +286,25 @@ sdms <- function(df, # full data set
   )
   
   set.seed(123)
-  betst_tune <- caret::train(pr_ab ~ ., 
-                             data = 
-                             dplyr::mutate(df_clean, 
-                                          pr_ab=
-                                            as.factor(ifelse(pr_ab==1, 'Pres', 'Abs'))), 
-                             method = "gbm", 
-                             verbose = FALSE,
-                             metric = "ROC",
-                             trControl = fit_control,
-                             tuneGrid = tune_grid
-                             )
+  betst_tune <- caret::train(
+    pr_ab ~ .,
+    data =
+      dplyr::mutate(df_clean,
+                    pr_ab =
+                      as.factor(ifelse(pr_ab == 1, 'Pres', 'Abs'))),
+    method = "gbm",
+    verbose = FALSE,
+    metric = "ROC",
+    trControl = fit_control,
+    tuneGrid = tune_grid
+  )
   
-  ggplot(betst_tune)
-  betst_tune$bestTune
+  # ggplot(betst_tune)
+  
   set.seed(123)
   brt_final <-
-    gbm(pr_ab ~ .,
+    gbm(
+      pr_ab ~ .,
       data = df_clean,
       distribution = "bernoulli",
       n.trees = betst_tune$bestTune$n.trees,
@@ -288,7 +318,7 @@ sdms <- function(df, # full data set
   # brt_final_tune = gbm.perf(brt_final, method = "cv", plot.it = F)
   
   # model prediction on all data
-  # full_pred_brt <- predict(brt_final, df_clean, type = "response", n.trees = brt_final_tune)
+  full_pred_brt <- predict(brt_final, df_clean, type = "response", n.trees = brt_final_tune)
   
   # model evaluation for model built using all data
   full_eval_brt <- evaluates(x = df_clean$pr_ab, p = full_pred_brt)
@@ -297,7 +327,9 @@ sdms <- function(df, # full data set
   varImp_full_brt <- varImp(brt_final, scale = FALSE, 
                             numTrees = betst_tune$bestTune$n.trees)
   
-  # Validate this model
+  #### Training and testing model
+  # with best tuning
+  set.seed(123)
   brt_train <-
     gbm(pr_ab ~ .,
         data = calib,
@@ -324,24 +356,54 @@ sdms <- function(df, # full data set
   # varImp_test_brt <- varImp(brt_train, scale = FALSE, numTrees = brt_train_tune)
   
   
+##%######################################################%##
+#                                                          #
+####              Support Vector Machines               ####
+#                                                          #
+##%######################################################%##
   
-  ### Support Vector Machines
+  #### Final model built with all data
+  # Find best parameters for final model
   
-  # final model
-  svm_tune_final <- tune(
-    svm,
+  # Tune final model
+  # svm_tune_final <- e1071::tune(
+  #   svm,
+  #   pr_ab ~ .,
+  #   data = df_clean,
+  #   ranges = list(gamma = 2 ^ (-1:1), cost = 2 ^ (2:4)),
+  #   tunecontrol = tune.control(sampling = "fix")
+  # )
+  
+  # Combination of parameters values to be tested
+  tune_grid <-
+    expand.grid(C = c(1, 2, 4, 8, 16),
+                sigma = c(0.001, 0.01, 0.1, 0.2))
+  
+  set.seed(123)
+  betst_tune <- caret::train(
     pr_ab ~ .,
-    data = df_clean,
-    ranges = list(gamma = 2 ^ (-1:1), cost = 2 ^ (2:4)),
-    tunecontrol = tune.control(sampling = "fix")
+    data =
+      dplyr::mutate(df_clean,
+                    pr_ab =
+                      as.factor(ifelse(
+                        pr_ab == 1, 'Pres', 'Abs'
+                      ))),
+    method = "svmRadial",# Radial kernel (kernel = "rbfdot")
+    metric = "ROC",
+    trControl = fit_control,
+    tuneGrid = tune_grid
   )
   
-  svm_final<- kernlab::ksvm(
+  # ggplot(betst_tune)
+  
+  set.seed(123)
+  svm_final <- kernlab::ksvm(
     pr_ab ~ .,
     data = df_clean,
     type = "C-svc",
     kernel = "rbfdot",
-    C = svm_tune_final[[2]],
+    kpar = list(sigma = betst_tune$bestTune$sigma),
+    C = betst_tune$bestTune$C,
     prob.model = TRUE
   )
   
@@ -354,26 +416,32 @@ sdms <- function(df, # full data set
   # model evaluation for model built using all data
   full_eval_svm <- evaluates(x = df_clean$pr_ab, p = full_pred_svm)
   
+  # variable importance
+  varImp_full_svm <- caret::filterVarImp(df_clean[, env_preds], full_pred_svm, nonpara = FALSE)
+  # varImp_full_svm <- varImp_full_svm / sum(varImp_full_svm)
   
-  svm_tune_train <- tune(
-    svm,
-    pr_ab ~ .,
-    data = calib,
-    ranges = list(gamma = 2 ^ (-1:1), cost = 2 ^ (2:4)),
-    tunecontrol = tune.control(sampling = "fix")
-  )
+  #### Training and testing model
+  # with best tuning
+  # svm_tune_train <- tune(
+  #   svm,
+  #   pr_ab ~ .,
+  #   data = calib,
+  #   ranges = list(gamma = 2 ^ (-1:1), cost = 2 ^ (2:4)),
+  #   tunecontrol = tune.control(sampling = "fix")
+  # )
   
+  set.seed(123)
   svm_train <- kernlab::ksvm(
-    pr_ab ~ cwd + tmin + aet + ppt_djf + ppt_jja + pH + awc + depth + landform,
+    pr_ab ~ .,
     data = calib,
     type = "C-svc",
     kernel = "rbfdot",
-    C = svm_tune_train[[2]],
+    kpar = list(sigma = betst_tune$bestTune$sigma),
+    C = betst_tune$bestTune$C,
     prob.model = TRUE
   )
   
   saveRDS(svm_train, file = file.path(dir_save, 'models/svm_train.rda'))
-  
   
   # model prediction on evaluation data
   test_pred_svm <- predict(svm_train, eval, type = 'prob')[, 2]
@@ -383,41 +451,55 @@ sdms <- function(df, # full data set
   
   
   
-  ### Artificial Neural Networks ###
+##%######################################################%##
+#                                                          #
+####            Artificial Neural Networks              ####
+#                                                          #
+##%######################################################%##
+  # cv_nnet_train <- biomod2:::.CV.nnet(Input = calib[, env_preds],
+  #                                     Target = calib$pr_ab)
+  # Tune final model
   
-  cv_nnet_train <- biomod2:::.CV.nnet(Input = calib[, env_preds],
-                                      Target = calib$pr_ab)
+  #### Final model built with all data
+  # Find best parameters for final model
+  # Combination of parameters values to be tested
+  tune_grid <-
+    expand.grid(size = c(2, 4, 6, 8, 10), 
+                decay = c(0.001, 0.01, 0.05, 0.1))
   
-  nnet_train <- nnet(
-    calib[, env_preds],
-    calib$pr_ab,
-    size = cv_nnet_train[1, 1],
-    rang = 0.1,
-    decay = cv_nnet_train[1, 2],
-    maxit = 200,
-    trace = F
+  cl <- makePSOCKcluster(cores)
+  registerDoParallel(cl)
+  
+  set.seed(123)
+  betst_tune <- caret::train(
+    pr_ab ~ .,
+    data =
+      dplyr::mutate(df_clean,
+                    pr_ab =
+                      as.factor(ifelse(
+                        pr_ab == 1, 'Pres', 'Abs'
+                      ))),
+    method = "nnet",
+    # Radial kernel
+    metric = "ROC",
+    trControl = fit_control,
+    tuneGrid = tune_grid
   )
   
-  saveRDS(nnet_train, file = file.path(dir_save, 'models/nnet_train.rda'))
-  
-  # model predictions on evaluation data
-  test_pred_nnet <- predict(nnet_train, eval[, env_preds])
-  
-  # model evaluation for model built on evaluation data
-  test_eval_nnet <- evaluates(x = eval$pr_ab, p = test_pred_nnet)
+  ggplot(betst_tune)
   
   # final model
-  cv_nnet_final <- biomod2:::.CV.nnet(Input = df_clean[, env_preds],
-                                      Target = df_clean$pr_ab)
-  
-  nnet_final <- nnet(
-    df_clean[, env_preds],
-    df_clean$pr_ab,
-    size = cv_nnet_final[1, 1],
+  # cv_nnet_final <- biomod2:::.CV.nnet(Input = df_clean[, env_preds],
+                                      # Target = df_clean$pr_ab)
+  set.seed(123)
+  nnet_final <- nnet::nnet(
+    pr_ab ~ .,
+    data = df_clean,
+    size = betst_tune$bestTune$size,
     rang = 0.1,
-    decay = cv_nnet_final[1, 2],
+    decay = betst_tune$bestTune$decay,
     maxit = 200,
-    trace = F
+    trace = FALSE
   )
   
   saveRDS(nnet_final, file = file.path(dir_save, 'models/nnet_final.rda'))
@@ -428,9 +510,39 @@ sdms <- function(df, # full data set
   # model evaluation for model built on evaluation data
   full_eval_nnet <- evaluates(x = df_clean$pr_ab, p = full_pred_nnet)
   
+  # variable importance
+  varImp_full_nnet <- caret::varImp(nnet_final)
+  
+  #### Training and testing model
+  # with best tuning
+  nnet_train <- nnet::nnet(
+    pr_ab ~ .,
+    data = calib,
+    size = betst_tune$bestTune$size,
+    rang = 0.1,
+    decay = betst_tune$bestTune$decay,
+    maxit = 200,
+    trace = FALSE
+  )
+  
+  # saveRDS(nnet_train, file = file.path(dir_save, 'models/nnet_train.rda'))
+  
+  # model predictions on evaluation data
+  test_pred_nnet <- predict(nnet_train, eval[, env_preds])
+  
+  # model evaluation for model built on evaluation data
+  test_eval_nnet <- evaluates(x = eval$pr_ab, p = test_pred_nnet)
+  
+  
+  # STOP CLUSTER
   stopCluster(cl)
   
-  ## post-processing
+##%######################################################%##
+#                                                          #
+####                  post-processing                   ####
+#                                                          #
+##%######################################################%##
+
   
   ### AUC based on evaluation model
   auc <- list(
