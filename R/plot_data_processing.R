@@ -37,8 +37,19 @@ study_sp_names <- gsub(x = study_sp_names, pattern = "\\.", replacement = " ")
 cfp <- st_read(paste0(wd$data,'shapefiles/CFP/CFP_GIS_California.shp'))
 cfp_trans <- st_transform(cfp, crs="+proj=aea +lat_1=34 +lat_2=40.5 +lat_0=0 +lon_0=-120 +x_0=0 +y_0=-4000000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs")
 
-# Environmental rasters
-env_stack <- raster::brick(paste0(wd$output, 'predictors/env_stack/BCM1981_2010_CA_CFP.grd'))
+# Environmental predictors
+env_stack <- list.files(
+  path = file.path(wd$output,'climate_commons_env_var'),
+  pattern = c('.tif$$'),
+  all.files = FALSE,
+  full.names = TRUE,
+  recursive = TRUE
+)
+env_stack <- raster::stack(env_stack)
+
+# US shapefile
+us_shp <- st_read(paste0(wd$data, 'shapefiles/tl_2019_us_state/tl_2019_us_state.shp')) %>%
+  st_transform(crs = crs(env_stack))
 
 ##%######################################################%##
 #                                                          #
@@ -255,7 +266,7 @@ final_releves <- all_releves2 %>%
   filter(sarea != 'VTM') %>%
   dplyr::mutate(x_albers = sf::st_coordinates(.)[,1],
                 y_albers = sf::st_coordinates(.)[,2]) %>%
-  st_intersection(st_make_valid(cfp_trans)) %>%
+  st_intersection(st_make_valid(us_shp)) %>%
   dplyr::mutate(survey = 'relevee',
                 source = 'Jim Thorne') 
 
@@ -398,7 +409,7 @@ all_rapids2 <- all_rapids %>%
   st_transform(crs(env_stack)) %>%
   dplyr::mutate(x_albers = sf::st_coordinates(.)[,1],
                 y_albers = sf::st_coordinates(.)[,2]) %>%
-  st_intersection(st_make_valid(cfp_trans)) %>%
+  st_intersection(st_make_valid(us_shp)) %>%
   dplyr::mutate(survey = 'rapid',
                 source = 'Jim Thorne')
 
@@ -578,7 +589,7 @@ cfw_cfp <- cfw_data %>%
   st_transform(crs(env_stack)) %>%
   dplyr::mutate(x_albers = sf::st_coordinates(.)[,1],
                 y_albers = sf::st_coordinates(.)[,2]) %>%
-  st_intersection(st_make_valid(cfp_trans)) %>%
+  st_intersection(st_make_valid(us_shp)) %>%
   relocate(x_albers:geometry, .before = Mirabilis.linearis)
 
 ggplot() +
@@ -588,7 +599,7 @@ ggplot() +
 
 ggsave(paste0(wd$data, 'plots/cfw_cfp_plot_map.jpeg'))
 
-data.table::fwrite(cfw_cfp, paste0(wd$data, 'plots/cfw_sp_names_cfp_cleaned.gz'))
+data.table::fwrite(cfw_cfp, paste0(wd$data, 'plots/cfw_sp_names_cleaned.gz'))
 
 ##%######################################################%##
 #                                                          #
@@ -599,9 +610,9 @@ data.table::fwrite(cfw_cfp, paste0(wd$data, 'plots/cfw_sp_names_cfp_cleaned.gz')
 all_calflora <-
   list.files(paste0(wd$data, 'CalFlora'),
              full.names = T)  %>%
-  lapply(., vroom::vroom) 
+  lapply(., vroom::vroom)
 
-all_calflora <- dplyr::bind_rows(all_calflora)
+all_calflora <- dplyr::bind_rows(all_calflora) #Error: Can't combine `Date` <date> and `Date` <character>.
 
 all_calflora <- all_calflora %>% janitor::clean_names() # 41052 plots
 
@@ -641,7 +652,7 @@ cf_pa <- left_join(all_calflora2, pres_abs, by ='id')
 cf_sf <- st_as_sf(cf_pa, coords = c("longitude", "latitude"), remove = FALSE) %>%
   st_set_crs(4008) %>%
   st_transform(crs(env_stack)) %>%
-  st_intersection(st_make_valid(cfp_trans)) %>%
+  st_intersection(st_make_valid(us_shp)) %>%
   dplyr::mutate(x_albers = sf::st_coordinates(.)[,1],
                 y_albers = sf::st_coordinates(.)[,2]) %>%
   relocate(AREA_SQ_MI:y_albers, .before = Abies.bracteata)
