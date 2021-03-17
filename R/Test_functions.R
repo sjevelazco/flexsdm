@@ -290,31 +290,12 @@ dim(spp)
 #                                                          #
 ##%######################################################%##
 load('./Data/spp_pres_psabs.RData')
-env <- raster::brick('C:/Users/santi/OneDrive/Documentos/FORESTAL/1-Trabajos/83-NSF_spatial_and_species_traits/3-Variables/Predictors/BCM1981_2010_CA_CFP.grd')
+env <- raster::brick("C:/Users/SVelazco/Documents/Santiago/1-PresencesOnlySDMs/3-Variables/Predictors/BCM1981_2010_CA_CFP.grd")
 
 require(raster)
 require(dplyr)
 require(data.table)
-require(ENMTML)
-require(ecospat)
-require(e1071)
-require(tidyverse)
-require(dismo)
-require(sf)
-require(gam)
-require(randomForest)
-require(MASS)
-require(biomod2)
-require(caret)
-require(doParallel)
-require(parallel)
-require(nnet)
-require(rasterVis)
 
-require(caret)
-
-require(velox)
-velox(env)
 envext <- raster::extract(env, spp_pres_psabs %>% dplyr::select(longitude_m, latitude_m))
 env_preds <- colnames(envext)
 df <- data.frame(spp_pres_psabs, envext)
@@ -330,21 +311,26 @@ test1 <- anti_join(df$`1`, train1)
 calib <- bind_rows(train0, train1)
 eval <- bind_rows(test0, test1)
 df <- bind_rows(df)
-df_clean <- df %>% dplyr::select(all_of(env_preds), pr_ab)
+df_clean <- df %>% dplyr::select(pr_ab, all_of(env_preds))
 
-dim(calib)
 calib <- calib[c('pr_ab', env_preds)]
 eval <- eval[c('pr_ab', env_preds)]
+dim(calib)
 dim(eval)
 
-caret::getModelInfo(model = "gam", regex = FALSE)$gam$fit
-modelLookup(model='gbm') 
+source("./R/sdm_function_BRv2.R")
 
+sdms(
+  df = split_data[[i]],
+  eval = eval_data[[i]],
+  calib = calib_data[[i]],
+  pr_ab = "pr_ab",
+  env_preds = env_preds,
+  sp_area = sp_areas[[i]],
+  pred_raster = env_stack,
+  species_name = test_species[[i]],
+  dir_save = dir_save[[i]], cores = 8
+)
 
-glm.formula <-
-  makeFormula("pr_ab", calib[, env_preds],
-              "quadratic", interaction.level = 0)
-
-glm.formula <-
-  makeFormula("pr_ab", calib[, env_preds],
-              "quadratic", interaction.level = 1)
+require(parallel)
+detectCores()

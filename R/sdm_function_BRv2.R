@@ -105,6 +105,10 @@ sdms <- function(df, # full data set
 #                                                          #
 ##%######################################################%##
   #### Final model built with all data
+  glm.formula <-
+    makeFormula("pr_ab", calib[, env_preds],
+                "quadratic", interaction.level = 1)
+  
   glm_final <-
       glmStart <- glm(glm.formula,
                       data = df_clean,
@@ -124,11 +128,7 @@ sdms <- function(df, # full data set
   
   
   #### Training and testing model
-  glm.formula <-
-    makeFormula("pr_ab", calib[, env_preds],
-                "quadratic", interaction.level = 1)
-  glm_train <-
-    glmStart <- glm(glm.formula,
+  glm_train <- glm(glm.formula,
                     data = calib,
                     family = binomial)
   
@@ -168,10 +168,10 @@ sdms <- function(df, # full data set
   full_pred_gam <- predict(gam_final, df_clean, type = "response")
   
   # model evaluation on model built using all data
-  full_eval_gam <- evaluates(x = df_clean$pr_ab, p = full_pred_gam)
+  full_eval_gam <- sdm::evaluates(x = df_clean$pr_ab, p = full_pred_gam)
   
   # variable importance
-  varImp_full_gam <- varImp(gam_final, scale = FALSE)
+  varImp_full_gam <- caret::varImp(gam_final, scale = FALSE)
   
   
   #### Training and testing model
@@ -188,7 +188,7 @@ sdms <- function(df, # full data set
   test_pred_gam <- predict(gam_train, eval, type = "response")
   
   # model evaluation on test (eval) data
-  test_eval_gam <- evaluates(x = eval$pr_ab, p = test_pred_gam)
+  test_eval_gam <- sdm::evaluates(x = eval$pr_ab, p = test_pred_gam)
   
   # variable importance
   # varImp_eval_gam <- varImp(gam_train, scale = FALSE)
@@ -239,10 +239,10 @@ sdms <- function(df, # full data set
   full_pred_rf <- predict(rf_final, df_clean, type = "prob")[, 2]
   
   # model evaluation for model built using evaluation data
-  full_eval_rf <- evaluates(x = df_clean$pr_ab, p = full_pred_rf)
+  full_eval_rf <- sdm::evaluates(x = df_clean$pr_ab, p = full_pred_rf)
   
   # variable importance
-  varImp_full_rf <- varImp(rf_final, scale = FALSE)
+  varImp_full_rf <- caret::varImp(rf_final, scale = FALSE)
   # varImpPlot(rf_final)
   varImp_full_rf <- randomForest::importance(rf_final)
   
@@ -250,7 +250,7 @@ sdms <- function(df, # full data set
   #### Training and testing model
   # with best tuning 
   set.seed(123)
-  rf_train <- randomForest(
+  rf_train <- randomForest::randomForest(
     x = calib[, env_preds],
     y = as.factor(calib$pr_ab),
     ntree = 1000,
@@ -265,7 +265,7 @@ sdms <- function(df, # full data set
   test_pred_rf <- predict(rf_train, eval, type = "prob")[, 2]
   
   # model evaluation for model built using evaluation data
-  test_eval_rf <- evaluates(x = eval$pr_ab, p = test_pred_rf)
+  test_eval_rf <- sdm::evaluates(x = eval$pr_ab, p = test_pred_rf)
   
   # variable importance
   # varImp_eval_rf <- varImp(rf_train, scale = FALSE)
@@ -303,7 +303,7 @@ sdms <- function(df, # full data set
   
   set.seed(123)
   brt_final <-
-    gbm(
+    gbm::gbm(
       pr_ab ~ .,
       data = df_clean,
       distribution = "bernoulli",
@@ -321,17 +321,17 @@ sdms <- function(df, # full data set
   full_pred_brt <- predict(brt_final, df_clean, type = "response", n.trees = brt_final_tune)
   
   # model evaluation for model built using all data
-  full_eval_brt <- evaluates(x = df_clean$pr_ab, p = full_pred_brt)
+  full_eval_brt <- sdm::evaluates(x = df_clean$pr_ab, p = full_pred_brt)
   
   # variable importance
-  varImp_full_brt <- varImp(brt_final, scale = FALSE, 
+  varImp_full_brt <- caret::varImp(brt_final, scale = FALSE, 
                             numTrees = betst_tune$bestTune$n.trees)
   
   #### Training and testing model
   # with best tuning
   set.seed(123)
   brt_train <-
-    gbm(pr_ab ~ .,
+    gbm::gbm(pr_ab ~ .,
         data = calib,
         distribution = "bernoulli",
         n.trees = betst_tune$bestTune$n.trees,
@@ -350,7 +350,7 @@ sdms <- function(df, # full data set
   test_pred_brt <- predict(brt_train, eval, type = "response")
   
   # model evaluation for model built using evaluation data
-  test_eval_brt <- evaluates(x = eval$pr_ab, p = test_pred_brt)
+  test_eval_brt <- sdm::evaluates(x = eval$pr_ab, p = test_pred_brt)
   
   # variable importance
   # varImp_test_brt <- varImp(brt_train, scale = FALSE, numTrees = brt_train_tune)
@@ -414,7 +414,7 @@ sdms <- function(df, # full data set
   full_pred_svm <- predict(svm_final, df_clean, type = 'prob')[, 2]
   
   # model evaluation for model built using all data
-  full_eval_svm <- evaluates(x = df_clean$pr_ab, p = full_pred_svm)
+  full_eval_svm <- sdm::evaluates(x = df_clean$pr_ab, p = full_pred_svm)
   
   # variable importance
   varImp_full_svm <- caret::filterVarImp(df_clean[, env_preds], full_pred_svm, nonpara = FALSE)
@@ -447,7 +447,7 @@ sdms <- function(df, # full data set
   test_pred_svm <- predict(svm_train, eval, type = 'prob')[, 2]
   
   # model evaluation for model built using evaluation data
-  test_eval_svm <- evaluates(x = eval$pr_ab, p = test_pred_svm)
+  test_eval_svm <- sdm::evaluates(x = eval$pr_ab, p = test_pred_svm)
   
   
   
@@ -508,7 +508,7 @@ sdms <- function(df, # full data set
   full_pred_nnet <- predict(nnet_final, df_clean[, env_preds])
   
   # model evaluation for model built on evaluation data
-  full_eval_nnet <- evaluates(x = df_clean$pr_ab, p = full_pred_nnet)
+  full_eval_nnet <- sdm::evaluates(x = df_clean$pr_ab, p = full_pred_nnet)
   
   # variable importance
   varImp_full_nnet <- caret::varImp(nnet_final)
@@ -531,7 +531,7 @@ sdms <- function(df, # full data set
   test_pred_nnet <- predict(nnet_train, eval[, env_preds])
   
   # model evaluation for model built on evaluation data
-  test_eval_nnet <- evaluates(x = eval$pr_ab, p = test_pred_nnet)
+  test_eval_nnet <- sdm::evaluates(x = eval$pr_ab, p = test_pred_nnet)
   
   
   # STOP CLUSTER
