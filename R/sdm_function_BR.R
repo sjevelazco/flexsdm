@@ -671,5 +671,5 @@ sdms <- function(df, # full data set
   print(threshold_maps)
   print(varImpPlot(rf_final))
   dev.off()
-  
+  print(species_name)
 }
