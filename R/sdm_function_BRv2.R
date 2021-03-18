@@ -280,7 +280,7 @@ sdms <- function(df, # full data set
   #### Final model built with all data
   # Find best parameters for final model
   tune_grid <- expand.grid(
-    interaction.depth = seq(2, 10, 2),
+    interaction.depth = seq(2, 10, 20),
     n.trees = c(100, 200, 500, 1000, 2000, 3000),
     shrinkage = 0.1,
     n.minobsinnode = 20
