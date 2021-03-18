@@ -51,7 +51,7 @@ sdms <- function(df, # full data set
   require(rasterVis)
   if (!"devtools"%in%installed.packages()){devtools::install_github("babaknaimi/sdm")}  
   if (!"devtools"%in%installed.packages()){install.packages("devtools")}  
-  devtools::install_github("andrefaa/ENMTML") 
+  # devtools::install_github("andrefaa/ENMTML") 
   require(sdm)
   require('ENMTML')
   
