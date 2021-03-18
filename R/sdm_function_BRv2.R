@@ -89,9 +89,10 @@ sdms <- function(df, # full data set
   
   # seting trainControl function for tuning models with caret
   fit_control <- caret::trainControl(
-    method = "repeatedcv",## 10-fold CV
+    # method = "repeatedcv",## 10-fold CV
+    method = "cv",
     number = 10, ## number of folds
-    repeats = 5, ## for repeating fold CV 
+    # repeats = 5, ## for repeating fold CV 
     selectionFunction = "best",
     classProbs = TRUE, ## Estimate class probabilities
     summaryFunction = caret::twoClassSummary,
