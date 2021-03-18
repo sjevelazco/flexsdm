@@ -53,7 +53,7 @@ sdms <- function(df, # full data set
   if (!"devtools"%in%installed.packages()){install.packages("devtools")}  
   # devtools::install_github("andrefaa/ENMTML") 
   require(sdm)
-  require('ENMTML')
+  #require('ENMTML')
   
   if(!dir.exists(paste0(dir_save, 'models/', sep = ''))) {
     dir.create(paste0(dir_save, 'models/', sep = ''))
