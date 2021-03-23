@@ -334,3 +334,28 @@ sdms(
 
 require(parallel)
 detectCores()
+
+
+##%######################################################%##
+#                                                          #
+####              Test  evaluate function               ####
+#                                                          #
+##%######################################################%##
+require(dismo)
+require(dplyr)
+
+set.seed(0)
+p <- rnorm(50, mean=0.7, sd=0.3) %>% abs()
+p[p>1] <- 1
+p[p<0] <- 0
+
+set.seed(0)
+a <- rnorm(50, mean=0.4, sd=0.4) %>% abs()
+a[a>1] <- 1
+a[a<0] <- 0
+
+source("./R/evaluate.R")
+
+e <- enmtml_evaluate(p, a)
+enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'JACCARD')))
+
