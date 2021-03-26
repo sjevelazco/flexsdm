@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-enmtml_evaluate <- function(p, a, thr=NULL){
+enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
   #Parameters:
   #p:presence points suitability
   #a:absence points suitability
@@ -31,6 +31,12 @@ enmtml_evaluate <- function(p, a, thr=NULL){
     stop("'thr' Argument is not valid!")
   }
   
+  if (any(thr[grep("type", names(thr))] %in% "SENSITIVITY") &&
+      !any(names(thr) %in% "sens")) {
+    stop(
+      "provide a sensitivity value in the vector used in 'thr' argument, e.g. thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')")
+  }
+  
   np <- length(p)
   na <- length(a)
   if (na == 0 | np == 0) {
@@ -51,6 +57,10 @@ enmtml_evaluate <- function(p, a, thr=NULL){
       tr <- c(tr, a)
     }
     tr <- sort(unique(round(tr, 8)))
+    if(any(thr[grep("type", names(thr))] %in% "SENSITIVITY")){
+      tr <- c(tr, as.numeric(thr['sens']))
+      tr <- sort(tr)
+    }
     # tr <- c(tr - 0.0001, tr[length(tr)] + c(0, 0.0001))
     # tr <- abs(sort(tr))
     # tr <- tr[tr<=1]
@@ -101,11 +111,11 @@ enmtml_evaluate <- function(p, a, thr=NULL){
   TNR <- res$tn / (res$tn + res$fp)
   TSS <- (TPR + TNR) - 1
   # if(is.null(thr)){
-    TSSTHR <- tr[which(TSS == max(TSS))][1]
+  TSSTHR <- tr[which(TSS == max(TSS))][1]
   # }else{
   #   TSSTHR <- tr  
   # }
-  
+
   thresholds <- list()
   thresholds$SORENSEN <- SorTHR
   thresholds$JACCARD <- JacTHR
@@ -115,7 +125,9 @@ enmtml_evaluate <- function(p, a, thr=NULL){
   ThrDis <- (sapply(ThrDis, function(x)
       dismo::threshold(eval_dismo)[x]))
   names(ThrDis) <- nom <- c("MAX_KAPPA", "MAX_TSS", "LPT", "EQUAL_SENS_SPEC", "SENSITIVITY")
-  
+  if(any(thr[grep("type", names(thr))] %in% "SENSITIVITY")){
+    ThrDis$SENSITIVITY <- as.numeric(thr['sens'])
+  }
   thresholds <- c(ThrDis, thresholds)
   thresholds <- dplyr::bind_cols(thresholds)
   
@@ -134,6 +146,13 @@ enmtml_evaluate <- function(p, a, thr=NULL){
   performance$KAPPA <- eval_dismo@kappa
   R <- sum(rank(c(p, a))[1:np]) - (np * (np + 1)/2)
   performance$AUC <- R/(as.numeric(na) * as.numeric(np))
+  
+  if(is.null(bg)){
+    performance$BOYCE <- boyce(pres = p, contrast = c(p, a))
+  } else {
+    performance$BOYCE <- boyce(pres = p, contrast = c(p, bg))
+  }
+  
   performance <- dplyr::bind_cols(performance)
   
   thr_table <- tibble(threshold = names(thresholds), values=unlist(thresholds))

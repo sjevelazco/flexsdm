@@ -343,6 +343,18 @@ detectCores()
 ##%######################################################%##
 require(dismo)
 require(dplyr)
+source("./R/enmtml_evaluate.R")
+
+e <- enmtml_evaluate(p, a)
+e$performance
+e$threshold
+e$threshold_table
+
+enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'JACCARD')))
+enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY')))
+enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8'))
+enmtml_evaluate(p, a, thr=c(type=c('LPT')))
+
 
 set.seed(0)
 p <- rnorm(50, mean=0.7, sd=0.3) %>% abs()
@@ -354,8 +366,62 @@ a <- rnorm(50, mean=0.4, sd=0.4) %>% abs()
 a[a>1] <- 1
 a[a<0] <- 0
 
-source("./R/evaluate.R")
 
-e <- enmtml_evaluate(p, a)
-enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'JACCARD')))
+##%######################################################%##
+#                                                          #
+####       Exploration of some metrics discussed        ####
+####             in Guisan et al 2017 book              ####
+#                                                          #
+##%######################################################%##
+# https://github.com/vdicolab/hsdm
+library(PresenceAbsence)
+mammals_data <- read.csv("https://raw.githubusercontent.com/vdicolab/hsdm/master/data/tabular/species/mammals_and_bioclim_table.csv", row.names=1)
+## Create the RF model
+library(randomForest)
+RF <-
+  randomForest(
+    x = mammals_data[, c("bio3", "bio7", "bio11", "bio12")],
+    y = as.factor(mammals_data$VulpesVulpes),
+    ntree = 1000
+  )
+RF.pred = predict(RF, type="prob")[,2]
+## Create the FDA model
+library(mda)
+fda_mod = fda(VulpesVulpes ~ 1+bio3+bio7+bio11+bio12,
+                data=mammals_data,method=mars)
+FDA.pred = predict(fda_mod, mammals_data[,c("bio3", "bio7",
+                                               "bio11", "bio12")], type = "posterior")[,2]
+## Create the BRT model
+library(gbm)
+BRT.mod <- gbm(VulpesVulpes~ bio3+bio7+bio11+bio12,
+                 data=mammals_data, distribution = "bernoulli", n.trees = 2000,
+                 interaction.depth = 7, shrinkage = 0.001, bag.fraction = 0.5,
+                 cv.folds=5)
+brt.mod.perf = gbm.perf(BRT.mod, method = "cv", plot.it = F)
+BRT.pred <-
+  predict(BRT.mod,
+          newdata = mammals_data[, c("bio3", "bio7", "bio11", "bio12")],
+          type = "response",
+          n.trees = brt.mod.perf)
+## Create an average prediction from the three single predictions (RF, FDA, BRT)
+AVER.pred<-((RF.pred+FDA.pred+BRT.pred)/3)
+## Create the final dataset containing all predictions
+ObsNum <- mammals_data[,8]
+plotID <- 1:nrow(mammals_data)
+EvalData <- data.frame(cbind(plotID, ObsNum, AVER.pred,
+                               RF.pred, FDA.pred, BRT.pred))
+colnames(EvalData) <- c("plotID", "ObsNum", "AVER", "RF",
+                           "FDA", "BRT")
+head(EvalData)
 
+cor(EvalData$AVER, EvalData$ObsNum)
+
+
+require(ecospat)
+obs <- (EvalData$AVER[which(EvalData$ObsNum==1)])
+EvalData$AVER
+EvalData$ObsNum
+
+obs <- (EvalData$BRT[which(EvalData$ObsNum==1)] * EvalData$ObsNum[which(EvalData$ObsNum==1)])
+avi <- sum(obs > 0.1)/length(obs)
+avi
