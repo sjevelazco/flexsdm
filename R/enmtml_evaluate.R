@@ -172,7 +172,9 @@ enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
     return(result)
   } else {
     result <- result$threshold_table
-    result <- result[result$threshold %in% thr, ]
+    result <-
+      list(selected_threshold = result[result$threshold %in% thr,], 
+           threshold_table = result)
     return(result)
   }
 }

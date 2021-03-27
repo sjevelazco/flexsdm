@@ -360,7 +360,7 @@ e$performance
 e$threshold
 e$threshold_table
 
-enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'JACCARD')))
+enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')))
 enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY')))
 enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8'))
 enmtml_evaluate(p, a, thr=c(type=c('LPT')))
