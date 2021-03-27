@@ -341,6 +341,16 @@ detectCores()
 ####              Test  evaluate function               ####
 #                                                          #
 ##%######################################################%##
+set.seed(0)
+p <- rnorm(50, mean=0.7, sd=0.3) %>% abs()
+p[p>1] <- 1
+p[p<0] <- 0
+
+set.seed(0)
+a <- rnorm(50, mean=0.4, sd=0.4) %>% abs()
+a[a>1] <- 1
+a[a<0] <- 0
+
 require(dismo)
 require(dplyr)
 source("./R/enmtml_evaluate.R")
@@ -356,15 +366,63 @@ enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')
 enmtml_evaluate(p, a, thr=c(type=c('LPT')))
 
 
-set.seed(0)
-p <- rnorm(50, mean=0.7, sd=0.3) %>% abs()
-p[p>1] <- 1
-p[p<0] <- 0
 
-set.seed(0)
-a <- rnorm(50, mean=0.4, sd=0.4) %>% abs()
-a[a>1] <- 1
-a[a<0] <- 0
+
+##%######################################################%##
+#                                                          #
+####                    Test mx_tune                    ####
+#                                                          #
+##%######################################################%##
+
+# mammals_data <- read.csv("https://raw.githubusercontent.com/vdicolab/hsdm/master/data/tabular/species/mammals_and_bioclim_table.csv", row.names=1)
+# ## Create the RF model
+# mammals_data$VulpesVulpes %>% table
+# mammals_data2 <- mammals_data %>% rename(pr_ab=VulpesVulpes, x=X_WGS84, y=Y_WGS84)
+# mammals_data2 <- mammals_data2 %>% dplyr::select(pr_ab, starts_with('bio'))
+# readr:::write_tsv(mammals_data2, './Data/mammals_data2.txt')
+ex_data <- readr::read_tsv('./Data/mammals_data2.txt')
+na <- ex_data %>% dplyr::filter(pr_ab == 0) %>% nrow
+np <- ex_data %>% dplyr::filter(pr_ab == 1) %>% nrow
+
+N <- 2
+na <- sample(rep(1:N, length.out=na))
+np <- sample(rep(1:N, length.out=np))
+ex_data <- ex_data %>% dplyr::mutate(Partition=c(na, np))
+
+gridtest <-
+  expand.grid(regmult = seq(0.1, 3, 0.2),
+              classes = c("l", "lq", "lqh", "lqhp", "lqht"))
+
+  if (np < 10) {
+    classes <- "l"
+  } else if (np < 15){
+    classes <- "lq"
+  } else if (np < 80) {
+    classes <- "lqh"
+  }
+    
+
+r <-
+  tune_mx(
+    data = ex_data,
+    response = "pr_ab",
+    predictors = c("bio3", 'bio4', 'bio7', 'bio11', 'bio12'),
+    predictors_f = NULL,
+    partition = "Partition",
+    grid = gridtest,
+    thr = "MAX_TSS",
+    metric = 'TSS'
+  )
+
+r$model %>% plot()
+r$tune_performance
+r$best_hyperparameter
+r$threshold
+
+require(ggplot2)
+ggplot(r$tune_performance, aes(regmult, TSS_mean, col=classes)) + 
+  geom_point() + 
+  geom_line()
 
 
 ##%######################################################%##

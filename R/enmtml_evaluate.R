@@ -24,8 +24,9 @@ enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
       "MAX_KAPPA",
       "EQUAL_SENS_SPEC",
       "SENSITIVITY",
-      "JACCARD",
-      "SORENSEN"
+      "MAX_JACCARD",
+      "MAX_SORENSEN",
+      "MAX_FPB"
     )
   )) {
     stop("'thr' Argument is not valid!")
@@ -117,9 +118,9 @@ enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
   # }
 
   thresholds <- list()
-  thresholds$SORENSEN <- SorTHR
-  thresholds$JACCARD <- JacTHR
-  thresholds$FPB <- JacTHR
+  thresholds$MAX_SORENSEN <- SorTHR
+  thresholds$MAX_JACCARD <- JacTHR
+  thresholds$MAX_FPB <- JacTHR
   
   ThrDis <- c("kappa", "spec_sens", "no_omission", "equal_sens_spec", "sensitivity")
   ThrDis <- (sapply(ThrDis, function(x)
@@ -138,8 +139,8 @@ enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
   performance$n_absences <- na
   performance$TPR <- res$tp / (res$tp + res$fn)
   performance$TNR <- res$tn / (res$tn + res$fp)
-  performance$Sorensen <- SOR
-  performance$Jaccard <- JAC
+  performance$SORENSEN <- SOR
+  performance$JACCARD <- JAC
   performance$Fpb <- Fpb
   performance$OR  <- (1-performance$TPR)
   performance$TSS <- (performance$TPR + performance$TNR) - 1

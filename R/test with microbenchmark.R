@@ -64,8 +64,19 @@ results <- microbenchmark(
 require(ggplot2)
 
 results <- microbenchmark(
-  braquets = variables[[i]][] %>% na.omit() %>% c(),
-  getvalues = raster::getValues(variables[[i]]) %>% na.omit() %>% c(),
+  for_m = {eval <- list()
+  for(i in 1:length(pred_test)) {
+    eval[[i]] <-
+      enmtml_evaluate(p = pred_test[[i]]$pred[pred_test[[i]]$pr_ab == 1],
+                      a = pred_test[[i]]$pred[pred_test[[i]]$pr_ab == 0],
+                      thr = thr)
+  }},
+  
+  sappli_m = lapply(pred_test, function(x) {
+    enmtml_evaluate(p = x$pred[x$pr_ab == 1],
+                    a = x$pred[x$pr_ab == 0],
+                    thr = thr)
+  }),
   times = 10)
 autoplot(results)
 results %>% class
