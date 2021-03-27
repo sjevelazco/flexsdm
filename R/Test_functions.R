@@ -353,6 +353,7 @@ a[a<0] <- 0
 
 require(dismo)
 require(dplyr)
+source("./R/boyce.R")
 source("./R/enmtml_evaluate.R")
 
 e <- enmtml_evaluate(p, a)
@@ -381,30 +382,45 @@ enmtml_evaluate(p, a, thr=c(type=c('LPT')))
 # mammals_data2 <- mammals_data2 %>% dplyr::select(pr_ab, starts_with('bio'))
 # readr:::write_tsv(mammals_data2, './Data/mammals_data2.txt')
 ex_data <- readr::read_tsv('./Data/mammals_data2.txt')
+
+# Background points (only for this example, bg will be assumed as the union of presences and absences records)
+backgd <- ex_data
+
+# Absences
 na <- ex_data %>% dplyr::filter(pr_ab == 0) %>% nrow
+# Presences
 np <- ex_data %>% dplyr::filter(pr_ab == 1) %>% nrow
+# Background
+bg <- backgd %>% nrow
 
 N <- 2
 na <- sample(rep(1:N, length.out=na))
 np <- sample(rep(1:N, length.out=np))
+bg <- sample(rep(1:N, length.out=bg))
 ex_data <- ex_data %>% dplyr::mutate(Partition=c(na, np))
+backgd <- backgd %>% dplyr::mutate(Partition=bg)
 
 gridtest <-
-  expand.grid(regmult = seq(0.1, 3, 0.2),
+  expand.grid(regmult = seq(0.1, 3, 0.5),
               classes = c("l", "lq", "lqh", "lqhp", "lqht"))
 
-  if (np < 10) {
-    classes <- "l"
-  } else if (np < 15){
-    classes <- "lq"
-  } else if (np < 80) {
-    classes <- "lqh"
-  }
-    
+  # if (np < 10) {
+  #   classes <- "l"
+  # } else if (np < 15){
+  #   classes <- "lq"
+  # } else if (np < 80) {
+  #   classes <- "lqh"
+  # }
+  #   
+
+source('./R/tune_mx.R')
+source("./R/boyce.R")
+source("./R/enmtml_evaluate.R")
 
 r <-
   tune_mx(
     data = ex_data,
+    background = backgd,
     response = "pr_ab",
     predictors = c("bio3", 'bio4', 'bio7', 'bio11', 'bio12'),
     predictors_f = NULL,
@@ -421,8 +437,12 @@ r$threshold
 
 require(ggplot2)
 ggplot(r$tune_performance, aes(regmult, TSS_mean, col=classes)) + 
+  geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.1)+
   geom_point() + 
   geom_line()
+
+
+
 
 
 ##%######################################################%##
