@@ -1,16 +1,38 @@
-# source("./R/boyce.R")
-# source("./R/enmtml_evaluate.R")
-
+#' Function for performing maxent model tuning hyperparameters 
+#'
+#'
+#' @param data 
+#' @param response 
+#' @param predictors 
+#' @param predictors_f 
+#' @param background 
+#' @param partition 
+#' @param grid 
+#' @param thr 
+#' @param metric 
+#' @param clamp 
+#' @param pred_type 
+#'
+#' @importFrom dismo predict
+#' @importFrom dplyr filter pull bind_rows tibble select group_by_at summarise across everything
+#' @importFrom maxnet maxnet maxnet.formula
+#'  
+#' @return
+#' @export
+#'
+#' @examples
 tune_mx <-
   function(data,
            response,
            predictors,
-           background = NULL,
            predictors_f = NULL,
+           background = NULL,
            partition,
            grid = NULL,
            thr = NULL,
-           metric = "TSS") {
+           metric = "TSS",
+           clamp = TRUE,
+           pred_type = "cloglog") {
     
     require(maxnet)
     require(dplyr)
@@ -117,11 +139,11 @@ tune_mx <-
       lapply(mod, function(x)
         data.frame(
           'pr_ab' = test[[i]][response],
-          'pred' = predict(
+          'pred' = dismo::predict(
             x,
             newdata = test[[i]],
-            clamp = TRUE,
-            type = 'cloglog'
+            clamp = clamp,
+            type = pred_type
           )
         ))
     
@@ -173,7 +195,7 @@ tune_mx <-
   
   pred_test <- data.frame(
     'pr_ab' = data[response],
-    'pred' = predict(
+    'pred' = dismo::predict(
       mod,
       newdata = data,
       clamp = TRUE,

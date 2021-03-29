@@ -374,7 +374,9 @@ enmtml_evaluate(p, a, thr=c(type=c('LPT')))
 ####                    Test mx_tune                    ####
 #                                                          #
 ##%######################################################%##
-
+require(prefixer)
+prefixer::prefixer()
+prefixer::import_from("tune_mx")
 # mammals_data <- read.csv("https://raw.githubusercontent.com/vdicolab/hsdm/master/data/tabular/species/mammals_and_bioclim_table.csv", row.names=1)
 # ## Create the RF model
 # mammals_data$VulpesVulpes %>% table
@@ -402,7 +404,7 @@ backgd <- backgd %>% dplyr::mutate(Partition=bg)
 
 gridtest <-
   expand.grid(regmult = seq(0.1, 3, 0.5),
-              classes = c("l", "lq", "lqh", "lqhp", "lqht"))
+              classes = c("l", "lq", "lqh", "lqhp", "lqhpt"))
 
   # if (np < 10) {
   #   classes <- "l"
@@ -427,10 +429,12 @@ r <-
     partition = "Partition",
     grid = gridtest,
     thr = "MAX_TSS",
-    metric = 'TSS'
+    metric = 'TSS',
+    clamp = FALSE,
+    pred_type = "cloglog" 
   )
 
-r$model %>% plot()
+r$model %>% plot(type="cloglog")
 r$tune_performance
 r$best_hyperparameter
 r$threshold
@@ -444,62 +448,15 @@ ggplot(r$tune_performance, aes(regmult, TSS_mean, col=classes)) +
 
 
 
+library(maxnet)
+data(bradypus)
+p <- bradypus$presence
+data <- bradypus[,-1]
+mod <- maxnet(p, data)
+dismo::predict(mod, data, type="cloglog") %>% hist
+dismo::predict(mod, data, type="link") %>% hist
 
-##%######################################################%##
-#                                                          #
-####       Exploration of some metrics discussed        ####
-####             in Guisan et al 2017 book              ####
-#                                                          #
-##%######################################################%##
-# https://github.com/vdicolab/hsdm
-library(PresenceAbsence)
-mammals_data <- read.csv("https://raw.githubusercontent.com/vdicolab/hsdm/master/data/tabular/species/mammals_and_bioclim_table.csv", row.names=1)
-## Create the RF model
-library(randomForest)
-RF <-
-  randomForest(
-    x = mammals_data[, c("bio3", "bio7", "bio11", "bio12")],
-    y = as.factor(mammals_data$VulpesVulpes),
-    ntree = 1000
-  )
-RF.pred = predict(RF, type="prob")[,2]
-## Create the FDA model
-library(mda)
-fda_mod = fda(VulpesVulpes ~ 1+bio3+bio7+bio11+bio12,
-                data=mammals_data,method=mars)
-FDA.pred = predict(fda_mod, mammals_data[,c("bio3", "bio7",
-                                               "bio11", "bio12")], type = "posterior")[,2]
-## Create the BRT model
-library(gbm)
-BRT.mod <- gbm(VulpesVulpes~ bio3+bio7+bio11+bio12,
-                 data=mammals_data, distribution = "bernoulli", n.trees = 2000,
-                 interaction.depth = 7, shrinkage = 0.001, bag.fraction = 0.5,
-                 cv.folds=5)
-brt.mod.perf = gbm.perf(BRT.mod, method = "cv", plot.it = F)
-BRT.pred <-
-  predict(BRT.mod,
-          newdata = mammals_data[, c("bio3", "bio7", "bio11", "bio12")],
-          type = "response",
-          n.trees = brt.mod.perf)
-## Create an average prediction from the three single predictions (RF, FDA, BRT)
-AVER.pred<-((RF.pred+FDA.pred+BRT.pred)/3)
-## Create the final dataset containing all predictions
-ObsNum <- mammals_data[,8]
-plotID <- 1:nrow(mammals_data)
-EvalData <- data.frame(cbind(plotID, ObsNum, AVER.pred,
-                               RF.pred, FDA.pred, BRT.pred))
-colnames(EvalData) <- c("plotID", "ObsNum", "AVER", "RF",
-                           "FDA", "BRT")
-head(EvalData)
-
-cor(EvalData$AVER, EvalData$ObsNum)
-
-
-require(ecospat)
-obs <- (EvalData$AVER[which(EvalData$ObsNum==1)])
-EvalData$AVER
-EvalData$ObsNum
-
-obs <- (EvalData$BRT[which(EvalData$ObsNum==1)] * EvalData$ObsNum[which(EvalData$ObsNum==1)])
-avi <- sum(obs > 0.1)/length(obs)
-avi
+par(mfrow=c(1,1))
+plot(mod, type="cloglog")
+mod <- maxnet(p, data, maxnet.formula(p, data, classes="lq"))
+plot(mod, "tmp6190_ann")
