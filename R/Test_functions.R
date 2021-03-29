@@ -341,6 +341,11 @@ detectCores()
 ####              Test  evaluate function               ####
 #                                                          #
 ##%######################################################%##
+require(dismo)
+require(dplyr)
+source("./R/boyce.R")
+source("./R/enm_eval.R")
+
 set.seed(0)
 p <- rnorm(50, mean=0.7, sd=0.3) %>% abs()
 p[p>1] <- 1
@@ -351,22 +356,30 @@ a <- rnorm(50, mean=0.4, sd=0.4) %>% abs()
 a[a>1] <- 1
 a[a<0] <- 0
 
-require(dismo)
-require(dplyr)
-source("./R/boyce.R")
-source("./R/enm_eval.R")
+set.seed(0)
+backg <- rnorm(1000, mean=0.4, sd=0.4) %>% abs()
+backg[backg>1] <- 1
+backg[backg<0] <- 0
 
+
+# Use function without threshold specification 
 e <- enm_eval(p, a)
 e$performance
 e$threshold
 e$threshold_table
 
-enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')))
-enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'))) # wrong way to SENSITIVITY threshold
-enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')) # correct way to use SENSITIVITY threshold
-enm_eval(p, a, thr=c(type=c('LPT')))
-
-
+#' # Different ways to use thr argument
+#' enm_eval(p, a, thr=c(type=c('MAX_KAPPA')))
+#' enm_eval(p, a, thr=c(type=c('MAX_KAPPA')), bg=backg)
+#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')))
+#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'))) # wrong way to SENSITIVITY threshold
+#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')) # correct way to use SENSITIVITY threshold
+#' 
+#' # Use of bg argument (it will only be used for calculating BOYCE index)
+#' enm_eval(p, a, thr=c(type=c('MAX_TSS')))[[1]]
+#' enm_eval(p, a, thr=c(type=c('MAX_TSS')), bg=backg)[[1]]
+#' # I the case it is needed use background for calculate all other metric background values can be used in "a" argument 
+#' enm_eval(p, backg, thr=c(type=c('MAX_TSS')))[[1]]
 
 
 ##%######################################################%##
@@ -374,9 +387,10 @@ enm_eval(p, a, thr=c(type=c('LPT')))
 ####                    Test mx_tune                    ####
 #                                                          #
 ##%######################################################%##
-require(prefixer)
-prefixer::prefixer()
-prefixer::import_from("tune_mx")
+# require(prefixer)
+# prefixer::prefixer()
+# prefixer::import_from("tune_mx")
+
 # mammals_data <- read.csv("https://raw.githubusercontent.com/vdicolab/hsdm/master/data/tabular/species/mammals_and_bioclim_table.csv", row.names=1)
 # ## Create the RF model
 # mammals_data$VulpesVulpes %>% table
