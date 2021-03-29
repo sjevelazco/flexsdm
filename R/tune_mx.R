@@ -1,4 +1,4 @@
-#' Function for performing maxent model tuning hyperparameters 
+#' Function for performing maximum entropy model exploring hyper-parameters 
 #'
 #'
 #' @param data 
@@ -36,6 +36,9 @@ tune_mx <-
     
     require(maxnet)
     require(dplyr)
+    
+    data <- data.frame(data)
+    
     predictors <- c(predictors, predictors_f)
     if (is.null(predictors_f)) {
       data <- data[, c(response, predictors, partition)]
@@ -65,6 +68,7 @@ tune_mx <-
       }
     }
     
+    # Prepare grid when grid=default or NULL
     if(is.null(grid)){
       grid <- data.frame(regmult=1, classes = "default")
     } 
@@ -74,6 +78,8 @@ tune_mx <-
                             classes = c("l", "lq", "lqh", "lqhp", "lqhpt"))
       }
     }
+    
+    # Test hyperparameter names
     hyperp <- names(grid)
     if(any(!hyperp%in%c("regmult", "classes"))){
       stop("Database used in 'grid' argument has to contain this columns for tunning: 'regmult', 'classes'")
@@ -144,8 +150,8 @@ tune_mx <-
     pred_test <-
       lapply(mod, function(x)
         data.frame(
-          'pr_ab' = test[[i]][response],
-          'pred' = dismo::predict(
+          pr_ab = test[[i]][,response],
+          pred = dismo::predict(
             x,
             newdata = test[[i]],
             clamp = clamp,
@@ -158,8 +164,8 @@ tune_mx <-
       bgt <-
         lapply(mod, function(x)
           data.frame(
-            'pr_ab' = bgt_test[[i]][response],
-            'pred' = dismo::predict(
+            pr_ab = bgt_test[[i]][,response],
+            pred = dismo::predict(
               x,
               newdata = test[[i]],
               clamp = clamp,
@@ -174,13 +180,13 @@ tune_mx <-
         eval[[ii]] <-
           enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
                    a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-                   thr = thr, 
-                   bg = bgt[[ii]])
+                   thr = thr)
       } else {
         eval[[ii]] <-
           enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
                    a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-                   thr = thr)
+                   thr = thr, 
+                   bg = bgt[[ii]])
       }
     }
     

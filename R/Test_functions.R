@@ -464,15 +464,59 @@ ggplot(r$tune_performance, aes(regmult, TSS_mean, col=classes)) +
 
 
 
-library(maxnet)
-data(bradypus)
-p <- bradypus$presence
-data <- bradypus[,-1]
-mod <- maxnet(p, data)
-dismo::predict(mod, data, type="cloglog") %>% hist
-dismo::predict(mod, data, type="link") %>% hist
+##%######################################################%##
+#                                                          #
+####                   test svm_tune                    ####
+#                                                          #
+##%######################################################%##
+source("./R/tune_svm.R")
+source("./R/boyce.R")
+source("./R/enm_eval.R")
 
-par(mfrow=c(1,1))
-plot(mod, type="cloglog")
-mod <- maxnet(p, data, maxnet.formula(p, data, classes="lq"))
-plot(mod, "tmp6190_ann")
+data("bradypus")
+names(bradypus)
+# Absences
+na <- bradypus %>% dplyr::filter(presence == 0) %>% nrow
+# Presences
+np <- bradypus %>% dplyr::filter(presence == 1) %>% nrow
+
+N <- 2
+na <- sample(rep(1:N, length.out=na))
+np <- sample(rep(1:N, length.out=np))
+bradypus <- bradypus %>% dplyr::mutate(Partition=c(na, np))
+colnames(bradypus)
+
+tune_grid <-
+  expand.grid(C = c(1, 2, 4, 8, 16),
+              sigma = c(0.001, 0.01, 0.1, 0.2, 0.3, 0.4))
+svmt <-
+  tune_svm(
+    data = bradypus,
+    response = "presence",
+    predictors = c("cld6190_ann", "dtr6190_ann", "h_dem", "pre6190_ann", "tmn6190_ann", "vap6190_ann"),
+    predictors_f = c("ecoreg"),
+    partition = "Partition",
+    grid = tune_grid,
+    thr = "MAX_TSS",
+    metric = 'TSS',
+  )
+
+svmt$model
+svmt$tune_performance
+svmt$best_hyperparameter
+svmt$threshold
+
+require(ggplot2)
+ggplot(svmt$tune_performance, aes(factor(sigma), 
+                                  TSS_mean, col=factor(C))) + 
+  geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.1)+
+  geom_point() + 
+  geom_line(data = svmt$tune_performance, aes(as.numeric(factor(sigma)), 
+                                              TSS_mean, col=factor(C)))
+
+ggplot(svmt$tune_performance, aes(factor(sigma), 
+                                  TSS_mean, col=factor(C))) + 
+  geom_point() + 
+  geom_line(data = svmt$tune_performance, aes(as.numeric(factor(sigma)), 
+                                              TSS_mean, col=factor(C)))
+
