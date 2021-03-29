@@ -1,11 +1,32 @@
-#' Calculate different model peformance metrics
+#' Calculate different model performance metrics
 #'
-#' @param p 
-#' @param a 
-#' @param thr 
-#' @param bg 
+#' @description This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, Fpb, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), and BOYCE.
+#' @param p numeric. Presence predicted suitability
+#' @param a numeric. Absences predicted suitability
+#' @param thr character. Threshold used for binaryse suitability. It is useful for threshold dependent metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+#' \itemize{
+#'   \item LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').
+#'   \item EQUAL_SENS_SPEC: Threshold at which the sum of the sensitivity and specificity is the highest.
+#'   \item MAX_TSS: Threshold at which the sensitivity and specificity are equal.
+#'   Usage thr=c(type='MAX_TSS').
+#'   \item MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').
+#'   \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
+#'   \item MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').
+#'   \item MAX_FPB: The threshold at which Fpb is highest. Usage thr=c(type='MAX_FPB').
+#'   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value. Note that this method assumes 'sens' value for all algorithm and species.
+#'   }
+#' In the case of use more than one threshold type it is necessary concatenate the names of threshold types, e.g., thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')). When SENSITIVITY threshold is used in combination with other it is necessary specify the desired sensitivity value, e.g. thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')
 #'
-#' @return
+#' @param bg numeric. Pseudo-absence predicted suitability. It is used for BOYCE metric. It bg is set as null BOYCE metric will be calculated with presences and absences suitability values 
+#'
+#' @return a list with the next tibble
+#' \itemize{
+#' \item "performance". A tibble object with the performance metric for 90 threshold values >0 and <1. Performance.
+#' \item "threshold".  A tibble with values for all the threshold available in the package.
+#' \item "threshold_table". A tibble with the threshold values and the performance metric values for each threshold.
+#' \item " selected_threshold". It is similar to "threshold_table" with difference that it contains the thresholds and the performance metric values for the selected threshold. A tibble with threshold values and the performance metric values for each threshold.
+#' }
+#' when thr argument is NULL function will return a list with "performance", "threshold", and "threshold_table" tibbles, when thr argument is used with one or more threshold function returns "selected_threshold" and "threshold_table" tibbles
 #' @export
 #' 
 #' @importFrom dismo evaluate threshold
@@ -14,7 +35,7 @@
 #' @examples
 enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
   #Parameters:
-  #p:presence points suitability
+  #p:
   #a:absence points suitability
   #tr:numeric vector with threshold values
   

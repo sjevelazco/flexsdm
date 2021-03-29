@@ -357,7 +357,7 @@ source("./R/boyce.R")
 source("./R/enmtml_evaluate.R")
 
 e <- enmtml_evaluate(p, a)
-e$performance
+e$performance %>% dim
 e$threshold
 e$threshold_table
 
