@@ -11,6 +11,11 @@
 #' @param thr 
 #' @param metric 
 #'
+#' @importFrom dismo predict
+#' @importFrom dplyr bind_rows tibble select group_by_at summarise across everything pull
+#' @importFrom kernlab ksvm
+#' @importFrom stats formula
+#' 
 #' @return
 #' @export
 #'

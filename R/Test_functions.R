@@ -480,7 +480,7 @@ na <- bradypus %>% dplyr::filter(presence == 0) %>% nrow
 # Presences
 np <- bradypus %>% dplyr::filter(presence == 1) %>% nrow
 
-N <- 2
+N <- 5
 na <- sample(rep(1:N, length.out=na))
 np <- sample(rep(1:N, length.out=np))
 bradypus <- bradypus %>% dplyr::mutate(Partition=c(na, np))
