@@ -33,7 +33,7 @@
 #' @importFrom dplyr bind_cols left_join
 #' 
 #' @examples
-enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
+enm_eval <- function(p, a, bg=NULL, thr=NULL){
   #Parameters:
   #p:
   #a:absence points suitability
