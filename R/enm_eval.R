@@ -33,6 +33,27 @@
 #' @importFrom dplyr bind_cols left_join
 #' 
 #' @examples
+#' set.seed(0)
+#' p <- rnorm(50, mean=0.7, sd=0.3) %>% abs()
+#' p[p>1] <- 1
+#' p[p<0] <- 0
+#' 
+#' set.seed(0)
+#' a <- rnorm(50, mean=0.4, sd=0.4) %>% abs()
+#' a[a>1] <- 1
+#' a[a<0] <- 0
+#' require(dismo)
+#' require(dplyr)
+#' e <- enm_eval(p, a)
+#' e$performance
+#' e$threshold
+#' e$threshold_table
+#' 
+#' enm_eval(p, a, thr=c(type=c('MAX_KAPPA')))
+#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')))
+#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'))) # wrong way to SENSITIVITY threshold
+#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')) # correct way to use SENSITIVITY threshold
+#' 
 enm_eval <- function(p, a, bg=NULL, thr=NULL){
   #Parameters:
   #p:

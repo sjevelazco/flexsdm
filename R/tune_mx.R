@@ -150,7 +150,7 @@ tune_mx <-
     eval <- list()
     for(ii in 1:length(pred_test)) {
       eval[[ii]] <-
-        enmtml_evaluate(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+        enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
                         a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
                         thr = thr)
     }
@@ -202,7 +202,7 @@ tune_mx <-
       type = 'cloglog'
     ))
     
-  threshold <- enmtml_evaluate(p = pred_test$pred[pred_test$pr_ab == 1],
+  threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
                                a = pred_test$pred[pred_test$pr_ab == 0],
                                thr = thr)
   

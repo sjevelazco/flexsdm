@@ -354,17 +354,17 @@ a[a<0] <- 0
 require(dismo)
 require(dplyr)
 source("./R/boyce.R")
-source("./R/enmtml_evaluate.R")
+source("./R/enm_eval.R")
 
-e <- enmtml_evaluate(p, a)
-e$performance %>% dim
+e <- enm_eval(p, a)
+e$performance
 e$threshold
 e$threshold_table
 
-enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')))
-enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY')))
-enmtml_evaluate(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8'))
-enmtml_evaluate(p, a, thr=c(type=c('LPT')))
+enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')))
+enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'))) # wrong way to SENSITIVITY threshold
+enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')) # correct way to use SENSITIVITY threshold
+enm_eval(p, a, thr=c(type=c('LPT')))
 
 
 
@@ -417,7 +417,7 @@ gridtest <-
 
 source('./R/tune_mx.R')
 source("./R/boyce.R")
-source("./R/enmtml_evaluate.R")
+source("./R/enm_eval.R")
 
 r <-
   tune_mx(
