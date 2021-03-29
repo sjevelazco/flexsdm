@@ -86,6 +86,7 @@ tune_svm <-
       message('Partition number: ', i, '/', N)
       mod <- list()
       for (ii in 1:nrow(grid)) {
+        set.seed(1)
         try(mod[[ii]] <-
               kernlab::ksvm(
                 Fmula,
@@ -147,6 +148,7 @@ tune_svm <-
     
     
     # Fit final models with best settings 
+    set.seed(1)
     mod <-
       kernlab::ksvm(
         Fmula,
