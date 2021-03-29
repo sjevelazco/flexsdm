@@ -1,9 +1,10 @@
-#' Title
+#' Boyce metric
 #'
 #' @param pres 
 #' @param contrast 
 #' @param n_bins 
 #' @param n_width 
+#'
 #' @description This function calculate Boyce index performance metric. Codes were adapted from enmSdm package. Boyce have value between -1 and +1, 
 #' with a value tending toward +1 indicating good to perfect predictions, values
 #' around 0 indicating predictions no different from those obtained by chance,
@@ -11,6 +12,8 @@
 #' @return
 #' @export
 #'
+#' @importFrom stats cor
+#' 
 #' @examples
 boyce <- function(pres,
                   contrast,
@@ -69,7 +72,7 @@ boyce <- function(pres,
   PE <- P / E
   
   # remove NAs
-  rm_nas <- complete.cases(data.frame(mean_pred, PE))
+  rm_nas <- stats::complete.cases(data.frame(mean_pred, PE))
   mean_pred <- mean_pred[rm_nas]
   PE <- PE[rm_nas]
   

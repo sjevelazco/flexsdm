@@ -1,12 +1,16 @@
-#' Title
+#' Calculate different model peformance metrics
 #'
 #' @param p 
 #' @param a 
 #' @param thr 
+#' @param bg 
 #'
 #' @return
 #' @export
-#'
+#' 
+#' @importFrom dismo evaluate threshold
+#' @importFrom dplyr bind_cols left_join
+#' 
 #' @examples
 enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
   #Parameters:
@@ -48,12 +52,12 @@ enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
   # if(is.null(thr)){
     
     if (length(p) > 1000) {
-      tr <- as.vector(quantile(p, 0:1000 / 1000))
+      tr <- as.vector(stats::quantile(p, 0:1000 / 1000))
     } else {
       tr <- p
     }
     if (length(a) > 1000) {
-      tr <- c(tr, as.vector(quantile(a, 0:1000 / 1000)))
+      tr <- c(tr, as.vector(stats::quantile(a, 0:1000 / 1000)))
     } else {
       tr <- c(tr, a)
     }
@@ -156,7 +160,7 @@ enmtml_evaluate <- function(p, a, bg=NULL, thr=NULL){
   
   performance <- dplyr::bind_cols(performance)
   
-  thr_table <- tibble(threshold = names(thresholds), values=unlist(thresholds))
+  thr_table <- dplyr::tibble(threshold = names(thresholds), values=unlist(thresholds))
   thr_table <- dplyr::left_join(thr_table, performance, by=c('values'='threshold'))
   
   #Return final result
