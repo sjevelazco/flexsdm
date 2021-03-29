@@ -368,18 +368,18 @@ e$performance
 e$threshold
 e$threshold_table
 
-#' # Different ways to use thr argument
-#' enm_eval(p, a, thr=c(type=c('MAX_KAPPA')))
-#' enm_eval(p, a, thr=c(type=c('MAX_KAPPA')), bg=backg)
-#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')))
-#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'))) # wrong way to SENSITIVITY threshold
-#' enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')) # correct way to use SENSITIVITY threshold
-#' 
-#' # Use of bg argument (it will only be used for calculating BOYCE index)
-#' enm_eval(p, a, thr=c(type=c('MAX_TSS')))[[1]]
-#' enm_eval(p, a, thr=c(type=c('MAX_TSS')), bg=backg)[[1]]
-#' # I the case it is needed use background for calculate all other metric background values can be used in "a" argument 
-#' enm_eval(p, backg, thr=c(type=c('MAX_TSS')))[[1]]
+# Different ways to use thr argument
+enm_eval(p, a, thr=c(type=c('MAX_KAPPA')))
+enm_eval(p, a, thr=c(type=c('MAX_KAPPA')), bg=backg)
+enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')))
+enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'))) # wrong way to SENSITIVITY threshold
+enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')) # correct way to use SENSITIVITY threshold
+
+# Use of bg argument (it will only be used for calculating BOYCE index)
+enm_eval(p, a, thr=c(type=c('MAX_TSS')))[[1]]
+enm_eval(p, a, thr=c(type=c('MAX_TSS')), bg=backg)[[1]]
+# I the case it is needed use background for calculate all other metric background values can be used in "a" argument 
+enm_eval(p, backg, thr=c(type=c('MAX_TSS')))[[1]]
 
 
 ##%######################################################%##
@@ -450,6 +450,8 @@ r <-
 
 r$model %>% plot(type="cloglog")
 r$tune_performance
+r$tune_performance$BOYCE_mean
+
 r$best_hyperparameter
 r$threshold
 

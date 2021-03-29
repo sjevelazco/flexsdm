@@ -36,7 +36,7 @@ tune_mx <-
     
     require(maxnet)
     require(dplyr)
-    
+    predictors <- c(predictors, predictors_f)
     if (is.null(predictors_f)) {
       data <- data[, c(response, predictors, partition)]
       data <- data.frame(data)
@@ -71,7 +71,7 @@ tune_mx <-
     if(class(grid)=='character'){
       if(grid=='defalut'){
         grid <- expand.grid(regmult = seq(0.1, 3, 0.5),
-                            classes = c("l", "lq", "lqh", "lqhp", "lqht"))
+                            classes = c("l", "lq", "lqh", "lqhp", "lqhpt"))
       }
     }
     hyperp <- names(grid)
@@ -112,6 +112,11 @@ tune_mx <-
     train <- lapply(train, function(x) x[x[,response]==1,])
     bgt <- split(background, background[,partition])
     train <- mapply(dplyr::bind_rows, train, bgt, SIMPLIFY = FALSE)
+    bgt_test <- list()
+    for(i in 1:N){
+      bgt_test[[i]] <- background[background[, partition] != i, ]
+    }
+    rm(bgt)
   }
   
   
@@ -135,6 +140,7 @@ tune_mx <-
     mod <- mod[filt]
     grid2 <- grid[filt, ]
     
+    # Predict for presences absences data
     pred_test <-
       lapply(mod, function(x)
         data.frame(
@@ -147,12 +153,35 @@ tune_mx <-
           )
         ))
     
+    # Predict for background data
+    if(!is.null(background)){
+      bgt <-
+        lapply(mod, function(x)
+          data.frame(
+            'pr_ab' = bgt_test[[i]][response],
+            'pred' = dismo::predict(
+              x,
+              newdata = test[[i]],
+              clamp = clamp,
+              type = pred_type
+            )
+          ))
+    }
+    
     eval <- list()
-    for(ii in 1:length(pred_test)) {
-      eval[[ii]] <-
-        enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
-                        a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-                        thr = thr)
+    for (ii in 1:length(pred_test)) {
+      if (is.null(background)) {
+        eval[[ii]] <-
+          enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+                   a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+                   thr = thr, 
+                   bg = bgt[[ii]])
+      } else {
+        eval[[ii]] <-
+          enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+                   a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+                   thr = thr)
+      }
     }
     
     eval <- dplyr::bind_rows(lapply(eval, function(x) x$selected_threshold))
@@ -181,7 +210,6 @@ tune_mx <-
   
   
   # Fit final models with best settings 
-  best_hyperp
   
   mod <-
     maxnet::maxnet(
@@ -199,12 +227,27 @@ tune_mx <-
       mod,
       newdata = data,
       clamp = TRUE,
-      type = 'cloglog'
+      type = pred_type
     ))
+  
+  if (is.null(background)) {
+    threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
+                          a = pred_test$pred[pred_test$pr_ab == 0],
+                          thr = thr)
+  } else {
+    background <- dismo::predict(
+      mod,
+      newdata = background[c(predictors, predictors_f)],
+      clamp = TRUE,
+      type = pred_type
+    )[,1]
     
-  threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                               a = pred_test$pred[pred_test$pr_ab == 0],
-                               thr = thr)
+    threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
+                          a = pred_test$pred[pred_test$pr_ab == 0],
+                          thr = thr, 
+                          bg = background)
+    
+  }
   
   
   result <- list(model = mod, 
