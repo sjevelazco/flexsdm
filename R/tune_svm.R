@@ -172,9 +172,9 @@ tune_svm <-
                           thr = thr)
   
     result <- list(model = mod, 
-                   # eval_partial,
                    tune_performance=eval_final,
-                   best_hyperparameter=best_hyperp,
+                   best_hyper_performance=best_tune,
+                   best_hyper=best_hyperp,
                    selected_threshold=threshold[[1]],
                    threshold_table=threshold[[2]])
     return(result)
