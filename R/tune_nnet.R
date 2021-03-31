@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples
-tune_rf <-
+tune_nnet <-
   function(data,
            response,
            predictors,
@@ -31,7 +31,7 @@ tune_rf <-
            metric = "TSS",
            ...) {
     
-    require(randomForest)
+    require(nnet)
     require(dplyr)
     
     data <- data.frame(data)
@@ -57,19 +57,20 @@ tune_rf <-
     # Prepare grid when grid=default or NULL
     if(is.null(grid)){
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      grid <- data.frame(mtry=round(sqrt(nv)))
+      grid <- data.frame(size = 2, decay = 0)
     } 
     if(class(grid)=='character'){
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
       if(grid=='defalut'){
-        grid <-  expand.grid(mtry = seq(2, nv, 1))
-        }
+        grid <- expand.grid(size = c(2, 4, 6, 8), 
+                      decay = c(0.01, 0.05, 0.1,0.2,0.3))  #revise this values
+      }
     }
     
     # Test hyper-parameters names
     hyperp <- names(grid)
-    if(!all(c("mtry")%in%hyperp)){
-      stop("Database used in 'grid' argument has to contain this columns for tunning: 'mtry'")
+    if(!all(c("size", "decay")%in%hyperp)){
+      stop("Database used in 'grid' argument has to contain this columns for tunning: 'size', 'decay'")
     }
     
     grid$tune <- 1:nrow(grid)
@@ -91,13 +92,14 @@ tune_rf <-
       for (ii in 1:nrow(grid)) {
         set.seed(1)
         try(mod[[ii]] <-
-              randomForest::randomForest(
+              nnet::nnet(
                 Fmula,
                 data = train[[i]],
-                type = "classification",
-                mtry = grid$mtry[ii],
-                ntree = 500,
-                importance = FALSE
+                size = grid$size[ii],
+                rang = 0.1,
+                decay = grid$decay[ii],
+                maxit = 200,
+                trace = FALSE
               )
         )
       }
@@ -114,8 +116,7 @@ tune_rf <-
             pred = dismo::predict(
               x,
               newdata = test[[i]],
-              type = 'prob'
-            )[,2]
+            )
           ))
       
       # Validation of parameter combination
@@ -152,22 +153,24 @@ tune_rf <-
     # Fit final models with best settings 
     set.seed(1)
     mod <-
-      randomForest::randomForest(
+      nnet::nnet(
         Fmula,
-        data = data,
-        type = "classification",
-        mtry = best_hyperp$mtry,
-        ntree = 500,
-        importance = TRUE
+        data = train[[i]],
+        size = best_hyperp$size,
+        rang = 0.1,
+        decay = best_hyperp$decay,
+        maxit = 200,
+        trace = FALSE
       )
+    
+    
     
     pred_test <- data.frame(
       pr_ab = data[,response],
       pred = dismo::predict(
         mod,
         newdata = data,
-        type = "prob"
-      )[,2])
+      ))
     
     threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
                           a = pred_test$pred[pred_test$pr_ab == 0],
