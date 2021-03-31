@@ -13,9 +13,9 @@
 #'
 #' @importFrom dismo predict
 #' @importFrom dplyr bind_rows tibble select group_by_at summarise across everything pull
-#' @importFrom randomForest randomForest
-#' @importFrom stats formula
-#' 
+#' @importFrom nnet nnet
+#' @importFrom stats formula na.omit
+#'  
 #' @return
 #' @export
 #'
