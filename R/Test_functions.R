@@ -466,12 +466,13 @@ ggplot(r$tune_performance, aes(regmult, TSS_mean, col=classes)) +
 
 ##%######################################################%##
 #                                                          #
-####                   test svm_tune                    ####
+####                   test tune_svm                    ####
 #                                                          #
 ##%######################################################%##
 source("./R/tune_svm.R")
 source("./R/boyce.R")
 source("./R/enm_eval.R")
+require(ggplot2)
 
 data("bradypus")
 names(bradypus)
@@ -480,14 +481,14 @@ na <- bradypus %>% dplyr::filter(presence == 0) %>% nrow
 # Presences
 np <- bradypus %>% dplyr::filter(presence == 1) %>% nrow
 
-N <- 5
+N <- 10
 na <- sample(rep(1:N, length.out=na))
 np <- sample(rep(1:N, length.out=np))
 bradypus <- bradypus %>% dplyr::mutate(Partition=c(na, np))
 colnames(bradypus)
 
 tune_grid <-
-  expand.grid(C = c(1, 2, 4, 8, 16),
+  expand.grid(C = c(1, 2, 4, 8, 16, 20),
               sigma = c(0.001, 0.01, 0.1, 0.2, 0.3, 0.4))
 svmt <-
   tune_svm(
@@ -503,10 +504,11 @@ svmt <-
 
 svmt$model
 svmt$tune_performance
-svmt$best_hyperparameter
-svmt$threshold
+svmt$best_hyper_performance
+svmt$best_hyper
+svmt$selected_threshold
+svmt$threshold_table
 
-require(ggplot2)
 ggplot(svmt$tune_performance, aes(factor(sigma), 
                                   TSS_mean, col=factor(C))) + 
   geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.1)+
@@ -515,8 +517,68 @@ ggplot(svmt$tune_performance, aes(factor(sigma),
                                               TSS_mean, col=factor(C)))
 
 ggplot(svmt$tune_performance, aes(factor(sigma), 
+                                  AUC_mean, col=factor(C))) + 
+  # geom_errorbar(aes(ymin=AUC_mean-AUC_sd, ymax=AUC_mean+AUC_sd), width=0.1)+
+  geom_point() + 
+  geom_line(data = svmt$tune_performance, aes(as.numeric(factor(sigma)), 
+                                              AUC_mean, col=factor(C)))
+
+ggplot(svmt$tune_performance, aes(factor(sigma), 
                                   TSS_mean, col=factor(C))) + 
   geom_point() + 
   geom_line(data = svmt$tune_performance, aes(as.numeric(factor(sigma)), 
                                               TSS_mean, col=factor(C)))
 
+
+##%######################################################%##
+#                                                          #
+####                   test tune_rf                    ####
+#                                                          #
+##%######################################################%##
+source("./R/tune_rf.R")
+source("./R/boyce.R")
+source("./R/enm_eval.R")
+require(maxnet)
+
+data("bradypus")
+names(bradypus)
+# Absences
+na <- bradypus %>% dplyr::filter(presence == 0) %>% nrow
+# Presences
+np <- bradypus %>% dplyr::filter(presence == 1) %>% nrow
+
+N <- 10
+na <- sample(rep(1:N, length.out=na))
+np <- sample(rep(1:N, length.out=np))
+bradypus <- bradypus %>% dplyr::mutate(Partition=c(na, np))
+colnames(bradypus)
+
+tune_grid <-
+  expand.grid(mtry = seq(1, 7, 1)) # The maximum mtry must be equal to total number of predictors
+
+rf_t <-
+  tune_rf(
+    data = bradypus,
+    response = "presence",
+    predictors = c("cld6190_ann", "dtr6190_ann", "h_dem", "pre6190_ann", "tmn6190_ann", "vap6190_ann"),
+    predictors_f = c("ecoreg"),
+    partition = "Partition",
+    grid = tune_grid,
+    thr = "MAX_TSS",
+    metric = 'TSS',
+  )
+
+rf_t$model %>% plot
+rf_t$tune_performance %>% arrange(desc(TSS_mean)) 
+rf_t$best_hyper_performance
+rf_t$best_hyper
+rf_t$selected_threshold
+rf_t$threshold_table
+
+require(ggplot2)
+ggplot(rf_t$tune_performance, aes(factor(mtry), 
+                                  TSS_mean)) + 
+  geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.1)+
+  geom_point() + 
+  geom_line(data = rf_t$tune_performance, aes(as.numeric(factor(mtry)), 
+                                              TSS_mean))
