@@ -1,4 +1,4 @@
-#' Function for performing support vector machine model exploring hyper-parameters 
+#' Function for constructing Support Vector Machine with exploration of hyper-parameters
 #'
 #'
 #'
@@ -36,7 +36,6 @@ tune_svm <-
     
     data <- data.frame(data)
     
-    predictors <- c(predictors, predictors_f)
     if (is.null(predictors_f)) {
       data <- data[, c(response, predictors, partition)]
       data <- data.frame(data)
