@@ -80,7 +80,7 @@ tune_mx <-
     
     # Test hyperparameter names
     hyperp <- names(grid)
-    if(any(!hyperp%in%c("regmult", "classes"))){
+    if(!all(c("regmult", "classes")%in%hyperp)){
       stop("Database used in 'grid' argument has to contain this columns for tunning: 'regmult', 'classes'")
     }
     

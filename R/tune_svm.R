@@ -36,6 +36,9 @@ tune_svm <-
     
     data <- data.frame(data)
     
+    # Transform response variable as factor
+    data[,response] <- as.factor(data[,response])
+    
     if (is.null(predictors_f)) {
       data <- data[, c(response, predictors, partition)]
       data <- data.frame(data)
@@ -64,7 +67,7 @@ tune_svm <-
     
     # Test hyper-parameters names
     hyperp <- names(grid)
-    if(any(!hyperp%in%c("C", "sigma"))){
+    if(!all(c("C", "sigma")%in%hyperp)){
       stop("Database used in 'grid' argument has to contain this columns for tunning: 'C', 'sigma'")
     }
     
