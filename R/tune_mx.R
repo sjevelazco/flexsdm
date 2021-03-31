@@ -1,4 +1,4 @@
-#' Function for performing maximum entropy model exploring hyper-parameters 
+#' Function for constructing Maximum Entropy with exploration of hyper-parameters
 #'
 #'
 #' @param data 
@@ -39,7 +39,6 @@ tune_mx <-
     
     data <- data.frame(data)
     
-    predictors <- c(predictors, predictors_f)
     if (is.null(predictors_f)) {
       data <- data[, c(response, predictors, partition)]
       data <- data.frame(data)
