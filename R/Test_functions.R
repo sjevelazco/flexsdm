@@ -470,6 +470,7 @@ ggplot(r$tune_performance, aes(regmult, TSS_mean, col=classes)) +
 #                                                          #
 ##%######################################################%##
 require(maxnet)
+require(dplyr)
 data("bradypus")
 names(bradypus)
 # Absences
@@ -626,3 +627,62 @@ ggplot(nnet_t$tune_performance, aes(factor(decay),
   geom_point() + 
   geom_line(data = nnet_t$tune_performance, aes(as.numeric(factor(decay)), 
                                                 AUC_mean, col=factor(size)))
+
+
+##%######################################################%##
+#                                                          #
+####                   test tune_gbm                    ####
+#                                                          #
+##%######################################################%##
+source("./R/tune_gbm.R")
+source("./R/boyce.R")
+source("./R/enm_eval.R")
+
+tune_grid <-
+  expand.grid(
+    n.trees = c(20, 50, 100, 200, 500, 1000),
+    shrinkage = c(0.01, 0.1, 0.5, 1),
+    n.minobsinnode = c(1:10, 20, 30)
+  ) #The data set is too small or the subsampling rate is too large: `nTrain * bag.fraction <= n.minobsinnode`
+
+gbm_t <-
+  tune_gbm(
+    data = bradypus,
+    response = "presence",
+    predictors = c("cld6190_ann", "dtr6190_ann", "h_dem", "pre6190_ann", "tmn6190_ann", "vap6190_ann"),
+    predictors_f = c("ecoreg"),
+    partition = "Partition",
+    grid = tune_grid,
+    thr = "MAX_TSS",
+    metric = 'TSS',
+  )
+
+gbm_t$model %>% plot
+gbm_t$tune_performance %>% arrange(desc(TSS_mean)) 
+gbm_t$best_hyper_performance
+gbm_t$best_hyper
+gbm_t$selected_threshold
+gbm_t$threshold_table
+
+require(ggplot2)
+dodge
+pg <- position_dodge(width=0.5)
+ggplot(gbm_t$tune_performance, aes(factor(n.minobsinnode),
+                                   TSS_mean, col = factor(shrinkage))) +
+  # geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.2, position=pg)+
+  geom_point(position=pg) +
+  geom_line(data = gbm_t$tune_performance,
+            aes(as.numeric(factor(n.minobsinnode)),
+                TSS_mean, col = factor(shrinkage)), position=pg) +
+  facet_wrap(. ~ n.trees) + theme(legend.position = 'bottom')
+
+
+ggplot(gbm_t$tune_performance, aes(factor(n.minobsinnode),
+                                   AUC_mean, col = factor(shrinkage))) +
+  # geom_errorbar(aes(ymin=AUC_mean-AUC_sd, ymax=AUC_mean+AUC_sd), width=0.2, position=pg)+
+  geom_point(position=pg) +
+  geom_line(data = gbm_t$tune_performance,
+            aes(as.numeric(factor(n.minobsinnode)),
+                AUC_mean, col = factor(shrinkage)), position=pg) +
+  facet_wrap(. ~ n.trees) + theme(legend.position = 'bottom')
+
