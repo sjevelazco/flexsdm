@@ -129,7 +129,8 @@ tune_mx <-
   eval_partial <- list()
   for(i in 1:N){
     message('Partition number: ', i, '/', N)
-    mod <- list()
+    mod <- as.list(rep(NA, nrow(grid)))
+    names(mod) <- 1:nrow(grid)
     for (ii in 1:nrow(grid)) {
       try(mod[[ii]] <-
             maxnet::maxnet(
@@ -142,7 +143,8 @@ tune_mx <-
             ))
     }
     
-    filt <- !sapply(mod, is.null)
+    class(mod[[1]])
+    filt <- sapply(mod, function(x) length(class(x))==3)
     mod <- mod[filt]
     grid2 <- grid[filt, ]
     
