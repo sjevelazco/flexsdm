@@ -86,8 +86,8 @@ tune_rf <-
     
     eval_partial <- list()
     for(i in 1:N){
-      message('Partition number: ', i, '/', N)
-      mod <- list()
+      mod <- as.list(rep(NA, nrow(grid)))
+      names(mod) <- 1:nrow(grid)
       for (ii in 1:nrow(grid)) {
         set.seed(1)
         try(mod[[ii]] <-
@@ -102,7 +102,7 @@ tune_rf <-
         )
       }
       
-      filt <- !sapply(mod, is.null)
+      filt <- sapply(mod, function(x) length(class(x))>1)
       mod <- mod[filt]
       grid2 <- grid[filt, ]
       
