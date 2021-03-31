@@ -32,7 +32,8 @@ tune_mx <-
            thr = NULL,
            metric = "TSS",
            clamp = TRUE,
-           pred_type = "cloglog") {
+           pred_type = "cloglog", 
+           ...) {
     
     require(maxnet)
     require(dplyr)
