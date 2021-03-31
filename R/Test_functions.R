@@ -469,11 +469,7 @@ ggplot(r$tune_performance, aes(regmult, TSS_mean, col=classes)) +
 ####                   test tune_svm                    ####
 #                                                          #
 ##%######################################################%##
-source("./R/tune_svm.R")
-source("./R/boyce.R")
-source("./R/enm_eval.R")
-require(ggplot2)
-
+require(maxnet)
 data("bradypus")
 names(bradypus)
 # Absences
@@ -486,6 +482,12 @@ na <- sample(rep(1:N, length.out=na))
 np <- sample(rep(1:N, length.out=np))
 bradypus <- bradypus %>% dplyr::mutate(Partition=c(na, np))
 colnames(bradypus)
+
+
+source("./R/tune_svm.R")
+source("./R/boyce.R")
+source("./R/enm_eval.R")
+require(ggplot2)
 
 tune_grid <-
   expand.grid(C = c(1, 2, 4, 8, 16, 20),
@@ -540,19 +542,6 @@ source("./R/boyce.R")
 source("./R/enm_eval.R")
 require(maxnet)
 
-data("bradypus")
-names(bradypus)
-# Absences
-na <- bradypus %>% dplyr::filter(presence == 0) %>% nrow
-# Presences
-np <- bradypus %>% dplyr::filter(presence == 1) %>% nrow
-
-N <- 10
-na <- sample(rep(1:N, length.out=na))
-np <- sample(rep(1:N, length.out=np))
-bradypus <- bradypus %>% dplyr::mutate(Partition=c(na, np))
-colnames(bradypus)
-
 tune_grid <-
   expand.grid(mtry = seq(1, 7, 1)) # The maximum mtry must be equal to total number of predictors
 
@@ -582,3 +571,58 @@ ggplot(rf_t$tune_performance, aes(factor(mtry),
   geom_point() + 
   geom_line(data = rf_t$tune_performance, aes(as.numeric(factor(mtry)), 
                                               TSS_mean))
+
+##%######################################################%##
+#                                                          #
+####                   test tune_nnet                   ####
+#                                                          #
+##%######################################################%##
+source("./R/tune_nnet.R")
+source("./R/boyce.R")
+source("./R/enm_eval.R")
+
+tune_grid <-
+  expand.grid(size = c(2, 4, 6, 8, 10), 
+              decay = c(0.001, 0.05, 0.1,1, 3, 4, 5, 10))
+
+nnet_t <-
+  tune_nnet(
+    data = bradypus,
+    response = "presence",
+    predictors = c("cld6190_ann", "dtr6190_ann", "h_dem", "pre6190_ann", "tmn6190_ann", "vap6190_ann"),
+    predictors_f = c("ecoreg"),
+    partition = "Partition",
+    grid = tune_grid,
+    thr = "MAX_TSS",
+    metric = 'TSS',
+  )
+
+nnet_t$model
+nnet_t$tune_performance %>% arrange(desc(TSS_mean)) 
+nnet_t$best_hyper_performance
+nnet_t$best_hyper
+nnet_t$selected_threshold
+nnet_t$threshold_table
+
+require(ggplot2)
+
+ggplot(nnet_t$tune_performance, aes(factor(decay), 
+                                  TSS_mean, col=factor(size))) + 
+  # geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.1)+
+  geom_point() + 
+  geom_line(data = nnet_t$tune_performance, aes(as.numeric(factor(decay)), 
+                                              TSS_mean, col=factor(size)))
+
+ggplot(nnet_t$tune_performance, aes(factor(decay), 
+                                    JACCARD_mean, col=factor(size))) + 
+  # geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.1)+
+  geom_point() + 
+  geom_line(data = nnet_t$tune_performance, aes(as.numeric(factor(decay)), 
+                                                JACCARD_mean, col=factor(size)))
+
+ggplot(nnet_t$tune_performance, aes(factor(decay), 
+                                    AUC_mean, col=factor(size))) + 
+  # geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.1)+
+  geom_point() + 
+  geom_line(data = nnet_t$tune_performance, aes(as.numeric(factor(decay)), 
+                                                AUC_mean, col=factor(size)))
