@@ -41,6 +41,7 @@ when thr argument is NULL function will return a list with "performance", "thres
 This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, Fpb, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), and BOYCE.
 }
 \examples{
+\dontrun{
 require(dismo)
 require(dplyr)
 
@@ -75,5 +76,6 @@ enm_eval(p, a, thr=c(type=c('MAX_TSS')))[[1]]
 enm_eval(p, a, thr=c(type=c('MAX_TSS')), bg=backg)[[1]]
 # I the case it is needed use background for calculate all other metric background values can be used in "a" argument 
 enm_eval(p, backg, thr=c(type=c('MAX_TSS')))[[1]]
+}
 
 }
