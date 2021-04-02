@@ -1,6 +1,6 @@
 #' Calculate different model performance metrics
 #'
-#' @description This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, Fpb, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), and BOYCE.
+#' @description This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), and BOYCE.
 #' @param p numeric. Presence predicted suitability
 #' @param a numeric. Absences predicted suitability
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
@@ -12,7 +12,7 @@
 #'   \item MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').
 #'   \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
 #'   \item MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').
-#'   \item MAX_FPB: The threshold at which Fpb is highest. Usage thr=c(type='MAX_FPB').
+#'   \item MAX_FPB: The threshold at which FPB is highest. Usage thr=c(type='MAX_FPB').
 #'   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate the names of threshold types, e.g., thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')). When SENSITIVITY threshold is used in combination with other it is necessary specify the desired sensitivity value, e.g. thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')
@@ -154,10 +154,10 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
   #   JacTHR <- tr  
   # }
   
-  #Fpb
-  Fpb <- 2 * JAC
+  #FPB
+  FPB <- 2 * JAC
   # if(is.null(thr)){
-    FpbTHR <- tr[which(Fpb == max(Fpb))][1]
+    FpbTHR <- tr[which(FPB == max(FPB))][1]
   # }else{
   #   FpbTHR <- tr  
   # }
@@ -196,7 +196,7 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
   performance$TNR <- res$tn / (res$tn + res$fp)
   performance$SORENSEN <- SOR
   performance$JACCARD <- JAC
-  performance$Fpb <- Fpb
+  performance$FPB <- FPB
   performance$OR  <- (1-performance$TPR)
   performance$TSS <- (performance$TPR + performance$TNR) - 1
   performance$KAPPA <- eval_dismo@kappa
