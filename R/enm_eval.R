@@ -33,6 +33,7 @@
 #' @importFrom dplyr bind_cols left_join
 #' 
 #' @examples
+#' \dontrun{
 #' require(dismo)
 #' require(dplyr)
 #' 
@@ -67,6 +68,7 @@
 #' enm_eval(p, a, thr=c(type=c('MAX_TSS')), bg=backg)[[1]]
 #' # I the case it is needed use background for calculate all other metric background values can be used in "a" argument 
 #' enm_eval(p, backg, thr=c(type=c('MAX_TSS')))[[1]]
+#' }
 #' 
 enm_eval <- function(p, a, bg=NULL, thr=NULL){
   #Parameters:
@@ -238,4 +240,3 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
     return(result)
   }
 }
-
