@@ -19,7 +19,7 @@
 #'   \item MAX_FPB: The threshold at which Fpb is highest. Usage thr=c(type='MAX_FPB').
 #'   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
-#' @param metric character. Performance metric used for selecting the best combination of hyperparameter values
+#' @param metric character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.
 #'   
 #' @return
 #' @export
@@ -36,8 +36,6 @@ tune_gbm <-
            metric = 'TSS',
            ...) {
     
-    require(gbm)
-    require(dplyr)
     
     data <- data.frame(data)
     

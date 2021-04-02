@@ -7,11 +7,11 @@
 enm_eval(p, a, bg = NULL, thr = NULL)
 }
 \arguments{
-\item{p}{numeric. Presence predicted suitability}
+\item{p}{numeric. Predicted suitability for presences}
 
-\item{a}{numeric. Absences predicted suitability}
+\item{a}{numeric. Predicted suitability for presences absences}
 
-\item{bg}{numeric. Pseudo-absence predicted suitability. It is used for BOYCE metric. It bg is set as null BOYCE metric will be calculated with presences and absences suitability values}
+\item{bg}{numeric. Predicted suitability for background points. It is used for BOYCE metric. It bg is set as null BOYCE metric will be calculated with presences and absences suitability values}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 \itemize{
@@ -22,7 +22,7 @@ enm_eval(p, a, bg = NULL, thr = NULL)
   \item MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').
   \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
   \item MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').
-  \item MAX_FPB: The threshold at which Fpb is highest. Usage thr=c(type='MAX_FPB').
+  \item MAX_FPB: The threshold at which FPB is highest. Usage thr=c(type='MAX_FPB').
   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
   }
 In the case of use more than one threshold type it is necessary concatenate the names of threshold types, e.g., thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')). When SENSITIVITY threshold is used in combination with other it is necessary specify the desired sensitivity value, e.g. thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')}
@@ -38,7 +38,7 @@ a list with the next tibble
 when thr argument is NULL function will return a list with "performance", "threshold", and "threshold_table" tibbles, when thr argument is used with one or more threshold function returns "selected_threshold" and "threshold_table" tibbles
 }
 \description{
-This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, Fpb, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), and BOYCE.
+This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), and BOYCE.
 }
 \examples{
 \dontrun{

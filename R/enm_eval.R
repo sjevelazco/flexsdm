@@ -1,8 +1,8 @@
 #' Calculate different model performance metrics
 #'
 #' @description This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), and BOYCE.
-#' @param p numeric. Presence predicted suitability
-#' @param a numeric. Absences predicted suitability
+#' @param p numeric. Predicted suitability for presences 
+#' @param a numeric. Predicted suitability for presences absences
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
 #'   \item LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').
@@ -17,7 +17,7 @@
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate the names of threshold types, e.g., thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')). When SENSITIVITY threshold is used in combination with other it is necessary specify the desired sensitivity value, e.g. thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')
 #'
-#' @param bg numeric. Pseudo-absence predicted suitability. It is used for BOYCE metric. It bg is set as null BOYCE metric will be calculated with presences and absences suitability values 
+#' @param bg numeric. Predicted suitability for background points. It is used for BOYCE metric. It bg is set as null BOYCE metric will be calculated with presences and absences suitability values 
 #'
 #' @return a list with the next tibble
 #' \itemize{

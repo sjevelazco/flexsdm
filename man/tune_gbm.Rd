@@ -42,7 +42,7 @@ tune_gbm(
   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
   }}
 
-\item{metric}{character. Performance metric used for selecting the best combination of hyperparameter values}
+\item{metric}{character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.}
 }
 \value{
 
