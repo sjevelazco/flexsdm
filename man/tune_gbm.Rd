@@ -2,7 +2,7 @@
 % Please edit documentation in R/tune_gbm.R
 \name{tune_gbm}
 \alias{tune_gbm}
-\title{Function for constructing Random Forest with exploration of hyper-parameters}
+\title{Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters}
 \usage{
 tune_gbm(
   data,
@@ -17,25 +17,36 @@ tune_gbm(
 )
 }
 \arguments{
-\item{data}{}
+\item{data}{data.frame. Database with response (0,1) and predictors values.}
 
-\item{response}{}
+\item{response}{character. Column name with species absence-presence data (0,1).}
 
-\item{predictors}{}
+\item{predictors}{character. Vector with the column names of quantitative predictor variables (i.e. continuous or discrete variables). Usage predictors = c()}
 
-\item{predictors_f}{}
+\item{predictors_f}{character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors = c()}
 
-\item{partition}{}
+\item{partition}{character. Column name with training and validation partition groups.}
 
-\item{grid}{}
+\item{grid}{data.frame. Provide a data frame object with algorithm hyperparameters values to be tested. It Is recommended to generate this data.frame with grid() function. In the case this argument is set as NULL. It will not perform the tuning process using the defalut values of the parameters.}
 
-\item{thr}{}
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\itemize{
+  \item LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').
+  \item EQUAL_SENS_SPEC: Threshold at which the sum of the sensitivity and specificity is the highest.
+  \item MAX_TSS: Threshold at which the sensitivity and specificity are equal.
+  Usage thr=c(type='MAX_TSS').
+  \item MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').
+  \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
+  \item MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').
+  \item MAX_FPB: The threshold at which Fpb is highest. Usage thr=c(type='MAX_FPB').
+  \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
+  }}
 
-\item{metric}{}
+\item{metric}{character. Performance metric used for selecting the best combination of hyperparameter values}
 }
 \value{
 
 }
 \description{
-Function for constructing Random Forest with exploration of hyper-parameters
+Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters
 }

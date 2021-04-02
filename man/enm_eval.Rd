@@ -13,7 +13,7 @@ enm_eval(p, a, bg = NULL, thr = NULL)
 
 \item{bg}{numeric. Pseudo-absence predicted suitability. It is used for BOYCE metric. It bg is set as null BOYCE metric will be calculated with presences and absences suitability values}
 
-\item{thr}{character. Threshold used for binaryse suitability. It is useful for threshold dependent metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 \itemize{
   \item LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').
   \item EQUAL_SENS_SPEC: Threshold at which the sum of the sensitivity and specificity is the highest.
@@ -23,7 +23,7 @@ enm_eval(p, a, bg = NULL, thr = NULL)
   \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
   \item MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').
   \item MAX_FPB: The threshold at which Fpb is highest. Usage thr=c(type='MAX_FPB').
-  \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value. Note that this method assumes 'sens' value for all algorithm and species.
+  \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
   }
 In the case of use more than one threshold type it is necessary concatenate the names of threshold types, e.g., thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')). When SENSITIVITY threshold is used in combination with other it is necessary specify the desired sensitivity value, e.g. thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')}
 }

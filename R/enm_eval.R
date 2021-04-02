@@ -71,13 +71,6 @@
 #' }
 #' 
 enm_eval <- function(p, a, bg=NULL, thr=NULL){
-  #Parameters:
-  #p:
-  #a:absence points suitability
-  #tr:numeric vector with threshold values
-  
-  require(dismo)
-  require(dplyr)
   
   if(any(
     !thr[grep('type', names(thr))] %in% c(
