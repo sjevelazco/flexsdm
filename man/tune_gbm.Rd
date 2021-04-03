@@ -21,13 +21,13 @@ tune_gbm(
 
 \item{response}{character. Column name with species absence-presence data (0,1).}
 
-\item{predictors}{character. Vector with the column names of quantitative predictor variables (i.e. continuous or discrete variables). Usage predictors = c()}
+\item{predictors}{character. Vector with the column names of quantitative predictor variables (i.e. continuous or discrete variables). Usage predictors = c("aet", "cwd", "tmin")}
 
-\item{predictors_f}{character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors = c()}
+\item{predictors_f}{character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")}
 
 \item{partition}{character. Column name with training and validation partition groups.}
 
-\item{grid}{data.frame. Provide a data frame object with algorithm hyperparameters values to be tested. It Is recommended to generate this data.frame with grid() function. In the case this argument is set as NULL. It will not perform the tuning process using the defalut values of the parameters.}
+\item{grid}{data.frame. Provide a data frame object with algorithm hyper-parameters values to be tested. It Is recommended to generate this data.frame with grid() function. Hyper-parameters needed for tuning are 'n.trees', 'shrinkage', and 'n.minobsinnode'.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 \itemize{
@@ -49,4 +49,59 @@ tune_gbm(
 }
 \description{
 Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters
+}
+\examples{
+\dontrun{
+
+data(abies_db) 
+abies_db 
+# pr_ab columns is species presence and absences (i.e. the response variable)
+# partition columns is partition groups for species k-fold cross validation
+# from aet to landform are the predictors variables (landform is a qualitative variable)
+
+Hyper-parameter values for tunning 
+tune_grid <- 
+ expand.grid(
+ n.trees = c(20, 50, 100, 200), 
+ shrinkage = c(0.1, 0.5, 1), 
+ n.minobsinnode = c(1:10, 20)
+)
+
+gbm_t <-
+ tune_gbm(
+   data = abies_db,
+   response = "pr_ab",
+   predictors = c("aet", "cwd", "tmin", "ppt_djf", 
+                  "ppt_jja", "pH", "awc", "depth", "percent_clay"),
+ predictors_f = c("landform"),
+ partition = "partition",
+ grid = tune_grid,
+ thr = "MAX_TSS",
+ metric = 'TSS',
+ )
+
+# Outputs
+gbm_t$model
+gbm_t$tune_performance
+gbm_t$best_hyper
+gbm_t$selected_threshold
+gbm_t$threshold_table
+
+# Graphical exploration of performance of each hyper-parameter setting
+require(ggplot2)
+ggplot(gbm_t$tune_performance, aes(n.minobsinnode, TSS_mean)) + 
+  geom_point(aes(col=factor(n.trees)))
+
+pg <- position_dodge(width=0.5)
+ggplot(gbm_t$tune_performance, aes(factor(n.minobsinnode),
+                                   TSS_mean, col = factor(shrinkage))) +
+geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.2, position=pg) +
+geom_point(position=pg) +
+geom_line(data = gbm_t$tune_performance,
+           aes(as.numeric(factor(n.minobsinnode)),
+                TSS_mean, col = factor(shrinkage)), position=pg) +
+  facet_wrap(. ~ n.trees) + 
+  theme(legend.position = 'bottom')
+}
+
 }
