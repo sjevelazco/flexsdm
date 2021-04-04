@@ -19,7 +19,7 @@ Plot the maximum resolution to be used in block_partition_pa
 }
 \examples{
 \dontrun{
-f <- system.file("external/test.grd", package="raster")
+f <- system.file("external/test.grd", package = "raster")
 f
 r <- raster(f)
 plot_max_res(r, max_res_mult = 2)
