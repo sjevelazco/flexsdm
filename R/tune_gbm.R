@@ -22,6 +22,16 @@
 #' @param metric character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.
 #'
 #' @return
+#'
+#' A list object with:
+#' \itemize{
+#' \item model: A "gbm" class object. This object can be used for predicting.
+#' \item tune_performance: Performance metric (see \code{\link{enm_eval}}) for each combination of the hyper-parameters.
+#' \item best_hyper: Hyper-parameters values and performance metric (see \code{\link{enm_eval}}) for the best hyper-parameters combination.
+#' \item selected_threshold: Value of the threshold selected.
+#' \item threshold_table: Value of all threshold.
+#' }
+#'
 #' @export
 #'
 #' @importFrom dplyr bind_rows tibble select group_by_at summarise across everything pull %>%
@@ -41,24 +51,26 @@
 #'
 #' # Hyper-parameter values for tuning
 #' tune_grid <-
-#'  expand.grid(
-#'  n.trees = c(20, 50, 100, 200),
-#'  shrinkage = c(0.1, 0.5, 1),
-#'  n.minobsinnode = c(1, 3, 5, 7 ,9)
-#' )
+#'   expand.grid(
+#'     n.trees = c(20, 50, 100, 200),
+#'     shrinkage = c(0.1, 0.5, 1),
+#'     n.minobsinnode = c(1, 3, 5, 7, 9)
+#'   )
 #'
 #' gbm_t <-
-#'  tune_gbm(
-#'    data = abies_db,
-#'    response = "pr_ab",
-#'    predictors = c("aet", "cwd", "tmin", "ppt_djf",
-#'                   "ppt_jja", "pH", "awc", "depth", "percent_clay"),
-#'  predictors_f = c("landform"),
-#'  partition = "partition",
-#'  grid = tune_grid,
-#'  thr = "MAX_TSS",
-#'  metric = 'TSS',
-#'  )
+#'   tune_gbm(
+#'     data = abies_db,
+#'     response = "pr_ab",
+#'     predictors = c(
+#'       "aet", "cwd", "tmin", "ppt_djf",
+#'       "ppt_jja", "pH", "awc", "depth", "percent_clay"
+#'     ),
+#'     predictors_f = c("landform"),
+#'     partition = "partition",
+#'     grid = tune_grid,
+#'     thr = "MAX_TSS",
+#'     metric = "TSS",
+#'   )
 #'
 #' # Outputs
 #' gbm_t$model
@@ -70,18 +82,24 @@
 #' # Graphical exploration of performance of each hyper-parameter setting
 #' require(ggplot2)
 #' ggplot(gbm_t$tune_performance, aes(n.minobsinnode, TSS_mean)) +
-#'   geom_point(aes(col=factor(n.trees)))
+#'   geom_point(aes(col = factor(n.trees)))
 #'
-#' pg <- position_dodge(width=0.5)
+#' pg <- position_dodge(width = 0.5)
 #' ggplot(gbm_t$tune_performance, aes(factor(n.minobsinnode),
-#'                                    TSS_mean, col = factor(shrinkage))) +
-#' geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.2, position=pg) +
-#' geom_point(position=pg) +
-#' geom_line(data = gbm_t$tune_performance,
-#'            aes(as.numeric(factor(n.minobsinnode)),
-#'                 TSS_mean, col = factor(shrinkage)), position=pg) +
+#'   TSS_mean,
+#'   col = factor(shrinkage)
+#' )) +
+#'   geom_errorbar(aes(ymin = TSS_mean - TSS_sd, ymax = TSS_mean + TSS_sd), width = 0.2, position = pg) +
+#'   geom_point(position = pg) +
+#'   geom_line(
+#'     data = gbm_t$tune_performance,
+#'     aes(as.numeric(factor(n.minobsinnode)),
+#'       TSS_mean,
+#'       col = factor(shrinkage)
+#'     ), position = pg
+#'   ) +
 #'   facet_wrap(. ~ n.trees) +
-#'   theme(legend.position = 'bottom')
+#'   theme(legend.position = "bottom")
 #' }
 #'
 tune_gbm <-
@@ -92,10 +110,8 @@ tune_gbm <-
            partition,
            grid = NULL,
            thr = NULL,
-           metric = 'TSS',
+           metric = "TSS",
            ...) {
-
-
     data <- data.frame(data)
 
     if (is.null(predictors_f)) {
@@ -110,28 +126,30 @@ tune_gbm <-
     }
 
     # Formula
-    Fmula <- stats::formula(paste(response, '~',
-                                  paste(c(predictors, predictors_f), collapse = ' + ')))
+    Fmula <- stats::formula(paste(
+      response, "~",
+      paste(c(predictors, predictors_f), collapse = " + ")
+    ))
 
     # Prepare grid when grid=default or NULL
-    if(is.null(grid)){
+    if (is.null(grid)) {
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
       grid <- data.frame(n.trees = 100, shrinkage = 0.1, n.minobsinnode = 10)
     }
-    if(class(grid)=='character'){
+    if (class(grid) == "character") {
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      if(grid=='defalut'){
+      if (grid == "defalut") {
         grid <- expand.grid(
           n.trees = c(20, 50, 100, 200, 500),
           shrinkage = c(0.01, 0.1, 0.3),
-          n.minobsinnode = c(1:10, 20, 30) #try define a best default tuning set
+          n.minobsinnode = c(1:10, 20, 30) # try define a best default tuning set
         )
       }
     }
 
     # Test hyper-parameters names
     hyperp <- names(grid)
-    if(!all(c('n.trees', 'shrinkage', 'n.minobsinnode')%in%hyperp)){
+    if (!all(c("n.trees", "shrinkage", "n.minobsinnode") %in% hyperp)) {
       stop("Database used in 'grid' argument has to contain this columns for tunning: 'n.trees', 'shrinkage', 'n.minobsinnode'")
     }
 
@@ -148,49 +166,51 @@ tune_gbm <-
     }
 
     eval_partial <- list()
-    for(i in 1:N){
-      message('Partition number: ', i, '/', N)
+    for (i in 1:N) {
+      message("Partition number: ", i, "/", N)
       mod <- as.list(rep(NA, nrow(grid)))
       names(mod) <- 1:nrow(grid)
       for (ii in 1:nrow(grid)) {
         set.seed(1)
         try(mod[[ii]] <-
-              gbm::gbm(
-                Fmula,
-                data = train[[i]],
-                distribution = "bernoulli",
-                bag.fraction = 1, #Explore more this parameter
-                n.trees = grid$n.trees[ii],
-                interaction.depth = 1,
-                shrinkage = grid$shrinkage[ii],
-                n.minobsinnode = grid$n.minobsinnode[ii]
-              )
-        )
+          gbm::gbm(
+            Fmula,
+            data = train[[i]],
+            distribution = "bernoulli",
+            bag.fraction = 1, # Explore more this parameter
+            n.trees = grid$n.trees[ii],
+            interaction.depth = 1,
+            shrinkage = grid$shrinkage[ii],
+            n.minobsinnode = grid$n.minobsinnode[ii]
+          ))
       }
 
-      filt <- sapply(mod, function(x) class(x)=="gbm")
+      filt <- sapply(mod, function(x) class(x) == "gbm")
       mod <- mod[filt]
       grid2 <- grid[filt, ]
 
       # Predict for presences absences data
       pred_test <-
-        lapply(mod, function(x)
+        lapply(mod, function(x) {
           data.frame(
-            pr_ab = test[[i]][,response],
+            pr_ab = test[[i]][, response],
             pred = gbm::predict.gbm(
               x,
               newdata = test[[i]],
               type = "response"
             )
-          ))
+          )
+        })
 
       # Validation of parameter combination
       eval <- list()
       for (ii in 1:length(pred_test)) {
         eval[[ii]] <-
-          enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
-                   a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-                   thr = thr)
+          enm_eval(
+            p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+            a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+            thr = thr
+          )
       }
 
       eval <- dplyr::bind_rows(lapply(eval, function(x) x$selected_threshold))
@@ -201,19 +221,21 @@ tune_gbm <-
 
     # Create final database with parameter performance
     names(eval_partial) <- 1:N
-    eval_partial <- eval_partial %>% dplyr::bind_rows(.,.id='partition')
+    eval_partial <- eval_partial %>% dplyr::bind_rows(., .id = "partition")
 
     eval_final <- eval_partial %>%
       dplyr::select(-partition, -c(tune:n_absences)) %>%
       dplyr::group_by_at(hyperp) %>%
-      dplyr::summarise(dplyr::across(dplyr::everything(),
-                                     list(mean = mean, sd = sd)), .groups = 'drop')
+      dplyr::summarise(dplyr::across(
+        dplyr::everything(),
+        list(mean = mean, sd = sd)
+      ), .groups = "drop")
 
     # Find the bets parameter setting
-    filt <- eval_final %>% dplyr::pull(paste0(metric, '_mean'))
+    filt <- eval_final %>% dplyr::pull(paste0(metric, "_mean"))
     filt <- which.max(filt)
-    best_tune <- eval_final[filt,]
-    best_hyperp <- eval_final[filt,hyperp]
+    best_tune <- eval_final[filt, ]
+    best_hyperp <- eval_final[filt, hyperp]
 
 
     # Fit final models with best settings
@@ -231,22 +253,27 @@ tune_gbm <-
 
 
     pred_test <- data.frame(
-      pr_ab = data[,response],
+      pr_ab = data[, response],
       pred = gbm::predict.gbm(
         mod,
         newdata = data,
         type = "response"
-      ))
+      )
+    )
 
-    threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                          a = pred_test$pred[pred_test$pr_ab == 0],
-                          thr = thr)
+    threshold <- enm_eval(
+      p = pred_test$pred[pred_test$pr_ab == 1],
+      a = pred_test$pred[pred_test$pr_ab == 0],
+      thr = thr
+    )
 
-    result <- list(model = mod,
-                   tune_performance=eval_final,
-                   best_hyper_performance=best_tune,
-                   best_hyper=best_hyperp,
-                   selected_threshold=threshold[[1]],
-                   threshold_table=threshold[[2]])
+    result <- list(
+      model = mod,
+      tune_performance = eval_final,
+      best_hyper_performance = best_tune,
+      # best_hyper=best_hyperp,
+      selected_threshold = threshold[[1]],
+      threshold_table = threshold[[2]]
+    )
     return(result)
   }

@@ -45,7 +45,14 @@ tune_gbm(
 \item{metric}{character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.}
 }
 \value{
-
+A list object with:
+\itemize{
+\item model: A "gbm" class object. This object can be used for predicting.
+\item tune_performance: Performance metric (see \code{\link{enm_eval}}) for each combination of the hyper-parameters.
+\item best_hyper: Hyper-parameters values and performance metric (see \code{\link{enm_eval}}) for the best hyper-parameters combination.
+\item selected_threshold: Value of the threshold selected.
+\item threshold_table: Value of all threshold.
+}
 }
 \description{
 Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters
@@ -60,24 +67,26 @@ abies_db
 
 # Hyper-parameter values for tuning
 tune_grid <-
- expand.grid(
- n.trees = c(20, 50, 100, 200),
- shrinkage = c(0.1, 0.5, 1),
- n.minobsinnode = c(1, 3, 5, 7 ,9)
-)
+  expand.grid(
+    n.trees = c(20, 50, 100, 200),
+    shrinkage = c(0.1, 0.5, 1),
+    n.minobsinnode = c(1, 3, 5, 7, 9)
+  )
 
 gbm_t <-
- tune_gbm(
-   data = abies_db,
-   response = "pr_ab",
-   predictors = c("aet", "cwd", "tmin", "ppt_djf",
-                  "ppt_jja", "pH", "awc", "depth", "percent_clay"),
- predictors_f = c("landform"),
- partition = "partition",
- grid = tune_grid,
- thr = "MAX_TSS",
- metric = 'TSS',
- )
+  tune_gbm(
+    data = abies_db,
+    response = "pr_ab",
+    predictors = c(
+      "aet", "cwd", "tmin", "ppt_djf",
+      "ppt_jja", "pH", "awc", "depth", "percent_clay"
+    ),
+    predictors_f = c("landform"),
+    partition = "partition",
+    grid = tune_grid,
+    thr = "MAX_TSS",
+    metric = "TSS",
+  )
 
 # Outputs
 gbm_t$model
@@ -89,18 +98,24 @@ gbm_t$threshold_table
 # Graphical exploration of performance of each hyper-parameter setting
 require(ggplot2)
 ggplot(gbm_t$tune_performance, aes(n.minobsinnode, TSS_mean)) +
-  geom_point(aes(col=factor(n.trees)))
+  geom_point(aes(col = factor(n.trees)))
 
-pg <- position_dodge(width=0.5)
+pg <- position_dodge(width = 0.5)
 ggplot(gbm_t$tune_performance, aes(factor(n.minobsinnode),
-                                   TSS_mean, col = factor(shrinkage))) +
-geom_errorbar(aes(ymin=TSS_mean-TSS_sd, ymax=TSS_mean+TSS_sd), width=0.2, position=pg) +
-geom_point(position=pg) +
-geom_line(data = gbm_t$tune_performance,
-           aes(as.numeric(factor(n.minobsinnode)),
-                TSS_mean, col = factor(shrinkage)), position=pg) +
+  TSS_mean,
+  col = factor(shrinkage)
+)) +
+  geom_errorbar(aes(ymin = TSS_mean - TSS_sd, ymax = TSS_mean + TSS_sd), width = 0.2, position = pg) +
+  geom_point(position = pg) +
+  geom_line(
+    data = gbm_t$tune_performance,
+    aes(as.numeric(factor(n.minobsinnode)),
+      TSS_mean,
+      col = factor(shrinkage)
+    ), position = pg
+  ) +
   facet_wrap(. ~ n.trees) +
-  theme(legend.position = 'bottom')
+  theme(legend.position = "bottom")
 }
 
 }
