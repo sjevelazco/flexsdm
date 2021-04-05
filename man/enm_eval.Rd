@@ -38,7 +38,7 @@ a list with the next tibble
 when thr argument is NULL function will return a list with "performance", "threshold", and "threshold_table" tibbles, when thr argument is used with one or more threshold function returns "selected_threshold" and "threshold_table" tibbles
 }
 \description{
-This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), and BOYCE.
+This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), BOYCE, MAE (Mean Absolute Error, values closer to zero denote better performance).
 }
 \examples{
 \dontrun{
@@ -51,7 +51,7 @@ p[p>1] <- 1
 p[p<0] <- 0
 
 set.seed(0)
-a <- rnorm(50, mean=0.4, sd=0.4) \%>\% abs()
+a <- rnorm(50, mean=0.3, sd=0.2) \%>\% abs()
 a[a>1] <- 1
 a[a<0] <- 0
 
@@ -60,7 +60,7 @@ backg <- rnorm(1000, mean=0.4, sd=0.4) \%>\% abs()
 backg[backg>1] <- 1
 backg[backg<0] <- 0
 
-# Use function without threshold specification 
+# Use function without threshold specification
 e <- enm_eval(p, a)
 e$performance
 e$threshold
@@ -74,7 +74,7 @@ enm_eval(p, a, thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')) # cor
 # Use of bg argument (it will only be used for calculating BOYCE index)
 enm_eval(p, a, thr=c(type=c('MAX_TSS')))[[1]]
 enm_eval(p, a, thr=c(type=c('MAX_TSS')), bg=backg)[[1]]
-# I the case it is needed use background for calculate all other metric background values can be used in "a" argument 
+# I the case it is needed use background for calculate all other metric background values can be used in "a" argument
 enm_eval(p, backg, thr=c(type=c('MAX_TSS')))[[1]]
 }
 
