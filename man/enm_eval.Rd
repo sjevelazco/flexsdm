@@ -42,7 +42,6 @@ This function calculates threshold dependent and independent performance metric.
 }
 \examples{
 \dontrun{
-require(dismo)
 require(dplyr)
 
 set.seed(0)

@@ -34,7 +34,6 @@
 #'
 #' @examples
 #' \dontrun{
-#' require(dismo)
 #' require(dplyr)
 #'
 #' set.seed(0)
