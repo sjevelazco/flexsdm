@@ -171,22 +171,22 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
   #   TSSTHR <- tr
   # }
 
-  # # SEDI
-  # Hi <- res$tp / (res$tp + res$fn) #true positive rate
-  # Fi <- res$fp / (res$tn + res$fp) #false positive rate
-  # Hi <- ifelse(Hi == 0, .Machine$double.eps, Hi)
-  # Fi <- ifelse(Fi == 0, .Machine$double.eps, Fi)
-  # Hi_minus1 <- 1 - Hi
-  # Fi_minus1 <- 1 - Fi
-  # Hi_minus1 <- ifelse(Hi_minus1 == 0, .Machine$double.eps, Hi_minus1)
-  # Fi_minus1 <- ifelse(Fi_minus1 == 0, .Machine$double.eps, Fi_minus1)
-  #
-  # SEDI <-
-  #   (log(Fi)-log(Hi)-log(Fi_minus1) + log(Hi_minus1)) /
-  #   (log(Fi)+log(Hi)+log(Fi_minus1) + log(Hi_minus1))
-  #
-  # # ORSS
-  # ORSS <- (res$tp*res$tn-res$fp*res$fn)/(res$tp*res$tn+res$fp*res$fn)
+  # SEDI
+  Hi <- res$tp / (res$tp + res$fn) #true positive rate
+  Fi <- res$fp / (res$tn + res$fp) #false positive rate
+  Hi <- ifelse(Hi == 0, .Machine$double.eps, Hi)
+  Fi <- ifelse(Fi == 0, .Machine$double.eps, Fi)
+  Hi_minus1 <- 1 - Hi
+  Fi_minus1 <- 1 - Fi
+  Hi_minus1 <- ifelse(Hi_minus1 == 0, .Machine$double.eps, Hi_minus1)
+  Fi_minus1 <- ifelse(Fi_minus1 == 0, .Machine$double.eps, Fi_minus1)
+
+  SEDI <-
+    (log(Fi)-log(Hi)-log(Fi_minus1) + log(Hi_minus1)) /
+    (log(Fi)+log(Hi)+log(Fi_minus1) + log(Hi_minus1))
+
+  # ORSS
+  ORSS <- (res$tp*res$tn-res$fp*res$fn)/(res$tp*res$tn+res$fp*res$fn)
 
 
   thresholds <- list()
@@ -228,6 +228,9 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
   real <- c(rep(1, length(p)), rep(0, length(a)))
   pred <- c(p, a)
   performance$MAE <- sum(abs(real-pred))/length(pred)
+  performance$SEDI <- SEDI
+  performance$ORSS <- ORSS
+
 
   performance <- dplyr::bind_cols(performance)
 
