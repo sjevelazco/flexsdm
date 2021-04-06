@@ -116,15 +116,7 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
       tr <- c(tr, as.numeric(thr['sens']))
       tr <- sort(tr)
     }
-    # tr <- c(tr - 0.0001, tr[length(tr)] + c(0, 0.0001))
-    # tr <- abs(sort(tr))
-    # tr <- tr[tr<=1]
     eval_dismo <- dismo::evaluate(p=p, a=a, tr = tr)
-  # }else{
-  #   tr <- thr
-  #
-  #   eval_dismo <- dismo::evaluate(p=p, a=a, tr = tr)
-  # }
 
   res <- matrix(ncol = 4, nrow = length(tr))
   colnames(res) <- c('tp', 'fp', 'fn', 'tn')
@@ -139,56 +131,23 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
 
   #Sorensen Index
   SOR <- 2 * res$tp / (res$fn + (2 * res$tp) + res$fp)
-  # if(is.null(thr)){
-    SorTHR <- tr[which(SOR == max(SOR))][1]
-  # }else{
-  #   SorTHR <- tr
-  # }
+  SorTHR <- tr[which(SOR == max(SOR))][1]
 
   #Jaccard Index
   JAC <- res$tp / (res$fn + res$tp + res$fp)
-  # if(is.null(thr)){
-    JacTHR <- tr[which(JAC == max(JAC))][1]
-  # }else{
-  #   JacTHR <- tr
-  # }
+  JacTHR <- tr[which(JAC == max(JAC))][1]
 
   #FPB
   FPB <- 2 * JAC
-  # if(is.null(thr)){
-    FpbTHR <- tr[which(FPB == max(FPB))][1]
-  # }else{
-  #   FpbTHR <- tr
-  # }
+  FpbTHR <- tr[which(FPB == max(FPB))][1]
 
   #TSS
   TPR <- res$tp / (res$tp + res$fn)
   TNR <- res$tn / (res$tn + res$fp)
   TSS <- (TPR + TNR) - 1
-  # if(is.null(thr)){
   TSSTHR <- tr[which(TSS == max(TSS))][1]
-  # }else{
-  #   TSSTHR <- tr
-  # }
 
-  # SEDI
-  Hi <- res$tp / (res$tp + res$fn) #true positive rate
-  Fi <- res$fp / (res$tn + res$fp) #false positive rate
-  Hi <- ifelse(Hi == 0, .Machine$double.eps, Hi)
-  Fi <- ifelse(Fi == 0, .Machine$double.eps, Fi)
-  Hi_minus1 <- 1 - Hi
-  Fi_minus1 <- 1 - Fi
-  Hi_minus1 <- ifelse(Hi_minus1 == 0, .Machine$double.eps, Hi_minus1)
-  Fi_minus1 <- ifelse(Fi_minus1 == 0, .Machine$double.eps, Fi_minus1)
-
-  SEDI <-
-    (log(Fi)-log(Hi)-log(Fi_minus1) + log(Hi_minus1)) /
-    (log(Fi)+log(Hi)+log(Fi_minus1) + log(Hi_minus1))
-
-  # ORSS
-  ORSS <- (res$tp*res$tn-res$fp*res$fn)/(res$tp*res$tn+res$fp*res$fn)
-
-
+  # Threshold
   thresholds <- list()
   thresholds$MAX_SORENSEN <- SorTHR
   thresholds$MAX_JACCARD <- JacTHR
