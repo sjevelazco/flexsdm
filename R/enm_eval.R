@@ -187,9 +187,6 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
   real <- c(rep(1, length(p)), rep(0, length(a)))
   pred <- c(p, a)
   performance$MAE <- sum(abs(real-pred))/length(pred)
-  performance$SEDI <- SEDI
-  performance$ORSS <- ORSS
-
 
   performance <- dplyr::bind_cols(performance)
 
