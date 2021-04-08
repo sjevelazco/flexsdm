@@ -9,11 +9,11 @@ data_part(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL)
 \arguments{
 \item{data}{data.frame. Database with presences, presence-absence, or pseudo-absence, records for a given species}
 
-\item{p_a}{character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences with 0}
+\item{p_a}{character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0}
 
 \item{bg_data}{data.frame. Data frames with background points.}
 
-\item{bg_a}{character. Column name of "bg_data" with absences. Absences must be repented with 0}
+\item{bg_a}{character. Column name of "bg_data" with absences. Background must be repented by 0}
 
 \item{method}{character. Vector with partition method to be used:
 \itemize{

@@ -1,12 +1,12 @@
 #' Spatial block cross validation
 #'
 #' @param env_layer raster. Raster stack or brick with environmental variable. This will be used to evaluate spatial autocorrelation and environmental similarity between training and testing partition
-#' @param data data.frame frame with presences records
-#' @param x
-#' @param y
-#' @param pr_ab
-#' @param min_res_mult
-#' @param max_res_mult numeric. Maximum value will multiply raster resolution and will define the coarsest resolution to be tested, default 50.
+#' @param data data.frame. Data.frame or tibble object with presences (or presence-absence, o presences-pseudo-absence) records, and coordinates
+#' @param x character. Column name with longitude data
+#' @param y character. Column name with longitude data
+#' @param pr_ab character. Column with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0
+#' @param min_res_mult numeric. Minimum value used for multiplying raster resolution and will define the coarsest resolution to be tested, default 2.
+#' @param max_res_mult numeric. Maximum value used for multiplying raster resolution and will define the coarsest resolution to be tested, default 50.
 #' @param num_grids numeric. Number of grid to be tested between 2x(raster resolution) and max_res_mult*(raster resolution), default 30
 #' @param n_part
 #'
@@ -21,13 +21,135 @@
 #' @importFrom stats sd
 #'
 #' @examples
-block_partition_pa <- function(env_layer,
+#' \dontrun{
+#' data(spp)
+#' data(somevar)
+#'
+#' # Lest practice with a single species
+#' single_spp <- spp %>% dplyr::filter(species == "sp3")
+#' part <- block_partition(
+#'   env_layer = somevar,
+#'   data = single_spp,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   min_res_mult = 10,
+#'   max_res_mult = 500,
+#'   num_grids = 30,
+#'   n_part = 2
+#' )
+#' part
+#'
+#' part$ResultList
+#' part$BestGridInfo
+#' part$Grid
+#'
+#' # Lets explore Grid object
+#' plot(part$Grid)
+#' points(part$ResultList[c("x", "y")],
+#'   col = c("blue", "red")[part$ResultList$.part],
+#'   cex = 0.5,
+#'   pch = 19
+#' )
+#'
+#' raster::res(part$Grid)
+#' raster::res(somevar)
+#'
+#' # Note that is a layer with block partition, but it has a different resolution than the original environmental variables.
+#' # In the case you wish have a layer with the same properties (i.e. resolution, extent, NAs) than your original environmental variables you can use the \code{\link{get_block}} function.
+#'
+#' grid_env <- get_block(env_layer = somevar, bestgrid = part$Grid)
+#'
+#' plot(grid_env) # this is a block layer with the same layer properties than environmental variables.
+#' points(part$ResultList[c("x", "y")],
+#'   col = c("blue", "red")[part$ResultList$.part],
+#'   cex = 0.5,
+#'   pch = 19
+#' )
+#' # This layer could be very useful in case you need sample pseudo_absence or background point
+#' # See examples in \code{\link{get_block}} and \code{\link{get_block}}
+#'
+#'
+#'
+#' # Now lets learn use these functions with several species
+#' spp2 <- split(spp, spp$species)
+#' class(spp2)
+#' length(spp2)
+#' names(spp2)
+#'
+#' part_list <- lapply(spp2, function(x) {
+#'   result <- block_partition(
+#'     env_layer = somevar,
+#'     data = x,
+#'     x = "x",
+#'     y = "y",
+#'     pr_ab = "pr_ab",
+#'     min_res_mult = 10,
+#'     max_res_mult = 500,
+#'     num_grids = 30,
+#'     n_part = 2
+#'   )
+#'   result
+#' })
+#'
+#' # Lets reconstruct a single database for all species
+#' occ_part <- dplyr::bind_rows(lapply(part_list, function(x) x[[1]]), .id = "species")
+#' occ_part
+#'
+#' # Lets get a the best grid info for all species
+#' grid_info <- dplyr::bind_rows(lapply(part_list, function(x) x[[2]]), .id = "species")
+#'
+#' # Lets get a the best grid layer for all species
+#' grid_layer <- lapply(part_list, function(x) x[[3]])
+#' sapply(grid_layer, plot)
+#'
+#' # Lets get a the best grid info for all species
+#' grid_layer2 <-
+#'   lapply(grid_layer, function(x) {
+#'     get_block(env_layer = somevar[[1]], bestgrid = x)
+#'   })
+#' grid_layer2 <- stack(grid_layer2)
+#' grid_layer2
+#' plot(grid_layer2)
+#'
+#'
+#' # Block partition for presences-only database
+#' single_spp <- spp %>% dplyr::filter(species == "sp2", pr_ab == 1)
+#' single_spp
+#' single_spp$pr_ab %>% unique() # only presences
+#'
+#' part <- block_partition(
+#'   env_layer = somevar,
+#'   data = single_spp,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   min_res_mult = 10,
+#'   max_res_mult = 500,
+#'   num_grids = 30,
+#'   n_part = 2
+#' )
+#'
+#' part$ResultList
+#' part$BestGridInfo
+#' part$Grid
+#'
+#' plot(part$Grid)
+#' points(
+#'   part$ResultList[c("x", "y")],
+#'   col = c("blue", "red")[part$ResultList$.part],
+#'   cex = 0.5,
+#'   pch = 19
+#' )
+#' }
+#'
+block_partition <- function(env_layer,
                                data,
                                x,
                                y,
                                pr_ab,
                                n_part = 2,
-                               min_res_mult = 2,
+                               min_res_mult = 3,
                                max_res_mult = 200,
                                num_grids = 30) {
   if (n_part != 2) {
@@ -163,22 +285,24 @@ unique list values in pr_ab column are: ",
 
   ### Remove problematic grids based on presences
   # Grids that assigned partitions less than the number of groups will be removed
-  pa <- presences2@data[, 1] # Vector with presences and absences
-  pp <- sapply(part[pa == 0, ], function(x) {
-    length(unique(range(x)))
-  })
-  pp <- ifelse(pp == n_part, TRUE, FALSE)
-  # Elimination of those partition that have one record in some group
-  pf <- sapply(part[pa == 0, ], table)
-  if (is.list(pf) == TRUE) {
-    pf <- which(sapply(pf, min) <= 1)
-  } else {
-    pf <- which(apply(pf, 2, min) <= 1)
+  if (any(unique(pa) == 0)) {
+    pa <- presences2@data[, 1] # Vector with presences and absences
+    pp <- sapply(part[pa == 0, ], function(x) {
+      length(unique(range(x)))
+    })
+    pp <- ifelse(pp == n_part, TRUE, FALSE)
+    # Elimination of those partition that have one record in some group
+    pf <- sapply(part[pa == 0, ], table)
+    if (is.list(pf) == TRUE) {
+      pf <- which(sapply(pf, min) <= 1)
+    } else {
+      pf <- which(apply(pf, 2, min) <= 1)
+    }
+    pp[pf] <- FALSE
+    grid <- grid[pp]
+    part <- data.frame(part[, pp])
+    names(part) <- names(which(pp == TRUE))
   }
-  pp[pf] <- FALSE
-  grid <- grid[pp]
-  part <- data.frame(part[, pp])
-  names(part) <- names(which(pp == TRUE))
 
 
   # Ncell
@@ -194,11 +318,15 @@ unique list values in pr_ab column are: ",
   # SD of number of records per cell size-----
 
   Sd.Grid.P <- rep(NA, length(grid))
-  Sd.Grid.A <- rep(NA, length(grid))
+  if (any(unique(pa) == 0)) {
+    Sd.Grid.A <- rep(NA, length(grid))
+  }
 
   for (i in 1:ncol(part)) {
-    Sd.Grid.A[i] <- stats::sd(table(part[pa == 0, i])) /
-      mean(table(part[pa == 0, i]))
+    if (any(unique(pa) == 0)) {
+      Sd.Grid.A[i] <- stats::sd(table(part[pa == 0, i])) /
+        mean(table(part[pa == 0, i]))
+    }
     Sd.Grid.P[i] <- stats::sd(table(part[pa == 1, i])) /
       mean(table(part[pa == 1, i]))
   }
@@ -276,17 +404,30 @@ unique list values in pr_ab column are: ",
   N.grid <- 1:length(cellSize[pp])
 
   Opt <-
-    data.frame(N.grid, cellSize = cellSize[pp], round(
-      data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P, Sd.Grid.A),
-      3
-    ))
+    if (any(unique(pa) == 0)) {
+      data.frame(N.grid, cellSize = cellSize[pp], round(
+        data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P, Sd.Grid.A),
+        3
+      ))
+    } else {
+      data.frame(N.grid, cellSize = cellSize[pp], round(
+        data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P),
+        3
+      ))
+    }
+
   # Cleaning those variances based in data divided in a number of partition less than
   # the number of groups
 
   # SELLECTION OF THE BEST CELL SIZE----
   Opt2 <- Opt
   Dup <-
-    !duplicated(Opt2[c("Imoran.Grid", "EnvirDist.Grid", "Sd.Grid.P", "Sd.Grid.A")])
+    if (any(unique(pa) == 0)) {
+      !duplicated(Opt2[c("Imoran.Grid", "EnvirDist.Grid", "Sd.Grid.P", "Sd.Grid.A")])
+    } else {
+      !duplicated(Opt2[c("Imoran.Grid", "EnvirDist.Grid", "Sd.Grid.P")])
+    }
+
   Opt2 <- Opt2[Dup, ]
 
   while (nrow(Opt2) > 1) {
@@ -305,17 +446,19 @@ unique list values in pr_ab column are: ",
     if (nrow(Opt2) == 1) {
       break
     }
-    # SD
+    # SD presence
     Opt2 <-
       Opt2[which(Opt2$Sd.Grid.P <= summary(Opt2$Sd.Grid.P)[2]), ]
     if (nrow(Opt2) == 2) {
       break
     }
-    # SD
-    Opt2 <-
-      Opt2[which(Opt2$Sd.Grid.A <= summary(Opt2$Sd.Grid.A)[2]), ]
-    if (nrow(Opt2) == 2) {
-      break
+    # SD absences
+    if (any(unique(pa) == 0)) {
+      Opt2 <-
+        Opt2[which(Opt2$Sd.Grid.A <= summary(Opt2$Sd.Grid.A)[2]), ]
+      if (nrow(Opt2) == 2) {
+        break
+      }
     }
 
     if (unique(Opt2$Imoran.Grid) &&
@@ -338,8 +481,9 @@ unique list values in pr_ab column are: ",
 
   # Final data.frame result2----
   out <- list(
-    ResultList = result,
-    BestGridList = Opt2
+    ResultList = dplyr::tibble(result),
+    BestGridInfo = dplyr::tibble(Opt2),
+    Grid = grid[[Opt2$N.grid]]
   )
   return(out)
 }
