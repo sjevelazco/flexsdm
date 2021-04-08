@@ -5,9 +5,9 @@
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with longitude data
 #' @param pr_ab character. Column with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0
-#' @param min_res_mult numeric. Minimum value used for multiplying raster resolution and will define the coarsest resolution to be tested, default 2.
-#' @param max_res_mult numeric. Maximum value used for multiplying raster resolution and will define the coarsest resolution to be tested, default 50.
-#' @param num_grids numeric. Number of grid to be tested between 2x(raster resolution) and max_res_mult*(raster resolution), default 30
+#' @param min_res_mult numeric. Minimum value used for multiplying raster resolution and define the finest resolution to be tested, default 3.
+#' @param max_res_mult numeric. Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested, default 200.
+#' @param num_grids numeric. Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30
 #' @param n_part
 #'
 #' @return
@@ -19,6 +19,8 @@
 #' @importFrom raster brick extent extract crs projection values res ncell cellFromXY
 #' @importFrom sp coordinates
 #' @importFrom stats sd
+#'
+#' @seealso \code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_max_res}}.
 #'
 #' @examples
 #' \dontrun{

@@ -29,11 +29,11 @@ block_partition(
 
 \item{n_part}{}
 
-\item{min_res_mult}{numeric. Minimum value used for multiplying raster resolution and will define the coarsest resolution to be tested, default 2.}
+\item{min_res_mult}{numeric. Minimum value used for multiplying raster resolution and define the finest resolution to be tested, default 3.}
 
-\item{max_res_mult}{numeric. Maximum value used for multiplying raster resolution and will define the coarsest resolution to be tested, default 50.}
+\item{max_res_mult}{numeric. Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested, default 200.}
 
-\item{num_grids}{numeric. Number of grid to be tested between 2x(raster resolution) and max_res_mult*(raster resolution), default 30}
+\item{num_grids}{numeric. Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30}
 }
 \value{
 
@@ -164,4 +164,7 @@ points(
 )
 }
 
+}
+\seealso{
+\code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_max_res}}.
 }
