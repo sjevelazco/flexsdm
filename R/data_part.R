@@ -34,7 +34,7 @@
 #' # K-fold method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = 'pr_ab',
+#'   p_a = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_a = NULL,
 #'   method = c(method = "KFOLD", folds = 10)
@@ -44,17 +44,17 @@
 #' # Repeated K-fold method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = 'pr_ab',
+#'   p_a = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_p_a = NULL,
-#'   method = c(method = "REP_KFOLD", folds = 10, replicates=10)
+#'   method = c(method = "REP_KFOLD", folds = 10, replicates = 10)
 #' )
 #' abies_db2
 #'
 #' # Leave-one-out cross-validation (LOOCV) method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = 'pr_ab',
+#'   p_a = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_a = NULL,
 #'   method = c(method = "LOOCV")
@@ -64,12 +64,12 @@
 #' # Bootstrap method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = 'pr_ab',
+#'   p_a = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_a = NULL,
-#'   method = c(method = "BOOT", replicates=50, proportion=0.7)
+#'   method = c(method = "BOOT", replicates = 50, proportion = 0.7)
 #' )
-#' abies_db2$.part1 %>% table # Note that for this method .partX columns have train and test words.
+#' abies_db2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
 #' }
 #'
 data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
@@ -90,7 +90,8 @@ data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
         data %>%
         dplyr::group_by(!!as.symbol(p_a)) %>%
         dplyr::mutate(REP_KFOLD = sample(rep(1:method["folds"],
-                                             length.out = dplyr::n()))) %>%
+          length.out = dplyr::n()
+        ))) %>%
         dplyr::group_by()
       colnames(data)[colnames(data) == "REP_KFOLD"] <- cname
     }
@@ -114,7 +115,7 @@ data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
   if (method["method"] == "BOOT") {
     reps <- as.numeric(method["replicates"])
     prop <- as.numeric(method["proportion"])
-    prop2 <- 1-prop
+    prop2 <- 1 - prop
     data <- data %>% dplyr::mutate(IDBOOT = 1:nrow(data))
     for (i in 1:reps) {
       data2 <- data %>% dplyr::select({{ p_a }}, "IDBOOT")

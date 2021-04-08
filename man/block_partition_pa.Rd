@@ -2,54 +2,34 @@
 % Please edit documentation in R/block_partition_pa.R
 \name{block_partition_pa}
 \alias{block_partition_pa}
-\title{Title}
+\title{Spatial block cross validation}
 \usage{
 block_partition_pa(
   env_layer,
-  occ_data,
-  sp,
+  data,
   x,
   y,
   pr_ab,
+  n_part = 2,
   min_res_mult = 2,
   max_res_mult = 200,
-  num_grids = 30,
-  n_part = 2,
-  cores = 1,
-  save_part_raster = FALSE,
-  dir_save
+  num_grids = 30
 )
 }
 \arguments{
-\item{env_layer}{}
+\item{env_layer}{raster. Raster stack or brick with environmental variable. This will be used to evaluate spatial autocorrelation and environmental similarity between training and testing partition}
 
-\item{occ_data}{}
-
-\item{sp}{}
-
-\item{x}{}
-
-\item{y}{}
-
-\item{pr_ab}{}
-
-\item{min_res_mult}{}
-
-\item{max_res_mult}{}
-
-\item{num_grids}{}
+\item{data}{data.frame frame with presences records}
 
 \item{n_part}{}
 
-\item{cores}{}
+\item{max_res_mult}{numeric. Maximum value will multiply raster resolution and will define the coarsest resolution to be tested, default 50.}
 
-\item{save_part_raster}{}
-
-\item{dir_save}{}
+\item{num_grids}{numeric. Number of grid to be tested between 2x(raster resolution) and max_res_mult*(raster resolution), default 30}
 }
 \value{
 
 }
 \description{
-Title
+Spatial block cross validation
 }
