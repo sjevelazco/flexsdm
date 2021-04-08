@@ -3,9 +3,9 @@
 #' @description This function provides different partition methods based in folds (KFOLD, REP_KFOLD, and LOOCV), bootstrap (BOOT), and spatially structured (BANDS and BLOCK).
 #'
 #' @param data data.frame. Database with presences, presence-absence, or pseudo-absence, records for a given species
-#' @param p_a character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences with 0
+#' @param p_a character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0
 #' @param bg_data data.frame. Data frames with background points.
-#' @param bg_a character. Column name of "bg_data" with absences. Absences must be repented with 0
+#' @param bg_a character. Column name of "bg_data" with absences. Background must be repented by 0
 #' @param method character. Vector with partition method to be used:
 #' \itemize{
 #'   \item KFOLD: Random partition in k-fold cross-validation. Usage part=c(method= 'KFOLD', folds='5'). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. Usage method = c(method = "KFOLD", folds = 10).
