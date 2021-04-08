@@ -20,7 +20,7 @@
 #' This function will return the same data.frame used in the arguments 'data' and 'gb_data' with the additional column or columns staring with the names .part with partition group. In the case of BOOT partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will returned a list with partition data for each database with the names data and bg_data.
 #' @export
 #'
-#' @importFrom dplyr group_by mutate n select slice_sample anti_join bind_rows left_join tibble
+#' @importFrom dplyr group_by mutate n summarise filter select slice_sample full_join left_join tibble
 #'
 #' @seealso \code{\link{pseudoabs}}, \code{\link{backgroudp}}}
 #'
@@ -69,20 +69,7 @@
 #'   bg_a = NULL,
 #'   method = c(method = "BOOT", replicates=50, proportion=0.7)
 #' )
-#' abies_db2
-#' # Note that for this method .partX columns have train and test words.
-#' method <- c(method = "KFOLD", folds = 10)
-#' method <- c(
-#'   method = "REP_KFOLD",
-#'   folds = 10,
-#'   replicates = 20
-#' )
-#' method <- c(method = "LOOCV")
-#' method <- c(
-#'   method = "BOOT",
-#'   replicates = 50,
-#'   proportion = 0.7
-#' )
+#' abies_db2$.part1 %>% table # Note that for this method .partX columns have train and test words.
 #' }
 #'
 data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
@@ -115,22 +102,36 @@ data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
       dplyr::group_by(!!as.symbol(p_a)) %>%
       dplyr::mutate(.part = 1:dplyr::n()) %>%
       dplyr::group_by()
+    filt <- data %>%
+      dplyr::group_by(!!as.symbol(p_a)) %>%
+      dplyr::summarise(max = max(.part))
+    filtmi <- filt %>% dplyr::filter(max == min(max))
+    filt <- data$.part > filtmi$max
+    data$.part[filt] <- rep(1:filtmi$max, length.out = sum(filt))
   }
 
   # BOOOTSRAP
   if (method["method"] == "BOOT") {
     reps <- as.numeric(method["replicates"])
     prop <- as.numeric(method["proportion"])
+    prop2 <- 1-prop
     data <- data %>% dplyr::mutate(IDBOOT = 1:nrow(data))
     for (i in 1:reps) {
       data2 <- data %>% dplyr::select({{ p_a }}, "IDBOOT")
       data_train <- data2 %>%
         dplyr::group_by(!!as.symbol(p_a)) %>%
         dplyr::slice_sample(prop = prop) %>%
-        dplyr::mutate(BOOT = "train")
-      data_ttest <- dplyr::anti_join(data2, data_train) %>%
-        dplyr::mutate(BOOT = "test")
-      data2 <- dplyr::bind_rows(data_train, data_ttest)
+        dplyr::mutate(BOOT1 = "train")
+      data_ttest <- data2 %>%
+        dplyr::group_by(!!as.symbol(p_a)) %>%
+        dplyr::slice_sample(prop = prop2) %>%
+        dplyr::mutate(BOOT2 = "test")
+
+      data2 <- dplyr::full_join(data_train, data_ttest, by = c("pr_ab", "IDBOOT")) %>%
+        dplyr::mutate(BOOT = paste(BOOT1, BOOT2, sep = "-")) %>%
+        dplyr::select(-BOOT1, -BOOT2) %>%
+        dplyr::mutate(BOOT = gsub(paste(c("-NA", "NA-"), collapse = "|"), "", BOOT))
+
       data <- dplyr::left_join(data, data2, by = c("pr_ab", "IDBOOT"))
       colnames(data)[colnames(data) == "BOOT"] <- paste0(".part", i)
     }

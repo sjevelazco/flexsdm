@@ -76,20 +76,7 @@ abies_db2 <- data_part(
   bg_a = NULL,
   method = c(method = "BOOT", replicates=50, proportion=0.7)
 )
-abies_db2
-# Note that for this method .partX columns have train and test words.
-method <- c(method = "KFOLD", folds = 10)
-method <- c(
-  method = "REP_KFOLD",
-  folds = 10,
-  replicates = 20
-)
-method <- c(method = "LOOCV")
-method <- c(
-  method = "BOOT",
-  replicates = 50,
-  proportion = 0.7
-)
+abies_db2$.part1 \%>\% table # Note that for this method .partX columns have train and test words.
 }
 
 }
