@@ -21,6 +21,99 @@
 #' @importFrom stats sd
 #'
 #' @examples
+#' \dontrun{
+#' load(spp)
+#' load(somevar)
+#'
+#' # Lest practice with a single species
+#' single_spp <- spp %>% dplyr::filter(species == "sp3")
+#' part <- block_partition_pa(
+#'   env_layer = somevar,
+#'   data = single_spp,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   min_res_mult = 10,
+#'   max_res_mult = 500,
+#'   num_grids = 30,
+#'   n_part = 2
+#' )
+#' part
+#'
+#' part$ResultList
+#' part$BestGridInfo
+#' part$Grid
+#'
+#' # Lets explore Grid object
+#' plot(part$Grid)
+#' plot(part$Grid)
+#' points(part$ResultList[c("x", "y")],
+#'   col = c("blue", "red")[part$ResultList$.part],
+#'   cex = 0.5,
+#'   pch = 19
+#' )
+#'
+#' raster::res(part$Grid)
+#' raster::res(somevar)
+#'
+#' # Note that is a layer with block partition, but it has a different resolution than the original environmental variables.
+#' # In the case you wish have a layer with the same properties (i.e. resolution, extent, NAs) than your original environmental variables you can use the \code{\link{get_block}} function.
+#'
+#' grid_env <- get_block(env_layer = somevar, bestgrid = part$Grid)
+#'
+#' plot(grid_env) # this is a block layer with the same layer properties than environmental variables.
+#' points(part$ResultList[c("x", "y")],
+#'   col = c("blue", "red")[part$ResultList$.part],
+#'   cex = 0.5,
+#'   pch = 19
+#' )
+#' # This layer could be very useful in case you need sample pseudo_absence or background point
+#' # See examples in \code{\link{get_block}} and \code{\link{get_block}}
+#'
+#'
+#'
+#' # Now lets learn use these functions with several species
+#' spp2 <- split(spp, spp$species)
+#' class(spp2)
+#' length(spp2)
+#' names(spp2)
+#'
+#' part_list <- lapply(spp2, function(x) {
+#'   result <- block_partition_pa(
+#'     env_layer = somevar,
+#'     data = x,
+#'     x = "x",
+#'     y = "y",
+#'     pr_ab = "pr_ab",
+#'     min_res_mult = 10,
+#'     max_res_mult = 500,
+#'     num_grids = 30,
+#'     n_part = 2
+#'   )
+#'   result
+#' })
+#'
+#' # Lets reconstruct a single database for all species
+#' occ_part <- dplyr::bind_rows(lapply(part_list, function(x) x[[1]]), .id = "species")
+#' occ_part
+#'
+#' # Lets get a the best grid info for all species
+#' grid_info <- dplyr::bind_rows(lapply(part_list, function(x) x[[2]]), .id = "species")
+#'
+#' # Lets get a the best grid layer for all species
+#' grid_layer <- lapply(part_list, function(x) x[[3]])
+#' sapply(grid_layer, plot)
+#'
+#' # Lets get a the best grid info for all species
+#' grid_layer2 <-
+#'   lapply(grid_layer, function(x) {
+#'     get_block(env_layer = somevar[[1]], bestgrid = x)
+#'   })
+#' grid_layer2 <- stack(grid_layer2)
+#' grid_layer2
+#' plot(grid_layer2)
+#' }
+#'
 block_partition_pa <- function(env_layer,
                                data,
                                x,
@@ -338,8 +431,9 @@ unique list values in pr_ab column are: ",
 
   # Final data.frame result2----
   out <- list(
-    ResultList = result,
-    BestGridList = Opt2
+    ResultList = dplyr::tibble(result),
+    BestGridInfo = dplyr::tibble(Opt2),
+    Grid = grid[[Opt2$N.grid]]
   )
   return(out)
 }
