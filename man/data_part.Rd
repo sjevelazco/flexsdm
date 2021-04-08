@@ -26,7 +26,7 @@ data_part(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL)
   }}
 }
 \value{
-This function will return the same data.frame used in the arguments 'data' and 'gb_data' with the additional column or columns staring with the names .part with partition group. In the case of BOOT partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will retured a list with partition data for each database with the names data and bg_data.
+This function will return the same data.frame used in the arguments 'data' and 'gb_data' with the additional column or columns staring with the names .part with partition group. In the case of BOOT partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will returned a list with partition data for each database with the names data and bg_data.
 }
 \description{
 This function provides different partition methods based in folds (KFOLD, REP_KFOLD, and LOOCV), bootstrap (BOOT), and spatially structured (BANDS and BLOCK).
