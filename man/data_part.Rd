@@ -41,7 +41,7 @@ abies_db <- tibble(abies_db)
 # K-fold method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = 'pr_ab',
+  p_a = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
   method = c(method = "KFOLD", folds = 10)
@@ -51,17 +51,17 @@ abies_db2
 # Repeated K-fold method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = 'pr_ab',
+  p_a = "pr_ab",
   bg_data = NULL,
   bg_p_a = NULL,
-  method = c(method = "REP_KFOLD", folds = 10, replicates=10)
+  method = c(method = "REP_KFOLD", folds = 10, replicates = 10)
 )
 abies_db2
 
 # Leave-one-out cross-validation (LOOCV) method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = 'pr_ab',
+  p_a = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
   method = c(method = "LOOCV")
@@ -71,12 +71,12 @@ abies_db2
 # Bootstrap method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = 'pr_ab',
+  p_a = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
-  method = c(method = "BOOT", replicates=50, proportion=0.7)
+  method = c(method = "BOOT", replicates = 50, proportion = 0.7)
 )
-abies_db2$.part1 \%>\% table # Note that for this method .partX columns have train and test words.
+abies_db2$.part1 \%>\% table() # Note that for this method .partX columns have train and test words.
 }
 
 }
