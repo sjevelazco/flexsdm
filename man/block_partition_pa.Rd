@@ -35,8 +35,8 @@ Spatial block cross validation
 }
 \examples{
 \dontrun{
-load(spp)
-load(somevar)
+data(spp)
+data(somevar)
 
 # Lest practice with a single species
 single_spp <- spp \%>\% dplyr::filter(species == "sp3")
@@ -58,7 +58,6 @@ part$BestGridInfo
 part$Grid
 
 # Lets explore Grid object
-plot(part$Grid)
 plot(part$Grid)
 points(part$ResultList[c("x", "y")],
   col = c("blue", "red")[part$ResultList$.part],
@@ -125,6 +124,36 @@ grid_layer2 <-
 grid_layer2 <- stack(grid_layer2)
 grid_layer2
 plot(grid_layer2)
+
+
+# Block partition for presences-only database
+single_spp <- spp \%>\% dplyr::filter(species == "sp2", pr_ab == 1)
+single_spp
+single_spp$pr_ab \%>\% unique() # only presences
+
+part <- block_partition_pa(
+  env_layer = somevar,
+  data = single_spp,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  min_res_mult = 10,
+  max_res_mult = 500,
+  num_grids = 30,
+  n_part = 2
+)
+
+part$ResultList
+part$BestGridInfo
+part$Grid
+
+plot(part$Grid)
+points(
+  part$ResultList[c("x", "y")],
+  col = c("blue", "red")[part$ResultList$.part],
+  cex = 0.5,
+  pch = 19
+)
 }
 
 }
