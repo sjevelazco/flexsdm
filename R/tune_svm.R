@@ -32,6 +32,9 @@ tune_svm <-
            ...) {
     data <- data.frame(data)
 
+    # Transform response variable as factor
+    data[,response] <- as.factor(data[,response])
+
     if (is.null(predictors_f)) {
       data <- data %>%
         dplyr::select(response, predictors, dplyr::starts_with(partition))
@@ -136,7 +139,6 @@ tune_svm <-
 
         eval <- dplyr::bind_rows(lapply(eval, function(x) x$selected_threshold))
         eval <- dplyr::tibble(cbind(grid2, eval))
-        eval[hyperp]
         eval_partial[[i]] <- eval
       }
 
