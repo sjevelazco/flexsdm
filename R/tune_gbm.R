@@ -115,10 +115,12 @@ tune_gbm <-
     data <- data.frame(data)
 
     if (is.null(predictors_f)) {
-      data <- data[, c(response, predictors, partition)]
+      data <- data %>%
+        dplyr::select(response, predictors, dplyr::starts_with(partition))
       data <- data.frame(data)
     } else {
-      data <- data[, c(response, predictors, predictors_f, partition)]
+      data <- data %>%
+        dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
       data <- data.frame(data)
       for (i in predictors_f) {
         data[, i] <- as.factor(data[, i])
@@ -156,75 +158,93 @@ tune_gbm <-
     grid$tune <- 1:nrow(grid)
 
 
-    N <- max(data[partition])
+    np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
+    p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
+    eval_partial_list <- list()
+    for (h in 1:np) {
+      message("Replica number: ", h, "/", np)
+      np2 <- max(data[p_names[h]])
 
-    train <- list()
-    test <- list()
-    for (i in 1:N) {
-      train[[i]] <- data[data[, partition] == i, ]
-      test[[i]] <- data[data[, partition] != i, ]
-    }
-
-    eval_partial <- list()
-    for (i in 1:N) {
-      message("Partition number: ", i, "/", N)
-      mod <- as.list(rep(NA, nrow(grid)))
-      names(mod) <- 1:nrow(grid)
-      for (ii in 1:nrow(grid)) {
-        set.seed(1)
-        try(mod[[ii]] <-
-          gbm::gbm(
-            Fmula,
-            data = train[[i]],
-            distribution = "bernoulli",
-            bag.fraction = 1, # Explore more this parameter
-            n.trees = grid$n.trees[ii],
-            interaction.depth = 1,
-            shrinkage = grid$shrinkage[ii],
-            n.minobsinnode = grid$n.minobsinnode[ii]
-          ))
+      train <- list()
+      test <- list()
+      for (i in 1:np2) {
+        train[[i]] <- data[data[, p_names[h]] == i, ] %>%
+          select(-p_names[!p_names == p_names[h]])
+        test[[i]] <- data[data[, p_names[h]] != i, ] %>%
+          select(-p_names[!p_names == p_names[h]])
       }
 
-      filt <- sapply(mod, function(x) class(x) == "gbm")
-      mod <- mod[filt]
-      grid2 <- grid[filt, ]
+      eval_partial <- list()
 
-      # Predict for presences absences data
-      pred_test <-
-        lapply(mod, function(x) {
-          data.frame(
-            pr_ab = test[[i]][, response],
-            pred = gbm::predict.gbm(
-              x,
-              newdata = test[[i]],
-              type = "response"
+      for (i in 1:np2) {
+        message("Partition number: ", i, "/", np2)
+        mod <- as.list(rep(NA, nrow(grid)))
+        names(mod) <- 1:nrow(grid)
+        for (ii in 1:nrow(grid)) {
+          set.seed(1)
+          try(mod[[ii]] <-
+            suppressMessages(
+              gbm::gbm(
+                Fmula,
+                data = train[[i]],
+                distribution = "bernoulli",
+                bag.fraction = 1, # Explore more this parameter
+                n.trees = grid$n.trees[ii],
+                interaction.depth = 1,
+                shrinkage = grid$shrinkage[ii],
+                n.minobsinnode = grid$n.minobsinnode[ii]
+              )
+            ))
+        }
+
+        filt <- sapply(mod, function(x) class(x) == "gbm")
+        mod <- mod[filt]
+        grid2 <- grid[filt, ]
+
+        # Predict for presences absences data
+        pred_test <-
+          lapply(mod, function(x) {
+            data.frame(
+              pr_ab = test[[i]][, response],
+              pred = suppressMessages(
+                gbm::predict.gbm(
+                  x,
+                  newdata = test[[i]],
+                  type = "response"
+                )
+              )
             )
-          )
-        })
+          })
 
-      # Validation of parameter combination
-      eval <- list()
-      for (ii in 1:length(pred_test)) {
-        eval[[ii]] <-
-          enm_eval(
-            p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
-            a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-            thr = thr
-          )
+        # Validation of parameter combination
+        eval <- list()
+        for (ii in 1:length(pred_test)) {
+          eval[[ii]] <-
+            enm_eval(
+              p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+              a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+              thr = thr
+            )
+        }
+
+        eval <- dplyr::bind_rows(lapply(eval, function(x) x$selected_threshold))
+        eval <- dplyr::tibble(cbind(grid2, eval))
+        eval[hyperp]
+        eval_partial[[i]] <- eval
       }
 
-      eval <- dplyr::bind_rows(lapply(eval, function(x) x$selected_threshold))
-      eval <- dplyr::tibble(cbind(grid2, eval))
-      eval[hyperp]
-      eval_partial[[i]] <- eval
+      # Create final database with parameter performance
+      names(eval_partial) <- 1:np2
+      eval_partial <- eval_partial %>%
+        dplyr::bind_rows(., .id = "partition")
+      eval_partial_list[[h]] <- eval_partial
     }
 
-    # Create final database with parameter performance
-    names(eval_partial) <- 1:N
-    eval_partial <- eval_partial %>% dplyr::bind_rows(., .id = "partition")
+    eval_partial <- eval_partial_list %>%
+      dplyr::bind_rows(., .id = "replicate")
 
     eval_final <- eval_partial %>%
-      dplyr::select(-partition, -c(tune:n_absences)) %>%
+      dplyr::select(-replicate, -partition, -c(tune:n_absences)) %>%
       dplyr::group_by_at(hyperp) %>%
       dplyr::summarise(dplyr::across(
         dplyr::everything(),
@@ -241,24 +261,27 @@ tune_gbm <-
     # Fit final models with best settings
     set.seed(1)
     mod <-
-      gbm::gbm(
-        Fmula,
-        data = data,
-        distribution = "bernoulli",
-        n.trees = best_hyperp$n.trees,
-        interaction.depth = 1,
-        shrinkage = best_hyperp$shrinkage,
-        n.minobsinnode = best_hyperp$n.minobsinnode
+      suppressMessages(
+        gbm::gbm(
+          Fmula,
+          data = data,
+          distribution = "bernoulli",
+          n.trees = best_hyperp$n.trees,
+          interaction.depth = 1,
+          shrinkage = best_hyperp$shrinkage,
+          n.minobsinnode = best_hyperp$n.minobsinnode
+        )
       )
+
 
 
     pred_test <- data.frame(
       pr_ab = data[, response],
-      pred = gbm::predict.gbm(
+      pred = suppressMessages(gbm::predict.gbm(
         mod,
         newdata = data,
         type = "response"
-      )
+      ))
     )
 
     threshold <- enm_eval(
