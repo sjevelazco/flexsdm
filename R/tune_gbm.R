@@ -34,7 +34,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr bind_rows tibble select group_by_at summarise across everything pull %>%
+#' @importFrom dplyr select starts_with bind_rows tibble group_by_at summarise across everything pull
 #' @importFrom gbm gbm predict.gbm
 #' @importFrom stats formula na.omit
 #'
@@ -168,41 +168,18 @@ tune_gbm <-
 
     grid$tune <- 1:nrow(grid)
 
-
+    # Fit models
     np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
     p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
     eval_partial_list <- list()
     for (h in 1:np) {
       message("Replica number: ", h, "/", np)
 
-      train <- list()
-      test <- list()
-
-      if(any(c("train", "train-test", "test")
-             %in%
-             unique(data[, p_names[h]]))){
-        np2 <- 1
-
-        filt <- grepl('train', data[,p_names[h]])
-        train[[i]] <- data[filt, ] %>%
-          select(-p_names[!p_names == p_names[h]])
-
-        filt <- grepl('test', data[,p_names[h]])
-        test[[i]] <- data[filt, ] %>%
-          select(-p_names[!p_names == p_names[h]])
-
-        } else {
-        np2 <- max(data[p_names[h]])
-
-        for (i in 1:np2) {
-
-          train[[i]] <- data[data[p_names[h]] == i, ] %>%
-            select(-p_names[!p_names == p_names[h]])
-
-          test[[i]] <- data[data[p_names[h]] != i, ] %>%
-            select(-p_names[!p_names == p_names[h]])
-        }
-      }
+      out <- pre_tr_te(data, p_names, h)
+      train <- out$train
+      test <- out$test
+      np2 <- out$np2
+      rm(out)
 
       eval_partial <- list()
 
@@ -271,10 +248,10 @@ tune_gbm <-
     }
 
     eval_partial <- eval_partial_list %>%
-      dplyr::bind_rows(., .id = "replicate")
+      dplyr::bind_rows(., .id = "replica")
 
     eval_final <- eval_partial %>%
-      dplyr::select(-replicate, -partition, -c(tune:n_absences)) %>%
+      dplyr::select(-replica, -partition, -c(tune:n_absences)) %>%
       dplyr::group_by_at(hyperp) %>%
       dplyr::summarise(dplyr::across(
         dplyr::everything(),
