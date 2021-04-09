@@ -17,23 +17,31 @@ block_partition(
 )
 }
 \arguments{
-\item{env_layer}{raster. Raster stack or brick with environmental variable. This will be used to evaluate spatial autocorrelation and environmental similarity between training and testing partition}
+\item{env_layer}{raster. Raster stack or brick with environmental
+variable. This will be used to evaluate spatial autocorrelation and
+environmental similarity between training and testing partition}
 
-\item{data}{data.frame. Data.frame or tibble object with presences (or presence-absence, o presences-pseudo-absence) records, and coordinates}
+\item{data}{data.frame. Data.frame or tibble object with presences
+(or presence-absence, o presences-pseudo-absence) records, and coordinates}
 
 \item{x}{character. Column name with longitude data}
 
 \item{y}{character. Column name with longitude data}
 
-\item{pr_ab}{character. Column with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0}
+\item{pr_ab}{character. Column with presences, presence-absence,
+or pseudo-absence. Presences must be represented by 1 and absences by 0}
 
-\item{n_part}{}
+\item{n_part}{numeric. Number of partition. Default 2, values other than
+2 has not yet been implemented.}
 
-\item{min_res_mult}{numeric. Minimum value used for multiplying raster resolution and define the finest resolution to be tested, default 3.}
+\item{min_res_mult}{numeric. Minimum value used for multiplying
+raster resolution and define the finest resolution to be tested, default 3.}
 
-\item{max_res_mult}{numeric. Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested, default 200.}
+\item{max_res_mult}{numeric. Maximum value used for multiplying
+raster resolution and define the coarsest resolution to be tested, default 200.}
 
-\item{num_grids}{numeric. Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30}
+\item{num_grids}{numeric. Number of grid to be tested between
+min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30}
 }
 \value{
 
@@ -76,20 +84,24 @@ points(part$ResultList[c("x", "y")],
 raster::res(part$Grid)
 raster::res(somevar)
 
-# Note that is a layer with block partition, but it has a different resolution than the original environmental variables.
-# In the case you wish have a layer with the same properties (i.e. resolution, extent, NAs) than your original environmental variables you can use the \code{\link{get_block}} function.
+# Note that is a layer with block partition, but it has a
+# different resolution than the original environmental variables.
+# In the case you wish have a layer with the same properties
+# (i.e. resolution, extent, NAs) than your original environmental
+# variables you can use the \code{\link{get_block}} function.
 
 grid_env <- get_block(env_layer = somevar, bestgrid = part$Grid)
 
-plot(grid_env) # this is a block layer with the same layer properties than environmental variables.
+plot(grid_env) # this is a block layer with the same layer
+# properties as environmental variables.
 points(part$ResultList[c("x", "y")],
   col = c("blue", "red")[part$ResultList$.part],
   cex = 0.5,
   pch = 19
 )
-# This layer could be very useful in case you need sample pseudo_absence or background point
-# See examples in \code{\link{get_block}} and \code{\link{get_block}}
-
+# This layer could be very useful in case you need sample
+# pseudo_absence or background point
+# See examples in \code{\link{backgroudp}} and \code{\link{pseudoabs}}
 
 
 # Now lets learn use these functions with several species
@@ -114,14 +126,23 @@ part_list <- lapply(spp2, function(x) {
 })
 
 # Lets reconstruct a single database for all species
-occ_part <- dplyr::bind_rows(lapply(part_list, function(x) x[[1]]), .id = "species")
+occ_part <- dplyr::bind_rows(lapply(
+  part_list,
+  function(x) x[[1]]
+), .id = "species")
 occ_part
 
 # Lets get a the best grid info for all species
-grid_info <- dplyr::bind_rows(lapply(part_list, function(x) x[[2]]), .id = "species")
+grid_info <- dplyr::bind_rows(lapply(
+  part_list,
+  function(x) x[[2]]
+), .id = "species")
 
 # Lets get a the best grid layer for all species
-grid_layer <- lapply(part_list, function(x) x[[3]])
+grid_layer <- lapply(
+  part_list,
+  function(x) x[[3]]
+)
 sapply(grid_layer, plot)
 
 # Lets get a the best grid info for all species
@@ -135,7 +156,8 @@ plot(grid_layer2)
 
 
 # Block partition for presences-only database
-single_spp <- spp \%>\% dplyr::filter(species == "sp2", pr_ab == 1)
+single_spp <- spp \%>\%
+  dplyr::filter(species == "sp2", pr_ab == 1)
 single_spp
 single_spp$pr_ab \%>\% unique() # only presences
 
