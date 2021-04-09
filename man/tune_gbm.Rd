@@ -61,6 +61,17 @@ Function for constructing Generalized Boosted Regression models with exploration
 \dontrun{
 data(abies_db)
 abies_db
+
+# We will partition the data with the k-fold method
+
+abies_db2 <- data_part(
+data = abies_db,
+p_a = 'pr_ab',
+bg_data = NULL,
+bg_a = NULL,
+method = c(method = "KFOLD", folds = 10)
+)
+
 # pr_ab columns is species presence and absences (i.e. the response variable)
 # partition is columns with partition groups for performing 5-fold cross validation
 # from aet to landform are the predictors variables (landform is a qualitative variable)
@@ -75,7 +86,7 @@ tune_grid <-
 
 gbm_t <-
   tune_gbm(
-    data = abies_db,
+    data = abies_db2,
     response = "pr_ab",
     predictors = c(
       "aet", "cwd", "tmin", "ppt_djf",

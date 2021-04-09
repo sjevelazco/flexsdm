@@ -45,6 +45,17 @@
 #' \dontrun{
 #' data(abies_db)
 #' abies_db
+#'
+#' # We will partition the data with the k-fold method
+#'
+#' abies_db2 <- data_part(
+#' data = abies_db,
+#' p_a = 'pr_ab',
+#' bg_data = NULL,
+#' bg_a = NULL,
+#' method = c(method = "KFOLD", folds = 10)
+#' )
+#'
 #' # pr_ab columns is species presence and absences (i.e. the response variable)
 #' # partition is columns with partition groups for performing 5-fold cross validation
 #' # from aet to landform are the predictors variables (landform is a qualitative variable)
@@ -59,7 +70,7 @@
 #'
 #' gbm_t <-
 #'   tune_gbm(
-#'     data = abies_db,
+#'     data = abies_db2,
 #'     response = "pr_ab",
 #'     predictors = c(
 #'       "aet", "cwd", "tmin", "ppt_djf",
@@ -163,15 +174,34 @@ tune_gbm <-
     eval_partial_list <- list()
     for (h in 1:np) {
       message("Replica number: ", h, "/", np)
-      np2 <- max(data[p_names[h]])
 
       train <- list()
       test <- list()
-      for (i in 1:np2) {
-        train[[i]] <- data[data[, p_names[h]] == i, ] %>%
+
+      if(any(c("train", "train-test", "test")
+             %in%
+             unique(data[, p_names[h]]))){
+        np2 <- 1
+
+        filt <- grepl('train', data[,p_names[h]])
+        train[[i]] <- data[filt, ] %>%
           select(-p_names[!p_names == p_names[h]])
-        test[[i]] <- data[data[, p_names[h]] != i, ] %>%
+
+        filt <- grepl('test', data[,p_names[h]])
+        test[[i]] <- data[filt, ] %>%
           select(-p_names[!p_names == p_names[h]])
+
+        } else {
+        np2 <- max(data[p_names[h]])
+
+        for (i in 1:np2) {
+
+          train[[i]] <- data[data[p_names[h]] == i, ] %>%
+            select(-p_names[!p_names == p_names[h]])
+
+          test[[i]] <- data[data[p_names[h]] != i, ] %>%
+            select(-p_names[!p_names == p_names[h]])
+        }
       }
 
       eval_partial <- list()
@@ -272,7 +302,6 @@ tune_gbm <-
           n.minobsinnode = best_hyperp$n.minobsinnode
         )
       )
-
 
 
     pred_test <- data.frame(
