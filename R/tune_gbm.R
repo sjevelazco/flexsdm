@@ -236,7 +236,6 @@ tune_gbm <-
 
         eval <- dplyr::bind_rows(lapply(eval, function(x) x$selected_threshold))
         eval <- dplyr::tibble(cbind(grid2, eval))
-        eval[hyperp]
         eval_partial[[i]] <- eval
       }
 
