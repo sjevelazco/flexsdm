@@ -190,11 +190,12 @@ tune_svm <-
                           a = pred_test$pred[pred_test$pr_ab == 0],
                           thr = thr)
 
-    result <- list(model = mod,
-                   tune_performance=eval_final,
-                   best_hyper_performance=best_tune,
-                   best_hyper=best_hyperp,
-                   selected_threshold=threshold[[1]],
-                   threshold_table=threshold[[2]])
+    result <- list(
+      model = mod,
+      tune_performance = eval_final,
+      best_hyper_performance = best_tune,
+      selected_threshold = threshold[[1]],
+      threshold_table = threshold[[2]]
+    )
     return(result)
-  }
+    }
