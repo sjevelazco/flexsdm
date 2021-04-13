@@ -38,7 +38,7 @@ a list with the next tibble
 when thr argument is NULL function will return a list with "performance", "threshold", and "threshold_table" tibbles, when thr argument is used with one or more threshold function returns "selected_threshold" and "threshold_table" tibbles
 }
 \description{
-This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), BOYCE, MAE (Mean Absolute Error, values closer to zero denote better performance).
+This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), BOYCE, IMAE (Inverse Mean Absolute Error, i.e. 1-Mean Absolute Error).
 }
 \examples{
 \dontrun{

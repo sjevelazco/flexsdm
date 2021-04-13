@@ -1,6 +1,6 @@
 #' Calculate different model performance metrics
 #'
-#' @description This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), BOYCE, MAE (Mean Absolute Error, values closer to zero denote better performance).
+#' @description This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), BOYCE, IMAE (Inverse Mean Absolute Error, i.e. 1-Mean Absolute Error).
 #' @param p numeric. Predicted suitability for presences
 #' @param a numeric. Predicted suitability for presences absences
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
@@ -186,7 +186,7 @@ enm_eval <- function(p, a, bg=NULL, thr=NULL){
   }
   real <- c(rep(1, length(p)), rep(0, length(a)))
   pred <- c(p, a)
-  performance$MAE <- sum(abs(real-pred))/length(pred)
+  performance$IMAE <- 1-(sum(abs(real-pred))/length(pred))
 
   performance <- dplyr::bind_cols(performance)
 
