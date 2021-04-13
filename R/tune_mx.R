@@ -274,8 +274,8 @@ tune_mx <-
       model = mod,
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
-      selected_threshold = threshold[[1]],
-      threshold_table = threshold[[2]]
+      selected_threshold = threshold[[1]] %>% dplyr::select(threshold:TNR),
+      threshold_table = threshold[[2]] %>% dplyr::select(threshold:TNR)
     )
     return(result)
   }
