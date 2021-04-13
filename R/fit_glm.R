@@ -44,6 +44,9 @@
 #'
 #' @export
 #'
+#' @importFrom dplyr select all_of starts_with bind_rows summarise across everything
+#' @importFrom stats formula glm predict.glm
+#'
 #' @examples
 #' \dontrun{
 #' data("abies_db")
@@ -118,11 +121,11 @@ fit_glm <- function(data,
 
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(all_of(response), all_of(predictors), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
     data <- data.frame(data)
   } else {
     data <- data %>%
-      dplyr::select(all_of(response), all_of(predictors), all_of(predictors_f), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
@@ -212,7 +215,7 @@ fit_glm <- function(data,
       try(suppressWarnings(mod[[i]] <-
         stats::glm(formula1,
           data = train[[i]],
-          family = binomial
+          family = "binomial"
         )))
 
 
@@ -261,14 +264,14 @@ fit_glm <- function(data,
     dplyr::select(-c(replica:n_absences)) %>%
     dplyr::summarise(dplyr::across(
       dplyr::everything(),
-      list(mean = mean, sd = sd)
+      list(mean = mean, sd = stats::sd)
     ), .groups = "drop")
 
   # Fit final models with best settings
   suppressWarnings(mod <-
     stats::glm(formula1,
       data = data,
-      family = binomial
+      family = "binomial"
     ))
 
   pred_test <- data.frame(
