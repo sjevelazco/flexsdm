@@ -24,7 +24,7 @@
 #'   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
 #' @param fit_formula formula. A formula object with response and predictor
-#' variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+#' variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments
 #' @param poly interger >= 2. If used with values >= 2 model will use polinomius
@@ -293,7 +293,7 @@ fit_glm <- function(data,
     model = mod,
     performance = eval_final,
     selected_threshold = threshold[[1]] %>% dplyr::select(threshold:TNR),
-    threshold_table = threshold[[2]] %>% dplyr::select(threshold:TNR)
+    threshold_table = threshold[[2]]
   )
   return(result)
 }
