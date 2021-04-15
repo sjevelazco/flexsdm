@@ -6,8 +6,8 @@
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
 #'   \item LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').
-#'   \item EQUAL_SENS_SPEC: Threshold at which the sum of the sensitivity and specificity is the highest.
-#'   \item MAX_TSS: Threshold at which the sensitivity and specificity are equal.
+#'   \item EQUAL_SENS_SPEC: Threshold at which the sensitivity and specificity are equal.
+#'   \item MAX_TSS: Threshold at which the sum of the sensitivity and specificity is the highest.
 #'   Usage thr=c(type='MAX_TSS').
 #'   \item MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').
 #'   \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
