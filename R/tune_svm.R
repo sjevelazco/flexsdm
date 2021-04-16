@@ -195,7 +195,7 @@ tune_svm <-
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
       selected_threshold = threshold[[1]] %>% dplyr::select(threshold:TNR),
-      threshold_table = threshold[[2]] %>% dplyr::select(threshold:TNR)
+      threshold_table = threshold[[2]]
     )
     return(result)
     }
