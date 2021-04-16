@@ -204,7 +204,8 @@ fit_gbm <- function(data,
     dplyr::bind_rows(., .id = "replica")
 
   eval_final <- eval_partial %>%
-    dplyr::select(-c(replica:n_absences)) %>%
+    dplyr::group_by(threshold) %>%
+    dplyr::select(-c(replica:partition, values:n_absences)) %>%
     dplyr::summarise(dplyr::across(
       dplyr::everything(),
       list(mean = mean, sd = stats::sd)
@@ -236,8 +237,8 @@ fit_gbm <- function(data,
   result <- list(
     model = mod,
     performance = eval_final,
-    selected_threshold = threshold[[1]] %>% dplyr::select(threshold:TNR),
-    threshold_table = threshold[[2]]
+    selected_threshold = threshold[[1]] %>% dplyr::select(threshold:values),
+    threshold_table = threshold[[2]] %>% dplyr::select(threshold:values)
   )
   return(result)
 }

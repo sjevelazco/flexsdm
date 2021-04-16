@@ -250,12 +250,10 @@ tune_gbm <-
       dplyr::bind_rows(., .id = "replica")
 
     eval_final <- eval_partial %>%
-      dplyr::select(-replica, -partition, -c(tune:n_absences)) %>%
-      dplyr::group_by_at(hyperp) %>%
-      dplyr::summarise(dplyr::across(
-        dplyr::everything(),
-        list(mean = mean, sd = sd)
-      ), .groups = "drop")
+      dplyr::select(-replica, -partition, -c(tune, values:n_absences)) %>%
+      dplyr::group_by_at(c(hyperp, "threshold")) %>%
+      dplyr::summarise(dplyr::across(dplyr::everything(),
+                                     list(mean = mean, sd = sd)), .groups = "drop")
 
     # Find the bets parameter setting
     filt <- eval_final %>% dplyr::pull(paste0(metric, "_mean"))
@@ -299,8 +297,8 @@ tune_gbm <-
       model = mod,
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
-      selected_threshold = threshold[[1]] %>% dplyr::select(threshold:TNR),
-      threshold_table = threshold[[2]]
+      selected_threshold = threshold[[1]] %>% dplyr::select(threshold:values),
+      threshold_table = threshold[[2]] %>% dplyr::select(threshold:values)
     )
     return(result)
   }
