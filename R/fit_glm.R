@@ -14,13 +14,13 @@
 #' vector for this argument. The next threshold area available:
 #' \itemize{
 #'   \item LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').
-#'   \item EQUAL_SENS_SPEC: Threshold at which the sum of the sensitivity and specificity is the highest.
-#'   \item MAX_TSS: Threshold at which the sensitivity and specificity are equal.
+#'   \item EQUAL_SENS_SPEC: Threshold at which the sensitivity and specificity are equal.
+#'   \item MAX_TSS: Threshold at which the sum of the sensitivity and specificity is the highest.
 #'   Usage thr=c(type='MAX_TSS').
 #'   \item MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').
 #'   \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
 #'   \item MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').
-#'   \item MAX_FPB: The threshold at which Fpb is highest. Usage thr=c(type='MAX_FPB').
+#'   \item MAX_FPB: The threshold at which FPB is highest. Usage thr=c(type='MAX_FPB').
 #'   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
 #' @param fit_formula formula. A formula object with response and predictor
