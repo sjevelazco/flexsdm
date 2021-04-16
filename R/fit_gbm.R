@@ -42,7 +42,7 @@
 #' @export
 #'
 #' @importFrom dplyr select all_of starts_with bind_rows summarise across everything
-#' @importFrom gam gam predict.Gam
+#' @importFrom gbm gbm predict.gbm
 #' @importFrom stats formula sd
 #'
 #' @examples
@@ -57,7 +57,7 @@
 #' )
 #' abies_db2
 #'
-#' gam_t1 <- fit_gam(
+#' gbm_t1 <- fit_gbm(
 #'   data = abies_db2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
@@ -65,38 +65,20 @@
 #'   partition = ".part",
 #'   thr = "MAX_TSS"
 #' )
-#' gam_t1$model %>% plot()
-#' gam_t1$performance
-#' gam_t1$selected_threshold
-#' gam_t1$threshold_table
+#' gbm_t1$model %>% plot()
+#' gbm_t1$performance
+#' gbm_t1$selected_threshold
+#' gbm_t1$threshold_table
 #'
-#' # Using our own formula
-#' gam_t2 <- fit_gam(
-#'   data = abies_db2,
-#'   response = "pr_ab",
-#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-#'   predictors_f = c("landform"),
-#'   partition = ".part",
-#'   thr = "MAX_TSS",
-#'   fit_formula = stats::formula(pr_ab ~ s(aet, df = 4) +
-#'     s(ppt_jja, df = 3) +
-#'     s(pH, df = 3) + landform)
-#' )
-#'
-#' gam_t2$model %>% plot()
-#' gam_t2$performance %>% dplyr::select(ends_with("_mean"))
-#' gam_t2$selected_threshold
-#' gam_t2$threshold_table
-#'
-#' # Using REP_KFOLD partition method
+#' # Using BOOTS partition method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
 #'   p_a = "pr_ab",
-#'   method = c(method = "REP_KFOLD", folds = 10, replicates = 10)
+#'   method = c(method = "BOOT", replicates = 10, proportion = 0.7)
 #' )
 #' abies_db2
 #'
-#' gam_t3 <- fit_gam(
+#' gbm_t2 <- fit_gbm(
 #'   data = abies_db2,
 #'   response = "pr_ab",
 #'   predictors = c("ppt_jja", "pH", "awc"),
@@ -106,10 +88,10 @@
 #'   poly = 3,
 #'   inter_order = 2
 #' )
-#' gam_t3$model %>% plot.Gam()
+#' gbm_t2
 #' }
 #'
-fit_gam <- function(data,
+fit_gbm <- function(data,
                     response,
                     predictors,
                     predictors_f = NULL,
@@ -134,13 +116,9 @@ fit_gam <- function(data,
 
   # Formula
   if (is.null(fit_formula)) {
-    formula1 <-
-      paste(c(
-        paste("s(", predictors, ")", collapse = " + ", sep = ""),
-        predictors_f
-      ), collapse = " + ")
     formula1 <- stats::formula(paste(
-      response, "~", formula1
+      response, "~",
+      paste(c(predictors, predictors_f), collapse = " + ")
     ))
     message(
       "Formula used for model fitting:\n",
@@ -174,26 +152,29 @@ fit_gam <- function(data,
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      try(suppressWarnings(mod[[i]] <-
-        gam::gam(formula1,
-          data = train[[i]],
-          family = "binomial"
-        )))
-
+      set.seed(1)
+      try(mod[[i]] <-
+        suppressMessages(
+          gbm::gbm(
+            formula1,
+            data = train[[i]],
+            distribution = "bernoulli"
+          )
+        ))
 
       # Predict for presences absences data
-      if (!is.null(predictors_f)) {
-        for (fi in 1:length(predictors_f)) {
-          lev <- as.character(unique(mod[[i]]$data[, predictors_f[fi]]))
-          lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-          test[[i]] <- test[[i]][lev_filt, ]
-        }
-      }
+      # if (!is.null(predictors_f)) {
+      #   for (fi in 1:length(predictors_f)) {
+      #     lev <- as.character(unique(mod[[i]]$data[, predictors_f[fi]]))
+      #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
+      #     test[[i]] <- test[[i]][lev_filt, ]
+      #   }
+      # }
 
       pred_test <- try(data.frame(
         pr_ab = test[[i]][, response],
-        pred = suppressWarnings(
-          gam::predict.Gam(
+        pred = suppressMessages(
+          gbm::predict.gbm(
             mod[[i]],
             newdata = test[[i]],
             type = "response",
@@ -230,15 +211,16 @@ fit_gam <- function(data,
     ), .groups = "drop")
 
   # Fit final models with best settings
-  suppressWarnings(mod <-
-    gam::gam(formula1,
+  set.seed(1)
+  suppressMessages(mod <-
+    gbm::gbm(formula1,
       data = data,
-      family = "binomial"
+      distribution = "bernoulli"
     ))
 
   pred_test <- data.frame(
     pr_ab = data[, response],
-    pred = suppressMessages(gam::predict.Gam(
+    pred = suppressMessages(gbm::predict.gbm(
       mod,
       newdata = data,
       type = "response"

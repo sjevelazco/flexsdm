@@ -65,11 +65,11 @@ abies_db
 # We will partition the data with the k-fold method
 
 abies_db2 <- data_part(
-data = abies_db,
-p_a = 'pr_ab',
-bg_data = NULL,
-bg_a = NULL,
-method = c(method = "KFOLD", folds = 10)
+  data = abies_db,
+  p_a = "pr_ab",
+  bg_data = NULL,
+  bg_a = NULL,
+  method = c(method = "KFOLD", folds = 10)
 )
 
 # pr_ab columns is species presence and absences (i.e. the response variable)
