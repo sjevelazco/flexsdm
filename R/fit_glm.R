@@ -220,6 +220,7 @@ fit_glm <- function(data,
 
 
       # Predict for presences absences data
+      ## Eliminate factor levels not used for fitting
       if (!is.null(predictors_f)) {
         for (fi in 1:length(predictors_f)) {
           lev <- as.character(unique(mod[[i]]$data[, predictors_f[fi]]))
