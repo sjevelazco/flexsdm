@@ -7,19 +7,13 @@
 boyce(pres, contrast, n_bins = 101, n_width = 0.1)
 }
 \arguments{
-\item{pres}{}
-
-\item{contrast}{}
-
-\item{n_bins}{}
-
 \item{n_width}{}
 }
 \value{
 
 }
 \description{
-This function calculate Boyce index performance metric. Codes were adapted from enmSdm package. Boyce have value between -1 and +1, 
+This function calculate Boyce index performance metric. Codes were adapted from enmSdm package. Boyce have value between -1 and +1,
 with a value tending toward +1 indicating good to perfect predictions, values
 around 0 indicating predictions no different from those obtained by chance,
 and values toward -1 indicating counter-predictions.

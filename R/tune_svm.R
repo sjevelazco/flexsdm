@@ -33,7 +33,7 @@ tune_svm <-
     data <- data.frame(data)
 
     # Transform response variable as factor
-    data[,response] <- as.factor(data[,response])
+    data[, response] <- as.factor(data[, response])
 
     if (is.null(predictors_f)) {
       data <- data %>%
@@ -49,23 +49,27 @@ tune_svm <-
     }
 
     # Formula
-    Fmula <- stats::formula(paste(response, '~',
-                                  paste(c(predictors, predictors_f), collapse = " + ")))
+    Fmula <- stats::formula(paste(
+      response, "~",
+      paste(c(predictors, predictors_f), collapse = " + ")
+    ))
 
     # Prepare grid when grid=default or NULL
-    if(is.null(grid)){
-      grid <- data.frame(C=1, sigma = "automatic")
+    if (is.null(grid)) {
+      grid <- data.frame(C = 1, sigma = "automatic")
     }
-    if(class(grid)=='character'){
-      if(grid=='defalut'){
-        grid <-  expand.grid(C = c(1, 2, 4, 8, 16),
-                             sigma = c(0.001, 0.01, 0.1, 0.2))
+    if (class(grid) == "character") {
+      if (grid == "defalut") {
+        grid <- expand.grid(
+          C = c(1, 2, 4, 8, 16),
+          sigma = c(0.001, 0.01, 0.1, 0.2)
+        )
       }
     }
 
     # Test hyper-parameters names
     hyperp <- names(grid)
-    if(!all(c("C", "sigma")%in%hyperp)){
+    if (!all(c("C", "sigma") %in% hyperp)) {
       stop("Database used in 'grid' argument has to contain this columns for tunning: 'C', 'sigma'")
     }
 
@@ -105,8 +109,7 @@ tune_svm <-
                 C = grid$C[ii],
                 prob.model = TRUE
               )
-          })
-          )
+          }))
         }
 
 
@@ -116,15 +119,16 @@ tune_svm <-
 
         # Predict for presences absences data
         pred_test <-
-          lapply(mod, function(x)
+          lapply(mod, function(x) {
             data.frame(
-              pr_ab = test[[i]][,response],
+              pr_ab = test[[i]][, response],
               pred = dismo::predict(
                 x,
                 newdata = test[[i]],
-                type = 'prob'
-              )[,2]
-            ))
+                type = "prob"
+              )[, 2]
+            )
+          })
 
         # Validation of parameter combination
         eval <- list()
@@ -155,14 +159,16 @@ tune_svm <-
     eval_final <- eval_partial %>%
       dplyr::select(-replica, -partition, -c(tune, values:n_absences)) %>%
       dplyr::group_by_at(c(hyperp, "threshold")) %>%
-      dplyr::summarise(dplyr::across(dplyr::everything(),
-                                     list(mean = mean, sd = sd)), .groups = "drop")
+      dplyr::summarise(dplyr::across(
+        dplyr::everything(),
+        list(mean = mean, sd = sd)
+      ), .groups = "drop")
 
     # Find the bets parameter setting
-    filt <- eval_final %>% dplyr::pull(paste0(metric, '_mean'))
+    filt <- eval_final %>% dplyr::pull(paste0(metric, "_mean"))
     filt <- which.max(filt)
-    best_tune <- eval_final[filt,]
-    best_hyperp <- eval_final[filt,hyperp]
+    best_tune <- eval_final[filt, ]
+    best_hyperp <- eval_final[filt, hyperp]
 
 
     # Fit final models with best settings
@@ -179,16 +185,19 @@ tune_svm <-
       )
 
     pred_test <- data.frame(
-      pr_ab = data[,response],
+      pr_ab = data[, response],
       pred = dismo::predict(
         mod,
         newdata = data,
         type = "prob"
-      )[,2])
+      )[, 2]
+    )
 
-    threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                          a = pred_test$pred[pred_test$pr_ab == 0],
-                          thr = thr)
+    threshold <- enm_eval(
+      p = pred_test$pred[pred_test$pr_ab == 1],
+      a = pred_test$pred[pred_test$pr_ab == 0],
+      thr = thr
+    )
 
     result <- list(
       model = mod,
@@ -198,4 +207,4 @@ tune_svm <-
       threshold_table = threshold[[2]] %>% dplyr::select(threshold:values)
     )
     return(result)
-    }
+  }

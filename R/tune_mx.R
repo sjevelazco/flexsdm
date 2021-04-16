@@ -35,12 +35,12 @@ tune_mx <-
            pred_type = "cloglog",
            ...) {
     data <- data.frame(data)
-    if(!is.null(background)) background <- data.frame(background)
+    if (!is.null(background)) background <- data.frame(background)
 
     if (is.null(predictors_f)) {
       data <- data %>%
         dplyr::select(response, predictors, dplyr::starts_with(partition))
-      if(!is.null(background)){
+      if (!is.null(background)) {
         background <- background %>%
           dplyr::select(response, predictors, dplyr::starts_with(partition))
       }
@@ -48,38 +48,40 @@ tune_mx <-
       data <- data %>%
         dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
       data <- data.frame(data)
-      for(i in predictors_f){
-        data[,i] <- as.factor(data[,i])
+      for (i in predictors_f) {
+        data[, i] <- as.factor(data[, i])
       }
-      if(!is.null(background)){
+      if (!is.null(background)) {
         background <- background %>%
           dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
-        for(i in predictors_f){
-          background[,i] <- as.factor(background[,i])
+        for (i in predictors_f) {
+          background[, i] <- as.factor(background[, i])
         }
       }
     }
 
-    if(!is.null(background)){
-      if(!all(table(c(names(background), names(data)))==2)){
+    if (!is.null(background)) {
+      if (!all(table(c(names(background), names(data))) == 2)) {
         stop("Column names of database used in 'data' and 'background' arguments do not match")
       }
     }
 
     # Prepare grid when grid=default or NULL
-    if(is.null(grid)){
-      grid <- data.frame(regmult=1, classes = "default")
+    if (is.null(grid)) {
+      grid <- data.frame(regmult = 1, classes = "default")
     }
-    if(class(grid)=='character'){
-      if(grid=='defalut'){
-        grid <- expand.grid(regmult = seq(0.1, 3, 0.5),
-                            classes = c("l", "lq", "lqh", "lqhp", "lqhpt"))
+    if (class(grid) == "character") {
+      if (grid == "defalut") {
+        grid <- expand.grid(
+          regmult = seq(0.1, 3, 0.5),
+          classes = c("l", "lq", "lqh", "lqhp", "lqhpt")
+        )
       }
     }
 
     # Test hyperparameter names
     hyperp <- names(grid)
-    if(!all(c("regmult", "classes")%in%hyperp)){
+    if (!all(c("regmult", "classes") %in% hyperp)) {
       stop("Database used in 'grid' argument has to contain this columns for tunning: 'regmult', 'classes'")
     }
 
@@ -87,18 +89,24 @@ tune_mx <-
 
 
     p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
-    for(i in p_names){
-      if(!is.null(background)){
-        Npart_p <- data %>% dplyr::filter(!!as.symbol(response)==1) %>%
-          dplyr::pull({{i}}) %>% unique %>% sort
-        Npart_bg <- background %>% dplyr::filter(!!as.symbol(response)==0) %>%
-          dplyr::pull({{i}}) %>% unique %>% sort
-        if(!all(table(c(Npart_p,Npart_bg))==2)) {
+    for (i in p_names) {
+      if (!is.null(background)) {
+        Npart_p <- data %>%
+          dplyr::filter(!!as.symbol(response) == 1) %>%
+          dplyr::pull({{ i }}) %>%
+          unique() %>%
+          sort()
+        Npart_bg <- background %>%
+          dplyr::filter(!!as.symbol(response) == 0) %>%
+          dplyr::pull({{ i }}) %>%
+          unique() %>%
+          sort()
+        if (!all(table(c(Npart_p, Npart_bg)) == 2)) {
           stop(
             paste(
               "Partition groups between presences and background do not match:\n",
-              paste("Part. group presences:", paste(Npart_p, collapse = ' '), "\n"),
-              paste("Part. group background:", paste(Npart_bg, collapse = ' '), "\n")
+              paste("Part. group presences:", paste(Npart_p, collapse = " "), "\n"),
+              paste("Part. group background:", paste(Npart_bg, collapse = " "), "\n")
             )
           )
         }
@@ -123,9 +131,9 @@ tune_mx <-
       # In the follow code function will substitutes absences by background points
       # only in train database in order to fit maxent with presences and background
       # and validate models with presences and absences
-      if(!is.null(background)){
+      if (!is.null(background)) {
         background2 <- pre_tr_te(background, p_names, h)
-        train <- lapply(train, function(x) x[x[,response]==1,])
+        train <- lapply(train, function(x) x[x[, response] == 1, ])
         train <- mapply(dplyr::bind_rows, train, background2$train, SIMPLIFY = FALSE)
         bgt_test <- background2$test
         rm(background2)
@@ -140,62 +148,68 @@ tune_mx <-
         for (ii in 1:nrow(grid)) {
           set.seed(1)
           try(mod[[ii]] <-
-                maxnet::maxnet(
-                  p = train[[i]][,response],
-                  data = train[[i]][predictors],
-                  f = maxnet::maxnet.formula(train[[i]][response],
-                                             train[[i]][predictors],
-                                             classes = grid$classes[ii]),
-                  regmult = grid$regmult[ii]
-                )
-              )
+            maxnet::maxnet(
+              p = train[[i]][, response],
+              data = train[[i]][predictors],
+              f = maxnet::maxnet.formula(train[[i]][response],
+                train[[i]][predictors],
+                classes = grid$classes[ii]
+              ),
+              regmult = grid$regmult[ii]
+            ))
         }
 
-        filt <- sapply(mod, function(x) length(class(x))==3)
+        filt <- sapply(mod, function(x) length(class(x)) == 3)
         mod <- mod[filt]
         grid2 <- grid[filt, ]
 
         # Predict for presences absences data
         pred_test <-
-          lapply(mod, function(x)
+          lapply(mod, function(x) {
             data.frame(
-              pr_ab = test[[i]][,response],
+              pr_ab = test[[i]][, response],
               pred = dismo::predict(
                 x,
                 newdata = test[[i]],
                 clamp = clamp,
                 type = pred_type
               )
-            ))
+            )
+          })
 
         # Predict for background data
-        if(!is.null(background)){
+        if (!is.null(background)) {
           bgt <-
-            lapply(mod, function(x)
+            lapply(mod, function(x) {
               data.frame(
-                pr_ab = bgt_test[[i]][,response],
+                pr_ab = bgt_test[[i]][, response],
                 pred = dismo::predict(
                   x,
                   newdata = bgt_test[[i]],
                   clamp = clamp,
                   type = pred_type
                 )
-              ))
+              )
+            })
         }
 
         eval <- list()
         for (ii in 1:length(pred_test)) {
           if (is.null(background)) {
             eval[[ii]] <-
-              enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
-                       a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-                       thr = thr)
+              enm_eval(
+                p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+                a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+                thr = thr
+              )
           } else {
             eval[[ii]] <-
-              enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
-                       a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-                       thr = thr,
-                       bg = bgt[[ii]]$pred)
+              enm_eval(
+                p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+                a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+                thr = thr,
+                bg = bgt[[ii]]$pred
+              )
           }
         }
 
@@ -208,7 +222,7 @@ tune_mx <-
       eval_partial <- eval_partial %>%
         dplyr::bind_rows(., .id = "partition")
       eval_partial_list[[h]] <- eval_partial
-  }
+    }
 
     # Create final database with parameter performance 2
     eval_partial <- eval_partial_list %>%
@@ -217,11 +231,13 @@ tune_mx <-
     eval_final <- eval_partial %>%
       dplyr::select(-replica, -partition, -c(tune, values:n_absences)) %>%
       dplyr::group_by_at(c(hyperp, "threshold")) %>%
-      dplyr::summarise(dplyr::across(dplyr::everything(),
-                                     list(mean = mean, sd = sd)), .groups = "drop")
+      dplyr::summarise(dplyr::across(
+        dplyr::everything(),
+        list(mean = mean, sd = sd)
+      ), .groups = "drop")
 
 
-    filt <- eval_final %>% dplyr::pull(paste0(metric, '_mean'))
+    filt <- eval_final %>% dplyr::pull(paste0(metric, "_mean"))
     filt <- which.max(filt)
     best_tune <- eval_final[filt, ]
     best_hyperp <- eval_final[filt, hyperp]
@@ -235,14 +251,15 @@ tune_mx <-
         p = data[, response],
         data = data[predictors],
         f = maxnet::maxnet.formula(data[response],
-                                   data[predictors],
-                                   classes = best_hyperp$classes),
+          data[predictors],
+          classes = best_hyperp$classes
+        ),
         regmult = best_hyperp$regmult
       )
 
     pred_test <- data.frame(
-      'pr_ab' = data[response],
-      'pred' = dismo::predict(
+      "pr_ab" = data[response],
+      "pred" = dismo::predict(
         mod,
         newdata = data,
         clamp = TRUE,
@@ -251,14 +268,17 @@ tune_mx <-
     )
 
     if (is.null(background)) {
-      threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                            a = pred_test$pred[pred_test$pr_ab == 0],
-                            thr = thr)
+      threshold <- enm_eval(
+        p = pred_test$pred[pred_test$pr_ab == 1],
+        a = pred_test$pred[pred_test$pr_ab == 0],
+        thr = thr
+      )
     } else {
       background <- dismo::predict(mod,
-                                   newdata = background[c(predictors, predictors_f)],
-                                   clamp = TRUE,
-                                   type = pred_type)[, 1]
+        newdata = background[c(predictors, predictors_f)],
+        clamp = TRUE,
+        type = pred_type
+      )[, 1]
 
       threshold <- enm_eval(
         p = pred_test$pred[pred_test$pr_ab == 1],

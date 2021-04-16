@@ -33,7 +33,7 @@ tune_nnet <-
     data <- data.frame(data)
 
     # Transform response variable as factor
-    data[,response] <- as.factor(data[,response])
+    data[, response] <- as.factor(data[, response])
 
     if (is.null(predictors_f)) {
       data <- data %>%
@@ -49,25 +49,29 @@ tune_nnet <-
     }
 
     # Formula
-    Fmula <- stats::formula(paste(response, '~',
-                                  paste(c(predictors, predictors_f), collapse = " + ")))
+    Fmula <- stats::formula(paste(
+      response, "~",
+      paste(c(predictors, predictors_f), collapse = " + ")
+    ))
 
     # Prepare grid when grid=default or NULL
-    if(is.null(grid)){
+    if (is.null(grid)) {
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
       grid <- data.frame(size = 2, decay = 0)
     }
-    if(class(grid)=='character'){
+    if (class(grid) == "character") {
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      if(grid=='defalut'){
-        grid <- expand.grid(size = c(2, 4, 6, 8),
-                      decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10))  #revise this values
+      if (grid == "defalut") {
+        grid <- expand.grid(
+          size = c(2, 4, 6, 8),
+          decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10)
+        ) # revise this values
       }
     }
 
     # Test hyper-parameters names
     hyperp <- names(grid)
-    if(!all(c("size", "decay")%in%hyperp)){
+    if (!all(c("size", "decay") %in% hyperp)) {
       stop("Database used in 'grid' argument has to contain this columns for tunning: 'size', 'decay'")
     }
 
@@ -110,29 +114,32 @@ tune_nnet <-
         }
 
 
-        filt <- sapply(mod, function(x) length(class(x))>1)
+        filt <- sapply(mod, function(x) length(class(x)) > 1)
         mod <- mod[filt]
         grid2 <- grid[filt, ]
 
         # Predict for presences absences data
         pred_test <-
-          lapply(mod, function(x)
+          lapply(mod, function(x) {
             data.frame(
-              pr_ab = test[[i]][,response],
+              pr_ab = test[[i]][, response],
               pred = dismo::predict(
                 x,
                 newdata = test[[i]],
               )
-            ))
+            )
+          })
 
 
         # Validation of parameter combination
         eval <- list()
         for (ii in 1:length(pred_test)) {
           eval[[ii]] <-
-            enm_eval(p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
-                     a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-                     thr = thr)
+            enm_eval(
+              p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+              a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+              thr = thr
+            )
         }
 
         eval <- dplyr::bind_rows(lapply(eval, function(x) x$selected_threshold))
@@ -154,14 +161,16 @@ tune_nnet <-
     eval_final <- eval_partial %>%
       dplyr::select(-replica, -partition, -c(tune, values:n_absences)) %>%
       dplyr::group_by_at(c(hyperp, "threshold")) %>%
-      dplyr::summarise(dplyr::across(dplyr::everything(),
-                                     list(mean = mean, sd = sd)), .groups = "drop")
+      dplyr::summarise(dplyr::across(
+        dplyr::everything(),
+        list(mean = mean, sd = sd)
+      ), .groups = "drop")
 
     # Find the bets parameter setting
-    filt <- eval_final %>% dplyr::pull(paste0(metric, '_mean'))
+    filt <- eval_final %>% dplyr::pull(paste0(metric, "_mean"))
     filt <- which.max(filt)
-    best_tune <- eval_final[filt,]
-    best_hyperp <- eval_final[filt,hyperp]
+    best_tune <- eval_final[filt, ]
+    best_hyperp <- eval_final[filt, hyperp]
 
 
     # Fit final models with best settings
@@ -178,15 +187,18 @@ tune_nnet <-
       )
 
     pred_test <- data.frame(
-      pr_ab = data[,response],
+      pr_ab = data[, response],
       pred = dismo::predict(
         mod,
         newdata = data,
-      ))
+      )
+    )
 
-    threshold <- enm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                          a = pred_test$pred[pred_test$pr_ab == 0],
-                          thr = thr)
+    threshold <- enm_eval(
+      p = pred_test$pred[pred_test$pr_ab == 1],
+      a = pred_test$pred[pred_test$pr_ab == 0],
+      thr = thr
+    )
 
     result <- list(
       model = mod,

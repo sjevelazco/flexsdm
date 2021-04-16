@@ -109,7 +109,7 @@ gaup_t2 <- fit_gau(
   predictors = c("ppt_jja", "pH", "awc"),
   predictors_f = c("landform"),
   partition = ".part",
-  thr = c("MAX_TSS", "EQUAL_SENS_SPEC")
+  thr = c(type = c("LPT", "MAX_TSS", "SENSITIVITY"), sens = "0.8")
 )
 gaup_t2
 }
