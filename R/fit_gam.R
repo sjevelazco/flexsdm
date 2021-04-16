@@ -24,12 +24,9 @@
 #'   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
 #' @param fit_formula formula. A formula object with response and predictor
-#' variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+#' variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments
-#' @param poly interger >= 2. If used with values >= 2 model will use polinomius
-#' for those continuous variables (i.e. used in predictors argument)
-#' @param inter_order interger >= 0. The interaction order between explanatory variables.
 #'
 #' @return
 #'
@@ -45,12 +42,12 @@
 #' @export
 #'
 #' @importFrom dplyr select all_of starts_with bind_rows summarise across everything
-#' @importFrom stats formula glm predict.glm
+#' @importFrom gam gam predict.Gam
+#' @importFrom stats formula sd
 #'
 #' @examples
 #' \dontrun{
 #' data("abies_db")
-#' abies_db
 #'
 #' # Using KFOLD partition method
 #' abies_db2 <- data_part(
@@ -60,32 +57,36 @@
 #' )
 #' abies_db2
 #'
-#' glm_t1 <- fit_glm(
+#' gam_t1 <- fit_gam(
+#'   data = abies_db2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors_f = c("landform"),
+#'   partition = ".part",
+#'   thr = "MAX_TSS"
+#' )
+#' gam_t1$model %>% plot()
+#' gam_t1$performance
+#' gam_t1$selected_threshold
+#' gam_t1$threshold_table
+#'
+#' # Using our onwn formula
+#' gam_t2 <- fit_gam(
 #'   data = abies_db2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
 #'   thr = "MAX_TSS",
-#'   poly = 0,
-#'   inter_order = 0
+#'   fit_formula = stats::formula(pr_ab ~ s(aet, df = 4) +
+#'     s(ppt_jja, df = 3) +
+#'     s(pH, df = 3) + landform)
 #' )
-#' glm_t1$model
-#' glm_t1$performance
-#' glm_t1$selected_threshold
-#' glm_t1$threshold_table
 #'
-#'
-#' glm_t2 <- fit_glm(
-#'   data = abies_db2,
-#'   response = "pr_ab",
-#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-#'   predictors_f = c("landform"),
-#'   partition = ".part",
-#'   thr = "MAX_TSS",
-#'   poly = 2,
-#'   inter_order = 1
-#' )
+#' gam_t2$model %>% plot()
+#' gam_t2$performance %>% dplyr::select(ends_with("_mean"))
+#' gam_t2$selected_threshold
+#' gam_t2$threshold_table
 #'
 #' # Using REP_KFOLD partition method
 #' abies_db2 <- data_part(
@@ -95,7 +96,7 @@
 #' )
 #' abies_db2
 #'
-#' glm_t3 <- fit_glm(
+#' gam_t3 <- fit_gam(
 #'   data = abies_db2,
 #'   response = "pr_ab",
 #'   predictors = c("ppt_jja", "pH", "awc"),
@@ -105,17 +106,16 @@
 #'   poly = 3,
 #'   inter_order = 2
 #' )
+#' gam_t3$model %>% plot.Gam()
 #' }
 #'
-fit_glm <- function(data,
+fit_gam <- function(data,
                     response,
                     predictors,
                     predictors_f = NULL,
                     partition,
                     thr = NULL,
                     fit_formula = NULL,
-                    poly = 0,
-                    inter_order = 0,
                     ...) {
   data <- data.frame(data)
 
@@ -134,62 +134,24 @@ fit_glm <- function(data,
 
   # Formula
   if (is.null(fit_formula)) {
-    if (poly >= 2) {
-      forpoly <- lapply(2:poly, function(x) {
-        paste("I(", predictors, "^", x, ")",
-          sep = "", collapse = " + "
-        )
-      }) %>% paste(collapse = " + ")
-      formula1 <- paste(c(predictors, predictors_f), collapse = " + ") %>%
-        paste(., forpoly, sep = " + ")
-    } else {
-      formula1 <-
-        paste(c(predictors, predictors_f), collapse = " + ")
-    }
-
-    if (inter_order > 0) {
-      forinter <- c(predictors, predictors_f)
-      if (inter_order > length(forinter)) {
-        stop("value of inter_order is higher than number of predicors ", "(", length(forinter), ")")
-      }
-      forinter_l <- list()
-
-      for (i in 1:inter_order) {
-        forinter_l[[i]] <- do.call(
-          "expand.grid",
-          c(lapply(1:(i + 1), function(x) {
-            forinter
-          }), stringsAsFactors = FALSE)
-        )
-        forinter_l[[i]] <- apply(forinter_l[[i]], 1, function(x) {
-          x <- unique(sort(x))
-          if (length(x) > i) {
-            paste(x, collapse = ":")
-          }
-        }) %>%
-          unlist() %>%
-          unique()
-      }
-      forinter <- sapply(forinter_l, paste, collapse = " + ")
-      forinter <- do.call("paste", c(as.list(forinter), sep = " + "))
-    }
-
-    if (exists("forinter")) {
-      formula1 <- paste(formula1, forinter, sep = " + ")
-      formula1 <- stats::formula(paste(
-        response, "~", formula1
-      ))
-    } else {
-      formula1 <- stats::formula(paste(
-        response, "~", formula1
-      ))
-    }
+    formula1 <-
+      paste(c(
+        paste("s(", predictors, ")", collapse = " + ", sep = ""),
+        predictors_f
+      ), collapse = " + ")
+    formula1 <- stats::formula(paste(
+      response, "~", formula1
+    ))
     message(
       "Formula used for model fitting:\n",
       Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .)
     )
   } else {
     formula1 <- fit_formula
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .)
+    )
   }
 
 
@@ -213,7 +175,7 @@ fit_glm <- function(data,
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
       try(suppressWarnings(mod[[i]] <-
-        stats::glm(formula1,
+        gam::gam(formula1,
           data = train[[i]],
           family = "binomial"
         )))
@@ -231,7 +193,7 @@ fit_glm <- function(data,
       pred_test <- try(data.frame(
         pr_ab = test[[i]][, response],
         pred = suppressWarnings(
-          stats::predict.glm(
+          gam::predict.Gam(
             mod[[i]],
             newdata = test[[i]],
             type = "response",
@@ -269,14 +231,14 @@ fit_glm <- function(data,
 
   # Fit final models with best settings
   suppressWarnings(mod <-
-    stats::glm(formula1,
+    gam::gam(formula1,
       data = data,
       family = "binomial"
     ))
 
   pred_test <- data.frame(
     pr_ab = data[, response],
-    pred = suppressMessages(stats::predict.glm(
+    pred = suppressMessages(gam::predict.Gam(
       mod,
       newdata = data,
       type = "response"
