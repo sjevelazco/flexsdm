@@ -6,21 +6,6 @@
 \usage{
 env_outliers(da, species, x, y, pr_ab, id, envr)
 }
-\arguments{
-\item{da}{}
-
-\item{species}{}
-
-\item{x}{}
-
-\item{y}{}
-
-\item{pr_ab}{}
-
-\item{id}{}
-
-\item{envr}{}
-}
 \description{
 Detection of outliers in the environmental space
 }

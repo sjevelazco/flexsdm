@@ -252,8 +252,10 @@ tune_gbm <-
     eval_final <- eval_partial %>%
       dplyr::select(-replica, -partition, -c(tune, values:n_absences)) %>%
       dplyr::group_by_at(c(hyperp, "threshold")) %>%
-      dplyr::summarise(dplyr::across(dplyr::everything(),
-                                     list(mean = mean, sd = sd)), .groups = "drop")
+      dplyr::summarise(dplyr::across(
+        dplyr::everything(),
+        list(mean = mean, sd = sd)
+      ), .groups = "drop")
 
     # Find the bets parameter setting
     filt <- eval_final %>% dplyr::pull(paste0(metric, "_mean"))
