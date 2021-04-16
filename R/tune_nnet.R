@@ -152,8 +152,8 @@ tune_nnet <-
       dplyr::bind_rows(., .id = "replica")
 
     eval_final <- eval_partial %>%
-      dplyr::select(-replica, -partition, -c(tune:n_absences)) %>%
-      dplyr::group_by_at(hyperp) %>%
+      dplyr::select(-replica, -partition, -c(tune, values:n_absences)) %>%
+      dplyr::group_by_at(c(hyperp, "threshold")) %>%
       dplyr::summarise(dplyr::across(dplyr::everything(),
                                      list(mean = mean, sd = sd)), .groups = "drop")
 
@@ -192,8 +192,8 @@ tune_nnet <-
       model = mod,
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
-      selected_threshold = threshold[[1]] %>% dplyr::select(threshold:TNR),
-      threshold_table = threshold[[2]]
+      selected_threshold = threshold[[1]] %>% dplyr::select(threshold:values),
+      threshold_table = threshold[[2]] %>% dplyr::select(threshold:values)
     )
     return(result)
   }
