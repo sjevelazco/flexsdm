@@ -2,7 +2,7 @@
 % Please edit documentation in R/tune_nnet.R
 \name{tune_nnet}
 \alias{tune_nnet}
-\title{Function for constructing Random Forest with exploration of hyper-parameters}
+\title{Function for constructing Neural Network model with exploration of hyper-parameters}
 \usage{
 tune_nnet(
   data,
@@ -23,5 +23,5 @@ tune_nnet(
 
 }
 \description{
-Function for constructing Random Forest with exploration of hyper-parameters
+Function for constructing Neural Network model with exploration of hyper-parameters
 }
