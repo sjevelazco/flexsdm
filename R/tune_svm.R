@@ -11,9 +11,8 @@
 #' @param thr
 #' @param metric
 #'
-#' @importFrom dismo predict
-#' @importFrom dplyr bind_rows tibble select group_by_at summarise across everything pull
-#' @importFrom kernlab ksvm
+#' @importFrom dplyr select starts_with bind_rows tibble group_by_at summarise across everything pull
+#' @importFrom kernlab ksvm predict
 #' @importFrom stats formula
 #'
 #' @return
@@ -122,7 +121,7 @@ tune_svm <-
           lapply(mod, function(x) {
             data.frame(
               pr_ab = test[[i]][, response],
-              pred = dismo::predict(
+              pred = kernlab::predict(
                 x,
                 newdata = test[[i]],
                 type = "prob"
@@ -186,7 +185,7 @@ tune_svm <-
 
     pred_test <- data.frame(
       pr_ab = data[, response],
-      pred = dismo::predict(
+      pred = kernlab::predict(
         mod,
         newdata = data,
         type = "prob"

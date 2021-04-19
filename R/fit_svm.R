@@ -41,9 +41,8 @@
 #'
 #' @export
 #'
-#' @importFrom dismo predict
 #' @importFrom dplyr select all_of starts_with bind_rows group_by summarise across everything
-#' @importFrom kernlab ksvm
+#' @importFrom kernlab ksvm predict
 #' @importFrom stats formula sd
 #'
 #' @examples
@@ -172,7 +171,7 @@ fit_svm <- function(data,
       pred_test <- try(data.frame(
         pr_ab = test[[i]][, response],
         pred = suppressMessages(
-          dismo::predict(
+          kernlab::predict(
             mod[[i]],
             newdata = test[[i]],
             type = "prob",
@@ -224,7 +223,7 @@ fit_svm <- function(data,
 
   pred_test <- data.frame(
     pr_ab = data[, response],
-    pred = dismo::predict(
+    pred = kernlab::predict(
       mod,
       newdata = data,
       type = "prob"

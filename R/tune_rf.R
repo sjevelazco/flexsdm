@@ -11,10 +11,9 @@
 #' @param thr
 #' @param metric
 #'
-#' @importFrom dismo predict
-#' @importFrom dplyr bind_rows tibble select group_by_at summarise across everything pull
+#' @importFrom dplyr select starts_with bind_rows tibble group_by_at summarise across everything pull
 #' @importFrom randomForest randomForest
-#' @importFrom stats formula
+#' @importFrom stats formula na.omit predict
 #'
 #' @return
 #' @export
@@ -120,7 +119,7 @@ tune_rf <-
           lapply(mod, function(x) {
             data.frame(
               pr_ab = test[[i]][, response],
-              pred = dismo::predict(
+              pred = stats::predict(
                 x,
                 newdata = test[[i]],
                 type = "prob"
@@ -184,7 +183,7 @@ tune_rf <-
 
     pred_test <- data.frame(
       pr_ab = data[, response],
-      pred = dismo::predict(
+      pred = stats::predict(
         mod,
         newdata = data,
         type = "prob"
