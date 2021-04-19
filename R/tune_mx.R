@@ -10,11 +10,11 @@
 #' @param grid
 #' @param thr
 #' @param metric
-#' @param clamp
-#' @param pred_type
+#' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
+#' @param pred_type character. Type of response required availabe "link", "exponential", "cloglog" and "logistic". Dafault "cloglog"
 #'
 #' @importFrom dismo predict
-#' @importFrom dplyr filter pull bind_rows tibble select group_by_at summarise across everything
+#' @importFrom dplyr select starts_with filter pull bind_rows tibble group_by_at summarise across everything
 #' @importFrom maxnet maxnet maxnet.formula
 #'
 #' @return
@@ -63,6 +63,7 @@ tune_mx <-
     if (!is.null(background)) {
       if (!all(table(c(names(background), names(data))) == 2)) {
         stop("Column names of database used in 'data' and 'background' arguments do not match")
+        print(table(c(names(background), names(data))))
       }
     }
 
@@ -168,7 +169,7 @@ tune_mx <-
           lapply(mod, function(x) {
             data.frame(
               pr_ab = test[[i]][, response],
-              pred = dismo::predict(
+              pred = maxnet:::predict.maxnet(
                 x,
                 newdata = test[[i]],
                 clamp = clamp,
@@ -259,7 +260,7 @@ tune_mx <-
 
     pred_test <- data.frame(
       "pr_ab" = data[response],
-      "pred" = dismo::predict(
+      "pred" = maxnet:::predict.maxnet(
         mod,
         newdata = data,
         clamp = TRUE,
@@ -279,7 +280,6 @@ tune_mx <-
         clamp = TRUE,
         type = pred_type
       )[, 1]
-
       threshold <- enm_eval(
         p = pred_test$pred[pred_test$pr_ab == 1],
         a = pred_test$pred[pred_test$pr_ab == 0],
@@ -287,7 +287,6 @@ tune_mx <-
         bg = background
       )
     }
-
 
     result <- list(
       model = mod,
