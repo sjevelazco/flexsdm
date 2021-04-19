@@ -8,6 +8,8 @@
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
 #' @param partition character. Column name with training and validation partition groups.
+#' @param background data.frame. Database with response column only with 0 and predictors variables. All
+#' column names must be consistent with data
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1).
 #' It is useful for threshold-dependent performance metrics.
 #' It is possible to use more than one threshold type. It is necessary to provide a
@@ -23,8 +25,6 @@
 #'   \item MAX_FPB: The threshold at which FPB is highest. Usage thr=c(type='MAX_FPB').
 #'   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
-#' @param background data.frame. Database with response column only with 0 and predictors variables. All
-#' column names must be consistent with data
 #' @param ...
 #'
 #' @return
