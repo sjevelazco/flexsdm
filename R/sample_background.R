@@ -37,19 +37,19 @@
 #'
 #'
 #' # Sample background points throughout study area
-#' bg <- background(n = 1000, rlayer = grid_env)
+#' bg <- sample_background(n = 1000, rlayer = grid_env)
 #' bg %>% plot()
 #'
 #' # Sample background points constrained to a region regions with a give set of values
-#' background(n = 1000, rlayer = grid_env, maskval = 1) %>% plot()
-#' background(n = 1000, rlayer = grid_env, maskval = 2) %>% plot()
-#' background(n = 1000, rlayer = grid_env, maskval = c(1, 2)) %>% plot()
+#' sample_background(n = 1000, rlayer = grid_env, maskval = 1) %>% plot()
+#' sample_background(n = 1000, rlayer = grid_env, maskval = 2) %>% plot()
+#' sample_background(n = 1000, rlayer = grid_env, maskval = c(1, 2)) %>% plot()
 #' }
 #' @importFrom dplyr tibble
 #' @importFrom raster ncell xyFromCell
 #'
 #' @examples
-background <- function(n, rlayer, maskval = NULL) {
+sample_background <- function(n, rlayer, maskval = NULL) {
   if (!is.null(maskval)) {
     rvalues <- raster::values(rlayer) %>% stats::na.exclude()
     rvalues <- rvalues[!rvalues %in% maskval]
