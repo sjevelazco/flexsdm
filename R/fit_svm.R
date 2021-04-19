@@ -1,4 +1,4 @@
-#' Fit and validate Random Forest models
+#' Fit and validate Support Vector Machine models
 #'
 #' @param data data.frame. Database with response (0,1) and predictors values.
 #' @param response character. Column name with species absence-presence data (0,1).
@@ -32,7 +32,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A "randomForest" class object. This object can be used for predicting.
+#' \item model: A "ksvm" class object. This object can be used for predicting.
 #' \item performance: Performance metric (see \code{\link{enm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item selected_threshold: Value of the threshold selected.
@@ -43,7 +43,7 @@
 #'
 #' @importFrom dismo predict
 #' @importFrom dplyr select all_of starts_with bind_rows group_by summarise across everything
-#' @importFrom randomForest randomForest
+#' @importFrom kernlab ksvm
 #' @importFrom stats formula sd
 #'
 #' @examples
@@ -58,18 +58,18 @@
 #' )
 #' abies_db2
 #'
-#' rf_t1 <- fit_rf(data = abies_db2,
-#'                 response = "pr_ab",
-#'                 predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-#'                 predictors_f = c("landform"),
-#'                 partition = ".part",
-#'                 thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
-#'                 fit_formula = NULL)
+#' svm_t1 <- fit_svm(data = abies_db2,
+#'                   response = "pr_ab",
+#'                   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'                   predictors_f = c("landform"),
+#'                   partition = ".part",
+#'                   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+#'                   fit_formula = NULL)
 #'
-#' rf_t1$model
-#' rf_t1$performance
-#' rf_t1$selected_threshold
-#' rf_t1$threshold_table
+#' svm_t1$model
+#' svm_t1$performance
+#' svm_t1$selected_threshold
+#' svm_t1$threshold_table
 #'
 #' # Using BOOTS partition method and only with presence-absence
 #' # and get performance for several method
@@ -80,24 +80,24 @@
 #' )
 #' abies_db2
 #'
-#' rf_t2 <- fit_rf(data = abies_db2,
-#'                 response = "pr_ab",
-#'                 predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-#'                 predictors_f = c("landform"),
-#'                 partition = ".part",
-#'                 thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
-#'                 fit_formula = NULL)
-#' rf_t2
+#' svm_t2 <- fit_svm(data = abies_db2,
+#'                   response = "pr_ab",
+#'                   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'                   predictors_f = c("landform"),
+#'                   partition = ".part",
+#'                   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+#'                   fit_formula = NULL)
+#' svm_t2
 #' }
 #'
-fit_rf <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    partition,
-                    thr = NULL,
-                    fit_formula = NULL,
-                    ...) {
+fit_svm <- function(data,
+                   response,
+                   predictors,
+                   predictors_f = NULL,
+                   partition,
+                   thr = NULL,
+                   fit_formula = NULL,
+                   ...) {
   data <- data.frame(data)
 
   # Transform response variable as factor
@@ -157,14 +157,17 @@ fit_rf <- function(data,
       set.seed(1)
       try(
         mod[[i]] <-
-          randomForest::randomForest(
+          kernlab::ksvm(
             formula1,
             data = train[[i]],
-            # mtry = grid$mtry[ii],
-            ntree = 500,
-            importance = FALSE,
+            type = "C-svc",
+            kernel = "rbfdot",
+            # kpar = list(sigma = grid$sigma[ii]),
+            # C = grid$C[ii],
+            prob.model = TRUE
           )
       )
+
 
       pred_test <- try(data.frame(
         pr_ab = test[[i]][, response],
@@ -208,14 +211,16 @@ fit_rf <- function(data,
   # Fit final models with best settings
   set.seed(1)
   suppressMessages(mod <-
-                     randomForest::randomForest(
+                     kernlab::ksvm(
                        formula1,
                        data = data,
-                       # mtry = grid$mtry[ii],
-                       ntree = 500,
-                       importance = FALSE,
+                       type = "C-svc",
+                       kernel = "rbfdot",
+                       # kpar = list(sigma = grid$sigma[ii]),
+                       # C = grid$C[ii],
+                       prob.model = TRUE
                      )
-                     )
+  )
 
   pred_test <- data.frame(
     pr_ab = data[, response],
