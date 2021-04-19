@@ -52,19 +52,20 @@
 #'
 #' @examples
 #' \dontrun{
+#'
 #' }
 #'
 fit_mx <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    partition,
-                    background,
-                    thr = NULL,
-                    fit_formula = NULL,
-                    clamp = TRUE,
-                    pred_type = "cloglog",
-                    ...) {
+                   response,
+                   predictors,
+                   predictors_f = NULL,
+                   partition,
+                   background,
+                   thr = NULL,
+                   fit_formula = NULL,
+                   clamp = TRUE,
+                   pred_type = "cloglog",
+                   ...) {
   data <- data.frame(data)
   if (!is.null(background)) background <- data.frame(background)
 
@@ -157,15 +158,15 @@ fit_mx <- function(data,
       message("Partition number: ", i, "/", np2)
       set.seed(1)
       try(mod[[i]] <-
-            maxnet::maxnet(
-              p = train[[i]][, response],
-              data = train[[i]][predictors],
-              f = maxnet::maxnet.formula(train[[i]][response],
-                                         train[[i]][predictors],
-                                         classes = 'default'),
-              regmult = 1
-            )
-      )
+        maxnet::maxnet(
+          p = train[[i]][, response],
+          data = train[[i]][predictors],
+          f = maxnet::maxnet.formula(train[[i]][response],
+            train[[i]][predictors],
+            classes = "default"
+          ),
+          regmult = 1
+        ))
 
       # Predict for presences absences data
       ## Eliminate factor levels not used in fitting
@@ -205,7 +206,7 @@ fit_mx <- function(data,
                 clamp = clamp,
                 type = pred_type
               )
-            )
+          )
       }
 
       # Validation of model
@@ -250,15 +251,15 @@ fit_mx <- function(data,
   # Fit final models with best settings
 
   suppressMessages(mod <-
-                     maxnet::maxnet(
-                       p = data[, response],
-                       data = data[predictors],
-                       f = maxnet::maxnet.formula(data[response],
-                                                  data[predictors],
-                                                  classes = 'default'),
-                       regmult = 1
-                     )
-  )
+    maxnet::maxnet(
+      p = data[, response],
+      data = data[predictors],
+      f = maxnet::maxnet.formula(data[response],
+        data[predictors],
+        classes = "default"
+      ),
+      regmult = 1
+    ))
 
   pred_test <- data.frame(
     "pr_ab" = data[response],

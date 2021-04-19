@@ -65,23 +65,25 @@ Fit and validate Random Forest models
 }
 \examples{
 \dontrun{
-data('abies_db')
+data("abies_db")
 
 # Using KFOLD partition method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = 'pr_ab',
+  p_a = "pr_ab",
   method = c(method = "KFOLD", folds = 10)
 )
 abies_db2
 
-rf_t1 <- fit_rf(data = abies_db2,
-                response = "pr_ab",
-                predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-                predictors_f = c("landform"),
-                partition = ".part",
-                thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
-                fit_formula = NULL)
+rf_t1 <- fit_rf(
+  data = abies_db2,
+  response = "pr_ab",
+  predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+  predictors_f = c("landform"),
+  partition = ".part",
+  thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+  fit_formula = NULL
+)
 
 rf_t1$model
 rf_t1$performance
@@ -92,18 +94,20 @@ rf_t1$threshold_table
 # and get performance for several method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = 'pr_ab',
-  method = c(method = "BOOT", replicates=10,  proportion=0.7)
+  p_a = "pr_ab",
+  method = c(method = "BOOT", replicates = 10, proportion = 0.7)
 )
 abies_db2
 
-rf_t2 <- fit_rf(data = abies_db2,
-                response = "pr_ab",
-                predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-                predictors_f = c("landform"),
-                partition = ".part",
-                thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
-                fit_formula = NULL)
+rf_t2 <- fit_rf(
+  data = abies_db2,
+  response = "pr_ab",
+  predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+  predictors_f = c("landform"),
+  partition = ".part",
+  thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+  fit_formula = NULL
+)
 rf_t2
 }
 

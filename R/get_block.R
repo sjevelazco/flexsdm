@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' See examples in block_partition \code{\link{block_partition}} ro \code{\link{band_partition}}
+#' See examples in block_partition
 #' }
 #'
 get_block <- function(env_layer, best_grid){

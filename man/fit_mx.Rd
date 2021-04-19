@@ -77,6 +77,7 @@ Fit and validate Maximum Entropy models
 }
 \examples{
 \dontrun{
+
 }
 
 }

@@ -48,23 +48,25 @@
 #'
 #' @examples
 #' \dontrun{
-#' data('abies_db')
+#' data("abies_db")
 #'
 #' # Using KFOLD partition method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = 'pr_ab',
+#'   p_a = "pr_ab",
 #'   method = c(method = "KFOLD", folds = 10)
 #' )
 #' abies_db2
 #'
-#' svm_t1 <- fit_svm(data = abies_db2,
-#'                   response = "pr_ab",
-#'                   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-#'                   predictors_f = c("landform"),
-#'                   partition = ".part",
-#'                   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
-#'                   fit_formula = NULL)
+#' svm_t1 <- fit_svm(
+#'   data = abies_db2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors_f = c("landform"),
+#'   partition = ".part",
+#'   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+#'   fit_formula = NULL
+#' )
 #'
 #' svm_t1$model
 #' svm_t1$performance
@@ -75,29 +77,31 @@
 #' # and get performance for several method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = 'pr_ab',
-#'   method = c(method = "BOOT", replicates=10,  proportion=0.7)
+#'   p_a = "pr_ab",
+#'   method = c(method = "BOOT", replicates = 10, proportion = 0.7)
 #' )
 #' abies_db2
 #'
-#' svm_t2 <- fit_svm(data = abies_db2,
-#'                   response = "pr_ab",
-#'                   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-#'                   predictors_f = c("landform"),
-#'                   partition = ".part",
-#'                   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
-#'                   fit_formula = NULL)
+#' svm_t2 <- fit_svm(
+#'   data = abies_db2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors_f = c("landform"),
+#'   partition = ".part",
+#'   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+#'   fit_formula = NULL
+#' )
 #' svm_t2
 #' }
 #'
 fit_nnet <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    partition,
-                    thr = NULL,
-                    fit_formula = NULL,
-                    ...) {
+                     response,
+                     predictors,
+                     predictors_f = NULL,
+                     partition,
+                     thr = NULL,
+                     fit_formula = NULL,
+                     ...) {
   data <- data.frame(data)
 
   # Transform response variable as factor
@@ -211,16 +215,15 @@ fit_nnet <- function(data,
   # Fit final models with best settings
   set.seed(1)
   suppressMessages(mod <-
-                     nnet::nnet(
-                       formula1,
-                       data = data,
-                       size = 3, # revise and implement a formula to calculate it
-                       rang = 0.1,
-                       # decay = grid$decay[ii],
-                       maxit = 200,
-                       trace = FALSE
-                     )
-  )
+    nnet::nnet(
+      formula1,
+      data = data,
+      size = 3, # revise and implement a formula to calculate it
+      rang = 0.1,
+      # decay = grid$decay[ii],
+      maxit = 200,
+      trace = FALSE
+    ))
 
   pred_test <- data.frame(
     pr_ab = data[, response],

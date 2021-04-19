@@ -47,23 +47,25 @@
 #'
 #' @examples
 #' \dontrun{
-#' data('abies_db')
+#' data("abies_db")
 #'
 #' # Using KFOLD partition method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = 'pr_ab',
+#'   p_a = "pr_ab",
 #'   method = c(method = "KFOLD", folds = 10)
 #' )
 #' abies_db2
 #'
-#' rf_t1 <- fit_rf(data = abies_db2,
-#'                 response = "pr_ab",
-#'                 predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-#'                 predictors_f = c("landform"),
-#'                 partition = ".part",
-#'                 thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
-#'                 fit_formula = NULL)
+#' rf_t1 <- fit_rf(
+#'   data = abies_db2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors_f = c("landform"),
+#'   partition = ".part",
+#'   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+#'   fit_formula = NULL
+#' )
 #'
 #' rf_t1$model
 #' rf_t1$performance
@@ -74,29 +76,31 @@
 #' # and get performance for several method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = 'pr_ab',
-#'   method = c(method = "BOOT", replicates=10,  proportion=0.7)
+#'   p_a = "pr_ab",
+#'   method = c(method = "BOOT", replicates = 10, proportion = 0.7)
 #' )
 #' abies_db2
 #'
-#' rf_t2 <- fit_rf(data = abies_db2,
-#'                 response = "pr_ab",
-#'                 predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
-#'                 predictors_f = c("landform"),
-#'                 partition = ".part",
-#'                 thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
-#'                 fit_formula = NULL)
+#' rf_t2 <- fit_rf(
+#'   data = abies_db2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors_f = c("landform"),
+#'   partition = ".part",
+#'   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+#'   fit_formula = NULL
+#' )
 #' rf_t2
 #' }
 #'
 fit_rf <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    partition,
-                    thr = NULL,
-                    fit_formula = NULL,
-                    ...) {
+                   response,
+                   predictors,
+                   predictors_f = NULL,
+                   partition,
+                   thr = NULL,
+                   fit_formula = NULL,
+                   ...) {
   data <- data.frame(data)
 
   # Transform response variable as factor
@@ -172,7 +176,7 @@ fit_rf <- function(data,
             mod[[i]],
             newdata = test[[i]],
             type = "prob",
-          )[,2]
+          )[, 2]
         )
       ))
 
@@ -207,14 +211,13 @@ fit_rf <- function(data,
   # Fit final models with best settings
   set.seed(1)
   suppressMessages(mod <-
-                     randomForest::randomForest(
-                       formula1,
-                       data = data,
-                       # mtry = grid$mtry[ii],
-                       ntree = 500,
-                       importance = FALSE,
-                     )
-                     )
+    randomForest::randomForest(
+      formula1,
+      data = data,
+      # mtry = grid$mtry[ii],
+      ntree = 500,
+      importance = FALSE,
+    ))
 
   pred_test <- data.frame(
     pr_ab = data[, response],
@@ -222,7 +225,7 @@ fit_rf <- function(data,
       mod,
       newdata = data,
       type = "prob"
-    )[,2]
+    )[, 2]
   )
 
   threshold <- enm_eval(
