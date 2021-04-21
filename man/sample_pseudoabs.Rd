@@ -16,7 +16,7 @@ sample_pseudoabs(
 )
 }
 \arguments{
-\item{data}{data.frame. Data.frame or tibble object with presences
+\item{data}{data.frame or tibble. Database with presences
 (or presence-absence, o presences-pseudo-absence) records, and coordinates}
 
 \item{x}{character. Column name with longitude data}
