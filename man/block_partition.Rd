@@ -26,7 +26,7 @@ environmental similarity between training and testing partition}
 
 \item{x}{character. Column name with longitude data}
 
-\item{y}{character. Column name with longitude data}
+\item{y}{character. Column name with latitude data}
 
 \item{pr_ab}{character. Column with presences, presence-absence,
 or pseudo-absence. Presences must be represented by 1 and absences by 0}

@@ -4,16 +4,25 @@
 \alias{env_filtering}
 \title{Function to perform environmental filtering of species occurrence records}
 \usage{
-env_filtering(da, x, y, id, variables, nbins, cores = 1, plot = TRUE)
+env_filtering(data, x, y, id, variables, nbins, cores = 1, plot = FALSE)
 }
 \arguments{
-\item{variables}{data.frame. A data.frame with environmental conditions. It is possible use two or three variables.}
+\item{data}{data.frame. Data.frame or tibble object with presences
+(or presence-absence) records, and coordinates}
 
-\item{nbins}{numeric. A number of classes used to split each environmental condition.}
+\item{x}{character. Column name with longitude data}
 
-\item{plot}{logical. Plot filtering procedure.}
+\item{y}{character. Column name with latitude data}
 
-\item{coord}{data.frame. A data.frame with longitude and latitude in the first and second columns.}
+\item{id}{character. Column names with rows id. It is important that each row has its own unique code.}
+
+\item{variables}{data.frame. A data.frame with environmental conditions. It is possible use two or three variables}
+
+\item{nbins}{interger. A number of classes used to split each environmental condition}
+
+\item{cores}{interger. Number of machine cores used for processing in parallel}
+
+\item{plot}{logical. Plot filtering procedure}
 }
 \description{
 Function to perform environmental filtering of species occurrence records

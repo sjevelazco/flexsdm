@@ -6,7 +6,7 @@
 #' @param data data.frame. Data.frame or tibble object with presences
 #' (or presence-absence, o presences-pseudo-absence) records, and coordinates
 #' @param x character. Column name with longitude data
-#' @param y character. Column name with longitude data
+#' @param y character. Column name with latitude data
 #' @param pr_ab character. Column with presences, presence-absence,
 #' or pseudo-absence. Presences must be represented by 1 and absences by 0
 #' @param min_res_mult numeric. Minimum value used for multiplying

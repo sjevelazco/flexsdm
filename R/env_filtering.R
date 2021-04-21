@@ -1,10 +1,15 @@
 #' Function to perform environmental filtering of species occurrence records
 #'
-#' @param coord data.frame. A data.frame with longitude and latitude in the first and second columns.
-#' @param variables data.frame. A data.frame with environmental conditions. It is possible use two or three variables.
-#' @param nbins numeric. A number of classes used to split each environmental condition.
-#' @param plot logical. Plot filtering procedure.
-env_filtering <- function(da, x, y, id, variables, nbins, cores = 1, plot = TRUE) {
+#' @param data data.frame. Data.frame or tibble object with presences
+#' (or presence-absence) records, and coordinates
+#' @param x character. Column name with longitude data
+#' @param y character. Column name with latitude data
+#' @param id character. Column names with rows id. It is important that each row has its own unique code.
+#' @param variables data.frame. A data.frame with environmental conditions. It is possible use two or three variables
+#' @param nbins interger. A number of classes used to split each environmental condition
+#' @param cores interger. Number of machine cores used for processing in parallel
+#' @param plot logical. Plot filtering procedure
+env_filtering <- function(data, x, y, id, variables, nbins, cores = 1, plot = FALSE) {
   # require(maps)
   require(raster)
   require(progress)
@@ -12,8 +17,8 @@ env_filtering <- function(da, x, y, id, variables, nbins, cores = 1, plot = TRUE
   require(parallel)
   require(doParallel)
 
-  da <- da[c(x, y, id)]
-  coord <- da[c(x, y)]
+  da <- data[c(x, y, id)]
+  coord <- data[c(x, y)]
 
   message("Extracting values from raster ... ")
   variables <- raster::extract(variables, data.frame(coord))
