@@ -1,6 +1,6 @@
 #' Peseudo-absence allocation method
 #'
-#' @param data data.frame. Data.frame or tibble object with presences
+#' @param data data.frame or tibble. Database with presences
 #' (or presence-absence, o presences-pseudo-absence) records, and coordinates
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
