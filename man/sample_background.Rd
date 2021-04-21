@@ -9,7 +9,7 @@ sample_background(n, rlayer, maskval = NULL)
 \arguments{
 \item{n}{integer. Number of background point to be sampled}
 
-\item{rlayer}{raster. A raster layer to be used for sampling background-point.
+\item{rlayer}{raster. A raster layer used for sampling background-point.
 It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint}
 
 \item{maskval}{integer or numeric. Values of the raster layer used for constraining the background points sampling}
@@ -53,4 +53,5 @@ sample_background(n = 1000, rlayer = grid_env, maskval = 1) \%>\% plot()
 sample_background(n = 1000, rlayer = grid_env, maskval = 2) \%>\% plot()
 sample_background(n = 1000, rlayer = grid_env, maskval = c(1, 2)) \%>\% plot()
 }
+
 }

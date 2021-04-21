@@ -1,7 +1,7 @@
 #' Sample background points
 #'
 #' @param n integer. Number of background point to be sampled
-#' @param rlayer raster. A raster layer to be used for sampling background-point.
+#' @param rlayer raster. A raster layer used for sampling background-point.
 #' It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint
 #' @param maskval integer or numeric. Values of the raster layer used for constraining the background points sampling
 #'
@@ -45,15 +45,20 @@
 #' sample_background(n = 1000, rlayer = grid_env, maskval = 2) %>% plot()
 #' sample_background(n = 1000, rlayer = grid_env, maskval = c(1, 2)) %>% plot()
 #' }
+#'
 #' @importFrom dplyr tibble
-#' @importFrom raster ncell xyFromCell
+#' @importFrom raster cellStats match mask ncell xyFromCell
+#' @importFrom stats na.exclude
 #'
 #' @examples
 sample_background <- function(n, rlayer, maskval = NULL) {
+  rlayer <- rlayer[[1]]
+
   if (!is.null(maskval)) {
-    rvalues <- raster::values(rlayer) %>% stats::na.exclude()
-    rvalues <- rvalues[!rvalues %in% maskval]
-    rlayer <- raster::mask(rlayer, rlayer, maskvalue = rvalues)
+    rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
+    filt <- raster::match(rlayer, maskval)
+    filt[filt[]==0] <- NA
+    rlayer <- raster::mask(rlayer, filt)
   }
 
   ncellr <- sum(!is.na(rlayer[]))
