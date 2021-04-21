@@ -23,8 +23,9 @@
 #' @return
 #' @export
 #'
-#' @importFrom raster extent extract cellStats match mask
-#' @importFrom stats na.exclude
+#' @importFrom dplyr mutate
+#' @importFrom raster extent extract cellStats match mask coordinates
+#' @importFrom stats na.exclude kmeans
 #'
 #' @examples
 #' \dontrun{
@@ -184,5 +185,45 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
     cell_samp <- sample_background(n = n, rlayer = envp)
   }
+
+
+  if (any(method == "GEO_ENV_KM_CONST")) {
+    if (!all(c("env", "width") %in% names(method))) {
+      stop("Provide a width value and environmental stack/brick variables for 'GEO_ENV_KM_CONST' method, \ne.g. method=c('GEO_ENV_CONST', width='50000', env=somevar)")
+    }
+
+    # Restriction for a given region
+    envp <- inv_geo(e = rlayer, p = data[, c(x, y)], d = as.numeric(method["width"]))
+    envp2 <- inv_bio(e = env, p = data[, c(x, y)])
+    if (raster::extent(env) != raster::extent(rlayer)) {
+      rlayer2 <- rlayer
+      rlayer2[] <- raster::extract(envp2, coordinates(rlayer2))
+      envp2 <- rlayer2
+    }
+    envp <- (envp2 + envp)
+    rm(envp2)
+
+    if (!is.null(maskval)) {
+      rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
+      filt <- raster::match(rlayer, maskval)
+      filt[filt[] == 0] <- NA
+      envp <- raster::mask(envp, filt)
+    }
+
+    # K-mean procedure
+    if (raster::extent(env) != raster::extent(envp)) {
+      env_changed <- crop(env, envp)
+    }
+    env_changed <- mask(env_changed, envp)
+
+    env_changed <- data.frame(raster::coordinates(env_changed), val = values(env_changed))
+    env_changed <- stats::na.exclude(env_changed)
+
+    suppressWarnings(km <- stats::kmeans(env_changed, centers = n))
+    cell_samp <- km$centers[, 1:2] %>%data.frame()
+    cell_samp <- cell_samp %>% dplyr::mutate(val = raster::extract(envp, cell_samp))
+    cell_samp <- cell_samp[!is.na(cell_samp$val),-3]
+  }
+
   return(cell_samp)
 }
