@@ -57,7 +57,7 @@ sample_background <- function(n, rlayer, maskval = NULL) {
   if (!is.null(maskval)) {
     rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
     filt <- raster::match(rlayer, maskval)
-    filt[filt[]==0] <- NA
+    filt[filt[] == 0] <- NA
     rlayer <- raster::mask(rlayer, filt)
   }
 

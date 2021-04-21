@@ -18,7 +18,7 @@
 #' @param rlayer raster. A raster layer used for sampling pseudo-absence
 #' It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint
 #' @param maskval integer or numeric. Values of the raster layer used for constraining the pseudo-absence sampling
-#' @param calibarea raster or shapefile. Raster or shapefile with delimited calibration area used for a given species (see calibarea fuction).
+#' @param calibarea raster or shapefile. Raster or shapefile with delimited calibration area used for a given species (see calibarea function).
 #'
 #' @return
 #' @export
@@ -36,26 +36,26 @@
 #'
 #' single_spp <-
 #'   spp %>%
-#'   dplyr::filter(species == 'sp3') %>%
+#'   dplyr::filter(species == "sp3") %>%
 #'   dplyr::filter(pr_ab == 1) %>%
 #'   dplyr::select(-pr_ab)
-#' names(somevar) <- paste('var', 1:4)
+#' names(somevar) <- paste("var", 1:4)
 #'
 #'
 #' # Pseudo-absences randomly sampled throughout study area
 #' ps1 <-
 #'   sample_pseudoabs(
 #'     data = single_spp,
-#'     x = 'x',
-#'     y = 'y',
+#'     x = "x",
+#'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method = 'RND',
+#'     method = "RND",
 #'     rlayer = regions,
 #'     maskval = NULL
 #'   )
-#' plot(regions, col=gray.colors(9))
-#' points(single_spp[-1], col='blue', cex=0.7, pch=19)
-#' points(ps1, col='red', cex=0.7, pch=19)
+#' plot(regions, col = gray.colors(9))
+#' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+#' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
 #'
 #' # Pseudo-absences randomly sampled within a regions where a species occurs
@@ -63,54 +63,53 @@
 #' ps1 <-
 #'   sample_pseudoabs(
 #'     data = single_spp,
-#'     x = 'x',
-#'     y = 'y',
+#'     x = "x",
+#'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method = 'RND',
+#'     method = "RND",
 #'     rlayer = regions,
 #'     maskval = samp_here
 #'   )
-#' plot(regions, col=gray.colors(9))
-#' points(single_spp[-1], col='blue', cex=0.7, pch=19)
-#' points(ps1, col='red', cex=0.7, pch=19)
+#' plot(regions, col = gray.colors(9))
+#' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+#' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
 #'
 #' # Pseudo-absences sampled with environmental and geographical constraint
 #' ps1 <-
 #'   sample_pseudoabs(
 #'     data = single_spp,
-#'     x = 'x',
-#'     y = 'y',
+#'     x = "x",
+#'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method = c(method='GEO_ENV_CONST', env = somevar, width=50000),
+#'     method = c(method = "GEO_ENV_CONST", env = somevar, width = 50000),
 #'     rlayer = regions,
 #'     maskval = NULL
 #'   )
-#' plot(regions, col=gray.colors(9))
-#' points(single_spp[-1], col='blue', cex=0.7, pch=19)
-#' points(ps1, col='red', cex=0.7, pch=19)
+#' plot(regions, col = gray.colors(9))
+#' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+#' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
 #' # Pseudo-absences randomly sampled for regions where species occurs with environmental and geographical constraint
-#' samp_here <- raster::extract(regions, single_spp[,c('x', 'y')]) %>%
+#' samp_here <- raster::extract(regions, single_spp[, c("x", "y")]) %>%
 #'   unique() %>%
 #'   na.exclude()
 #'
 #' ps1 <-
 #'   sample_pseudoabs(
 #'     data = single_spp,
-#'     x = 'x',
-#'     y = 'y',
+#'     x = "x",
+#'     y = "y",
 #'     n = 1000,
-#'     method = c(method='GEO_ENV_CONST', env = somevar, width=50000),
+#'     method = c(method = "GEO_ENV_CONST", env = somevar, width = 50000),
 #'     rlayer = regions,
 #'     maskval = samp_here
 #'   )
-#' plot(regions, col=gray.colors(9))
-#' points(single_spp[-1], col='blue', cex=0.7, pch=19)
-#' points(ps1, col='red', cex=0.7, pch=19)
+#' plot(regions, col = gray.colors(9))
+#' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+#' points(ps1, col = "red", cex = 0.7, pch = 19)
 #' }
 sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, calibarea = NULL) {
-
   rlayer <- rlayer[[1]]
 
   if (any(method %in% "RND")) {
@@ -126,18 +125,18 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
     # Restriction for a given region
     envp <- inv_bio(e = env, p = data[, c(x, y)])
-    if(raster::extent(env)!=raster::extent(rlayer)){
+    if (raster::extent(env) != raster::extent(rlayer)) {
       rlayer2 <- rlayer
       rlayer2[] <- raster::extract(envp, coordinates(rlayer2))
       envp <- rlayer2
     }
 
     if (!is.null(maskval)) {
-    rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
-    filt <- raster::match(rlayer, maskval)
-    filt[filt[]==0] <- NA
-    envp <- raster::mask(envp, filt)
-  }
+      rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
+      filt <- raster::match(rlayer, maskval)
+      filt[filt[] == 0] <- NA
+      envp <- raster::mask(envp, filt)
+    }
 
     cell_samp <- sample_background(n = n, rlayer = envp)
   }
@@ -153,7 +152,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     if (!is.null(maskval)) {
       rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
       filt <- raster::match(rlayer, maskval)
-      filt[filt[]==0] <- NA
+      filt[filt[] == 0] <- NA
       envp <- raster::mask(envp, filt)
     }
 
@@ -168,7 +167,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     # Restriction for a given region
     envp <- inv_geo(e = rlayer, p = data[, c(x, y)], d = as.numeric(method["width"]))
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
-    if(raster::extent(env)!=raster::extent(rlayer)){
+    if (raster::extent(env) != raster::extent(rlayer)) {
       rlayer2 <- rlayer
       rlayer2[] <- raster::extract(envp2, coordinates(rlayer2))
       envp2 <- rlayer2
@@ -177,11 +176,11 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     rm(envp2)
 
     if (!is.null(maskval)) {
-    rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
-    filt <- raster::match(rlayer, maskval)
-    filt[filt[]==0] <- NA
-    envp <- raster::mask(envp, filt)
-  }
+      rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
+      filt <- raster::match(rlayer, maskval)
+      filt[filt[] == 0] <- NA
+      envp <- raster::mask(envp, filt)
+    }
 
     cell_samp <- sample_background(n = n, rlayer = envp)
   }

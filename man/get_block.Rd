@@ -22,7 +22,7 @@ Transform a layer originated from the function block_partition or band_partition
 }
 \examples{
 \dontrun{
-See examples in block_partition
+# See examples in block_partition
 }
 
 }

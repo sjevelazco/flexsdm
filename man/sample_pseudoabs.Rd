@@ -40,7 +40,7 @@ It is recommended to use a layer with the same resolution and extent that enviro
 
 \item{maskval}{integer or numeric. Values of the raster layer used for constraining the pseudo-absence sampling}
 
-\item{calibarea}{raster or shapefile. Raster or shapefile with delimited calibration area used for a given species (see calibarea fuction).}
+\item{calibarea}{raster or shapefile. Raster or shapefile with delimited calibration area used for a given species (see calibarea function).}
 }
 \value{
 
@@ -58,26 +58,26 @@ plot(regions)
 
 single_spp <-
   spp \%>\%
-  dplyr::filter(species == 'sp3') \%>\%
+  dplyr::filter(species == "sp3") \%>\%
   dplyr::filter(pr_ab == 1) \%>\%
   dplyr::select(-pr_ab)
-names(somevar) <- paste('var', 1:4)
+names(somevar) <- paste("var", 1:4)
 
 
 # Pseudo-absences randomly sampled throughout study area
 ps1 <-
   sample_pseudoabs(
     data = single_spp,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     n = nrow(single_spp) * 10,
-    method = 'RND',
+    method = "RND",
     rlayer = regions,
     maskval = NULL
   )
-plot(regions, col=gray.colors(9))
-points(single_spp[-1], col='blue', cex=0.7, pch=19)
-points(ps1, col='red', cex=0.7, pch=19)
+plot(regions, col = gray.colors(9))
+points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+points(ps1, col = "red", cex = 0.7, pch = 19)
 
 
 # Pseudo-absences randomly sampled within a regions where a species occurs
@@ -85,50 +85,50 @@ points(ps1, col='red', cex=0.7, pch=19)
 ps1 <-
   sample_pseudoabs(
     data = single_spp,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     n = nrow(single_spp) * 10,
-    method = 'RND',
+    method = "RND",
     rlayer = regions,
     maskval = samp_here
   )
-plot(regions, col=gray.colors(9))
-points(single_spp[-1], col='blue', cex=0.7, pch=19)
-points(ps1, col='red', cex=0.7, pch=19)
+plot(regions, col = gray.colors(9))
+points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+points(ps1, col = "red", cex = 0.7, pch = 19)
 
 
 # Pseudo-absences sampled with environmental and geographical constraint
 ps1 <-
   sample_pseudoabs(
     data = single_spp,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     n = nrow(single_spp) * 10,
-    method = c(method='GEO_ENV_CONST', env = somevar, width=50000),
+    method = c(method = "GEO_ENV_CONST", env = somevar, width = 50000),
     rlayer = regions,
     maskval = NULL
   )
-plot(regions, col=gray.colors(9))
-points(single_spp[-1], col='blue', cex=0.7, pch=19)
-points(ps1, col='red', cex=0.7, pch=19)
+plot(regions, col = gray.colors(9))
+points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+points(ps1, col = "red", cex = 0.7, pch = 19)
 
 # Pseudo-absences randomly sampled for regions where species occurs with environmental and geographical constraint
-samp_here <- raster::extract(regions, single_spp[,c('x', 'y')]) \%>\%
+samp_here <- raster::extract(regions, single_spp[, c("x", "y")]) \%>\%
   unique() \%>\%
   na.exclude()
 
 ps1 <-
   sample_pseudoabs(
     data = single_spp,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     n = 1000,
-    method = c(method='GEO_ENV_CONST', env = somevar, width=50000),
+    method = c(method = "GEO_ENV_CONST", env = somevar, width = 50000),
     rlayer = regions,
     maskval = samp_here
   )
-plot(regions, col=gray.colors(9))
-points(single_spp[-1], col='blue', cex=0.7, pch=19)
-points(ps1, col='red', cex=0.7, pch=19)
+plot(regions, col = gray.colors(9))
+points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+points(ps1, col = "red", cex = 0.7, pch = 19)
 }
 }

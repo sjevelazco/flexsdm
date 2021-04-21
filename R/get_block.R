@@ -13,15 +13,17 @@
 #'
 #' @examples
 #' \dontrun{
-#' See examples in block_partition
+#' # See examples in block_partition
 #' }
 #'
-get_block <- function(env_layer, best_grid){
+get_block <- function(env_layer, best_grid) {
   maskr <- env_layer[[1]]
   rdf <- data.frame(raster::coordinates(maskr),
-                    ncell=1:raster::ncell(maskr),
-                    val=raster::values(maskr)) %>%
-    stats::na.exclude() %>% dplyr::select(-val)
+    ncell = 1:raster::ncell(maskr),
+    val = raster::values(maskr)
+  ) %>%
+    stats::na.exclude() %>%
+    dplyr::select(-val)
   val <- raster::extract(best_grid, rdf[1:2])
   maskr[rdf$ncell] <- c(val)
   return(maskr)
