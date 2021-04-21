@@ -34,3 +34,24 @@ pre_tr_te <- function(data, p_names, h) {
   }
   return(list(train = train, test = test, np2 = np2))
 }
+
+
+# Inverse bioclim
+inv_bio <- function(e, p) {
+  Model <- dismo::bioclim(e, p)
+  r <- dismo::predict(Model, e)
+  r <- (r - raster::minValue(r)) /
+    (raster::maxValue(r) - raster::minValue(r))
+  r <- (1 - r) >= 0.99 #environmental constrain
+  r[which(r[,] == FALSE)] <- NA
+  return(r)
+}
+
+
+# Inverse geo
+inv_geo <- function(e, p, d) {
+  r <- raster::rasterize(p, e)
+  b <- raster::buffer(r, width=d)
+  e[!is.na(b[])] <- NA
+  return(e)
+}
