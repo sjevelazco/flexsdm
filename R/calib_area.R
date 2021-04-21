@@ -1,6 +1,6 @@
 #' Delimit calibration area for ecological niche models
 #'
-#' @description This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, enm_predict, and enm_esemble, among others
+#' @description This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, enm_predict, and enm_ensemble, among others
 #'
 #' @param data data.frame or tibble. Database with presences
 #' @param x character. Column name with longitude data
@@ -10,7 +10,7 @@
 #' \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 #' \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.
 #' \item bmcp: calibration area is defined by buffed minimum convex polygon. Usage method = c('bmcp', width=40000).
-#' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN").
+#' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatialPolygonDataFrame
 #' }
 #' @param groups character. Column name with that differentiate set of points. This could be used with mcp and bmcp method. Default NULL
 #' @param crs character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatialPolygonDataFrame used

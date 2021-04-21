@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_gbm.R
 \name{fit_gbm}
 \alias{fit_gbm}
-\title{Fit and validate Generalized Linear Models}
+\title{Fit and validate Generalized Boosted Regression models}
 \usage{
 fit_gbm(
   data,
@@ -53,7 +53,7 @@ response, predictors, and predictors_f arguments}
 \value{
 A list object with:
 \itemize{
-\item model: A "glm" class object. This object can be used for predicting.
+\item model: A "gbm" class object. This object can be used for predicting.
 \item performance: Performance metric (see \code{\link{enm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 \item selected_threshold: Value of the threshold selected.
@@ -61,7 +61,7 @@ Those threshold dependent metric are calculated based on the threshold specified
 }
 }
 \description{
-Fit and validate Generalized Linear Models
+Fit and validate Generalized Boosted Regression models
 }
 \examples{
 \dontrun{

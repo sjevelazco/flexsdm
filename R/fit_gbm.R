@@ -1,4 +1,4 @@
-#' Fit and validate Generalized Linear Models
+#' Fit and validate Generalized Boosted Regression models
 #'
 #' @param data data.frame. Database with response (0,1) and predictors values.
 #' @param response character. Column name with species absence-presence data (0,1).
@@ -32,7 +32,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A "glm" class object. This object can be used for predicting.
+#' \item model: A "gbm" class object. This object can be used for predicting.
 #' \item performance: Performance metric (see \code{\link{enm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item selected_threshold: Value of the threshold selected.

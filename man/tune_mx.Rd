@@ -2,7 +2,7 @@
 % Please edit documentation in R/tune_mx.R
 \name{tune_mx}
 \alias{tune_mx}
-\title{Function for constructing Maximum Entropy with exploration of hyper-parameters}
+\title{Fit and validate Maximum Entropy models with exploration of hyper-parameters}
 \usage{
 tune_mx(
   data,
@@ -22,11 +22,11 @@ tune_mx(
 \arguments{
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.}
 
-\item{pred_type}{character. Type of response required availabe "link", "exponential", "cloglog" and "logistic". Dafault "cloglog"}
+\item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"}
 }
 \value{
 
 }
 \description{
-Function for constructing Maximum Entropy with exploration of hyper-parameters
+Fit and validate Maximum Entropy models with exploration of hyper-parameters
 }

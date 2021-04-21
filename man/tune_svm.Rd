@@ -2,7 +2,7 @@
 % Please edit documentation in R/tune_svm.R
 \name{tune_svm}
 \alias{tune_svm}
-\title{Function for constructing Support Vector Machine with exploration of hyper-parameters}
+\title{Fit and validate Support Vector Machine models with exploration of hyper-parameters}
 \usage{
 tune_svm(
   data,
@@ -23,5 +23,5 @@ tune_svm(
 
 }
 \description{
-Function for constructing Support Vector Machine with exploration of hyper-parameters
+Fit and validate Support Vector Machine models with exploration of hyper-parameters
 }

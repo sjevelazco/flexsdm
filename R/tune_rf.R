@@ -1,4 +1,4 @@
-#' Function for constructing Random Forest with exploration of hyper-parameters
+#' Fit and validate Random Forest models with exploration of hyper-parameters
 #'
 #'
 #'

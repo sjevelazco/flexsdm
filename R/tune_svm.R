@@ -1,4 +1,4 @@
-#' Function for constructing Support Vector Machine with exploration of hyper-parameters
+#' Fit and validate Support Vector Machine models with exploration of hyper-parameters
 #'
 #'
 #'

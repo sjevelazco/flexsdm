@@ -1,0 +1,5 @@
+title: flexsdm
+
+template:
+  params:
+    bootswatch: yeti

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tune_gbm.R
 \name{tune_gbm}
 \alias{tune_gbm}
-\title{Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters}
+\title{Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters}
 \usage{
 tune_gbm(
   data,
@@ -55,7 +55,7 @@ A list object with:
 }
 }
 \description{
-Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters
+Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters
 }
 \examples{
 \dontrun{

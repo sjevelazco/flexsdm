@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_nnet.R
 \name{fit_nnet}
 \alias{fit_nnet}
-\title{Fit and validate Neural Network models}
+\title{Fit and validate Neural Networks models}
 \usage{
 fit_nnet(
   data,
@@ -53,7 +53,7 @@ response, predictors, and predictors_f arguments}
 \value{
 A list object with:
 \itemize{
-\item model: A "nnet" class object. This object can be used for predicting.
+\item model: A "nnet.formula" "nnet" class object. This object can be used for predicting.
 \item performance: Performance metric (see \code{\link{enm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 \item selected_threshold: Value of the threshold selected.
@@ -61,7 +61,7 @@ Those threshold dependent metric are calculated based on the threshold specified
 }
 }
 \description{
-Fit and validate Neural Network models
+Fit and validate Neural Networks models
 }
 \examples{
 \dontrun{

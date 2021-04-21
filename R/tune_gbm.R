@@ -1,4 +1,4 @@
-#' Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters
+#' Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters
 #'
 #'
 #' @param data data.frame. Database with response (0,1) and predictors values.

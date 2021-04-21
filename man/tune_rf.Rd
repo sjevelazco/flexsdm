@@ -2,7 +2,7 @@
 % Please edit documentation in R/tune_rf.R
 \name{tune_rf}
 \alias{tune_rf}
-\title{Function for constructing Random Forest with exploration of hyper-parameters}
+\title{Fit and validate Random Forest models with exploration of hyper-parameters}
 \usage{
 tune_rf(
   data,
@@ -23,5 +23,5 @@ tune_rf(
 
 }
 \description{
-Function for constructing Random Forest with exploration of hyper-parameters
+Fit and validate Random Forest models with exploration of hyper-parameters
 }

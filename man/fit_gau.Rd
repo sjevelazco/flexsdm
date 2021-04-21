@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_gau.R
 \name{fit_gau}
 \alias{fit_gau}
-\title{Fit and validate Generalized Linear Models}
+\title{Fit and validate Gaussian Process models}
 \usage{
 fit_gau(
   data,
@@ -53,7 +53,7 @@ vector for this argument. The next threshold area available:
 \value{
 A list object with:
 \itemize{
-\item model: A "glm" class object. This object can be used for predicting.
+\item model: A "graf" class object. This object can be used for predicting.
 \item performance: Performance metric (see \code{\link{enm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 \item selected_threshold: Value of the threshold selected.
@@ -61,7 +61,7 @@ Those threshold dependent metric are calculated based on the threshold specified
 }
 }
 \description{
-Fit and validate Generalized Linear Models
+Fit and validate Gaussian Process models
 }
 \examples{
 \dontrun{

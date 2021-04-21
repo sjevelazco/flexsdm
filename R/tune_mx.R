@@ -1,4 +1,4 @@
-#' Function for constructing Maximum Entropy with exploration of hyper-parameters
+#' Fit and validate Maximum Entropy models with exploration of hyper-parameters
 #'
 #'
 #' @param data
@@ -11,7 +11,7 @@
 #' @param thr
 #' @param metric
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
-#' @param pred_type character. Type of response required availabe "link", "exponential", "cloglog" and "logistic". Dafault "cloglog"
+#' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
 #'
 #' @importFrom dismo predict
 #' @importFrom dplyr select starts_with filter pull bind_rows tibble group_by_at summarise across everything

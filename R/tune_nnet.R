@@ -1,4 +1,4 @@
-#' Function for constructing Neural Network model with exploration of hyper-parameters
+#' Fit and validate Neural Networks models with exploration of hyper-parameters
 #'
 #'
 #'

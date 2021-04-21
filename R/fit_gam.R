@@ -1,4 +1,4 @@
-#' Fit and validate Generalized Linear Models
+#' Fit and validate Generalized Additive Models
 #'
 #' @param data data.frame. Database with response (0,1) and predictors values.
 #' @param response character. Column name with species absence-presence data (0,1).
@@ -32,7 +32,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A "glm" class object. This object can be used for predicting.
+#' \item model: A "Gam" "glm" "lm"  class object. This object can be used for predicting.
 #' \item performance: Performance metric (see \code{\link{enm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item selected_threshold: Value of the threshold selected.
@@ -42,7 +42,7 @@
 #' @export
 #'
 #' @importFrom dplyr select all_of starts_with bind_rows summarise across everything
-#' @importFrom gam gam predict.Gam
+#' @importFrom gam gam predict.Gam s
 #' @importFrom stats formula sd
 #'
 #' @examples

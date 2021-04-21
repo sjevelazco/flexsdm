@@ -18,7 +18,7 @@ calib_area(data, x, y, method, groups = NULL, crs = NULL)
 \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.
 \item bmcp: calibration area is defined by buffed minimum convex polygon. Usage method = c('bmcp', width=40000).
-\item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN").
+\item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatialPolygonDataFrame
 }}
 
 \item{groups}{character. Column name with that differentiate set of points. This could be used with mcp and bmcp method. Default NULL}
@@ -29,7 +29,7 @@ calib_area(data, x, y, method, groups = NULL, crs = NULL)
 A SpatialPolygon or SpatialPolygonDataFrame
 }
 \description{
-This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, enm_predict, and enm_esemble, among others
+This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, enm_predict, and enm_ensemble, among others
 }
 \examples{
 \dontrun{
