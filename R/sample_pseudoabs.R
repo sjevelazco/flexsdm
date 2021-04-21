@@ -111,6 +111,11 @@
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #' }
 sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, calibarea = NULL) {
+
+  if(!any(c('RND', 'ENV_CONST', 'GEO_CONST', 'GEO_ENV_CONST', 'GEO_ENV_KM_CONST')%in%method)){
+    stop("argument 'method' was misused, available methods RND, ENV_CONST, GEO_CONST, GEO_ENV_CONST, and GEO_ENV_KM_CONST")
+  }
+
   rlayer <- rlayer[[1]]
 
   if (any(method %in% "RND")) {
