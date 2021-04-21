@@ -19,6 +19,10 @@
 #' A SpatialPolygon or SpatialPolygonDataFrame
 #' @export
 #'
+#' @importFrom grDevices chull
+#' @importFrom raster buffer bind projection extract
+#' @importFrom sp coordinates
+#'
 #' @examples
 #' \dontrun{
 #' require(raster)
@@ -141,9 +145,9 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     for (i in 1:length(data)) {
       data_pl <- data.frame(data[[i]][, c("x", "y")])
       data_pl <- data_pl[grDevices::chull(data_pl), ]
-      data_pl <- Polygon(data_pl)
-      data_pl <- Polygons(list(data_pl), ID = 1)
-      data_pl <- SpatialPolygons(list(data_pl))
+      data_pl <- sp::Polygon(data_pl)
+      data_pl <- sp::Polygons(list(data_pl), ID = 1)
+      data_pl <- sp::SpatialPolygons(list(data_pl))
       result[[i]] <- data_pl
     }
     if (length(result) > 1) {
@@ -162,9 +166,9 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     for (i in 1:length(data)) {
       data_pl <- data.frame(data[[i]][, c("x", "y")])
       data_pl <- data_pl[grDevices::chull(data_pl), ]
-      data_pl <- Polygon(data_pl)
-      data_pl <- Polygons(list(data_pl), ID = 1)
-      data_pl <- SpatialPolygons(list(data_pl))
+      data_pl <- sp::Polygon(data_pl)
+      data_pl <- sp::Polygons(list(data_pl), ID = 1)
+      data_pl <- sp::SpatialPolygons(list(data_pl))
       data_pl <- raster::buffer(data_pl, width = as.numeric(method["width"]))
       result[[i]] <- data_pl
     }
@@ -181,8 +185,8 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     data <- data[, c("x", "y")]
     data_sp <- data
     sp::coordinates(data_sp) <- ~ x + y
-    raster::projection(data_sp) <- crs(polyc)
-    data_sp <- spTransform(data_sp, crs(polyc))
+    raster::projection(data_sp) <- raster::crs(polyc)
+    data_sp <- sp::spTransform(data_sp, raster::crs(polyc))
     result <- raster::extract(polyc, data_sp)[, cname]
     result <- polyc[polyc[[cname]] %in% result, ]
   }
