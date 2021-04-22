@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Data partitioning for training and testing models — data_part" />
-<meta property="og:description" content="This function provides different partition methods based in folds (KFOLD, REP_KFOLD, and LOOCV), bootstrap (BOOT), and spatially structured (BANDS and BLOCK)." />
+<meta property="og:description" content="This function provides different partition methods based in folds (kfold, rep_kfold, and loocv), bootstrap (boot), and spatially structured (BANDS and BLOCK)." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">flexsdm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
     </div>
 
     <div class="ref-description">
-    <p>This function provides different partition methods based in folds (KFOLD, REP_KFOLD, and LOOCV), bootstrap (BOOT), and spatially structured (BANDS and BLOCK).</p>
+    <p>This function provides different partition methods based in folds (kfold, rep_kfold, and loocv), bootstrap (boot), and spatially structured (BANDS and BLOCK).</p>
     </div>
 
     <pre class="usage"><span class='fu'>data_part</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>p_a</span>, bg_data <span class='op'>=</span> <span class='cn'>NULL</span>, bg_a <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -123,7 +123,7 @@
     </tr>
     <tr>
       <th>p_a</th>
-      <td><p>character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences with 0</p></td>
+      <td><p>character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0</p></td>
     </tr>
     <tr>
       <th>bg_data</th>
@@ -131,24 +131,22 @@
     </tr>
     <tr>
       <th>bg_a</th>
-      <td><p>character. Column name of "bg_data" with absences. Absences must be repented with 0</p></td>
+      <td><p>character. Column name of "bg_data" with absences. Background must be repented by 0</p></td>
     </tr>
     <tr>
       <th>method</th>
       <td><p>character. Vector with partition method to be used:</p><ul>
-<li><p>KFOLD: Random partition in k-fold cross-validation. Usage part=c(method= 'KFOLD', folds='5'). 'folds' refers to the number of folds for data partitioning, it assumes value &gt;=1. Usage method = c(method = "KFOLD", folds = 10).</p></li>
-<li><p>REP_KFOLD: Random partition in repeated k-fold cross-validation. Usage method = c(method = "REP_KFOLD", folds = 10, replicates=10). 'folds' refers to the number of folds for data partitioning, it assumes value &gt;=1. 'replicate' refers to the number of replicates, it assumes a value &gt;=1.</p></li>
-<li><p>LOOCV: Leave-one-out cross-validation (a.k.a. Jackknife) WRITE METHOD HERE . Usage method = c(method = "LOOCV").</p></li>
-<li><p>BOOT: Random bootstrap partition. Usage part=c(method='BOOT', replicates='2', proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value &gt;=1. 'proportion' refers to the proportion of occurrences used for model fitting, it assumes a value &gt;0 and &lt;=1. In this example proportion='0.7' mean that 70<!-- % of data will be used for model training, while 30% for model testing. For this method function will returns .partX columns with "train" and "test" words --></p></li>
-<li><p>BANDS: Geographic partition structured as bands arranged in a latitudinal way (type 1) or longitudinal way (type 2). Usage part=c(method= 'BANDS', type='1'). 'type' refers to the bands disposition</p></li>
-<li><p>BLOCK: Geographic partition structured as a checkerboard (a.k.a. block cross-validation). Usage part=c(method= 'BLOCK').</p></li>
+<li><p>kfold: Random partition in k-fold cross-validation. Usage part=c(method= 'kfold', folds='5'). 'folds' refers to the number of folds for data partitioning, it assumes value &gt;=1. Usage method = c(method = "kfold", folds = 10).</p></li>
+<li><p>rep_kfold: Random partition in repeated k-fold cross-validation. Usage method = c(method = "rep_kfold", folds = 10, replicates=10). 'folds' refers to the number of folds for data partitioning, it assumes value &gt;=1. 'replicate' refers to the number of replicates, it assumes a value &gt;=1.</p></li>
+<li><p>loocv: Leave-one-out cross-validation (a.k.a. Jackknife) WRITE METHOD HERE . Usage method = c(method = "loocv").</p></li>
+<li><p>boot: Random bootstrap partition. Usage part=c(method='boot', replicates='2', proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value &gt;=1. 'proportion' refers to the proportion of occurrences used for model fitting, it assumes a value &gt;0 and &lt;=1. In this example proportion='0.7' mean that 70<!-- % of data will be used for model training, while 30% for model testing. For this method function will returns .partX columns with "train" and "test" words --></p></li>
 </ul></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>This function will return the same data.frame used in the arguments 'data' and 'gb_data' with the additional column or columns staring with the names .part with partition group. In the case of BOOT partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will returned a list with partition data for each database with the names data and bg_data.</p>
+    <p>This function will return the same data.frame used in the arguments 'data' and 'gb_data' with the additional column or columns staring with the names .part with partition group. In the case of boot partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will returned a list with partition data for each database with the names data and bg_data.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'>
@@ -160,60 +158,47 @@
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://devtools.r-lib.org/'>devtools</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"abies_db"</span><span class='op'>)</span>
 <span class='va'>abies_db</span><span class='op'>$</span><span class='va'>partition</span> <span class='op'>&lt;-</span> <span class='cn'>NULL</span>
-<span class='va'>abies_db</span> <span class='op'>&lt;-</span> <span class='fu'>tibble</span><span class='op'>(</span><span class='va'>abies_db</span><span class='op'>)</span>
+<span class='va'>abies_db</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span><span class='op'>(</span><span class='va'>abies_db</span><span class='op'>)</span>
 
 <span class='co'># K-fold method</span>
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>'pr_ab'</span>,
+  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"KFOLD"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies_db2</span>
 
 <span class='co'># Repeated K-fold method</span>
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>'pr_ab'</span>,
+  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_p_a <span class='op'>=</span> <span class='cn'>NULL</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"REP_KFOLD"</span>, folds <span class='op'>=</span> <span class='fl'>10</span>, replicates<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"rep_kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span>, replicates <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies_db2</span>
 
-<span class='co'># Leave-one-out cross-validation (LOOCV) method</span>
+<span class='co'># Leave-one-out cross-validation (loocv) method</span>
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>'pr_ab'</span>,
+  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"LOOCV"</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"loocv"</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies_db2</span>
 
 <span class='co'># Bootstrap method</span>
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>'pr_ab'</span>,
+  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"BOOT"</span>, replicates<span class='op'>=</span><span class='fl'>50</span>, proportion<span class='op'>=</span><span class='fl'>0.7</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"boot"</span>, replicates <span class='op'>=</span> <span class='fl'>50</span>, proportion <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
 <span class='op'>)</span>
-<span class='va'>abies_db2</span>
-<span class='co'># Note that for this method .partX columns have train and test words.</span>
-<span class='va'>method</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"KFOLD"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-<span class='va'>method</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  method <span class='op'>=</span> <span class='st'>"REP_KFOLD"</span>,
-  folds <span class='op'>=</span> <span class='fl'>10</span>,
-  replicates <span class='op'>=</span> <span class='fl'>20</span>
-<span class='op'>)</span>
-<span class='va'>method</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"LOOCV"</span><span class='op'>)</span>
-<span class='va'>method</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
-  method <span class='op'>=</span> <span class='st'>"BOOT"</span>,
-  replicates <span class='op'>=</span> <span class='fl'>50</span>,
-  proportion <span class='op'>=</span> <span class='fl'>0.7</span>
-<span class='op'>)</span>
+<span class='va'>abies_db2</span><span class='op'>$</span><span class='va'>.part1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># Note that for this method .partX columns have train and test words.</span>
 <span class='op'>}</span>
 
 </div></pre>
@@ -228,7 +213,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, XXXXX XXXXX.</p>
 </div>
 
 <div class="pkgdown">

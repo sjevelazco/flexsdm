@@ -5,12 +5,12 @@
 #' @param data data.frame or tibble. Database with presences
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
-#' @param method character. Pseudo-absence allocation method. Could be necessary concatenate (c()) different object for this argument. The next methods are implemented:
+#' @param method character. Pseudo-absence allocation method. Could be necessary concatenate (c()) different objects for this argument. The next methods are implemented:
 #' \itemize{
 #' \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 #' \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.
 #' \item bmcp: calibration area is defined by buffed minimum convex polygon. Usage method = c('bmcp', width=40000).
-#' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatialPolygonDataFrame
+#' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatialPolygonDataFrame,  the third element is a character with the column name from SpatialPolygonDataFrame used for filtering polygons.
 #' }
 #' @param groups character. Column name with that differentiate set of points. This could be used with mcp and bmcp method. Default NULL
 #' @param crs character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatialPolygonDataFrame used

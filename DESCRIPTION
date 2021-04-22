@@ -1,11 +1,19 @@
 Package: flexsdm
 Type: Package
 Title: What the Package Does (Title Case)))
-Version: 0.1.0
-Author: Santiago J.E. Velazco
+Version: 0.0.1
+Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
+           email = "sjevelazco@gmail.com",
+           comment = c(ORCID = "0000-0002-7527-0967")),
+           person(given = "André F.A.", family = "Andrade", role = c("aut"),
+           email = "andrefaandrade@gmail.com",
+           comment = c(ORCID = "0000-0002-6134-3176")),
+           person(given = "XXXXX", family = "XXXXX", role = c("aut"),
+           comment = c(ORCID = "0000")))
 Maintainer: Santiago J.E. Velazco <sjevelazco@gmail.com>
 Depends: R (>= 3.5.0)
 Imports: 
+    ape,
     dismo,
     dplyr,
     gbm,
@@ -14,10 +22,12 @@ Imports:
     nnet,
     randomForest,
     raster,
-    ape,
     flexclust,
     sp,
     grDevices,
+    gam,
+    foreach,
+    doParallel,
     GRaF
 Remotes:  
     goldingn/GRaF

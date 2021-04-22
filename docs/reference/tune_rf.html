@@ -6,14 +6,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function for constructing Random Forest with exploration of hyper-parameters — tune_rf • flexsdm</title>
+<title>Fit and validate Random Forest models with exploration of hyper-parameters — tune_rf • flexsdm</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Function for constructing Random Forest with exploration of hyper-parameters — tune_rf" />
-<meta property="og:description" content="Function for constructing Random Forest with exploration of hyper-parameters" />
+<meta property="og:title" content="Fit and validate Random Forest models with exploration of hyper-parameters — tune_rf" />
+<meta property="og:description" content="Fit and validate Random Forest models with exploration of hyper-parameters" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">flexsdm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -103,13 +103,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function for constructing Random Forest with exploration of hyper-parameters</h1>
+    <h1>Fit and validate Random Forest models with exploration of hyper-parameters</h1>
     
     <div class="hidden name"><code>tune_rf.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function for constructing Random Forest with exploration of hyper-parameters</p>
+    <p>Fit and validate Random Forest models with exploration of hyper-parameters</p>
     </div>
 
     <pre class="usage"><span class='fu'>tune_rf</span><span class='op'>(</span>
@@ -129,35 +129,45 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td></td>
+      <td><p>data.frame. Database with response (0,1) and predictors values.</p></td>
     </tr>
     <tr>
       <th>response</th>
-      <td></td>
+      <td><p>character. Column name with species absence-presence data (0,1).</p></td>
     </tr>
     <tr>
       <th>predictors</th>
-      <td></td>
+      <td><p>character. Vector with the column names of quantitative predictor variables (i.e. continuous or discrete variables). Usage predictors = c("aet", "cwd", "tmin")</p></td>
     </tr>
     <tr>
       <th>predictors_f</th>
-      <td></td>
+      <td><p>character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")</p></td>
     </tr>
     <tr>
       <th>partition</th>
-      <td></td>
+      <td><p>character. Column name with training and validation partition groups.</p></td>
     </tr>
     <tr>
       <th>grid</th>
-      <td></td>
+      <td><p>data.frame. Provide a data frame object with algorithm hyper-parameters values to be tested. It Is recommended to generate this data.frame. Hyper-parameter needed for tuning is 'mtry'. The maximum mtry must be equal to total number of predictors</p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td></td>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+<li><p>lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').</p></li>
+<li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).</p></li>
+<li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
+  Usage thr=c(type='max_sens_spec').</p></li>
+<li><p>max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').</p></li>
+<li><p>max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').</p></li>
+<li><p>max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').</p></li>
+<li><p>max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').</p></li>
+<li><p>specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.</p></li>
+</ul></td>
     </tr>
     <tr>
       <th>metric</th>
-      <td></td>
+      <td><p>character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.</p></td>
     </tr>
     </table>
 
@@ -166,7 +176,52 @@
     
 
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p><code><a href='tune_gbm.html'>tune_gbm</a></code>, <code><a href='tune_mx.html'>tune_mx</a></code>, <code><a href='tune_nnet.html'>tune_nnet</a></code>, and <code><a href='tune_svm.html'>tune_svm</a></code>.</p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>abies_db</span><span class='op'>)</span>
+<span class='va'>abies_db</span>
+
+<span class='co'># We will partition the data with the k-fold method</span>
+
+<span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='data_part.html'>data_part</a></span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>abies_db</span>,
+  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='va'>tune_grid</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>mtry <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>7</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>rf_t</span> <span class='op'>&lt;-</span>
+  <span class='fu'>tune_rf</span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>abies_db2</span>,
+    response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+    predictors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+      <span class='st'>"aet"</span>, <span class='st'>"cwd"</span>, <span class='st'>"tmin"</span>, <span class='st'>"ppt_djf"</span>,
+      <span class='st'>"ppt_jja"</span>, <span class='st'>"pH"</span>, <span class='st'>"awc"</span>, <span class='st'>"depth"</span>, <span class='st'>"percent_clay"</span>
+    <span class='op'>)</span>,
+    predictors_f <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"landform"</span><span class='op'>)</span>,
+    partition <span class='op'>=</span> <span class='st'>".part"</span>,
+    grid <span class='op'>=</span> <span class='va'>tune_grid</span>,
+    thr <span class='op'>=</span> <span class='st'>"max_sens_spec"</span>,
+    metric <span class='op'>=</span> <span class='st'>"TSS"</span>,
+  <span class='op'>)</span>
+
+<span class='co'># Outputs</span>
+<span class='va'>rf_t</span><span class='op'>$</span><span class='va'>model</span>
+<span class='va'>rf_t</span><span class='op'>$</span><span class='va'>tune_performance</span>
+<span class='va'>rf_t</span><span class='op'>$</span><span class='va'>best_hyper</span>
+<span class='va'>rf_t</span><span class='op'>$</span><span class='va'>selected_threshold</span>
+<span class='va'>rf_t</span><span class='op'>$</span><span class='va'>threshold_table</span>
+<span class='op'>}</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -178,7 +233,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, XXXXX XXXXX.</p>
 </div>
 
 <div class="pkgdown">

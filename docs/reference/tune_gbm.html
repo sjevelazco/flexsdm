@@ -6,14 +6,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters — tune_gbm • flexsdm</title>
+<title>Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters — tune_gbm • flexsdm</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters — tune_gbm" />
-<meta property="og:description" content="Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters" />
+<meta property="og:title" content="Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters — tune_gbm" />
+<meta property="og:description" content="Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">flexsdm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
       </span>
     </div>
 
@@ -103,13 +103,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters</h1>
+    <h1>Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters</h1>
     
     <div class="hidden name"><code>tune_gbm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function for constructing Generalized Boosted Regression models with exploration of hyper-parameters</p>
+    <p>Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters</p>
     </div>
 
     <pre class="usage"><span class='fu'>tune_gbm</span><span class='op'>(</span>
@@ -154,15 +154,15 @@
     <tr>
       <th>thr</th>
       <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
-<li><p>LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').</p></li>
-<li><p>EQUAL_SENS_SPEC: Threshold at which the sum of the sensitivity and specificity is the highest.</p></li>
-<li><p>MAX_TSS: Threshold at which the sensitivity and specificity are equal.
-  Usage thr=c(type='MAX_TSS').</p></li>
-<li><p>MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').</p></li>
-<li><p>MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').</p></li>
-<li><p>MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').</p></li>
-<li><p>MAX_FPB: The threshold at which Fpb is highest. Usage thr=c(type='MAX_FPB').</p></li>
-<li><p>SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.</p></li>
+<li><p>lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').</p></li>
+<li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).</p></li>
+<li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
+  Usage thr=c(type='max_sens_spec').</p></li>
+<li><p>max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').</p></li>
+<li><p>max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').</p></li>
+<li><p>max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').</p></li>
+<li><p>max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').</p></li>
+<li><p>specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -189,8 +189,18 @@
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>abies_db</span><span class='op'>)</span>
 <span class='va'>abies_db</span>
+
+<span class='co'># We will partition the data with the k-fold method</span>
+
+<span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='data_part.html'>data_part</a></span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>abies_db</span>,
+  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+<span class='op'>)</span>
+
 <span class='co'># pr_ab columns is species presence and absences (i.e. the response variable)</span>
-<span class='co'># partition is columns with partition groups for performing 5-fold cross validation</span>
 <span class='co'># from aet to landform are the predictors variables (landform is a qualitative variable)</span>
 
 <span class='co'># Hyper-parameter values for tuning</span>
@@ -203,16 +213,16 @@
 
 <span class='va'>gbm_t</span> <span class='op'>&lt;-</span>
   <span class='fu'>tune_gbm</span><span class='op'>(</span>
-    data <span class='op'>=</span> <span class='va'>abies_db</span>,
+    data <span class='op'>=</span> <span class='va'>abies_db2</span>,
     response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
     predictors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
       <span class='st'>"aet"</span>, <span class='st'>"cwd"</span>, <span class='st'>"tmin"</span>, <span class='st'>"ppt_djf"</span>,
       <span class='st'>"ppt_jja"</span>, <span class='st'>"pH"</span>, <span class='st'>"awc"</span>, <span class='st'>"depth"</span>, <span class='st'>"percent_clay"</span>
     <span class='op'>)</span>,
     predictors_f <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"landform"</span><span class='op'>)</span>,
-    partition <span class='op'>=</span> <span class='st'>"partition"</span>,
+    partition <span class='op'>=</span> <span class='st'>".part"</span>,
     grid <span class='op'>=</span> <span class='va'>tune_grid</span>,
-    thr <span class='op'>=</span> <span class='st'>"MAX_TSS"</span>,
+    thr <span class='op'>=</span> <span class='st'>"max_sens_spec"</span>,
     metric <span class='op'>=</span> <span class='st'>"TSS"</span>,
   <span class='op'>)</span>
 
@@ -258,7 +268,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, XXXXX XXXXX.</p>
 </div>
 
 <div class="pkgdown">
