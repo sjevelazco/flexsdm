@@ -3,7 +3,7 @@ Type: Package
 Title: What the Package Does (Title Case)))
 Version: 0.1.0
 Author: Santiago J.E. Velazco
-Maintainer: The package maintainer <yourself@somewhere.net>
+Maintainer: Santiago J.E. Velazco <sjevelazco@gmail.com>
 Depends: R (>= 3.5.0)
 Imports: 
     dismo,
@@ -17,6 +17,7 @@ Imports:
     ape,
     flexclust,
     sp,
+    grDevices,
     GRaF
 Remotes:  
     goldingn/GRaF
