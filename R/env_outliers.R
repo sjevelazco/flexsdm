@@ -1,14 +1,15 @@
 #' Detection of outliers in the environmental space
-#'
-#' @param da
+#' @param data data.frame. Data.frame or tibble object with presences
+#' (or presence-absence) records, and coordinates
 #' @param species
-#' @param x
-#' @param y
-#' @param pr_ab
-#' @param id
+#' @param x character. Column name with longitude data
+#' @param y character. Column name with latitude data
+#' @param id character. Column names with rows id. It is important that each row has its own unique code.
+#' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
+#' @param id character. Column names with rows id. It is important that each row has its own unique code.
 #' @param envr
 
-env_outliers <- function(da, species, x, y, pr_ab, id, envr) {
+env_outliers <- function(data, x, y, pr_ab, id, envr) {
   # Packages
   require(dplyr)
   require(raster)
@@ -18,18 +19,18 @@ env_outliers <- function(da, species, x, y, pr_ab, id, envr) {
   require(Rlof)
 
   # Filter and replace species names
-  da <- da[, c(id, species, x, y, pr_ab)]
-  names(da) <- c("id", "species", "x", "y", "pr_ab")
+  data <- data[, c(id, x, y, pr_ab)]
+  names(data) <- c("id", "species", "x", "y", "pr_ab")
 
-  # Convert da to tibble object
-  da <- da %>% tibble()
-  spp <- unique(da$species)
+  # Convert data to tibble object
+  data <- data %>% tibble()
+  spp <- unique(data$species)
   var <- names(envr)
 
   out_list <- list()
   for (i in 1:length(spp)) {
     message(i)
-    occ_sp_01 <- da %>%
+    occ_sp_01 <- data %>%
       dplyr::filter(species == spp[i]) %>%
       dplyr::select(species, x, y, id, pr_ab)
 

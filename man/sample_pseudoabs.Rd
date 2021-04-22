@@ -28,11 +28,11 @@ sample_pseudoabs(
 \item{method}{character. Pseudo-absence allocation method. It is necessary to
 provide a vector for this argument. The next methods are implemented:
 \itemize{
-\item RND: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='RND'.
-\item ENV_CONST: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster stack or brick object with environmental variables Usage method=c(method='ENV_CONST', env = somevar).
-\item GEO_CONST: Pseudo-absences are allocated far from occurrences based on a geographical buffer. For this method, it is necessary to provide a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('GEO_CONST', width='50000').
-\item GEO_ENV_CONST: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('GEO_ENV_CONST', width='50000', env = somevar)
-\item GEO_ENV_KM_CONST: Pseudo-absences are constrained on a three-level procedure; it is similar to the GEO_ENV_CONST with an additional step which distributes the pseudo-absences in the environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('GEO_ENV_KM_CONST', width='50000', env = somevar)
+\item rnd: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='rnd'.
+\item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster stack or brick object with environmental variables Usage method=c(method='env_const', env = somevar).
+\item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. For this method, it is necessary to provide a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_const', width='50000').
+\item geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar)
+\item geo_env_km_const: Pseudo-absences are constrained on a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in the environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar)
 }}
 
 \item{rlayer}{raster. A raster layer used for sampling pseudo-absence
@@ -71,7 +71,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = "RND",
+    method = "rnd",
     rlayer = regions,
     maskval = NULL
   )
@@ -88,7 +88,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = "RND",
+    method = "rnd",
     rlayer = regions,
     maskval = samp_here
   )
@@ -104,7 +104,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = c(method = "GEO_ENV_CONST", env = somevar, width = 50000),
+    method = c(method = "geo_env_const", env = somevar, width = 50000),
     rlayer = regions,
     maskval = NULL
   )
@@ -123,7 +123,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = 1000,
-    method = c(method = "GEO_ENV_CONST", env = somevar, width = 50000),
+    method = c(method = "geo_env_const", env = somevar, width = 50000),
     rlayer = regions,
     maskval = samp_here
   )

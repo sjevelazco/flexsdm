@@ -4,7 +4,7 @@
 \alias{env_filtering}
 \title{Function to perform environmental filtering of species occurrence records}
 \usage{
-env_filtering(data, x, y, id, variables, nbins, cores = 1, plot = FALSE)
+env_filtering(data, x, y, id, variables, nbins, cores = 1)
 }
 \arguments{
 \item{data}{data.frame. Data.frame or tibble object with presences
@@ -21,8 +21,6 @@ env_filtering(data, x, y, id, variables, nbins, cores = 1, plot = FALSE)
 \item{nbins}{interger. A number of classes used to split each environmental condition}
 
 \item{cores}{interger. Number of machine cores used for processing in parallel}
-
-\item{plot}{logical. Plot filtering procedure}
 }
 \description{
 Function to perform environmental filtering of species occurrence records

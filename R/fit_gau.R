@@ -10,20 +10,17 @@
 #' @param partition character. Column name with training and validation partition groups.
 #' @param background data.frame. Database with response column only with 0 and predictors variables. All
 #' column names must be consistent with data
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1).
-#' It is useful for threshold-dependent performance metrics.
-#' It is possible to use more than one threshold type. It is necessary to provide a
-#' vector for this argument. The next threshold area available:
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
-#'   \item LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').
-#'   \item EQUAL_SENS_SPEC: Threshold at which the sensitivity and specificity are equal.
-#'   \item MAX_TSS: Threshold at which the sum of the sensitivity and specificity is the highest.
-#'   Usage thr=c(type='MAX_TSS').
-#'   \item MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').
-#'   \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
-#'   \item MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').
-#'   \item MAX_FPB: The threshold at which FPB is highest. Usage thr=c(type='MAX_FPB').
-#'   \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
+#'   \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
+#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
+#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
+#'   Usage thr=c(type='max_sens_spec').
+#'   \item max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').
+#'   \item max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').
+#'   \item max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').
+#'   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
+#'   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
 #' @param ...
 #'
@@ -48,11 +45,11 @@
 #' \dontrun{
 #' data("abies_db")
 #'
-#' # Using KFOLD partition method
+#' # Using k-fold partition method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
 #'   p_a = "pr_ab",
-#'   method = c(method = "KFOLD", folds = 10)
+#'   method = c(method = "kfold", folds = 10)
 #' )
 #' abies_db2
 #'
@@ -67,7 +64,7 @@
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
 #'   background = bg,
-#'   thr = c("MAX_TSS", "EQUAL_SENS_SPEC", "MAX_SORENSEN"),
+#'   thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
 #'   fit_formula = NULL
 #' )
 #'
@@ -76,11 +73,11 @@
 #' gaup_t1$selected_threshold
 #' gaup_t1$threshold_table
 #'
-#' # Using BOOTS partition method and only with presence-absence
+#' # Using bootstrap partition method and only with presence-absence
 #' abies_db2 <- data_part(
 #'   data = abies_db,
 #'   p_a = "pr_ab",
-#'   method = c(method = "BOOT", replicates = 10, proportion = 0.7)
+#'   method = c(method = "boot", replicates = 10, proportion = 0.7)
 #' )
 #' abies_db2
 #'
@@ -90,7 +87,7 @@
 #'   predictors = c("ppt_jja", "pH", "awc"),
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
-#'   thr = c(type = c("LPT", "MAX_TSS", "SENSITIVITY"), sens = "0.8")
+#'   thr = c(type = c("lpt", "max_sens_spec", "specific"), sens = "0.8")
 #' )
 #' gaup_t2
 #' }

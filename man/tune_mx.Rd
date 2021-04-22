@@ -20,6 +20,39 @@ tune_mx(
 )
 }
 \arguments{
+\item{data}{data.frame. Database with response (0,1) and predictors values.}
+
+\item{response}{character. Column name with species absence-presence data (0,1).}
+
+\item{predictors}{character. Vector with the column names of quantitative
+predictor variables (i.e. continuous or discrete variables).
+Usage predictors = c("aet", "cwd", "tmin")}
+
+\item{predictors_f}{character. Vector with the column names of qualitative
+predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")}
+
+\item{background}{data.frame. Database with response column only with 0 and predictors variables. All
+column names must be consistent with data}
+
+\item{partition}{character. Column name with training and validation partition groups.}
+
+\item{grid}{data.frame. Provide a data frame object with algorithm hyper-parameters values to be tested. It Is recommended to generate this data.frame with grid() function. Hyper-parameters needed for tuning are 'regmult' and 'classes' (any combination of next letters l -linear-, q -quadratic-, h -hinge-, p -product-, and t -threshold-).}
+
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\itemize{
+  \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
+  \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
+  \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
+  Usage thr=c(type='max_sens_spec').
+  \item max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').
+  \item max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').
+  \item max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').
+  \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
+  \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
+  }}
+
+\item{metric}{character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.}
+
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.}
 
 \item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"}
@@ -29,4 +62,7 @@ tune_mx(
 }
 \description{
 Fit and validate Maximum Entropy models with exploration of hyper-parameters
+}
+\seealso{
+\code{\link{tune_gbm}}, \code{\link{tune_nnet}}, \code{\link{tune_rf}}, and \code{\link{tune_svm}}.
 }

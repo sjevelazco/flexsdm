@@ -15,27 +15,26 @@ enm_eval(p, a, bg = NULL, thr = NULL)
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 \itemize{
-  \item LPT: The highest threshold at which there is no omission. Usage thr=c(type='LPT').
-  \item EQUAL_SENS_SPEC: Threshold at which the sensitivity and specificity are equal.
-  \item MAX_TSS: Threshold at which the sum of the sensitivity and specificity is the highest.
-  Usage thr=c(type='MAX_TSS').
-  \item MAX_KAPPA: The threshold at which kappa is the highest ("max kappa"). Usage thr=c(type='MAX_KAPPA').
-  \item MAX_JACCARD: The threshold at which Jaccard is the highest. Usage thr=c(type='MAX_JACCARD').
-  \item MAX_SORENSEN: The threshold at which Sorensen is highest. Usage thr=c(type='MAX_SORENSEN').
-  \item MAX_FPB: The threshold at which FPB is highest. Usage thr=c(type='MAX_FPB').
-  \item SENSITIVITY: A threshold value specified by user. Usage thr=c(type='SENSITIVITY', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
+  \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
+  \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
+  \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
+  Usage thr=c(type='max_sens_spec').
+  \item max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').
+  \item max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').
+  \item max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').
+  \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
+  \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
   }
-In the case of use more than one threshold type it is necessary concatenate the names of threshold types, e.g., thr=c(type=c('LPT', 'MAX_TSS', 'MAX_JACCARD')). When SENSITIVITY threshold is used in combination with other it is necessary specify the desired sensitivity value, e.g. thr=c(type=c('LPT', 'MAX_TSS', 'SENSITIVITY'), sens='0.8')}
+In the case of use more than one threshold type it is necessary concatenate the names of threshold types, e.g., thr=c(type=c('lpt', 'max_sens_spec', 'max_jaccard')). When specific threshold is used in combination with other it is necessary specify the desired sensitivity value, e.g. thr=c(type=c('lpt', 'max_sens_spec', 'specific'), sens='0.8')}
 }
 \value{
-a list with the next tibble
+a list with two or three tibbles
 \itemize{
-\item "performance". A tibble object with the performance metric for 90 threshold values >0 and <1. Performance.
-\item "threshold".  A tibble with values for all the threshold available in the package.
-\item "threshold_table". A tibble with the threshold values and the performance metric values for each threshold.
-\item " selected_threshold". It is similar to "threshold_table" with difference that it contains the thresholds and the performance metric values for the selected threshold. A tibble with threshold values and the performance metric values for each threshold.
+\item "all_values". A tibble object with the performance metric for 90 threshold values >0 and <1.
+\item "selected_threshold". It is similar to "threshold_table" with difference that it contains the thresholds and the performance metric values for the selected threshold. A tibble with threshold values and the performance metric values for selected thresholds.
+\item "threshold_table". A tibble with the threshold values and the performance metric values for all thresholds.
 }
-when thr argument is NULL function will return a list with "performance", "threshold", and "threshold_table" tibbles, when thr argument is used with one or more threshold function returns "selected_threshold" and "threshold_table" tibbles
+when thr argument is NULL function will return a list with "all_values", "threshold", and "threshold_table" tibbles, when thr argument is used with one or more threshold function returns "selected_threshold" and "threshold_table" tibbles
 }
 \description{
 This function calculates threshold dependent and independent performance metric. It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate, , also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic) KAPPA, AUC (Area Under Curve), BOYCE, IMAE (Inverse Mean Absolute Error, i.e. 1-Mean Absolute Error).
@@ -61,20 +60,20 @@ backg[backg < 0] <- 0
 
 # Use function without threshold specification
 e <- enm_eval(p, a)
-e$performance
+e$all_values
 e$threshold
 e$threshold_table
 
-enm_eval(p, a, thr = c(type = c("MAX_KAPPA")))
-enm_eval(p, a, thr = c(type = c("LPT", "MAX_TSS", "MAX_JACCARD")))
-enm_eval(p, a, thr = c(type = c("LPT", "MAX_TSS", "SENSITIVITY"))) # wrong way to SENSITIVITY threshold
-enm_eval(p, a, thr = c(type = c("LPT", "MAX_TSS", "SENSITIVITY"), sens = "0.8")) # correct way to use SENSITIVITY threshold
+enm_eval(p, a, thr = c(type = c("max_kappa")))
+enm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "max_jaccard")))
+enm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"))) # wrong way to specific threshold
+enm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"), sens = "0.8")) # correct way to use specific threshold
 
 # Use of bg argument (it will only be used for calculating BOYCE index)
-enm_eval(p, a, thr = c(type = c("MAX_TSS")))[[1]]
-enm_eval(p, a, thr = c(type = c("MAX_TSS")), bg = backg)[[1]]
+enm_eval(p, a, thr = c(type = c("max_sens_spec")))[[1]]
+enm_eval(p, a, thr = c(type = c("max_sens_spec")), bg = backg)[[1]]
 # I the case it is needed use background for calculate all other metric background values can be used in "a" argument
-enm_eval(p, backg, thr = c(type = c("MAX_TSS")))[[1]]
+enm_eval(p, backg, thr = c(type = c("max_sens_spec")))[[1]]
 }
 
 }

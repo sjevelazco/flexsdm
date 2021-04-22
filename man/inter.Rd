@@ -2,7 +2,7 @@
 % Please edit documentation in R/inter.R
 \name{inter}
 \alias{inter}
-\title{Raster interpolation}
+\title{Raster interpolation between two time periods}
 \usage{
 inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1)
 }
@@ -15,7 +15,7 @@ inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1)
 
 \item{y2}{numeric. Final year}
 
-\item{rastername}{character. word used as prefix in raster file name}
+\item{rastername}{character. Word used as prefix in raster file name}
 
 \item{dir_save}{character. Directory path and name of the folder in which you want to save the raster files}
 
@@ -25,5 +25,5 @@ inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1)
 
 }
 \description{
-Raster interpolation
+This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values. .
 }

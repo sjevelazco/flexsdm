@@ -8,14 +8,7 @@
 #' @param variables data.frame. A data.frame with environmental conditions. It is possible use two or three variables
 #' @param nbins interger. A number of classes used to split each environmental condition
 #' @param cores interger. Number of machine cores used for processing in parallel
-#' @param plot logical. Plot filtering procedure
-env_filtering <- function(data, x, y, id, variables, nbins, cores = 1, plot = FALSE) {
-  # require(maps)
-  require(raster)
-  require(progress)
-  require(dplyr)
-  require(parallel)
-  require(doParallel)
+env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
 
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
@@ -110,25 +103,6 @@ env_filtering <- function(data, x, y, id, variables, nbins, cores = 1, plot = FA
   final_points <- real_p[!duplicated(real_p$groupID), cnames]
   coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y)]
 
-  if (plot == TRUE) {
-    par(mfrow = c(1, 2), mar = c(4, 4, 0, 0.5))
-    plot(
-      variables[, 1],
-      variables[, 2],
-      pch = 19,
-      col = "grey50",
-      xlab = "Var 1",
-      ylab = "Var 2"
-    )
-    points(final_points$f1,
-      final_points$f2,
-      pch = 19,
-      col = "red"
-    )
-    plot(coord, pch = 19, col = "grey50")
-    points(coord_filter[, c(x, y)], pch = 19, col = "red")
-    par(mfrow = c(1, 1), mar = c(4, 4, 0, 0.5))
-  }
   message("Number of filtered records: ", nrow(coord_filter))
   return(coord_filter)
 }

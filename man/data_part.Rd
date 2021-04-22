@@ -17,19 +17,17 @@ data_part(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL)
 
 \item{method}{character. Vector with partition method to be used:
 \itemize{
-  \item KFOLD: Random partition in k-fold cross-validation. Usage part=c(method= 'KFOLD', folds='5'). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. Usage method = c(method = "KFOLD", folds = 10).
-  \item REP_KFOLD: Random partition in repeated k-fold cross-validation. Usage method = c(method = "REP_KFOLD", folds = 10, replicates=10). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. 'replicate' refers to the number of replicates, it assumes a value >=1.
-  \item LOOCV: Leave-one-out cross-validation (a.k.a. Jackknife) WRITE METHOD HERE . Usage method = c(method = "LOOCV").
-  \item BOOT: Random bootstrap partition. Usage part=c(method='BOOT', replicates='2', proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value >=1. 'proportion' refers to the proportion of occurrences used for model fitting, it assumes a value >0 and <=1. In this example proportion='0.7' mean that 70% of data will be used for model training, while 30% for model testing. For this method function will returns .partX columns with "train" and "test" words
-  \item BANDS: Geographic partition structured as bands arranged in a latitudinal way (type 1) or longitudinal way (type 2). Usage part=c(method= 'BANDS', type='1'). 'type' refers to the bands disposition
-  \item BLOCK: Geographic partition structured as a checkerboard (a.k.a. block cross-validation). Usage part=c(method= 'BLOCK').
+  \item kfold: Random partition in k-fold cross-validation. Usage part=c(method= 'kfold', folds='5'). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. Usage method = c(method = "kfold", folds = 10).
+  \item rep_kfold: Random partition in repeated k-fold cross-validation. Usage method = c(method = "rep_kfold", folds = 10, replicates=10). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. 'replicate' refers to the number of replicates, it assumes a value >=1.
+  \item loocv: Leave-one-out cross-validation (a.k.a. Jackknife) WRITE METHOD HERE . Usage method = c(method = "loocv").
+  \item boot: Random bootstrap partition. Usage part=c(method='boot', replicates='2', proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value >=1. 'proportion' refers to the proportion of occurrences used for model fitting, it assumes a value >0 and <=1. In this example proportion='0.7' mean that 70% of data will be used for model training, while 30% for model testing. For this method function will returns .partX columns with "train" and "test" words
   }}
 }
 \value{
-This function will return the same data.frame used in the arguments 'data' and 'gb_data' with the additional column or columns staring with the names .part with partition group. In the case of BOOT partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will returned a list with partition data for each database with the names data and bg_data.
+This function will return the same data.frame used in the arguments 'data' and 'gb_data' with the additional column or columns staring with the names .part with partition group. In the case of boot partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will returned a list with partition data for each database with the names data and bg_data.
 }
 \description{
-This function provides different partition methods based in folds (KFOLD, REP_KFOLD, and LOOCV), bootstrap (BOOT), and spatially structured (BANDS and BLOCK).
+This function provides different partition methods based in folds (kfold, rep_kfold, and loocv), bootstrap (boot), and spatially structured (BANDS and BLOCK).
 }
 \examples{
 \dontrun{
@@ -44,7 +42,7 @@ abies_db2 <- data_part(
   p_a = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
-  method = c(method = "KFOLD", folds = 10)
+  method = c(method = "kfold", folds = 10)
 )
 abies_db2
 
@@ -54,17 +52,17 @@ abies_db2 <- data_part(
   p_a = "pr_ab",
   bg_data = NULL,
   bg_p_a = NULL,
-  method = c(method = "REP_KFOLD", folds = 10, replicates = 10)
+  method = c(method = "rep_kfold", folds = 10, replicates = 10)
 )
 abies_db2
 
-# Leave-one-out cross-validation (LOOCV) method
+# Leave-one-out cross-validation (loocv) method
 abies_db2 <- data_part(
   data = abies_db,
   p_a = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
-  method = c(method = "LOOCV")
+  method = c(method = "loocv")
 )
 abies_db2
 
@@ -74,7 +72,7 @@ abies_db2 <- data_part(
   p_a = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
-  method = c(method = "BOOT", replicates = 50, proportion = 0.7)
+  method = c(method = "boot", replicates = 50, proportion = 0.7)
 )
 abies_db2$.part1 \%>\% table() # Note that for this method .partX columns have train and test words.
 }

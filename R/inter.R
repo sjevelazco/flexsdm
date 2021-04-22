@@ -1,14 +1,19 @@
-#' Raster interpolation
+#' Raster interpolation between two time periods
+#'
+#' @description This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values. .
 #'
 #' @param r1 raster. Raster object for the initial year
 #' @param r2 raster. Raster object for the final year
 #' @param y1 numeric. Initial year
 #' @param y2 numeric. Final year
-#' @param rastername character. word used as prefix in raster file name
+#' @param rastername character. Word used as prefix in raster file name
 #' @param dir_save character. Directory path and name of the folder in which you want to save the raster files
 #' @param n_cores numeric. Number of cores use for parallelization
 #'
-#' @importFrom raster brick writeRaster
+#' @importFrom doParallel registerDoParallel
+#' @importFrom foreach foreach
+#' @importFrom parallel detectCores makeCluster stopCluster
+#' @importFrom raster brick nlayers writeRaster
 #'
 #' @return
 #' @export
@@ -29,7 +34,6 @@ inter <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 
   }
   i <- length(rlist)
   rlist[[i + 1]] <- (r1 - (annual * (i)))
-  # unique(values(r2-rlist[[length(rlist)]])) #test
 
   if (is.null(rastername)) {
     rastername <- (y1:y2)
