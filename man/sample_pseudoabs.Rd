@@ -40,7 +40,7 @@ It is recommended to use a layer with the same resolution and extent that enviro
 
 \item{maskval}{integer or numeric. Values of the raster layer used for constraining the pseudo-absence sampling}
 
-\item{calibarea}{raster or shapefile. Raster or shapefile with delimited calibration area used for a given species (see calibarea function).}
+\item{calibarea}{shapefile. A SpatialPolygon or SpatialPolygonDataFrame which delimit the calibration area used for a given species (see calib_area function).}
 }
 \value{
 
@@ -63,6 +63,10 @@ single_spp <-
   dplyr::select(-pr_ab)
 names(somevar) <- paste("var", 1:4)
 
+# Regions where this species occurrs
+samp_here <- raster::extract(regions, single_spp[,2:3]) \%>\%
+unique() \%>\%
+ na.exclude()
 
 # Pseudo-absences randomly sampled throughout study area
 ps1 <-
@@ -112,11 +116,8 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
-# Pseudo-absences randomly sampled for regions where species occurs with environmental and geographical constraint
-samp_here <- raster::extract(regions, single_spp[, c("x", "y")]) \%>\%
-  unique() \%>\%
-  na.exclude()
-
+# Pseudo-absences randomly sampled within regions where species occurs
+# and with environmental and geographical constraint
 ps1 <-
   sample_pseudoabs(
     data = single_spp,
@@ -130,5 +131,52 @@ ps1 <-
 plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
+
+# Sampling pseudo-absence using a calibration area
+ca_ps1 <- calib_area(
+  data = single_spp,
+  x = 'x',
+  y = 'y',
+  method = c('buffer', width=50000),
+)
+plot(regions, col=gray.colors(9))
+plot(ca_ps1, add=T)
+points(single_spp[-1], col='blue', cex=0.7, pch=19)
+
+ps1 <-
+  sample_pseudoabs(
+    data = single_spp,
+    x = 'x',
+    y = 'y',
+    n = nrow(single_spp) * 50,
+    method = 'rnd',
+    rlayer = regions,
+    maskval = NULL,
+    calibarea = ca_ps1
+  )
+plot(regions, col=gray.colors(9))
+plot(ca_ps1, add=T)
+points(single_spp[-1], col='blue', cex=0.7, pch=19)
+points(ps1)
+
+
+ps1 <-
+  sample_pseudoabs(
+    data = single_spp,
+    x = 'x',
+    y = 'y',
+    n = nrow(single_spp) * 50,
+    method = 'rnd',
+    rlayer = regions,
+    maskval = samp_here,
+    calibarea = ca_ps1
+  )
+plot(regions, col=gray.colors(9))
+plot(ca_ps1, add=T)
+points(single_spp[-1], col='blue', cex=0.7, pch=19)
+points(ps1)
 }
+}
+\seealso{
+\code{\link{sample_background}} and \code{\link{calib_area}}.
 }

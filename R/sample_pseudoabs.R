@@ -18,7 +18,7 @@
 #' @param rlayer raster. A raster layer used for sampling pseudo-absence
 #' It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint
 #' @param maskval integer or numeric. Values of the raster layer used for constraining the pseudo-absence sampling
-#' @param calibarea raster or shapefile. Raster or shapefile with delimited calibration area used for a given species (see calibarea function).
+#' @param calibarea shapefile. A SpatialPolygon or SpatialPolygonDataFrame which delimit the calibration area used for a given species (see calib_area function).
 #'
 #' @return
 #' @export
@@ -26,6 +26,8 @@
 #' @importFrom dplyr mutate
 #' @importFrom raster extent extract cellStats match mask coordinates
 #' @importFrom stats na.exclude kmeans
+#'
+#' @seealso \code{\link{sample_background}} and \code{\link{calib_area}}.
 #'
 #' @examples
 #' \dontrun{
@@ -42,6 +44,10 @@
 #'   dplyr::select(-pr_ab)
 #' names(somevar) <- paste("var", 1:4)
 #'
+#' # Regions where this species occurrs
+#' samp_here <- raster::extract(regions, single_spp[,2:3]) %>%
+#' unique() %>%
+#'  na.exclude()
 #'
 #' # Pseudo-absences randomly sampled throughout study area
 #' ps1 <-
@@ -91,11 +97,8 @@
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
-#' # Pseudo-absences randomly sampled for regions where species occurs with environmental and geographical constraint
-#' samp_here <- raster::extract(regions, single_spp[, c("x", "y")]) %>%
-#'   unique() %>%
-#'   na.exclude()
-#'
+#' # Pseudo-absences randomly sampled within regions where species occurs
+#' # and with environmental and geographical constraint
 #' ps1 <-
 #'   sample_pseudoabs(
 #'     data = single_spp,
@@ -109,6 +112,50 @@
 #' plot(regions, col = gray.colors(9))
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
+#'
+#' # Sampling pseudo-absence using a calibration area
+#' ca_ps1 <- calib_area(
+#'   data = single_spp,
+#'   x = 'x',
+#'   y = 'y',
+#'   method = c('buffer', width=50000),
+#' )
+#' plot(regions, col=gray.colors(9))
+#' plot(ca_ps1, add=T)
+#' points(single_spp[-1], col='blue', cex=0.7, pch=19)
+#'
+#' ps1 <-
+#'   sample_pseudoabs(
+#'     data = single_spp,
+#'     x = 'x',
+#'     y = 'y',
+#'     n = nrow(single_spp) * 50,
+#'     method = 'rnd',
+#'     rlayer = regions,
+#'     maskval = NULL,
+#'     calibarea = ca_ps1
+#'   )
+#' plot(regions, col=gray.colors(9))
+#' plot(ca_ps1, add=T)
+#' points(single_spp[-1], col='blue', cex=0.7, pch=19)
+#' points(ps1)
+#'
+#'
+#' ps1 <-
+#'   sample_pseudoabs(
+#'     data = single_spp,
+#'     x = 'x',
+#'     y = 'y',
+#'     n = nrow(single_spp) * 50,
+#'     method = 'rnd',
+#'     rlayer = regions,
+#'     maskval = samp_here,
+#'     calibarea = ca_ps1
+#'   )
+#' plot(regions, col=gray.colors(9))
+#' plot(ca_ps1, add=T)
+#' points(single_spp[-1], col='blue', cex=0.7, pch=19)
+#' points(ps1)
 #' }
 sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, calibarea = NULL) {
   if (!any(c("rnd", "env_const", "geo_const", "geo_env_const", "geo_env_km_const") %in% method)) {
@@ -116,6 +163,15 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
   }
 
   rlayer <- rlayer[[1]]
+  data <- data[, c(x, y)]
+
+  if(!is.null(calibarea)){
+    allcells <- 1:(raster::ncell(rlayer))
+    suppressMessages(ncells <- raster::cellFromPolygon(rlayer, calibarea)[[1]])
+    allcells <- allcells[!allcells%in%ncells]
+    rm(ncells)
+    rlayer[allcells] <- NA
+  }
 
   if (any(method %in% "rnd")) {
     cell_samp <- sample_background(n = n, rlayer = rlayer, maskval = maskval)
@@ -228,6 +284,6 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     cell_samp <- cell_samp %>% dplyr::mutate(val = raster::extract(envp, cell_samp))
     cell_samp <- cell_samp[!is.na(cell_samp$val), -3]
   }
-
+  colnames(cell_samp) <- c(x, y)
   return(cell_samp)
 }
