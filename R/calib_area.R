@@ -5,7 +5,7 @@
 #' @param data data.frame or tibble. Database with presences
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
-#' @param method character. Pseudo-absence allocation method. Could be necessary concatenate (c()) different obje for this argument. The next methods are implemented:
+#' @param method character. Pseudo-absence allocation method. Could be necessary concatenate (c()) different object for this argument. The next methods are implemented:
 #' \itemize{
 #' \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 #' \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.

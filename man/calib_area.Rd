@@ -13,7 +13,7 @@ calib_area(data, x, y, method, groups = NULL, crs = NULL)
 
 \item{y}{character. Column name with latitude data}
 
-\item{method}{character. Pseudo-absence allocation method. Could be necessary concatenate (c()) different obje for this argument. The next methods are implemented:
+\item{method}{character. Pseudo-absence allocation method. Could be necessary concatenate (c()) different object for this argument. The next methods are implemented:
 \itemize{
 \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.
