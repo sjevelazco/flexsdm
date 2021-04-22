@@ -54,7 +54,7 @@ Spatial block cross validation
 data(spp)
 data(somevar)
 
-# Lest practice with a single species
+# Let's practice with a single species
 single_spp <- spp \%>\% dplyr::filter(species == "sp3")
 part <- block_partition(
   env_layer = somevar,
@@ -84,10 +84,10 @@ points(part$result_list[c("x", "y")],
 raster::res(part$grid)
 raster::res(somevar)
 
-# Note that is a layer with block partition, but it has a
+# Note there is a raster layer with block partition, but it has a
 # different resolution than the original environmental variables.
-# In the case you wish have a layer with the same properties
-# (i.e. resolution, extent, NAs) than your original environmental
+# If you want a grid layer with the same properties
+# (i.e. resolution, extent, NAs) as your original environmental
 # variables you can use the \code{\link{get_block}} function.
 
 grid_env <- get_block(env_layer = somevar, bestgrid = part$grid)
@@ -99,12 +99,12 @@ points(part$ResultList[c("x", "y")],
   cex = 0.5,
   pch = 19
 )
-# This layer could be very useful in case you need sample
-# pseudo_absence or background point
+# This layer could be very useful in case you need to sample
+# pseudo_absence or background points
 # See examples in \code{\link{backgroudp}} and \code{\link{pseudoabs}}
 
 
-# Now lets learn use these functions with several species
+# Now let's learn to use these functions with several species
 spp2 <- split(spp, spp$species)
 class(spp2)
 length(spp2)
@@ -125,20 +125,20 @@ part_list <- lapply(spp2, function(x) {
   result
 })
 
-# Lets create a single database for all species
+# Let's create a single database for all species
 occ_part <- dplyr::bind_rows(lapply(
   part_list,
   function(x) x[[1]]
 ), .id = "species")
 occ_part
 
-# Lets get a the best grid info for all species
+# Let's get a the best grid info for all species
 grid_info <- dplyr::bind_rows(lapply(
   part_list,
   function(x) x[[2]]
 ), .id = "species")
 
-# Lets get a the best grid layer for all species
+# Let's get a the best grid layer for all species
 grid_layer <- lapply(
   part_list,
   function(x) x[[3]]
