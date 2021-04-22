@@ -9,7 +9,6 @@
 #' @param nbins interger. A number of classes used to split each environmental condition
 #' @param cores interger. Number of machine cores used for processing in parallel
 env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
-
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
 

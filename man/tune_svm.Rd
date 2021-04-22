@@ -70,8 +70,10 @@ abies_db2 <- data_part(
 
 # Hyper-parameter values for tuning
 tune_grid <-
-expand.grid(C = c(2, 4, 8, 16, 20),
-           sigma = c(0.01, 0.1, 0.2, 0.3, 0.4))
+  expand.grid(
+    C = c(2, 4, 8, 16, 20),
+    sigma = c(0.01, 0.1, 0.2, 0.3, 0.4)
+  )
 
 svm_t <-
   tune_svm(

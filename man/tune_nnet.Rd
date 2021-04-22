@@ -70,8 +70,10 @@ abies_db2 <- data_part(
 
 # Hyper-parameter values for tuning
 tune_grid <-
-and.grid(size = c(2, 4, 6, 8, 10),
-         decay = c(0.001, 0.05, 0.1,1, 3, 4, 5, 10))
+  and.grid(
+    size = c(2, 4, 6, 8, 10),
+    decay = c(0.001, 0.05, 0.1, 1, 3, 4, 5, 10)
+  )
 
 net_t <-
   tune_nnet(

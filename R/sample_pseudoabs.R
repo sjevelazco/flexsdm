@@ -111,8 +111,7 @@
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #' }
 sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, calibarea = NULL) {
-
-  if(!any(c('rnd', 'env_const', 'geo_const', 'geo_env_const', 'geo_env_km_const')%in%method)){
+  if (!any(c("rnd", "env_const", "geo_const", "geo_env_const", "geo_env_km_const") %in% method)) {
     stop("argument 'method' was misused, available methods rnd, env_const, geo_const, geo_env_const, and geo_env_km_const")
   }
 
@@ -225,9 +224,9 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     env_changed <- stats::na.exclude(env_changed)
 
     suppressWarnings(km <- stats::kmeans(env_changed, centers = n))
-    cell_samp <- km$centers[, 1:2] %>%data.frame()
+    cell_samp <- km$centers[, 1:2] %>% data.frame()
     cell_samp <- cell_samp %>% dplyr::mutate(val = raster::extract(envp, cell_samp))
-    cell_samp <- cell_samp[!is.na(cell_samp$val),-3]
+    cell_samp <- cell_samp[!is.na(cell_samp$val), -3]
   }
 
   return(cell_samp)
