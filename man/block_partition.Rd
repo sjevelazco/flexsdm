@@ -69,19 +69,19 @@ part <- block_partition(
 )
 part
 
-part$ResultList
-part$BestGridInfo
-part$Grid
+part$result_list
+part$best_grid_info
+part$grid
 
 # Lets explore Grid object
-plot(part$Grid)
-points(part$ResultList[c("x", "y")],
-  col = c("blue", "red")[part$ResultList$.part],
+plot(part$grid)
+points(part$result_list[c("x", "y")],
+  col = c("blue", "red")[part$result_list$.part],
   cex = 0.5,
   pch = 19
 )
 
-raster::res(part$Grid)
+raster::res(part$grid)
 raster::res(somevar)
 
 # Note that is a layer with block partition, but it has a
@@ -90,7 +90,7 @@ raster::res(somevar)
 # (i.e. resolution, extent, NAs) than your original environmental
 # variables you can use the \code{\link{get_block}} function.
 
-grid_env <- get_block(env_layer = somevar, bestgrid = part$Grid)
+grid_env <- get_block(env_layer = somevar, bestgrid = part$grid)
 
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
@@ -125,7 +125,7 @@ part_list <- lapply(spp2, function(x) {
   result
 })
 
-# Lets reconstruct a single database for all species
+# Lets create a single database for all species
 occ_part <- dplyr::bind_rows(lapply(
   part_list,
   function(x) x[[1]]
@@ -148,7 +148,7 @@ sapply(grid_layer, plot)
 # Lets get a the best grid info for all species
 grid_layer2 <-
   lapply(grid_layer, function(x) {
-    get_block(env_layer = somevar[[1]], bestgrid = x)
+    get_block(env_layer = somevar[[1]], best_grid = x)
   })
 grid_layer2 <- stack(grid_layer2)
 grid_layer2
@@ -173,14 +173,14 @@ part <- block_partition(
   n_part = 2
 )
 
-part$ResultList
-part$BestGridInfo
-part$Grid
+part$result_list
+part$best_grid_info
+part$grid
 
-plot(part$Grid)
+plot(part$grid)
 points(
-  part$ResultList[c("x", "y")],
-  col = c("blue", "red")[part$ResultList$.part],
+  part$result_list[c("x", "y")],
+  col = c("blue", "red")[part$result_list$.part],
   cex = 0.5,
   pch = 19
 )
