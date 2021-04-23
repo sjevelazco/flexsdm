@@ -72,7 +72,7 @@ enm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"), sens = "0.8
 # Use of bg argument (it will only be used for calculating BOYCE index)
 enm_eval(p, a, thr = c(type = c("max_sens_spec")))[[1]]
 enm_eval(p, a, thr = c(type = c("max_sens_spec")), bg = backg)[[1]]
-# In the case it is needed use background for calculate all other metric background values can be used in "a" argument
+# I the case it is needed use background for calculate all other metric background values can be used in "a" argument
 enm_eval(p, backg, thr = c(type = c("max_sens_spec")))[[1]]
 }
 

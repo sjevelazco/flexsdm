@@ -50,14 +50,14 @@
 #' )
 #' part
 #'
-#' part$result_list
+#' part$part
 #' part$best_grid_info
 #' part$grid
 #'
 #' # Lets explore Grid object
 #' plot(part$grid)
-#' points(part$result_list[c("x", "y")],
-#'   col = c("blue", "red")[part$result_list$.part],
+#' points(part$part[c("x", "y")],
+#'   col = c("blue", "red")[part$part$.part],
 #'   cex = 0.5,
 #'   pch = 19
 #' )
@@ -75,8 +75,8 @@
 #'
 #' plot(grid_env) # this is a block layer with the same layer
 #' # properties as environmental variables.
-#' points(part$ResultList[c("x", "y")],
-#'   col = c("blue", "red")[part$ResultList$.part],
+#' points(part$part[c("x", "y")],
+#'   col = c("blue", "red")[part$part$.part],
 #'   cex = 0.5,
 #'   pch = 19
 #' )
@@ -154,14 +154,14 @@
 #'   n_part = 2
 #' )
 #'
-#' part$result_list
+#' part$part
 #' part$best_grid_info
 #' part$grid
 #'
 #' plot(part$grid)
 #' points(
-#'   part$result_list[c("x", "y")],
-#'   col = c("blue", "red")[part$result_list$.part],
+#'   part$part[c("x", "y")],
+#'   col = c("blue", "red")[part$part$.part],
 #'   cex = 0.5,
 #'   pch = 19
 #' )
@@ -505,7 +505,7 @@ unique list values in pr_ab column are: ",
 
   # Final data.frame result2----
   out <- list(
-    result_list = dplyr::tibble(result),
+    part = dplyr::tibble(result),
     best_grid_info = dplyr::tibble(Opt2),
     grid = grid[[Opt2$N.grid]]
   )

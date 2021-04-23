@@ -54,7 +54,7 @@ Spatial block cross validation
 data(spp)
 data(somevar)
 
-# Let's practice with a single species
+# Lest practice with a single species
 single_spp <- spp \%>\% dplyr::filter(species == "sp3")
 part <- block_partition(
   env_layer = somevar,
@@ -69,14 +69,14 @@ part <- block_partition(
 )
 part
 
-part$result_list
+part$part
 part$best_grid_info
 part$grid
 
 # Lets explore Grid object
 plot(part$grid)
-points(part$result_list[c("x", "y")],
-  col = c("blue", "red")[part$result_list$.part],
+points(part$part[c("x", "y")],
+  col = c("blue", "red")[part$part$.part],
   cex = 0.5,
   pch = 19
 )
@@ -84,27 +84,27 @@ points(part$result_list[c("x", "y")],
 raster::res(part$grid)
 raster::res(somevar)
 
-# Note there is a raster layer with block partition, but it has a
+# Note that is a layer with block partition, but it has a
 # different resolution than the original environmental variables.
-# If you want a grid layer with the same properties
-# (i.e. resolution, extent, NAs) as your original environmental
+# In the case you wish have a layer with the same properties
+# (i.e. resolution, extent, NAs) than your original environmental
 # variables you can use the \code{\link{get_block}} function.
 
 grid_env <- get_block(env_layer = somevar, bestgrid = part$grid)
 
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
-points(part$ResultList[c("x", "y")],
-  col = c("blue", "red")[part$ResultList$.part],
+points(part$part[c("x", "y")],
+  col = c("blue", "red")[part$part$.part],
   cex = 0.5,
   pch = 19
 )
-# This layer could be very useful in case you need to sample
-# pseudo_absence or background points
+# This layer could be very useful in case you need sample
+# pseudo_absence or background point
 # See examples in \code{\link{backgroudp}} and \code{\link{pseudoabs}}
 
 
-# Now let's learn to use these functions with several species
+# Now lets learn use these functions with several species
 spp2 <- split(spp, spp$species)
 class(spp2)
 length(spp2)
@@ -125,20 +125,20 @@ part_list <- lapply(spp2, function(x) {
   result
 })
 
-# Let's create a single database for all species
+# Lets create a single database for all species
 occ_part <- dplyr::bind_rows(lapply(
   part_list,
   function(x) x[[1]]
 ), .id = "species")
 occ_part
 
-# Let's get a the best grid info for all species
+# Lets get a the best grid info for all species
 grid_info <- dplyr::bind_rows(lapply(
   part_list,
   function(x) x[[2]]
 ), .id = "species")
 
-# Let's get a the best grid layer for all species
+# Lets get a the best grid layer for all species
 grid_layer <- lapply(
   part_list,
   function(x) x[[3]]
@@ -173,14 +173,14 @@ part <- block_partition(
   n_part = 2
 )
 
-part$result_list
+part$part
 part$best_grid_info
 part$grid
 
 plot(part$grid)
 points(
-  part$result_list[c("x", "y")],
-  col = c("blue", "red")[part$result_list$.part],
+  part$part[c("x", "y")],
+  col = c("blue", "red")[part$part$.part],
   cex = 0.5,
   pch = 19
 )
