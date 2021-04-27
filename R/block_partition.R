@@ -245,6 +245,7 @@ unique list values in pr_ab column are: ",
   DIM <-
     matrix(0, length(cellSize), 2) # the number of rows and columns of each grid
   colnames(DIM) <- c("R", "C")
+  N.grid <- 1:num_grids
 
   for (i in 1:length(cellSize)) {
     mask3 <- mask2
@@ -303,6 +304,10 @@ unique list values in pr_ab column are: ",
     pf <- which(apply(pf, 2, min) <= 1)
   }
   pp[pf] <- FALSE
+
+
+  N.grid <- N.grid[pp]
+  cellSize <- cellSize[pp]
   grid <- grid[pp]
   part <- data.frame(part[, pp])
   names(part) <- names(which(pp == TRUE))
@@ -323,6 +328,9 @@ unique list values in pr_ab column are: ",
       pf <- which(apply(pf, 2, min) <= 1)
     }
     pp[pf] <- FALSE
+
+    N.grid <- N.grid[pp]
+    cellSize <- cellSize[pp]
     grid <- grid[pp]
     part <- data.frame(part[, pp])
     names(part) <- names(which(pp == TRUE))
@@ -425,16 +433,15 @@ unique list values in pr_ab column are: ",
 
   Imoran.Grid <-
     abs(Imoran.Grid)
-  N.grid <- 1:length(cellSize[pp])
 
   Opt <-
     if (any(unique(pa) == 0)) {
-      data.frame(N.grid, cellSize = cellSize[pp], round(
+      data.frame(N.grid, cellSize = cellSize, round(
         data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P, Sd.Grid.A),
         3
       ))
     } else {
-      data.frame(N.grid, cellSize = cellSize[pp], round(
+      data.frame(N.grid, cellSize = cellSize, round(
         data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P),
         3
       ))
