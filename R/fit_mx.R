@@ -104,6 +104,13 @@ fit_mx <- function(data,
     }
   }
 
+  # Remove NAs
+  data <- rm_na(x = data)
+  if (!is.null(background)) {
+    data <- rm_na(x = background)
+  }
+
+  # Compare pr_ab and background column names
   p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
   for (i in p_names) {
     if (!is.null(background)) {

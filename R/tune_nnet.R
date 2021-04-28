@@ -105,6 +105,9 @@ tune_nnet <-
       }
     }
 
+    # Remove NAs
+    data <- rm_na(x = data)
+
     # Formula
     Fmula <- stats::formula(paste(
       response, "~",

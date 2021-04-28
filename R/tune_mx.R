@@ -85,6 +85,12 @@ tune_mx <-
       }
     }
 
+    # Remove NAs
+    data <- rm_na(x = data)
+    if (!is.null(background)) {
+      data <- rm_na(x = background)
+    }
+
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
       grid <- data.frame(regmult = 1, classes = "default")

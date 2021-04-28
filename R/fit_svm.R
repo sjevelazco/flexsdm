@@ -116,6 +116,9 @@ fit_svm <- function(data,
     }
   }
 
+  # Remove NAs
+  data <- rm_na(x = data)
+
   # Formula
   if (is.null(fit_formula)) {
     formula1 <- stats::formula(paste(
