@@ -180,7 +180,7 @@ block_partition <- function(env_layer,
     stop("The use of n_part values other than 2 has not yet been implemented.")
   }
 
-  # Transform data to data.frame and list
+  # Select columns
   data <- data.frame(data)
   data <- data[, c(pr_ab, x, y)]
   colnames(data) <- c("pr_ab", "x", "y")
@@ -217,6 +217,7 @@ unique list values in pr_ab column are: ",
   names(mask) <- "group"
   mask[!is.na(mask[, ])] <- 1
 
+
   # Extent
   e <- raster::extent(mask)
 
@@ -245,11 +246,11 @@ unique list values in pr_ab column are: ",
   DIM <-
     matrix(0, length(cellSize), 2) # the number of rows and columns of each grid
   colnames(DIM) <- c("R", "C")
-  N.grid <- 1:num_grids
 
   for (i in 1:length(cellSize)) {
     mask3 <- mask2
     raster::res(mask3) <- cellSize[i]
+    mask3 <- raster::extend(mask3, y = c(1, 1))
     DIM[i, ] <- dim(mask3)[1:2]
     raster::values(mask3) <- 1 # Add values to cells /
     NAS <-
@@ -265,8 +266,7 @@ unique list values in pr_ab column are: ",
     }
     grid[[i]] <- mask3
   }
-  rm(mask3)
-  rm(mask2)
+  rm(list=c('mask3', 'mask2', 'mask'))
 
   # In this section is assigned the group of each cell
   for (i in 1:length(grid)) {
@@ -305,8 +305,6 @@ unique list values in pr_ab column are: ",
   }
   pp[pf] <- FALSE
 
-
-  N.grid <- N.grid[pp]
   cellSize <- cellSize[pp]
   grid <- grid[pp]
   part <- data.frame(part[, pp])
@@ -329,7 +327,6 @@ unique list values in pr_ab column are: ",
     }
     pp[pf] <- FALSE
 
-    N.grid <- N.grid[pp]
     cellSize <- cellSize[pp]
     grid <- grid[pp]
     part <- data.frame(part[, pp])
@@ -371,8 +368,7 @@ unique list values in pr_ab column are: ",
     Env.P2 <- split(Env.P1[, -1], Env.P1[, 1])
     euq1 <- flexclust::dist2(Env.P2[[1]], Env.P2[[2]])
     EnvirDist.Grid[i] <- mean(euq1)
-    rm(Env.P1)
-    rm(Env.P2)
+    rm(list=c('Env.P1', 'Env.P2'))
   }
 
 
@@ -436,12 +432,12 @@ unique list values in pr_ab column are: ",
 
   Opt <-
     if (any(unique(pa) == 0)) {
-      data.frame(N.grid, cellSize = cellSize, round(
+      data.frame(N.grid=1:length(cellSize), cellSize = cellSize, round(
         data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P, Sd.Grid.A),
         3
       ))
     } else {
-      data.frame(N.grid, cellSize = cellSize, round(
+      data.frame(N.grid=1:length(cellSize), cellSize = cellSize, round(
         data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P),
         3
       ))
@@ -502,8 +498,6 @@ unique list values in pr_ab column are: ",
     Opt2 <- Opt2[nrow(Opt2), ]
   }
 
-  # Optimum size for presences
-  Optimum.Grid <- grid[[Opt2$N.grid]]
 
   # Final data.frame result----
   result <- data.frame(presences2@data, partition = c(part[, Opt2$N.grid]))
@@ -514,7 +508,7 @@ unique list values in pr_ab column are: ",
   out <- list(
     part = dplyr::tibble(result),
     best_grid_info = dplyr::tibble(Opt2),
-    grid = grid[[Opt2$N.grid]]
+    grid = grid[[Opt2$N.grid]] # Optimum size for presences
   )
   return(out)
 }
