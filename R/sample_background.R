@@ -54,16 +54,15 @@
 #' # Delimit a calibration area with calib_area
 #' ca_ps1 <- calib_area(
 #'   data = single_spp,
-#'   x = 'x',
-#'   y = 'y',
-#'   method = c('buffer', width=50000),
+#'   x = "x",
+#'   y = "y",
+#'   method = c("buffer", width = 50000),
 #' )
 #' plot(grid_env)
-#' plot(ca_ps1, add=T)
-#' points(single_spp[-1], col='blue', cex=0.7, pch=19)
+#' plot(ca_ps1, add = T)
+#' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' sample_background(n = 1000, rlayer = grid_env, maskval = 1, calibarea = ca_ps1) %>%
-#'   points(col='red')
-#'
+#'   points(col = "red")
 #' }
 #'
 #' @importFrom dplyr tibble
@@ -74,13 +73,12 @@
 #'
 #' @examples
 sample_background <- function(n, rlayer, maskval = NULL, calibarea = NULL) {
-
   rlayer <- rlayer[[1]]
 
-  if(!is.null(calibarea)){
+  if (!is.null(calibarea)) {
     allcells <- 1:(raster::ncell(rlayer))
     suppressMessages(ncells <- raster::cellFromPolygon(rlayer, calibarea)[[1]])
-    allcells <- allcells[!allcells%in%ncells]
+    allcells <- allcells[!allcells %in% ncells]
     rm(ncells)
     rlayer[allcells] <- NA
   }

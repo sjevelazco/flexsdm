@@ -79,5 +79,5 @@ abies_db2$.part1 \%>\% table() # Note that for this method .partX columns have t
 
 }
 \seealso{
-
+\code{\link{sample_pseudoabs}}, \code{\link{sample_background}}
 }

@@ -128,12 +128,12 @@ boyce <- function(pres,
 
 
 # Remove NAs
-rm_na <- function(x){
+rm_na <- function(x) {
   n0 <- nrow(x)
   x <- stats::na.exclude(x)
   n1 <- nrow(x)
-  if(n0>n1){
-    message(n0-n1, ' rows were excluded from database because NAs were found')
+  if (n0 > n1) {
+    message(n0 - n1, " rows were excluded from database because NAs were found")
   }
   return(x)
 }

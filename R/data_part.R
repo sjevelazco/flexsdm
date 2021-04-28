@@ -20,7 +20,7 @@
 #'
 #' @importFrom dplyr group_by mutate n summarise filter select slice_sample full_join left_join tibble
 #'
-#' @seealso \code{\link{pseudoabs}}, \code{\link{backgroudp}}}
+#' @seealso \code{\link{sample_pseudoabs}}, \code{\link{sample_background}}
 #'
 #' @examples
 #' \dontrun{

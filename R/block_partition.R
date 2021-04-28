@@ -22,11 +22,11 @@
 #' @export
 #'
 #' @importFrom ape Moran.I
-#' @importFrom dplyr group_by pull
+#' @importFrom dplyr group_by slice_sample pull tibble
 #' @importFrom flexclust dist2
-#' @importFrom raster brick extent extract crs projection values res ncell cellFromXY
+#' @importFrom raster res brick extent extract crs projection extend values ncell cellFromXY
 #' @importFrom sp coordinates
-#' @importFrom stats sd
+#' @importFrom stats complete.cases sd
 #'
 #' @seealso \code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_max_res}}.
 #'
@@ -266,7 +266,7 @@ unique list values in pr_ab column are: ",
     }
     grid[[i]] <- mask3
   }
-  rm(list=c('mask3', 'mask2', 'mask'))
+  rm(list = c("mask3", "mask2", "mask"))
 
   # In this section is assigned the group of each cell
   for (i in 1:length(grid)) {
@@ -368,7 +368,7 @@ unique list values in pr_ab column are: ",
     Env.P2 <- split(Env.P1[, -1], Env.P1[, 1])
     euq1 <- flexclust::dist2(Env.P2[[1]], Env.P2[[2]])
     EnvirDist.Grid[i] <- mean(euq1)
-    rm(list=c('Env.P1', 'Env.P2'))
+    rm(list = c("Env.P1", "Env.P2"))
   }
 
 
@@ -432,12 +432,12 @@ unique list values in pr_ab column are: ",
 
   Opt <-
     if (any(unique(pa) == 0)) {
-      data.frame(N.grid=1:length(cellSize), cellSize = cellSize, round(
+      data.frame(N.grid = 1:length(cellSize), cellSize = cellSize, round(
         data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P, Sd.Grid.A),
         3
       ))
     } else {
-      data.frame(N.grid=1:length(cellSize), cellSize = cellSize, round(
+      data.frame(N.grid = 1:length(cellSize), cellSize = cellSize, round(
         data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P),
         3
       ))
