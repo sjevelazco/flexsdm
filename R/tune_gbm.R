@@ -7,7 +7,7 @@
 #' @param predictors_f character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
 #' @param partition character. Column name with training and validation partition groups.
 #' @param grid data.frame. Provide a data frame object with algorithm hyper-parameters values to be tested. It Is recommended to generate this data.frame with grid() function. Hyper-parameters needed for tuning are 'n.trees', 'shrinkage', and 'n.minobsinnode'.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1) useful for threshold-dependent performance metrics. It is possible not define a threshold or use more than one, in these cases, function will return the best model and the best threshold. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
@@ -28,7 +28,7 @@
 #' \item model: A "gbm" class object. This object can be used for predicting.
 #' \item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
 #' \item best_hyper: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
-#' \item selected_threshold: Value of the threshold selected.
+#' \item selected_thresholds: Value of the threshold selected.
 #' \item threshold_table: Value of all threshold.
 #' }
 #'
@@ -85,8 +85,8 @@
 #' gbm_t$model
 #' gbm_t$tune_performance
 #' gbm_t$best_hyper
-#' gbm_t$selected_threshold
-#' gbm_t$threshold_table
+#' gbm_t$selected_thresholds
+#' gbm_t$all_thresholds
 #'
 #' # Graphical exploration of performance of each hyper-parameter setting
 #' require(ggplot2)
@@ -208,6 +208,7 @@ tune_gbm <-
         filt <- sapply(mod, function(x) class(x) == "gbm")
         mod <- mod[filt]
         grid2 <- grid[filt, ]
+        tnames <- apply(grid2, 1, function(x) paste(x, collapse = '_'))
 
         # Predict for presences absences data
         pred_test <-
@@ -235,9 +236,24 @@ tune_gbm <-
             )
         }
 
-        eval <- dplyr::bind_rows(lapply(eval, function(x) x$selected_threshold))
-        eval <- dplyr::tibble(cbind(grid2, eval))
-        eval_partial[[i]] <- eval
+
+        if (!is.null(thr)) {
+          eval <- lapply(eval, function(x)
+            x$selected_thresholds)
+          names(eval) <- tnames
+          eval <- dplyr::bind_rows(eval, .id='tnames')
+        } else {
+          eval <- lapply(eval, function(x)
+            x$all_thresholds)
+          names(eval) <- tnames
+          eval <- dplyr::bind_rows(eval, .id='tnames')
+        }
+
+          eval <-
+            dplyr::tibble(dplyr::left_join(dplyr::mutate(grid2, tnames),
+                                           eval, by = "tnames")) %>%
+            dplyr::select(-tnames)
+          eval_partial[[i]] <- eval
       }
 
       # Create final database with parameter performance
@@ -296,12 +312,19 @@ tune_gbm <-
       thr = thr
     )
 
+    if(!is.null(thr)) {
+      st <- threshold$selected_thresholds
+    } else {
+      st <- threshold$all_thresholds %>%
+        dplyr::filter(threshold==best_tune$threshold)
+    }
+
     result <- list(
       model = mod,
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
-      selected_threshold = threshold[[1]] %>% dplyr::select(threshold:values),
-      threshold_table = threshold[[2]] %>% dplyr::select(threshold:values)
+      selected_thresholds = st %>% dplyr::select(threshold:values),
+      all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values)
     )
     return(result)
   }

@@ -29,7 +29,7 @@ tune_gbm(
 
 \item{grid}{data.frame. Provide a data frame object with algorithm hyper-parameters values to be tested. It Is recommended to generate this data.frame with grid() function. Hyper-parameters needed for tuning are 'n.trees', 'shrinkage', and 'n.minobsinnode'.}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1) useful for threshold-dependent performance metrics. It is possible not define a threshold or use more than one, in these cases, function will return the best model and the best threshold. It is necessary to provide a vector for this argument. The next threshold area available:
 \itemize{
   \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
@@ -50,7 +50,7 @@ A list object with:
 \item model: A "gbm" class object. This object can be used for predicting.
 \item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
 \item best_hyper: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
-\item selected_threshold: Value of the threshold selected.
+\item selected_thresholds: Value of the threshold selected.
 \item threshold_table: Value of all threshold.
 }
 }
@@ -102,8 +102,8 @@ gbm_t <-
 gbm_t$model
 gbm_t$tune_performance
 gbm_t$best_hyper
-gbm_t$selected_threshold
-gbm_t$threshold_table
+gbm_t$selected_thresholds
+gbm_t$all_thresholds
 
 # Graphical exploration of performance of each hyper-parameter setting
 require(ggplot2)
