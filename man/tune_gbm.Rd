@@ -48,8 +48,8 @@ tune_gbm(
 A list object with:
 \itemize{
 \item model: A "gbm" class object. This object can be used for predicting.
-\item tune_performance: Performance metric (see \code{\link{enm_eval}}) for each combination of the hyper-parameters.
-\item best_hyper: Hyper-parameters values and performance metric (see \code{\link{enm_eval}}) for the best hyper-parameters combination.
+\item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+\item best_hyper: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
 \item selected_threshold: Value of the threshold selected.
 \item threshold_table: Value of all threshold.
 }

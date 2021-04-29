@@ -63,7 +63,7 @@ response, predictors, and predictors_f arguments}
 A list object with:
 \itemize{
 \item model: A "MaxEnt" class object. This object can be used for predicting.
-\item performance: Performance metric (see \code{\link{enm_eval}}).
+\item performance: Performance metric (see \code{\link{sdm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 \item selected_threshold: Value of the threshold selected.
 \item threshold_table: Value of all threshold.
