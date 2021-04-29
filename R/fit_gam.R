@@ -32,7 +32,7 @@
 #' \item model: A "Gam" "glm" "lm"  class object. This object can be used for predicting.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
-#' \item selected_threshold: Value of the threshold selected.
+#' \item selected_thresholds: Value of the threshold selected.
 #' \item threshold_table: Value of all threshold.
 #' }
 #'
@@ -64,8 +64,8 @@
 #' )
 #' gam_t1$model %>% plot()
 #' gam_t1$performance
-#' gam_t1$selected_threshold
-#' gam_t1$threshold_table
+#' gam_t1$selected_thresholds
+#' gam_t1$all_thresholds
 #'
 #' # Using our own formula
 #' gam_t2 <- fit_gam(
@@ -82,7 +82,7 @@
 #'
 #' gam_t2$model %>% plot()
 #' gam_t2$performance %>% dplyr::select(ends_with("_mean"))
-#' gam_t2$selected_threshold
+#' gam_t2$selected_thresholds
 #' gam_t2$threshold_table
 #'
 #' # Using repeated k-fold partition method

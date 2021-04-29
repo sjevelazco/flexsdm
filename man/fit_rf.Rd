@@ -84,8 +84,8 @@ rf_t1 <- fit_rf(
 
 rf_t1$model
 rf_t1$performance
-rf_t1$selected_threshold
-rf_t1$threshold_table
+rf_t1$selected_thresholds
+rf_t1$all_thresholds
 
 # Using bootstrap partition method and only with presence-absence
 # and get performance for several method

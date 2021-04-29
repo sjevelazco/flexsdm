@@ -32,7 +32,7 @@
 #' \item model: A "gbm" class object. This object can be used for predicting.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
-#' \item selected_threshold: Value of the threshold selected.
+#' \item selected_thresholds: Value of the threshold selected.
 #' \item threshold_table: Value of all threshold.
 #' }
 #'
@@ -64,8 +64,8 @@
 #' )
 #' gbm_t1$model
 #' gbm_t1$performance
-#' gbm_t1$selected_threshold
-#' gbm_t1$threshold_table
+#' gbm_t1$selected_thresholds
+#' gbm_t1$all_thresholds
 #'
 #' # Using bootstrap partition method
 #' abies_db2 <- data_part(
@@ -190,7 +190,7 @@ fit_gbm <- function(data,
           a = pred_test$pred[pred_test$pr_ab == 0],
           thr = thr
         )
-      eval_partial[[i]] <- eval$selected_threshold
+      eval_partial[[i]] <- eval$selected_thresholds
     }
 
     # Create final database with parameter performance
@@ -237,8 +237,8 @@ fit_gbm <- function(data,
   result <- list(
     model = mod,
     performance = eval_final,
-    selected_threshold = threshold[[1]] %>% dplyr::select(threshold:values),
-    threshold_table = threshold[[2]] %>% dplyr::select(threshold:values)
+    selected_thresholds = threshold[[1]] %>% dplyr::select(threshold:values),
+    all_thresholds = threshold[[2]] %>% dplyr::select(threshold:values)
   )
   return(result)
 }

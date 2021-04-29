@@ -364,18 +364,17 @@ sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred
   if (!is.null(thr)) {
     if (thr == "selected_thr") {
       thr_df <- lapply(models, function(x) {
-        x[["selected_threshold"]]
+        x[["selected_thresholds"]]
       })
     }
     if (thr == "all_thr") {
       thr_df <- lapply(models, function(x) {
-        x[["threshold_table"]]
+        x[["all_thresholds"]]
       })
     }
 
     model_b <- list()
     for (i in 1:length(model_c)) {
-      print(i)
       model_b[[i]] <-
         lapply(thr_df[[i]]$values, function(x) {
           model_c[[i]] > x

@@ -84,8 +84,8 @@ nnet_t1 <- fit_nnet(
 
 nnet_t1$model
 nnet_t1$performance
-nnet_t1$selected_threshold
-nnet_t1$threshold_table
+nnet_t1$selected_thresholds
+nnet_t1$all_thresholds
 
 # Using bootstrap partition method and only with presence-absence
 # and get performance for several method

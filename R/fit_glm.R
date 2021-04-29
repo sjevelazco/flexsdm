@@ -69,8 +69,8 @@
 #' )
 #' glm_t1$model
 #' glm_t1$performance
-#' glm_t1$selected_threshold
-#' glm_t1$threshold_table
+#' glm_t1$selected_thresholds
+#' glm_t1$all_thresholds
 #'
 #'
 #' glm_t2 <- fit_glm(

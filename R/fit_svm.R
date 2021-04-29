@@ -32,8 +32,8 @@
 #' \item model: A "ksvm" class object. This object can be used for predicting.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
-#' \item selected_threshold: Value of the threshold selected.
-#' \item threshold_table: Value of all threshold.
+#' \item selected_thresholds: Value of the threshold selected.
+#' \item all_thresholds: Value of all threshold.
 #' }
 #'
 #' @export
@@ -66,8 +66,8 @@
 #'
 #' svm_t1$model
 #' svm_t1$performance
-#' svm_t1$selected_threshold
-#' svm_t1$threshold_table
+#' svm_t1$selected_thresholds
+#' svm_t1$all_thresholds
 #'
 #' # Using bootstrap partition method and only with presence-absence
 #' # and get performance for several method

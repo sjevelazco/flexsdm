@@ -31,7 +31,7 @@
 #' \item model: A "graf" class object. This object can be used for predicting.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
-#' \item selected_threshold: Value of the threshold selected.
+#' \item selected_thresholds: Value of the threshold selected.
 #' \item threshold_table: Value of all threshold.
 #' }
 #'
@@ -70,8 +70,8 @@
 #'
 #' gaup_t1$model
 #' gaup_t1$performance
-#' gaup_t1$selected_threshold
-#' gaup_t1$threshold_table
+#' gaup_t1$selected_thresholds
+#' gaup_t1$all_thresholds
 #'
 #' # Using bootstrap partition method and only with presence-absence
 #' abies_db2 <- data_part(
