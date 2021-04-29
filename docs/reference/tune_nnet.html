@@ -153,7 +153,7 @@
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1) useful for threshold-dependent performance metrics. It is possible not define a threshold or use more than one, in these cases, function will return the best model and the best threshold. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
@@ -224,8 +224,8 @@
 <span class='va'>net_t</span><span class='op'>$</span><span class='va'>model</span>
 <span class='va'>net_t</span><span class='op'>$</span><span class='va'>tune_performance</span>
 <span class='va'>net_t</span><span class='op'>$</span><span class='va'>best_hyper</span>
-<span class='va'>net_t</span><span class='op'>$</span><span class='va'>selected_threshold</span>
-<span class='va'>net_t</span><span class='op'>$</span><span class='va'>threshold_table</span>
+<span class='va'>net_t</span><span class='op'>$</span><span class='va'>selected_thresholds</span>
+<span class='va'>net_t</span><span class='op'>$</span><span class='va'>all_thresholds</span>
 <span class='op'>}</span>
 
 </div></pre>

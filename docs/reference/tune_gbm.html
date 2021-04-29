@@ -153,7 +153,7 @@
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1) useful for threshold-dependent performance metrics. It is possible not define a threshold or use more than one, in these cases, function will return the best model and the best threshold. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
@@ -175,9 +175,9 @@
 
     <p>A list object with:</p><ul>
 <li><p>model: A "gbm" class object. This object can be used for predicting.</p></li>
-<li><p>tune_performance: Performance metric (see <code><a href='enm_eval.html'>enm_eval</a></code>) for each combination of the hyper-parameters.</p></li>
-<li><p>best_hyper: Hyper-parameters values and performance metric (see <code><a href='enm_eval.html'>enm_eval</a></code>) for the best hyper-parameters combination.</p></li>
-<li><p>selected_threshold: Value of the threshold selected.</p></li>
+<li><p>tune_performance: Performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>) for each combination of the hyper-parameters.</p></li>
+<li><p>best_hyper: Hyper-parameters values and performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>) for the best hyper-parameters combination.</p></li>
+<li><p>selected_thresholds: Value of the threshold selected.</p></li>
 <li><p>threshold_table: Value of all threshold.</p></li>
 </ul>
 
@@ -230,8 +230,8 @@
 <span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>model</span>
 <span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>tune_performance</span>
 <span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>best_hyper</span>
-<span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>selected_threshold</span>
-<span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>threshold_table</span>
+<span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>selected_thresholds</span>
+<span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>all_thresholds</span>
 
 <span class='co'># Graphical exploration of performance of each hyper-parameter setting</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
