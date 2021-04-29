@@ -30,7 +30,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "Gam" "glm" "lm"  class object. This object can be used for predicting.
-#' \item performance: Performance metric (see \code{\link{enm_eval}}).
+#' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item selected_threshold: Value of the threshold selected.
 #' \item threshold_table: Value of all threshold.
@@ -204,12 +204,16 @@ fit_gam <- function(data,
 
       # Validation of model
       eval <-
-        enm_eval(
+        sdm_eval(
           p = pred_test$pred[pred_test$pr_ab == 1],
           a = pred_test$pred[pred_test$pr_ab == 0],
           thr = thr
         )
-      eval_partial[[i]] <- eval$selected_threshold
+      if(is.null(thr)){
+        eval_partial[[i]] <- eval$all_thresholds
+      } else {
+        eval_partial[[i]] <- eval$selected_thresholds
+      }
     }
 
     # Create final database with parameter performance
@@ -246,17 +250,23 @@ fit_gam <- function(data,
     ))
   )
 
-  threshold <- enm_eval(
+  threshold <- sdm_eval(
     p = pred_test$pred[pred_test$pr_ab == 1],
     a = pred_test$pred[pred_test$pr_ab == 0],
     thr = thr
   )
 
+  if(!is.null(thr)) {
+    st <- threshold$selected_thresholds
+  } else {
+    st <- threshold$all_thresholds
+  }
+
   result <- list(
     model = mod,
     performance = eval_final,
-    selected_threshold = threshold[[1]] %>% dplyr::select(threshold:values),
-    threshold_table = threshold[[2]] %>% dplyr::select(threshold:values)
+    selected_thresholds = st %>% dplyr::select(threshold:values),
+    all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values)
   )
   return(result)
 }

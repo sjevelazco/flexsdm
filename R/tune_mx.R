@@ -222,14 +222,14 @@ tune_mx <-
         for (ii in 1:length(pred_test)) {
           if (is.null(background)) {
             eval[[ii]] <-
-              enm_eval(
+              sdm_eval(
                 p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
                 a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
                 thr = thr
               )
           } else {
             eval[[ii]] <-
-              enm_eval(
+              sdm_eval(
                 p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
                 a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
                 thr = thr,
@@ -293,7 +293,7 @@ tune_mx <-
     )
 
     if (is.null(background)) {
-      threshold <- enm_eval(
+      threshold <- sdm_eval(
         p = pred_test$pred[pred_test$pr_ab == 1],
         a = pred_test$pred[pred_test$pr_ab == 0],
         thr = thr
@@ -304,7 +304,7 @@ tune_mx <-
         clamp = TRUE,
         type = pred_type
       )[, 1]
-      threshold <- enm_eval(
+      threshold <- sdm_eval(
         p = pred_test$pred[pred_test$pr_ab == 1],
         a = pred_test$pred[pred_test$pr_ab == 0],
         thr = thr,
