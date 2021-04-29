@@ -195,7 +195,7 @@ tune_nnet <-
         eval <- list()
         for (ii in 1:length(pred_test)) {
           eval[[ii]] <-
-            enm_eval(
+            sdm_eval(
               p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
               a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
               thr = thr
@@ -254,7 +254,7 @@ tune_nnet <-
       )
     )
 
-    threshold <- enm_eval(
+    threshold <- sdm_eval(
       p = pred_test$pred[pred_test$pr_ab == 1],
       a = pred_test$pred[pred_test$pr_ab == 0],
       thr = thr

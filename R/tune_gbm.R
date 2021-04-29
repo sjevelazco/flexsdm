@@ -26,8 +26,8 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "gbm" class object. This object can be used for predicting.
-#' \item tune_performance: Performance metric (see \code{\link{enm_eval}}) for each combination of the hyper-parameters.
-#' \item best_hyper: Hyper-parameters values and performance metric (see \code{\link{enm_eval}}) for the best hyper-parameters combination.
+#' \item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+#' \item best_hyper: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
 #' \item selected_threshold: Value of the threshold selected.
 #' \item threshold_table: Value of all threshold.
 #' }
@@ -228,7 +228,7 @@ tune_gbm <-
         eval <- list()
         for (ii in 1:length(pred_test)) {
           eval[[ii]] <-
-            enm_eval(
+            sdm_eval(
               p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
               a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
               thr = thr
@@ -290,7 +290,7 @@ tune_gbm <-
       ))
     )
 
-    threshold <- enm_eval(
+    threshold <- sdm_eval(
       p = pred_test$pred[pred_test$pr_ab == 1],
       a = pred_test$pred[pred_test$pr_ab == 0],
       thr = thr
