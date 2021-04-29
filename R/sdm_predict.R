@@ -20,7 +20,6 @@
 #' @importFrom kernlab predict
 #' @importFrom raster ncell as.data.frame values predict stack
 #' @importFrom stats na.exclude predict
-#' @importFrom utils stack
 #' @examples
 sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred_type = "cloglog") {
 
@@ -383,7 +382,7 @@ sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred
         }) %>% raster::stack()
     }
     names(model_b) <- names(model_c)
-    result <- mapply(utils::stack, model_c, model_b, SIMPLIFY = FALSE)
+    result <- mapply(raster::stack, model_c, model_b, SIMPLIFY = FALSE)
     return(result)
   } else {
     result <- model_c
