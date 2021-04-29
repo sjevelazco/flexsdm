@@ -30,18 +30,20 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
       cc <- c("category")
       names(cc) <- factvar
       pred_df[factvar] <-
-        dplyr::left_join(pred_df[factvar], df1, by = cc)[, 2]
+        dplyr::left_join(pred_df[factvar], df1[[1]], by = cc)[, 2]
       names(pred_df)[names(pred_df) == factvar] <- factvar2
       pred_df[, factvar2] <- pred_df[, factvar2] %>% as.factor()
     }
   }
+
+
 
   #### graf models ####
   wm <- which(clss == "graf")
   if (length(wm) > 0) {
     wm <- names(wm)
     for (i in wm) {
-      model_c[[wm]] <- GRaF::predict.graf(m[[wm]], pred, type = "response", CI = NULL)
+      suppressWarnings(model_c[[i]] <- GRaF::predict.graf(m[[i]], pred, type = "response", CI = NULL))
     }
   }
 
@@ -55,35 +57,39 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
       values(r) <- NA
 
       # Test factor levels
-      f <- which(sapply(m[[wm]]$data, class) == "factor")
+      f <- which(sapply(m[[i]]$data, class) == "factor")
       if (f > 0) {
         for (ii in 1:length(f)) {
-          vf <- m[[wm]]$data[, f[ii]] %>% unique()
+          vf <- m[[i]]$data[, f[ii]] %>% unique()
           vf2 <- pred_df[, names(f[ii])] %>% unique()
           vfilter <- list()
           if (sum(!vf2 %in% vf) > 0) {
             vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
           }
         }
-        if (length(vfilter) > 1) {
-          vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+        if (length(vfilter) > 0) {
+          if (length(vfilter) > 1) {
+            vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+          } else {
+            vfilter <- vfilter[[1]]
+          }
         } else {
-          vfilter <- vfilter[[1]]
+          vfilter <- 0
         }
       }
 
       if (sum(vfilter) > 0) {
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
-          gam::predict.Gam(m[[wm]], pred_df[!vfilter, ], type = "response")
+          gam::predict.Gam(m[[i]], pred_df[!vfilter, ], type = "response")
         r[as.numeric(rownames(pred_df))] <- v
         rm(v)
       } else {
         r[as.numeric(rownames(pred_df))] <-
-          gam::predict.Gam(m[[wm]], pred_df, type = "response")
+          gam::predict.Gam(m[[i]], pred_df, type = "response")
       }
 
-      model_c[[wm]] <- r
+      model_c[[i]] <- r
     }
   }
 
@@ -96,35 +102,39 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
       values(r) <- NA
 
       # Test factor levels
-      f <- which(sapply(m[[wm]]$data, class) == "factor")
+      f <- which(sapply(m[[i]]$data, class) == "factor")
       if (f > 0) {
         for (ii in 1:length(f)) {
-          vf <- m[[wm]]$data[, f[ii]] %>% unique()
+          vf <- m[[i]]$data[, f[ii]] %>% unique()
           vf2 <- pred_df[, names(f[ii])] %>% unique()
           vfilter <- list()
           if (sum(!vf2 %in% vf) > 0) {
             vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
           }
         }
-        if (length(vfilter) > 1) {
-          vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+        if (length(vfilter) > 0) {
+          if (length(vfilter) > 1) {
+            vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+          } else {
+            vfilter <- vfilter[[1]]
+          }
         } else {
-          vfilter <- vfilter[[1]]
+          vfilter <- 0
         }
       }
 
       if (sum(vfilter) > 0) {
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
-          stats::predict(m[[wm]], pred_df[!vfilter, ], type = "response")
+          stats::predict(m[[i]], pred_df[!vfilter, ], type = "response")
         r[as.numeric(rownames(pred_df))] <- v
         rm(v)
       } else {
         r[as.numeric(rownames(pred_df))] <-
-          stats::predict(m[[wm]], pred_df, type = "response")
+          stats::predict(m[[i]], pred_df, type = "response")
       }
 
-      model_c[[wm]] <- r
+      model_c[[i]] <- r
     }
   }
 
@@ -136,9 +146,10 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
       r <- pred[[1]]
       values(r) <- NA
       r[as.numeric(rownames(pred_df))] <-
-        stats::predict(m[[wm]], pred_df, type = "response")
+        suppressMessages(stats::predict(m[[i]], pred_df, type = "response"))
 
-      model_c[[wm]] <- r
+      model_c[[i]] <- r
+      rm(i)
     }
   }
 
@@ -148,7 +159,7 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
   if (length(wm) > 0) {
     wm <- names(wm)
     for (i in wm) {
-      model_c[[wm]] <- raster::predict(pred, m[[wm]], clamp = clamp, type = pred_type)
+      model_c[[i]] <- raster::predict(pred, m[[i]], clamp = clamp, type = pred_type)
     }
   }
 
@@ -161,7 +172,7 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
       values(r) <- NA
 
       # Test factor levels
-      f <- (m[[wm]]$xlevels)
+      f <- (m[[i]]$xlevels)
 
       if (length(f) > 0) {
         for (ii in 1:length(f)) {
@@ -174,25 +185,29 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
             vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
           }
         }
-        if (length(vfilter) > 1) {
-          vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+        if (length(vfilter) > 0) {
+          if (length(vfilter) > 1) {
+            vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+          } else {
+            vfilter <- vfilter[[1]]
+          }
         } else {
-          vfilter <- vfilter[[1]]
+          vfilter <- 0
         }
       }
 
       if (sum(vfilter) > 0) {
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
-          stats::predict(m[[wm]], pred_df[!vfilter, ], type = "raw")
+          stats::predict(m[[i]], pred_df[!vfilter, ], type = "raw")
         r[as.numeric(rownames(pred_df))] <- v
         rm(v)
       } else {
         r[as.numeric(rownames(pred_df))] <-
-          stats::predict(m[[wm]], pred_df, type = "raw")
+          stats::predict(m[[i]], pred_df, type = "raw")
       }
 
-      model_c[[wm]] <- r
+      model_c[[i]] <- r
     }
   }
 
@@ -207,7 +222,7 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
 
       # Test factor levels
       f <-
-        m[[wm]]$forest$xlevels[sapply(m[[wm]]$forest$xlevels, function(x) {
+        m[[i]]$forest$xlevels[sapply(m[[i]]$forest$xlevels, function(x) {
           class(x) == "character"
         })]
       if (length(f) > 0) {
@@ -221,10 +236,14 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
             vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
           }
         }
-        if (length(vfilter) > 1) {
-          vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+        if (length(vfilter) > 0) {
+          if (length(vfilter) > 1) {
+            vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+          } else {
+            vfilter <- vfilter[[1]]
+          }
         } else {
-          vfilter <- vfilter[[1]]
+          vfilter <- 0
         }
       }
 
@@ -232,7 +251,7 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
       if (sum(vfilter) > 0) {
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
-          stats::predict(m[[wm]], pred_df[!vfilter, ] %>%
+          stats::predict(m[[i]], pred_df[!vfilter, ] %>%
             dplyr::mutate(across(
               .cols = names(f),
               .fns = ~ droplevels(.)
@@ -243,10 +262,10 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
         rm(v)
       } else {
         r[as.numeric(rownames(pred_df))] <-
-          stats::predict(m[[wm]], pred_df, type = "prob")[, 2]
+          stats::predict(m[[i]], pred_df, type = "prob")[, 2]
       }
 
-      model_c[[wm]] <- r
+      model_c[[i]] <- r
     }
   }
 
@@ -260,7 +279,7 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
 
       # Test factor levels
       f_n <- which(sapply(pred_df, class) == "factor") %>% names()
-      f_n2 <- m[[wm]]@xmatrix[[1]] %>% colnames()
+      f_n2 <- m[[i]]@xmatrix[[1]] %>% colnames()
       f <- lapply(f_n, function(x) {
         gsub(x, "", grep(x, f_n2, value = TRUE))
       })
@@ -277,17 +296,21 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
             vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
           }
         }
-        if (length(vfilter) > 1) {
-          vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+        if (length(vfilter) > 0) {
+          if (length(vfilter) > 1) {
+            vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+          } else {
+            vfilter <- vfilter[[1]]
+          }
         } else {
-          vfilter <- vfilter[[1]]
+          vfilter <- 0
         }
       }
 
       if (sum(vfilter) > 0) {
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
-          kernlab::predict(m[[wm]], pred_df[!vfilter, ] %>%
+          kernlab::predict(m[[i]], pred_df[!vfilter, ] %>%
             dplyr::mutate(across(
               .cols = names(f),
               .fns = ~ droplevels(.)
@@ -296,40 +319,50 @@ sdm_predict <- function(models, pred, pred_proj, thr, calibarea = NULL, clamp = 
         rm(v)
       } else {
         r[as.numeric(rownames(pred_df))] <-
-          kernlab::predict(m[[wm]], pred_df, type = "prob")[, 2]
+          kernlab::predict(m[[i]], pred_df, type = "prob")[, 2]
       }
-      model_c[[wm]] <- r
+      model_c[[i]] <- r
     }
   }
 
-  df <- data.frame(alg=c('gam', 'graf', 'glm', 'gbm', 'maxnet', 'nnet', 'randomforest', 'ksvm'),
-  names=c('gam', 'gau', 'glm', 'gbm', 'mx', 'nne', 'rf', 'svm'))
+  df <- data.frame(
+    alg = c("gam", "graf", "glm", "gbm", "maxnet", "nnet", "randomforest", "ksvm"),
+    names = c("gam", "gau", "glm", "gbm", "mx", "nne", "rf", "svm")
+  )
 
-  names(model_c) <- left_join(data.frame(alg=clss), df, by = 'alg')[,2]
-  model_c <- stack(model_c)
+  names(model_c) <- left_join(data.frame(alg = clss), df, by = "alg")[, 2]
+  model_c <- mapply(function(x, n) {
+    names(x) <- n
+    x
+  }, model_c, names(model_c))
 
 
   #### Thresholds ####
-  if(!is.null(thr)) {
-    if (thr == 'selected_thr') {
-      thr_df <- lapply(models, function(x)
-        x[["selected_threshold"]])
+  if (!is.null(thr)) {
+    if (thr == "selected_thr") {
+      thr_df <- lapply(models, function(x) {
+        x[["selected_threshold"]]
+      })
     }
-    if (thr == 'all_thr') {
-      thr_df <- lapply(models, function(x)
-        x[["threshold_table"]])
+    if (thr == "all_thr") {
+      thr_df <- lapply(models, function(x) {
+        x[["threshold_table"]]
+      })
     }
 
-    pred_thr <- list()
-    for (i in 1:nlayers(model_c)) {
+    model_b <- list()
+    for (i in 1:length(model_c)) {
       print(i)
-      pred_thr[[i]] <-
-        lapply(thr_df[[i]]$values, function(x)
-          model_c[[i]] > x) %>% stack
+      model_b[[i]] <-
+        lapply(thr_df[[i]]$values, function(x) {
+          model_c[[i]] > x
+        }) %>% stack()
     }
-    names(pred_thr) <- names(model_c)
-
+    names(model_b) <- names(model_c)
+    result <- mapply(stack, model_c, model_b, SIMPLIFY = FALSE)
+    return(result)
+  } else {
+    result <- model_c
+    return(result)
   }
-
-  return(pred)
 }
