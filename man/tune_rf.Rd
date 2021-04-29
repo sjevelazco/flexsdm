@@ -29,7 +29,7 @@ tune_rf(
 
 \item{grid}{data.frame. Provide a data frame object with algorithm hyper-parameters values to be tested. It Is recommended to generate this data.frame. Hyper-parameter needed for tuning is 'mtry'. The maximum mtry must be equal to total number of predictors}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1) useful for threshold-dependent performance metrics. It is possible not define a threshold or use more than one, in these cases, function will return the best model and the best threshold. It is necessary to provide a vector for this argument. The next threshold area available:
 \itemize{
   \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
@@ -87,8 +87,8 @@ rf_t <-
 rf_t$model
 rf_t$tune_performance
 rf_t$best_hyper
-rf_t$selected_threshold
-rf_t$threshold_table
+rf_t$selected_thresholds
+rf_t$all_thresholds
 }
 
 }
