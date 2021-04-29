@@ -19,13 +19,13 @@
 #'
 #' @param bg numeric. Predicted suitability for background points. It is used for BOYCE metric. It bg is set as null BOYCE metric will be calculated with presences and absences suitability values
 #'
-#' @return a list with two or three tibbles
+#' @return a list with two tibbles
 #' \itemize{
 #' \item "all_values". A tibble object with the performance metric for 90 threshold values >0 and <1.
-#' \item "selected_threshold". It is similar to "threshold_table" with difference that it contains the thresholds and the performance metric values for the selected threshold. A tibble with threshold values and the performance metric values for selected thresholds.
-#' \item "threshold_table". A tibble with the threshold values and the performance metric values for all thresholds.
+#' \item "all_thresholds". A tibble with the threshold values and the performance metric values for all thresholds.
+#' \item "selected_thresholds". It is similar to "all_threshold" with difference that it contains the thresholds and the performance metric values for the selected threshold.
 #' }
-#' when thr argument is NULL function will return a list with "all_values", "threshold", and "threshold_table" tibbles, when thr argument is used with one or more threshold function returns "selected_threshold" and "threshold_table" tibbles
+#' when thr argument is NULL function will return a list with "all_values", "all_thresholds" tibbles, when thr argument is used with one or more threshold function returns "selected_thresholds" and "all_thresholds" tibbles
 #' @export
 #'
 #' @importFrom dismo evaluate threshold
@@ -51,24 +51,24 @@
 #' backg[backg < 0] <- 0
 #'
 #' # Use function without threshold specification
-#' e <- enm_eval(p, a)
+#' e <- sdm_eval(p, a)
 #' e$all_values
 #' e$threshold
 #' e$threshold_table
 #'
-#' enm_eval(p, a, thr = c(type = c("max_kappa")))
-#' enm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "max_jaccard")))
-#' enm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"))) # wrong way to specific threshold
-#' enm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"), sens = "0.8")) # correct way to use specific threshold
+#' sdm_eval(p, a, thr = c(type = c("max_kappa")))
+#' sdm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "max_jaccard")))
+#' sdm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"))) # wrong way to specific threshold
+#' sdm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"), sens = "0.8")) # correct way to use specific threshold
 #'
 #' # Use of bg argument (it will only be used for calculating BOYCE index)
-#' enm_eval(p, a, thr = c(type = c("max_sens_spec")))[[1]]
-#' enm_eval(p, a, thr = c(type = c("max_sens_spec")), bg = backg)[[1]]
+#' sdm_eval(p, a, thr = c(type = c("max_sens_spec")))[[1]]
+#' sdm_eval(p, a, thr = c(type = c("max_sens_spec")), bg = backg)[[1]]
 #' # I the case it is needed use background for calculate all other metric background values can be used in "a" argument
-#' enm_eval(p, backg, thr = c(type = c("max_sens_spec")))[[1]]
+#' sdm_eval(p, backg, thr = c(type = c("max_sens_spec")))[[1]]
 #' }
 #'
-enm_eval <- function(p, a, bg = NULL, thr = NULL) {
+sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   if (any(
     !thr[grep("type", names(thr))] %in% c(
       "lpt",
@@ -198,18 +198,17 @@ enm_eval <- function(p, a, bg = NULL, thr = NULL) {
   result <-
     list(
       all_values = performance,
-      threshold = thresholds,
-      threshold_table = thr_table
+      all_thresholds = thr_table
     )
 
   if (is.null(thr)) {
     return(result)
   } else {
-    result <- result$threshold_table
+    result <- result$all_threshold
     result <-
       list(
-        selected_threshold = result[result$threshold %in% thr, ],
-        threshold_table = result
+        selected_thresholds = result[result$threshold %in% thr, ],
+        all_thresholds = result
       )
     return(result)
   }
