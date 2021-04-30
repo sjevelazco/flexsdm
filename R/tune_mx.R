@@ -144,6 +144,11 @@ tune_mx <-
     p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
     eval_partial_list <- list()
 
+    # New predictor vectors
+    if(!is.null(predictors_f)){
+      predictors <- c(predictors, predictors_f)
+    }
+
     for (h in 1:np) {
       message("Replica number: ", h, "/", np)
 
