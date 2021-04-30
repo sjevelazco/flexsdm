@@ -88,7 +88,7 @@ tune_mx <-
     # Remove NAs
     data <- rm_na(x = data)
     if (!is.null(background)) {
-      data <- rm_na(x = background)
+      background <- rm_na(x = background)
     }
 
     # Prepare grid when grid=default or NULL
