@@ -107,7 +107,7 @@ fit_mx <- function(data,
   # Remove NAs
   data <- rm_na(x = data)
   if (!is.null(background)) {
-    data <- rm_na(x = background)
+    background <- rm_na(x = background)
   }
 
   # Compare pr_ab and background column names
