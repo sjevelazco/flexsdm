@@ -43,7 +43,7 @@ part <- block_partition(
   n_part = 2
 )
 
-grid_env <- get_block(env_layer = somevar, best_grid = part$Grid)
+grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 plot(grid_env)
 
 # Sample background points throughout study area

@@ -13,7 +13,31 @@
 #'
 #' @examples
 #' \dontrun{
-#' # See examples in block_partition
+#' require(dplyr)
+#' data(spp)
+#' data(somevar)
+#'
+#' # Lest practice with a single species
+#' single_spp <- spp %>% dplyr::filter(species == "sp3")
+#'
+#' part <- block_partition(
+#'   env_layer = somevar,
+#'   data = single_spp,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   min_res_mult = 100,
+#'   max_res_mult = 500,
+#'   num_grids = 10,
+#'   n_part = 2
+#' )
+#'
+#' grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
+#' grid_env
+#' part$grid
+#'
+#' plot(part$grid)
+#' plot(grid_env)
 #' }
 #'
 get_block <- function(env_layer, best_grid) {

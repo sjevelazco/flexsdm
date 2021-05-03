@@ -34,7 +34,7 @@
 #'   n_part = 2
 #' )
 #'
-#' grid_env <- get_block(env_layer = somevar, best_grid = part$Grid)
+#' grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 #' plot(grid_env)
 #'
 #' # Sample background points throughout study area
@@ -116,6 +116,6 @@ sample_background <- function(n, rlayer, maskval = NULL, calibarea = NULL) {
       data.frame() %>%
       dplyr::tibble()
   }
-  colnames(cell_samp) <- c(x, y)
+  colnames(cell_samp) <- c('x', 'y')
   return(cell_samp)
 }
