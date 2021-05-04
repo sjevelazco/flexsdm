@@ -164,7 +164,7 @@ fit_nnet <- function(data,
           nnet::nnet(
             formula1,
             data = train[[i]],
-            size = 3, # revise and implement a formula to calculate it
+            size = 8, # revise and implement a formula to calculate it
             rang = 0.1,
             # decay = grid$decay[ii],
             maxit = 200,

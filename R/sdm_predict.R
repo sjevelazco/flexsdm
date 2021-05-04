@@ -53,7 +53,7 @@ sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred
       cc <- c("category")
       names(cc) <- factvar
       pred_df[factvar] <-
-        dplyr::left_join(pred_df[factvar], df1[[1]], by = cc)[, 2]
+        dplyr::left_join(pred_df[factvar], df1, by = cc)[, 2]
       names(pred_df)[names(pred_df) == factvar] <- factvar2
       pred_df[, factvar2] <- pred_df[, factvar2] %>% as.factor()
     }

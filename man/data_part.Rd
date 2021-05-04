@@ -4,12 +4,12 @@
 \alias{data_part}
 \title{Data partitioning for training and testing models}
 \usage{
-data_part(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL)
+data_part(data, pr_ab, bg_data = NULL, bg_a = NULL, method = NULL)
 }
 \arguments{
 \item{data}{data.frame. Database with presences, presence-absence, or pseudo-absence, records for a given species}
 
-\item{p_a}{character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0}
+\item{pr_ab}{character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0}
 
 \item{bg_data}{data.frame. Data frames with background points.}
 
@@ -39,7 +39,7 @@ abies_db <- tibble(abies_db)
 # K-fold method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = "pr_ab",
+  pr_ab = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
   method = c(method = "kfold", folds = 10)
@@ -49,7 +49,7 @@ abies_db2
 # Repeated K-fold method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = "pr_ab",
+  pr_ab = "pr_ab",
   bg_data = NULL,
   bg_p_a = NULL,
   method = c(method = "rep_kfold", folds = 10, replicates = 10)
@@ -59,7 +59,7 @@ abies_db2
 # Leave-one-out cross-validation (loocv) method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = "pr_ab",
+  pr_ab = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
   method = c(method = "loocv")
@@ -69,7 +69,7 @@ abies_db2
 # Bootstrap method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = "pr_ab",
+  pr_ab = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
   method = c(method = "boot", replicates = 50, proportion = 0.7)
