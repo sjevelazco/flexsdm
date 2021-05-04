@@ -3,7 +3,7 @@
 #' @description This function provides different partition methods based in folds (kfold, rep_kfold, and loocv), bootstrap (boot), and spatially structured (BANDS and BLOCK).
 #'
 #' @param data data.frame. Database with presences, presence-absence, or pseudo-absence, records for a given species
-#' @param p_a character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0
+#' @param pr_ab character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0
 #' @param bg_data data.frame. Data frames with background points.
 #' @param bg_a character. Column name of "bg_data" with absences. Background must be repented by 0
 #' @param method character. Vector with partition method to be used:
@@ -32,7 +32,7 @@
 #' # K-fold method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = "pr_ab",
+#'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_a = NULL,
 #'   method = c(method = "kfold", folds = 10)
@@ -42,7 +42,7 @@
 #' # Repeated K-fold method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = "pr_ab",
+#'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_p_a = NULL,
 #'   method = c(method = "rep_kfold", folds = 10, replicates = 10)
@@ -52,7 +52,7 @@
 #' # Leave-one-out cross-validation (loocv) method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = "pr_ab",
+#'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_a = NULL,
 #'   method = c(method = "loocv")
@@ -62,7 +62,7 @@
 #' # Bootstrap method
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = "pr_ab",
+#'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_a = NULL,
 #'   method = c(method = "boot", replicates = 50, proportion = 0.7)
@@ -70,12 +70,12 @@
 #' abies_db2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
 #' }
 #'
-data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
+data_part <- function(data, pr_ab, bg_data = NULL, bg_a = NULL, method = NULL) {
 
   # kfold
   if (method["method"] == "kfold") {
     data <- data %>%
-      dplyr::group_by(!!as.symbol(p_a)) %>%
+      dplyr::group_by(!!as.symbol(pr_ab)) %>%
       dplyr::mutate(.part = sample(rep(1:method["folds"], length.out = dplyr::n()))) %>%
       dplyr::group_by()
   }
@@ -86,7 +86,7 @@ data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
       cname <- paste0(".part", i)
       data <-
         data %>%
-        dplyr::group_by(!!as.symbol(p_a)) %>%
+        dplyr::group_by(!!as.symbol(pr_ab)) %>%
         dplyr::mutate(rep_kfold = sample(rep(1:method["folds"],
           length.out = dplyr::n()
         ))) %>%
@@ -98,11 +98,11 @@ data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
   # loocv
   if (method["method"] == "loocv") {
     data <- data %>%
-      dplyr::group_by(!!as.symbol(p_a)) %>%
+      dplyr::group_by(!!as.symbol(pr_ab)) %>%
       dplyr::mutate(.part = 1:dplyr::n()) %>%
       dplyr::group_by()
     filt <- data %>%
-      dplyr::group_by(!!as.symbol(p_a)) %>%
+      dplyr::group_by(!!as.symbol(pr_ab)) %>%
       dplyr::summarise(max = max(.part))
     filtmi <- filt %>% dplyr::filter(max == min(max))
     filt <- data$.part > filtmi$max
@@ -116,13 +116,13 @@ data_part <- function(data, p_a, bg_data = NULL, bg_a = NULL, method = NULL) {
     prop2 <- 1 - prop
     data <- data %>% dplyr::mutate(IDBOOT = 1:nrow(data))
     for (i in 1:reps) {
-      data2 <- data %>% dplyr::select({{ p_a }}, "IDBOOT")
+      data2 <- data %>% dplyr::select({{ pr_ab }}, "IDBOOT")
       data_train <- data2 %>%
-        dplyr::group_by(!!as.symbol(p_a)) %>%
+        dplyr::group_by(!!as.symbol(pr_ab)) %>%
         dplyr::slice_sample(prop = prop) %>%
         dplyr::mutate(BOOT1 = "train")
       data_ttest <- data2 %>%
-        dplyr::group_by(!!as.symbol(p_a)) %>%
+        dplyr::group_by(!!as.symbol(pr_ab)) %>%
         dplyr::slice_sample(prop = prop2) %>%
         dplyr::mutate(BOOT2 = "test")
 
