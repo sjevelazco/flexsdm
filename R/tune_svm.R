@@ -27,6 +27,17 @@
 #' @importFrom stats formula
 #'
 #' @return
+#'
+#' A list object with:
+#' \itemize{
+#' \item model: A "ksvm" class object. This object can be used for predicting.
+#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+#' \item best_hyper_performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
+#' \item selected_thresholds: Value of the threshold selected.
+#' \item all_thresholds: Value of all threshold.
+#' }
+#'
 #' @export
 #' @seealso \code{\link{tune_gbm}}, \code{\link{tune_mx}}, \code{\link{tune_nnet}}, and \code{\link{tune_rf}}.
 #'
@@ -89,6 +100,8 @@ tune_svm <-
            thr = NULL,
            metric = "TSS",
            ...) {
+    variables <- c(c=predictors, f=predictors_f)
+
     data <- data.frame(data)
 
     # Transform response variable as factor
@@ -285,6 +298,7 @@ tune_svm <-
 
     result <- list(
       model = mod,
+      predictors = variables,
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),

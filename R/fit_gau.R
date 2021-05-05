@@ -29,6 +29,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "graf" class object. This object can be used for predicting.
+#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item selected_thresholds: Value of the threshold selected.
@@ -100,6 +101,8 @@ fit_gau <- function(data,
                     partition,
                     thr = NULL,
                     ...) {
+  variables <- c(c=predictors, f=predictors_f)
+
   data <- data.frame(data)
   if (!is.null(background)) background <- data.frame(background)
 
@@ -340,6 +343,7 @@ fit_gau <- function(data,
 
   result <- list(
     model = mod,
+    predictors = variables,
     performance = eval_final,
     selected_thresholds = st %>% dplyr::select(threshold:values),
     all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values)

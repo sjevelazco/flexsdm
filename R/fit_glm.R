@@ -33,6 +33,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "glm" class object. This object can be used for predicting.
+#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item selected_threshold: Value of the threshold selected.
@@ -114,8 +115,9 @@ fit_glm <- function(data,
                     poly = 0,
                     inter_order = 0,
                     ...) {
-  data <- data.frame(data)
+  variables <- c(c=predictors, f=predictors_f)
 
+  data <- data.frame(data)
   if (is.null(predictors_f)) {
     data <- data %>%
       dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
@@ -304,6 +306,7 @@ fit_glm <- function(data,
 
   result <- list(
     model = mod,
+    predictors = variables,
     performance = eval_final,
     selected_thresholds = st %>% dplyr::select(threshold:values),
     all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values)

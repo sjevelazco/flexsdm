@@ -21,12 +21,22 @@
 #'   }
 #' @param metric character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.
 #'
-#'
 #' @importFrom dplyr select starts_with bind_rows tibble group_by_at summarise across everything pull
 #' @importFrom randomForest randomForest
 #' @importFrom stats formula na.omit predict
 #'
 #' @return
+#'
+#' A list object with:
+#' \itemize{
+#' \item model: A "randomForest" class object. This object can be used for predicting.
+#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+#' \item best_hyper_performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
+#' \item selected_thresholds: Value of the threshold selected.
+#' \item all_thresholds: Value of all threshold.
+#' }
+#'
 #' @export
 #'
 #' @seealso \code{\link{tune_gbm}}, \code{\link{tune_mx}}, \code{\link{tune_nnet}}, and \code{\link{tune_svm}}.
@@ -82,6 +92,8 @@ tune_rf <-
            thr = NULL,
            metric = "TSS",
            ...) {
+    variables <- c(c=predictors, f=predictors_f)
+
     data <- data.frame(data)
 
     # Transform response variable as factor
@@ -276,6 +288,7 @@ tune_rf <-
 
     result <- list(
       model = mod,
+      predictors = variables,
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),

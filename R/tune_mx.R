@@ -28,6 +28,18 @@
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
 #'
+#' @return
+#'
+#' A list object with:
+#' \itemize{
+#' \item model: A "maxnet" "lognet" "glmnet" class object. This object can be used for predicting.
+#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+#' \item best_hyper_performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
+#' \item selected_thresholds: Value of the threshold selected.
+#' \item all_thresholds: Value of all threshold.
+#' }
+#'
 #' @importFrom dismo predict
 #' @importFrom dplyr select starts_with filter pull bind_rows tibble group_by_at summarise across everything
 #' @importFrom maxnet maxnet maxnet.formula
@@ -35,7 +47,6 @@
 #' @seealso \code{\link{tune_gbm}}, \code{\link{tune_nnet}}, \code{\link{tune_rf}}, and \code{\link{tune_svm}}.
 #'
 #'
-#' @return
 #' @export
 #'
 #' @examples
@@ -52,6 +63,8 @@ tune_mx <-
            clamp = TRUE,
            pred_type = "cloglog",
            ...) {
+    variables <- c(c=predictors, f=predictors_f)
+
     data <- data.frame(data)
     if (!is.null(background)) background <- data.frame(background)
 
@@ -341,6 +354,7 @@ tune_mx <-
 
     result <- list(
       model = mod,
+      predictors = variables,
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),
