@@ -100,7 +100,7 @@ tune_svm <-
            thr = NULL,
            metric = "TSS",
            ...) {
-    variables <- c(c=predictors, f=predictors_f)
+    variables <- c(c = predictors, f = predictors_f)
 
     data <- data.frame(data)
 
@@ -191,7 +191,7 @@ tune_svm <-
         filt <- sapply(mod, function(x) class(x) == "ksvm")
         mod <- mod[filt]
         grid2 <- grid[filt, ]
-        tnames <- apply(grid2, 1, function(x) paste(x, collapse = '_'))
+        tnames <- apply(grid2, 1, function(x) paste(x, collapse = "_"))
 
         # Predict for presences absences data
         pred_test <-
@@ -218,20 +218,24 @@ tune_svm <-
         }
 
         if (!is.null(thr)) {
-          eval <- lapply(eval, function(x)
-            x$selected_thresholds)
+          eval <- lapply(eval, function(x) {
+            x$selected_thresholds
+          })
           names(eval) <- tnames
-          eval <- dplyr::bind_rows(eval, .id='tnames')
+          eval <- dplyr::bind_rows(eval, .id = "tnames")
         } else {
-          eval <- lapply(eval, function(x)
-            x$all_thresholds)
+          eval <- lapply(eval, function(x) {
+            x$all_thresholds
+          })
           names(eval) <- tnames
-          eval <- dplyr::bind_rows(eval, .id='tnames')
+          eval <- dplyr::bind_rows(eval, .id = "tnames")
         }
 
         eval <-
           dplyr::tibble(dplyr::left_join(dplyr::mutate(grid2, tnames),
-                                         eval, by = "tnames")) %>%
+            eval,
+            by = "tnames"
+          )) %>%
           dplyr::select(-tnames)
         eval_partial[[i]] <- eval
       }
@@ -289,11 +293,11 @@ tune_svm <-
       thr = thr
     )
 
-    if(!is.null(thr)) {
+    if (!is.null(thr)) {
       st <- threshold$selected_thresholds
     } else {
       st <- threshold$all_thresholds %>%
-        dplyr::filter(threshold==best_tune$threshold)
+        dplyr::filter(threshold == best_tune$threshold)
     }
 
     result <- list(

@@ -58,6 +58,7 @@ for those continuous variables (i.e. used in predictors argument)}
 A list object with:
 \itemize{
 \item model: A "glm" class object. This object can be used for predicting.
+\item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 \item selected_threshold: Value of the threshold selected.

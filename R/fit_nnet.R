@@ -100,7 +100,7 @@ fit_nnet <- function(data,
                      thr = NULL,
                      fit_formula = NULL,
                      ...) {
-  variables <- c(c=predictors, f=predictors_f)
+  variables <- c(c = predictors, f = predictors_f)
 
   data <- data.frame(data)
 
@@ -194,7 +194,7 @@ fit_nnet <- function(data,
           a = pred_test$pred[pred_test$pr_ab == 0],
           thr = thr
         )
-      if(is.null(thr)){
+      if (is.null(thr)) {
         eval_partial[[i]] <- eval$all_thresholds
       } else {
         eval_partial[[i]] <- eval$selected_thresholds
@@ -247,7 +247,7 @@ fit_nnet <- function(data,
     thr = thr
   )
 
-  if(!is.null(thr)) {
+  if (!is.null(thr)) {
     st <- threshold$selected_thresholds
   } else {
     st <- threshold$all_thresholds

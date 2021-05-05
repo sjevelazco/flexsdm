@@ -45,7 +45,15 @@ tune_svm(
 \item{metric}{character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.}
 }
 \value{
-
+A list object with:
+\itemize{
+\item model: A "ksvm" class object. This object can be used for predicting.
+\item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+\item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+\item best_hyper_performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
+\item selected_thresholds: Value of the threshold selected.
+\item all_thresholds: Value of all threshold.
+}
 }
 \description{
 Fit and validate Support Vector Machine models with exploration of hyper-parameters

@@ -97,7 +97,7 @@ fit_gbm <- function(data,
                     thr = NULL,
                     fit_formula = NULL,
                     ...) {
-  variables <- c(c=predictors, f=predictors_f)
+  variables <- c(c = predictors, f = predictors_f)
 
   data <- data.frame(data)
   if (is.null(predictors_f)) {

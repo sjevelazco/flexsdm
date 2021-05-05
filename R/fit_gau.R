@@ -101,7 +101,7 @@ fit_gau <- function(data,
                     partition,
                     thr = NULL,
                     ...) {
-  variables <- c(c=predictors, f=predictors_f)
+  variables <- c(c = predictors, f = predictors_f)
 
   data <- data.frame(data)
   if (!is.null(background)) background <- data.frame(background)
@@ -267,7 +267,7 @@ fit_gau <- function(data,
             bg = bgt$pred
           )
       }
-      if(is.null(thr)){
+      if (is.null(thr)) {
         eval_partial[[i]] <- eval$all_thresholds
       } else {
         eval_partial[[i]] <- eval$selected_thresholds
@@ -335,7 +335,7 @@ fit_gau <- function(data,
     )
   }
 
-  if(!is.null(thr)) {
+  if (!is.null(thr)) {
     st <- threshold$selected_thresholds
   } else {
     st <- threshold$all_thresholds

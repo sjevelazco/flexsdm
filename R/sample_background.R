@@ -116,6 +116,6 @@ sample_background <- function(n, rlayer, maskval = NULL, calibarea = NULL) {
       data.frame() %>%
       dplyr::tibble()
   }
-  colnames(cell_samp) <- c('x', 'y')
+  colnames(cell_samp) <- c("x", "y")
   return(cell_samp)
 }
