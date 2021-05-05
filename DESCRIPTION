@@ -5,10 +5,10 @@ Version: 0.0.1
 Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
            email = "sjevelazco@gmail.com",
            comment = c(ORCID = "0000-0002-7527-0967")),
-           person(given = "André F.A.", family = "Andrade", role = c("aut", "cre"),
+           person(given = "André F.A.", family = "Andrade", role = c("aut"),
            email = "andrefaandrade@gmail.com",
            comment = c(ORCID = "0000-0002-6134-3176")),
-           person(given = "Brooke Rose", family = "Rose", role = c("aut", "cre"),
+           person(given = "Brooke Rose", family = "Rose", role = c("aut"),
            email = "mrose048@ucr.edu",
            comment = c(ORCID = "0000-0001-5269-3759")))
 Maintainer: Santiago J.E. Velazco <sjevelazco@gmail.com>
