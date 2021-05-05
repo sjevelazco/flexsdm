@@ -33,18 +33,23 @@ sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred
 
   # Crop projection area
   if(!is.null(calib_area)){
-    pred <- raster::mask(pred, calib_area)
-  }
-  ### factor correction
-  if(length(fac_0)>0){
-    f <- lapply(fac_0, function(x) raster::ratify(pred[[x]])) %>% raster::stack()
-    for(ff in fac_0){
-      lev <- dplyr::left_join(
-        raster::levels(f[[ff]])[[1]],
-        raster::levels(env_layer[[ff]])[[1]])
-      levels(f[[ff]]) <- lev
+    pred2 <- raster::mask(pred, calib_area)
+
+    ### factor correction
+    if(length(fac_0)>0){
+      f <- lapply(fac_0, function(x) raster::ratify(pred[[x]])) %>% raster::stack()
+      for(ff in fac_0){
+        lev <- suppressMessages(dplyr::left_join(
+          raster::levels(f[[ff]])[[1]],
+          raster::levels(pred[[ff]])[[1]]))
+        levels(f[[ff]]) <- lev
+      }
+      pred <- raster::stack(raster::dropLayer(pred, fac_0), f)
+    } else {
+      pred <- pred2
+      rm(pred2)
     }
-    somevar2 <- raster::stack(raster::dropLayer(somevar2, fac_0), f)
+
   }
 
 
