@@ -112,7 +112,7 @@
     <p>This function provides different partition methods based in folds (kfold, rep_kfold, and loocv), bootstrap (boot), and spatially structured (BANDS and BLOCK).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>data_part</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>p_a</span>, bg_data <span class='op'>=</span> <span class='cn'>NULL</span>, bg_a <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>data_part</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>pr_ab</span>, bg_data <span class='op'>=</span> <span class='cn'>NULL</span>, bg_a <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -122,7 +122,7 @@
       <td><p>data.frame. Database with presences, presence-absence, or pseudo-absence, records for a given species</p></td>
     </tr>
     <tr>
-      <th>p_a</th>
+      <th>pr_ab</th>
       <td><p>character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0</p></td>
     </tr>
     <tr>
@@ -161,7 +161,7 @@
 <span class='co'># K-fold method</span>
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
@@ -171,7 +171,7 @@
 <span class='co'># Repeated K-fold method</span>
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_p_a <span class='op'>=</span> <span class='cn'>NULL</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"rep_kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span>, replicates <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
@@ -181,7 +181,7 @@
 <span class='co'># Leave-one-out cross-validation (loocv) method</span>
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"loocv"</span><span class='op'>)</span>
@@ -191,7 +191,7 @@
 <span class='co'># Bootstrap method</span>
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"boot"</span>, replicates <span class='op'>=</span> <span class='fl'>50</span>, proportion <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
@@ -211,7 +211,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, XXXXX XXXXX.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose.</p>
 </div>
 
 <div class="pkgdown">
