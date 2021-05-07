@@ -413,7 +413,7 @@ sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred
     for (i in 1:length(model_c)) {
       model_b[[i]] <-
         lapply(thr_df[[i]]$values, function(x) {
-          model_c[[i]] > x
+          model_c[[i]] >= x
         }) %>% raster::stack()
     }
     names(model_b) <- names(model_c)
