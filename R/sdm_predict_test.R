@@ -7,6 +7,7 @@
 #' @param thr character. Binarize projection. Default NULL, i.e. function returns only continuous projection. If used with 'selected_thr', function returns continuous and binarized models used in the 'thr' argument of some of fit_ or tune_ functions. It used with "all_thr" , function returns continuous and binarized for all threshold types.
 #' @param calib_area SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restrinc prediction into a given region. Default = NULL
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)
+#' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)
 #' @param ensemble character. Method used to ensemble different models It is possible to use more than one method. A vector must be provided for this argument. For meansup, meanw or pcasup method it is necessary provide an evaluation metric to ensemble arguments (i.e., AUC, Kappa, TSS, Jaccard, Sorensen or Fpb) see below. (default NULL):
 #'   \itemize{
 #'   \item mean: Simple average of the different models. Usage ensemble=c(method='mean').
@@ -18,7 +19,9 @@
 #'
 #'  In the case of use more than one ensemble method it is necessary concatenate the names of ensemble methods within the argument, e.g., ensemble=c(method=c('mean', 'median')) or ensemble = c(method=c('mean', 'meanw', 'meansup', 'meanthr', 'median'), metric='TSS', thr = 'max_sens_spec')
 #'
-#' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)
+#' @param data
+#' @param x
+#' @param y
 #'
 #' @return
 #'
@@ -33,7 +36,7 @@
 #' @importFrom raster ncell as.data.frame values predict stack
 #' @importFrom stats na.exclude predict
 #' @examples
-sdm_predict_test <- function(models, pred, thr, calib_area = NULL, ensemble = NULL, clamp = TRUE, pred_type = "cloglog") {
+sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred_type = "cloglog", ensemble = NULL, data = NULL, x = NULL, y = NULL) {
 
   #### Prepare datasets ####
   # Detect factor predictors
@@ -428,7 +431,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, ensemble = NU
     for (i in 1:length(model_c)) {
       model_b[[i]] <-
         lapply(thr_df[[i]]$values, function(x) {
-          model_c[[i]] > x
+          model_c[[i]] >= x
         }) %>% raster::stack()
     }
     names(model_b) <- names(model_c)
@@ -518,7 +521,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, ensemble = NU
       sapply(., exists) %>%
       which() %>%
       names()
-    terra::rast(sapply(en_object, get))
+    result <- terra::rast(sapply(en_object, get))
 
     # Binarize ensemble (FOR THIS PART OF THE CODE IT IS NECESSARY PROVIDE THRESHOLD VALUES FROM fit_ and tune_ function families)
   } else {
