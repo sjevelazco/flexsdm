@@ -32,8 +32,13 @@
 #'
 #' @examples
 #' \dontrun{
+#' require(terra)
+#' require(dplyr)
+#'
+#' # Load datasets
 #' data(spp)
-#' data(somevar)
+#' f <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(f)
 #'
 #' # Lest practice with a single species
 #' single_spp <- spp %>% dplyr::filter(species == "sp3")
@@ -71,7 +76,7 @@
 #' # (i.e. resolution, extent, NAs) than your original environmental
 #' # variables you can use the \code{\link{get_block}} function.
 #'
-#' grid_env <- get_block(env_layer = somevar, bestgrid = part$grid)
+#' grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 #'
 #' plot(grid_env) # this is a block layer with the same layer
 #' # properties as environmental variables.
@@ -131,7 +136,7 @@
 #'   lapply(grid_layer, function(x) {
 #'     get_block(env_layer = somevar[[1]], best_grid = x)
 #'   })
-#' grid_layer2 <- stack(grid_layer2)
+#' grid_layer2 <- terra::rast(grid_layer2)
 #' grid_layer2
 #' plot(grid_layer2)
 #'
@@ -196,14 +201,14 @@ unique list values in pr_ab column are: ",
   }
 
   # Vector with grid cell-size used
-  cellSize <- seq(terra::res(env_layer[[1]])[1] * min_res_mult,
+  cell_size <- seq(terra::res(env_layer[[1]])[1] * min_res_mult,
                   terra::res(env_layer[[1]])[1] * max_res_mult,
     length.out = num_grids
   )
 
   message(
     "The following grid cell sizes will be tested:\n",
-    paste(round(cellSize, 2), collapse = " | "),
+    paste(round(cell_size, 2), collapse = " | "),
     "\n"
   )
 
@@ -212,7 +217,7 @@ unique list values in pr_ab column are: ",
 
   mask <- env_layer[[1]]
   names(mask) <- "group"
-  mask[!is.na(mask[, ])] <- 1
+  mask[!is.na(mask)] <- 1
 
 
   # Extent
@@ -225,10 +230,15 @@ unique list values in pr_ab column are: ",
   mask2 <- mask
   mask2[] <- 0
 
-  # Eliminate any recrods wity NA
-  filt <- terra::extract(env_layer, data[, c("x", "y")]) %>%
-    stats::complete.cases()
-  presences2 <- data[filt, ]
+  # Eliminate any records with NA
+  filt <- stats::complete.cases(data[, c("x", "y")])
+  if(any(!filt)){
+    message(sum(!filt), " rows were excluded from database because NAs were found in coordinates")
+    data <- data[filt,]
+  }
+
+  rm(filt)
+  presences2 <- data
 
   # Transform the presences points in a DataFrameSpatialPoints
   sp::coordinates(presences2) <- presences2[, c("x", "y")]
@@ -242,12 +252,12 @@ unique list values in pr_ab column are: ",
 
   # raster resolution
   DIM <-
-    matrix(0, length(cellSize), 2) # the number of rows and columns of each grid
+    matrix(0, length(cell_size), 2) # the number of rows and columns of each grid
   colnames(DIM) <- c("R", "C")
 
-  for (i in 1:length(cellSize)) {
+  for (i in 1:length(cell_size)) {
     mask3 <- mask2
-    terra::res(mask3) <- cellSize[i]
+    terra::res(mask3) <- cell_size[i]
     mask3 <- terra::extend(mask3, y = c(1, 1))
     DIM[i, ] <- dim(mask3)[1:2]
     terra::values(mask3) <- 1 # Add values to cells /
@@ -255,8 +265,8 @@ unique list values in pr_ab column are: ",
       c(terra::extract(mask3, presences2)) # Extract values to test if exist NAs
     if (any(is.na(NAS))) {
       while (any(is.na(NAS))) {
-        terra::ext(mask3) <- terra::ext(mask3) + cellSize[i]
-        terra::res(mask3) <- cellSize[i] # Give to cells a size
+        terra::ext(mask3) <- terra::ext(mask3) + cell_size[i]
+        terra::res(mask3) <- cell_size[i] # Give to cells a size
         DIM[i, ] <- dim(mask3)[1:2]
         terra::values(mask3) <- 1
         NAS <- terra::extract(mask3, presences2)
@@ -303,7 +313,7 @@ unique list values in pr_ab column are: ",
   }
   pp[pf] <- FALSE
 
-  cellSize <- cellSize[pp]
+  cell_size <- cell_size[pp]
   grid <- grid[pp]
   part <- data.frame(part[, pp])
   names(part) <- names(which(pp == TRUE))
@@ -325,7 +335,7 @@ unique list values in pr_ab column are: ",
     }
     pp[pf] <- FALSE
 
-    cellSize <- cellSize[pp]
+    cell_size <- cell_size[pp]
     grid <- grid[pp]
     part <- data.frame(part[, pp])
     names(part) <- names(which(pp == TRUE))
@@ -344,34 +354,35 @@ unique list values in pr_ab column are: ",
   # Performance of cells ----
   # SD of number of records per cell size-----
 
-  Sd.Grid.P <- rep(NA, length(grid))
+  sd_grid_p <- rep(NA, length(grid))
   if (any(unique(pa) == 0)) {
-    Sd.Grid.A <- rep(NA, length(grid))
+    sd_grid_a <- rep(NA, length(grid))
   }
 
   for (i in 1:ncol(part)) {
     if (any(unique(pa) == 0)) {
-      Sd.Grid.A[i] <- stats::sd(table(part[pa == 0, i])) /
+      sd_grid_a[i] <- stats::sd(table(part[pa == 0, i])) /
         mean(table(part[pa == 0, i]))
     }
-    Sd.Grid.P[i] <- stats::sd(table(part[pa == 1, i])) /
+    sd_grid_p[i] <- stats::sd(table(part[pa == 1, i])) /
       mean(table(part[pa == 1, i]))
   }
 
   # Environmental similarity between train and test based on euclidean  -----
-  EnvirDist.Grid <- rep(NA, length(grid))
+  envir_dist_grid <- rep(NA, length(grid))
   Env.P <- terra::extract(env_layer, presences2)
   for (i in 1:ncol(part)) {
     Env.P1 <- cbind(part[i], Env.P)
+    Env.P1 <- Env.P1[complete.cases(Env.P1),]
     Env.P2 <- split(Env.P1[, -1], Env.P1[, 1])
     euq1 <- flexclust::dist2(Env.P2[[1]], Env.P2[[2]])
-    EnvirDist.Grid[i] <- mean(euq1)
+    envir_dist_grid[i] <- mean(euq1)
     rm(list = c("Env.P1", "Env.P2"))
   }
 
 
   # I moran-----
-  Imoran.Grid <- rep(NA, length(grid))
+  imoran_grid <- rep(NA, length(grid))
 
   dist <- flexclust::dist2(
     presences2[, c("x", "y")] %>% as.data.frame,
@@ -409,7 +420,7 @@ unique list values in pr_ab column are: ",
     }
 
     if (nrow(species2) < 3) {
-      Imoran.Grid[p] <- NA
+      imoran_grid[p] <- NA
     } else {
       im <- sapply(
         species2[filt, names(env_layer)],
@@ -421,22 +432,22 @@ unique list values in pr_ab column are: ",
           )$observed
         }
       )
-      Imoran.Grid[p] <- mean(im)
+      imoran_grid[p] <- mean(im)
     }
   }
 
-  Imoran.Grid <-
-    abs(Imoran.Grid)
+  imoran_grid <-
+    abs(imoran_grid)
 
   Opt <-
     if (any(unique(pa) == 0)) {
-      data.frame(N.grid = 1:length(cellSize), cellSize = cellSize, round(
-        data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P, Sd.Grid.A),
+      data.frame(n_grid = 1:length(cell_size), cell_size = cell_size, round(
+        data.frame(imoran_grid, envir_dist_grid, sd_grid_p, sd_grid_a),
         3
       ))
     } else {
-      data.frame(N.grid = 1:length(cellSize), cellSize = cellSize, round(
-        data.frame(Imoran.Grid, EnvirDist.Grid, Sd.Grid.P),
+      data.frame(n_grid = 1:length(cell_size), cell_size = cell_size, round(
+        data.frame(imoran_grid, envir_dist_grid, sd_grid_p),
         3
       ))
     }
@@ -448,9 +459,9 @@ unique list values in pr_ab column are: ",
   Opt2 <- Opt
   Dup <-
     if (any(unique(pa) == 0)) {
-      !duplicated(Opt2[c("Imoran.Grid", "EnvirDist.Grid", "Sd.Grid.P", "Sd.Grid.A")])
+      !duplicated(Opt2[c("imoran_grid", "envir_dist_grid", "sd_grid_p", "sd_grid_a")])
     } else {
-      !duplicated(Opt2[c("Imoran.Grid", "EnvirDist.Grid", "Sd.Grid.P")])
+      !duplicated(Opt2[c("imoran_grid", "envir_dist_grid", "sd_grid_p")])
     }
 
   Opt2 <- Opt2[Dup, ]
@@ -461,33 +472,33 @@ unique list values in pr_ab column are: ",
       break
     }
     Opt2 <-
-      Opt2[which(Opt2$Imoran.Grid <= summary(Opt2$Imoran.Grid)[2]), ]
+      Opt2[which(Opt2$imoran_grid <= summary(Opt2$imoran_grid)[2]), ]
     if (nrow(Opt2) == 1) {
       break
     }
     # Euclidean
     Opt2 <-
-      Opt2[which(Opt2$EnvirDist.Grid >= summary(Opt2$EnvirDist.Grid)[5]), ]
+      Opt2[which(Opt2$envir_dist_grid >= summary(Opt2$envir_dist_grid)[5]), ]
     if (nrow(Opt2) == 1) {
       break
     }
     # SD presence
     Opt2 <-
-      Opt2[which(Opt2$Sd.Grid.P <= summary(Opt2$Sd.Grid.P)[2]), ]
+      Opt2[which(Opt2$sd_grid_p <= summary(Opt2$sd_grid_p)[2]), ]
     if (nrow(Opt2) == 2) {
       break
     }
     # SD absences
     if (any(unique(pa) == 0)) {
       Opt2 <-
-        Opt2[which(Opt2$Sd.Grid.A <= summary(Opt2$Sd.Grid.A)[2]), ]
+        Opt2[which(Opt2$sd_grid_a <= summary(Opt2$sd_grid_a)[2]), ]
       if (nrow(Opt2) == 2) {
         break
       }
     }
 
-    if (unique(Opt2$Imoran.Grid) &&
-      unique(Opt2$EnvirDist.Grid) && unique(Opt2$Sd.Grid.P)) {
+    if (unique(Opt2$imoran_grid) &&
+      unique(Opt2$envir_dist_grid) && unique(Opt2$sd_grid_p)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }
@@ -498,7 +509,7 @@ unique list values in pr_ab column are: ",
 
 
   # Final data.frame result----
-  result <- data.frame(terra::as.data.frame(presences2), partition = c(part[, Opt2$N.grid]))
+  result <- data.frame(terra::as.data.frame(presences2), partition = c(part[, Opt2$n_grid]))
   colnames(result) <- c("pr_ab", "x", "y", ".part")
   result <- result[c("x", "y", "pr_ab", ".part")]
 
@@ -506,7 +517,7 @@ unique list values in pr_ab column are: ",
   out <- list(
     part = dplyr::tibble(result),
     best_grid_info = dplyr::tibble(Opt2),
-    grid = grid[[Opt2$N.grid]] # Optimum size for presences
+    grid = grid[[Opt2$n_grid]] # Optimum size for presences
   )
   return(out)
 }

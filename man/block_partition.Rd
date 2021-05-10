@@ -51,8 +51,13 @@ Spatial block cross validation
 }
 \examples{
 \dontrun{
+require(terra)
+require(dplyr)
+
+# Load datasets
 data(spp)
-data(somevar)
+f <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(f)
 
 # Lest practice with a single species
 single_spp <- spp \%>\% dplyr::filter(species == "sp3")
@@ -90,7 +95,7 @@ terra::res(somevar)
 # (i.e. resolution, extent, NAs) than your original environmental
 # variables you can use the \code{\link{get_block}} function.
 
-grid_env <- get_block(env_layer = somevar, bestgrid = part$grid)
+grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
@@ -150,7 +155,7 @@ grid_layer2 <-
   lapply(grid_layer, function(x) {
     get_block(env_layer = somevar[[1]], best_grid = x)
   })
-grid_layer2 <- stack(grid_layer2)
+grid_layer2 <- terra::rast(grid_layer2)
 grid_layer2
 plot(grid_layer2)
 
