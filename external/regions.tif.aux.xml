@@ -1,0 +1,16 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <Description>category</Description>
+    <CategoryNames>
+      <Category></Category>
+      <Category>Cascade Ranges Region</Category>
+      <Category>Central Western California Region</Category>
+      <Category>Great Valley Region</Category>
+      <Category>Northern Channel Islands District</Category>
+      <Category>Northwestern California Region</Category>
+      <Category>Sierra Nevada Region</Category>
+      <Category>Southern Channel Islands District</Category>
+      <Category>Southwestern California Region</Category>
+    </CategoryNames>
+  </PAMRasterBand>
+</PAMDataset>
