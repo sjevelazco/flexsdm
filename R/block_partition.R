@@ -1,6 +1,6 @@
 #' Spatial block cross validation
 #'
-#' @param env_layer raster. Raster stack or brick with environmental
+#' @param env_layer SpatRaster. Raster with environmental
 #' variable. This will be used to evaluate spatial autocorrelation and
 #' environmental similarity between training and testing partition
 #' @param data data.frame. Data.frame or tibble object with presences
@@ -24,11 +24,11 @@
 #' @importFrom ape Moran.I
 #' @importFrom dplyr group_by slice_sample pull tibble
 #' @importFrom flexclust dist2
-#' @importFrom raster res brick extent extract crs projection extend values ncell cellFromXY
 #' @importFrom sp coordinates
 #' @importFrom stats complete.cases sd
+#' @importFrom terra res ext extract crs vect extend values ncell cellFromXY coords as.data.frame
 #'
-#' @seealso \code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_max_res}}.
+#' @seealso \code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 #'
 #' @examples
 #' \dontrun{
@@ -62,8 +62,8 @@
 #'   pch = 19
 #' )
 #'
-#' raster::res(part$grid)
-#' raster::res(somevar)
+#' terra::res(part$grid)
+#' terra::res(somevar)
 #'
 #' # Note that is a layer with block partition, but it has a
 #' # different resolution than the original environmental variables.
@@ -196,8 +196,8 @@ unique list values in pr_ab column are: ",
   }
 
   # Vector with grid cell-size used
-  cellSize <- seq(raster::res(env_layer[[1]])[1] * min_res_mult,
-    raster::res(env_layer[[1]])[1] * max_res_mult,
+  cellSize <- seq(terra::res(env_layer[[1]])[1] * min_res_mult,
+                  terra::res(env_layer[[1]])[1] * max_res_mult,
     length.out = num_grids
   )
 
@@ -211,15 +211,12 @@ unique list values in pr_ab column are: ",
   message("Creating basic raster mask...\n")
 
   mask <- env_layer[[1]]
-  if (class(mask) != "brick") {
-    mask <- raster::brick(mask)
-  }
   names(mask) <- "group"
   mask[!is.na(mask[, ])] <- 1
 
 
   # Extent
-  e <- raster::extent(mask)
+  e <- terra::ext(mask)
 
   # Start Cluster
   message("Searching for the optimal grid size...\n")
@@ -229,13 +226,14 @@ unique list values in pr_ab column are: ",
   mask2[] <- 0
 
   # Eliminate any recrods wity NA
-  filt <- raster::extract(env_layer, data[, c("x", "y")]) %>%
+  filt <- terra::extract(env_layer, data[, c("x", "y")]) %>%
     stats::complete.cases()
   presences2 <- data[filt, ]
 
   # Transform the presences points in a DataFrameSpatialPoints
   sp::coordinates(presences2) <- presences2[, c("x", "y")]
-  raster::crs(presences2) <- raster::projection(mask)
+  terra::crs(presences2) <- terra::crs(mask)
+  presences2 <- terra::vect(presences2)
 
   #### Data partitioning using a grid approach ####
 
@@ -249,19 +247,19 @@ unique list values in pr_ab column are: ",
 
   for (i in 1:length(cellSize)) {
     mask3 <- mask2
-    raster::res(mask3) <- cellSize[i]
-    mask3 <- raster::extend(mask3, y = c(1, 1))
+    terra::res(mask3) <- cellSize[i]
+    mask3 <- terra::extend(mask3, y = c(1, 1))
     DIM[i, ] <- dim(mask3)[1:2]
-    raster::values(mask3) <- 1 # Add values to cells /
+    terra::values(mask3) <- 1 # Add values to cells /
     NAS <-
-      c(raster::extract(mask3, presences2)) # Extract values to test if exist NAs
+      c(terra::extract(mask3, presences2)) # Extract values to test if exist NAs
     if (any(is.na(NAS))) {
       while (any(is.na(NAS))) {
-        raster::extent(mask3) <- raster::extent(mask3) + cellSize[i]
-        raster::res(mask3) <- cellSize[i] # Give to cells a size
+        terra::ext(mask3) <- terra::ext(mask3) + cellSize[i]
+        terra::res(mask3) <- cellSize[i] # Give to cells a size
         DIM[i, ] <- dim(mask3)[1:2]
-        raster::values(mask3) <- 1
-        NAS <- raster::extract(mask3, presences2)
+        terra::values(mask3) <- 1
+        NAS <- terra::extract(mask3, presences2)
       }
     }
     grid[[i]] <- mask3
@@ -278,20 +276,20 @@ unique list values in pr_ab column are: ",
         rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
       )
 
-      raster::values(grid[[i]]) <- rep(group, length.out = raster::ncell(grid[[i]]))
+      terra::values(grid[[i]]) <- rep(group, length.out = terra::ncell(grid[[i]]))
     }
   }
 
   # Matrix within each columns represent the partitions of points
   # for each grid resolution
-  part <- data.frame(matrix(0, nrow(presences2@data), length(grid)))
+  part <- data.frame(matrix(0, nrow(presences2), length(grid)))
   for (i in 1:length(grid)) {
-    part[, i] <- raster::extract(grid[[i]], presences2)
+    part[, i] <- terra::extract(grid[[i]], presences2)[,2]
   }
 
   ### Remove problematic grids based on presences
   # Grids that assigned partitions less than the number of groups will be removed
-  pa <- presences2@data[, 1] # Vector with presences and absences
+  pa <- presences2$pr_ab # Vector with presences and absences
   pp <- sapply(part[pa == 1, ], function(x) {
     length(unique(range(x)))
   })
@@ -313,7 +311,7 @@ unique list values in pr_ab column are: ",
   ### Remove problematic grids based on presences
   # Grids that assigned partitions less than the number of groups will be removed
   if (any(unique(pa) == 0)) {
-    pa <- presences2@data[, 1] # Vector with presences and absences
+    pa <- presences2$pr_ab # Vector with presences and absences
     pp <- sapply(part[pa == 0, ], function(x) {
       length(unique(range(x)))
     })
@@ -336,11 +334,11 @@ unique list values in pr_ab column are: ",
 
   # Ncell
   ncell <- data.frame(matrix(
-    0, nrow(presences2@data),
+    0, nrow(presences2),
     length(grid)
   ))
   for (i in 1:length(grid)) {
-    ncell[, i] <- raster::cellFromXY(grid[[i]], presences2)
+    ncell[, i] <- terra::cellFromXY(grid[[i]], terra::coords(presences2))
   }
 
   # Performance of cells ----
@@ -362,7 +360,7 @@ unique list values in pr_ab column are: ",
 
   # Environmental similarity between train and test based on euclidean  -----
   EnvirDist.Grid <- rep(NA, length(grid))
-  Env.P <- raster::extract(env_layer, presences2)
+  Env.P <- terra::extract(env_layer, presences2)
   for (i in 1:ncol(part)) {
     Env.P1 <- cbind(part[i], Env.P)
     Env.P2 <- split(Env.P1[, -1], Env.P1[, 1])
@@ -376,15 +374,15 @@ unique list values in pr_ab column are: ",
   Imoran.Grid <- rep(NA, length(grid))
 
   dist <- flexclust::dist2(
-    presences2@data[, c("x", "y")],
-    presences2@data[, c("x", "y")]
+    presences2[, c("x", "y")] %>% as.data.frame,
+    presences2[, c("x", "y")] %>% as.data.frame
   )
   dist <- 1 / dist
   diag(dist) <- 0
   dist[which(dist == Inf)] <- 0
 
   species2 <-
-    cbind(presences2@data, raster::extract(env_layer, presences2))
+    cbind(terra::as.data.frame(presences2), terra::extract(env_layer, presences2))
 
   for (p in 1:length(grid)) {
     ncell3 <- ncell[, p]
@@ -393,7 +391,7 @@ unique list values in pr_ab column are: ",
       nrow = 1:length(ncell3),
       ncell = ncell3,
       group = part3,
-      pr_ab = presences2@data[c("pr_ab")]
+      pr_ab = presences2$pr_ab
     ) %>%
       dplyr::group_by(ncell, group, pr_ab) %>%
       dplyr::slice_sample(n = 1) %>%
@@ -500,7 +498,7 @@ unique list values in pr_ab column are: ",
 
 
   # Final data.frame result----
-  result <- data.frame(presences2@data, partition = c(part[, Opt2$N.grid]))
+  result <- data.frame(terra::as.data.frame(presences2), partition = c(part[, Opt2$N.grid]))
   colnames(result) <- c("pr_ab", "x", "y", ".part")
   result <- result[c("x", "y", "pr_ab", ".part")]
 
