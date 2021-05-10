@@ -17,7 +17,7 @@ block_partition(
 )
 }
 \arguments{
-\item{env_layer}{raster. Raster stack or brick with environmental
+\item{env_layer}{SpatRaster. Raster with environmental
 variable. This will be used to evaluate spatial autocorrelation and
 environmental similarity between training and testing partition}
 
@@ -81,8 +81,8 @@ points(part$part[c("x", "y")],
   pch = 19
 )
 
-raster::res(part$grid)
-raster::res(somevar)
+terra::res(part$grid)
+terra::res(somevar)
 
 # Note that is a layer with block partition, but it has a
 # different resolution than the original environmental variables.
@@ -188,5 +188,5 @@ points(
 
 }
 \seealso{
-\code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_max_res}}.
+\code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 }
