@@ -24,30 +24,9 @@
 sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred_type = "cloglog") {
 
   #### Prepare datasets ####
-  # Detect factor predictors
-  # fac_0 <- sapply(models, function(x) {
-  #   f <- x[[2]]
-  #   f <- f[(names(f) %>% grep('f', .))]
-  #   f
-  # }) %>% unlist %>% unique
-
   # Crop projection area
   if (!is.null(calib_area)) {
     pred2 <- terra::crop(pred, calib_area)
-    ### factor correction
-    # if(length(fac_0)>0){
-    #   f <- lapply(fac_0, function(x) raster::ratify(pred[[x]])) %>% raster::stack()
-    #   for(ff in fac_0){
-    #     lev <- suppressMessages(dplyr::left_join(
-    #       raster::levels(f[[ff]])[[1]],
-    #       raster::levels(pred[[ff]])[[1]]))
-    #     levels(f[[ff]]) <- lev
-    #   }
-    #   pred <- raster::stack(raster::dropLayer(pred, fac_0), f)
-    # } else {
-    #   pred <- pred2
-    #   rm(pred2)
-    # }
   }
 
 
@@ -66,24 +45,6 @@ sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred
 
   ## Transform raster to data.frame
   pred_df <- terra::as.data.frame(pred, cells = FALSE, na.rm = TRUE)
-
-  ### correct factor levels
-  # if (length(fac_0) > 0) {
-  #   fac_1 <- names(pred_df)
-  #   fac_1 <- fac_1[!fac_1 %in% names(pred)]
-  #   fac_3 <- gsub("_category", "", fac_1)
-  #   for (i in 1:length(fac_3)) {
-  #     df1 <- pred[[fac_3[i]]]@data@attributes[[1]]
-  #     cc <- c("category")
-  #     names(cc) <- fac_1
-  #     pred_df[fac_1] <-
-  #       dplyr::left_join(pred_df[fac_1], df1, by = cc)[, 2]
-  #     names(pred_df)[names(pred_df) == fac_1] <- fac_3
-  #     pred_df[, fac_3] <- pred_df[, fac_3] %>% as.factor()
-  #   }
-  # }
-
-
 
   #                                                          #
   ####          Prediction for different models           ####
