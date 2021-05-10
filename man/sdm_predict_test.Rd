@@ -9,9 +9,12 @@ sdm_predict_test(
   pred,
   thr,
   calib_area = NULL,
-  ensemble = NULL,
   clamp = TRUE,
-  pred_type = "cloglog"
+  pred_type = "cloglog",
+  ensemble = NULL,
+  data = NULL,
+  x = NULL,
+  y = NULL
 )
 }
 \arguments{
@@ -22,6 +25,10 @@ sdm_predict_test(
 \item{thr}{character. Binarize projection. Default NULL, i.e. function returns only continuous projection. If used with 'selected_thr', function returns continuous and binarized models used in the 'thr' argument of some of fit_ or tune_ functions. It used with "all_thr" , function returns continuous and binarized for all threshold types.}
 
 \item{calib_area}{SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restrinc prediction into a given region. Default = NULL}
+
+\item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)}
+
+\item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)}
 
 \item{ensemble}{character. Method used to ensemble different models It is possible to use more than one method. A vector must be provided for this argument. For meansup, meanw or pcasup method it is necessary provide an evaluation metric to ensemble arguments (i.e., AUC, Kappa, TSS, Jaccard, Sorensen or Fpb) see below. (default NULL):
   \itemize{
@@ -34,9 +41,7 @@ sdm_predict_test(
 
  In the case of use more than one ensemble method it is necessary concatenate the names of ensemble methods within the argument, e.g., ensemble=c(method=c('mean', 'median')) or ensemble = c(method=c('mean', 'meanw', 'meansup', 'meanthr', 'median'), metric='TSS', thr = 'max_sens_spec')}
 
-\item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)}
-
-\item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)}
+\item{y}{}
 }
 \value{
 A list of Raster or RasterStack with continuous or continuous and binary predictions

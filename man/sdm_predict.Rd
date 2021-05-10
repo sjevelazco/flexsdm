@@ -16,7 +16,7 @@ sdm_predict(
 \arguments{
 \item{models}{list. A list a single or several models fitted with some of fit_ or tune_ functions}
 
-\item{pred}{stack or brick. Raster layer with predictor variables. Names of raster layers must exactly match those used in model fitting.}
+\item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.}
 
 \item{thr}{character. Binarize projection. Default NULL, i.e. function returns only continuous projection. If used with 'selected_thr', function returns continuous and binarized models used in the 'thr' argument of some of fit_ or tune_ functions. It used with "all_thr" , function returns continuous and binarized for all threshold types.}
 
@@ -27,7 +27,7 @@ sdm_predict(
 \item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)}
 }
 \value{
-A list of Raster or RasterStack with continuous or continuous and binary predictions
+A list of SpatRaster with continuous or continuous and binary predictions
 }
 \description{
 This function allows the prediction of one or more models built with the fit_ or tune_ function set. It can return continuous or continuous and binary predictions for one or more thresholds
