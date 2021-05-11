@@ -2,31 +2,28 @@
 #'
 #' @description This function is useful to display the maximum and minimum resolution that you want to test with the block_partition function. Note that if the resolution to be tested is very fine, the plot display may take a long time.
 #'
-#' @param r raster. A raster layer. Preferably a layer of environmental variables to be used
+#' @param r SpatRaster. A raster layer, preferably a layer of environmental variables to be used
 #' @param res_mult numeric. Maximum or minimum resolution to be tested.
-#'
-#' @importFrom raster res plot rasterToPolygons
 #'
 #' @return A plot with the original raster overlapped by a grid with the resolution used
 #' @export
 #'
-#' @importFrom raster res plot rasterToPolygons
+#' @importFrom terra res plot as.polygons
 #'
 #' @examples
 #' \dontrun{
-#' f <- system.file("external/test.grd", package = "raster")
-#' f
-#' r <- raster(f)
-#' plot_res(r, max_res_mult = 2)
-#' plot_res(r, max_res_mult = 10)
-#' plot_res(r, max_res_mult = 20)
+#' f <- system.file("external/somevar.tif", package = "flexsdm")
+#' r <- terra::rast(f)
+#' r <- r$CFP_1
+#' plot_res(r, res_mult = 100)
+#' plot_res(r, res_mult = 200)
 #' }
-plot_res <- function(r, max_res_mult) {
+plot_res <- function(r, res_mult) {
   r0 <- r
-  r0[!is.na(values(r0))] <- 1
+  r0[!is.na(r0)] <- 1
   r[] <- 0
-  raster::res(r) <- raster::res(r) * max_res_mult
-  raster::plot(r0)
-  r <- raster::rasterToPolygons(r)
-  raster::plot(r, add = TRUE)
+  terra::res(r) <- terra::res(r) * res_mult
+  terra::plot(r0)
+  r <- terra::as.polygons(r)
+  terra::plot(r, add = TRUE)
 }
