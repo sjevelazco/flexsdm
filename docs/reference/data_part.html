@@ -164,7 +164,7 @@
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies_db2</span>
 
@@ -174,7 +174,7 @@
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_p_a <span class='op'>=</span> <span class='cn'>NULL</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"rep_kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span>, replicates <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"rep_kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span>, replicates <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies_db2</span>
 
@@ -184,7 +184,7 @@
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"loocv"</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"loocv"</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies_db2</span>
 
@@ -194,7 +194,7 @@
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"boot"</span>, replicates <span class='op'>=</span> <span class='fl'>50</span>, proportion <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"boot"</span>, replicates <span class='op'>=</span> <span class='fl'>50</span>, proportion <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies_db2</span><span class='op'>$</span><span class='va'>.part1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/table.html'>table</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># Note that for this method .partX columns have train and test words.</span>
 <span class='op'>}</span>
