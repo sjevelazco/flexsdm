@@ -6,20 +6,95 @@
 #' @param y character. Column name with latitude data
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
 #' @param variables data.frame. A data.frame with environmental conditions. It is possible use two or three variables
-#' @param nbins interger. A number of classes used to split each environmental condition
-#' @param cores interger. Number of machine cores used for processing in parallel
+#' @param nbins integer. A number of classes used to split each environmental condition
+#' @param cores integer. Number of machine cores used for processing in parallel
+#'
+#' @return
+#' A tibble object with filtered data
+#'
+#' @export
+#'
+#' @importFrom doParallel registerDoParallel
+#' @importFrom dplyr mutate select pull
+#' @importFrom parallel makeCluster
+#' @importFrom raster extract
+#'
+#' @examples
+#' \dontrun{
+#' require(terra)
+#' require(dplyr)
+#'
+#' # Envirnomental variables
+#' somevar <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(somevar)
+#'
+#' plot(somevar)
+#'
+#' # Species occurrences
+#' data("spp")
+#' spp
+#' spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
+#'
+#' somevar[[1]] %>% plot()
+#' points(spp1 %>% select(x, y))
+#'
+#' spp1$idd <- 1:nrow(spp1)
+#'
+#'
+#' # 5 bins
+#' filtered_1 <- env_filtering(
+#'   data = spp1,
+#'   x = "x",
+#'   y = "y",
+#'   id = "idd",
+#'   variables = somevar,
+#'   nbins = 5,
+#'   cores = 1
+#' )
+#'
+#' # 10 bins
+#' filtered_2 <- env_filtering(
+#'   data = spp1,
+#'   x = "x",
+#'   y = "y",
+#'   id = "idd",
+#'   variables = somevar,
+#'   nbins = 10,
+#'   cores = 1
+#' )
+#'
+#' # 20 bins
+#' filtered_3 <- env_filtering(
+#'   data = spp1,
+#'   x = "x",
+#'   y = "y",
+#'   id = "idd",
+#'   variables = somevar,
+#'   nbins = 20,
+#'   cores = 1
+#' )
+#' # note that while higher the nbins parameter higher the number of
+#' # classes to be processed (4 variables, 30 bins = 923521 classes)
+#'
+#' # While higher the number of bins smaller the number of records retained
+#' }
 env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
 
   message("Extracting values from raster ... ")
-  variables <- raster::extract(variables, data.frame(coord))
+  variables <- terra::extract(variables, coord)
+  variables$ID <- NULL
 
-  filt <- complete.cases(variables)
-  da <- da[filt, ]
-  coord <- coord[filt, ]
+  filt <- stats::complete.cases(variables)
+  if (sum(!filt) > 0) {
+    message(sum(!filt), " records were removed because they have NAs for some variables")
+    da <- da[filt, ]
+    coord <- coord[filt, ]
+    variables <- variables[filt, ]
+  }
+  rm(filt)
 
-  variables <- variables[filt, ]
   n <- ncol(variables)
   res <- (apply(variables, 2, max) - apply(variables, 2, min)) / nbins
 
@@ -60,29 +135,14 @@ env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
   real_p$groupID <- NA
 
   cnames <- real_p %>%
-    dplyr::select(starts_with("f")) %>%
+    dplyr::select(dplyr::starts_with("f")) %>%
     names()
-
-  # pb <- progress_bar$new(total = nrow(real_p))
-  # for(l in 1:nrow(real_p)) {
-  #   pb$tick()
-  #   real_p2 <- real_p[l,] %>% dplyr::select(starts_with('f'))
-  #   flt <- list()
-  #   for (ll in 1:length(cnames)) {
-  #     vf <- real_p2 %>% dplyr::pull(cnames[ll])
-  #     flt[[ll]] <-
-  #       vf <= (classes %>% dplyr::pull(paste0('end_', cnames[ll]))) &
-  #       vf > (classes %>% dplyr::pull(paste0('start_', cnames[ll])))
-  #   }
-  #   flt <- do.call('cbind', flt) %>% apply(., 1, all) %>% which()
-  #   real_p$groupID[l] <- classes$groupID[flt]
-  # }
 
   cl <- parallel::makeCluster(cores, outfile = "")
   doParallel::registerDoParallel(cl)
 
-  groupID <- foreach(l = 1:nrow(real_p), .packages = c("dplyr"), .final = unlist) %dopar% {
-    real_p2 <- real_p[l, ] %>% dplyr::select(starts_with("f"))
+  groupID <- foreach::foreach(l = 1:nrow(real_p), .packages = c("dplyr"), .final = unlist) %dopar% {
+    real_p2 <- real_p[l, ] %>% dplyr::select(dplyr::starts_with("f"))
     flt <- list()
     for (ll in 1:length(cnames)) {
       vf <- real_p2 %>% dplyr::pull(cnames[ll])
@@ -97,11 +157,11 @@ env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
     real_p$groupID[l]
   }
   real_p$groupID <- groupID
-  stopCluster(cl)
+  parallel::stopCluster(cl)
 
   final_points <- real_p[!duplicated(real_p$groupID), cnames]
   coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y)]
 
   message("Number of filtered records: ", nrow(coord_filter))
-  return(coord_filter)
+  return(dplyr::tibble(coord_filter))
 }
