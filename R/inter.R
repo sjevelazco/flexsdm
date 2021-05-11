@@ -1,6 +1,6 @@
 #' Raster interpolation between two time periods
 #'
-#' @description This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values. .
+#' @description This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values.
 #'
 #' @param r1 SpatRaster. Raster object for the initial year
 #' @param r2 SpatRaster. Raster object for the final year
