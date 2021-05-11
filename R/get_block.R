@@ -15,7 +15,8 @@
 #' \dontrun{
 #' require(dplyr)
 #' data(spp)
-#' data(somevar)
+#' f <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(f)
 #'
 #' # Lest practice with a single species
 #' single_spp <- spp %>% dplyr::filter(species == "sp3")
