@@ -17,7 +17,8 @@
 #' \dontrun{
 #' require(dplyr)
 #' data(spp)
-#' data(somevar)
+#' somevar <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(somevar)
 #'
 #' # Lest practice with a single species
 #' single_spp <- spp %>% dplyr::filter(species == "sp3")
@@ -65,32 +66,27 @@
 #'   points(col = "red")
 #' }
 #'
-#' @importFrom dplyr tibble
-#' @importFrom raster cellStats match mask ncell xyFromCell
-#' @importFrom stats na.exclude
-#'
 #' @seealso \code{\link{sample_pseudoabs}} and \code{\link{calib_area}}.
+#'
+#' @importFrom dplyr tibble
+#' @importFrom stats na.exclude
+#' @importFrom terra mask freq match values ncell xyFromCell
 #'
 #' @examples
 sample_background <- function(n, rlayer, maskval = NULL, calibarea = NULL) {
   rlayer <- rlayer[[1]]
 
   if (!is.null(calibarea)) {
-    allcells <- 1:(raster::ncell(rlayer))
-    suppressMessages(ncells <- raster::cellFromPolygon(rlayer, calibarea)[[1]])
-    allcells <- allcells[!allcells %in% ncells]
-    rm(ncells)
-    rlayer[allcells] <- NA
+    rlayer <- terra::mask(rlayer, calibarea)
   }
 
   if (!is.null(maskval)) {
-    rvalues <- raster::cellStats(rlayer, unique) %>% stats::na.exclude()
-    filt <- raster::match(rlayer, maskval)
-    filt[filt[] == 0] <- NA
-    rlayer <- raster::mask(rlayer, filt)
+    rvalues <- terra::freq(rlayer)[, 2] %>% stats::na.exclude()
+    filt <- terra::match(rlayer, maskval)
+    rlayer <- terra::mask(rlayer, filt)
   }
 
-  ncellr <- sum(!is.na(rlayer[]))
+  ncellr <- sum(!is.na(terra::values(rlayer)))
 
   if (ncellr < n) {
     message(
@@ -98,21 +94,21 @@ sample_background <- function(n, rlayer, maskval = NULL, calibarea = NULL) {
       ncellr,
       " background-points"
     )
-    cell_samp <- 1:raster::ncell(rlayer)
-    cell_samp <- cell_samp[!is.na(rlayer[])]
-    cell_samp <- raster::xyFromCell(rlayer, cell_samp) %>%
+    cell_samp <- 1:terra::ncell(rlayer)
+    cell_samp <- cell_samp[!is.na(terra::values(rlayer))]
+    cell_samp <- terra::xyFromCell(rlayer, cell_samp) %>%
       data.frame() %>%
       dplyr::tibble()
   } else {
-    cell_samp <- 1:raster::ncell(rlayer)
-    cell_samp <- cell_samp[!is.na(rlayer[])]
+    cell_samp <- 1:terra::ncell(rlayer)
+    cell_samp <- cell_samp[!is.na(terra::values(rlayer))]
     cell_samp <-
       sample(cell_samp,
         size = n,
         replace = FALSE,
         prob = NULL
       )
-    cell_samp <- raster::xyFromCell(rlayer, cell_samp) %>%
+    cell_samp <- terra::xyFromCell(rlayer, cell_samp) %>%
       data.frame() %>%
       dplyr::tibble()
   }
