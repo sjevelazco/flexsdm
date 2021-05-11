@@ -29,44 +29,19 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr left_join mutate across
+#' @importFrom dplyr mutate across left_join bind_rows filter pull
 #' @importFrom gam predict.Gam
 #' @importFrom GRaF predict.graf
 #' @importFrom kernlab predict
-#' @importFrom raster ncell as.data.frame values predict stack
-#' @importFrom stats na.exclude predict
+#' @importFrom stats predict
+#' @importFrom terra crop as.data.frame values rast mean weighted.mean median nlyr ifel
 #' @examples
 sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred_type = "cloglog", ensemble = NULL, data = NULL, x = NULL, y = NULL) {
 
   #### Prepare datasets ####
-  # Detect factor predictors
-  fac_0 <- sapply(models, function(x) {
-    f <- x[[2]]
-    f <- f[(names(f) %>% grep("f", .))]
-    f
-  }) %>%
-    unlist() %>%
-    unique()
-
   # Crop projection area
   if (!is.null(calib_area)) {
-    pred2 <- raster::mask(pred, calib_area)
-
-    ### factor correction
-    if (length(fac_0) > 0) {
-      f <- lapply(fac_0, function(x) raster::ratify(pred[[x]])) %>% raster::stack()
-      for (ff in fac_0) {
-        lev <- suppressMessages(dplyr::left_join(
-          raster::levels(f[[ff]])[[1]],
-          raster::levels(pred[[ff]])[[1]]
-        ))
-        levels(f[[ff]]) <- lev
-      }
-      pred <- raster::stack(raster::dropLayer(pred, fac_0), f)
-    } else {
-      pred <- pred2
-      rm(pred2)
-    }
+    pred2 <- terra::crop(pred, calib_area)
   }
 
 
@@ -84,31 +59,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
   names(model_c) <- names(m)
 
   ## Transform raster to data.frame
-  pred_df <- data.frame(
-    ncell = 1:raster::ncell(pred),
-    raster::as.data.frame(pred)
-  ) %>%
-    stats::na.exclude(pred_df)
-  rownames(pred_df) <- pred_df$ncell
-  pred_df$ncell <- NULL
-
-  ### correct factor levels
-  if (length(fac_0) > 0) {
-    fac_1 <- names(pred_df)
-    fac_1 <- fac_1[!fac_1 %in% names(pred)]
-    fac_3 <- gsub("_category", "", fac_1)
-    for (i in 1:length(fac_3)) {
-      df1 <- pred[[fac_3[i]]]@data@attributes[[1]]
-      cc <- c("category")
-      names(cc) <- fac_1
-      pred_df[fac_1] <-
-        dplyr::left_join(pred_df[fac_1], df1, by = cc)[, 2]
-      names(pred_df)[names(pred_df) == fac_1] <- fac_3
-      pred_df[, fac_3] <- pred_df[, fac_3] %>% as.factor()
-    }
-  }
-
-
+  pred_df <- terra::as.data.frame(pred, cells = FALSE, na.rm = TRUE)
 
   #                                                          #
   ####          Prediction for different models           ####
@@ -130,7 +81,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
     wm <- names(wm)
     for (i in wm) {
       r <- pred[[1]]
-      raster::values(r) <- NA
+      terra::values(r) <- NA
 
       # Test factor levels
       f <- which(sapply(m[[i]]$data, class) == "factor")
@@ -175,7 +126,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
     wm <- names(wm)
     for (i in wm) {
       r <- pred[[1]]
-      raster::values(r) <- NA
+      terra::values(r) <- NA
 
       # Test factor levels
       f <- which(sapply(m[[i]]$data, class) == "factor")
@@ -220,7 +171,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
     wm <- names(wm)
     for (i in wm) {
       r <- pred[[1]]
-      raster::values(r) <- NA
+      terra::values(r) <- NA
       r[as.numeric(rownames(pred_df))] <-
         suppressMessages(stats::predict(m[[i]], pred_df, type = "response"))
 
@@ -235,7 +186,12 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
   if (length(wm) > 0) {
     wm <- names(wm)
     for (i in wm) {
-      model_c[[i]] <- raster::predict(pred, m[[i]], clamp = clamp, type = pred_type)
+      r <- pred[[1]]
+      terra::values(r) <- NA
+      r[as.numeric(rownames(pred_df))] <-
+        predict_maxnet(object = m[[i]], newdata = pred_df, clamp = clamp, type = pred_type)
+      model_c[[i]] <- r
+      rm(i)
     }
   }
 
@@ -245,7 +201,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
     wm <- names(wm)
     for (i in wm) {
       r <- pred[[1]]
-      raster::values(r) <- NA
+      terra::values(r) <- NA
 
       # Test factor levels
       f <- (m[[i]]$xlevels)
@@ -294,7 +250,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
     wm <- names(wm)
     for (i in wm) {
       r <- pred[[1]]
-      raster::values(r) <- NA
+      terra::values(r) <- NA
 
       # Test factor levels
       f <-
@@ -328,11 +284,11 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
           stats::predict(m[[i]], pred_df[!vfilter, ] %>%
-            dplyr::mutate(dplyr::across(
-              .cols = names(f),
-              .fns = ~ droplevels(.)
-            )),
-          type = "prob"
+                           dplyr::mutate(dplyr::across(
+                             .cols = names(f),
+                             .fns = ~ droplevels(.)
+                           )),
+                         type = "prob"
           )[, 2]
         r[as.numeric(rownames(pred_df))] <- v
         rm(v)
@@ -345,13 +301,13 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
     }
   }
 
-  #### ksvm class ####
+  #### ksvmj class ####
   wm <- which(clss == "ksvm")
   if (length(wm) > 0) {
     wm <- names(wm)
     for (i in wm) {
       r <- pred[[1]]
-      raster::values(r) <- NA
+      terra::values(r) <- NA
 
       # Test factor levels
       f_n <- which(sapply(pred_df, class) == "factor") %>% names()
@@ -387,10 +343,10 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
           kernlab::predict(m[[i]], pred_df[!vfilter, ] %>%
-            dplyr::mutate(dplyr::across(
-              .cols = names(f),
-              .fns = ~ droplevels(.)
-            )), type = "prob")[, 2]
+                             dplyr::mutate(dplyr::across(
+                               .cols = names(f),
+                               .fns = ~ droplevels(.)
+                             )), type = "prob")[, 2]
         r[as.numeric(rownames(pred_df))] <- v
         rm(v)
       } else {
@@ -401,7 +357,6 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
     }
   }
 
-  #### List of type of algorithms and model names
   df <- data.frame(
     alg = c("gam", "graf", "glm", "gbm", "maxnet", "nnet", "randomforest", "ksvm"),
     names = c("gam", "gau", "glm", "gbm", "mx", "nne", "rf", "svm")
@@ -432,13 +387,18 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
       model_b[[i]] <-
         lapply(thr_df[[i]]$values, function(x) {
           model_c[[i]] >= x
-        }) %>% raster::stack()
+        }) %>% terra::rast()
+      names(model_b[[i]]) <- names(thr_df[[i]]$values)
     }
     names(model_b) <- names(model_c)
-    result <- mapply(raster::stack, model_c, model_b, SIMPLIFY = FALSE)
+    mf <- function(x, x2) {
+      terra::rast(list(x, x2))
+    }
+    result <- mapply(mf, model_c, model_b, SIMPLIFY = FALSE)
     return(result)
   } else {
     result <- model_c
+    return(result)
   }
 
   #                                                          #
@@ -475,7 +435,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
     }
 
     # Prepare SpatRaster and data.frame
-    p_algo <- as(raster::stack(lapply(model_c, function(x) x[[1]])), "SpatRaster")
+    p_algo <- as(terra::rast(lapply(model_c, function(x) x[[1]])), "SpatRaster")
 
     # Mean
     if (any(ense_type == "mean")) {
@@ -488,7 +448,7 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
       w <- perf_2 %>%
         dplyr::filter(threshold == ensemble["thr"]) %>%
         dplyr::pull(3)
-      en_meanw <- raster::weighted.mean(p_algo, w = w)
+      en_meanw <- terra::weighted.mean(p_algo, w = w)
       names(en_meanw) <- "en_meanw"
     }
 
