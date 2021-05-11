@@ -16,7 +16,7 @@ env_filtering(data, x, y, id, variables, nbins, cores = 1)
 
 \item{id}{character. Column names with rows id. It is important that each row has its own unique code.}
 
-\item{variables}{data.frame. A data.frame with environmental conditions. It is possible use two or three variables}
+\item{variables}{SpatRaste. Rasters with environmental conditions}
 
 \item{nbins}{integer. A number of classes used to split each environmental condition}
 

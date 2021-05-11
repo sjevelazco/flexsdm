@@ -7,9 +7,9 @@
 inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1)
 }
 \arguments{
-\item{r1}{raster. Raster object for the initial year}
+\item{r1}{SpatRaster. Raster object for the initial year}
 
-\item{r2}{raster. Raster object for the final year}
+\item{r2}{SpatRaster. Raster object for the final year}
 
 \item{y1}{numeric. Initial year}
 

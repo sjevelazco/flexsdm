@@ -2,8 +2,8 @@
 #'
 #' @description This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values. .
 #'
-#' @param r1 raster. Raster object for the initial year
-#' @param r2 raster. Raster object for the final year
+#' @param r1 SpatRaster. Raster object for the initial year
+#' @param r2 SpatRaster. Raster object for the final year
 #' @param y1 numeric. Initial year
 #' @param y2 numeric. Final year
 #' @param rastername character. Word used as prefix in raster file name
@@ -13,7 +13,7 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach foreach
 #' @importFrom parallel detectCores makeCluster stopCluster
-#' @importFrom raster brick nlayers writeRaster
+#' @importFrom terra rast nlyr writeRaster
 #'
 #' @return
 #' @export
@@ -29,7 +29,7 @@ inter <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 
   cl <- parallel::makeCluster(n_cores)
   doParallel::registerDoParallel(cl)
 
-  rlist <- foreach::foreach(i = 1:(y2 - y1), .export = "raster") %dopar% {
+  rlist <- foreach::foreach(i = 1:(y2 - y1), .export = "terra") %dopar% {
     (r1 - (annual * (i - 1)))
   }
   i <- length(rlist)
@@ -41,15 +41,13 @@ inter <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 
     rastername <- paste(rastername, (y1:y2), sep = "_")
   }
   names(rlist) <- rastername
-  rlist <- raster::brick(rlist)
+  rlist <- terra::rast(rlist)
   if (!is.null(dir_save)) {
     message("saving raster...")
-    foreach::foreach(i = 1:raster::nlayers(rlist), .export = "raster") %dopar% {
-      raster::writeRaster(
+    foreach::foreach(i = 1:terra::nlyr(rlist), .export = "terra") %dopar% {
+      terra::writeRaster(
         x = rlist[[i]],
-        filename = file.path(dir_save, names(rlist)[i]),
-        bylayer = TRUE,
-        format = "GTiff",
+        filename = paste0(file.path(dir_save, names(rlist)[i]),'.tif'),
         overwrite = TRUE
       )
       NULL
