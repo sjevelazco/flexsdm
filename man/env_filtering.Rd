@@ -18,10 +18,73 @@ env_filtering(data, x, y, id, variables, nbins, cores = 1)
 
 \item{variables}{data.frame. A data.frame with environmental conditions. It is possible use two or three variables}
 
-\item{nbins}{interger. A number of classes used to split each environmental condition}
+\item{nbins}{integer. A number of classes used to split each environmental condition}
 
-\item{cores}{interger. Number of machine cores used for processing in parallel}
+\item{cores}{integer. Number of machine cores used for processing in parallel}
+}
+\value{
+A tibble object with filtered data
 }
 \description{
 Function to perform environmental filtering of species occurrence records
+}
+\examples{
+\dontrun{
+require(terra)
+require(dplyr)
+
+# Envirnomental variables
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+plot(somevar)
+
+# Species occurrences
+data("spp")
+spp
+spp1 <- spp \%>\% dplyr::filter(species == "sp1", pr_ab == 1)
+
+somevar[[1]] \%>\% plot()
+points(spp1 \%>\% select(x, y))
+
+spp1$idd <- 1:nrow(spp1)
+
+
+# 5 bins
+filtered_1 <- env_filtering(
+  data = spp1,
+  x = "x",
+  y = "y",
+  id = "idd",
+  variables = somevar,
+  nbins = 5,
+  cores = 1
+)
+
+# 10 bins
+filtered_2 <- env_filtering(
+  data = spp1,
+  x = "x",
+  y = "y",
+  id = "idd",
+  variables = somevar,
+  nbins = 10,
+  cores = 1
+)
+
+# 20 bins
+filtered_3 <- env_filtering(
+  data = spp1,
+  x = "x",
+  y = "y",
+  id = "idd",
+  variables = somevar,
+  nbins = 20,
+  cores = 1
+)
+# note that while higher the nbins parameter higher the number of
+# classes to be processed (4 variables, 30 bins = 923521 classes)
+
+# While higher the number of bins smaller the number of records retained
+}
 }

@@ -3,6 +3,7 @@
 export(block_partition)
 export(calib_area)
 export(data_part)
+export(env_filtering)
 export(fit_gam)
 export(fit_gau)
 export(fit_gbm)
