@@ -5,7 +5,7 @@
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
-#' @param variables data.frame. A data.frame with environmental conditions. It is possible use two or three variables
+#' @param variables SpatRaste. Rasters with environmental conditions
 #' @param nbins integer. A number of classes used to split each environmental condition
 #' @param cores integer. Number of machine cores used for processing in parallel
 #'
@@ -17,7 +17,7 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr mutate select pull
 #' @importFrom parallel makeCluster
-#' @importFrom raster extract
+#' @importFrom terra extract
 #'
 #' @examples
 #' \dontrun{
