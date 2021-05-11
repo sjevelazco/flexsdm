@@ -46,7 +46,7 @@ env_outliers <- function(data, x, y, pr_ab, id, envr) {
       )
 
     sp_env_01 <-
-      raster::extract(envr, data.frame(occ_sp_01[c("x", "y")])) %>%
+      terra::extract(envr, data.frame(occ_sp_01[c("x", "y")])) %>%
       data.frame() %>%
       tibble(id = occ_sp_01$id, pr_ab = occ_sp_01$pr_ab, .)
     sp_env_1 <- sp_env_01 %>% dplyr::filter(pr_ab == 1)

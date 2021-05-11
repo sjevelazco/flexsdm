@@ -36,10 +36,13 @@ pre_tr_te <- function(data, p_names, h) {
 }
 
 
+
 # Inverse bioclim
 inv_bio <- function(e, p) {
-  model <- dismo::bioclim(e, p)
-  r <- dismo::predict(model, e)
+  e <- raster::stack(e)
+  model <- dismo::bioclim(e, as.matrix(p))
+  r <- terra::predict(model, e)
+  r <- terra::rast(r)
   r <- (r - terra::minmax(r)[1]) /
     (terra::minmax(r)[2] - terra::minmax(r)[1])
   r <- (1 - r) >= 0.99 # environmental constrain
@@ -50,9 +53,12 @@ inv_bio <- function(e, p) {
 
 # Inverse geo
 inv_geo <- function(e, p, d) {
+  colnames(p) <- c('x', 'y')
+  sp::coordinates(p) <- ~ x + y
+  p <- terra::vect(p)
   r <- terra::rasterize(p, e)
   b <- terra::buffer(r, width = d)
-  e[!is.na(b[])] <- NA
+  e <- mask(e, b, maskvalues=1)
   return(e)
 }
 

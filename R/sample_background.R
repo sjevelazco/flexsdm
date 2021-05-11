@@ -13,6 +13,12 @@
 #' @importFrom raster values mask ncell xyFromCell
 #' @importFrom stats na.exclude
 #'
+#' @seealso \code{\link{sample_pseudoabs}} and \code{\link{calib_area}}.
+#'
+#' @importFrom dplyr tibble
+#' @importFrom stats na.exclude
+#' @importFrom terra mask freq match values ncell xyFromCell
+#'
 #' @examples
 #' \dontrun{
 #' require(dplyr)
@@ -66,13 +72,6 @@
 #'   points(col = "red")
 #' }
 #'
-#' @seealso \code{\link{sample_pseudoabs}} and \code{\link{calib_area}}.
-#'
-#' @importFrom dplyr tibble
-#' @importFrom stats na.exclude
-#' @importFrom terra mask freq match values ncell xyFromCell
-#'
-#' @examples
 sample_background <- function(n, rlayer, maskval = NULL, calibarea = NULL) {
   rlayer <- rlayer[[1]]
 
@@ -81,7 +80,11 @@ sample_background <- function(n, rlayer, maskval = NULL, calibarea = NULL) {
   }
 
   if (!is.null(maskval)) {
-    rvalues <- terra::freq(rlayer)[, 2] %>% stats::na.exclude()
+    if(is.factor(maskval)){
+      maskval <-
+        which(levels(maskval)[-1]%in%as.character(maskval))
+      rlayer <- rlayer*1
+    }
     filt <- terra::match(rlayer, maskval)
     rlayer <- terra::mask(rlayer, filt)
   }
