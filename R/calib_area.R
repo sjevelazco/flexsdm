@@ -20,15 +20,16 @@
 #' @export
 #'
 #' @importFrom grDevices chull
-#' @importFrom raster buffer bind projection extract
-#' @importFrom sp coordinates
+#' @importFrom sp coordinates Polygon Polygons SpatialPolygons spTransform
+#' @importFrom terra vect buffer crs extract
 #'
 #' @examples
 #' \dontrun{
-#' require(raster)
+#' require(terra)
 #' require(dplyr)
 #' data("spp")
-#' data("clusters")
+#' clusters <- system.file("external/clusters.shp", package = "flexsdm")
+#' clusters <- terra::vect(clusters)
 #'
 #' single_spp <-
 #'   spp %>%
@@ -60,7 +61,7 @@
 #' # mcp method for different groups
 #' single_spp <- single_spp %>% mutate(groups = ifelse(x > 150000, "a", "b"))
 #'
-#' plot(single_spp[, 2:3], pch = 19)
+#' plot(single_spp[, 2:3], pch = 19, col = 'blue')
 #' points(single_spp[single_spp$groups == "a", 2:3], col = "red", pch = 19)
 #' points(single_spp[, 2:3])
 #'
@@ -103,7 +104,7 @@
 #'   data = single_spp,
 #'   x = "x",
 #'   y = "y",
-#'   method = c("mask", clusters, "DN"),
+#'   method = c("mask", clusters, "clusters"),
 #' )
 #' plot(ca_3.1)
 #' points(single_spp[, 2:3], pch = 19, cex = 0.5, col = "red")
@@ -120,8 +121,11 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   }
 
   if (method[1] %in% c("mask")) {
-    if (!"SpatialPolygonsDataFrame" %in% class(clusters)) {
-      stop("provide a SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
+    if (!class(clusters)%in%c("SpatialPolygonsDataFrame", "SpatVector")) {
+      stop("provide a SpatVector or SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
+    }
+    if(class(clusters)!="SpatVector"){
+      clusters <- terra::vect(clusters)
     }
   }
 
@@ -133,7 +137,8 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     data <- data[, c("x", "y")]
     data_sp <- data
     sp::coordinates(data_sp) <- ~ x + y
-    result <- raster::buffer(data_sp, width = as.numeric(method["width"]))
+    result <- terra::buffer(data_sp, width = as.numeric(method["width"]))
+    result <- terra::vect(result)
   }
 
   if (method[1] == "mcp") {
@@ -148,10 +153,10 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
       data_pl <- sp::Polygon(data_pl)
       data_pl <- sp::Polygons(list(data_pl), ID = 1)
       data_pl <- sp::SpatialPolygons(list(data_pl))
-      result[[i]] <- data_pl
+      result[[i]] <- terra::vect(data_pl)
     }
     if (length(result) > 1) {
-      result <- do.call(raster::bind, result)
+      result <- do.call(rbind, result)
     } else {
       result <- result[[1]]
     }
@@ -169,11 +174,11 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
       data_pl <- sp::Polygon(data_pl)
       data_pl <- sp::Polygons(list(data_pl), ID = 1)
       data_pl <- sp::SpatialPolygons(list(data_pl))
-      data_pl <- raster::buffer(data_pl, width = as.numeric(method["width"]))
+      data_pl <- terra::buffer(data_pl, width = as.numeric(method["width"]))
       result[[i]] <- data_pl
     }
     if (length(result) > 1) {
-      result <- do.call(raster::bind, result)
+      result <- do.call(bind, result)
     } else {
       result <- result[[1]]
     }
@@ -185,10 +190,10 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     data <- data[, c("x", "y")]
     data_sp <- data
     sp::coordinates(data_sp) <- ~ x + y
-    raster::projection(data_sp) <- raster::crs(polyc)
-    data_sp <- sp::spTransform(data_sp, raster::crs(polyc))
-    result <- raster::extract(polyc, data_sp)[, cname]
-    result <- polyc[polyc[[cname]] %in% result, ]
+    terra::crs(data_sp) <- terra::crs(polyc)
+    data_sp <- sp::spTransform(data_sp, terra::crs(polyc))
+    result <- terra::extract(polyc, vect(data_sp))[, cname] %>% unique
+    result <- polyc[polyc[[cname]][,1] %in% result, ]
   }
   return(result)
 }

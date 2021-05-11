@@ -33,10 +33,11 @@ This function offers different methods to define de calibration area. The output
 }
 \examples{
 \dontrun{
-require(raster)
+require(terra)
 require(dplyr)
 data("spp")
-data("clusters")
+clusters <- system.file("external/clusters.shp", package = "flexsdm")
+clusters <- terra::vect(clusters)
 
 single_spp <-
   spp \%>\%
@@ -68,7 +69,7 @@ points(single_spp[, 2:3], pch = 19, cex = 0.5)
 # mcp method for different groups
 single_spp <- single_spp \%>\% mutate(groups = ifelse(x > 150000, "a", "b"))
 
-plot(single_spp[, 2:3], pch = 19)
+plot(single_spp[, 2:3], pch = 19, col = 'blue')
 points(single_spp[single_spp$groups == "a", 2:3], col = "red", pch = 19)
 points(single_spp[, 2:3])
 
@@ -111,7 +112,7 @@ ca_3.1 <- calib_area(
   data = single_spp,
   x = "x",
   y = "y",
-  method = c("mask", clusters, "DN"),
+  method = c("mask", clusters, "clusters"),
 )
 plot(ca_3.1)
 points(single_spp[, 2:3], pch = 19, cex = 0.5, col = "red")

@@ -12,7 +12,7 @@
 env_outliers <- function(data, x, y, pr_ab, id, envr) {
   # Packages
   require(dplyr)
-  require(raster)
+  require(terra)
   require(kernlab)
   require(randomForest)
   require(biogeo)
