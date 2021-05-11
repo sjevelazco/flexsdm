@@ -4,10 +4,10 @@
 \alias{plot_res}
 \title{Plot different resolutions to be used in block_partition}
 \usage{
-plot_res(r, max_res_mult)
+plot_res(r, res_mult)
 }
 \arguments{
-\item{r}{raster. A raster layer. Preferably a layer of environmental variables to be used}
+\item{r}{SpatRaster. A raster layer, preferably a layer of environmental variables to be used}
 
 \item{res_mult}{numeric. Maximum or minimum resolution to be tested.}
 }
@@ -19,11 +19,10 @@ This function is useful to display the maximum and minimum resolution that you w
 }
 \examples{
 \dontrun{
-f <- system.file("external/test.grd", package = "raster")
-f
-r <- raster(f)
-plot_res(r, max_res_mult = 2)
-plot_res(r, max_res_mult = 10)
-plot_res(r, max_res_mult = 20)
+f <- system.file("external/somevar.tif", package = "flexsdm")
+r <- terra::rast(f)
+r <- r$CFP_1
+plot_res(r, res_mult = 100)
+plot_res(r, res_mult = 200)
 }
 }
