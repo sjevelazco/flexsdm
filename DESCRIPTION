@@ -21,6 +21,7 @@ Imports:
     kernlab,
     maxnet,
     nnet,
+    nFactors,
     randomForest,
     raster,
     terra,
@@ -30,6 +31,7 @@ Imports:
     gam,
     foreach,
     doParallel,
+    usdm,
     GRaF
 Remotes:  
     goldingn/GRaF
