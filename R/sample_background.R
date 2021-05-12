@@ -9,10 +9,6 @@
 #' @return
 #' @export
 #'
-#' @importFrom dplyr tibble
-#' @importFrom raster values mask ncell xyFromCell
-#' @importFrom stats na.exclude
-#'
 #' @seealso \code{\link{sample_pseudoabs}} and \code{\link{calib_area}}.
 #'
 #' @importFrom dplyr tibble

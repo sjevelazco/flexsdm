@@ -23,7 +23,6 @@ Imports:
     nnet,
     nFactors,
     randomForest,
-    raster,
     terra,
     flexclust,
     sp,

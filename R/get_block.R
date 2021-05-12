@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @importFrom dplyr select
-#' @importFrom raster coordinates ncell values extract
+#' @importFrom terra as.data.frame extract
 #'
 #' @examples
 #' \dontrun{
