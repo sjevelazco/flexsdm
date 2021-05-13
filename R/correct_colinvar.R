@@ -22,33 +22,33 @@
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)
 #'
-#' #Perform pearson collinearity control
-#' somevar <- correct_colinvar(rstack = somevar, method = c('pearson', th='0.8'))
+#' # Perform pearson collinearity control
+#' somevar <- correct_colinvar(rstack = somevar, method = c("pearson", th = "0.8"))
 #' somevar$rstack
 #' somevar$removed_variables
 #' somevar$correlation_table
 #'
-#' #Perform vif collinearity control
-#' somevar <- correct_colinvar(rstack = somevar, method = c('vif', th='8'))
+#' # Perform vif collinearity control
+#' somevar <- correct_colinvar(rstack = somevar, method = c("vif", th = "8"))
 #' somevar$rstack
 #' somevar$removed_variables
 #' somevar$correlation_table
 #'
-#' #Perform pca collinearity control
-#' somevar <- correct_colinvar(rstack = somevar, method = c('pca'))
+#' # Perform pca collinearity control
+#' somevar <- correct_colinvar(rstack = somevar, method = c("pca"))
 #' somevar$rstack
 #' somevar$coeficients
 #' somevar$cumulative_variance
 #'
-#' #Perform pca collinearity control for projections
-#' somevar <- correct_colinvar(rstack = somevar, method = c('pca', proj = ))
+#' # Perform pca collinearity control for projections
+#' somevar <- correct_colinvar(rstack = somevar, method = c("pca", proj = ))
 #' somevar$rstack
 #' somevar$coeficients
 #' somevar$cumulative_variance
 #' somevar$proj
 #'
-#' #Perform fa collinearity control
-#' somevar <- correct_colinvar(rstack = somevar, method = c('fa'))
+#' # Perform fa collinearity control
+#' somevar <- correct_colinvar(rstack = somevar, method = c("fa"))
 #' somevar$rstack
 #' somevar$removed_variables
 #' somevar$correlation_table
@@ -63,19 +63,19 @@ correct_colinvar <- function(rstack,
     )
   }
 
-  if (!class(rstack) %in% 'SpatRaster') {
+  if (!class(rstack) %in% "SpatRaster") {
     stop("Raster object must be from the class SpatRaster")
   }
 
   if (any(method %in% "pearson")) {
-    if (is.null(method['th'])) {
+    if (is.null(method["th"])) {
       th <- 0.7
-    } else{
-      th <- as.numeric(method['th'])
+    } else {
+      th <- as.numeric(method["th"])
     }
 
     h <- terra::as.data.frame(rstack)
-    h <- base::abs(stats::cor(h, method = 'pearson'))
+    h <- base::abs(stats::cor(h, method = "pearson"))
     diag(h) <- 0
 
     res <- as.list(1:10000)
@@ -84,12 +84,14 @@ correct_colinvar <- function(rstack,
       h2 <- h[ord, ord]
       h2[upper.tri(h2)] <- 0
       res[[i]] <-
-        colnames(h2)[!apply(h2, 2, function(x)
-          any(x > th))]
+        colnames(h2)[!apply(h2, 2, function(x) {
+          any(x > th)
+        })]
     }
 
-    len <- sapply(res, function(x)
-      length(x))
+    len <- sapply(res, function(x) {
+      length(x)
+    })
     sel <- res[[sample(which(len == max(len)), 1)]]
     rem <- names(rstack)[!names(rstack) %in% sel]
     rstack <- terra::subset(rstack, subset = sel)
@@ -102,47 +104,47 @@ correct_colinvar <- function(rstack,
   }
 
   if (any(method %in% "vif")) {
-    if (is.null(method['th'])) {
+    if (is.null(method["th"])) {
       th <- 10
-    } else{
-      th <- as.numeric(method['th'])
+    } else {
+      th <- as.numeric(method["th"])
     }
 
     x <- terra::as.data.frame(rstack)
     LOOP <- TRUE
-    if(nrow(x) > 10000){
-      x <- x[sample(1:nrow(x),10000),]
+    if (nrow(x) > 10000) {
+      x <- x[sample(1:nrow(x), 10000), ]
     }
     n <- list()
     n$variables <- colnames(x)
     exc <- c()
 
     while (LOOP) {
-      v<-rep(NA,ncol(x))
+      v <- rep(NA, ncol(x))
       names(v) <- colnames(x)
       for (i in 1:ncol(x)) {
-        v[i] <-  1/(1-summary(lm(x[,i]~.,data=x[-i]))$r.squared)
+        v[i] <- 1 / (1 - summary(lm(x[, i] ~ ., data = x[-i]))$r.squared)
       }
       if (v[which.max(v)] >= th) {
         ex <- names(v[which.max(v)])
-        exc <- c(exc,ex)
-        x <- x[,-which(colnames(x) == ex)]
+        exc <- c(exc, ex)
+        x <- x[, -which(colnames(x) == ex)]
       } else {
-        LOOP=FALSE
+        LOOP <- FALSE
       }
     }
-    if (length(exc) > 0){
+    if (length(exc) > 0) {
       n$excluded <- exc
     }
 
-    v<-rep(NA,ncol(x))
+    v <- rep(NA, ncol(x))
     names(v) <- colnames(x)
     for (i in 1:ncol(x)) {
-      v[i] <-  1/(1-summary(lm(x[,i]~.,data=x[-i]))$r.squared)
+      v[i] <- 1 / (1 - summary(lm(x[, i] ~ ., data = x[-i]))$r.squared)
     }
 
-    n$corMatrix <- cor(x, method="pearson")
-    n$results <- data.frame(Variables=names(v),VIF=as.vector(v))
+    n$corMatrix <- cor(x, method = "pearson")
+    n$results <- data.frame(Variables = names(v), VIF = as.vector(v))
 
     diag(n$corMatrix) <- 0
     rstack <-
@@ -159,17 +161,19 @@ correct_colinvar <- function(rstack,
     p <- terra::as.data.frame(rstack, xy = FALSE, na.rm = TRUE)
 
     p <- stats::prcomp(p,
-                       retx = TRUE,
-                       scale. = TRUE,
-                       center = TRUE)
+      retx = TRUE,
+      scale. = TRUE,
+      center = TRUE
+    )
 
     means <- p$center
     stds <- p$scale
     cof <- p$rotation
 
-    cvar <- summary(p)$importance["Cumulative Proportion",]
-    naxis <- Position(function(x)
-      x >= 0.95, cvar)
+    cvar <- summary(p)$importance["Cumulative Proportion", ]
+    naxis <- Position(function(x) {
+      x >= 0.95
+    }, cvar)
     cvar <- data.frame(cvar)
     rstack <- terra::predict(rstack, p, index = 1:naxis)
 
@@ -180,12 +184,13 @@ correct_colinvar <- function(rstack,
     )
 
     if (!is.null(proj)) {
-      dpca <- file.path(dirname(proj), 'Projection_PCA')
+      dpca <- file.path(dirname(proj), "Projection_PCA")
       dir.create(dpca)
       subfold <- list.files(proj)
       subfold <- as.list(file.path(dpca, subfold))
-      sapply(subfold, function(x)
-        dir.create(x))
+      sapply(subfold, function(x) {
+        dir.create(x)
+      })
 
       proj <- base::list.files(proj, full.names = TRUE)
       for (i in 1:length(proj)) {
@@ -201,7 +206,8 @@ correct_colinvar <- function(rstack,
       }
 
       result <- list(result,
-                     proj = dpca)
+        proj = dpca
+      )
     }
   }
 
@@ -209,8 +215,8 @@ correct_colinvar <- function(rstack,
     p <- terra::scale(rstack, center = TRUE, scale = TRUE)
     p <- terra::as.data.frame(p, xy = FALSE, na.rm = TRUE)
 
-    if(nrow(p) > 10000){
-      p <- p[sample(1:nrow(p),10000),]
+    if (nrow(p) > 10000) {
+      p <- p[sample(1:nrow(p), 10000), ]
     }
 
     e <- eigen(cor(p))
@@ -218,9 +224,9 @@ correct_colinvar <- function(rstack,
     a <- NULL
     r <- NULL
 
-    for(j in 1:len){
-      a[j] <- 1/len * sum(1/(j:len) )
-      r[j] <- e$values[j]/(sum(e$values))
+    for (j in 1:len) {
+      a[j] <- 1 / len * sum(1 / (j:len))
+      r[j] <- e$values[j] / (sum(e$values))
     }
 
     ns <- length(which(r > a))
@@ -233,10 +239,12 @@ correct_colinvar <- function(rstack,
           rotation = "varimax",
           lower = 0.01
         ),
-        error = function(e)
+        error = function(e) {
           stop(
             "Covariance matrix is not invertible. Consider choosing another method to control collinearity.",
-            call. =F)
+            call. = F
+          )
+        }
       )
 
     sel <-
@@ -255,6 +263,3 @@ correct_colinvar <- function(rstack,
 
   return(result)
 }
-
-
-

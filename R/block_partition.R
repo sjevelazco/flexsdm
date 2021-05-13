@@ -202,7 +202,7 @@ unique list values in pr_ab column are: ",
 
   # Vector with grid cell-size used
   cell_size <- seq(terra::res(env_layer[[1]])[1] * min_res_mult,
-                  terra::res(env_layer[[1]])[1] * max_res_mult,
+    terra::res(env_layer[[1]])[1] * max_res_mult,
     length.out = num_grids
   )
 
@@ -232,9 +232,9 @@ unique list values in pr_ab column are: ",
 
   # Eliminate any records with NA
   filt <- stats::complete.cases(data[, c("x", "y")])
-  if(any(!filt)){
+  if (any(!filt)) {
     message(sum(!filt), " rows were excluded from database because NAs were found in coordinates")
-    data <- data[filt,]
+    data <- data[filt, ]
   }
 
   rm(filt)
@@ -294,7 +294,7 @@ unique list values in pr_ab column are: ",
   # for each grid resolution
   part <- data.frame(matrix(0, nrow(presences2), length(grid)))
   for (i in 1:length(grid)) {
-    part[, i] <- terra::extract(grid[[i]], presences2)[,2]
+    part[, i] <- terra::extract(grid[[i]], presences2)[, 2]
   }
 
   ### Remove problematic grids based on presences
@@ -373,7 +373,7 @@ unique list values in pr_ab column are: ",
   Env.P <- terra::extract(env_layer, presences2)
   for (i in 1:ncol(part)) {
     Env.P1 <- cbind(part[i], Env.P)
-    Env.P1 <- Env.P1[complete.cases(Env.P1),]
+    Env.P1 <- Env.P1[complete.cases(Env.P1), ]
     Env.P2 <- split(Env.P1[, -1], Env.P1[, 1])
     euq1 <- flexclust::dist2(Env.P2[[1]], Env.P2[[2]])
     envir_dist_grid[i] <- mean(euq1)
@@ -385,8 +385,8 @@ unique list values in pr_ab column are: ",
   imoran_grid <- rep(NA, length(grid))
 
   dist <- flexclust::dist2(
-    presences2[, c("x", "y")] %>% as.data.frame,
-    presences2[, c("x", "y")] %>% as.data.frame
+    presences2[, c("x", "y")] %>% as.data.frame(),
+    presences2[, c("x", "y")] %>% as.data.frame()
   )
   dist <- 1 / dist
   diag(dist) <- 0
@@ -514,7 +514,7 @@ unique list values in pr_ab column are: ",
   result <- result[c("x", "y", "pr_ab", ".part")]
 
   grid <- grid[[Opt2$n_grid]]
-  names(grid) <- 'block'
+  names(grid) <- "block"
 
   # Final data.frame result2----
   out <- list(

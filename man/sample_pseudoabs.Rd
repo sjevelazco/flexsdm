@@ -79,13 +79,13 @@ ps1 <-
     maskval = NULL
   )
 plot(regions, col = gray.colors(9))
-points(single_spp[-1], col = "blue", cex = 0.7, pch = 19) #presences
-points(ps1, col = "red", cex = 0.7, pch = 19) #absences
+points(single_spp[-1], col = "blue", cex = 0.7, pch = 19) # presences
+points(ps1, col = "red", cex = 0.7, pch = 19) # absences
 
 
 # Pseudo-absences randomly sampled within a regions where a species occurs
 ## Regions where this species occurrs
-samp_here <- terra::extract(regions, single_spp[2:3])[,2] \%>\%
+samp_here <- terra::extract(regions, single_spp[2:3])[, 2] \%>\%
   unique() \%>\%
   na.exclude()
 
@@ -112,7 +112,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = c('geo_const', width='30000'),
+    method = c("geo_const", width = "30000"),
     rlayer = regions,
     maskval = samp_here
   )
@@ -127,7 +127,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = c('env_const', env = somevar),
+    method = c("env_const", env = somevar),
     rlayer = regions,
     maskval = samp_here
   )
@@ -142,7 +142,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method=c('geo_env_const', width='50000', env = somevar),
+    method = c("geo_env_const", width = "50000", env = somevar),
     rlayer = regions,
     maskval = samp_here
   )
@@ -157,7 +157,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method=c('geo_env_km_const', width='50000', env = somevar),
+    method = c("geo_env_km_const", width = "50000", env = somevar),
     rlayer = regions,
     maskval = samp_here
   )

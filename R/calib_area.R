@@ -61,7 +61,7 @@
 #' # mcp method for different groups
 #' single_spp <- single_spp %>% mutate(groups = ifelse(x > 150000, "a", "b"))
 #'
-#' plot(single_spp[, 2:3], pch = 19, col = 'blue')
+#' plot(single_spp[, 2:3], pch = 19, col = "blue")
 #' points(single_spp[single_spp$groups == "a", 2:3], col = "red", pch = 19)
 #' points(single_spp[, 2:3])
 #'
@@ -121,10 +121,10 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   }
 
   if (method[1] %in% c("mask")) {
-    if (!class(clusters)%in%c("SpatialPolygonsDataFrame", "SpatVector")) {
+    if (!class(clusters) %in% c("SpatialPolygonsDataFrame", "SpatVector")) {
       stop("provide a SpatVector or SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
     }
-    if(class(clusters)!="SpatVector"){
+    if (class(clusters) != "SpatVector") {
       clusters <- terra::vect(clusters)
     }
   }
@@ -192,8 +192,8 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     sp::coordinates(data_sp) <- ~ x + y
     terra::crs(data_sp) <- terra::crs(polyc)
     data_sp <- sp::spTransform(data_sp, terra::crs(polyc))
-    result <- terra::extract(polyc, vect(data_sp))[, cname] %>% unique
-    result <- polyc[polyc[[cname]][,1] %in% result, ]
+    result <- terra::extract(polyc, vect(data_sp))[, cname] %>% unique()
+    result <- polyc[polyc[[cname]][, 1] %in% result, ]
   }
   return(result)
 }

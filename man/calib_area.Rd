@@ -69,7 +69,7 @@ points(single_spp[, 2:3], pch = 19, cex = 0.5)
 # mcp method for different groups
 single_spp <- single_spp \%>\% mutate(groups = ifelse(x > 150000, "a", "b"))
 
-plot(single_spp[, 2:3], pch = 19, col = 'blue')
+plot(single_spp[, 2:3], pch = 19, col = "blue")
 points(single_spp[single_spp$groups == "a", 2:3], col = "red", pch = 19)
 points(single_spp[, 2:3])
 

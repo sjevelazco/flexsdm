@@ -31,33 +31,33 @@ Perform collinearity reduction on predictors
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
-#Perform pearson collinearity control
-somevar <- correct_colinvar(rstack = somevar, method = c('pearson', th='0.8'))
+# Perform pearson collinearity control
+somevar <- correct_colinvar(rstack = somevar, method = c("pearson", th = "0.8"))
 somevar$rstack
 somevar$removed_variables
 somevar$correlation_table
 
-#Perform vif collinearity control
-somevar <- correct_colinvar(rstack = somevar, method = c('vif', th='8'))
+# Perform vif collinearity control
+somevar <- correct_colinvar(rstack = somevar, method = c("vif", th = "8"))
 somevar$rstack
 somevar$removed_variables
 somevar$correlation_table
 
-#Perform pca collinearity control
-somevar <- correct_colinvar(rstack = somevar, method = c('pca'))
+# Perform pca collinearity control
+somevar <- correct_colinvar(rstack = somevar, method = c("pca"))
 somevar$rstack
 somevar$coeficients
 somevar$cumulative_variance
 
-#Perform pca collinearity control for projections
-somevar <- correct_colinvar(rstack = somevar, method = c('pca', proj = ))
+# Perform pca collinearity control for projections
+somevar <- correct_colinvar(rstack = somevar, method = c("pca", proj = ))
 somevar$rstack
 somevar$coeficients
 somevar$cumulative_variance
 somevar$proj
 
-#Perform fa collinearity control
-somevar <- correct_colinvar(rstack = somevar, method = c('fa'))
+# Perform fa collinearity control
+somevar <- correct_colinvar(rstack = somevar, method = c("fa"))
 somevar$rstack
 somevar$removed_variables
 somevar$correlation_table

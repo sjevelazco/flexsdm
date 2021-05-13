@@ -47,7 +47,7 @@ inter <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 
     foreach::foreach(i = 1:terra::nlyr(rlist), .export = "terra") %dopar% {
       terra::writeRaster(
         x = rlist[[i]],
-        filename = paste0(file.path(dir_save, names(rlist)[i]),'.tif'),
+        filename = paste0(file.path(dir_save, names(rlist)[i]), ".tif"),
         overwrite = TRUE
       )
       NULL

@@ -61,13 +61,13 @@
 #'     maskval = NULL
 #'   )
 #' plot(regions, col = gray.colors(9))
-#' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19) #presences
-#' points(ps1, col = "red", cex = 0.7, pch = 19) #absences
+#' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19) # presences
+#' points(ps1, col = "red", cex = 0.7, pch = 19) # absences
 #'
 #'
 #' # Pseudo-absences randomly sampled within a regions where a species occurs
 #' ## Regions where this species occurrs
-#' samp_here <- terra::extract(regions, single_spp[2:3])[,2] %>%
+#' samp_here <- terra::extract(regions, single_spp[2:3])[, 2] %>%
 #'   unique() %>%
 #'   na.exclude()
 #'
@@ -94,7 +94,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method = c('geo_const', width='30000'),
+#'     method = c("geo_const", width = "30000"),
 #'     rlayer = regions,
 #'     maskval = samp_here
 #'   )
@@ -109,7 +109,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method = c('env_const', env = somevar),
+#'     method = c("env_const", env = somevar),
 #'     rlayer = regions,
 #'     maskval = samp_here
 #'   )
@@ -124,7 +124,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method=c('geo_env_const', width='50000', env = somevar),
+#'     method = c("geo_env_const", width = "50000", env = somevar),
 #'     rlayer = regions,
 #'     maskval = samp_here
 #'   )
@@ -139,7 +139,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method=c('geo_env_km_const', width='50000', env = somevar),
+#'     method = c("geo_env_km_const", width = "50000", env = somevar),
 #'     rlayer = regions,
 #'     maskval = samp_here
 #'   )
@@ -228,7 +228,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp, coordinates(rlayer2), method="simple", xy=TRUE) %>%
+      rlayer2[] <- terra::extract(envp, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
         dplyr::select(-c(ID, x, y))
       envp <- rlayer2
     }
@@ -262,7 +262,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp2, coordinates(rlayer2), method="simple", xy=TRUE) %>%
+      rlayer2[] <- terra::extract(envp2, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
         dplyr::select(-c(ID, x, y))
       envp2 <- rlayer2
     }
@@ -285,7 +285,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp2, coordinates(rlayer2), method="simple", xy=TRUE) %>%
+      rlayer2[] <- terra::extract(envp2, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
         dplyr::select(-c(ID, x, y))
       envp2 <- rlayer2
     }
@@ -294,10 +294,10 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     rm(envp2)
 
     if (!is.null(maskval)) {
-      if(is.factor(maskval)){
+      if (is.factor(maskval)) {
         maskval <-
-          which(levels(maskval)[-1]%in%as.character(maskval))
-        rlayer <- rlayer*1
+          which(levels(maskval)[-1] %in% as.character(maskval))
+        rlayer <- rlayer * 1
       }
       filt <- terra::match(rlayer, maskval)
       rlayer <- terra::mask(rlayer, filt)
@@ -320,7 +320,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     val <- terra::extract(envp, cell_samp, method = "simple", xy = TRUE) %>%
       dplyr::select(-c(ID, x, y))
     cell_samp <-
-      cell_samp %>% dplyr::mutate(val = val[,1])
+      cell_samp %>% dplyr::mutate(val = val[, 1])
     cell_samp <- cell_samp[!is.na(cell_samp$val), -3]
   }
   colnames(cell_samp) <- c(x, y)

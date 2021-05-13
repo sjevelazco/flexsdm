@@ -76,10 +76,10 @@ sample_background <- function(n, rlayer, maskval = NULL, calibarea = NULL) {
   }
 
   if (!is.null(maskval)) {
-    if(is.factor(maskval)){
+    if (is.factor(maskval)) {
       maskval <-
-        which(levels(maskval)[-1]%in%as.character(maskval))
-      rlayer <- rlayer*1
+        which(levels(maskval)[-1] %in% as.character(maskval))
+      rlayer <- rlayer * 1
     }
     filt <- terra::match(rlayer, maskval)
     rlayer <- terra::mask(rlayer, filt)

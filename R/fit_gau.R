@@ -115,18 +115,18 @@ fit_gau <- function(data,
     }
   } else {
     data <- data %>%
-    dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
     data <- data.frame(data)
     for (i in predictors_f) {
-    data[, i] <- as.factor(data[, i])
+      data[, i] <- as.factor(data[, i])
     }
-  if (!is.null(background)) {
-  background <- background %>%
-  dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
-  for (i in predictors_f) {
-  background[, i] <- as.factor(background[, i])
-  }
-  }
+    if (!is.null(background)) {
+      background <- background %>%
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
+      for (i in predictors_f) {
+        background[, i] <- as.factor(background[, i])
+      }
+    }
   }
 
   if (!is.null(background)) {
@@ -209,7 +209,9 @@ fit_gau <- function(data,
       ## Eliminate factor levels not used in fitting
       if (!is.null(predictors_f)) {
         for (fi in 1:length(predictors_f)) {
-          lev <- train[[i]][, predictors_f[fi]] %>% unique %>% as.character
+          lev <- train[[i]][, predictors_f[fi]] %>%
+            unique() %>%
+            as.character()
           lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
           test[[i]] <- test[[i]][lev_filt, ]
           if (!is.null(background)) {

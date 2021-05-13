@@ -284,11 +284,11 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
           stats::predict(m[[i]], pred_df[!vfilter, ] %>%
-                           dplyr::mutate(dplyr::across(
-                             .cols = names(f),
-                             .fns = ~ droplevels(.)
-                           )),
-                         type = "prob"
+            dplyr::mutate(dplyr::across(
+              .cols = names(f),
+              .fns = ~ droplevels(.)
+            )),
+          type = "prob"
           )[, 2]
         r[as.numeric(rownames(pred_df))] <- v
         rm(v)
@@ -343,10 +343,10 @@ sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE,
         v <- rep(0, nrow(pred_df))
         v[!vfilter] <-
           kernlab::predict(m[[i]], pred_df[!vfilter, ] %>%
-                             dplyr::mutate(dplyr::across(
-                               .cols = names(f),
-                               .fns = ~ droplevels(.)
-                             )), type = "prob")[, 2]
+            dplyr::mutate(dplyr::across(
+              .cols = names(f),
+              .fns = ~ droplevels(.)
+            )), type = "prob")[, 2]
         r[as.numeric(rownames(pred_df))] <- v
         rm(v)
       } else {
