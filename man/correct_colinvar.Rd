@@ -32,74 +32,35 @@ somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
 #Perform pearson collinearity control
-h <- terra::as.data.frame(somevar)
-h <- base::abs(stats::cor(h, method = 'pearson'))
-diag(h) <- 0
-
-res <- as.list(1:10000)
-for(i in 1:10000){
-  ord <- base::sample(1:ncol(h))
-  h2 <- h[ord,ord]
-  h2[upper.tri(h2)] <- 0
-  res[[i]] <- names(somevar)[!apply(h2,2,function(x) any(x > 0.7))]
-}
-
-len <- sapply(res, function(x) length(x))
-sel <- res[[sample(which(len==max(len)),1)]]
-rem <- terra::names(rstack)[!names(rstack)\%in\%sel]
-rstack <- terra::subset(rstack,subset=sel)
-result <- list(
-rstack = rstack,
-removed_variables = rem,
-correlation_table = h
-)
+somevar <- correct_colinvar(rstack = somevar, method = c('pearson', th='0.8'))
+somevar$rstack
+somevar$removed_variables
+somevar$correlation_table
 
 #Perform vif collinearity control
-VF <- usdm::vifstep(terra::as.data.frame(somevar), th = 10)
-rem <- VF@excluded
-h <- VF@corMatrix
-diag(h) <- 0
-rstack <- terra::subset(rstack,subset=VF@variables[!VF@variables\%in\%VF@excluded])
-result <- list(
-rstack = rstack,
-removed_variables = rem,
-correlation_table = h
-)
+somevar <- correct_colinvar(rstack = somevar, method = c('vif', th='8'))
+somevar$rstack
+somevar$removed_variables
+somevar$correlation_table
 
 #Perform pca collinearity control
-p <- terra::as.data.frame(somevar,xy=FALSE,na.rm=TRUE)
-p <- stats::prcomp(p, retx = TRUE, scale. = TRUE, center = TRUE)
-means <- p$center
-stds <- p$scale
-cof <- p$rotation
-cvar <- summary(p)$importance["Cumulative Proportion", ]
-naxis <- Position(function(x) x>=0.95,cvar)
-cvar <- data.frame(cvar)
-rstack <- terra::predict(rstack,p,index=1:naxis)
-result <- list(
-rstack = rstack,
-coeficients = cof,
-cumulative_variance = cvar
-)
+somevar <- correct_colinvar(rstack = somevar, method = c('pca'))
+somevar$rstack
+somevar$coeficients
+somevar$cumulative_variance
+
+#Perform pca collinearity control for projections
+somevar <- correct_colinvar(rstack = somevar, method = c('pca', proj = ))
+somevar$rstack
+somevar$coeficients
+somevar$cumulative_variance
+somevar$proj
 
 #Perform fa collinearity control
-p <- terra::scale(rstack,center = TRUE, scale = TRUE)
-p <- terra::as.data.frame(p,xy=FALSE,na.rm=TRUE)
-e <- eigen(cor(p))
-ap <- nFactors::parallel(subject=nrow(p),var=ncol(p),rep=100,cent=.05)
-nS <- nFactors::nScree(x=e$values, aparallel=ap$eigen$qevpea)
-fit <- tryCatch(stats::factanal(x = p, factors = nS$Components$noc, rotation = "varimax", lower = 0.01),
-error = function(e) message("Warning: covariance matrix is not invertible. Consider removing highly correlated variables
-and trying again or choosing another method to control collinearity."))
-sel <- row.names(fit$loadings)[apply(fit$loadings,2,which.max)]
-rem <- row.names(fit$loadings)[!row.names(fit$loadings) \%in\% sel]
-rstack <- terra::subset(rstack,sel)
-result <- list(
-rstack = rstack,
-removed_variables = rem,
-correlation_table = fit$loadings
-)
-
+somevar <- correct_colinvar(rstack = somevar, method = c('fa'))
+somevar$rstack
+somevar$removed_variables
+somevar$correlation_table
 }
 
 }
