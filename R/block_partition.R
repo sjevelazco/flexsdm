@@ -262,14 +262,14 @@ unique list values in pr_ab column are: ",
     DIM[i, ] <- dim(mask3)[1:2]
     terra::values(mask3) <- 1 # Add values to cells /
     NAS <-
-      c(terra::extract(mask3, presences2)) # Extract values to test if exist NAs
+      c(terra::extract(mask3, presences2)[-1]) # Extract values to test if exist NAs
     if (any(is.na(NAS))) {
       while (any(is.na(NAS))) {
         terra::ext(mask3) <- terra::ext(mask3) + cell_size[i]
         terra::res(mask3) <- cell_size[i] # Give to cells a size
         DIM[i, ] <- dim(mask3)[1:2]
         terra::values(mask3) <- 1
-        NAS <- terra::extract(mask3, presences2)
+        NAS <- terra::extract(mask3, presences2)[-1]
       }
     }
     grid[[i]] <- mask3
@@ -370,7 +370,7 @@ unique list values in pr_ab column are: ",
 
   # Environmental similarity between train and test based on euclidean  -----
   envir_dist_grid <- rep(NA, length(grid))
-  Env.P <- terra::extract(env_layer, presences2)
+  Env.P <- terra::extract(env_layer, presences2)[-1]
   for (i in 1:ncol(part)) {
     Env.P1 <- cbind(part[i], Env.P)
     Env.P1 <- Env.P1[complete.cases(Env.P1), ]
@@ -393,7 +393,7 @@ unique list values in pr_ab column are: ",
   dist[which(dist == Inf)] <- 0
 
   species2 <-
-    cbind(terra::as.data.frame(presences2), terra::extract(env_layer, presences2))
+    cbind(terra::as.data.frame(presences2), terra::extract(env_layer, presences2)[-1])
 
   for (p in 1:length(grid)) {
     ncell3 <- ncell[, p]
