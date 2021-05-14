@@ -15,8 +15,10 @@
 #' @export
 #'
 #' @importFrom doParallel registerDoParallel
-#' @importFrom dplyr mutate select pull
-#' @importFrom parallel makeCluster
+#' @importFrom dplyr mutate select starts_with pull tibble
+#' @importFrom foreach foreach %dopar%
+#' @importFrom parallel makeCluster stopCluster
+#' @importFrom stats complete.cases
 #' @importFrom terra extract
 #'
 #' @examples
