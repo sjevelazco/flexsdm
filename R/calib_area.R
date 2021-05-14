@@ -178,7 +178,8 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
       result[[i]] <- data_pl
     }
     if (length(result) > 1) {
-      result <- do.call(bind, result)
+      result <- sapply(result, terra::vect)
+      result <- do.call(terra:::rbind.SpatVector, result)
     } else {
       result <- result[[1]]
     }

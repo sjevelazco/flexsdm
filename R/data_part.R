@@ -24,7 +24,6 @@
 #'
 #' @examples
 #' \dontrun{
-#' require(devtools)
 #' data("abies_db")
 #' abies_db$partition <- NULL
 #' abies_db <- tibble(abies_db)
@@ -44,7 +43,7 @@
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
-#'   bg_p_a = NULL,
+#'   bg_a = NULL,
 #'   method = c(method = "rep_kfold", folds = 10, replicates = 10)
 #' )
 #' abies_db2
@@ -67,6 +66,7 @@
 #'   bg_a = NULL,
 #'   method = c(method = "boot", replicates = 50, proportion = 0.7)
 #' )
+#' abies_db2
 #' abies_db2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
 #' }
 #'
