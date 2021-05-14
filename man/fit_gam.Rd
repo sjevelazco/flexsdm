@@ -64,6 +64,7 @@ Fit and validate Generalized Additive Models
 \examples{
 \dontrun{
 data("abies_db")
+require(gam)
 
 # Using k-fold partition method
 abies_db2 <- data_part(
@@ -81,7 +82,7 @@ gam_t1 <- fit_gam(
   partition = ".part",
   thr = "max_sens_spec"
 )
-gam_t1$model \%>\% plot()
+gam_t1$model
 gam_t1$performance
 gam_t1$selected_thresholds
 gam_t1$all_thresholds
@@ -99,7 +100,7 @@ gam_t2 <- fit_gam(
     s(pH, df = 3) + landform)
 )
 
-gam_t2$model \%>\% plot()
+gam_t2$model
 gam_t2$performance \%>\% dplyr::select(ends_with("_mean"))
 gam_t2$selected_thresholds
 gam_t2$threshold_table
@@ -122,7 +123,7 @@ gam_t3 <- fit_gam(
   poly = 3,
   inter_order = 2
 )
-gam_t3$model \%>\% plot.Gam()
+gam_t3$model
 }
 
 }

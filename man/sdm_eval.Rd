@@ -66,7 +66,7 @@ e$threshold_table
 
 sdm_eval(p, a, thr = c(type = c("max_kappa")))
 sdm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "max_jaccard")))
-sdm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"))) # wrong way to specific threshold
+# sdm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"))) # wrong way to specific threshold
 sdm_eval(p, a, thr = c(type = c("lpt", "max_sens_spec", "specific"), sens = "0.8")) # correct way to use specific threshold
 
 # Use of bg argument (it will only be used for calculating BOYCE index)
