@@ -23,35 +23,28 @@
 #' somevar <- terra::rast(somevar)
 #'
 #' # Perform pearson collinearity control
-#' somevar <- correct_colinvar(rstack = somevar, method = c("pearson", th = "0.8"))
-#' somevar$rstack
-#' somevar$removed_variables
-#' somevar$correlation_table
+#' var <- correct_colinvar(rstack = somevar, method = c("pearson", th = "0.8"))
+#' var$rstack
+#' var$removed_variables
+#' var$correlation_table
 #'
 #' # Perform vif collinearity control
-#' somevar <- correct_colinvar(rstack = somevar, method = c("vif", th = "8"))
-#' somevar$rstack
-#' somevar$removed_variables
-#' somevar$correlation_table
+#' var <- correct_colinvar(rstack = somevar, method = c("vif", th = "8"))
+#' var$rstack
+#' var$removed_variables
+#' var$correlation_table
 #'
 #' # Perform pca collinearity control
-#' somevar <- correct_colinvar(rstack = somevar, method = c("pca"))
-#' somevar$rstack
-#' somevar$coeficients
-#' somevar$cumulative_variance
-#'
-#' # Perform pca collinearity control for projections
-#' somevar <- correct_colinvar(rstack = somevar, method = c("pca", proj = ))
-#' somevar$rstack
-#' somevar$coeficients
-#' somevar$cumulative_variance
-#' somevar$proj
+#' var <- correct_colinvar(rstack = somevar, method = c("pca"))
+#' plot(var$rstack)
+#' var$rstack
+#' var$coeficients
+#' var$cumulative_variance
 #'
 #' # Perform fa collinearity control
-#' somevar <- correct_colinvar(rstack = somevar, method = c("fa"))
-#' somevar$rstack
-#' somevar$removed_variables
-#' somevar$correlation_table
+#' # this method only will be performed if covariance matrix is invertible.
+#' # WRITE HERE A EXAMPLE THAT WORKS :)
+#' # var <- correct_colinvar(rstack = somevar, method = c("fa"))
 #' }
 #'
 correct_colinvar <- function(rstack,
