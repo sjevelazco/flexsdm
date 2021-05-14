@@ -20,7 +20,7 @@ sdm_predict(
 
 \item{thr}{character. Binarize projection. Default NULL, i.e. function returns only continuous projection. If used with 'selected_thr', function returns continuous and binarized models used in the 'thr' argument of some of fit_ or tune_ functions. It used with "all_thr" , function returns continuous and binarized for all threshold types.}
 
-\item{calib_area}{SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restrinc prediction into a given region. Default = NULL}
+\item{calib_area}{SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restricting prediction to a given region. Default = NULL}
 
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)}
 
