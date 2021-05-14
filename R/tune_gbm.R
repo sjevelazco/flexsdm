@@ -50,7 +50,7 @@
 #'
 #' abies_db2 <- data_part(
 #'   data = abies_db,
-#'   p_a = "pr_ab",
+#'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
 #'   bg_a = NULL,
 #'   method = c(method = "kfold", folds = 10)

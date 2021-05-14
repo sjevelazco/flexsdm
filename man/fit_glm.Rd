@@ -76,7 +76,7 @@ abies_db
 # Using k-fold partition method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = "pr_ab",
+  pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
 )
 abies_db2
@@ -111,7 +111,7 @@ glm_t2 <- fit_glm(
 # Using repeated k-fold partition method
 abies_db2 <- data_part(
   data = abies_db,
-  p_a = "pr_ab",
+  pr_ab = "pr_ab",
   method = c(method = "rep_kfold", folds = 10, replicates = 10)
 )
 abies_db2
