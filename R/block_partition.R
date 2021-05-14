@@ -520,7 +520,7 @@ unique list values in pr_ab column are: ",
   out <- list(
     part = dplyr::tibble(result),
     best_grid_info = dplyr::tibble(Opt2),
-    grid = grid[[Opt2$n_grid]] # Optimum size for presences
+    grid = grid # Optimum size for presences
   )
   return(out)
 }
