@@ -121,11 +121,11 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   }
 
   if (method[1] %in% c("mask")) {
-    if (!class(clusters) %in% c("SpatialPolygonsDataFrame", "SpatVector")) {
+    if (!class(method[[2]]) %in% c("SpatialPolygonsDataFrame", "SpatVector")) {
       stop("provide a SpatVector or SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
     }
-    if (class(clusters) != "SpatVector") {
-      clusters <- terra::vect(clusters)
+    if (class(method[[2]])  != "SpatVector") {
+      method[[2]] <- terra::vect(method[[2]])
     }
   }
 
