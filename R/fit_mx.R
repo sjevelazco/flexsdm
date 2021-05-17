@@ -79,21 +79,21 @@ fit_mx <- function(data,
 
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(response, predictors, dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
     if (!is.null(background)) {
       background <- background %>%
-        dplyr::select(response, predictors, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
     }
   } else {
     data <- data %>%
-      dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
     }
     if (!is.null(background)) {
       background <- background %>%
-        dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
       for (i in predictors_f) {
         background[, i] <- as.factor(background[, i])
       }
@@ -144,6 +144,13 @@ fit_mx <- function(data,
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
   p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
   eval_partial_list <- list()
+  pred_test_ens <- data %>%
+    dplyr::select(dplyr::starts_with(partition)) %>%
+    apply(., 2, unique) %>%
+    data.frame() %>%
+    as.list() %>%
+    lapply(., as.list)
+
   for (h in 1:np) {
     message("Replica number: ", h, "/", np)
 
@@ -209,6 +216,9 @@ fit_mx <- function(data,
           )
       )
 
+      pred_test_ens[[h]][[i]] <- pred_test %>%
+        dplyr::mutate(rnames=rownames(.))
+
       # Predict for background data
       if (!is.null(background)) {
         bgt <-
@@ -267,8 +277,14 @@ fit_mx <- function(data,
       list(mean = mean, sd = stats::sd)
     ), .groups = "drop")
 
-  # Fit final models with best settings
+  # Bind data for ensemble
+  pred_test_ens <-
+    lapply(pred_test_ens, function(x)
+      bind_rows(x, .id = 'part')) %>%
+    bind_rows(., .id = 'replicates') %>% dplyr::tibble() %>%
+    dplyr::relocate(rnames)
 
+  # Fit final models with best settings
   suppressMessages(mod <-
     maxnet::maxnet(
       p = data[, response],
@@ -322,7 +338,9 @@ fit_mx <- function(data,
     predictors = variables,
     performance = eval_final,
     selected_thresholds = st %>% dplyr::select(threshold:values),
-    all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values)
+    all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
+    all_thresholds = threshold[[2]] %>% dplyr::select(threshold:values),
+    data_ens = pred_test_ens
   )
   return(result)
 }
