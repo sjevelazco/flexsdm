@@ -128,11 +128,11 @@ tune_gbm <-
 
     if (is.null(predictors_f)) {
       data <- data %>%
-        dplyr::select(response, predictors, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
       data <- data.frame(data)
     } else {
       data <- data %>%
-        dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
       data <- data.frame(data)
       for (i in predictors_f) {
         data[, i] <- as.factor(data[, i])
@@ -288,6 +288,22 @@ tune_gbm <-
     best_hyperp <- eval_final[filt, hyperp]
 
 
+
+    # Bind data for ensemble
+    pred_test_ens <- fit_gbm(
+      data = data,
+      response = response,
+      predictors = predictors,
+      predictors_f = predictors_f,
+      partition = partition,
+      thr = thr,
+      fit_formula = fit_formula,
+      n_trees = best_tune$n.trees,
+      n_minobsinnode = best_tune$n.minobsinnode,
+      shrinkage = best_tune$shrinkage
+    )[['data_ens']]
+
+
     # Fit final models with best settings
     set.seed(1)
     mod <-
@@ -332,7 +348,8 @@ tune_gbm <-
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),
-      all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values)
+      all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
+      data_ens=pred_test_ens
     )
     return(result)
   }
