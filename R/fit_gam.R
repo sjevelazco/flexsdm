@@ -162,6 +162,13 @@ fit_gam <- function(data,
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
   p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
   eval_partial_list <- list()
+  pred_test_ens <- data %>%
+    dplyr::select(dplyr::starts_with(partition)) %>%
+    apply(., 2, unique) %>%
+    data.frame() %>%
+    as.list() %>%
+    lapply(., as.list)
+
   for (h in 1:np) {
     message("Replica number: ", h, "/", np)
 
@@ -205,6 +212,9 @@ fit_gam <- function(data,
         )
       ))
 
+      pred_test_ens[[h]][[i]] <- pred_test %>%
+        dplyr::mutate(rnames=rownames(.))
+
       # Validation of model
       eval <-
         sdm_eval(
@@ -236,6 +246,14 @@ fit_gam <- function(data,
       dplyr::everything(),
       list(mean = mean, sd = stats::sd)
     ), .groups = "drop")
+
+  # Bind data for ensemble
+  pred_test_ens <-
+    lapply(pred_test_ens, function(x)
+      bind_rows(x, .id = 'part')) %>%
+    bind_rows(., .id = 'replicates') %>% dplyr::tibble() %>%
+    dplyr::relocate(rnames)
+
 
   # Fit final models with best settings
   suppressWarnings(mod <-
@@ -270,7 +288,8 @@ fit_gam <- function(data,
     predictors = variables,
     performance = eval_final,
     selected_thresholds = st %>% dplyr::select(threshold:values),
-    all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values)
+    all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
+    data_ens = pred_test_ens
   )
   return(result)
 }

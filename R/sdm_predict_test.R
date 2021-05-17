@@ -19,10 +19,6 @@
 #'
 #'  In the case of use more than one ensemble method it is necessary concatenate the names of ensemble methods within the argument, e.g., ensemble=c(method=c('mean', 'median')) or ensemble = c(method=c('mean', 'meanw', 'meansup', 'meanthr', 'median'), metric='TSS', thr = 'max_sens_spec')
 #'
-#' @param data
-#' @param x
-#' @param y
-#'
 #' @return
 #'
 #' A list of Raster or RasterStack with continuous or continuous and binary predictions
@@ -36,7 +32,7 @@
 #' @importFrom stats predict
 #' @importFrom terra crop as.data.frame values rast mean weighted.mean median nlyr ifel
 #' @examples
-sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred_type = "cloglog", ensemble = NULL, data = NULL, x = NULL, y = NULL) {
+sdm_predict_test <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred_type = "cloglog", ensemble = NULL) {
 
   #### Prepare datasets ####
   # Crop projection area
