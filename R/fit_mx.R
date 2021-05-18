@@ -27,7 +27,9 @@
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
+#' @param classes character. A single feature of any combinations of them. Features are symbolized by letters: l (linear), q (quadratic), h (hinge), p (product), and t (threshold). Usage classes = "lpq". Default "default" (see details).
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
+#' @param regmult numeric. A constant to adjust regularization. Default 1.
 #' @param ...
 #'
 #' @return
@@ -52,7 +54,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select starts_with filter pull bind_rows group_by summarise across everything
+#' @importFrom dplyr select starts_with filter pull bind_rows group_by summarise across everything all_of
 #' @importFrom maxnet maxnet maxnet.formula
 #' @importFrom stats sd
 #'
@@ -70,7 +72,9 @@ fit_mx <- function(data,
                    thr = NULL,
                    fit_formula = NULL,
                    clamp = TRUE,
+                   classes = "default",
                    pred_type = "cloglog",
+                   regmult = 1,
                    ...) {
   variables <- c(c = predictors, f = predictors_f)
 
@@ -178,17 +182,21 @@ fit_mx <- function(data,
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
+      tryCatch({
       set.seed(1)
-      try(mod[[i]] <-
-        maxnet::maxnet(
+        mod[[i]] <-
+          suppressMessages(
+          maxnet::maxnet(
           p = train[[i]][, response],
           data = train[[i]][predictors],
           f = maxnet::maxnet.formula(train[[i]][response],
             train[[i]][predictors],
-            classes = "default"
+            classes = classes
           ),
-          regmult = 1
-        ))
+          regmult = regmult
+        )
+        )
+
 
       # Predict for presences absences data
       ## Eliminate factor levels not used in fitting
@@ -257,10 +265,18 @@ fit_mx <- function(data,
       } else {
         eval_partial[[i]] <- eval$selected_thresholds
       }
+
+      names(eval_partial) <- i
+
+      }
+      ,
+      error=function(cond) {
+        message("It was not possible to fit this model")
+      })
+
     }
 
     # Create final database with parameter performance
-    names(eval_partial) <- 1:np2
     eval_partial <- eval_partial %>%
       dplyr::bind_rows(., .id = "partition")
     eval_partial_list[[h]] <- eval_partial
@@ -278,6 +294,11 @@ fit_mx <- function(data,
     ), .groups = "drop")
 
   # Bind data for ensemble
+  for(e in 1:length(pred_test_ens)){
+    fitl <- sapply(pred_test_ens[[e]], function(x) !is.null(nrow(x)))
+    pred_test_ens[[e]] <- pred_test_ens[[e]][fitl]
+  }
+
   pred_test_ens <-
     lapply(pred_test_ens, function(x)
       bind_rows(x, .id = 'part')) %>%
@@ -291,9 +312,9 @@ fit_mx <- function(data,
       data = data[predictors],
       f = maxnet::maxnet.formula(data[response],
         data[predictors],
-        classes = "default"
+        classes = classes
       ),
-      regmult = 1
+      regmult = regmult
     ))
 
   pred_test <- data.frame(
