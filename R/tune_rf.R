@@ -256,6 +256,17 @@ tune_rf <-
     best_tune <- eval_final[filt, ]
     best_hyperp <- eval_final[filt, hyperp]
 
+    # Get data for ensemble
+    pred_test_ens <- fit_rf(
+      data = data,
+      response = response,
+      predictors = predictors,
+      predictors_f = predictors_f,
+      partition = partition,
+      thr = thr,
+      fit_formula = fit_formula,
+      mtry = best_tune$mtry
+    )[['data_ens']]
 
     # Fit final models with best settings
     set.seed(1)
@@ -296,7 +307,8 @@ tune_rf <-
       tune_performance = eval_final,
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),
-      all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values)
+      all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
+      data_ens=pred_test_ens
     )
     return(result)
   }

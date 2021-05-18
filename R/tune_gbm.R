@@ -288,8 +288,7 @@ tune_gbm <-
     best_hyperp <- eval_final[filt, hyperp]
 
 
-
-    # Bind data for ensemble
+    # Get data for ensemble
     pred_test_ens <- fit_gbm(
       data = data,
       response = response,

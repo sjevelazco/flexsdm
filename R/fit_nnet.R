@@ -24,6 +24,8 @@
 #' variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments
+#' @param size numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2 IMRPOVE THIS VALUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#' @param decay numeric. Parameter for weight decay. Default 0.
 #'
 #' @return
 #'
@@ -99,6 +101,8 @@ fit_nnet <- function(data,
                      partition,
                      thr = NULL,
                      fit_formula = NULL,
+                     size = 2,
+                     decay = 0,
                      ...) {
   variables <- c(c = predictors, f = predictors_f)
 
@@ -174,9 +178,9 @@ fit_nnet <- function(data,
           nnet::nnet(
             formula1,
             data = train[[i]],
-            size = 8, # revise and implement a formula to calculate it
+            size = size, # revise and implement a formula to calculate it
             rang = 0.1,
-            # decay = grid$decay[ii],
+            decay = decay,
             maxit = 200,
             trace = FALSE
           )
