@@ -2,7 +2,9 @@
 #'
 #' @param env_layer SpatRaster. Raster with environmental
 #' variable. This will be used to evaluate spatial autocorrelation and
-#' environmental similarity between training and testing partition
+#' environmental similarity between training and testing partition. Because this function
+#' calculate dissimilarity based on euclidean distances, it can only handle continuous
+#' layers, do not use categorical layers as inputs
 #' @param data data.frame. Data.frame or tibble object with presences
 #' (or presence-absence, o presences-pseudo-absence) records, and coordinates
 #' @param x character. Column name with longitude data
