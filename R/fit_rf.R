@@ -24,6 +24,8 @@
 #' variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments
+#' @param mtry numeric. Number of variables randomly sampled as candidates at each split. Default sqrt(length(c(predictors, predictors_f)))
+#' @param ...
 #'
 #' @return
 #'
@@ -98,6 +100,7 @@ fit_rf <- function(data,
                    partition,
                    thr = NULL,
                    fit_formula = NULL,
+                   mtry = sqrt(length(c(predictors, predictors_f))),
                    ...) {
   variables <- c(c = predictors, f = predictors_f)
 
@@ -173,7 +176,7 @@ fit_rf <- function(data,
           randomForest::randomForest(
             formula1,
             data = train[[i]],
-            # mtry = grid$mtry[ii],
+            mtry = mtry,
             ntree = 500,
             importance = FALSE,
           )
@@ -238,7 +241,7 @@ fit_rf <- function(data,
     randomForest::randomForest(
       formula1,
       data = data,
-      # mtry = grid$mtry[ii],
+      mtry = mtry,
       ntree = 500,
       importance = FALSE,
     ))
