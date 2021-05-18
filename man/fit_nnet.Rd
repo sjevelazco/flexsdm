@@ -12,6 +12,8 @@ fit_nnet(
   partition,
   thr = NULL,
   fit_formula = NULL,
+  size = 2,
+  decay = 0,
   ...
 )
 }
@@ -46,6 +48,10 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
 variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments}
+
+\item{size}{numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2 IMRPOVE THIS VALUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}
+
+\item{decay}{numeric. Parameter for weight decay. Default 0.}
 }
 \value{
 A list object with:

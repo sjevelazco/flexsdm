@@ -14,7 +14,9 @@ fit_mx(
   thr = NULL,
   fit_formula = NULL,
   clamp = TRUE,
+  classes = "default",
   pred_type = "cloglog",
+  regmult = 1,
   ...
 )
 }
@@ -55,7 +57,11 @@ response, predictors, and predictors_f arguments}
 
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.}
 
+\item{classes}{character. A single feature of any combinations of them. Features are symbolized by letters: l (linear), q (quadratic), h (hinge), p (product), and t (threshold). Usage classes = "lpq". Default "default" (see details).}
+
 \item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"}
+
+\item{regmult}{numeric. A constant to adjust regularization. Default 1.}
 
 \item{...}{}
 }

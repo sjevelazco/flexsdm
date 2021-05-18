@@ -12,6 +12,8 @@ fit_svm(
   partition,
   thr = NULL,
   fit_formula = NULL,
+  sigma = "automatic",
+  C = 1,
   ...
 )
 }
@@ -46,6 +48,12 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
 variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments}
+
+\item{sigma}{numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot". Default "automatic".}
+
+\item{C}{numeric. Cost of constraints violation this is the 'C'-constant of the regularization term in the Lagrange formulation. Default 1}
+
+\item{...}{}
 }
 \value{
 A list object with:
@@ -60,6 +68,10 @@ Those threshold dependent metric are calculated based on the threshold specified
 }
 \description{
 Fit and validate Support Vector Machine models
+}
+\details{
+This function constructs 'C-svc' classification type and uses
+Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[kernlab]{ksvm}.
 }
 \examples{
 \dontrun{

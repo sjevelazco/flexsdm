@@ -11,10 +11,7 @@ sdm_predict_test(
   calib_area = NULL,
   clamp = TRUE,
   pred_type = "cloglog",
-  ensemble = NULL,
-  data = NULL,
-  x = NULL,
-  y = NULL
+  ensemble = NULL
 )
 }
 \arguments{
@@ -40,8 +37,6 @@ sdm_predict_test(
   }
 
  In the case of use more than one ensemble method it is necessary concatenate the names of ensemble methods within the argument, e.g., ensemble=c(method=c('mean', 'median')) or ensemble = c(method=c('mean', 'meanw', 'meansup', 'meanthr', 'median'), metric='TSS', thr = 'max_sens_spec')}
-
-\item{y}{}
 }
 \value{
 A list of Raster or RasterStack with continuous or continuous and binary predictions

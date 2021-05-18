@@ -12,6 +12,9 @@ fit_gbm(
   partition,
   thr = NULL,
   fit_formula = NULL,
+  n_trees = 100,
+  n_minobsinnode = 10,
+  shrinkage = 0.1,
   ...
 )
 }
@@ -45,7 +48,22 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
 \item{fit_formula}{formula. A formula object with response and predictor
 variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
-response, predictors, and predictors_f arguments}
+response, predictors, and predictors_f arguments. Defaul is NULL.}
+
+\item{n_trees}{Integer specifying the total number of trees to fit.
+This is equivalent to the number of iterations and the number of basis
+functions in the additive expansion. Default is 100.}
+
+\item{n_minobsinnode}{Integer. It specifies the minimum number of
+observations in the terminal nodes of the trees. Note that this
+is the actual number of observations, not the total weight.}
+
+\item{shrinkage}{Numeric. This parameter applied to each tree in the
+expansion. Also known as the learning rate or step-size reduction;
+0.001 to 0.1 usually work, but a smaller learning rate typically
+requires more trees. Default is 0.1.}
+
+\item{...}{}
 }
 \value{
 A list object with:

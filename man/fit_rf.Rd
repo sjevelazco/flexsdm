@@ -12,6 +12,7 @@ fit_rf(
   partition,
   thr = NULL,
   fit_formula = NULL,
+  mtry = sqrt(length(c(predictors, predictors_f))),
   ...
 )
 }
@@ -46,6 +47,10 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
 variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments}
+
+\item{mtry}{numeric. Number of variables randomly sampled as candidates at each split. Default sqrt(length(c(predictors, predictors_f)))}
+
+\item{...}{}
 }
 \value{
 A list object with:
