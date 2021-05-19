@@ -148,10 +148,19 @@ tune_gbm <-
     data <- rm_na(x = data)
 
     # Formula
-    Fmula <- stats::formula(paste(
-      response, "~",
-      paste(c(predictors, predictors_f), collapse = " + ")
-    ))
+    if (is.null(fit_formula)) {
+      formula1 <- stats::formula(paste(
+        response, "~",
+        paste(c(predictors, predictors_f), collapse = " + ")
+      ))
+    } else {
+      formula1 <- fit_formula
+    }
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
+    )
 
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
@@ -201,7 +210,7 @@ tune_gbm <-
           try(mod[[ii]] <-
             suppressMessages(
               gbm::gbm(
-                Fmula,
+                formula1,
                 data = train[[i]],
                 distribution = "bernoulli",
                 bag.fraction = 1, # Explore more this parameter
@@ -301,7 +310,7 @@ tune_gbm <-
       predictors_f = predictors_f,
       partition = partition,
       thr = thr,
-      fit_formula = fit_formula,
+      fit_formula = formula1,
       n_trees = best_tune$n.trees,
       n_minobsinnode = best_tune$n.minobsinnode,
       shrinkage = best_tune$shrinkage
@@ -313,7 +322,7 @@ tune_gbm <-
     mod <-
       suppressMessages(
         gbm::gbm(
-          Fmula,
+          formula1,
           data = data,
           distribution = "bernoulli",
           n.trees = best_hyperp$n.trees,
