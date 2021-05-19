@@ -7,6 +7,10 @@
 #' Usage predictors = c("aet", "cwd", "tmin")
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
+#' @param fit_formula formula. A formula object with response and predictor
+#' variables see maxnet.formula function from maxnet package.
+#' Note that the variables used here must be consistent with those used in
+#' response, predictors, and predictors_f arguments. Default NULL.
 #' @param partition character. Column name with training and validation partition groups.
 #' @param background data.frame. Database with response column only with 0 and predictors variables. All
 #' column names must be consistent with data
@@ -22,10 +26,6 @@
 #'   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
 #'   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
-#' @param fit_formula formula. A formula object with response and predictor
-#' variables see maxnet.formula function from maxnet package.
-#' Note that the variables used here must be consistent with those used in
-#' response, predictors, and predictors_f arguments
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
 #' @param classes character. A single feature of any combinations of them. Features are symbolized by letters: l (linear), q (quadratic), h (hinge), p (product), and t (threshold). Usage classes = "lpq". Default "default" (see details).
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
@@ -67,10 +67,10 @@ fit_mx <- function(data,
                    response,
                    predictors,
                    predictors_f = NULL,
+                   fit_formula = NULL,
                    partition,
                    background,
                    thr = NULL,
-                   fit_formula = NULL,
                    clamp = TRUE,
                    classes = "default",
                    pred_type = "cloglog",
@@ -183,16 +183,21 @@ fit_mx <- function(data,
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
       tryCatch({
+        if(is.null(fit_formula)){
+          f <- maxnet::maxnet.formula(train[[i]][response],
+                                      train[[i]][predictors],
+                                      classes = classes)
+        } else {
+          f <- fit_formula
+        }
+
       set.seed(1)
         mod[[i]] <-
           suppressMessages(
           maxnet::maxnet(
           p = train[[i]][, response],
           data = train[[i]][predictors],
-          f = maxnet::maxnet.formula(train[[i]][response],
-            train[[i]][predictors],
-            classes = classes
-          ),
+          f = f,
           regmult = regmult
         )
         )

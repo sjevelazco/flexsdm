@@ -27,6 +27,7 @@
 #' @param metric character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
+#' @param ...
 #'
 #' @return
 #'
@@ -313,7 +314,7 @@ tune_mx <-
       predictors_f = predictors_f,
       partition = partition,
       thr = thr,
-      fit_formula = fit_formula,
+      fit_formula = NULL,
       background = background,
       clamp = clamp,
       classes = best_tune$classes,
