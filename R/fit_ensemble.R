@@ -1,4 +1,4 @@
-#' Perform and validate models ensemble
+#' Model assemble and validation
 #'
 #' @param models list. A list of models fitted with fit_ or tune_ function family. Models used for ensemble must have the same presences-absences records, partition methods, threshold types.
 #' @param ensemble character. Method used to ensemble different models. A vector must be provided for this argument. For meansup, meanw or pcasup method, it is necessary to provide an evaluation metric to ensemble arguments (metric argument below). By default will be performed all ensemble methods:
@@ -39,179 +39,179 @@ fit_ensemble <-
            thr,
            metric = "TSS") {
 
-  #### Models names
-  nms <- paste0("m_", 1:length(models))
+    #### Models names
+    nms <- paste0("m_", 1:length(models))
 
-  #### Model object
-  m <- lapply(models, function(x) x[[1]])
-  names(m) <- nms
+    #### Model object
+    m <- lapply(models, function(x) x[[1]])
+    names(m) <- nms
 
-  #### Performance metric
-  metric <- paste0(metric, "_mean")
+    #### Performance metric
+    metric <- paste0(metric, "_mean")
 
-  #### Model performances
-  perf <- sapply(models, function(x) {
-    x[["performance"]] %>%
-      dplyr::filter(threshold == dplyr::all_of(thr)) %>%
-      dplyr::pull(dplyr::all_of(metric))
-  })
-
-  #### Model thresholds
-  thr_v <- sapply(models, function(x) {
-    x[["selected_thresholds"]] %>%
-      dplyr::filter(threshold == dplyr::all_of(thr)) %>%
-      dplyr::pull(values)
-  })
-
-  names(perf) <- names(thr_v) <- nms
-
-  # Variables used in each models
-  variables <- lapply(models, function(x) {
-    x$predictors
-  }) %>%
-    dplyr::bind_rows()
-
-  #### Extract and merge suitability databases
-  data_ens <- sapply(models, function(x) {
-    x["data_ens"]
-  })
-
-  data_ens <- mapply(function(x, cn) {
-    colnames(x)[colnames(x) %in% "pred"] <- cn
-    x
-  }, data_ens, nms, SIMPLIFY = FALSE)
-
-  data_ens <- lapply(data_ens, function(x) {
-    x %>% dplyr::mutate(pr_ab = pr_ab %>%
-      as.character() %>%
-      as.double())
-  })
-
-  data_ens2 <-
-    dplyr::inner_join(data_ens[[1]],
-      data_ens[[2]],
-      by = c("rnames", "replicates", "part", "pr_ab")
-    )
-  if (length(data_ens) > 2) {
-    for (i in 3:length(data_ens)) {
-      data_ens2 <-
-        dplyr::inner_join(data_ens2,
-          data_ens[[2]],
-          by = c("rnames", "replicates", "part", "pr_ab")
-        )
-    }
-  }
-  rm(data_ens)
-
-  #### Extract predicted suitability of each model
-  values <- data_ens2 %>%
-    dplyr::select(dplyr::starts_with("m_"))
-
-  #### Remove suitability values from data_ens2
-  data_ens2 <- data_ens2 %>% dplyr::select(-dplyr::starts_with("m_"))
-
-  #### Perform ensembles
-  data_ens2 <- data_ens2 %>% dplyr::mutate(
-    mean = apply(values, 1, function(x) {
-      mean(x, na.rm = TRUE)
-    }),
-    meanw = mapply(function(x, v) {
-      (x * v)
-    }, values, perf, SIMPLIFY = TRUE) %>%
-      apply(., 1, function(x) {
-        mean(x, na.rm = TRUE)
-      }),
-    meansup = apply(values[, perf >= mean(perf)], 1, function(x) {
-      mean(x, na.rm = TRUE)
-    }),
-    meanthr = mapply(function(x, v) {
-      ifelse(x >= v, x, 0)
-    }, values, thr_v, SIMPLIFY = TRUE) %>%
-      apply(., 1, function(x) {
-        mean(x, na.rm = TRUE)
-      }),
-    median = apply(values, 1, function(x) {
-      median(x, na.rm = TRUE)
+    #### Model performances
+    perf <- sapply(models, function(x) {
+      x[["performance"]] %>%
+        dplyr::filter(threshold == dplyr::all_of(thr)) %>%
+        dplyr::pull(dplyr::all_of(metric))
     })
-  )
-  rm(values)
 
-  #### Calculate ensemble performance
-  p_names <- data_ens2 %>%
-    dplyr::pull(replicates) %>%
-    unique()
-  np <- length(p_names)
+    #### Model thresholds
+    thr_v <- sapply(models, function(x) {
+      x[["selected_thresholds"]] %>%
+        dplyr::filter(threshold == dplyr::all_of(thr)) %>%
+        dplyr::pull(values)
+    })
 
-  eval_partial_list <- list()
-  threshold <- ensemble <- as.list(rep(NA, length(ens_method)))
-  names(threshold) <- names(ensemble) <- ens_method
+    names(perf) <- names(thr_v) <- nms
 
-  pb <- utils::txtProgressBar(min = 0, max = np, style = 3)
-  for (g in ens_method) {
-    for (h in 1:np) {
-      # message("\n", "Replica number: ", h, "/", np)
+    # Variables used in each models
+    variables <- lapply(models, function(x) {
+      x$predictors
+    }) %>%
+      dplyr::bind_rows()
 
-      pred_test <- data_ens2 %>%
-        dplyr::filter(replicates == p_names[h])
-      pred_test <- split(pred_test, f = pred_test$part)
-      np2 <- length(pred_test)
-      eval_partial <- list()
+    #### Extract and merge suitability databases
+    data_ens <- sapply(models, function(x) {
+      x["data_ens"]
+    })
 
-      for (i in 1:np2) {
-        # message("Partition number: ", i, "/", np2)
-        # Validation of model
+    data_ens <- mapply(function(x, cn) {
+      colnames(x)[colnames(x) %in% "pred"] <- cn
+      x
+    }, data_ens, nms, SIMPLIFY = FALSE)
 
-        eval <-
-          sdm_eval(
-            p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
-            a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
-            thr = thr
+    data_ens <- lapply(data_ens, function(x) {
+      x %>% dplyr::mutate(pr_ab = pr_ab %>%
+        as.character() %>%
+        as.double())
+    })
+
+    data_ens2 <-
+      dplyr::inner_join(data_ens[[1]],
+        data_ens[[2]],
+        by = c("rnames", "replicates", "part", "pr_ab")
+      )
+    if (length(data_ens) > 2) {
+      for (i in 3:length(data_ens)) {
+        data_ens2 <-
+          dplyr::inner_join(data_ens2,
+            data_ens[[2]],
+            by = c("rnames", "replicates", "part", "pr_ab")
           )
-        eval_partial[[i]] <- eval$selected_thresholds
-        names(eval_partial)[i] <- i
+      }
+    }
+    rm(data_ens)
+
+    #### Extract predicted suitability of each model
+    values <- data_ens2 %>%
+      dplyr::select(dplyr::starts_with("m_"))
+
+    #### Remove suitability values from data_ens2
+    data_ens2 <- data_ens2 %>% dplyr::select(-dplyr::starts_with("m_"))
+
+    #### Perform ensembles
+    data_ens2 <- data_ens2 %>% dplyr::mutate(
+      mean = apply(values, 1, function(x) {
+        mean(x, na.rm = TRUE)
+      }),
+      meanw = mapply(function(x, v) {
+        (x * v)
+      }, values, perf, SIMPLIFY = TRUE) %>%
+        apply(., 1, function(x) {
+          mean(x, na.rm = TRUE)
+        }),
+      meansup = apply(values[, perf >= mean(perf)], 1, function(x) {
+        mean(x, na.rm = TRUE)
+      }),
+      meanthr = mapply(function(x, v) {
+        ifelse(x >= v, x, 0)
+      }, values, thr_v, SIMPLIFY = TRUE) %>%
+        apply(., 1, function(x) {
+          mean(x, na.rm = TRUE)
+        }),
+      median = apply(values, 1, function(x) {
+        median(x, na.rm = TRUE)
+      })
+    )
+    rm(values)
+
+    #### Calculate ensemble performance
+    p_names <- data_ens2 %>%
+      dplyr::pull(replicates) %>%
+      unique()
+    np <- length(p_names)
+
+    eval_partial_list <- list()
+    threshold <- ensemble <- as.list(rep(NA, length(ens_method)))
+    names(threshold) <- names(ensemble) <- ens_method
+
+    pb <- utils::txtProgressBar(min = 0, max = np, style = 3)
+    for (g in ens_method) {
+      for (h in 1:np) {
+        # message("\n", "Replica number: ", h, "/", np)
+
+        pred_test <- data_ens2 %>%
+          dplyr::filter(replicates == p_names[h])
+        pred_test <- split(pred_test, f = pred_test$part)
+        np2 <- length(pred_test)
+        eval_partial <- list()
+
+        for (i in 1:np2) {
+          # message("Partition number: ", i, "/", np2)
+          # Validation of model
+
+          eval <-
+            sdm_eval(
+              p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
+              a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
+              thr = thr
+            )
+          eval_partial[[i]] <- eval$selected_thresholds
+          names(eval_partial)[i] <- i
+        }
+
+        # Create final database with parameter performance
+        eval_partial <- eval_partial %>%
+          dplyr::bind_rows(., .id = "partition")
+        eval_partial_list[[h]] <- eval_partial
       }
 
-      # Create final database with parameter performance
-      eval_partial <- eval_partial %>%
-        dplyr::bind_rows(., .id = "partition")
-      eval_partial_list[[h]] <- eval_partial
+      eval_partial <- eval_partial_list %>%
+        dplyr::bind_rows(., .id = "replica")
+
+      eval_final <- eval_partial %>%
+        dplyr::group_by(threshold) %>%
+        dplyr::select(-c(replica:partition, values:n_absences)) %>%
+        dplyr::summarise(dplyr::across(
+          dplyr::everything(),
+          list(mean = mean, sd = stats::sd)
+        ), .groups = "drop")
+
+      ensemble[[g]] <- eval_final
+
+      threshold[[g]] <- sdm_eval(
+        p = data_ens2 %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
+        a = data_ens2 %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
+        thr = thr
+      )
+      utils::setTxtProgressBar(pb, which(ens_method == g))
     }
+    close(pb)
 
-    eval_partial <- eval_partial_list %>%
-      dplyr::bind_rows(., .id = "replica")
+    # Threshold
+    st <- lapply(threshold, function(x) x$selected_thresholds) %>%
+      dplyr::bind_rows(., .id = "model")
+    threshold <- lapply(threshold, function(x) x$all_thresholds) %>%
+      dplyr::bind_rows(., .id = "model")
 
-    eval_final <- eval_partial %>%
-      dplyr::group_by(threshold) %>%
-      dplyr::select(-c(replica:partition, values:n_absences)) %>%
-      dplyr::summarise(dplyr::across(
-        dplyr::everything(),
-        list(mean = mean, sd = stats::sd)
-      ), .groups = "drop")
+    ensemble <- dplyr::bind_rows(ensemble, .id = "model")
 
-    ensemble[[g]] <- eval_final
-
-    threshold[[g]] <- sdm_eval(
-      p = data_ens2 %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
-      a = data_ens2 %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
-      thr = thr
+    result <- list(
+      model = m,
+      predictors = variables,
+      performance = ensemble,
+      selected_thresholds = st %>% dplyr::select(model, threshold:values),
+      all_thresholds = threshold %>% dplyr::select(model, threshold:values)
     )
-    utils::setTxtProgressBar(pb, which(ens_method==g))
   }
-  close(pb)
-
-  # Threshold
-  st <- lapply(threshold, function(x) x$selected_thresholds) %>%
-    dplyr::bind_rows(., .id = "model")
-  threshold <- lapply(threshold, function(x) x$all_thresholds) %>%
-    dplyr::bind_rows(., .id = "model")
-
-  ensemble <- dplyr::bind_rows(ensemble, .id = "model")
-
-  result <- list(
-    model = m,
-    predictors = variables,
-    performance = ensemble,
-    selected_thresholds = st %>% dplyr::select(model, threshold:values),
-    all_thresholds = threshold %>% dplyr::select(model, threshold:values)
-  )
-}

@@ -43,7 +43,7 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
   }}
 
 \item{fit_formula}{formula. A formula object with response and predictor
-variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments}
 }

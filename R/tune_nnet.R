@@ -127,7 +127,7 @@ tune_nnet <-
     data <- rm_na(x = data)
 
     # Formula
-    if(is.null(fit_formula)){
+    if (is.null(fit_formula)) {
       formula1 <- stats::formula(paste(
         response, "~",
         paste(c(predictors, predictors_f), collapse = " + ")
@@ -290,7 +290,7 @@ tune_nnet <-
       fit_formula = fit_formula,
       size = best_tune$size,
       decay = best_tune$decay
-    )[['data_ens']]
+    )[["data_ens"]]
 
 
     # Fit final models with best settings
@@ -334,7 +334,7 @@ tune_nnet <-
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),
       all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
-      data_ens=pred_test_ens
+      data_ens = pred_test_ens
     )
     return(result)
   }

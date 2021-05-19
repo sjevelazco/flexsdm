@@ -190,9 +190,11 @@ fit_glm <- function(data,
   } else {
     formula1 <- fit_formula
   }
-  message("Formula used for model fitting:\n",
-          Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
-          "\n")
+  message(
+    "Formula used for model fitting:\n",
+    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+    "\n"
+  )
 
   # Fit models
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
@@ -250,7 +252,7 @@ fit_glm <- function(data,
       ))
 
       pred_test_ens[[h]][[i]] <- pred_test %>%
-        dplyr::mutate(rnames=rownames(.))
+        dplyr::mutate(rnames = rownames(.))
 
       # Validation of model
       eval <-
@@ -286,9 +288,11 @@ fit_glm <- function(data,
 
   # Bind data for ensemble
   pred_test_ens <-
-    lapply(pred_test_ens, function(x)
-      bind_rows(x, .id = 'part')) %>%
-    bind_rows(., .id = 'replicates') %>% dplyr::tibble() %>%
+    lapply(pred_test_ens, function(x) {
+      bind_rows(x, .id = "part")
+    }) %>%
+    bind_rows(., .id = "replicates") %>%
+    dplyr::tibble() %>%
     dplyr::relocate(rnames)
 
   # Fit final models with best settings

@@ -314,7 +314,7 @@ tune_gbm <-
       n_trees = best_tune$n.trees,
       n_minobsinnode = best_tune$n.minobsinnode,
       shrinkage = best_tune$shrinkage
-    )[['data_ens']]
+    )[["data_ens"]]
 
 
     # Fit final models with best settings
@@ -362,7 +362,7 @@ tune_gbm <-
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),
       all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
-      data_ens=pred_test_ens
+      data_ens = pred_test_ens
     )
     return(result)
   }

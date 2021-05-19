@@ -320,7 +320,7 @@ tune_mx <-
       classes = best_tune$classes,
       pred_type = pred_type,
       regmult = best_tune$regmult
-    )[['data_ens']]
+    )[["data_ens"]]
 
 
     # Fit final models with best settings
@@ -379,7 +379,7 @@ tune_mx <-
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),
       all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
-      data_ens=pred_test_ens
+      data_ens = pred_test_ens
     )
     return(result)
   }

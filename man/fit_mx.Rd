@@ -9,10 +9,10 @@ fit_mx(
   response,
   predictors,
   predictors_f = NULL,
+  fit_formula = NULL,
   partition,
   background,
   thr = NULL,
-  fit_formula = NULL,
   clamp = TRUE,
   classes = "default",
   pred_type = "cloglog",
@@ -32,6 +32,11 @@ Usage predictors = c("aet", "cwd", "tmin")}
 \item{predictors_f}{character. Vector with the column names of qualitative
 predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")}
 
+\item{fit_formula}{formula. A formula object with response and predictor
+variables see maxnet.formula function from maxnet package.
+Note that the variables used here must be consistent with those used in
+response, predictors, and predictors_f arguments. Default NULL.}
+
 \item{partition}{character. Column name with training and validation partition groups.}
 
 \item{background}{data.frame. Database with response column only with 0 and predictors variables. All
@@ -49,11 +54,6 @@ column names must be consistent with data}
   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
   }}
-
-\item{fit_formula}{formula. A formula object with response and predictor
-variables see maxnet.formula function from maxnet package.
-Note that the variables used here must be consistent with those used in
-response, predictors, and predictors_f arguments}
 
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.}
 
