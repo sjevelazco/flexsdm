@@ -118,10 +118,11 @@ fit_mx <- function(data,
   }
 
   # Formula
-  if(is.null(fit_formula)){
+  if (is.null(fit_formula)) {
     formula1 <- maxnet::maxnet.formula(data[response],
-                                       data[predictors],
-                                       classes = classes)
+      data[predictors],
+      classes = classes
+    )
   } else {
     formula1 <- fit_formula
   }
@@ -197,95 +198,94 @@ fit_mx <- function(data,
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      tryCatch({
-      set.seed(1)
-        mod[[i]] <-
-          suppressMessages(
-          maxnet::maxnet(
-          p = train[[i]][, response],
-          data = train[[i]][predictors],
-          f = formula1,
-          regmult = regmult
-        )
-        )
+      tryCatch(
+        {
+          set.seed(1)
+          mod[[i]] <-
+            suppressMessages(
+              maxnet::maxnet(
+                p = train[[i]][, response],
+                data = train[[i]][predictors],
+                f = formula1,
+                regmult = regmult
+              )
+            )
 
 
-      # Predict for presences absences data
-      ## Eliminate factor levels not used in fitting
-      # if (!is.null(predictors_f)) {
-      #   for (fi in 1:length(predictors_f)) {
-      #     lev <- as.character(unique(mod[[i]]$x[, predictors_f[fi]]))
-      #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-      #     test[[i]] <- test[[i]][lev_filt, ]
-      #     if (!is.null(background)) {
-      #       lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
-      #       bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
-      #     }
-      #   }
-      # }
+          # Predict for presences absences data
+          ## Eliminate factor levels not used in fitting
+          # if (!is.null(predictors_f)) {
+          #   for (fi in 1:length(predictors_f)) {
+          #     lev <- as.character(unique(mod[[i]]$x[, predictors_f[fi]]))
+          #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
+          #     test[[i]] <- test[[i]][lev_filt, ]
+          #     if (!is.null(background)) {
+          #       lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
+          #       bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
+          #     }
+          #   }
+          # }
 
-      # Predict for presences absences data
-      pred_test <- data.frame(
-        pr_ab = test[[i]][, response],
-        pred =
-          maxnet:::predict.maxnet(
-            mod[[i]],
-            newdata = test[[i]],
-            clamp = clamp,
-            type = pred_type
-          )
-      )
-
-      pred_test_ens[[h]][[i]] <- pred_test %>%
-        dplyr::mutate(rnames=rownames(.))
-
-      # Predict for background data
-      if (!is.null(background)) {
-        bgt <-
-          data.frame(
-            pr_ab = bgt_test[[i]][, response],
+          # Predict for presences absences data
+          pred_test <- data.frame(
+            pr_ab = test[[i]][, response],
             pred =
               maxnet:::predict.maxnet(
                 mod[[i]],
-                newdata = bgt_test[[i]][c(predictors, predictors_f)],
+                newdata = test[[i]],
                 clamp = clamp,
                 type = pred_type
               )
           )
-      }
 
-      # Validation of model
-      if (is.null(background)) {
-        eval <-
-          sdm_eval(
-            p = pred_test$pred[pred_test$pr_ab == 1],
-            a = pred_test$pred[pred_test$pr_ab == 0],
-            thr = thr
-          )
-      } else {
-        eval <-
-          sdm_eval(
-            p = pred_test$pred[pred_test$pr_ab == 1],
-            a = pred_test$pred[pred_test$pr_ab == 0],
-            thr = thr,
-            bg = bgt$pred
-          )
-      }
+          pred_test_ens[[h]][[i]] <- pred_test %>%
+            dplyr::mutate(rnames = rownames(.))
 
-      if (is.null(thr)) {
-        eval_partial[[i]] <- eval$all_thresholds
-      } else {
-        eval_partial[[i]] <- eval$selected_thresholds
-      }
+          # Predict for background data
+          if (!is.null(background)) {
+            bgt <-
+              data.frame(
+                pr_ab = bgt_test[[i]][, response],
+                pred =
+                  maxnet:::predict.maxnet(
+                    mod[[i]],
+                    newdata = bgt_test[[i]][c(predictors, predictors_f)],
+                    clamp = clamp,
+                    type = pred_type
+                  )
+              )
+          }
 
-      names(eval_partial) <- i
+          # Validation of model
+          if (is.null(background)) {
+            eval <-
+              sdm_eval(
+                p = pred_test$pred[pred_test$pr_ab == 1],
+                a = pred_test$pred[pred_test$pr_ab == 0],
+                thr = thr
+              )
+          } else {
+            eval <-
+              sdm_eval(
+                p = pred_test$pred[pred_test$pr_ab == 1],
+                a = pred_test$pred[pred_test$pr_ab == 0],
+                thr = thr,
+                bg = bgt$pred
+              )
+          }
 
-      }
-      ,
-      error=function(cond) {
-        message("It was not possible to fit this model")
-      })
+          if (is.null(thr)) {
+            eval_partial[[i]] <- eval$all_thresholds
+          } else {
+            eval_partial[[i]] <- eval$selected_thresholds
+          }
 
+          names(eval_partial) <- i
+        },
+        error = function(cond) {
+          message("It was not possible to fit this model")
+        }
+      )
     }
 
     # Create final database with parameter performance
@@ -306,15 +306,17 @@ fit_mx <- function(data,
     ), .groups = "drop")
 
   # Bind data for ensemble
-  for(e in 1:length(pred_test_ens)){
+  for (e in 1:length(pred_test_ens)) {
     fitl <- sapply(pred_test_ens[[e]], function(x) !is.null(nrow(x)))
     pred_test_ens[[e]] <- pred_test_ens[[e]][fitl]
   }
 
   pred_test_ens <-
-    lapply(pred_test_ens, function(x)
-      bind_rows(x, .id = 'part')) %>%
-    bind_rows(., .id = 'replicates') %>% dplyr::tibble() %>%
+    lapply(pred_test_ens, function(x) {
+      bind_rows(x, .id = "part")
+    }) %>%
+    bind_rows(., .id = "replicates") %>%
+    dplyr::tibble() %>%
     dplyr::relocate(rnames)
 
   # Fit final models

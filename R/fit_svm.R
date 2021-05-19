@@ -140,16 +140,20 @@ fit_svm <- function(data,
 
   # Formula
   if (is.null(fit_formula)) {
-    formula1 <- stats::formula(paste(response, "~",
-                                     paste(c(
-                                       predictors, predictors_f
-                                     ), collapse = " + ")))
+    formula1 <- stats::formula(paste(
+      response, "~",
+      paste(c(
+        predictors, predictors_f
+      ), collapse = " + ")
+    ))
   } else {
     formula1 <- fit_formula
   }
-  message("Formula used for model fitting:\n",
-          Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
-          "\n")
+  message(
+    "Formula used for model fitting:\n",
+    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+    "\n"
+  )
 
 
   # Fit models
@@ -179,116 +183,126 @@ fit_svm <- function(data,
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      tryCatch({
+      tryCatch(
+        {
+          if (sigma == "automatic") {
+            kpar_ <- "automatic"
+          } else {
+            kpar_ <- list(sigma = sigma)
+          }
 
-        if (sigma == "automatic") {
-          kpar_ <- "automatic"
-        } else{
-          kpar_ <- list(sigma = sigma)
-        }
-
-        set.seed(1)
-        mod[[i]] <-
-          suppressMessages(
-            kernlab::ksvm(
-              formula1,
-              data = train[[i]],
-              type = "C-svc",
-              kernel = "rbfdot",
-              kpar = kpar_,
-              C = C,
-              prob.model = TRUE
+          set.seed(1)
+          mod[[i]] <-
+            suppressMessages(
+              kernlab::ksvm(
+                formula1,
+                data = train[[i]],
+                type = "C-svc",
+                kernel = "rbfdot",
+                kpar = kpar_,
+                C = C,
+                prob.model = TRUE
+              )
             )
+
+          pred_test <- data.frame(
+            pr_ab = test[[i]][, response],
+            pred = suppressMessages(kernlab::predict(
+              mod[[i]],
+              newdata = test[[i]],
+              type = "prob",
+            )[, 2])
           )
 
-        pred_test <- data.frame(pr_ab = test[[i]][, response],
-                                pred = suppressMessages(kernlab::predict(
-                                  mod[[i]],
-                                  newdata = test[[i]],
-                                  type = "prob",
-                                )[, 2]))
+          pred_test_ens[[h]][[i]] <- pred_test %>%
+            dplyr::mutate(rnames = rownames(.))
 
-        pred_test_ens[[h]][[i]] <- pred_test %>%
-          dplyr::mutate(rnames = rownames(.))
+          # Validation of model
+          eval <-
+            sdm_eval(
+              p = pred_test$pred[pred_test$pr_ab == 1],
+              a = pred_test$pred[pred_test$pr_ab == 0],
+              thr = thr
+            )
+          if (is.null(thr)) {
+            eval_partial[[i]] <- eval$all_thresholds
+          } else {
+            eval_partial[[i]] <- eval$selected_thresholds
+          }
 
-        # Validation of model
-        eval <-
-          sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                   a = pred_test$pred[pred_test$pr_ab == 0],
-                   thr = thr)
-        if (is.null(thr)) {
-          eval_partial[[i]] <- eval$all_thresholds
-        } else {
-          eval_partial[[i]] <- eval$selected_thresholds
+          names(eval_partial) <- i
+        },
+        error = function(cond) {
+          message("It was not possible to fit this model")
         }
-
-        names(eval_partial) <- i
-      },
-      error = function(cond) {
-        message("It was not possible to fit this model")
-      })
-
-      }
-
-      # Create final database with parameter performance
-      eval_partial <- eval_partial %>%
-        dplyr::bind_rows(., .id = "partition")
-      eval_partial_list[[h]] <- eval_partial
+      )
     }
 
-    eval_partial <- eval_partial_list %>%
-      dplyr::bind_rows(., .id = "replica")
-
-    eval_final <- eval_partial %>%
-      dplyr::group_by(threshold) %>%
-      dplyr::select(-c(replica:partition, values:n_absences)) %>%
-      dplyr::summarise(dplyr::across(dplyr::everything(),
-                                     list(mean = mean, sd = stats::sd)), .groups = "drop")
-
-    # Bind data for ensemble
-    pred_test_ens <-
-      lapply(pred_test_ens, function(x)
-        bind_rows(x, .id = 'part')) %>%
-      bind_rows(., .id = 'replicates') %>% dplyr::tibble() %>%
-      dplyr::relocate(rnames)
-
-    # Fit final models with best settings
-    if (sigma == "automatic") {
-      kpar_ <- "automatic"
-    } else{
-      kpar_ <- list(sigma = sigma)
-    }
-    set.seed(1)
-    suppressMessages(
-      mod <-
-        kernlab::ksvm(
-          formula1,
-          data = data,
-          type = "C-svc",
-          kernel = "rbfdot",
-          kpar = kpar_,
-          C = C,
-          prob.model = TRUE
-        )
-    )
-
-    threshold <- sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                          a = pred_test$pred[pred_test$pr_ab == 0],
-                          thr = thr)
-
-    if (!is.null(thr)) {
-      st <- threshold$selected_thresholds
-    } else {
-      st <- threshold$all_thresholds
-    }
-
-    result <- list(
-      model = mod,
-      predictors = variables,
-      performance = eval_final,
-      selected_thresholds = st %>% dplyr::select(threshold:values),
-      all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
-      data_ens = pred_test_ens
-    )
-    return(result)
+    # Create final database with parameter performance
+    eval_partial <- eval_partial %>%
+      dplyr::bind_rows(., .id = "partition")
+    eval_partial_list[[h]] <- eval_partial
   }
+
+  eval_partial <- eval_partial_list %>%
+    dplyr::bind_rows(., .id = "replica")
+
+  eval_final <- eval_partial %>%
+    dplyr::group_by(threshold) %>%
+    dplyr::select(-c(replica:partition, values:n_absences)) %>%
+    dplyr::summarise(dplyr::across(
+      dplyr::everything(),
+      list(mean = mean, sd = stats::sd)
+    ), .groups = "drop")
+
+  # Bind data for ensemble
+  pred_test_ens <-
+    lapply(pred_test_ens, function(x) {
+      bind_rows(x, .id = "part")
+    }) %>%
+    bind_rows(., .id = "replicates") %>%
+    dplyr::tibble() %>%
+    dplyr::relocate(rnames)
+
+  # Fit final models with best settings
+  if (sigma == "automatic") {
+    kpar_ <- "automatic"
+  } else {
+    kpar_ <- list(sigma = sigma)
+  }
+  set.seed(1)
+  suppressMessages(
+    mod <-
+      kernlab::ksvm(
+        formula1,
+        data = data,
+        type = "C-svc",
+        kernel = "rbfdot",
+        kpar = kpar_,
+        C = C,
+        prob.model = TRUE
+      )
+  )
+
+  threshold <- sdm_eval(
+    p = pred_test$pred[pred_test$pr_ab == 1],
+    a = pred_test$pred[pred_test$pr_ab == 0],
+    thr = thr
+  )
+
+  if (!is.null(thr)) {
+    st <- threshold$selected_thresholds
+  } else {
+    st <- threshold$all_thresholds
+  }
+
+  result <- list(
+    model = mod,
+    predictors = variables,
+    performance = eval_final,
+    selected_thresholds = st %>% dplyr::select(threshold:values),
+    all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
+    data_ens = pred_test_ens
+  )
+  return(result)
+}

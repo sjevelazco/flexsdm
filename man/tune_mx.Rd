@@ -56,6 +56,8 @@ column names must be consistent with data}
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.}
 
 \item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"}
+
+\item{...}{}
 }
 \value{
 A list object with:

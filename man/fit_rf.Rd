@@ -9,9 +9,9 @@ fit_rf(
   response,
   predictors,
   predictors_f = NULL,
+  fit_formula = NULL,
   partition,
   thr = NULL,
-  fit_formula = NULL,
   mtry = sqrt(length(c(predictors, predictors_f))),
   ...
 )
@@ -28,6 +28,11 @@ Usage predictors = c("aet", "cwd", "tmin")}
 \item{predictors_f}{character. Vector with the column names of qualitative
 predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")}
 
+\item{fit_formula}{formula. A formula object with response and predictor
+variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+Note that the variables used here must be consistent with those used in
+response, predictors, and predictors_f arguments. Default NULL}
+
 \item{partition}{character. Column name with training and validation partition groups.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
@@ -42,11 +47,6 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
   }}
-
-\item{fit_formula}{formula. A formula object with response and predictor
-variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
-Note that the variables used here must be consistent with those used in
-response, predictors, and predictors_f arguments}
 
 \item{mtry}{numeric. Number of variables randomly sampled as candidates at each split. Default sqrt(length(c(predictors, predictors_f)))}
 

@@ -280,7 +280,7 @@ tune_rf <-
       thr = thr,
       fit_formula = formula1,
       mtry = best_tune$mtry
-    )[['data_ens']]
+    )[["data_ens"]]
 
     # Fit final models with best settings
     set.seed(1)
@@ -322,7 +322,7 @@ tune_rf <-
       best_hyper_performance = best_tune,
       selected_thresholds = st %>% dplyr::select(threshold:values),
       all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
-      data_ens=pred_test_ens
+      data_ens = pred_test_ens
     )
     return(result)
   }
