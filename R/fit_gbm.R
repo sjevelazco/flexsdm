@@ -7,6 +7,10 @@
 #' Usage predictors = c("aet", "cwd", "tmin")
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
+#' @param fit_formula formula. A formula object with response and predictor
+#' variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+#' Note that the variables used here must be consistent with those used in
+#' response, predictors, and predictors_f arguments. Default is NULL.
 #' @param partition character. Column name with training and validation partition groups.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
@@ -20,10 +24,6 @@
 #'   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
 #'   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
 #'   }
-#' @param fit_formula formula. A formula object with response and predictor
-#' variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
-#' Note that the variables used here must be consistent with those used in
-#' response, predictors, and predictors_f arguments. Defaul is NULL.
 #' @param n_trees Integer specifying the total number of trees to fit.
 #' This is equivalent to the number of iterations and the number of basis
 #' functions in the additive expansion. Default is 100.
@@ -104,9 +104,9 @@ fit_gbm <- function(data,
                     response,
                     predictors,
                     predictors_f = NULL,
+                    fit_formula = NULL,
                     partition,
                     thr = NULL,
-                    fit_formula = NULL,
                     n_trees = 100,
                     n_minobsinnode = 10,
                     shrinkage = 0.1,
