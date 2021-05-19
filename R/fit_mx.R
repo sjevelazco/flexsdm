@@ -310,7 +310,7 @@ fit_mx <- function(data,
     bind_rows(., .id = 'replicates') %>% dplyr::tibble() %>%
     dplyr::relocate(rnames)
 
-  # Fit final models with best settings
+  # Fit final models
   suppressMessages(mod <-
     maxnet::maxnet(
       p = data[, response],
