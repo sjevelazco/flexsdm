@@ -117,6 +117,21 @@ fit_mx <- function(data,
     background <- rm_na(x = background)
   }
 
+  # Formula
+  if(is.null(fit_formula)){
+    formula1 <- maxnet::maxnet.formula(data[response],
+                                       data[predictors],
+                                       classes = classes)
+  } else {
+    formula1 <- fit_formula
+  }
+  message(
+    "Formula used for model fitting:\n",
+    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+    "\n"
+  )
+
+
   # Compare pr_ab and background column names
   p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
   for (i in p_names) {
@@ -183,21 +198,13 @@ fit_mx <- function(data,
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
       tryCatch({
-        if(is.null(fit_formula)){
-          f <- maxnet::maxnet.formula(train[[i]][response],
-                                      train[[i]][predictors],
-                                      classes = classes)
-        } else {
-          f <- fit_formula
-        }
-
       set.seed(1)
         mod[[i]] <-
           suppressMessages(
           maxnet::maxnet(
           p = train[[i]][, response],
           data = train[[i]][predictors],
-          f = f,
+          f = formula1,
           regmult = regmult
         )
         )
@@ -315,10 +322,7 @@ fit_mx <- function(data,
     maxnet::maxnet(
       p = data[, response],
       data = data[predictors],
-      f = maxnet::maxnet.formula(data[response],
-        data[predictors],
-        classes = classes
-      ),
+      f = formula1,
       regmult = regmult
     ))
 

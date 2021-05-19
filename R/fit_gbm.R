@@ -136,17 +136,14 @@ fit_gbm <- function(data,
       response, "~",
       paste(c(predictors, predictors_f), collapse = " + ")
     ))
-    message(
-      "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .)
-    )
   } else {
     formula1 <- fit_formula
-    message(
-      "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .)
-    )
   }
+  message(
+    "Formula used for model fitting:\n",
+    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+    "\n"
+  )
 
 
   # Fit models

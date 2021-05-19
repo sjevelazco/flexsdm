@@ -5,6 +5,10 @@
 #' @param response character. Column name with species absence-presence data (0,1).
 #' @param predictors character. Vector with the column names of quantitative predictor variables (i.e. continuous or discrete variables). Usage predictors = c("aet", "cwd", "tmin")
 #' @param predictors_f character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
+#' @param fit_formula formula. A formula object with response and predictor
+#' variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+#' Note that the variables used here must be consistent with those used in
+#' response, predictors, and predictors_f arguments. Default NULL
 #' @param partition character. Column name with training and validation partition groups.
 #' @param grid data.frame. Provide a data frame object with algorithm hyper-parameters values to be tested. It Is recommended to generate this data.frame. Hyper-parameter needed for tuning is 'mtry'. The maximum mtry must be equal to total number of predictors
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1) useful for threshold-dependent performance metrics. It is possible not define a threshold or use more than one, in these cases, function will return the best model and the best threshold. It is necessary to provide a vector for this argument. The next threshold area available:
@@ -87,6 +91,7 @@ tune_rf <-
            response,
            predictors,
            predictors_f = NULL,
+           fit_formula = NULL,
            partition,
            grid = NULL,
            thr = NULL,
@@ -116,10 +121,19 @@ tune_rf <-
     data <- rm_na(x = data)
 
     # Formula
-    Fmula <- stats::formula(paste(
-      response, "~",
-      paste(c(predictors, predictors_f), collapse = " + ")
-    ))
+    if (is.null(fit_formula)) {
+      formula1 <- stats::formula(paste(
+        response, "~",
+        paste(c(predictors, predictors_f), collapse = " + ")
+      ))
+    } else {
+      formula1 <- fit_formula
+    }
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
+    )
 
 
     # Prepare grid when grid=default or NULL
@@ -168,7 +182,7 @@ tune_rf <-
           try(
             mod[[ii]] <-
               randomForest::randomForest(
-                Fmula,
+                formula1,
                 data = train[[i]],
                 mtry = grid$mtry[ii],
                 ntree = 500,
@@ -264,7 +278,7 @@ tune_rf <-
       predictors_f = predictors_f,
       partition = partition,
       thr = thr,
-      fit_formula = fit_formula,
+      fit_formula = formula1,
       mtry = best_tune$mtry
     )[['data_ens']]
 
@@ -272,7 +286,7 @@ tune_rf <-
     set.seed(1)
     mod <-
       randomForest::randomForest(
-        Fmula,
+        formula1,
         data = data,
         mtry = best_hyperp$mtry,
         ntree = 500,

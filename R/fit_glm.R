@@ -187,14 +187,12 @@ fit_glm <- function(data,
         response, "~", formula1
       ))
     }
-    message(
-      "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .)
-    )
   } else {
     formula1 <- fit_formula
   }
-
+  message("Formula used for model fitting:\n",
+          Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+          "\n")
 
   # Fit models
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))

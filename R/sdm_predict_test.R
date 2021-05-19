@@ -13,7 +13,7 @@
 #'   \item mean: Simple average of the different models. Usage ensemble=c(method='mean').
 #'   \item meanw: Weighted average of models based on their performance. An evaluation metric and threshold type must be provided. Usage ensemble = c(method='meanw', metric='TSS', thr = 'max_sens_spec').
 #'   \item meansup: Average of the best models (e.g., TSS over the average). An evaluation metric must be provided. Usage ensemble=c(method='meansup', metric='TSS').
-#'   \item meanthr: pca performed only with those cells with suitability values above the selected threshold. Usage ensemble=c(method='pcathr').
+#'   \item meanthr: Average performed only with those cells with suitability values above the selected threshold. Usage ensemble=c(method='pcathr').
 #'   \item median: Median of the different models. Usage ensemble = c(method = 'median')
 #'   }
 #'

@@ -145,17 +145,14 @@ fit_gam <- function(data,
     formula1 <- stats::formula(paste(
       response, "~", formula1
     ))
-    message(
-      "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .)
-    )
   } else {
     formula1 <- fit_formula
+  }
     message(
       "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .)
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
     )
-  }
 
 
   # Fit models
