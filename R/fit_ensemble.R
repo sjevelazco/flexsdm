@@ -42,10 +42,6 @@ fit_ensemble <-
     #### Models names
     nms <- paste0("m_", 1:length(models))
 
-    #### Model object
-    m <- lapply(models, function(x) x[[1]])
-    names(m) <- nms
-
     #### Performance metric
     metric <- paste0(metric, "_mean")
 
@@ -111,30 +107,45 @@ fit_ensemble <-
     data_ens2 <- data_ens2 %>% dplyr::select(-dplyr::starts_with("m_"))
 
     #### Perform ensembles
-    data_ens2 <- data_ens2 %>% dplyr::mutate(
-      mean = apply(values, 1, function(x) {
+    v <- as.list(rep('x', 5))
+    names(v) <- c('mean', 'meanw', 'meansup', 'meanthr', 'median')
+
+    if(any('mean' == ens_method)) {
+      v[['mean']] <- apply(values, 1, function(x) {
         mean(x, na.rm = TRUE)
-      }),
-      meanw = mapply(function(x, v) {
+      })
+    }
+    if(any('meanw' == ens_method)) {
+      v[['meanw']] <- mapply(function(x, v) {
         (x * v)
       }, values, perf, SIMPLIFY = TRUE) %>%
         apply(., 1, function(x) {
           mean(x, na.rm = TRUE)
-        }),
-      meansup = apply(values[, perf >= mean(perf)], 1, function(x) {
+        })
+    }
+    if(any('meansup' == ens_method)) {
+      v[['meansup']] <- apply(values[, perf >= mean(perf)], 1, function(x) {
         mean(x, na.rm = TRUE)
-      }),
-      meanthr = mapply(function(x, v) {
+      })
+    }
+    if(any('meanthr' == ens_method)) {
+      v[['meanthr']] <- mapply(function(x, v) {
         ifelse(x >= v, x, 0)
       }, values, thr_v, SIMPLIFY = TRUE) %>%
         apply(., 1, function(x) {
           mean(x, na.rm = TRUE)
-        }),
-      median = apply(values, 1, function(x) {
+        })
+    }
+    if(any('median' == ens_method)) {
+      v[['median']] <- apply(values, 1, function(x) {
         median(x, na.rm = TRUE)
       })
-    )
-    rm(values)
+    }
+
+    v <- v[!sapply(v, is.character)]
+    v <- dplyr::bind_rows(v)
+    data_ens2 <- dplyr::bind_cols(data_ens2, v)
+    rm(list=c('values', 'v'))
 
     #### Calculate ensemble performance
     p_names <- data_ens2 %>%
@@ -146,7 +157,7 @@ fit_ensemble <-
     threshold <- ensemble <- as.list(rep(NA, length(ens_method)))
     names(threshold) <- names(ensemble) <- ens_method
 
-    pb <- utils::txtProgressBar(min = 0, max = np, style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = length(ens_method), style = 3)
     for (g in ens_method) {
       for (h in 1:np) {
         # message("\n", "Replica number: ", h, "/", np)
@@ -206,6 +217,10 @@ fit_ensemble <-
       dplyr::bind_rows(., .id = "model")
 
     ensemble <- dplyr::bind_rows(ensemble, .id = "model")
+
+    #### Model object
+    m <- lapply(models, function(x) x[[1]])
+    names(m) <- nms
 
     result <- list(
       model = m,
