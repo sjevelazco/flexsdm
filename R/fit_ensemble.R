@@ -1,16 +1,27 @@
 #' Model assemble and validation
 #'
 #' @param models list. A list of models fitted with fit_ or tune_ function family. Models used for ensemble must have the same presences-absences records, partition methods, threshold types.
-#' @param ensemble character. Method used to ensemble different models. A vector must be provided for this argument. For meansup, meanw or pcasup method, it is necessary to provide an evaluation metric to ensemble arguments (metric argument below). By default will be performed all ensemble methods:
+#' @param ens_method character. Method used to ensemble different models. A vector must be provided for this argument. For meansup, meanw or pcasup method, it is necessary to provide an evaluation metric and threshold in 'metric' and 'thr_model' arguments respectively . By default will be performed all ensemble methods:
 #'   \itemize{
-#'   \item mean: Simple average of the different models. Usage ensemble=c(method='mean').
+#'   \item mean: Simple average of the different models.
 #'   \item meanw: Weighted average of models based on their performance. An evaluation metric and threshold type must be provided..
 #'   \item meansup: Average of the best models (e.g., TSS over the average). An evaluation metric must be provided.
 #'   \item meanthr: Average performed only with those cells with suitability values above the selected threshold.
-#'   \item median: Median of the different models.
-#'   }
+#'   \item median: Median of the different models.}
 #'   Usage ensemble = "meanthr". In case is needed perform different ensemble method it is necessary concatenate them, e.g., ensemble = c("meanw", "meanthr", "median")
-#' @param thr character. Threshold type used to get binary suitability values (i.e. 0,1). In fit_ensemble, only it possible to use one threshold type. It is mandatory that the threshold used was the same for all models (see thr argument in fit_ and tune_ family function). Threshold available: lpt, equal_sens_spec, max_sens_spec, max_kappa, max_jaccard, max_sorensen, max_fpb, and sensitivity. Usage thr = 'equal_sens_spec'
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1) useful for threshold-dependent performance metrics. It is possible not define a threshold or use more than one, in these cases, function will return the best model and the best threshold. It is necessary to provide a vector for this argument. The next threshold area available:
+#' \itemize{
+#'   \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
+#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
+#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
+#'   Usage thr=c(type='max_sens_spec').
+#'   \item max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').
+#'   \item max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').
+#'   \item max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').
+#'   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
+#'   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
+#'   }
+#' @param thr_model character. This threshold is needed for conduct meanw, meandsup, and meanthr ensemble methods. It is mandatory to use only one threshold, and this must be the same threshold used to fit all the models used in the "models" argument. Usage thr_model = 'equal_sens_spec'
 #' @param metric character. Performance metric used for selecting the best combination of hyper-parameter values. One of the next metrics can be used SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, IMAE, and BOYCE. Default TSS. Usage metric = BOYCE
 #'
 #' @return
@@ -36,30 +47,43 @@
 fit_ensemble <-
   function(models,
            ens_method = c("mean", "meanw", "meansup", "meanthr", "median"),
-           thr,
-           metric = "TSS") {
+           thr = NULL,
+           thr_model = NULL,
+           metric = NULL) {
+
+    if(any(c("meanw", "meansup", "meanthr")%in%ens_method)){
+      if(is.null(thr_model)){
+        stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' argument")
+      }
+      if(is.null(metric)){
+        stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a performance metric in 'metric' argument")
+      }
+    }
 
     #### Models names
     nms <- paste0("m_", 1:length(models))
 
-    #### Performance metric
-    metric <- paste0(metric, "_mean")
 
-    #### Model performances
-    perf <- sapply(models, function(x) {
-      x[["performance"]] %>%
-        dplyr::filter(threshold == dplyr::all_of(thr)) %>%
-        dplyr::pull(dplyr::all_of(metric))
-    })
+    if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
+      #### Performance metric
+      metric <- paste0(metric, "_mean")
 
-    #### Model thresholds
-    thr_v <- sapply(models, function(x) {
-      x[["selected_thresholds"]] %>%
-        dplyr::filter(threshold == dplyr::all_of(thr)) %>%
-        dplyr::pull(values)
-    })
+      #### Model performances
+      perf <- sapply(models, function(x) {
+        x[["performance"]] %>%
+          dplyr::filter(threshold == dplyr::all_of(thr_model)) %>%
+          dplyr::pull(dplyr::all_of(metric))
+      })
 
-    names(perf) <- names(thr_v) <- nms
+      #### Model thresholds
+      thr_v <- sapply(models, function(x) {
+        x[["selected_thresholds"]] %>%
+          dplyr::filter(threshold == dplyr::all_of(thr_model)) %>%
+          dplyr::pull(values)
+      })
+
+      names(perf) <- names(thr_v) <- nms
+    }
 
     # Variables used in each models
     variables <- lapply(models, function(x) {
