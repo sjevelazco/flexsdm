@@ -34,7 +34,7 @@
 #' @importFrom stats predict
 #' @importFrom terra crop as.data.frame values rast nlyr
 #' @examples
-sdm_predict <- function(models, pred, thr = NULL, con_thr =  FALSE, calib_area = NULL, clamp = TRUE, pred_type = "cloglog") {
+sdm_predict <- function(models, pred, thr = NULL, con_thr = FALSE, calib_area = NULL, clamp = TRUE, pred_type = "cloglog") {
 
   #### Prepare datasets ####
   # Crop projection area
@@ -370,21 +370,17 @@ sdm_predict <- function(models, pred, thr = NULL, con_thr =  FALSE, calib_area =
 
   #### Get binary predictions ####
   if (is.null(thr)) {
-
     return(model_c)
-
   } else {
     if (any("all" == thr)) {
       thr_df <- lapply(models, function(x) {
         x[["performance"]]
       })
-
     } else {
       thr_df <- lapply(models, function(x) {
         x[["performance"]] %>%
           dplyr::filter(threshold %in% thr)
       })
-
     }
 
     model_b <- list()
@@ -400,17 +396,16 @@ sdm_predict <- function(models, pred, thr = NULL, con_thr =  FALSE, calib_area =
     names(model_b) <- names(model_c)
 
     # Return suitability values above thresholds
-    if(con_thr){
-      for(i in 1:length(model_b)){
-        for(ii in 1:terra::nlyr(model_b[[i]])){
-          model_b[[i]][[ii]][model_b[[i]][[ii]]==1] <- model_c[[i]]
+    if (con_thr) {
+      for (i in 1:length(model_b)) {
+        for (ii in 1:terra::nlyr(model_b[[i]])) {
+          model_b[[i]][[ii]][model_b[[i]][[ii]] == 1] <- model_c[[i]]
         }
       }
     }
 
     mf <- function(x, x2) {
       terra::rast(list(x, x2))
-
     }
 
     result <- mapply(mf, model_c, model_b, SIMPLIFY = FALSE)

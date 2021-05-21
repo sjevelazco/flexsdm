@@ -14,6 +14,9 @@
 #' A tibble that returns the original data base of presence, presence-absence, or pseudo-absence location records with additional columns
 #' for the extracted environmental variables at each xy location from the SpatRast object 'env_layer'
 #'
+#' @importFrom dplyr select all_of
+#' @importFrom terra vect extract
+#'
 #' @export
 #'
 #' @examples
@@ -27,22 +30,24 @@
 #'
 #' # Extract environmental data from somevar for locations in spp
 #' ex_spp <-
-#' sdm_extract(data = spp,
-#' x = 'x',
-#' y = 'y',
-#' predictors = names(somevar),
-#' env_layer = some_var,
-#' filter_na = TRUE)
+#'   sdm_extract(
+#'     data = spp,
+#'     x = "x",
+#'     y = "y",
+#'     predictors = names(somevar),
+#'     env_layer = some_var,
+#'     filter_na = TRUE
+#'   )
 #'
 #' view(ex_spp)
-#'
+#' }
 sdm_extract <- function(data, x, y, predictors, env_layer, filter_na = TRUE) {
 
   # spatial data frame
   sp_data <-
     terra::vect(data,
       geom = c(x, y),
-      crs = crs(env_layer)
+      crs = terra::crs(env_layer)
     )
 
   # extract environmental data at xy locations, if filter_na = FALSE, does not remove rows with NAs
@@ -59,7 +64,7 @@ sdm_extract <- function(data, x, y, predictors, env_layer, filter_na = TRUE) {
         )
     )
 
-    extract_data <- as_tibble(extract_data)
+    extract_data <- dplyr::as_tibble(extract_data)
   }
   # extract environmental data at xy locations, removes rows with NAs for any environmental variable
   else {
@@ -75,7 +80,7 @@ sdm_extract <- function(data, x, y, predictors, env_layer, filter_na = TRUE) {
         )
     )
 
-    complete_vec <- complete.cases(extract_data[, predictors])
+    complete_vec <- stats::complete.cases(extract_data[, predictors])
     extract_data <- extract_data[complete_vec, ]
   }
 

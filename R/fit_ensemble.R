@@ -51,7 +51,6 @@ fit_ensemble <-
            thr = NULL,
            thr_model = NULL,
            metric = NULL) {
-
     if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
       if (is.null(thr_model)) {
         stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' argument")
@@ -179,12 +178,16 @@ fit_ensemble <-
     np <- length(p_names)
 
     ##### average ensemble prediction for calculating model threshold
-    data_ens3 <- data_ens2 %>% group_by(rnames, pr_ab) %>% summarise(dplyr::across(
-      dplyr::all_of(ens_method),
-      list(mean = function(x) {mean(x)})
-    ), .groups = "drop") %>%
+    data_ens3 <- data_ens2 %>%
+      group_by(rnames, pr_ab) %>%
+      summarise(dplyr::across(
+        dplyr::all_of(ens_method),
+        list(mean = function(x) {
+          mean(x)
+        })
+      ), .groups = "drop") %>%
       select(-rnames)
-    colnames(data_ens3) <- gsub('_mean', '', colnames(data_ens3))
+    colnames(data_ens3) <- gsub("_mean", "", colnames(data_ens3))
 
     #### Objects to store outputs
     eval_partial_list <- list()
