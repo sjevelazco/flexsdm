@@ -51,7 +51,7 @@
 #' @export
 #'
 #' @examples
-tune_mx <-
+tune_max <-
   function(data,
            response,
            predictors,

@@ -93,7 +93,7 @@
 #' rf_t2
 #' }
 #'
-fit_rf <- function(data,
+fit_raf <- function(data,
                    response,
                    predictors,
                    predictors_f = NULL,
