@@ -10,7 +10,10 @@ Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut",
            comment = c(ORCID = "0000-0002-6134-3176")),
            person(given = "Brooke", family = "Rose", role = c("aut"),
            email = "mrose048@ucr.edu",
-           comment = c(ORCID = "0000-0001-5269-3759")))
+           comment = c(ORCID = "0000-0001-5269-3759")),
+           person(given = "Janet", family = "Franklin", role = c("aut"),
+           email = "jfrankl@ucr.edu",
+           comment = c(ORCID = "0000-0003-0314-4598")))
 Maintainer: Santiago J.E. Velazco <sjevelazco@gmail.com>
 Depends: R (>= 3.5.0)
 Imports: 
