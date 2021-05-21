@@ -279,7 +279,7 @@ fit_gau <- function(data,
             bg = bgt$pred
           )
       }
-        eval_partial[[i]] <- dplyr::tibble(model = 'gau', eval)
+      eval_partial[[i]] <- dplyr::tibble(model = "gau", eval)
     }
 
     # Create final database with parameter performance
@@ -295,7 +295,8 @@ fit_gau <- function(data,
   eval_final <- eval_partial %>%
     dplyr::group_by(model, threshold) %>%
     dplyr::select(-c(replica:partition)) %>%
-    dplyr::summarise(dplyr::across(TPR:IMAE,
+    dplyr::summarise(dplyr::across(
+      TPR:IMAE,
       list(mean = mean, sd = stats::sd)
     ), .groups = "drop")
 
@@ -354,7 +355,7 @@ fit_gau <- function(data,
   result <- list(
     model = mod,
     predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = 'threshold') %>% dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
     data_ens = pred_test_ens
   )
   return(result)

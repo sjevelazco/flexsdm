@@ -217,7 +217,7 @@ fit_gbm <- function(data,
           a = pred_test$pred[pred_test$pr_ab == 0],
           thr = thr
         )
-      eval_partial[[i]] <- dplyr::tibble(model = 'gbm', eval)
+      eval_partial[[i]] <- dplyr::tibble(model = "gbm", eval)
     }
 
     # Create final database with parameter performance
@@ -233,8 +233,10 @@ fit_gbm <- function(data,
   eval_final <- eval_partial %>%
     dplyr::group_by(model, threshold) %>%
     dplyr::select(-c(replica:partition)) %>%
-    dplyr::summarise(dplyr::across(TPR:IMAE,
-                                   list(mean = mean, sd = stats::sd)), .groups = "drop")
+    dplyr::summarise(dplyr::across(
+      TPR:IMAE,
+      list(mean = mean, sd = stats::sd)
+    ), .groups = "drop")
 
   # Bind data for ensemble
   pred_test_ens <-
@@ -271,7 +273,7 @@ fit_gbm <- function(data,
   result <- list(
     model = mod,
     predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = 'threshold') %>% dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
     data_ens = pred_test_ens
   )
   return(result)

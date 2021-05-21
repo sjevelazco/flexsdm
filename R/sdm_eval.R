@@ -70,7 +70,7 @@
 #'
 sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   if (any(
-    !(thr[names(thr)!='sens']) %in% c(
+    !(thr[names(thr) != "sens"]) %in% c(
       "lpt",
       "max_sens_spec",
       "equal_sens_spec",
@@ -83,7 +83,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     stop("'thr' Argument is not valid!")
   }
 
-  if(is.null(thr)){
+  if (is.null(thr)) {
     thr <- c(
       "lpt",
       "max_sens_spec",
@@ -101,10 +101,10 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     # stop(
     #   "provide a sensitivity value in the vector used in 'thr' argument, e.g. thr=c(type=c('lpt', 'max_sens_spec', 'sensitivity'), sens='0.8')"
     # )
-    thr <- c(thr, sens=0.9)
+    thr <- c(thr, sens = 0.9)
   }
-  if(!any(thr[grep("type", names(thr))] %in% "sensitivity")){
-    thr <- c(thr, sens=0.9)
+  if (!any(thr[grep("type", names(thr))] %in% "sensitivity")) {
+    thr <- c(thr, sens = 0.9)
   }
 
   np <- length(p)
@@ -142,16 +142,18 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   res <- data.frame(res)
 
   # Performance metrics
-  performance <- dplyr::tibble(threshold = tr,
-                        n_presences = np,
-                        n_absences = na,
-                        TPR = res$tp / (res$tp + res$fn),
-                        TNR = res$tn / (res$tn + res$fp),
-                        SORENSEN = 2 * res$tp / (res$fn + (2 * res$tp) + res$fp),
-                        JACCARD = res$tp / (res$fn + res$tp + res$fp),
-                        FPB = 2 * JACCARD,
-                        OR = (1 - TPR),
-                        TSS = (TPR + TNR) - 1)
+  performance <- dplyr::tibble(
+    threshold = tr,
+    n_presences = np,
+    n_absences = na,
+    TPR = res$tp / (res$tp + res$fn),
+    TNR = res$tn / (res$tn + res$fp),
+    SORENSEN = 2 * res$tp / (res$fn + (2 * res$tp) + res$fp),
+    JACCARD = res$tp / (res$fn + res$tp + res$fp),
+    FPB = 2 * JACCARD,
+    OR = (1 - TPR),
+    TSS = (TPR + TNR) - 1
+  )
 
   R <- sum(rank(c(p, a))[1:np]) - (np * (np + 1) / 2)
   performance <- performance %>% mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
@@ -183,14 +185,16 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
 
   thresholds$equal_sens_spec <-
     performance$threshold[which(abs(
-      performance$TPR-performance$TNR)==
-      min(abs(performance$TPR-performance$TNR)))] %>% max
+      performance$TPR - performance$TNR
+    ) ==
+      min(abs(performance$TPR - performance$TNR)))] %>% max()
 
-  thresholds$lpt <- max(performance$threshold[performance$TPR==1])
+  thresholds$lpt <- max(performance$threshold[performance$TPR == 1])
 
   thresholds$sensitivity <- performance$threshold[which(abs(
-    performance$TPR - as.numeric(thr['sens'])) ==
-    min(abs(performance$TPR - as.numeric(thr['sens']))))] %>% max
+    performance$TPR - as.numeric(thr["sens"])
+  ) ==
+    min(abs(performance$TPR - as.numeric(thr["sens"]))))] %>% max()
 
   thresholds <- dplyr::bind_cols(thresholds)
 

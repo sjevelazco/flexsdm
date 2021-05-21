@@ -50,12 +50,11 @@ fit_ensemble <-
            thr = NULL,
            thr_model = NULL,
            metric = NULL) {
-
-    if(any(c("meanw", "meansup", "meanthr")%in%ens_method)){
-      if(is.null(thr_model)){
+    if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
+      if (is.null(thr_model)) {
         stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' argument")
       }
-      if(is.null(metric)){
+      if (is.null(metric)) {
         stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a performance metric in 'metric' argument")
       }
     }
@@ -131,37 +130,37 @@ fit_ensemble <-
     data_ens2 <- data_ens2 %>% dplyr::select(-dplyr::starts_with("m_"))
 
     #### Perform ensembles
-    v <- as.list(rep('x', 5))
-    names(v) <- c('mean', 'meanw', 'meansup', 'meanthr', 'median')
+    v <- as.list(rep("x", 5))
+    names(v) <- c("mean", "meanw", "meansup", "meanthr", "median")
 
-    if(any('mean' == ens_method)) {
-      v[['mean']] <- apply(values, 1, function(x) {
+    if (any("mean" == ens_method)) {
+      v[["mean"]] <- apply(values, 1, function(x) {
         mean(x, na.rm = TRUE)
       })
     }
-    if(any('meanw' == ens_method)) {
-      v[['meanw']] <- mapply(function(x, v) {
+    if (any("meanw" == ens_method)) {
+      v[["meanw"]] <- mapply(function(x, v) {
         (x * v)
       }, values, perf, SIMPLIFY = TRUE) %>%
         apply(., 1, function(x) {
           mean(x, na.rm = TRUE)
         })
     }
-    if(any('meansup' == ens_method)) {
-      v[['meansup']] <- apply(values[, perf >= mean(perf)], 1, function(x) {
+    if (any("meansup" == ens_method)) {
+      v[["meansup"]] <- apply(values[, perf >= mean(perf)], 1, function(x) {
         mean(x, na.rm = TRUE)
       })
     }
-    if(any('meanthr' == ens_method)) {
-      v[['meanthr']] <- mapply(function(x, v) {
+    if (any("meanthr" == ens_method)) {
+      v[["meanthr"]] <- mapply(function(x, v) {
         ifelse(x >= v, x, 0)
       }, values, thr_v, SIMPLIFY = TRUE) %>%
         apply(., 1, function(x) {
           mean(x, na.rm = TRUE)
         })
     }
-    if(any('median' == ens_method)) {
-      v[['median']] <- apply(values, 1, function(x) {
+    if (any("median" == ens_method)) {
+      v[["median"]] <- apply(values, 1, function(x) {
         median(x, na.rm = TRUE)
       })
     }
@@ -169,7 +168,7 @@ fit_ensemble <-
     v <- v[!sapply(v, is.character)]
     v <- dplyr::bind_rows(v)
     data_ens2 <- dplyr::bind_cols(data_ens2, v)
-    rm(list=c('values', 'v'))
+    rm(list = c("values", "v"))
 
     #### Calculate ensemble performance
     p_names <- data_ens2 %>%
