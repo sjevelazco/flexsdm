@@ -4,24 +4,37 @@
 #'
 #' @param models list. A list a single or several models fitted with some of fit_ or tune_ functions
 #' @param pred SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.
-#' @param thr character. Binarize projection. Default NULL, i.e. function returns only continuous projection. If used with 'selected_thr', function returns continuous and binarized models used in the 'thr' argument of some of fit_ or tune_ functions. It used with "all_thr" , function returns continuous and binarized for all threshold types.
-#' @param calib_area SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restrinc prediction into a given region. Default = NULL
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is possible to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the models. The next threshold area available:
+#' \itemize{
+#'   \item lpt: The highest threshold at which there is no omission.
+#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
+#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
+#'   \item max_jaccard: The threshold at which Jaccard is the highest.
+#'   \item max_sorensen: The threshold at which Sorensen is highest.
+#'   \item max_fpb: The threshold at which FPB is highest.
+#'   \item sensitivity: Threshold based on a specified sensitivity value used to fit the models.
+#'   \item all: Will be used all the threshold filled in the 'models' argument. It is not possible to combine with previews one
+#'   }
+#' Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spec', 'sensitivity'), or thr='all'. If no threshold is specified (i.e., thr = NULL) function will return continuous prediction only. Default NULL
+#' @param con_thr logical. If true will be returned predictions with suitability values above threshold/s. Default = FALSE
+#' @param calib_area SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)
+#'
 #' @return
 #'
 #' A list of SpatRaster with continuous or continuous and binary predictions
 #'
 #' @export
 #'
-#' @importFrom dplyr mutate across left_join
+#' @importFrom dplyr mutate across left_join filter
 #' @importFrom gam predict.Gam
 #' @importFrom GRaF predict.graf
 #' @importFrom kernlab predict
 #' @importFrom stats predict
-#' @importFrom terra crop as.data.frame values rast
+#' @importFrom terra crop as.data.frame values rast nlyr
 #' @examples
-sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred_type = "cloglog") {
+sdm_predict <- function(models, pred, thr = NULL, con_thr =  FALSE, calib_area = NULL, clamp = TRUE, pred_type = "cloglog") {
 
   #### Prepare datasets ####
   # Crop projection area
@@ -344,7 +357,7 @@ sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred
 
   df <- data.frame(
     alg = c("gam", "graf", "glm", "gbm", "maxnet", "nnet", "randomforest", "ksvm"),
-    names = c("gam", "gau", "glm", "gbm", "mx", "nne", "rf", "svm")
+    names = c("gam", "gau", "glm", "gbm", "max", "net", "raf", "svm")
   )
 
   names(model_c) <- dplyr::left_join(data.frame(alg = clss), df, by = "alg")[, 2]
@@ -354,35 +367,53 @@ sdm_predict <- function(models, pred, thr, calib_area = NULL, clamp = TRUE, pred
   }, model_c, names(model_c))
 
 
-  #### Thresholds ####
-  if (!is.null(thr)) {
-    if (thr == "selected_thr") {
+
+  #### Get binary predictions ####
+  if (is.null(thr)) {
+
+    return(model_c)
+
+  } else {
+    if (any("all" == thr)) {
       thr_df <- lapply(models, function(x) {
-        x[["selected_thresholds"]]
+        x[["performance"]]
       })
-    }
-    if (thr == "all_thr") {
+
+    } else {
       thr_df <- lapply(models, function(x) {
-        x[["all_thresholds"]]
+        x[["performance"]] %>%
+          dplyr::filter(threshold %in% thr)
       })
+
     }
 
     model_b <- list()
+
     for (i in 1:length(model_c)) {
       model_b[[i]] <-
-        lapply(thr_df[[i]]$values, function(x) {
+        lapply(thr_df[[i]]$thr_value, function(x) {
           model_c[[i]] >= x
         }) %>% terra::rast()
-      names(model_b[[i]]) <- names(thr_df[[i]]$values)
+      names(model_b[[i]]) <- names(thr_df[[i]]$thr_value)
     }
+
     names(model_b) <- names(model_c)
+
+    # Return suitability values above thresholds
+    if(con_thr){
+      for(i in 1:length(model_b)){
+        for(ii in 1:terra::nlyr(model_b[[i]])){
+          model_b[[i]][[ii]][model_b[[i]][[ii]]==1] <- model_c[[i]]
+        }
+      }
+    }
+
     mf <- function(x, x2) {
       terra::rast(list(x, x2))
+
     }
+
     result <- mapply(mf, model_c, model_b, SIMPLIFY = FALSE)
-    return(result)
-  } else {
-    result <- model_c
     return(result)
   }
 }

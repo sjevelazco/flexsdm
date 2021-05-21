@@ -7,7 +7,8 @@
 sdm_predict(
   models,
   pred,
-  thr,
+  thr = NULL,
+  con_thr = FALSE,
   calib_area = NULL,
   clamp = TRUE,
   pred_type = "cloglog"
@@ -18,9 +19,22 @@ sdm_predict(
 
 \item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.}
 
-\item{thr}{character. Binarize projection. Default NULL, i.e. function returns only continuous projection. If used with 'selected_thr', function returns continuous and binarized models used in the 'thr' argument of some of fit_ or tune_ functions. It used with "all_thr" , function returns continuous and binarized for all threshold types.}
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is possible to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the models. The next threshold area available:
+\itemize{
+  \item lpt: The highest threshold at which there is no omission.
+  \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
+  \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
+  \item max_jaccard: The threshold at which Jaccard is the highest.
+  \item max_sorensen: The threshold at which Sorensen is highest.
+  \item max_fpb: The threshold at which FPB is highest.
+  \item sensitivity: Threshold based on a specified sensitivity value used to fit the models.
+  \item all: Will be used all the threshold filled in the 'models' argument. It is not possible to combine with previews one
+  }
+Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spec', 'sensitivity'), or thr='all'. If no threshold is specified (i.e., thr = NULL) function will return continuous prediction only. Default NULL}
 
-\item{calib_area}{SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restrinc prediction into a given region. Default = NULL}
+\item{con_thr}{logical. If true will be returned predictions with suitability values above threshold/s. Default = FALSE}
+
+\item{calib_area}{SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL}
 
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)}
 
