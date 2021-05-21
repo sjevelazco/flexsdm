@@ -29,7 +29,6 @@
 #' @export
 #'
 #' @importFrom dplyr tibble mutate filter pull bind_cols left_join all_of
-#' @importFrom flexsdm mutate
 #' @importFrom stats quantile
 #'
 #' @examples
@@ -158,14 +157,14 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   performance <- performance %>% mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
 
   if (is.null(bg)) {
-    performance <- performance %>% dplyr::mutate(BOYCE = flexsdm::mutate(pres = p, contrast = c(p, a)))
+    performance <- performance %>% dplyr::mutate(BOYCE = dplyr::mutate(pres = p, contrast = c(p, a)))
   } else {
     performance <- performance %>% dplyr::mutate(BOYCE = boyce(pres = p, contrast = c(p, bg)))
   }
 
   real <- c(rep(1, length(p)), rep(0, length(a)))
   pred <- c(p, a)
-  performance <- performance %>% flexsdm::mutate(IMAE = 1 - (sum(abs(real - pred)) / length(pred)))
+  performance <- performance %>% dplyr::mutate(IMAE = 1 - (sum(abs(real - pred)) / length(pred)))
 
   # Thresholds
   thresholds <- list()
