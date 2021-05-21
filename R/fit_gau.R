@@ -12,16 +12,16 @@
 #' column names must be consistent with data
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
-#'   \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
-#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
-#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
-#'   Usage thr=c(type='max_sens_spec').
-#'   \item max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').
-#'   \item max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').
-#'   \item max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').
-#'   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
-#'   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
+#'   \item lpt: The highest threshold at which there is no omission.
+#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
+#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
+#'   \item max_jaccard: The threshold at which Jaccard is the highest.
+#'   \item max_sorensen: The threshold at which Sorensen is highest.
+#'   \item max_fpb: The threshold at which FPB is highest.
+#'   \item sensitivity: Threshold based on a specified sensitivity value.
+#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
+#' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
 #' @param ...
 #'
 #' @return
@@ -38,7 +38,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select starts_with filter pull bind_rows group_by summarise across everything all_of
+#' @importFrom dplyr select all_of starts_with filter pull bind_rows mutate tibble group_by summarise across relocate left_join
 #' @importFrom GRaF graf predict.graf
 #' @importFrom stats sd
 #'
@@ -70,9 +70,9 @@
 #' )
 #'
 #' gaup_t1$model
+#' gaup_t1$predictors
 #' gaup_t1$performance
-#' gaup_t1$selected_thresholds
-#' gaup_t1$all_thresholds
+#' gaup_t1$data_ens
 #'
 #' # Using bootstrap partition method and only with presence-absence
 #' abies_db2 <- data_part(
@@ -279,11 +279,7 @@ fit_gau <- function(data,
             bg = bgt$pred
           )
       }
-      if (is.null(thr)) {
-        eval_partial[[i]] <- eval$all_thresholds
-      } else {
-        eval_partial[[i]] <- eval$selected_thresholds
-      }
+        eval_partial[[i]] <- dplyr::tibble(model = 'gau', eval)
     }
 
     # Create final database with parameter performance
@@ -297,19 +293,18 @@ fit_gau <- function(data,
     dplyr::bind_rows(., .id = "replica")
 
   eval_final <- eval_partial %>%
-    dplyr::group_by(threshold) %>%
-    dplyr::select(-c(replica:partition, values:n_absences)) %>%
-    dplyr::summarise(dplyr::across(
-      dplyr::everything(),
+    dplyr::group_by(model, threshold) %>%
+    dplyr::select(-c(replica:partition)) %>%
+    dplyr::summarise(dplyr::across(TPR:IMAE,
       list(mean = mean, sd = stats::sd)
     ), .groups = "drop")
 
   # Bind data for ensemble
   pred_test_ens <-
     lapply(pred_test_ens, function(x) {
-      bind_rows(x, .id = "part")
+      dplyr::bind_rows(x, .id = "part")
     }) %>%
-    bind_rows(., .id = "replicates") %>%
+    dplyr::bind_rows(., .id = "replicates") %>%
     dplyr::tibble() %>%
     dplyr::relocate(rnames)
 
@@ -356,18 +351,10 @@ fit_gau <- function(data,
     )
   }
 
-  if (!is.null(thr)) {
-    st <- threshold$selected_thresholds
-  } else {
-    st <- threshold$all_thresholds
-  }
-
   result <- list(
     model = mod,
     predictors = variables,
-    performance = eval_final,
-    selected_thresholds = st %>% dplyr::select(threshold:values),
-    all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
+    performance = dplyr::left_join(eval_final, threshold[1:4], by = 'threshold') %>% dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
     data_ens = pred_test_ens
   )
   return(result)
