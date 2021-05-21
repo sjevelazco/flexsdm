@@ -86,7 +86,7 @@
 #' rf_t$all_thresholds
 #' }
 #'
-tune_rf <-
+tune_raf <-
   function(data,
            response,
            predictors,

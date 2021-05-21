@@ -63,7 +63,7 @@
 #'
 #' }
 #'
-fit_mx <- function(data,
+fit_max <- function(data,
                    response,
                    predictors,
                    predictors_f = NULL,
