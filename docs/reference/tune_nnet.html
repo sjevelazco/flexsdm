@@ -117,6 +117,7 @@
   <span class='va'>response</span>,
   <span class='va'>predictors</span>,
   predictors_f <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit_formula <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>partition</span>,
   grid <span class='op'>=</span> <span class='cn'>NULL</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -142,6 +143,13 @@
     <tr>
       <th>predictors_f</th>
       <td><p>character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")</p></td>
+    </tr>
+    <tr>
+      <th>fit_formula</th>
+      <td><p>formula. A formula object with response and predictor
+variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+Note that the variables used here must be consistent with those used in
+response, predictors, and predictors_f arguments. Defaul NULL.</p></td>
     </tr>
     <tr>
       <th>partition</th>
@@ -195,7 +203,7 @@
 
 <span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='data_part.html'>data_part</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
   bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
@@ -206,7 +214,7 @@
 
 <span class='co'># Hyper-parameter values for tuning</span>
 <span class='va'>tune_grid</span> <span class='op'>&lt;-</span>
-  <span class='fu'>and.grid</span><span class='op'>(</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>
     size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>6</span>, <span class='fl'>8</span>, <span class='fl'>10</span><span class='op'>)</span>,
     decay <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.001</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span>, <span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>5</span>, <span class='fl'>10</span><span class='op'>)</span>
   <span class='op'>)</span>

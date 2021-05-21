@@ -36,45 +36,48 @@
 #'
 #' view(ex_spp)
 #'
-sdm_extract <- function(data, x, y, predictors, env_layer, filter_na = TRUE){
+sdm_extract <- function(data, x, y, predictors, env_layer, filter_na = TRUE) {
 
   # spatial data frame
   sp_data <-
     terra::vect(data,
-                geom = c(x, y),
-                crs = crs(env_layer))
+      geom = c(x, y),
+      crs = crs(env_layer)
+    )
 
   # extract environmental data at xy locations, if filter_na = FALSE, does not remove rows with NAs
   if (filter_na == FALSE) {
     extract_data <- data.frame(
       data,
       terra::extract(env_layer,
-                     sp_data,
-                     cells = TRUE) %>%
-        dplyr::select(cell,
-                      dplyr::all_of(predictors))
+        sp_data,
+        cells = TRUE
+      ) %>%
+        dplyr::select(
+          cell,
+          dplyr::all_of(predictors)
+        )
     )
 
     extract_data <- as_tibble(extract_data)
-
   }
   # extract environmental data at xy locations, removes rows with NAs for any environmental variable
   else {
     extract_data <- data.frame(
       data,
       terra::extract(env_layer,
-                     sp_data,
-                     cells = TRUE) %>%
-        dplyr::select(cell,
-                      dplyr::all_of(predictors))
-
+        sp_data,
+        cells = TRUE
+      ) %>%
+        dplyr::select(
+          cell,
+          dplyr::all_of(predictors)
+        )
     )
 
-    complete_vec <- complete.cases(extract_data[,predictors])
-    extract_data <- extract_data[complete_vec,]
-
+    complete_vec <- complete.cases(extract_data[, predictors])
+    extract_data <- extract_data[complete_vec, ]
   }
 
   return(extract_data)
-
 }

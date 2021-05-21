@@ -8,22 +8,23 @@
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
 #' @param fit_formula formula. A formula object with response and predictor
-#' variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+#' variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments
 #' @param partition character. Column name with training and validation partition groups.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
-#'   \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
-#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
-#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
-#'   Usage thr=c(type='max_sens_spec').
-#'   \item max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').
-#'   \item max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').
-#'   \item max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').
-#'   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
-#'   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
+#'   \item lpt: The highest threshold at which there is no omission.
+#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
+#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
+#'   \item max_jaccard: The threshold at which Jaccard is the highest.
+#'   \item max_sorensen: The threshold at which Sorensen is highest.
+#'   \item max_fpb: The threshold at which FPB is highest.
+#'   \item sensitivity: Threshold based on a specified sensitivity value.
+#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
+#' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
+#'
 #' @param sigma numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot". Default "automatic".
 #' @param C numeric. Cost of constraints violation this is the 'C'-constant of the regularization term in the Lagrange formulation. Default 1
 #' @param ...
@@ -140,16 +141,20 @@ fit_svm <- function(data,
 
   # Formula
   if (is.null(fit_formula)) {
-    formula1 <- stats::formula(paste(response, "~",
-                                     paste(c(
-                                       predictors, predictors_f
-                                     ), collapse = " + ")))
+    formula1 <- stats::formula(paste(
+      response, "~",
+      paste(c(
+        predictors, predictors_f
+      ), collapse = " + ")
+    ))
   } else {
     formula1 <- fit_formula
   }
-  message("Formula used for model fitting:\n",
-          Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
-          "\n")
+  message(
+    "Formula used for model fitting:\n",
+    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+    "\n"
+  )
 
 
   # Fit models
@@ -179,116 +184,115 @@ fit_svm <- function(data,
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      tryCatch({
+      tryCatch(
+        {
+          if (sigma == "automatic") {
+            kpar_ <- "automatic"
+          } else {
+            kpar_ <- list(sigma = sigma)
+          }
 
-        if (sigma == "automatic") {
-          kpar_ <- "automatic"
-        } else{
-          kpar_ <- list(sigma = sigma)
-        }
-
-        set.seed(1)
-        mod[[i]] <-
-          suppressMessages(
-            kernlab::ksvm(
-              formula1,
-              data = train[[i]],
-              type = "C-svc",
-              kernel = "rbfdot",
-              kpar = kpar_,
-              C = C,
-              prob.model = TRUE
+          set.seed(1)
+          mod[[i]] <-
+            suppressMessages(
+              kernlab::ksvm(
+                formula1,
+                data = train[[i]],
+                type = "C-svc",
+                kernel = "rbfdot",
+                kpar = kpar_,
+                C = C,
+                prob.model = TRUE
+              )
             )
+
+          pred_test <- data.frame(
+            pr_ab = test[[i]][, response],
+            pred = suppressMessages(kernlab::predict(
+              mod[[i]],
+              newdata = test[[i]],
+              type = "prob",
+            )[, 2])
           )
 
-        pred_test <- data.frame(pr_ab = test[[i]][, response],
-                                pred = suppressMessages(kernlab::predict(
-                                  mod[[i]],
-                                  newdata = test[[i]],
-                                  type = "prob",
-                                )[, 2]))
+          pred_test_ens[[h]][[i]] <- pred_test %>%
+            dplyr::mutate(rnames = rownames(.))
 
-        pred_test_ens[[h]][[i]] <- pred_test %>%
-          dplyr::mutate(rnames = rownames(.))
+          # Validation of model
+          eval <-
+            sdm_eval(
+              p = pred_test$pred[pred_test$pr_ab == 1],
+              a = pred_test$pred[pred_test$pr_ab == 0],
+              thr = thr
+            )
 
-        # Validation of model
-        eval <-
-          sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                   a = pred_test$pred[pred_test$pr_ab == 0],
-                   thr = thr)
-        if (is.null(thr)) {
-          eval_partial[[i]] <- eval$all_thresholds
-        } else {
-          eval_partial[[i]] <- eval$selected_thresholds
+          eval_partial[[i]] <- dplyr::tibble(model = "svm", eval)
+
+          names(eval_partial) <- i
+        },
+        error = function(cond) {
+          message("It was not possible to fit this model")
         }
-
-        names(eval_partial) <- i
-      },
-      error = function(cond) {
-        message("It was not possible to fit this model")
-      })
-
-      }
-
-      # Create final database with parameter performance
-      eval_partial <- eval_partial %>%
-        dplyr::bind_rows(., .id = "partition")
-      eval_partial_list[[h]] <- eval_partial
+      )
     }
 
-    eval_partial <- eval_partial_list %>%
-      dplyr::bind_rows(., .id = "replica")
-
-    eval_final <- eval_partial %>%
-      dplyr::group_by(threshold) %>%
-      dplyr::select(-c(replica:partition, values:n_absences)) %>%
-      dplyr::summarise(dplyr::across(dplyr::everything(),
-                                     list(mean = mean, sd = stats::sd)), .groups = "drop")
-
-    # Bind data for ensemble
-    pred_test_ens <-
-      lapply(pred_test_ens, function(x)
-        bind_rows(x, .id = 'part')) %>%
-      bind_rows(., .id = 'replicates') %>% dplyr::tibble() %>%
-      dplyr::relocate(rnames)
-
-    # Fit final models with best settings
-    if (sigma == "automatic") {
-      kpar_ <- "automatic"
-    } else{
-      kpar_ <- list(sigma = sigma)
-    }
-    set.seed(1)
-    suppressMessages(
-      mod <-
-        kernlab::ksvm(
-          formula1,
-          data = data,
-          type = "C-svc",
-          kernel = "rbfdot",
-          kpar = kpar_,
-          C = C,
-          prob.model = TRUE
-        )
-    )
-
-    threshold <- sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                          a = pred_test$pred[pred_test$pr_ab == 0],
-                          thr = thr)
-
-    if (!is.null(thr)) {
-      st <- threshold$selected_thresholds
-    } else {
-      st <- threshold$all_thresholds
-    }
-
-    result <- list(
-      model = mod,
-      predictors = variables,
-      performance = eval_final,
-      selected_thresholds = st %>% dplyr::select(threshold:values),
-      all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
-      data_ens = pred_test_ens
-    )
-    return(result)
+    # Create final database with parameter performance
+    eval_partial <- eval_partial %>%
+      dplyr::bind_rows(., .id = "partition")
+    eval_partial_list[[h]] <- eval_partial
   }
+
+  eval_partial <- eval_partial_list %>%
+    dplyr::bind_rows(., .id = "replica")
+
+  eval_final <- eval_partial %>%
+    dplyr::group_by(model, threshold) %>%
+    dplyr::summarise(dplyr::across(
+      TPR:IMAE,
+      list(mean = mean, sd = stats::sd)
+    ), .groups = "drop")
+
+
+  # Bind data for ensemble
+  pred_test_ens <-
+    lapply(pred_test_ens, function(x) {
+      bind_rows(x, .id = "part")
+    }) %>%
+    bind_rows(., .id = "replicates") %>%
+    dplyr::tibble() %>%
+    dplyr::relocate(rnames)
+
+  # Fit final models with best settings
+  if (sigma == "automatic") {
+    kpar_ <- "automatic"
+  } else {
+    kpar_ <- list(sigma = sigma)
+  }
+  set.seed(1)
+  suppressMessages(
+    mod <-
+      kernlab::ksvm(
+        formula1,
+        data = data,
+        type = "C-svc",
+        kernel = "rbfdot",
+        kpar = kpar_,
+        C = C,
+        prob.model = TRUE
+      )
+  )
+
+  threshold <- sdm_eval(
+    p = pred_test$pred[pred_test$pr_ab == 1],
+    a = pred_test$pred[pred_test$pr_ab == 0],
+    thr = thr
+  )
+
+  result <- list(
+    model = mod,
+    predictors = variables,
+    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+    data_ens = pred_test_ens
+  )
+  return(result)
+}

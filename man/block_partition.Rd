@@ -195,5 +195,5 @@ points(
 
 }
 \seealso{
-\code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+\code{\link{data_part}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 }

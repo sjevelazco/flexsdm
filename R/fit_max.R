@@ -16,16 +16,17 @@
 #' column names must be consistent with data
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
-#'   \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
-#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
-#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
-#'   Usage thr=c(type='max_sens_spec').
-#'   \item max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').
-#'   \item max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').
-#'   \item max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').
-#'   \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
-#'   \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
+#'   \item lpt: The highest threshold at which there is no omission.
+#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
+#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
+#'   \item max_jaccard: The threshold at which Jaccard is the highest.
+#'   \item max_sorensen: The threshold at which Sorensen is highest.
+#'   \item max_fpb: The threshold at which FPB is highest.
+#'   \item sensitivity: Threshold based on a specified sensitivity value.
+#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
+#' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
+#'
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
 #' @param classes character. A single feature of any combinations of them. Features are symbolized by letters: l (linear), q (quadratic), h (hinge), p (product), and t (threshold). Usage classes = "lpq". Default "default" (see details).
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
@@ -63,19 +64,19 @@
 #'
 #' }
 #'
-fit_mx <- function(data,
-                   response,
-                   predictors,
-                   predictors_f = NULL,
-                   fit_formula = NULL,
-                   partition,
-                   background,
-                   thr = NULL,
-                   clamp = TRUE,
-                   classes = "default",
-                   pred_type = "cloglog",
-                   regmult = 1,
-                   ...) {
+fit_max <- function(data,
+                    response,
+                    predictors,
+                    predictors_f = NULL,
+                    fit_formula = NULL,
+                    partition,
+                    background,
+                    thr = NULL,
+                    clamp = TRUE,
+                    classes = "default",
+                    pred_type = "cloglog",
+                    regmult = 1,
+                    ...) {
   variables <- c(c = predictors, f = predictors_f)
 
   data <- data.frame(data)
@@ -118,10 +119,11 @@ fit_mx <- function(data,
   }
 
   # Formula
-  if(is.null(fit_formula)){
+  if (is.null(fit_formula)) {
     formula1 <- maxnet::maxnet.formula(data[response],
-                                       data[predictors],
-                                       classes = classes)
+      data[predictors],
+      classes = classes
+    )
   } else {
     formula1 <- fit_formula
   }
@@ -197,95 +199,90 @@ fit_mx <- function(data,
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      tryCatch({
-      set.seed(1)
-        mod[[i]] <-
-          suppressMessages(
-          maxnet::maxnet(
-          p = train[[i]][, response],
-          data = train[[i]][predictors],
-          f = formula1,
-          regmult = regmult
-        )
-        )
+      tryCatch(
+        {
+          set.seed(1)
+          mod[[i]] <-
+            suppressMessages(
+              maxnet::maxnet(
+                p = train[[i]][, response],
+                data = train[[i]][predictors],
+                f = formula1,
+                regmult = regmult
+              )
+            )
 
 
-      # Predict for presences absences data
-      ## Eliminate factor levels not used in fitting
-      # if (!is.null(predictors_f)) {
-      #   for (fi in 1:length(predictors_f)) {
-      #     lev <- as.character(unique(mod[[i]]$x[, predictors_f[fi]]))
-      #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-      #     test[[i]] <- test[[i]][lev_filt, ]
-      #     if (!is.null(background)) {
-      #       lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
-      #       bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
-      #     }
-      #   }
-      # }
+          # Predict for presences absences data
+          ## Eliminate factor levels not used in fitting
+          # if (!is.null(predictors_f)) {
+          #   for (fi in 1:length(predictors_f)) {
+          #     lev <- as.character(unique(mod[[i]]$x[, predictors_f[fi]]))
+          #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
+          #     test[[i]] <- test[[i]][lev_filt, ]
+          #     if (!is.null(background)) {
+          #       lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
+          #       bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
+          #     }
+          #   }
+          # }
 
-      # Predict for presences absences data
-      pred_test <- data.frame(
-        pr_ab = test[[i]][, response],
-        pred =
-          maxnet:::predict.maxnet(
-            mod[[i]],
-            newdata = test[[i]],
-            clamp = clamp,
-            type = pred_type
-          )
-      )
-
-      pred_test_ens[[h]][[i]] <- pred_test %>%
-        dplyr::mutate(rnames=rownames(.))
-
-      # Predict for background data
-      if (!is.null(background)) {
-        bgt <-
-          data.frame(
-            pr_ab = bgt_test[[i]][, response],
+          # Predict for presences absences data
+          pred_test <- data.frame(
+            pr_ab = test[[i]][, response],
             pred =
               maxnet:::predict.maxnet(
                 mod[[i]],
-                newdata = bgt_test[[i]][c(predictors, predictors_f)],
+                newdata = test[[i]],
                 clamp = clamp,
                 type = pred_type
               )
           )
-      }
 
-      # Validation of model
-      if (is.null(background)) {
-        eval <-
-          sdm_eval(
-            p = pred_test$pred[pred_test$pr_ab == 1],
-            a = pred_test$pred[pred_test$pr_ab == 0],
-            thr = thr
-          )
-      } else {
-        eval <-
-          sdm_eval(
-            p = pred_test$pred[pred_test$pr_ab == 1],
-            a = pred_test$pred[pred_test$pr_ab == 0],
-            thr = thr,
-            bg = bgt$pred
-          )
-      }
+          pred_test_ens[[h]][[i]] <- pred_test %>%
+            dplyr::mutate(rnames = rownames(.))
 
-      if (is.null(thr)) {
-        eval_partial[[i]] <- eval$all_thresholds
-      } else {
-        eval_partial[[i]] <- eval$selected_thresholds
-      }
+          # Predict for background data
+          if (!is.null(background)) {
+            bgt <-
+              data.frame(
+                pr_ab = bgt_test[[i]][, response],
+                pred =
+                  maxnet:::predict.maxnet(
+                    mod[[i]],
+                    newdata = bgt_test[[i]][c(predictors, predictors_f)],
+                    clamp = clamp,
+                    type = pred_type
+                  )
+              )
+          }
 
-      names(eval_partial) <- i
+          # Validation of model
+          if (is.null(background)) {
+            eval <-
+              sdm_eval(
+                p = pred_test$pred[pred_test$pr_ab == 1],
+                a = pred_test$pred[pred_test$pr_ab == 0],
+                thr = thr
+              )
+          } else {
+            eval <-
+              sdm_eval(
+                p = pred_test$pred[pred_test$pr_ab == 1],
+                a = pred_test$pred[pred_test$pr_ab == 0],
+                thr = thr,
+                bg = bgt$pred
+              )
+          }
 
-      }
-      ,
-      error=function(cond) {
-        message("It was not possible to fit this model")
-      })
+          eval_partial[[i]] <- dplyr::tibble(model = "max", eval)
 
+          names(eval_partial) <- i
+        },
+        error = function(cond) {
+          message("It was not possible to fit this model")
+        }
+      )
     }
 
     # Create final database with parameter performance
@@ -298,23 +295,24 @@ fit_mx <- function(data,
     dplyr::bind_rows(., .id = "replica")
 
   eval_final <- eval_partial %>%
-    dplyr::group_by(threshold) %>%
-    dplyr::select(-c(replica:partition, values:n_absences)) %>%
+    dplyr::group_by(model, threshold) %>%
     dplyr::summarise(dplyr::across(
-      dplyr::everything(),
+      TPR:IMAE,
       list(mean = mean, sd = stats::sd)
     ), .groups = "drop")
 
   # Bind data for ensemble
-  for(e in 1:length(pred_test_ens)){
+  for (e in 1:length(pred_test_ens)) {
     fitl <- sapply(pred_test_ens[[e]], function(x) !is.null(nrow(x)))
     pred_test_ens[[e]] <- pred_test_ens[[e]][fitl]
   }
 
   pred_test_ens <-
-    lapply(pred_test_ens, function(x)
-      bind_rows(x, .id = 'part')) %>%
-    bind_rows(., .id = 'replicates') %>% dplyr::tibble() %>%
+    lapply(pred_test_ens, function(x) {
+      bind_rows(x, .id = "part")
+    }) %>%
+    bind_rows(., .id = "replicates") %>%
+    dplyr::tibble() %>%
     dplyr::relocate(rnames)
 
   # Fit final models
@@ -357,19 +355,10 @@ fit_mx <- function(data,
     )
   }
 
-  if (!is.null(thr)) {
-    st <- threshold$selected_thresholds
-  } else {
-    st <- threshold$all_thresholds
-  }
-
   result <- list(
     model = mod,
     predictors = variables,
-    performance = eval_final,
-    selected_thresholds = st %>% dplyr::select(threshold:values),
-    all_thresholds = threshold$all_thresholds %>% dplyr::select(threshold:values),
-    all_thresholds = threshold[[2]] %>% dplyr::select(threshold:values),
+    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
     data_ens = pred_test_ens
   )
   return(result)

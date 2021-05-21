@@ -16,19 +16,20 @@ Depends: R (>= 3.5.0)
 Imports: 
     ape,
     dismo,
+    doParallel,
     dplyr,
+    flexclust,
+    foreach,
+    gam,
     gbm,
+    grDevices,
     kernlab,
     maxnet,
     nnet,
     randomForest,
-    terra,
-    flexclust,
     sp,
-    grDevices,
-    gam,
-    foreach,
-    doParallel,
+    terra,
+    utils,
     GRaF
 Remotes:  
     goldingn/GRaF
