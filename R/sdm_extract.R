@@ -17,6 +17,25 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' require(terra)
+#'
+#' # Load datasets
+#' data(spp)
+#' f <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(f)
+#'
+#' # Extract environmental data from somevar for locations in spp
+#' ex_spp <-
+#' sdm_extract(data = spp,
+#' x = 'x',
+#' y = 'y',
+#' predictors = names(somevar),
+#' env_layer = some_var,
+#' filter_na = TRUE)
+#'
+#' view(ex_spp)
+#'
 sdm_extract <- function(data, x, y, predictors, env_layer, filter_na = TRUE) {
 
   # spatial data frame
