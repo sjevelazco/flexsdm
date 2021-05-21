@@ -30,7 +30,7 @@
 #' @importFrom stats complete.cases sd
 #' @importFrom terra res ext extract crs vect extend values ncell cellFromXY coords as.data.frame
 #'
-#' @seealso \code{\link{data_part}}, \code{\link{band_partition}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+#' @seealso \code{\link{data_part}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 #'
 #' @examples
 #' \dontrun{

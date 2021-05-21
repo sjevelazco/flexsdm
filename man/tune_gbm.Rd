@@ -137,5 +137,5 @@ ggplot(gbm_t$tune_performance, aes(factor(n.minobsinnode),
 
 }
 \seealso{
-\code{\link{tune_mx}}, \code{\link{tune_nnet}}, \code{\link{tune_rf}}, and \code{\link{tune_svm}}.
+\code{\link{tune_max}}, \code{\link{tune_net}}, \code{\link{tune_raf}}, and \code{\link{tune_svm}}.
 }

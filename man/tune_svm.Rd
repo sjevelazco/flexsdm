@@ -114,5 +114,5 @@ svm_t$all_thresholds
 
 }
 \seealso{
-\code{\link{tune_gbm}}, \code{\link{tune_mx}}, \code{\link{tune_nnet}}, and \code{\link{tune_rf}}.
+\code{\link{tune_gbm}}, \code{\link{tune_max}}, \code{\link{tune_net}}, and \code{\link{tune_raf}}.
 }

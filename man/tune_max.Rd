@@ -74,5 +74,5 @@ A list object with:
 Fit and validate Maximum Entropy models with exploration of hyper-parameters
 }
 \seealso{
-\code{\link{tune_gbm}}, \code{\link{tune_nnet}}, \code{\link{tune_rf}}, and \code{\link{tune_svm}}.
+\code{\link{tune_gbm}}, \code{\link{tune_net}}, \code{\link{tune_raf}}, and \code{\link{tune_svm}}.
 }

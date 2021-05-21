@@ -44,7 +44,7 @@
 #' }
 #'
 #' @export
-#' @seealso \code{\link{tune_gbm}}, \code{\link{tune_mx}}, \code{\link{tune_nnet}}, and \code{\link{tune_rf}}.
+#' @seealso \code{\link{tune_gbm}}, \code{\link{tune_max}}, \code{\link{tune_net}}, and \code{\link{tune_raf}}.
 #'
 #'
 #' @examples

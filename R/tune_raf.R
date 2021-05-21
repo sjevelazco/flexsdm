@@ -44,7 +44,7 @@
 #'
 #' @export
 #'
-#' @seealso \code{\link{tune_gbm}}, \code{\link{tune_mx}}, \code{\link{tune_nnet}}, and \code{\link{tune_svm}}.
+#' @seealso \code{\link{tune_gbm}}, \code{\link{tune_max}}, \code{\link{tune_net}}, and \code{\link{tune_svm}}.
 #'
 #' @examples
 #' \dontrun{
@@ -65,7 +65,7 @@
 #'   expand.grid(mtry = seq(1, 7, 1))
 #'
 #' rf_t <-
-#'   tune_rf(
+#'   tune_raf(
 #'     data = abies_db2,
 #'     response = "pr_ab",
 #'     predictors = c(

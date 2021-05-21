@@ -90,7 +90,7 @@ tune_grid <-
   )
 
 net_t <-
-  tune_nnet(
+  tune_net(
     data = abies_db2,
     response = "pr_ab",
     predictors = c(
@@ -114,5 +114,5 @@ net_t$all_thresholds
 
 }
 \seealso{
-\code{\link{tune_gbm}}, \code{\link{tune_mx}}, \code{\link{tune_rf}}, and \code{\link{tune_svm}}.
+\code{\link{tune_gbm}}, \code{\link{tune_max}}, \code{\link{tune_raf}}, and \code{\link{tune_svm}}.
 }

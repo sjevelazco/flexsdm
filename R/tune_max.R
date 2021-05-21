@@ -46,7 +46,7 @@
 #' @importFrom dplyr select starts_with filter pull bind_rows tibble group_by_at summarise across everything
 #' @importFrom maxnet maxnet maxnet.formula
 #'
-#' @seealso \code{\link{tune_gbm}}, \code{\link{tune_nnet}}, \code{\link{tune_rf}}, and \code{\link{tune_svm}}.
+#' @seealso \code{\link{tune_gbm}}, \code{\link{tune_net}}, \code{\link{tune_raf}}, and \code{\link{tune_svm}}.
 #'
 #'
 #' @export
