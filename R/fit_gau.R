@@ -294,7 +294,6 @@ fit_gau <- function(data,
 
   eval_final <- eval_partial %>%
     dplyr::group_by(model, threshold) %>%
-    dplyr::select(-c(replica:partition)) %>%
     dplyr::summarise(dplyr::across(
       TPR:IMAE,
       list(mean = mean, sd = stats::sd)

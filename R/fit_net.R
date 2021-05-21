@@ -223,7 +223,6 @@ fit_net <- function(data,
 
   eval_final <- eval_partial %>%
     dplyr::group_by(model, threshold) %>%
-    dplyr::select(-c(replica:partition)) %>%
     dplyr::summarise(dplyr::across(
       TPR:IMAE,
       list(mean = mean, sd = stats::sd)
@@ -253,7 +252,7 @@ fit_net <- function(data,
 
   pred_test <- data.frame(
     pr_ab = data[, response],
-    pred = dismo::predict(
+    pred = stats::predict(
       mod,
       newdata = data,
       type = "raw"
