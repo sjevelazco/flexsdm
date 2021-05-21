@@ -39,7 +39,7 @@ sdm_predict <- function(models, pred, thr = NULL, con_thr = FALSE, calib_area = 
   #### Prepare datasets ####
   # Crop projection area
   if (!is.null(calib_area)) {
-    pred2 <- terra::crop(pred, calib_area)
+    pred <- terra::crop(pred, calib_area)
   }
 
 
