@@ -29,7 +29,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A list of models used for performing ensemble.
+#' \item models: A list of models used for performing ensemble.
 #' \item predictors: A tibble of quantitative (column names with c) and qualitative (column names with f) variables used in each models.
 #' \item performance: A tibble with performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metrics are calculated based on the threshold specified in thr argument .
@@ -51,12 +51,10 @@ fit_ensemble <-
            thr = NULL,
            thr_model = NULL,
            metric = NULL) {
+
     if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
-      if (is.null(thr_model)) {
-        stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' argument")
-      }
-      if (is.null(metric)) {
-        stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a performance metric in 'metric' argument")
+      if (is.null(thr_model) | is.null(metric)) {
+        stop("for 'meanw', 'meansup', or 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' and 'metric' argument")
       }
     }
 
@@ -254,13 +252,16 @@ fit_ensemble <-
     ensemble <- dplyr::bind_rows(ensemble, .id = "model")
 
     #### Model object
-    m <- lapply(models, function(x) x[[1]])
+    m <- lapply(models, function(x) x[c('model', 'performance')])
     names(m) <- nms
 
     result <- list(
-      model = m,
+      models = m,
+      thr_metric = c(thr_model, metric),
       predictors = variables,
       performance = dplyr::left_join(ensemble, threshold, by = c("model", "threshold")) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
     )
+
+    return(result)
   }
