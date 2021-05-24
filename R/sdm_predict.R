@@ -17,7 +17,7 @@
 #'   }
 #' Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spec', 'sensitivity'), or thr='all'. If no threshold is specified (i.e., thr = NULL) function will return continuous prediction only. Default NULL
 #' @param con_thr logical. If true will be returned predictions with suitability values above threshold/s. Default = FALSE
-#' @param calib_area SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL
+#' @param predict_area SpatVector, SpatialPolygon, or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)
 #'
@@ -34,12 +34,15 @@
 #' @importFrom stats predict
 #' @importFrom terra crop as.data.frame values rast nlyr
 #' @examples
-sdm_predict <- function(models, pred, thr = NULL, con_thr = FALSE, calib_area = NULL, clamp = TRUE, pred_type = "cloglog") {
+sdm_predict <- function(models, pred, thr = NULL, con_thr = FALSE, predict_area = NULL, clamp = TRUE, pred_type = "cloglog") {
 
   #### Prepare datasets ####
   # Crop projection area
-  if (!is.null(calib_area)) {
-    pred <- terra::crop(pred, calib_area)
+  if (!is.null(predict_area)) {
+    if(class(ca_1)%in%c("SpatialPolygons", "SpatialPolygonsDataFrame")){
+      predict_area <- terra::vect(predict_area)
+    }
+    pred <- pred %>% terra::crop(., predict_area) %>% terra::mask(., predict_area)
   }
 
 
