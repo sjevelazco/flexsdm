@@ -44,8 +44,7 @@ sdm_predict <-
            predict_area = NULL,
            clamp = TRUE,
            pred_type = "cloglog") {
-
-    if(all(names(ens) %in% c("models", "thr_metric", "predictors", "performance"))){
+    if (all(names(ens) %in% c("models", "thr_metric", "predictors", "performance"))) {
       message("Predicting ensembles")
       ensembles <- models
       models <- NULL
@@ -61,7 +60,9 @@ sdm_predict <-
         predict_area <- terra::vect(predict_area)
       }
       pred <-
-        pred %>% terra::crop(., predict_area) %>% terra::mask(., predict_area)
+        pred %>%
+        terra::crop(., predict_area) %>%
+        terra::mask(., predict_area)
     }
 
     # Transform raster to data.frame
@@ -72,35 +73,38 @@ sdm_predict <-
     #### Model predictions
     if (!is.null(models)) {
       # Prepare model list
-      m <- lapply(models, function(x)
-        x[[1]])
+      m <- lapply(models, function(x) {
+        x[[1]]
+      })
       names(m) <- paste0("m_", 1:length(m))
 
       # Extract model names object
-      clss <- sapply(m, function(x)
-        class(x)[1]) %>%
+      clss <- sapply(m, function(x) {
+        class(x)[1]
+      }) %>%
         tolower() %>%
         gsub(".formula", "", .)
     }
 
     if (!is.null(ensembles)) {
       # Prepare model list
-      m <- lapply(ensembles$models, function(x) x[['model']])
+      m <- lapply(ensembles$models, function(x) x[["model"]])
       names(m) <- paste0("m_", 1:length(m))
 
       # Extract model names object
-      clss <- sapply(m, function(x)
-        class(x)[1]) %>%
+      clss <- sapply(m, function(x) {
+        class(x)[1]
+      }) %>%
         tolower() %>%
         gsub(".formula", "", .)
     }
 
 
-    ##%######################################################%##
+    ## %######################################################%##
     #                                                          #
     ####          Prediction for different models           ####
     #                                                          #
-    ##%######################################################%##
+    ## %######################################################%##
 
     # Create list for storing raster for current condition
     model_c <- as.list(names(m))
@@ -112,7 +116,7 @@ sdm_predict <-
       wm <- names(wm)
       for (i in wm) {
         suppressWarnings(model_c[[i]] <-
-                           GRaF::predict.graf(m[[i]], pred, type = "response", CI = NULL))
+          GRaF::predict.graf(m[[i]], pred, type = "response", CI = NULL))
       }
     }
 
@@ -150,7 +154,7 @@ sdm_predict <-
         if (sum(vfilter) > 0) {
           v <- rep(0, nrow(pred_df))
           v[!vfilter] <-
-            gam::predict.Gam(m[[i]], pred_df[!vfilter,], type = "response")
+            gam::predict.Gam(m[[i]], pred_df[!vfilter, ], type = "response")
           r[as.numeric(rownames(pred_df))] <- v
           rm(v)
         } else {
@@ -195,7 +199,7 @@ sdm_predict <-
         if (sum(vfilter) > 0) {
           v <- rep(0, nrow(pred_df))
           v[!vfilter] <-
-            stats::predict(m[[i]], pred_df[!vfilter,], type = "response")
+            stats::predict(m[[i]], pred_df[!vfilter, ], type = "response")
           r[as.numeric(rownames(pred_df))] <- v
           rm(v)
         } else {
@@ -278,7 +282,7 @@ sdm_predict <-
         if (sum(vfilter) > 0) {
           v <- rep(0, nrow(pred_df))
           v[!vfilter] <-
-            stats::predict(m[[i]], pred_df[!vfilter,], type = "raw")
+            stats::predict(m[[i]], pred_df[!vfilter, ], type = "raw")
           r[as.numeric(rownames(pred_df))] <- v
           rm(v)
         } else {
@@ -330,12 +334,13 @@ sdm_predict <-
         if (sum(vfilter) > 0) {
           v <- rep(0, nrow(pred_df))
           v[!vfilter] <-
-            stats::predict(m[[i]], pred_df[!vfilter,] %>%
-                             dplyr::mutate(dplyr::across(
-                               .cols = names(f),
-                               .fns = ~ droplevels(.)
-                             )),
-                           type = "prob")[, 2]
+            stats::predict(m[[i]], pred_df[!vfilter, ] %>%
+              dplyr::mutate(dplyr::across(
+                .cols = names(f),
+                .fns = ~ droplevels(.)
+              )),
+            type = "prob"
+            )[, 2]
           r[as.numeric(rownames(pred_df))] <- v
           rm(v)
         } else {
@@ -388,11 +393,11 @@ sdm_predict <-
         if (sum(vfilter) > 0) {
           v <- rep(0, nrow(pred_df))
           v[!vfilter] <-
-            kernlab::predict(m[[i]], pred_df[!vfilter,] %>%
-                               dplyr::mutate(dplyr::across(
-                                 .cols = names(f),
-                                 .fns = ~ droplevels(.)
-                               )), type = "prob")[, 2]
+            kernlab::predict(m[[i]], pred_df[!vfilter, ] %>%
+              dplyr::mutate(dplyr::across(
+                .cols = names(f),
+                .fns = ~ droplevels(.)
+              )), type = "prob")[, 2]
           r[as.numeric(rownames(pred_df))] <- v
           rm(v)
         } else {
@@ -431,16 +436,17 @@ sdm_predict <-
 
     # Predict ensemble
     if (!is.null(ensembles)) {
-
       model_c <- terra::rast(model_c) # stack individual models
-      ens_perf <- ensembles[['performance']] # get performance of ensembles
-      ens_method <- ens_perf %>% dplyr::pull(model) %>% unique() # get ensemble methods
+      ens_perf <- ensembles[["performance"]] # get performance of ensembles
+      ens_method <- ens_perf %>%
+        dplyr::pull(model) %>%
+        unique() # get ensemble methods
       single_model_perf <- lapply(ensembles[[1]], function(x) { # Get performance of individual model used for performing ensemble
         x[["performance"]]
       }) %>% dplyr::bind_rows()
 
       # Threshold and metric values for performing some ensembles
-      if(any(ens_method%in%c("meanw", "meansup", "meanthr"))){
+      if (any(ens_method %in% c("meanw", "meansup", "meanthr"))) {
         weight_data <- single_model_perf %>%
           dplyr::filter(threshold == dplyr::all_of(ensembles$thr_metric[1])) %>%
           dplyr::select(model, thr_value, dplyr::all_of(ensembles$thr_metric[2]))
@@ -449,29 +455,32 @@ sdm_predict <-
       ensemble_c <- as.list(ens_method)
       names(ensemble_c) <- ensemble_c
 
-      if(any('mean' == ens_method)){
-        ensemble_c[['mean']] <- terra::app(model_c, fun = mean, cores = 1)
+      if (any("mean" == ens_method)) {
+        ensemble_c[["mean"]] <- terra::app(model_c, fun = mean, cores = 1)
       }
 
-      if(any('meanw' == ens_method)){
-        ensemble_c[['meanw']] <- terra::app(model_c * weight_data[[3]], fun = mean, cores = 1)
+      if (any("meanw" == ens_method)) {
+        ensemble_c[["meanw"]] <- terra::app(model_c * weight_data[[3]], fun = mean, cores = 1)
       }
 
-      if(any('meansup' == ens_method)) {
-        ensemble_c[['meansup']] <-
+      if (any("meansup" == ens_method)) {
+        ensemble_c[["meansup"]] <-
           terra::app(model_c[[which(weight_data[[3]] >= mean(weight_data[[3]]))]],
-                     fun = mean, cores = 1)
+            fun = mean, cores = 1
+          )
       }
 
-      if(any('meanthr' == ens_method)){
-        mf <- function(x, y) { terra::lapp(x, function(x) ifelse( x >= y, x, 0))}
+      if (any("meanthr" == ens_method)) {
+        mf <- function(x, y) {
+          terra::lapp(x, function(x) ifelse(x >= y, x, 0))
+        }
         model_c2 <- mapply(mf, model_c, weight_data[[2]], SIMPLIFY = FALSE) %>% terra::rast()
-        ensemble_c[['meanthr']] <- terra::app(model_c2, fun = mean, cores = 1)
+        ensemble_c[["meanthr"]] <- terra::app(model_c2, fun = mean, cores = 1)
         rm(model_c2)
       }
 
-      if(any('median'== ens_method)){
-        ensemble_c[['median']] <- terra::app(model_c, fun = median, cores = 1)
+      if (any("median" == ens_method)) {
+        ensemble_c[["median"]] <- terra::app(model_c, fun = median, cores = 1)
       }
 
       ensemble_c <- mapply(function(x, y) {
@@ -480,12 +489,12 @@ sdm_predict <-
       }, ensemble_c, ens_method, SIMPLIFY = FALSE)
 
       model_c <- ensemble_c
-      models <- split(ensembles[['performance']], ensembles[['performance']]$model)
+      models <- split(ensembles[["performance"]], ensembles[["performance"]]$model)
       models <- lapply(models, function(x) {
         x <- list(x)
-        names(x) <- 'performance'
+        names(x) <- "performance"
         x
-        })
+      })
       rm(ensembles)
       rm(ensemble_c)
     }

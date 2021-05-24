@@ -51,7 +51,6 @@ fit_ensemble <-
            thr = NULL,
            thr_model = NULL,
            metric = NULL) {
-
     if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
       if (is.null(thr_model) | is.null(metric)) {
         stop("for 'meanw', 'meansup', or 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' and 'metric' argument")
@@ -252,7 +251,7 @@ fit_ensemble <-
     ensemble <- dplyr::bind_rows(ensemble, .id = "model")
 
     #### Model object
-    m <- lapply(models, function(x) x[c('model', 'performance')])
+    m <- lapply(models, function(x) x[c("model", "performance")])
     names(m) <- nms
 
     result <- list(
