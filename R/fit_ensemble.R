@@ -29,7 +29,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A list of models used for performing ensemble.
+#' \item models: A list of models used for performing ensemble.
 #' \item predictors: A tibble of quantitative (column names with c) and qualitative (column names with f) variables used in each models.
 #' \item performance: A tibble with performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metrics are calculated based on the threshold specified in thr argument .
@@ -258,7 +258,7 @@ fit_ensemble <-
     names(m) <- nms
 
     result <- list(
-      model = m,
+      models = m,
       predictors = variables,
       performance = dplyr::left_join(ensemble, threshold, by = c("model", "threshold")) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
