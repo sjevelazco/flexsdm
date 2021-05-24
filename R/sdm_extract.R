@@ -47,7 +47,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     env_layer = somevar,
-#'     variables = c('CFP_3', 'CFP_4'),
+#'     variables = c("CFP_3", "CFP_4"),
 #'     filter_na = TRUE
 #'   )
 #'
@@ -63,29 +63,31 @@ sdm_extract <-
            filter_na = TRUE) {
 
     # Predictor vector when variables.=NULL
-    if(is.null(variables)){
+    if (is.null(variables)) {
       variables <- names(env_layer)
     }
 
     # spatial data frame
     sp_data <-
       terra::vect(data,
-                  geom = c(x, y),
-                  crs = terra::crs(env_layer))
+        geom = c(x, y),
+        crs = terra::crs(env_layer)
+      )
 
     # extract environmental data at xy locations, if filter_na = FALSE, does not remove rows with NAs
     extract_data <- dplyr::tibble(
       data,
       terra::extract(env_layer[variables],
-                     sp_data,
-                     cells = FALSE) %>%
+        sp_data,
+        cells = FALSE
+      ) %>%
         dplyr::select(dplyr::all_of(variables))
     )
 
     # removes rows with NAs for any environmental variable
     if (filter_na) {
       complete_vec <- stats::complete.cases(extract_data[, variables])
-      if (sum(!complete_vec)>0) {
+      if (sum(!complete_vec) > 0) {
         message(sum(!complete_vec), " rows were excluded from database because NAs were found")
         extract_data <- extract_data %>% dplyr::filter(complete_vec)
       }

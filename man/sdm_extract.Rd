@@ -55,7 +55,7 @@ ex_spp2 <-
     x = "x",
     y = "y",
     env_layer = somevar,
-    variables = c('CFP_3', 'CFP_4'),
+    variables = c("CFP_3", "CFP_4"),
     filter_na = TRUE
   )
 
