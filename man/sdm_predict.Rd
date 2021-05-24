@@ -2,20 +2,20 @@
 % Please edit documentation in R/sdm_predict.R
 \name{sdm_predict}
 \alias{sdm_predict}
-\title{Spatial model prediction}
+\title{Spatial predictions of individual and ensemble model}
 \usage{
 sdm_predict(
   models,
   pred,
   thr = NULL,
   con_thr = FALSE,
-  calib_area = NULL,
+  predict_area = NULL,
   clamp = TRUE,
   pred_type = "cloglog"
 )
 }
 \arguments{
-\item{models}{list. A list a single or several models fitted with some of fit_ or tune_ functions}
+\item{models}{list of individual models or a fit_ensemble output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.}
 
 \item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.}
 
@@ -34,15 +34,18 @@ Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spe
 
 \item{con_thr}{logical. If true will be returned predictions with suitability values above threshold/s. Default = FALSE}
 
-\item{calib_area}{SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL}
+\item{predict_area}{SpatVector, SpatialPolygon, or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL}
 
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)}
 
 \item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)}
 }
 \value{
-A list of SpatRaster with continuous or continuous and binary predictions
+A list of SpatRaster with continuous and/or binary predictions
 }
 \description{
 This function allows the prediction of one or more models built with the fit_ or tune_ function set. It can return continuous or continuous and binary predictions for one or more thresholds
+}
+\seealso{
+\code{\link{fit_ensemble}}
 }

@@ -51,12 +51,10 @@ fit_ensemble <-
            thr = NULL,
            thr_model = NULL,
            metric = NULL) {
+
     if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
-      if (is.null(thr_model)) {
-        stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' argument")
-      }
-      if (is.null(metric)) {
-        stop("for 'meanw', 'meansup', and 'meanthr' ensemble methods it is necessary to provide a performance metric in 'metric' argument")
+      if (is.null(thr_model) | is.null(metric)) {
+        stop("for 'meanw', 'meansup', or 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' and 'metric' argument")
       }
     }
 
@@ -254,13 +252,16 @@ fit_ensemble <-
     ensemble <- dplyr::bind_rows(ensemble, .id = "model")
 
     #### Model object
-    m <- lapply(models, function(x) x[[1]])
+    m <- lapply(models, function(x) x[c('model', 'performance')])
     names(m) <- nms
 
     result <- list(
       models = m,
+      thr_metric = c(thr_model, metric),
       predictors = variables,
       performance = dplyr::left_join(ensemble, threshold, by = c("model", "threshold")) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
     )
+
+    return(result)
   }
