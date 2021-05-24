@@ -4,8 +4,8 @@
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
 #' @param env_layer SpatRaster. Raster with environmental variables.
-#' @param predictors character. Vector with the variable names of predictor variables
-#' Usage predictors = c("aet", "cwd", "tmin"). If no
+#' @param variables. character. Vector with the variable names of predictor variables
+#' Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers. Default NULL
 #' @param filter_na logical. If filter_na = TRUE (default), the rows with NA values for any of the
 #' environmental variables are removed from the returned tibble.
 #'
@@ -14,8 +14,9 @@
 #' A tibble that returns the original data base of presence, presence-absence, or pseudo-absence location records with additional columns
 #' for the extracted environmental variables at each xy location from the SpatRast object 'env_layer'
 #'
-#' @importFrom dplyr select all_of
-#' @importFrom terra vect extract
+#' @importFrom dplyr tibble select all_of filter
+#' @importFrom stats complete.cases
+#' @importFrom terra vect crs extract
 #'
 #' @export
 #'
@@ -28,26 +29,44 @@
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)
 #'
-#' # Extract environmental data from somevar for locations of all species in spp
+#' # Extract environmental data from somevar for all species locations in spp
 #' ex_spp <-
 #'   sdm_extract(
-#'     data = spp %>% dplyr::filter(species == sp1),
+#'     data = spp,
 #'     x = "x",
 #'     y = "y",
-#'     predictors = names(somevar),
-#'     env_layer = some_var,
+#'     env_layer = somevar,
+#'     variables = NULL,
+#'     filter_na = FALSE
+#'   )
+#'
+#' # Extract environmental for two variables and remove rows with NAs
+#' ex_spp2 <-
+#'   sdm_extract(
+#'     data = spp,
+#'     x = "x",
+#'     y = "y",
+#'     env_layer = somevar,
+#'     variables = c('CFP_3', 'CFP_4'),
 #'     filter_na = TRUE
 #'   )
 #'
 #' ex_spp
+#' ex_spp2
 #' }
 sdm_extract <-
   function(data,
            x,
            y,
-           predictors,
            env_layer,
+           variables = NULL,
            filter_na = TRUE) {
+
+    # Predictor vector when variables.=NULL
+    if(is.null(variables)){
+      variables <- names(env_layer)
+    }
+
     # spatial data frame
     sp_data <-
       terra::vect(data,
@@ -55,20 +74,21 @@ sdm_extract <-
                   crs = terra::crs(env_layer))
 
     # extract environmental data at xy locations, if filter_na = FALSE, does not remove rows with NAs
-    extract_data <- data.frame(
+    extract_data <- dplyr::tibble(
       data,
-      terra::extract(env_layer,
+      terra::extract(env_layer[variables],
                      sp_data,
-                     cells = TRUE) %>%
-        dplyr::select(cell,
-                      dplyr::all_of(predictors))
+                     cells = FALSE) %>%
+        dplyr::select(dplyr::all_of(variables))
     )
 
     # removes rows with NAs for any environmental variable
     if (filter_na) {
-      complete_vec <- stats::complete.cases(extract_data[, predictors])
+      complete_vec <- stats::complete.cases(extract_data[, variables])
+      if (sum(!complete_vec)>0) {
+        message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+        extract_data <- extract_data %>% dplyr::filter(complete_vec)
+      }
     }
-
-    extract_data <- dplyr::as_tibble(extract_data)
     return(extract_data)
   }

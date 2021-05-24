@@ -4,7 +4,7 @@
 \alias{sdm_extract}
 \title{Extract environmental data based on x and y coordinates}
 \usage{
-sdm_extract(data, x, y, predictors, env_layer, filter_na = TRUE)
+sdm_extract(data, x, y, env_layer, variables = NULL, filter_na = TRUE)
 }
 \arguments{
 \item{data}{data.frame. Database with presences, presence-absence, or pseudo-absence, records with x and y coordinates}
@@ -13,13 +13,13 @@ sdm_extract(data, x, y, predictors, env_layer, filter_na = TRUE)
 
 \item{y}{character. Column name with latitude data}
 
-\item{predictors}{character. Vector with the variable names of predictor variables
-Usage predictors = c("aet", "cwd", "tmin")}
-
 \item{env_layer}{SpatRaster. Raster with environmental variables.}
 
 \item{filter_na}{logical. If filter_na = TRUE (default), the rows with NA values for any of the
 environmental variables are removed from the returned tibble.}
+
+\item{variables.}{character. Vector with the variable names of predictor variables
+Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers. Default NULL}
 }
 \value{
 A tibble that returns the original data base of presence, presence-absence, or pseudo-absence location records with additional columns
@@ -37,17 +37,29 @@ data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
 
-# Extract environmental data from somevar for locations in spp
+# Extract environmental data from somevar for all species locations in spp
 ex_spp <-
   sdm_extract(
     data = spp,
     x = "x",
     y = "y",
-    predictors = names(somevar),
-    env_layer = some_var,
+    env_layer = somevar,
+    variables = NULL,
+    filter_na = FALSE
+  )
+
+# Extract environmental for two variables and remove rows with NAs
+ex_spp2 <-
+  sdm_extract(
+    data = spp,
+    x = "x",
+    y = "y",
+    env_layer = somevar,
+    variables = c('CFP_3', 'CFP_4'),
     filter_na = TRUE
   )
 
-view(ex_spp)
+ex_spp
+ex_spp2
 }
 }
