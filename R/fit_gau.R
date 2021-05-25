@@ -88,7 +88,7 @@
 #'   predictors = c("ppt_jja", "pH", "awc"),
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
-#'   thr = c(type = c("lpt", "max_sens_spec", "specific"), sens = "0.8")
+#'   thr = c(type = c("lpt", "max_sens_spec", "sensitivity"), sens = "0.8")
 #' )
 #' gaup_t2
 #' }
@@ -101,7 +101,7 @@ fit_gau <- function(data,
                     partition,
                     thr = NULL,
                     ...) {
-  variables <- c(c = predictors, f = predictors_f)
+  variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)
   if (!is.null(background)) background <- data.frame(background)
@@ -136,7 +136,21 @@ fit_gau <- function(data,
   }
 
   # Remove NAs
-  data <- rm_na(x = data)
+  complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
+  if (sum(!complete_vec) > 0) {
+    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    data <- data %>% dplyr::filter(complete_vec)
+  }
+  rm(complete_vec)
+  if (!is.null(background)) {
+    complete_vec <- stats::complete.cases(background[, c(response, unlist(variables))])
+    if (sum(!complete_vec) > 0) {
+      message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+      background <- background %>% dplyr::filter(complete_vec)
+    }
+    rm(complete_vec)
+  }
+
 
   # Compare pr_ab and background column names
   p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
@@ -175,7 +189,10 @@ fit_gau <- function(data,
     apply(., 2, unique) %>%
     data.frame() %>%
     as.list() %>%
-    lapply(., as.list)
+    lapply(., function(x) {
+      x <- stats::na.exclude(x)
+      x[x != "train-test"] %>% as.list()
+    })
 
   for (h in 1:np) {
     message("Replica number: ", h, "/", np)

@@ -65,7 +65,7 @@ tune_max <-
            clamp = TRUE,
            pred_type = "cloglog",
            ...) {
-    variables <- c(c = predictors, f = predictors_f)
+    variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
     data <- data.frame(data)
     if (!is.null(background)) background <- data.frame(background)
@@ -101,9 +101,19 @@ tune_max <-
     }
 
     # Remove NAs
-    data <- rm_na(x = data)
+    complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
+    if (sum(!complete_vec) > 0) {
+      message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+      data <- data %>% dplyr::filter(complete_vec)
+    }
+    rm(complete_vec)
     if (!is.null(background)) {
-      background <- rm_na(x = background)
+      complete_vec <- stats::complete.cases(background[, c(response, unlist(variables))])
+      if (sum(!complete_vec) > 0) {
+        message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+        background <- background %>% dplyr::filter(complete_vec)
+      }
+      rm(complete_vec)
     }
 
     # Prepare grid when grid=default or NULL

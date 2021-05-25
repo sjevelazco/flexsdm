@@ -117,7 +117,7 @@ fit_gam <- function(data,
                     thr = NULL,
                     fit_formula = NULL,
                     ...) {
-  variables <- c(c = predictors, f = predictors_f)
+  variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)
   if (is.null(predictors_f)) {
@@ -134,7 +134,12 @@ fit_gam <- function(data,
   }
 
   # Remove NAs
-  data <- rm_na(x = data)
+  complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
+  if (sum(!complete_vec) > 0) {
+    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    data <- data %>% dplyr::filter(complete_vec)
+  }
+  rm(complete_vec)
 
   # Formula
   if (is.null(fit_formula)) {
@@ -165,7 +170,10 @@ fit_gam <- function(data,
     apply(., 2, unique) %>%
     data.frame() %>%
     as.list() %>%
-    lapply(., as.list)
+    lapply(., function(x) {
+      x <- stats::na.exclude(x)
+      x[x != "train-test"] %>% as.list()
+    })
 
   for (h in 1:np) {
     message("Replica number: ", h, "/", np)

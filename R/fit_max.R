@@ -77,7 +77,7 @@ fit_max <- function(data,
                     pred_type = "cloglog",
                     regmult = 1,
                     ...) {
-  variables <- c(c = predictors, f = predictors_f)
+  variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)
   if (!is.null(background)) background <- data.frame(background)
@@ -113,9 +113,19 @@ fit_max <- function(data,
   }
 
   # Remove NAs
-  data <- rm_na(x = data)
+  complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
+  if (sum(!complete_vec) > 0) {
+    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    data <- data %>% dplyr::filter(complete_vec)
+  }
+  rm(complete_vec)
   if (!is.null(background)) {
-    background <- rm_na(x = background)
+    complete_vec <- stats::complete.cases(background[, c(response, unlist(variables))])
+    if (sum(!complete_vec) > 0) {
+      message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+      background <- background %>% dplyr::filter(complete_vec)
+    }
+    rm(complete_vec)
   }
 
   # Formula
@@ -170,7 +180,10 @@ fit_max <- function(data,
     apply(., 2, unique) %>%
     data.frame() %>%
     as.list() %>%
-    lapply(., as.list)
+    lapply(., function(x) {
+      x <- stats::na.exclude(x)
+      x[x != "train-test"] %>% as.list()
+    })
 
   for (h in 1:np) {
     message("Replica number: ", h, "/", np)
