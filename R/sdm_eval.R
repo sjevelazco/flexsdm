@@ -156,7 +156,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   )
 
   R <- sum(rank(c(p, a))[1:np]) - (np * (np + 1) / 2)
-  performance <- performance %>% dpyr::mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
+  performance <- performance %>% dplyr::mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
 
   if (is.null(bg)) {
     performance <- performance %>% dplyr::mutate(BOYCE = dplyr::mutate(pres = p, contrast = c(p, a)))
