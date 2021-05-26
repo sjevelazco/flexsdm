@@ -29,7 +29,7 @@
 #' abies_db <- tibble(abies_db)
 #'
 #' # K-fold method
-#' abies_db2 <- data_part(
+#' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
@@ -39,7 +39,7 @@
 #' abies_db2
 #'
 #' # Repeated K-fold method
-#' abies_db2 <- data_part(
+#' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
@@ -49,7 +49,7 @@
 #' abies_db2
 #'
 #' # Leave-one-out cross-validation (loocv) method
-#' abies_db2 <- data_part(
+#' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
@@ -59,7 +59,7 @@
 #' abies_db2
 #'
 #' # Bootstrap method
-#' abies_db2 <- data_part(
+#' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   bg_data = NULL,
@@ -70,7 +70,7 @@
 #' abies_db2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
 #' }
 #'
-data_part <- function(data, pr_ab, bg_data = NULL, bg_a = NULL, method = NULL) {
+part <- function(data, pr_ab, bg_data = NULL, bg_a = NULL, method = NULL) {
 
   # kfold
   if (method["method"] == "kfold") {

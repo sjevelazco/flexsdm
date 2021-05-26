@@ -45,7 +45,7 @@
 #'
 #' # Lest practice with a single species
 #' single_spp <- spp %>% dplyr::filter(species == "sp3")
-#' part <- block_partition(
+#' part <- part(
 #'   env_layer = somevar,
 #'   data = single_spp,
 #'   x = "x",
@@ -100,7 +100,7 @@
 #' names(spp2)
 #'
 #' part_list <- lapply(spp2, function(x) {
-#'   result <- block_partition(
+#'   result <- part(
 #'     env_layer = somevar,
 #'     data = x,
 #'     x = "x",
@@ -150,7 +150,7 @@
 #' single_spp
 #' single_spp$pr_ab %>% unique() # only presences
 #'
-#' part <- block_partition(
+#' part <- part(
 #'   env_layer = somevar,
 #'   data = single_spp,
 #'   x = "x",
@@ -175,7 +175,7 @@
 #' )
 #' }
 #'
-block_partition <- function(env_layer,
+part_spatial <- function(env_layer,
                             data,
                             x,
                             y,
