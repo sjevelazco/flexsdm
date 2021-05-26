@@ -61,7 +61,7 @@ env_outliers <- function(data, x, y, pr_ab, id, envr) {
         xc <- sp_env_1 %>%
           data.frame() %>%
           pull(var[ii])
-        xr <- boxplot.stats(xc, coef = 1.5)$stats %>% range()
+        xr <- grDevices::boxplot.stats(xc, coef = 1.5)$stats %>% range()
         fe <- which((xc > xr[2] | xc < xr[1]))
         fe2 <- biogeo::rjack(xc) # reverse Reverse Jackknife
         l_box[fe, ii] <- 1

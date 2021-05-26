@@ -14,7 +14,7 @@
 #' @return
 #' @export
 #'
-#' @importFrom stats cor prcomp factanal
+#' @importFrom stats cor lm prcomp factanal
 #' @importFrom terra as.data.frame subset predict rast scale writeRaster
 #'
 #' @examples
@@ -68,7 +68,7 @@ correct_colinvar <- function(rstack,
     }
 
     h <- terra::as.data.frame(rstack)
-    h <- base::abs(stats::cor(h, method = "pearson"))
+    h <- abs(stats::cor(h, method = "pearson"))
     diag(h) <- 0
 
     res <- as.list(1:10000)
@@ -133,10 +133,10 @@ correct_colinvar <- function(rstack,
     v <- rep(NA, ncol(x))
     names(v) <- colnames(x)
     for (i in 1:ncol(x)) {
-      v[i] <- 1 / (1 - summary(lm(x[, i] ~ ., data = x[-i]))$r.squared)
+      v[i] <- 1 / (1 - summary(stats::lm(x[, i] ~ ., data = x[-i]))$r.squared)
     }
 
-    n$corMatrix <- cor(x, method = "pearson")
+    n$corMatrix <- stats::cor(x, method = "pearson")
     n$results <- data.frame(Variables = names(v), VIF = as.vector(v))
 
     diag(n$corMatrix) <- 0
@@ -185,7 +185,7 @@ correct_colinvar <- function(rstack,
         dir.create(x)
       })
 
-      proj <- base::list.files(proj, full.names = TRUE)
+      proj <- list.files(proj, full.names = TRUE)
       for (i in 1:length(proj)) {
         scen <- terra::rast(list.files(proj[i], full.names = TRUE))
         scen <- terra::scale(scen, center = means, scale = stds)
@@ -212,7 +212,7 @@ correct_colinvar <- function(rstack,
       p <- p[sample(1:nrow(p), 10000), ]
     }
 
-    e <- eigen(cor(p))
+    e <- eigen(terra::predict(p))
     len <- length(e$values)
     a <- NULL
     r <- NULL
@@ -222,7 +222,7 @@ correct_colinvar <- function(rstack,
       r[j] <- e$values[j] / (sum(e$values))
     }
 
-    ns <- length(which(r > a))
+    ns <- length(which(r > stats::cor))
 
     fit <-
       tryCatch(

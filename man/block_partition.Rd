@@ -46,7 +46,7 @@ raster resolution and define the coarsest resolution to be tested, default 200.}
 min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30}
 }
 \value{
-
+This function will return the same data.frame or tibble object used in the arguments 'data' with the additional column .part with partition group.
 }
 \description{
 Spatial block cross validation

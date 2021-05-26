@@ -193,8 +193,8 @@ tune_svm <-
         names(mod) <- 1:nrow(grid)
         for (ii in 1:nrow(grid)) {
           set.seed(1)
-          try(capture.output({
-            mod[[ii]] <-
+          try({
+            suppressMessages(mod[[ii]] <-
               kernlab::ksvm(
                 formula1,
                 data = train[[i]],
@@ -203,8 +203,8 @@ tune_svm <-
                 kpar = list(sigma = grid$sigma[ii]),
                 C = grid$C[ii],
                 prob.model = TRUE
-              )
-          }))
+              ))
+          })
         }
 
 

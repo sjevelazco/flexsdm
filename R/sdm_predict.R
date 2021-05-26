@@ -33,7 +33,7 @@
 #' @importFrom gam predict.Gam
 #' @importFrom GRaF predict.graf
 #' @importFrom kernlab predict
-#' @importFrom stats predict
+#' @importFrom stats predict median
 #' @importFrom terra vect crop mask as.data.frame values rast app lapp
 #' @examples
 sdm_predict <-
@@ -480,7 +480,7 @@ sdm_predict <-
       }
 
       if (any("median" == ens_method)) {
-        ensemble_c[["median"]] <- terra::app(model_c, fun = median, cores = 1)
+        ensemble_c[["median"]] <- terra::app(model_c, fun = stats::median, cores = 1)
       }
 
       ensemble_c <- mapply(function(x, y) {

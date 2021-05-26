@@ -38,8 +38,8 @@
 #' }
 #'
 #'
-#' @importFrom dplyr filter all_of pull bind_rows mutate inner_join select starts_with group_by summarise across everything
-#' @importFrom stats sd
+#' @importFrom dplyr filter all_of pull bind_rows mutate inner_join select starts_with bind_cols across group_by summarise left_join relocate
+#' @importFrom stats median sd
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @export
@@ -159,7 +159,7 @@ fit_ensemble <-
     }
     if (any("median" == ens_method)) {
       v[["median"]] <- apply(values, 1, function(x) {
-        median(x, na.rm = TRUE)
+        stats::median(x, na.rm = TRUE)
       })
     }
 

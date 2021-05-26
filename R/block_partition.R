@@ -21,6 +21,7 @@
 #' 2 has not yet been implemented.
 #'
 #' @return
+#' This function will return the same data.frame or tibble object used in the arguments 'data' with the additional column .part with partition group.
 #' @export
 #'
 #' @importFrom ape Moran.I

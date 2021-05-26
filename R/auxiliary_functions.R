@@ -166,7 +166,7 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
   hingeval <- function(x, min, max) {
     pmin(1, pmax(0, (x - min) / (max - min)))
   }
-  mm <- model.matrix(f, data.frame(newdata))
+  mm <- stats::model.matrix(f, data.frame(newdata))
   if (clamp) {
     mm <- t(pmin(
       pmax(t(mm), object$featuremins[names(object$betas)]),
