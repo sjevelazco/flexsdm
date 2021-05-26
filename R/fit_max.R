@@ -182,7 +182,7 @@ fit_max <- function(data,
     as.list() %>%
     lapply(., function(x) {
       x <- stats::na.exclude(x)
-      x[x != "train-test"] %>% as.list()
+      x[!(x %in% c("train-test", "test"))] %>% as.list()
     })
 
   for (h in 1:np) {

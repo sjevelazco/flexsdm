@@ -64,10 +64,9 @@ A list object with:
 \itemize{
 \item model: A "maxnet" "lognet" "glmnet" class object. This object can be used for predicting.
 \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
-\item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
-\item best_hyper_performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
-\item selected_thresholds: Value of the threshold selected.
-\item all_thresholds: Value of all threshold.
+\item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
+\item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+\item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
 }
 }
 \description{

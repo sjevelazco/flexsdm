@@ -55,10 +55,9 @@ A list object with:
 \itemize{
 \item model: A "gbm" class object. This object can be used for predicting.
 \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
-\item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
-\item best_hyper_performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
-\item selected_thresholds: Value of the threshold selected.
-\item all_thresholds: Value of all threshold.
+\item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
+\item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+\item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
 }
 }
 \description{
@@ -76,7 +75,7 @@ abies_db2 <- data_part(
   pr_ab = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
-  method = c(method = "kfold", folds = 10)
+  method = c(method = "kfold", folds = 5)
 )
 
 # pr_ab columns is species presence and absences (i.e. the response variable)
@@ -85,7 +84,7 @@ abies_db2 <- data_part(
 # Hyper-parameter values for tuning
 tune_grid <-
   expand.grid(
-    n.trees = c(20, 50, 100, 200),
+    n.trees = c(20, 50, 100),
     shrinkage = c(0.1, 0.5, 1),
     n.minobsinnode = c(1, 3, 5, 7, 9)
   )
@@ -95,30 +94,27 @@ gbm_t <-
     data = abies_db2,
     response = "pr_ab",
     predictors = c(
-      "aet", "cwd", "tmin", "ppt_djf",
+      "aet", "cwd", "tmin", "ppt_djf", "ppt_jja",
       "ppt_jja", "pH", "awc", "depth", "percent_clay"
     ),
     predictors_f = c("landform"),
     partition = ".part",
     grid = tune_grid,
     thr = "max_sens_spec",
-    metric = "TSS",
+    metric = "TSS"
   )
 
 # Outputs
 gbm_t$model
-gbm_t$tune_performance
-gbm_t$best_hyper
-gbm_t$selected_thresholds
-gbm_t$all_thresholds
+gbm_t$predictors
+gbm_t$performance
+gbm_t$data_ens
+gbm_t$hyper_performance
 
 # Graphical exploration of performance of each hyper-parameter setting
 require(ggplot2)
-ggplot(gbm_t$tune_performance, aes(n.minobsinnode, TSS_mean)) +
-  geom_point(aes(col = factor(n.trees)))
-
 pg <- position_dodge(width = 0.5)
-ggplot(gbm_t$tune_performance, aes(factor(n.minobsinnode),
+ggplot(gbm_t$hyper_performance, aes(factor(n.minobsinnode),
   TSS_mean,
   col = factor(shrinkage)
 )) +

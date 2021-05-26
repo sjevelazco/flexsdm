@@ -55,10 +55,9 @@ A list object with:
 \itemize{
 \item model: A "nnet" class object. This object can be used for predicting.
 \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
-\item tune_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
-\item best_hyper_performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
-\item selected_thresholds: Value of the threshold selected.
-\item all_thresholds: Value of all threshold.
+\item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
+\item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+\item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
 }
 }
 \description{
@@ -76,7 +75,7 @@ abies_db2 <- data_part(
   pr_ab = "pr_ab",
   bg_data = NULL,
   bg_a = NULL,
-  method = c(method = "kfold", folds = 10)
+  method = c(method = "kfold", folds = 5)
 )
 
 # pr_ab columns is species presence and absences (i.e. the response variable)
@@ -106,10 +105,10 @@ net_t <-
 
 # Outputs
 net_t$model
-net_t$tune_performance
-net_t$best_hyper
-net_t$selected_thresholds
-net_t$all_thresholds
+net_t$predictors
+net_t$performance
+net_t$hyper_performance
+net_t$data_ens
 }
 
 }

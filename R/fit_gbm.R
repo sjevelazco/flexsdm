@@ -45,8 +45,7 @@
 #' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
-#' \item selected_thresholds: Value of the threshold selected.
-#' \item threshold_table: Value of all threshold.
+#' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 #' }
 #'
 #' @export
@@ -163,7 +162,7 @@ fit_gbm <- function(data,
     as.list() %>%
     lapply(., function(x) {
       x <- stats::na.exclude(x)
-      x[x != "train-test"] %>% as.list()
+      x[!(x %in% c("train-test", "test"))] %>% as.list()
     })
 
   for (h in 1:np) {
