@@ -290,6 +290,15 @@ fit_svm <- function(data,
       )
   )
 
+  pred_test <- data.frame(
+    pr_ab = data[, response],
+    pred = suppressMessages(kernlab::predict(
+      mod,
+      newdata = data,
+      type = "prob"
+    )[,2])
+  )
+
   threshold <- sdm_eval(
     p = pred_test$pred[pred_test$pr_ab == 1],
     a = pred_test$pred[pred_test$pr_ab == 0],
