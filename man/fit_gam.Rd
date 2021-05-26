@@ -11,8 +11,7 @@ fit_gam(
   predictors_f = NULL,
   partition,
   thr = NULL,
-  fit_formula = NULL,
-  ...
+  fit_formula = NULL
 )
 }
 \arguments{
@@ -51,10 +50,10 @@ response, predictors, and predictors_f arguments}
 A list object with:
 \itemize{
 \item model: A "Gam" "glm" "lm"  class object. This object can be used for predicting.
-\item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+\item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
-Those threshold dependent metric are calculated based on the threshold specified in thr argument.
-\item selected_thresholds: Value of the threshold selected.
+Those threshold dependent metric are calculated based on the threshold specified in thr argument .
+\item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 }
 }
 \description{
@@ -63,7 +62,6 @@ Fit and validate Generalized Additive Models
 \examples{
 \dontrun{
 data("abies_db")
-require(gam)
 
 # Using k-fold partition method
 abies_db2 <- data_part(
@@ -82,9 +80,8 @@ gam_t1 <- fit_gam(
   thr = "max_sens_spec"
 )
 gam_t1$model
+gam_t1$predictors
 gam_t1$performance
-gam_t1$selected_thresholds
-gam_t1$all_thresholds
 
 # Using our own formula
 gam_t2 <- fit_gam(
@@ -95,20 +92,19 @@ gam_t2 <- fit_gam(
   partition = ".part",
   thr = "max_sens_spec",
   fit_formula = stats::formula(pr_ab ~ s(aet, df = 4) +
-    s(ppt_jja, df = 3) +
-    s(pH, df = 3) + landform)
+                                 s(ppt_jja, df = 3) +
+                                 s(pH, df = 3) + landform)
 )
 
 gam_t2$model
+gam_t2$predictors
 gam_t2$performance \%>\% dplyr::select(ends_with("_mean"))
-gam_t2$selected_thresholds
-gam_t2$threshold_table
 
 # Using repeated k-fold partition method
 abies_db2 <- data_part(
   data = abies_db,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 10, replicates = 10)
+  method = c(method = "rep_kfold", folds = 5, replicates = 5)
 )
 abies_db2
 
@@ -118,11 +114,9 @@ gam_t3 <- fit_gam(
   predictors = c("ppt_jja", "pH", "awc"),
   predictors_f = c("landform"),
   partition = ".part",
-  thr = "max_sens_spec",
-  poly = 3,
-  inter_order = 2
+  thr = "max_sens_spec"
 )
-gam_t3$model
+gam_t3
 }
 
 }

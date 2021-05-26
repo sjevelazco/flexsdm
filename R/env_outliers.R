@@ -7,9 +7,9 @@
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
-#' @param envr
+#' @param env_layer SpatRaster. Raster with environmental variables.
 
-env_outliers <- function(data, x, y, pr_ab, id, envr) {
+env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
   # Packages
   require(dplyr)
   require(terra)

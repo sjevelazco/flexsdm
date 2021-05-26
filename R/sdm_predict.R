@@ -29,7 +29,7 @@
 #'
 #' @seealso \code{\link{fit_ensemble}}
 #'
-#' @importFrom dplyr mutate across left_join pull bind_rows filter all_of select
+#' @importFrom dplyr %>% mutate across left_join pull bind_rows filter all_of select
 #' @importFrom gam predict.Gam
 #' @importFrom GRaF predict.graf
 #' @importFrom kernlab predict

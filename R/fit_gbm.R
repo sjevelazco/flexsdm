@@ -35,14 +35,13 @@
 #' expansion. Also known as the learning rate or step-size reduction;
 #' 0.001 to 0.1 usually work, but a smaller learning rate typically
 #' requires more trees. Default is 0.1.
-#' @param ...
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
 #' \item model: A "gbm" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
@@ -50,7 +49,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select all_of starts_with bind_rows summarise across everything
+#' @importFrom dplyr %>% select all_of starts_with bind_rows summarise across everything
 #' @importFrom gbm gbm predict.gbm
 #' @importFrom stats formula sd
 #'
@@ -93,9 +92,7 @@
 #'   predictors = c("ppt_jja", "pH", "awc"),
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
-#'   thr = "max_sens_spec",
-#'   poly = 3,
-#'   inter_order = 2
+#'   thr = "max_sens_spec"
 #' )
 #' gbm_t2
 #' }
@@ -109,8 +106,7 @@ fit_gbm <- function(data,
                     thr = NULL,
                     n_trees = 100,
                     n_minobsinnode = 10,
-                    shrinkage = 0.1,
-                    ...) {
+                    shrinkage = 0.1) {
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

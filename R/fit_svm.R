@@ -27,14 +27,13 @@
 #'
 #' @param sigma numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot". Default "automatic".
 #' @param C numeric. Cost of constraints violation this is the 'C'-constant of the regularization term in the Lagrange formulation. Default 1
-#' @param ...
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
 #' \item model: A "ksvm" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item selected_thresholds: Value of the threshold selected.
@@ -45,7 +44,7 @@
 #' Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[kernlab]{ksvm}.
 #' @export
 #'
-#' @importFrom dplyr select all_of starts_with bind_rows group_by summarise across everything
+#' @importFrom dplyr %>% select all_of starts_with bind_rows group_by summarise across everything
 #' @importFrom kernlab ksvm predict
 #' @importFrom stats formula sd
 #'
@@ -105,8 +104,7 @@ fit_svm <- function(data,
                     partition,
                     thr = NULL,
                     sigma = "automatic",
-                    C = 1,
-                    ...) {
+                    C = 1) {
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

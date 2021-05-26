@@ -24,7 +24,6 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
-#'
 #' @param size numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2 IMRPOVE THIS VALUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #' @param decay numeric. Parameter for weight decay. Default 0.
 #'
@@ -33,7 +32,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "nnet.formula" "nnet" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
@@ -42,7 +41,7 @@
 #' @export
 #'
 #' @importFrom dismo predict
-#' @importFrom dplyr select all_of starts_with bind_rows group_by summarise across everything
+#' @importFrom dplyr %>% select all_of starts_with bind_rows group_by summarise across everything
 #' @importFrom nnet nnet
 #' @importFrom stats formula predict sd
 #'
@@ -102,8 +101,7 @@ fit_net <- function(data,
                     partition,
                     thr = NULL,
                     size = 2,
-                    decay = 0,
-                    ...) {
+                    decay = 0) {
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

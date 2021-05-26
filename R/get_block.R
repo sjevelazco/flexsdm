@@ -8,12 +8,13 @@
 #' @return
 #' @export
 #'
-#' @importFrom dplyr select
+#' @importFrom dplyr %>% select
 #' @importFrom terra as.data.frame extract
 #'
 #' @examples
 #' \dontrun{
 #' require(dplyr)
+#' require(terra)
 #' data(spp)
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)

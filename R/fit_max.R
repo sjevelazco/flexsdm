@@ -31,14 +31,13 @@
 #' @param classes character. A single feature of any combinations of them. Features are symbolized by letters: l (linear), q (quadratic), h (hinge), p (product), and t (threshold). Usage classes = "lpq". Default "default" (see details).
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
 #' @param regmult numeric. A constant to adjust regularization. Default 1.
-#' @param ...
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
 #' \item model: A "MaxEnt" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item selected_thresholds: Value of the threshold selected.
@@ -55,7 +54,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select starts_with filter pull bind_rows group_by summarise across everything all_of
+#' @importFrom dplyr %>% select starts_with filter pull bind_rows group_by summarise across everything all_of
 #' @importFrom maxnet maxnet maxnet.formula
 #' @importFrom stats sd
 #'
@@ -75,8 +74,7 @@ fit_max <- function(data,
                     clamp = TRUE,
                     classes = "default",
                     pred_type = "cloglog",
-                    regmult = 1,
-                    ...) {
+                    regmult = 1) {
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

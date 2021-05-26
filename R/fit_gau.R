@@ -22,14 +22,13 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
-#' @param ...
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
 #' \item model: A "graf" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
@@ -37,7 +36,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select all_of starts_with filter pull bind_rows mutate tibble group_by summarise across relocate left_join
+#' @importFrom dplyr %>% select all_of starts_with filter pull bind_rows mutate tibble group_by summarise across relocate left_join
 #' @importFrom GRaF graf predict.graf
 #' @importFrom stats sd
 #'
@@ -64,8 +63,7 @@
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
 #'   background = bg,
-#'   thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
-#'   fit_formula = NULL
+#'   thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen")
 #' )
 #'
 #' gaup_t1$model
@@ -98,8 +96,7 @@ fit_gau <- function(data,
                     predictors_f = NULL,
                     background = NULL,
                     partition,
-                    thr = NULL,
-                    ...) {
+                    thr = NULL) {
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

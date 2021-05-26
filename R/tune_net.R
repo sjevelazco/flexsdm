@@ -22,10 +22,9 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
-#'
 #' @param metric character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.
 #'
-#' @importFrom dplyr select starts_with bind_rows tibble group_by_at summarise across everything pull
+#' @importFrom dplyr %>% select starts_with bind_rows tibble group_by_at summarise across everything pull
 #' @importFrom nnet nnet
 #' @importFrom stats formula na.omit predict
 #'
@@ -34,7 +33,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "nnet" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
 #' \item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
 #' \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
@@ -101,8 +100,7 @@ tune_net <-
            partition,
            grid = NULL,
            thr = NULL,
-           metric = "TSS",
-           ...) {
+           metric = "TSS") {
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
     data <- data.frame(data)

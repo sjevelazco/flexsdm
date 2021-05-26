@@ -48,7 +48,7 @@
 #' By default all thresholds will be calculated
 #' @export
 #'
-#' @importFrom dplyr tibble mutate filter pull bind_cols left_join all_of
+#' @importFrom dplyr %>% tibble mutate filter pull bind_cols left_join all_of
 #' @importFrom stats quantile
 #'
 #' @examples

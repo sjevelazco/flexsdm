@@ -28,21 +28,20 @@
 #' @param metric character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
-#' @param ...
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
 #' \item model: A "maxnet" "lognet" "glmnet" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
 #' \item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
 #' \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
 #' }
 #'
 #' @importFrom dismo predict
-#' @importFrom dplyr select starts_with filter pull bind_rows tibble group_by_at summarise across everything
+#' @importFrom dplyr %>% select starts_with filter pull bind_rows tibble group_by_at summarise across everything
 #' @importFrom maxnet maxnet maxnet.formula
 #'
 #' @seealso \code{\link{tune_gbm}}, \code{\link{tune_net}}, \code{\link{tune_raf}}, and \code{\link{tune_svm}}.
@@ -62,8 +61,7 @@ tune_max <-
            thr = NULL,
            metric = "TSS",
            clamp = TRUE,
-           pred_type = "cloglog",
-           ...) {
+           pred_type = "cloglog") {
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
     data <- data.frame(data)

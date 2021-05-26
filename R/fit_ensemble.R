@@ -38,7 +38,7 @@
 #' }
 #'
 #'
-#' @importFrom dplyr filter all_of pull bind_rows mutate inner_join select starts_with bind_cols across group_by summarise left_join relocate
+#' @importFrom dplyr %>% filter all_of pull bind_rows mutate inner_join select starts_with bind_cols across group_by summarise left_join relocate
 #' @importFrom stats median sd
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'

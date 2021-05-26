@@ -20,7 +20,7 @@
 #' @param maskval integer or numeric. Values of the raster layer used for constraining the pseudo-absence sampling
 #' @param calibarea SpatVector A SpatVector which delimit the calibration area used for a given species (see \code{\link{calib_area}} function).
 #'
-#' @importFrom dplyr select mutate
+#' @importFrom dplyr %>% select mutate
 #' @importFrom stats na.exclude kmeans
 #' @importFrom terra mask ext extract match as.data.frame
 #'

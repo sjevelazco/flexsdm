@@ -31,7 +31,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "gbm" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
 #' \item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
 #' \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
@@ -39,7 +39,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select starts_with bind_rows tibble group_by_at summarise across everything pull
+#' @importFrom dplyr %>% select starts_with bind_rows tibble group_by_at summarise across everything pull
 #' @importFrom gbm gbm predict.gbm
 #' @importFrom stats formula na.omit
 #'
@@ -122,8 +122,7 @@ tune_gbm <-
            partition,
            grid = NULL,
            thr = NULL,
-           metric = "TSS",
-           ...) {
+           metric = "TSS") {
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
     data <- data.frame(data)

@@ -11,7 +11,7 @@
 #'
 #' @seealso \code{\link{sample_pseudoabs}} and \code{\link{calib_area}}.
 #'
-#' @importFrom dplyr tibble
+#' @importFrom dplyr %>% tibble
 #' @importFrom stats na.exclude
 #' @importFrom terra mask freq match values ncell xyFromCell
 #'

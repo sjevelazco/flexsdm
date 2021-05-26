@@ -23,6 +23,7 @@ Transform a layer originated from the function block_partition or band_partition
 \examples{
 \dontrun{
 require(dplyr)
+require(terra)
 data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)

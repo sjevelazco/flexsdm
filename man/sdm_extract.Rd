@@ -22,8 +22,8 @@ environmental variables are removed from the returned tibble.}
 Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers. Default NULL}
 }
 \value{
-A tibble that returns the original data base of presence, presence-absence, or pseudo-absence location records with additional columns
-for the extracted environmental variables at each xy location from the SpatRast object 'env_layer'
+A tibble that returns the original data base with additional columns
+for the extracted environmental variables at each xy location from the SpatRast object used in 'env_layer'
 }
 \description{
 Extract environmental data based on x and y coordinates

@@ -26,14 +26,13 @@
 #' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
 #'
 #' @param mtry numeric. Number of variables randomly sampled as candidates at each split. Default sqrt(length(c(predictors, predictors_f)))
-#' @param ...
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
 #' \item model: A "randomForest" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
@@ -41,7 +40,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select all_of starts_with bind_rows group_by summarise across everything
+#' @importFrom dplyr %>% select all_of starts_with bind_rows group_by summarise across everything
 #' @importFrom randomForest randomForest
 #' @importFrom stats formula predict sd
 #'
@@ -100,8 +99,8 @@ fit_raf <- function(data,
                     fit_formula = NULL,
                     partition,
                     thr = NULL,
-                    mtry = sqrt(length(c(predictors, predictors_f))),
-                    ...) {
+                    mtry = sqrt(length(c(predictors, predictors_f)))
+                    ) {
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

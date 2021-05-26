@@ -25,7 +25,7 @@
 #' @export
 #'
 #' @importFrom ape Moran.I
-#' @importFrom dplyr group_by slice_sample pull tibble
+#' @importFrom dplyr %>% group_by slice_sample pull tibble
 #' @importFrom flexclust dist2
 #' @importFrom sp coordinates
 #' @importFrom stats complete.cases sd

@@ -34,7 +34,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "glm" class object. This object can be used for predicting.
-#' \item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
@@ -42,7 +42,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr select all_of starts_with mutate tibble bind_rows group_by summarise across relocate left_join
+#' @importFrom dplyr %>% select all_of starts_with mutate tibble bind_rows group_by summarise across relocate left_join
 #' @importFrom stats formula glm predict.glm sd
 #'
 #' @examples
@@ -113,8 +113,7 @@ fit_glm <- function(data,
                     thr = NULL,
                     fit_formula = NULL,
                     poly = 0,
-                    inter_order = 0,
-                    ...) {
+                    inter_order = 0) {
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

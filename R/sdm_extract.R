@@ -11,10 +11,10 @@
 #'
 #' @return
 #'
-#' A tibble that returns the original data base of presence, presence-absence, or pseudo-absence location records with additional columns
-#' for the extracted environmental variables at each xy location from the SpatRast object 'env_layer'
+#' A tibble that returns the original data base with additional columns
+#' for the extracted environmental variables at each xy location from the SpatRast object used in 'env_layer'
 #'
-#' @importFrom dplyr tibble select all_of filter
+#' @importFrom dplyr %>% tibble select all_of filter
 #' @importFrom stats complete.cases
 #' @importFrom terra vect crs extract
 #'

@@ -4,7 +4,7 @@
 \alias{env_outliers}
 \title{Detection of outliers in the environmental space}
 \usage{
-env_outliers(data, x, y, pr_ab, id, envr)
+env_outliers(data, x, y, pr_ab, id, env_layer)
 }
 \arguments{
 \item{data}{data.frame. Data.frame or tibble object with presences
@@ -17,6 +17,8 @@ env_outliers(data, x, y, pr_ab, id, envr)
 \item{pr_ab}{character. Column name with presence and absence data (i.e. 1 and 0)}
 
 \item{id}{character. Column names with rows id. It is important that each row has its own unique code.}
+
+\item{env_layer}{SpatRaster. Raster with environmental variables.}
 }
 \description{
 Detection of outliers in the environmental space
