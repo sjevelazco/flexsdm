@@ -76,9 +76,9 @@
 #'
 #' plot(part$grid)
 #' points(part$part[c("x", "y")],
-#'        col = c("blue", "red")[part$part$.part],
-#'        cex = 0.5,
-#'        pch = 19
+#'   col = c("blue", "red")[part$part$.part],
+#'   cex = 0.5,
+#'   pch = 19
 #' )
 #'
 #' terra::res(part$grid)
@@ -95,9 +95,9 @@
 #' plot(grid_env) # this is a block layer with the same layer
 #' # properties as environmental variables.
 #' points(part$part[c("x", "y")],
-#'        col = c("blue", "red")[part$part$.part],
-#'        cex = 0.5,
-#'        pch = 19
+#'   col = c("blue", "red")[part$part$.part],
+#'   cex = 0.5,
+#'   pch = 19
 #' )
 #' # This layer could be very useful in case you need sample
 #' # pseudo_absence or background point
@@ -182,15 +182,15 @@
 #' }
 #'
 part_spat <- function(env_layer,
-                            data,
-                            x,
-                            y,
-                            pr_ab,
-                            n_part = 2,
-                            min_res_mult = 3,
-                            max_res_mult = 200,
-                            num_grids = 30,
-                            prop = 0.5) {
+                      data,
+                      x,
+                      y,
+                      pr_ab,
+                      n_part = 2,
+                      min_res_mult = 3,
+                      max_res_mult = 200,
+                      num_grids = 30,
+                      prop = 0.5) {
   if (n_part != 2) {
     stop("The use of n_part values other than 2 has not yet been implemented.")
   }

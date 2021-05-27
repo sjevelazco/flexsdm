@@ -121,8 +121,7 @@
   <span class='va'>partition</span>,
   grid <span class='op'>=</span> <span class='cn'>NULL</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>,
-  metric <span class='op'>=</span> <span class='st'>"TSS"</span>,
-  <span class='va'>...</span>
+  metric <span class='op'>=</span> <span class='st'>"TSS"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -182,7 +181,7 @@ response, predictors, and predictors_f arguments. Default NULL</p></td>
 
     <p>A list object with:</p><ul>
 <li><p>model: A "ksvm" class object. This object can be used for predicting.</p></li>
-<li><p>predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.</p></li>
+<li><p>predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.</p></li>
 <li><p>performance: Hyper-parameters values and performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>) for the best hyper-parameters combination.</p></li>
 <li><p>hyper_performance: Performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>) for each combination of the hyper-parameters.</p></li>
 <li><p>data_ens: Predicted suitability for each test partition based on the best model. This database is used in <code><a href='fit_ensemble.html'>fit_ensemble</a></code></p></li>
@@ -199,7 +198,7 @@ response, predictors, and predictors_f arguments. Default NULL</p></td>
 
 <span class='co'># We will partition the data with the k-fold method</span>
 
-<span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='data_part.html'>data_part</a></span><span class='op'>(</span>
+<span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>data_part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,

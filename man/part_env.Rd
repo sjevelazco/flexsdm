@@ -59,14 +59,14 @@ f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
 
 # Select a species
-spp1 <- spp \%>\% dplyr::filter(species=='sp1')
+spp1 <- spp \%>\% dplyr::filter(species == "sp1")
 
 part1 <- part_env(
   env_layer = somevar,
   data = spp1,
-  x = 'x',
-  y = 'y',
-  pr_ab = 'pr_ab',
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
   min_n_groups = 2,
   max_n_groups = 10,
   prop = 0.2
@@ -74,17 +74,17 @@ part1 <- part_env(
 
 part1
 
-ggplot(part1$part, aes(x, y, col=factor(.part))) +
-  geom_point(aes(shape=factor(pr_ab)))
+ggplot(part1$part, aes(x, y, col = factor(.part))) +
+  geom_point(aes(shape = factor(pr_ab)))
 
-ggplot(part1$part, aes(x, y, col=factor(.part))) +
-  geom_point(aes(shape=factor(pr_ab))) +
-  facet_wrap(.~.part)
+ggplot(part1$part, aes(x, y, col = factor(.part))) +
+  geom_point(aes(shape = factor(pr_ab))) +
+  facet_wrap(. ~ .part)
 
-ggplot(part1$part, aes(x, y, col=factor(.part))) +
-  geom_point(aes(shape=factor(pr_ab))) +
-  facet_wrap(.~pr_ab)
- }
+ggplot(part1$part, aes(x, y, col = factor(.part))) +
+  geom_point(aes(shape = factor(pr_ab))) +
+  facet_wrap(. ~ pr_ab)
+}
 }
 \seealso{
 \code{\link{part}}, and \code{\link{part_spat}}.

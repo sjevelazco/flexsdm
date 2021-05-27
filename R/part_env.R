@@ -42,14 +42,14 @@
 #' somevar <- terra::rast(f)
 #'
 #' # Select a species
-#' spp1 <- spp %>% dplyr::filter(species=='sp1')
+#' spp1 <- spp %>% dplyr::filter(species == "sp1")
 #'
 #' part1 <- part_env(
 #'   env_layer = somevar,
 #'   data = spp1,
-#'   x = 'x',
-#'   y = 'y',
-#'   pr_ab = 'pr_ab',
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
 #'   min_n_groups = 2,
 #'   max_n_groups = 10,
 #'   prop = 0.2
@@ -57,45 +57,47 @@
 #'
 #' part1
 #'
-#' ggplot(part1$part, aes(x, y, col=factor(.part))) +
-#'   geom_point(aes(shape=factor(pr_ab)))
+#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#'   geom_point(aes(shape = factor(pr_ab)))
 #'
-#' ggplot(part1$part, aes(x, y, col=factor(.part))) +
-#'   geom_point(aes(shape=factor(pr_ab))) +
-#'   facet_wrap(.~.part)
+#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#'   geom_point(aes(shape = factor(pr_ab))) +
+#'   facet_wrap(. ~ .part)
 #'
-#' ggplot(part1$part, aes(x, y, col=factor(.part))) +
-#'   geom_point(aes(shape=factor(pr_ab))) +
-#'   facet_wrap(.~pr_ab)
-#'  }
+#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#'   geom_point(aes(shape = factor(pr_ab))) +
+#'   facet_wrap(. ~ pr_ab)
+#' }
 part_env <- function(env_layer,
-                         data,
-                         x,
-                         y,
-                         pr_ab,
-                         min_n_groups = 2,
-                         max_n_groups = 10,
-                         prop = 0.5) {
+                     data,
+                     x,
+                     y,
+                     pr_ab,
+                     min_n_groups = 2,
+                     max_n_groups = 10,
+                     prop = 0.5) {
   # Select columns
   data <- data.frame(data)
   data <- data[, c(pr_ab, x, y)]
   colnames(data) <- c("pr_ab", "x", "y")
-  pa <- data %>% dplyr::pull(pr_ab) %>% unique # Test if there are absences
+  pa <- data %>%
+    dplyr::pull(pr_ab) %>%
+    unique() # Test if there are absences
 
   # Test some about 0 and 1 (TRY TO ADAPT THIS FUNCTION FOR WORKING ONLY FOR PRESENCE)
   if (any(!unique(data[, "pr_ab"]) %in% c(0, 1))) {
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-paste(unique(data[, "pr_ab"]), collapse = " ")
+      paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 
   # Extract data
-  data <- dplyr::tibble(data, terra::extract(env_layer, data[,2:3])[-1])
+  data <- dplyr::tibble(data, terra::extract(env_layer, data[, 2:3])[-1])
   filt <- stats::complete.cases(data)
-  if(sum(!filt)>0){
-    data <- data[filt,]
+  if (sum(!filt) > 0) {
+    data <- data[filt, ]
     message(sum(!filt), " rows were excluded from database because NAs were found")
   }
   rm(filt)
@@ -113,26 +115,27 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
 
   # k-mean algorithm
   km_l <- list()
-  for(i in 1:length(cell_size)){
-    km_l[[i]] <- stats::kmeans(data[,-1], centers = cell_size[i])$cluster
+  for (i in 1:length(cell_size)) {
+    km_l[[i]] <- stats::kmeans(data[, -1], centers = cell_size[i])$cluster
   }
 
-  names(km_l) <- paste0('.g', cell_size)
+  names(km_l) <- paste0(".g", cell_size)
 
   # Bind groups
   km_l <- dplyr::bind_cols(km_l)
 
 
   ### Remove problematic partition
-  n_records <- apply(km_l, 2, function(x){
+  n_records <- apply(km_l, 2, function(x) {
     dplyr::tibble(x, data[1]) %>%
-      dplyr::group_by(x, pr_ab) %>% dplyr::count() %>%
-      dplyr::mutate(filt=n<=2) # 2
+      dplyr::group_by(x, pr_ab) %>%
+      dplyr::count() %>%
+      dplyr::mutate(filt = n <= 2) # 2
   })
 
-  filt <- sapply(n_records, function(x) any(x %>% dplyr::pull('filt')))
+  filt <- sapply(n_records, function(x) any(x %>% dplyr::pull("filt")))
 
-  if(sum(!filt)==0){
+  if (sum(!filt) == 0) {
     stop("it was not possible to find a good partition")
   }
 
@@ -141,13 +144,17 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
 
   # Perform SD
   sd_p <- sapply(n_records, function(x) {
-    x %>% dplyr::filter(pr_ab==1) %>%
-      dplyr::pull(n) %>% stats::sd()
+    x %>%
+      dplyr::filter(pr_ab == 1) %>%
+      dplyr::pull(n) %>%
+      stats::sd()
   })
 
   sd_a <- sapply(n_records, function(x) {
-    x %>% dplyr::filter(pr_ab==0) %>%
-      dplyr::pull(n) %>% sd
+    x %>%
+      dplyr::filter(pr_ab == 0) %>%
+      dplyr::pull(n) %>%
+      sd()
   })
 
   rm(n_records)
@@ -162,19 +169,23 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
     Env.P1 <- cbind(km_l[i], Env.P)
     Env.P1 <- split(Env.P1[, -1], Env.P1[, 1])
     euq_c <- list()
-    for(r in 1:ncol(cmb)){
-      euq_c[[r]] <- flexclust::dist2(Env.P1[[cmb[1,r]]], Env.P1[[cmb[2,r]]]) %>% mean()
+    for (r in 1:ncol(cmb)) {
+      euq_c[[r]] <- flexclust::dist2(Env.P1[[cmb[1, r]]], Env.P1[[cmb[2, r]]]) %>% mean()
     }
 
-    env_sim[i] <- euq_c %>% unlist() %>% mean()
+    env_sim[i] <- euq_c %>%
+      unlist() %>%
+      mean()
   }
 
 
   # # I moran-----
   spa_auto <- rep(NA, ncol(km_l))
 
-  dist <- flexclust::dist2(data[, c("x", "y")] %>% as.data.frame(),
-                           data[, c("x", "y")] %>% as.data.frame())
+  dist <- flexclust::dist2(
+    data[, c("x", "y")] %>% as.data.frame(),
+    data[, c("x", "y")] %>% as.data.frame()
+  )
   dist <- 1 / dist
   diag(dist) <- 0
   dist[which(dist == Inf)] <- 0
@@ -182,10 +193,11 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
   for (p in 1:ncol(km_l)) {
     cmb <- unique(km_l[, p][[1]]) %>% utils::combn(2)
     imoran_grid_c <- rep(NA, ncol(cmb))
-    dff <- dplyr::tibble(nrow=1:nrow(km_l), data['pr_ab'], group=km_l[p][[1]])
+    dff <- dplyr::tibble(nrow = 1:nrow(km_l), data["pr_ab"], group = km_l[p][[1]])
 
     for (c in 1:ncol(cmb)) {
-      filt <- dff %>% dplyr::group_by(group, pr_ab) %>%
+      filt <- dff %>%
+        dplyr::group_by(group, pr_ab) %>%
         dplyr::slice_sample(prop = prop) %>%
         dplyr::pull(nrow) %>%
         sort()
@@ -197,8 +209,9 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
       dist2[odd, odd] <- 0
       dist2[even, even] <- 0
 
-      mins <- apply(dist2, 2, function(x)
-        max(x, na.rm = TRUE))
+      mins <- apply(dist2, 2, function(x) {
+        max(x, na.rm = TRUE)
+      })
       for (i in 1:length(mins)) {
         dist2[, i] <- ifelse(dist2[, i] == mins[i], mins[i], 0)
       }
@@ -206,13 +219,16 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
       if (nrow(data) < 3) {
         imoran_grid_c[c] <- NA
       } else {
-        im <- sapply(data[filt, names(env_layer)],
-                     function(x) {
-                       ape::Moran.I(x,
-                                    dist2,
-                                    na.rm = TRUE,
-                                    scaled = TRUE)$observed
-                     })
+        im <- sapply(
+          data[filt, names(env_layer)],
+          function(x) {
+            ape::Moran.I(x,
+              dist2,
+              na.rm = TRUE,
+              scaled = TRUE
+            )$observed
+          }
+        )
         imoran_grid_c[c] <- mean(im)
       }
     }
@@ -226,17 +242,19 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
     if (any(unique(pa) == 0)) {
       data.frame(
         n_parition = 1:ncol(km_l),
-        n_groups = gsub('.g', '', colnames(km_l)),
+        n_groups = gsub(".g", "", colnames(km_l)),
         round(
           data.frame(sd_p, sd_a, spa_auto, env_sim),
           3
         )
       )
     } else {
-      data.frame(n_groups = gsub('.g', '', colnames(km_l)), round(data.frame(
-        sd_p, spa_auto, env_sim
-      ),
-      3))
+      data.frame(n_groups = gsub(".g", "", colnames(km_l)), round(
+        data.frame(
+          sd_p, spa_auto, env_sim
+        ),
+        3
+      ))
     }
 
   Opt2 <- Opt
@@ -273,7 +291,7 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
     }
 
     if (unique(Opt2$spa_auto) &&
-        unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
+      unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }
@@ -288,7 +306,7 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
   # Final data.frame result2----
   result <- list(
     part = dplyr::tibble(result),
-    best_part_info = dplyr::tibble(Opt2))
+    best_part_info = dplyr::tibble(Opt2)
+  )
   return(result)
 }
-
