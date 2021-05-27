@@ -32,13 +32,13 @@ layers, do not use categorical layers as inputs}
 \item{pr_ab}{character. Column with presences, presence-absence,
 or pseudo-absence. Presences must be represented by 1 and absences by 0}
 
+\item{min_n_groups}{integer. Minimum number of groups to be tested. Default 2.}
+
 \item{max_n_groups}{integer. Maximum number of groups to be tested. Default 10.}
 
 \item{prop}{numeric. Proportion of point used for testing autocorrelation between
 groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
 Default 0.5}
-
-\item{min_res_mult}{integer. Minimum number of groups to be tested. Default 2.}
 }
 \value{
 A list with:

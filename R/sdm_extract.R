@@ -4,7 +4,7 @@
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
 #' @param env_layer SpatRaster. Raster with environmental variables.
-#' @param variables. character. Vector with the variable names of predictor variables
+#' @param variables character. Vector with the variable names of predictor variables
 #' Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers. Default NULL
 #' @param filter_na logical. If filter_na = TRUE (default), the rows with NA values for any of the
 #' environmental variables are removed from the returned tibble.
