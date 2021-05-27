@@ -45,7 +45,7 @@
 #'
 #' # Lest practice with a single species
 #' single_spp <- spp %>% dplyr::filter(species == "sp3")
-#' part <- part(
+#' part <- part_spat(
 #'   env_layer = somevar,
 #'   data = single_spp,
 #'   x = "x",
@@ -100,7 +100,7 @@
 #' names(spp2)
 #'
 #' part_list <- lapply(spp2, function(x) {
-#'   result <- part(
+#'   result <- part_spat(
 #'     env_layer = somevar,
 #'     data = x,
 #'     x = "x",
@@ -150,7 +150,7 @@
 #' single_spp
 #' single_spp$pr_ab %>% unique() # only presences
 #'
-#' part <- part(
+#' part <- part_spat(
 #'   env_layer = somevar,
 #'   data = single_spp,
 #'   x = "x",
