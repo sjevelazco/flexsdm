@@ -1,5 +1,6 @@
 #' Spatial block cross validation
 #'
+#' @description  "asdf"
 #' @param env_layer SpatRaster. Raster with environmental
 #' variable. This will be used to evaluate spatial autocorrelation and
 #' environmental similarity between training and testing partition. Because this function
@@ -19,9 +20,18 @@
 #' min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30
 #' @param n_part  integer. Number of partition. Default 2, values other than
 #' 2 has not yet been implemented.
+#' @param prop numeric. Proportion of point used for testing autocorrelation between
+#' groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
+#' Default 0.5
 #'
 #' @return
-#' A tibble object with information used in 'data' arguments wand a additional column .part with partition group.
+#' A list with:
+#' \itemize{
+#'   \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
+#'   \item best_part_info: A tibble with information of the bets partition. It contains the number of the best partition (n_grid), cell size (cell_size), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on euclidean distance (env_sim).
+#'   \item grid: A SpatRaster object with blocks
+#'   }
+#'
 #' @export
 #'
 #' @importFrom ape Moran.I
@@ -59,15 +69,16 @@
 #' part
 #'
 #' part$part
-#' part$best_grid_info
+#' part$best_part_info
 #' part$grid
 #'
 #' # Lets explore Grid object
+#'
 #' plot(part$grid)
 #' points(part$part[c("x", "y")],
-#'   col = c("blue", "red")[part$part$.part],
-#'   cex = 0.5,
-#'   pch = 19
+#'        col = c("blue", "red")[part$part$.part],
+#'        cex = 0.5,
+#'        pch = 19
 #' )
 #'
 #' terra::res(part$grid)
@@ -84,9 +95,9 @@
 #' plot(grid_env) # this is a block layer with the same layer
 #' # properties as environmental variables.
 #' points(part$part[c("x", "y")],
-#'   col = c("blue", "red")[part$part$.part],
-#'   cex = 0.5,
-#'   pch = 19
+#'        col = c("blue", "red")[part$part$.part],
+#'        cex = 0.5,
+#'        pch = 19
 #' )
 #' # This layer could be very useful in case you need sample
 #' # pseudo_absence or background point
@@ -109,7 +120,8 @@
 #'     min_res_mult = 10,
 #'     max_res_mult = 500,
 #'     num_grids = 30,
-#'     n_part = 2
+#'     n_part = 2,
+#'     prop = 0.5
 #'   )
 #'   result
 #' })
@@ -128,13 +140,6 @@
 #' ), .id = "species")
 #'
 #' # Lets get a the best grid layer for all species
-#' grid_layer <- lapply(
-#'   part_list,
-#'   function(x) x[[3]]
-#' )
-#' sapply(grid_layer, plot)
-#'
-#' # Lets get a the best grid info for all species
 #' grid_layer2 <-
 #'   lapply(grid_layer, function(x) {
 #'     get_block(env_layer = somevar[[1]], best_grid = x)
@@ -159,11 +164,12 @@
 #'   min_res_mult = 10,
 #'   max_res_mult = 500,
 #'   num_grids = 30,
-#'   n_part = 2
+#'   n_part = 2,
+#'   prop = 0.5
 #' )
 #'
 #' part$part
-#' part$best_grid_info
+#' part$best_part_info
 #' part$grid
 #'
 #' plot(part$grid)
@@ -183,7 +189,8 @@ part_spat <- function(env_layer,
                             n_part = 2,
                             min_res_mult = 3,
                             max_res_mult = 200,
-                            num_grids = 30) {
+                            num_grids = 30,
+                            prop = 0.5) {
   if (n_part != 2) {
     stop("The use of n_part values other than 2 has not yet been implemented.")
   }
@@ -357,35 +364,35 @@ unique list values in pr_ab column are: ",
   # Performance of cells ----
   # SD of number of records per cell size-----
 
-  sd_grid_p <- rep(NA, length(grid))
+  sd_p <- rep(NA, length(grid))
   if (any(unique(pa) == 0)) {
-    sd_grid_a <- rep(NA, length(grid))
+    sd_a <- rep(NA, length(grid))
   }
 
   for (i in 1:ncol(part)) {
     if (any(unique(pa) == 0)) {
-      sd_grid_a[i] <- stats::sd(table(part[pa == 0, i])) /
+      sd_a[i] <- stats::sd(table(part[pa == 0, i])) /
         mean(table(part[pa == 0, i]))
     }
-    sd_grid_p[i] <- stats::sd(table(part[pa == 1, i])) /
+    sd_p[i] <- stats::sd(table(part[pa == 1, i])) /
       mean(table(part[pa == 1, i]))
   }
 
   # Environmental similarity between train and test based on euclidean  -----
-  envir_dist_grid <- rep(NA, length(grid))
+  env_sim <- rep(NA, length(grid))
   Env.P <- terra::extract(env_layer, presences2)[-1]
   for (i in 1:ncol(part)) {
     Env.P1 <- cbind(part[i], Env.P)
     Env.P1 <- Env.P1[complete.cases(Env.P1), ]
     Env.P2 <- split(Env.P1[, -1], Env.P1[, 1])
     euq1 <- flexclust::dist2(Env.P2[[1]], Env.P2[[2]])
-    envir_dist_grid[i] <- mean(euq1)
+    env_sim[i] <- mean(euq1)
     rm(list = c("Env.P1", "Env.P2"))
   }
 
 
   # I moran-----
-  imoran_grid <- rep(NA, length(grid))
+  spa_auto <- rep(NA, length(grid))
 
   dist <- flexclust::dist2(
     presences2[, c("x", "y")] %>% as.data.frame(),
@@ -399,16 +406,14 @@ unique list values in pr_ab column are: ",
     cbind(terra::as.data.frame(presences2), terra::extract(env_layer, presences2)[-1])
 
   for (p in 1:length(grid)) {
-    ncell3 <- ncell[, p]
     part3 <- c(part[, p])
     filt <- data.frame(
-      nrow = 1:length(ncell3),
-      ncell = ncell3,
+      nrow = 1:nrow(presences2),
       group = part3,
       pr_ab = presences2$pr_ab
     ) %>%
-      dplyr::group_by(ncell, group, pr_ab) %>%
-      dplyr::slice_sample(n = 1) %>%
+      dplyr::group_by(group, pr_ab) %>%
+      dplyr::slice_sample(prop = prop) %>%
       dplyr::pull(nrow) %>%
       sort()
     odd <- which((part3[filt] == 1))
@@ -423,7 +428,7 @@ unique list values in pr_ab column are: ",
     }
 
     if (nrow(species2) < 3) {
-      imoran_grid[p] <- NA
+      spa_auto[p] <- NA
     } else {
       im <- sapply(
         species2[filt, names(env_layer)],
@@ -435,22 +440,22 @@ unique list values in pr_ab column are: ",
           )$observed
         }
       )
-      imoran_grid[p] <- mean(im)
+      spa_auto[p] <- mean(im)
     }
   }
 
-  imoran_grid <-
-    abs(imoran_grid)
+  spa_auto <-
+    abs(spa_auto)
 
   Opt <-
     if (any(unique(pa) == 0)) {
       data.frame(n_grid = 1:length(cell_size), cell_size = cell_size, round(
-        data.frame(imoran_grid, envir_dist_grid, sd_grid_p, sd_grid_a),
+        data.frame(spa_auto, env_sim, sd_p, sd_a),
         3
       ))
     } else {
       data.frame(n_grid = 1:length(cell_size), cell_size = cell_size, round(
-        data.frame(imoran_grid, envir_dist_grid, sd_grid_p),
+        data.frame(spa_auto, env_sim, sd_p),
         3
       ))
     }
@@ -462,9 +467,9 @@ unique list values in pr_ab column are: ",
   Opt2 <- Opt
   Dup <-
     if (any(unique(pa) == 0)) {
-      !duplicated(Opt2[c("imoran_grid", "envir_dist_grid", "sd_grid_p", "sd_grid_a")])
+      !duplicated(Opt2[c("spa_auto", "env_sim", "sd_p", "sd_a")])
     } else {
-      !duplicated(Opt2[c("imoran_grid", "envir_dist_grid", "sd_grid_p")])
+      !duplicated(Opt2[c("spa_auto", "env_sim", "sd_p")])
     }
 
   Opt2 <- Opt2[Dup, ]
@@ -475,33 +480,33 @@ unique list values in pr_ab column are: ",
       break
     }
     Opt2 <-
-      Opt2[which(Opt2$imoran_grid <= summary(Opt2$imoran_grid)[2]), ]
+      Opt2[which(Opt2$spa_auto <= summary(Opt2$spa_auto)[2]), ]
     if (nrow(Opt2) == 1) {
       break
     }
     # Euclidean
     Opt2 <-
-      Opt2[which(Opt2$envir_dist_grid >= summary(Opt2$envir_dist_grid)[5]), ]
+      Opt2[which(Opt2$env_sim >= summary(Opt2$env_sim)[5]), ]
     if (nrow(Opt2) == 1) {
       break
     }
     # SD presence
     Opt2 <-
-      Opt2[which(Opt2$sd_grid_p <= summary(Opt2$sd_grid_p)[2]), ]
+      Opt2[which(Opt2$sd_p <= summary(Opt2$sd_p)[2]), ]
     if (nrow(Opt2) == 2) {
       break
     }
     # SD absences
     if (any(unique(pa) == 0)) {
       Opt2 <-
-        Opt2[which(Opt2$sd_grid_a <= summary(Opt2$sd_grid_a)[2]), ]
+        Opt2[which(Opt2$sd_a <= summary(Opt2$sd_a)[2]), ]
       if (nrow(Opt2) == 2) {
         break
       }
     }
 
-    if (unique(Opt2$imoran_grid) &&
-      unique(Opt2$envir_dist_grid) && unique(Opt2$sd_grid_p)) {
+    if (unique(Opt2$spa_auto) &&
+      unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }
@@ -522,7 +527,7 @@ unique list values in pr_ab column are: ",
   # Final data.frame result2----
   out <- list(
     part = dplyr::tibble(result),
-    best_grid_info = dplyr::tibble(Opt2),
+    best_part_info = dplyr::tibble(Opt2),
     grid = grid # Optimum size for presences
   )
   return(out)

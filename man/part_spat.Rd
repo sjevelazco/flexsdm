@@ -13,7 +13,8 @@ part_spat(
   n_part = 2,
   min_res_mult = 3,
   max_res_mult = 200,
-  num_grids = 30
+  num_grids = 30,
+  prop = 0.5
 )
 }
 \arguments{
@@ -44,12 +45,21 @@ raster resolution and define the coarsest resolution to be tested, default 200.}
 
 \item{num_grids}{integer. Number of grid to be tested between
 min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30}
+
+\item{prop}{numeric. Proportion of point used for testing autocorrelation between
+groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
+Default 0.5}
 }
 \value{
-A tibble object with information used in 'data' arguments wand a additional column .part with partition group.
+A list with:
+\itemize{
+  \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
+  \item best_part_info: A tibble with information of the bets partition. It contains the number of the best partition (n_grid), cell size (cell_size), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on euclidean distance (env_sim).
+  \item grid: A SpatRaster object with blocks
+  }
 }
 \description{
-Spatial block cross validation
+"asdf"
 }
 \examples{
 \dontrun{
@@ -77,15 +87,16 @@ part <- part_spat(
 part
 
 part$part
-part$best_grid_info
+part$best_part_info
 part$grid
 
 # Lets explore Grid object
+
 plot(part$grid)
 points(part$part[c("x", "y")],
-  col = c("blue", "red")[part$part$.part],
-  cex = 0.5,
-  pch = 19
+       col = c("blue", "red")[part$part$.part],
+       cex = 0.5,
+       pch = 19
 )
 
 terra::res(part$grid)
@@ -102,9 +113,9 @@ grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
 points(part$part[c("x", "y")],
-  col = c("blue", "red")[part$part$.part],
-  cex = 0.5,
-  pch = 19
+       col = c("blue", "red")[part$part$.part],
+       cex = 0.5,
+       pch = 19
 )
 # This layer could be very useful in case you need sample
 # pseudo_absence or background point
@@ -127,7 +138,8 @@ part_list <- lapply(spp2, function(x) {
     min_res_mult = 10,
     max_res_mult = 500,
     num_grids = 30,
-    n_part = 2
+    n_part = 2,
+    prop = 0.5
   )
   result
 })
@@ -146,13 +158,6 @@ grid_info <- dplyr::bind_rows(lapply(
 ), .id = "species")
 
 # Lets get a the best grid layer for all species
-grid_layer <- lapply(
-  part_list,
-  function(x) x[[3]]
-)
-sapply(grid_layer, plot)
-
-# Lets get a the best grid info for all species
 grid_layer2 <-
   lapply(grid_layer, function(x) {
     get_block(env_layer = somevar[[1]], best_grid = x)
@@ -177,11 +182,12 @@ part <- part_spat(
   min_res_mult = 10,
   max_res_mult = 500,
   num_grids = 30,
-  n_part = 2
+  n_part = 2,
+  prop = 0.5
 )
 
 part$part
-part$best_grid_info
+part$best_part_info
 part$grid
 
 plot(part$grid)
