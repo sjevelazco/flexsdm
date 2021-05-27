@@ -11,8 +11,7 @@
 #' @param y character. Column name with latitude data
 #' @param pr_ab character. Column with presences, presence-absence,
 #' or pseudo-absence. Presences must be represented by 1 and absences by 0
-#' @param min_n_groups
-#' @param min_res_mult integer. Minimum number of groups to be tested. Default 2.
+#' @param min_n_groups integer. Minimum number of groups to be tested. Default 2.
 #' @param max_n_groups integer. Maximum number of groups to be tested. Default 10.
 #' @param prop numeric. Proportion of point used for testing autocorrelation between
 #' groups (values > 0 and <=1). The smaller this number is, the faster the function will work.

@@ -15,11 +15,11 @@ sdm_extract(data, x, y, env_layer, variables = NULL, filter_na = TRUE)
 
 \item{env_layer}{SpatRaster. Raster with environmental variables.}
 
+\item{variables}{character. Vector with the variable names of predictor variables
+Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers. Default NULL}
+
 \item{filter_na}{logical. If filter_na = TRUE (default), the rows with NA values for any of the
 environmental variables are removed from the returned tibble.}
-
-\item{variables.}{character. Vector with the variable names of predictor variables
-Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers. Default NULL}
 }
 \value{
 A tibble that returns the original data base with additional columns
