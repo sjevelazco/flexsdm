@@ -6,22 +6,22 @@
 #' calculate dissimilarity based on euclidean distances, it can only handle continuous
 #' layers, do not use categorical layers as inputs
 #' @param data data.frame. Data.frame or tibble object with presences
-#' (or presence-absence, o presences-pseudo-absence) records, and coordinates
+#' (or presence-absence, or presences-pseudo-absence) records, and coordinates
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
 #' @param pr_ab character. Column with presences, presence-absence,
 #' or pseudo-absence. Presences must be represented by 1 and absences by 0
-#' @param min_res_mult numeric. Minimum value used for multiplying
+#' @param min_res_mult integer. Minimum value used for multiplying
 #' raster resolution and define the finest resolution to be tested, default 3.
-#' @param max_res_mult numeric. Maximum value used for multiplying
+#' @param max_res_mult integer. Maximum value used for multiplying
 #' raster resolution and define the coarsest resolution to be tested, default 200.
-#' @param num_grids numeric. Number of grid to be tested between
+#' @param num_grids integer. Number of grid to be tested between
 #' min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30
-#' @param n_part  numeric. Number of partition. Default 2, values other than
+#' @param n_part  integer. Number of partition. Default 2, values other than
 #' 2 has not yet been implemented.
 #'
 #' @return
-#' This function will return the same data.frame or tibble object used in the arguments 'data' with the additional column .part with partition group.
+#' A tibble object with information used in 'data' arguments wand a additional column .part with partition group.
 #' @export
 #'
 #' @importFrom ape Moran.I
@@ -31,7 +31,7 @@
 #' @importFrom stats complete.cases sd
 #' @importFrom terra res ext extract crs vect extend values ncell cellFromXY coords as.data.frame
 #'
-#' @seealso \code{\link{data_part}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+#' @seealso \code{\link{part}}, \code{\link{part_env}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 #'
 #' @examples
 #' \dontrun{
@@ -45,7 +45,7 @@
 #'
 #' # Lest practice with a single species
 #' single_spp <- spp %>% dplyr::filter(species == "sp3")
-#' part <- part_spatial(
+#' part <- part_spat(
 #'   env_layer = somevar,
 #'   data = single_spp,
 #'   x = "x",
@@ -100,7 +100,7 @@
 #' names(spp2)
 #'
 #' part_list <- lapply(spp2, function(x) {
-#'   result <- part_spatial(
+#'   result <- part_spat(
 #'     env_layer = somevar,
 #'     data = x,
 #'     x = "x",
@@ -150,7 +150,7 @@
 #' single_spp
 #' single_spp$pr_ab %>% unique() # only presences
 #'
-#' part <- part_spatial(
+#' part <- part_spat(
 #'   env_layer = somevar,
 #'   data = single_spp,
 #'   x = "x",
@@ -175,7 +175,7 @@
 #' )
 #' }
 #'
-part_spatial <- function(env_layer,
+part_spat <- function(env_layer,
                             data,
                             x,
                             y,
