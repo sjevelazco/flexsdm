@@ -94,9 +94,9 @@ part$grid
 
 plot(part$grid)
 points(part$part[c("x", "y")],
-       col = c("blue", "red")[part$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = c("blue", "red")[part$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 
 terra::res(part$grid)
@@ -113,9 +113,9 @@ grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
 points(part$part[c("x", "y")],
-       col = c("blue", "red")[part$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = c("blue", "red")[part$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 # This layer could be very useful in case you need sample
 # pseudo_absence or background point

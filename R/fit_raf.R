@@ -99,8 +99,7 @@ fit_raf <- function(data,
                     fit_formula = NULL,
                     partition,
                     thr = NULL,
-                    mtry = sqrt(length(c(predictors, predictors_f)))
-                    ) {
+                    mtry = sqrt(length(c(predictors, predictors_f)))) {
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

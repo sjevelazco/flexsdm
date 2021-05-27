@@ -294,7 +294,7 @@ fit_svm <- function(data,
       mod,
       newdata = data,
       type = "prob"
-    )[,2])
+    )[, 2])
   )
 
   threshold <- sdm_eval(

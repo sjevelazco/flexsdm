@@ -76,8 +76,8 @@
 #'   partition = ".part",
 #'   thr = "max_sens_spec",
 #'   fit_formula = stats::formula(pr_ab ~ s(aet, df = 4) +
-#'                                  s(ppt_jja, df = 3) +
-#'                                  s(pH, df = 3) + landform)
+#'     s(ppt_jja, df = 3) +
+#'     s(pH, df = 3) + landform)
 #' )
 #'
 #' gam_t2$model
