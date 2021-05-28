@@ -1,6 +1,7 @@
+#'
 #' Data partitioning for training and testing models
 #'
-#' @description This function provides different partition methods based in folds (kfold, rep_kfold, and loocv), bootstrap (boot), and spatially structured (BANDS and BLOCK).
+#' @description This function provides different conventional partition methods based in folds (kfold, rep_kfold, and loocv), and bootstrap (boot)
 #'
 #' @param data data.frame. Database with presences, presence-absence, or pseudo-absence, records for a given species
 #' @param pr_ab character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0
@@ -20,7 +21,7 @@
 #'
 #' @importFrom dplyr %>% group_by mutate n summarise filter select slice_sample full_join left_join tibble
 #'
-#' @seealso \code{\link{sample_pseudoabs}}, \code{\link{sample_background}}
+#' @seealso \code{\link{part_sblock}}, \code{\link{part_senv}}, \code{\link{sample_pseudoabs}}, \code{\link{sample_background}}
 #'
 #' @examples
 #' \dontrun{

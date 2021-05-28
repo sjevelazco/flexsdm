@@ -1,7 +1,7 @@
 #' Environmental and spatial cross validation
 #'
-#' @description This function explores different number of environmental partition based on
-#' k-mean cluster algorithm and returns the best one suited for a given presence or
+#' @description This function explores different numbers of environmental partitions based on the
+#' K-mean cluster algorithm and returns the best one suited for a given presence or
 #' presence-absences database. The selection of the best number of partition is performed
 #' automatically considering spatial autocorrelation, environmental similarity, and the
 #' number of presence and/or absence records in each partition.
@@ -29,16 +29,17 @@
 #'   \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
 #'   \item best_part_info: A tibble with information of the bets partition. It contains the number of partition (n_groups), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto) and environmental similarity based on euclidean distance (env_sim)
 #'   }
+#' @details write here criteria used for performing the search of the best partition (metrics and quartil selection).
 #'
 #' @export
 #' @importFrom ape Moran.I
-#' @importFrom dplyr %>% pull bind_cols tibble group_by count filter select slice_sample
+#' @importFrom dplyr tibble pull bind_cols group_by count mutate filter select slice_sample
 #' @importFrom flexclust dist2
-#' @importFrom stats kmeans
+#' @importFrom stats complete.cases kmeans sd
 #' @importFrom terra extract
 #' @importFrom utils combn
 #'
-#' @seealso \code{\link{part}}, and \code{\link{part_spat}}.
+#' @seealso \code{\link{part}}, and \code{\link{part_sblock}}.
 #' @examples
 #' \dontrun{
 #' require(terra)
@@ -174,8 +175,8 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
     cmb <- unique(part[, i][[1]]) %>% utils::combn(2)
 
     Env.P1 <- cbind(part[i], Env.P)
-    Env.P1 <- Env.P1[complete.cases(Env.P1), ]
-    Env.P1 <- split(Env.P1[, -1], Env.P1[, 1])
+    Env.P1 <- Env.P1[stats::complete.cases(Env.P1), ]
+    Env.P1 <- stats::complete.cases(Env.P1[, -1], Env.P1[, 1])
     euq_c <- list()
     for (r in 1:ncol(cmb)) {
       euq_c[[r]] <- flexclust::dist2(Env.P1[[cmb[1, r]]], Env.P1[[cmb[2, r]]]) %>% mean()

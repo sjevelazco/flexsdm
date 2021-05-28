@@ -36,16 +36,19 @@
 #'   \item grid: A SpatRaster object with blocks
 #'   }
 #'
+#' @details write here criteria used for performing the search of the best partition (metrics and quartil selection).
+#'
 #' @export
 #'
 #' @importFrom ape Moran.I
-#' @importFrom dplyr %>% group_by slice_sample pull tibble
+#' @importFrom dplyr tibble pull group_by slice_sample select
 #' @importFrom flexclust dist2
 #' @importFrom sp coordinates
 #' @importFrom stats complete.cases sd
-#' @importFrom terra res ext extract crs vect extend values ncell cellFromXY coords as.data.frame
+#' @importFrom terra extract res ext crs vect extend values ncell cellFromXY coords
+#' @importFrom utils combn
 #'
-#' @seealso \code{\link{part}}, \code{\link{part_env}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+#' @seealso \code{\link{part}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 #'
 #' @examples
 #' \dontrun{
@@ -81,9 +84,9 @@
 #'
 #' plot(part$grid)
 #' points(part$part[c("x", "y")],
-#'        col = c("blue", "red")[part$part$.part],
-#'        cex = 0.5,
-#'        pch = 19
+#'   col = c("blue", "red")[part$part$.part],
+#'   cex = 0.5,
+#'   pch = 19
 #' )
 #'
 #' terra::res(part$grid)
@@ -100,9 +103,9 @@
 #' plot(grid_env) # this is a block layer with the same layer
 #' # properties as environmental variables.
 #' points(part$part[c("x", "y")],
-#'        col = c("blue", "red")[part$part$.part],
-#'        cex = 0.5,
-#'        pch = 19
+#'   col = c("blue", "red")[part$part$.part],
+#'   cex = 0.5,
+#'   pch = 19
 #' )
 #' # This layer could be very useful in case you need sample
 #' # pseudo_absence or background point
@@ -124,11 +127,11 @@
 #' )
 #'
 #' # Lets explore Grid object
-#' plot(part$grid, col=gray.colors(4))
+#' plot(part$grid, col = gray.colors(4))
 #' points(part$part[c("x", "y")],
-#'        col = rainbow(n = 4)[part$part$.part],
-#'        cex = 0.5,
-#'        pch = 19
+#'   col = rainbow(n = 4)[part$part$.part],
+#'   cex = 0.5,
+#'   pch = 19
 #' )
 #'
 #'
@@ -210,15 +213,15 @@
 #' }
 #'
 part_sblock <- function(env_layer,
-                      data,
-                      x,
-                      y,
-                      pr_ab,
-                      n_part = 3,
-                      min_res_mult = 3,
-                      max_res_mult = 200,
-                      num_grids = 30,
-                      prop = 0.5) {
+                        data,
+                        x,
+                        y,
+                        pr_ab,
+                        n_part = 3,
+                        min_res_mult = 3,
+                        max_res_mult = 200,
+                        num_grids = 30,
+                        prop = 0.5) {
 
   # Select columns
   data <- dplyr::tibble(data)
@@ -229,7 +232,7 @@ part_sblock <- function(env_layer,
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-paste(unique(data[, "pr_ab"]), collapse = " ")
+      paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 
@@ -324,13 +327,13 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
 
   # In this section is assigned the group of each cell
   for (i in 1:length(grid)) {
-    if (n_part%%2==0) {
+    if (n_part %% 2 == 0) {
       group <- c(
         rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
         rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
       )
     }
-    if (n_part%%2==1) {
+    if (n_part %% 2 == 1) {
       group <- c(
         rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
         rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
@@ -484,9 +487,9 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
           data[filt, names(env_layer)],
           function(x) {
             ape::Moran.I(x,
-                         dist2,
-                         na.rm = TRUE,
-                         scaled = TRUE
+              dist2,
+              na.rm = TRUE,
+              scaled = TRUE
             )$observed
           }
         )
