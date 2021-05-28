@@ -209,7 +209,7 @@
 #' )
 #' }
 #'
-part_spat <- function(env_layer,
+part_sblock <- function(env_layer,
                       data,
                       x,
                       y,

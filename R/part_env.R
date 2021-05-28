@@ -30,6 +30,7 @@
 #' @importFrom flexclust dist2
 #' @importFrom stats kmeans
 #' @importFrom terra extract
+#' @importFrom utils combn
 #'
 #' @seealso \code{\link{part}}, and \code{\link{part_spat}}.
 #' @examples
@@ -79,16 +80,12 @@ part_env <- function(env_layer,
   data <- data.frame(data)
   data <- data[, c(pr_ab, x, y)]
   colnames(data) <- c("pr_ab", "x", "y")
-  pa <- data %>%
-    dplyr::pull(pr_ab) %>%
-    unique() # Test if there are absences
 
-  # Test some about 0 and 1 (TRY TO ADAPT THIS FUNCTION FOR WORKING ONLY FOR PRESENCE)
   if (any(!unique(data[, "pr_ab"]) %in% c(0, 1))) {
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-      paste(unique(data[, "pr_ab"]), collapse = " ")
+paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 
@@ -100,6 +97,11 @@ unique list values in pr_ab column are: ",
     message(sum(!filt), " rows were excluded from database because NAs were found")
   }
   rm(filt)
+
+  # Vector with presences and absences
+  pa <- data %>%
+    dplyr::pull(pr_ab) %>%
+    unique()
 
   # Vector with grid cell-size used
   cell_size <- seq(min_n_groups, max_n_groups)
@@ -113,19 +115,19 @@ unique list values in pr_ab column are: ",
   message("Searching best partition...\n")
 
   # k-mean algorithm
-  km_l <- list()
+  part <- list()
   for (i in 1:length(cell_size)) {
-    km_l[[i]] <- stats::kmeans(data[, -1], centers = cell_size[i])$cluster
+    part[[i]] <- stats::kmeans(data[, -1], centers = cell_size[i])$cluster
   }
 
-  names(km_l) <- paste0(".g", cell_size)
+  names(part) <- paste0(".g", cell_size)
 
   # Bind groups
-  km_l <- dplyr::bind_cols(km_l)
+  part <- dplyr::bind_cols(part)
 
 
   ### Remove problematic partition
-  n_records <- apply(km_l, 2, function(x) {
+  n_records <- apply(part, 2, function(x) {
     dplyr::tibble(x, data[1]) %>%
       dplyr::group_by(x, pr_ab) %>%
       dplyr::count() %>%
@@ -135,11 +137,12 @@ unique list values in pr_ab column are: ",
   filt <- sapply(n_records, function(x) any(x %>% dplyr::pull("filt")))
 
   if (sum(!filt) == 0) {
-    stop("it was not possible to find a good partition")
+    message("It was not possible to find a good partition. Try to change values in 'min_n_groups' and 'max_n_groups'")
+    return(NA)
   }
 
   n_records <- n_records[!filt]
-  km_l <- km_l[!filt]
+  part <- part[!filt]
 
   # Perform SD
   sd_p <- sapply(n_records, function(x) {
@@ -160,12 +163,12 @@ unique list values in pr_ab column are: ",
 
   # # Environmental similarity between train and test based on euclidean  -----
   Env.P <- data %>% dplyr::select(-pr_ab, -x, -y)
+  env_sim <- rep(NA, ncol(part))
+  for (i in 1:ncol(part)) {
+    cmb <- unique(part[, i][[1]]) %>% utils::combn(2)
 
-  env_sim <- rep(NA, ncol(km_l))
-  for (i in 1:ncol(km_l)) {
-    cmb <- unique(km_l[, i][[1]]) %>% combn(2)
-
-    Env.P1 <- cbind(km_l[i], Env.P)
+    Env.P1 <- cbind(part[i], Env.P)
+    Env.P1 <- Env.P1[complete.cases(Env.P1), ]
     Env.P1 <- split(Env.P1[, -1], Env.P1[, 1])
     euq_c <- list()
     for (r in 1:ncol(cmb)) {
@@ -179,7 +182,7 @@ unique list values in pr_ab column are: ",
 
 
   # # I moran-----
-  spa_auto <- rep(NA, ncol(km_l))
+  spa_auto <- rep(NA, ncol(part))
 
   dist <- flexclust::dist2(
     data[, c("x", "y")] %>% as.data.frame(),
@@ -189,10 +192,10 @@ unique list values in pr_ab column are: ",
   diag(dist) <- 0
   dist[which(dist == Inf)] <- 0
 
-  for (p in 1:ncol(km_l)) {
-    cmb <- unique(km_l[, p][[1]]) %>% utils::combn(2)
+  for (p in 1:ncol(part)) {
+    cmb <- unique(part[, p][[1]]) %>% utils::combn(2)
     imoran_grid_c <- rep(NA, ncol(cmb))
-    dff <- dplyr::tibble(nrow = 1:nrow(km_l), data["pr_ab"], group = km_l[p][[1]])
+    dff <- dplyr::tibble(nrow = 1:nrow(part), data["pr_ab"], group = part[p][[1]])
 
     for (c in 1:ncol(cmb)) {
       filt <- dff %>%
@@ -201,8 +204,8 @@ unique list values in pr_ab column are: ",
         dplyr::pull(nrow) %>%
         sort()
 
-      odd <- which((km_l[p][[1]] == cmb[1, c])[filt])
-      even <- which((km_l[p][[1]] == cmb[2, c])[filt])
+      odd <- which((part[p][[1]] == cmb[1, c])[filt])
+      even <- which((part[p][[1]] == cmb[2, c])[filt])
 
       dist2 <- dist[filt, filt]
       dist2[odd, odd] <- 0
@@ -228,27 +231,25 @@ unique list values in pr_ab column are: ",
             )$observed
           }
         )
-        imoran_grid_c[c] <- mean(im)
+        imoran_grid_c[c] <- mean(abs(im))
       }
     }
     spa_auto[p] <- mean(imoran_grid_c)
   }
 
-  spa_auto <- abs(spa_auto)
-
   # # SELLECTION OF THE BEST CELL SIZE----
   Opt <-
     if (any(unique(pa) == 0)) {
       data.frame(
-        n_parition = 1:ncol(km_l),
-        n_groups = gsub(".g", "", colnames(km_l)),
+        n_parition = 1:ncol(part),
+        n_groups = gsub(".g", "", colnames(part)),
         round(
           data.frame(sd_p, sd_a, spa_auto, env_sim),
           3
         )
       )
     } else {
-      data.frame(n_groups = gsub(".g", "", colnames(km_l)), round(
+      data.frame(n_groups = gsub(".g", "", colnames(part)), round(
         data.frame(
           sd_p, spa_auto, env_sim
         ),
@@ -266,7 +267,7 @@ unique list values in pr_ab column are: ",
       break
     }
     # SD absences
-    if (any(pa == 0)) {
+    if (any(unique(pa) == 0)) {
       Opt2 <-
         Opt2[which(Opt2$sd_a <= summary(Opt2$sd_a)[2]), ]
       if (nrow(Opt2) == 1) {
@@ -297,7 +298,7 @@ unique list values in pr_ab column are: ",
 
 
   # Final data.frame result----
-  result <- data.frame(data, .part = c(km_l[, rownames(Opt2)]))
+  result <- data.frame(data, .part = c(part[, rownames(Opt2)])[[1]])
   result <- result %>% dplyr::select(-names(env_layer))
   colnames(result) <- c("pr_ab", "x", "y", ".part")
   result <- result[c("x", "y", "pr_ab", ".part")]
