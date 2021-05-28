@@ -50,7 +50,7 @@
 #' # Select a species
 #' spp1 <- spp %>% dplyr::filter(species == "sp1")
 #'
-#' part1 <- part_env(
+#' part1 <- part_senv(
 #'   env_layer = somevar,
 #'   data = spp1,
 #'   x = "x",
@@ -74,7 +74,7 @@
 #'   geom_point(aes(shape = factor(pr_ab))) +
 #'   facet_wrap(. ~ pr_ab)
 #' }
-part_env <- function(env_layer,
+part_senv <- function(env_layer,
                      data,
                      x,
                      y,
