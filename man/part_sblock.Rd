@@ -64,6 +64,9 @@ best one suited for a given presence or presence-absences database. The selectio
 grid size is performed automatically considering spatial autocorrelation, environmental
 similarity, and the number of presence and absence records in each partition.
 }
+\details{
+write here criteria used for performing the search of the best partition (metrics and quartil selection).
+}
 \examples{
 \dontrun{
 require(terra)
@@ -98,9 +101,9 @@ part$grid
 
 plot(part$grid)
 points(part$part[c("x", "y")],
-       col = c("blue", "red")[part$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = c("blue", "red")[part$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 
 terra::res(part$grid)
@@ -117,9 +120,9 @@ grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
 points(part$part[c("x", "y")],
-       col = c("blue", "red")[part$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = c("blue", "red")[part$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 # This layer could be very useful in case you need sample
 # pseudo_absence or background point
@@ -141,11 +144,11 @@ part <- part_sblock(
 )
 
 # Lets explore Grid object
-plot(part$grid, col=gray.colors(4))
+plot(part$grid, col = gray.colors(4))
 points(part$part[c("x", "y")],
-       col = rainbow(n = 4)[part$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = rainbow(n = 4)[part$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 
 
@@ -228,5 +231,5 @@ points(
 
 }
 \seealso{
-\code{\link{part}}, \code{\link{part_env}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+\code{\link{part}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 }

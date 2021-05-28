@@ -27,7 +27,7 @@ part(data, pr_ab, bg_data = NULL, bg_a = NULL, method = NULL)
 A tibble object with information used in 'data' and/or 'gb_data' arguments and a additional columns .part with partition group. In the case of boot partition partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will returned a list with partition data for each database with the names data and bg_data.
 }
 \description{
-This function provides different partition methods based in folds (kfold, rep_kfold, and loocv), bootstrap (boot), and spatially structured (BANDS and BLOCK).
+This function provides different conventional partition methods based in folds (kfold, rep_kfold, and loocv), and bootstrap (boot)
 }
 \examples{
 \dontrun{
@@ -79,5 +79,5 @@ abies_db2$.part1 \%>\% table() # Note that for this method .partX columns have t
 
 }
 \seealso{
-\code{\link{sample_pseudoabs}}, \code{\link{sample_background}}
+\code{\link{part_sblock}}, \code{\link{part_senv}}, \code{\link{sample_pseudoabs}}, \code{\link{sample_background}}
 }

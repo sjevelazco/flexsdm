@@ -48,11 +48,14 @@ A list with:
   }
 }
 \description{
-This function explores different number of environmental partition based on
-k-mean cluster algorithm and returns the best one suited for a given presence or
+This function explores different numbers of environmental partitions based on the
+K-mean cluster algorithm and returns the best one suited for a given presence or
 presence-absences database. The selection of the best number of partition is performed
 automatically considering spatial autocorrelation, environmental similarity, and the
 number of presence and/or absence records in each partition.
+}
+\details{
+write here criteria used for performing the search of the best partition (metrics and quartil selection).
 }
 \examples{
 \dontrun{
@@ -91,5 +94,5 @@ ggplot(part1$part, aes(x, y, col = factor(.part))) +
 }
 }
 \seealso{
-\code{\link{part}}, and \code{\link{part_spat}}.
+\code{\link{part}}, and \code{\link{part_sblock}}.
 }
