@@ -54,25 +54,25 @@
 #'   cores = 1
 #' )
 #'
-#' # 10 bins
+#' # 8 bins
 #' filtered_2 <- env_filtering(
 #'   data = spp1,
 #'   x = "x",
 #'   y = "y",
 #'   id = "idd",
 #'   variables = somevar,
-#'   nbins = 10,
+#'   nbins = 8,
 #'   cores = 1
 #' )
 #'
-#' # 20 bins
+#' # 12 bins
 #' filtered_3 <- env_filtering(
 #'   data = spp1,
 #'   x = "x",
 #'   y = "y",
 #'   id = "idd",
 #'   variables = somevar,
-#'   nbins = 20,
+#'   nbins = 12,
 #'   cores = 1
 #' )
 #' # note that while higher the nbins parameter higher the number of

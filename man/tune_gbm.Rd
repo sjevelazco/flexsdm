@@ -69,7 +69,7 @@ abies_db
 
 # We will partition the data with the k-fold method
 
-abies_db2 <- data_part(
+abies_db2 <- part(
   data = abies_db,
   pr_ab = "pr_ab",
   bg_data = NULL,

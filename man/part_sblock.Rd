@@ -188,6 +188,7 @@ grid_info <- dplyr::bind_rows(lapply(
 ), .id = "species")
 
 # Lets get a the best grid layer for all species
+grid_layer <- lapply(part_list, function(x) x$grid)
 grid_layer2 <-
   lapply(grid_layer, function(x) {
     get_block(env_layer = somevar[[1]], best_grid = x)

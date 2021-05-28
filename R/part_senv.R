@@ -88,7 +88,7 @@ part_senv <- function(env_layer,
   data <- data[, c(pr_ab, x, y)]
   colnames(data) <- c("pr_ab", "x", "y")
 
-  if (any(!unique(data[, "pr_ab"]) %in% c(0, 1))) {
+  if (any(!unique(data[, "pr_ab"][[1]]) %in% c(0, 1))) {
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",

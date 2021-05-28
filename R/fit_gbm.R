@@ -58,7 +58,7 @@
 #' data("abies_db")
 #'
 #' # Using k-fold partition method
-#' abies_db2 <- data_part(
+#' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 10)
@@ -79,7 +79,7 @@
 #' gbm_t1$all_thresholds
 #'
 #' # Using bootstrap partition method
-#' abies_db2 <- data_part(
+#' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "boot", replicates = 10, proportion = 0.7)

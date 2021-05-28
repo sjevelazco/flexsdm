@@ -51,7 +51,7 @@
 #' abies_db
 #'
 #' # Using k-fold partition method
-#' abies_db2 <- data_part(
+#' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 10)
@@ -86,7 +86,7 @@
 #' )
 #'
 #' # Using repeated k-fold partition method
-#' abies_db2 <- data_part(
+#' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "rep_kfold", folds = 10, replicates = 10)

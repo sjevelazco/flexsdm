@@ -31,7 +31,7 @@ somevar <- terra::rast(f)
 # Lest practice with a single species
 single_spp <- spp \%>\% dplyr::filter(species == "sp3")
 
-part <- block_partition(
+part <- part_sblock(
   env_layer = somevar,
   data = single_spp,
   x = "x",

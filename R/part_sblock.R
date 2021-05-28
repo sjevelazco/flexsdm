@@ -171,6 +171,7 @@
 #' ), .id = "species")
 #'
 #' # Lets get a the best grid layer for all species
+#' grid_layer <- lapply(part_list, function(x) x$grid)
 #' grid_layer2 <-
 #'   lapply(grid_layer, function(x) {
 #'     get_block(env_layer = somevar[[1]], best_grid = x)
@@ -228,7 +229,7 @@ part_sblock <- function(env_layer,
   data <- data[, c(pr_ab, x, y)]
   colnames(data) <- c("pr_ab", "x", "y")
 
-  if (any(!unique(data[, "pr_ab"]) %in% c(0, 1))) {
+  if (any(!unique(data[, "pr_ab"][[1]]) %in% c(0, 1))) {
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",

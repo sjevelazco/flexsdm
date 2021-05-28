@@ -64,7 +64,7 @@ Fit and validate Generalized Additive Models
 data("abies_db")
 
 # Using k-fold partition method
-abies_db2 <- data_part(
+abies_db2 <- part(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
@@ -84,6 +84,7 @@ gam_t1$predictors
 gam_t1$performance
 
 # Using our own formula
+require(gam)
 gam_t2 <- fit_gam(
   data = abies_db2,
   response = "pr_ab",
@@ -101,7 +102,7 @@ gam_t2$predictors
 gam_t2$performance \%>\% dplyr::select(ends_with("_mean"))
 
 # Using repeated k-fold partition method
-abies_db2 <- data_part(
+abies_db2 <- part(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "rep_kfold", folds = 5, replicates = 5)
