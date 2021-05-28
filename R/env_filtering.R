@@ -81,6 +81,9 @@
 #' # While higher the number of bins smaller the number of records retained
 #' }
 env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
+
+  s <- . <- l <- NULL
+
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
 

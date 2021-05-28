@@ -1,7 +1,6 @@
 #' Detection of outliers in the environmental space
 #' @param data data.frame. Data.frame or tibble object with presences
 #' (or presence-absence) records, and coordinates
-#' @param species
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
@@ -10,6 +9,7 @@
 #' @param env_layer SpatRaster. Raster with environmental variables.
 
 env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
+  . <- NULL
   # Packages
   require(dplyr)
   require(terra)
@@ -18,21 +18,19 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
   require(biogeo)
   require(Rlof)
 
-  # Filter and replace species names
+  # Select columns and rename them
   data <- data[, c(id, x, y, pr_ab)]
-  names(data) <- c("id", "species", "x", "y", "pr_ab")
+  names(data) <- c("id", "x", "y", "pr_ab")
 
   # Convert data to tibble object
   data <- data %>% tibble()
-  spp <- unique(data$species)
-  var <- names(envr)
+  var <- names(env_layer)
 
   out_list <- list()
   for (i in 1:length(spp)) {
     message(i)
     occ_sp_01 <- data %>%
-      dplyr::filter(species == spp[i]) %>%
-      dplyr::select(species, x, y, id, pr_ab)
+      dplyr::select(x, y, id, pr_ab)
 
     occ_sp_01 <-
       occ_sp_01 %>% mutate(
@@ -46,7 +44,7 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
       )
 
     sp_env_01 <-
-      terra::extract(envr, data.frame(occ_sp_01[c("x", "y")])) %>%
+      terra::extract(env_layer, data.frame(occ_sp_01[c("x", "y")])) %>%
       data.frame() %>%
       tibble(id = occ_sp_01$id, pr_ab = occ_sp_01$pr_ab, .)
     sp_env_1 <- sp_env_01 %>% dplyr::filter(pr_ab == 1)
@@ -102,7 +100,7 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
       #### Random forest - outlier ####
       rf <-
         randomForest::randomForest(sp_env_1[-1], ntree = 2000, proximity = TRUE)
-      ot <- outlier(rf)
+      ot <- randomForest::outlier(rf)
       occ_sp_01[occ_sp_01$id %in% sp_env_1$id, ".out_rfout"] <-
         as.integer(ot > quantile(ot, probs = seq(0, 1, 0.05))[20])
       rm(rf)

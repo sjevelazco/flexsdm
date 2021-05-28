@@ -112,7 +112,7 @@ boyce <- function(pres,
 
   # remove classes with 0 background frequency
   if (any(0 %in% freq_contrast)) {
-    zeros <- which(freqPres == 0)
+    zeros <- which(freq_pres == 0)
     mean_pred[zeros] <- NA
     freq_pres[zeros] <- NA
     freq_contrast[zeros] <- NA

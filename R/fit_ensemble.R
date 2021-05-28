@@ -51,6 +51,8 @@ fit_ensemble <-
            thr = NULL,
            thr_model = NULL,
            metric = NULL) {
+    . <- NULL
+
     if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
       if (is.null(thr_model) | is.null(metric)) {
         stop("for 'meanw', 'meansup', or 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' and 'metric' argument")
