@@ -102,6 +102,7 @@ fit_net <- function(data,
                     thr = NULL,
                     size = 2,
                     decay = 0) {
+  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

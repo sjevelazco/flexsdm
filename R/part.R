@@ -72,6 +72,7 @@
 #' }
 #'
 part <- function(data, pr_ab, bg_data = NULL, bg_a = NULL, method = NULL) {
+  .part <- BOOT1 <- BOOT2 <- boot <- NULL
 
   # kfold
   if (method["method"] == "kfold") {

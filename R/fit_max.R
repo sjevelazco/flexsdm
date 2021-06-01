@@ -75,6 +75,7 @@ fit_max <- function(data,
                     classes = "default",
                     pred_type = "cloglog",
                     regmult = 1) {
+  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

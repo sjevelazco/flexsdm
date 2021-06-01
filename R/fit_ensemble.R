@@ -51,7 +51,7 @@ fit_ensemble <-
            thr = NULL,
            thr_model = NULL,
            metric = NULL) {
-    . <- NULL
+    . <- thr_value <- pr_ab <- rnames <- replicates <- TPR <- IMAE <- n_absences <- model <- thr_value <- n_presences <- n_absences <- NULL
 
     if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
       if (is.null(thr_model) | is.null(metric)) {

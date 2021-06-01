@@ -83,6 +83,7 @@ part_senv <- function(env_layer,
                      min_n_groups = 2,
                      max_n_groups = 10,
                      prop = 0.5) {
+  group <- NULL
   # Select columns
   data <- data.frame(data)
   data <- data[, c(pr_ab, x, y)]

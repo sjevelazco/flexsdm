@@ -107,6 +107,7 @@ fit_gbm <- function(data,
                     n_trees = 100,
                     n_minobsinnode = 10,
                     shrinkage = 0.1) {
+  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

@@ -101,6 +101,7 @@ tune_net <-
            grid = NULL,
            thr = NULL,
            metric = "TSS") {
+    . <- model <- TPR <- IMAE <- thr_value <- n_presences <- n_absences <- NULL
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
     data <- data.frame(data)
