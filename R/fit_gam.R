@@ -111,6 +111,7 @@ fit_gam <- function(data,
                     partition,
                     thr = NULL,
                     fit_formula = NULL) {
+  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)

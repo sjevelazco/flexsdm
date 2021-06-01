@@ -44,6 +44,8 @@ sdm_predict <-
            predict_area = NULL,
            clamp = TRUE,
            pred_type = "cloglog") {
+    ens <- ca_1 <- . <- model <- threshold <- thr_value <- NULL
+
     if (all(names(ens) %in% c("models", "thr_metric", "predictors", "performance"))) {
       message("Predicting ensembles")
       ensembles <- models
@@ -471,10 +473,10 @@ sdm_predict <-
       }
 
       if (any("meanthr" == ens_method)) {
-        mf <- function(x, y) {
+        mf1 <- function(x, y) {
           terra::lapp(x, function(x) ifelse(x >= y, x, 0))
         }
-        model_c2 <- mapply(mf, model_c, weight_data[[2]], SIMPLIFY = FALSE) %>% terra::rast()
+        model_c2 <- mapply(mf1, model_c, weight_data[[2]], SIMPLIFY = FALSE) %>% terra::rast()
         ensemble_c[["meanthr"]] <- terra::app(model_c2, fun = mean, cores = 1)
         rm(model_c2)
       }
@@ -537,11 +539,11 @@ sdm_predict <-
         }
       }
 
-      mf <- function(x, x2) {
+      mf2 <- function(x, x2) {
         terra::rast(list(x, x2))
       }
 
-      result <- mapply(mf, model_c, model_b, SIMPLIFY = FALSE)
+      result <- mapply(mf2, model_c, model_b, SIMPLIFY = FALSE)
       return(result)
     }
   }

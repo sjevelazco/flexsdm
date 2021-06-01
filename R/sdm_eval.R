@@ -90,6 +90,7 @@
 #' }
 #'
 sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
+  TPR <- TNR <- JACCARD <- SORENSEN <- threshold <- FPB <- TSS <- NULL
   if (any(
     !(thr[names(thr) != "sens"]) %in% c(
       "lpt",

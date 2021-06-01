@@ -192,6 +192,8 @@
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #' }
 sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, calibarea = NULL) {
+  ID <- NULL
+
   if (!any(c(
     "rnd",
     "env_const",

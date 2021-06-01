@@ -5,6 +5,17 @@
 ## %######################################################%##
 
 
+#' pre_tr_te
+#'
+#' @param data
+#' @param p_names
+#' @param h
+#'
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' }
 pre_tr_te <- function(data, p_names, h) {
   train <- list()
   test <- list()

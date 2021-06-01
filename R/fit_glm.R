@@ -114,6 +114,7 @@ fit_glm <- function(data,
                     fit_formula = NULL,
                     poly = 0,
                     inter_order = 0) {
+  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)
