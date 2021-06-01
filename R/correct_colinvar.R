@@ -228,7 +228,7 @@ correct_colinvar <- function(rstack,
       tryCatch(
         stats::factanal(
           x = p,
-          factors = nS$Components$noc,
+          factors = ns,
           rotation = "varimax",
           lower = 0.01
         ),
