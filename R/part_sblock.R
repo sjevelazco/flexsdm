@@ -45,7 +45,7 @@
 #' @importFrom flexclust dist2
 #' @importFrom sp coordinates
 #' @importFrom stats complete.cases sd
-#' @importFrom terra extract res ext crs vect extend values ncell cellFromXY coords
+#' @importFrom terra extract res ext crs vect extend values ncell cellFromXY geom
 #' @importFrom utils combn
 #'
 #' @seealso \code{\link{part}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
@@ -406,7 +406,7 @@ unique list values in pr_ab column are: ",
     length(grid)
   ))
   for (i in 1:length(grid)) {
-    ncell[, i] <- terra::cellFromXY(grid[[i]], terra::coords(presences2))
+    ncell[, i] <- terra::cellFromXY(grid[[i]], terra::geom(presences2)[,c('x', 'y')])
   }
 
   # Performance of cells ----
