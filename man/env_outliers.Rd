@@ -2,7 +2,7 @@
 % Please edit documentation in R/env_outliers.R
 \name{env_outliers}
 \alias{env_outliers}
-\title{Detection of outliers in the environmental space}
+\title{Several approaches for detecting outliers in the environmental space}
 \usage{
 env_outliers(data, x, y, pr_ab, id, env_layer)
 }
@@ -16,10 +16,19 @@ env_outliers(data, x, y, pr_ab, id, env_layer)
 
 \item{pr_ab}{character. Column name with presence and absence data (i.e. 1 and 0)}
 
-\item{id}{character. Column names with rows id. It is important that each row has its own unique code.}
+\item{id}{character. Column names with rows id. It is important that each row has its
+own unique code.}
 
 \item{env_layer}{SpatRaster. Raster with environmental variables.}
 }
+\value{
+
+}
 \description{
-Detection of outliers in the environmental space
+Several approaches for detecting outliers in the environmental space
+}
+\examples{
+\dontrun{
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+}
 }

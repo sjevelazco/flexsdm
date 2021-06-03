@@ -4,7 +4,7 @@
 \alias{env_filtering}
 \title{Function to perform environmental filtering of species occurrence records}
 \usage{
-env_filtering(data, x, y, id, variables, nbins, cores = 1)
+env_filtering(data, x, y, id, env_layer, nbins, cores = 1)
 }
 \arguments{
 \item{data}{data.frame. Data.frame or tibble object with presences
@@ -16,7 +16,7 @@ env_filtering(data, x, y, id, variables, nbins, cores = 1)
 
 \item{id}{character. Column names with rows id. It is important that each row has its own unique code.}
 
-\item{variables}{SpatRaste. Rasters with environmental conditions}
+\item{env_layer}{SpatRaste. Rasters with environmental conditions}
 
 \item{nbins}{integer. A number of classes used to split each environmental condition}
 
@@ -56,7 +56,7 @@ filtered_1 <- env_filtering(
   x = "x",
   y = "y",
   id = "idd",
-  variables = somevar,
+  env_layer = somevar,
   nbins = 5,
   cores = 1
 )
@@ -67,7 +67,7 @@ filtered_2 <- env_filtering(
   x = "x",
   y = "y",
   id = "idd",
-  variables = somevar,
+  env_layer = somevar,
   nbins = 8,
   cores = 1
 )
@@ -78,7 +78,7 @@ filtered_3 <- env_filtering(
   x = "x",
   y = "y",
   id = "idd",
-  variables = somevar,
+  env_layer = somevar,
   nbins = 12,
   cores = 1
 )

@@ -5,7 +5,7 @@
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
-#' @param variables SpatRaste. Rasters with environmental conditions
+#' @param env_layer SpatRaste. Rasters with environmental conditions
 #' @param nbins integer. A number of classes used to split each environmental condition
 #' @param cores integer. Number of machine cores used for processing in parallel
 #'
@@ -49,7 +49,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   id = "idd",
-#'   variables = somevar,
+#'   env_layer = somevar,
 #'   nbins = 5,
 #'   cores = 1
 #' )
@@ -60,7 +60,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   id = "idd",
-#'   variables = somevar,
+#'   env_layer = somevar,
 #'   nbins = 8,
 #'   cores = 1
 #' )
@@ -71,7 +71,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   id = "idd",
-#'   variables = somevar,
+#'   env_layer = somevar,
 #'   nbins = 12,
 #'   cores = 1
 #' )
@@ -80,7 +80,7 @@
 #'
 #' # While higher the number of bins smaller the number of records retained
 #' }
-env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
+env_filtering <- function(data, x, y, id, env_layer, nbins, cores = 1) {
 
   s <- . <- l <- NULL
 
@@ -88,24 +88,24 @@ env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
   coord <- data[c(x, y)]
 
   message("Extracting values from raster ... ")
-  variables <- terra::extract(variables, coord)
-  variables$ID <- NULL
+  env_layer <- terra::extract(env_layer, coord)
+  env_layer$ID <- NULL
 
-  filt <- stats::complete.cases(variables)
+  filt <- stats::complete.cases(env_layer)
   if (sum(!filt) > 0) {
     message(sum(!filt), " records were removed because they have NAs for some variables")
     da <- da[filt, ]
     coord <- coord[filt, ]
-    variables <- variables[filt, ]
+    env_layer <- env_layer[filt, ]
   }
   rm(filt)
 
-  n <- ncol(variables)
-  res <- (apply(variables, 2, max) - apply(variables, 2, min)) / nbins
+  n <- ncol(env_layer)
+  res <- (apply(env_layer, 2, max) - apply(env_layer, 2, min)) / nbins
 
   classes <- list()
   for (i in 1:n) {
-    ext1 <- range(variables[, i])
+    ext1 <- range(env_layer[, i])
     ext1[1] <- ext1[1] - 1
     classes[[i]] <- seq(ext1[1], ext1[2], by = res[i])
   }
@@ -121,7 +121,7 @@ env_filtering <- function(data, x, y, id, variables, nbins, cores = 1) {
   }
 
   classes <- data.frame(classes, ends) %>% dplyr::mutate(groupID = c(1:nrow(classes)))
-  real_p <- data.frame(coord, variables)
+  real_p <- data.frame(coord, env_layer)
 
   names_real <- c("lon", "lat")
   names_pot_st <- NULL

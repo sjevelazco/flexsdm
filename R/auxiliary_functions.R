@@ -7,10 +7,6 @@
 
 #' pre_tr_te
 #'
-#' @param data
-#' @param p_names
-#' @param h
-#'
 #' @noRd
 #'
 #' @examples
@@ -62,7 +58,13 @@ inv_bio <- function(e, p) {
 }
 
 
-# Inverse geo
+#' Inverse geo
+#'
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' }
 inv_geo <- function(e, p, d) {
   colnames(p) <- c("x", "y")
   sp::coordinates(p) <- ~ x + y
@@ -73,11 +75,16 @@ inv_geo <- function(e, p, d) {
   return(e)
 }
 
-# Boyce
-# This function calculate Boyce index performance metric. Codes were adapted from enmSdm package. Boyce have
-# value between -1 and +1, with a value tending toward +1 indicating good to perfect predictions, values
-# around 0 indicating predictions no different from those obtained by chance,
-# and values toward -1 indicating counter-predictions.
+#' Boyce
+#'
+#' @description This function calculate Boyce index performance metric. Codes were adapted from
+#' enmSdm package.
+#'
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' }
 boyce <- function(pres,
                   contrast,
                   n_bins = 101,
@@ -144,11 +151,13 @@ boyce <- function(pres,
 }
 
 
-## %######################################################%##
-#                                                          #
-####              Predict maxnet function               ####
-#                                                          #
-## %######################################################%##
+#' Predict maxnet
+#'
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' }
 predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "exponential", "cloglog", "logistic"), ...) {
   if (clamp) {
     for (v in intersect(names(object$varmax), names(newdata))) {
@@ -198,4 +207,48 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
   if (type == "logistic") {
     return(1 / (1 + exp(-object$entropy - link)))
   }
+}
+
+#' Outliers with Reverse Jackknife
+#'
+#' @noRd
+#'
+#' @examples
+#' \dontrun{
+#' }
+rev_jack <- function(v){
+  v2 <- v
+  v <- unique(v)
+  lgh <- length(v) - 1
+  t1 <- (0.95 * sqrt(length(v))) + 0.2
+  x <- sort(v)
+  y <- rep(0, lgh)
+  for (i in seq_len(lgh)) {
+    x1 <- x[i + 1]
+    if (x[i] < mean(v)) {
+      y[i] <- (x1 - x[i]) * (mean(v) - x[i])
+    }
+    else {
+      y[i] <- (x1 - x[i]) * (x1 - mean(v))
+    }
+  }
+  my <- mean(y)
+  z <- y/(sqrt(sum((y - my)^2)/lgh))
+  out <- rep(0, length(v2))
+  if (any(z > t1)) {
+    f <- which(z > t1)
+    v <- x[f]
+    if (v < median(x)) {
+      xa <- (v2 <= v) * 1
+      out <- out + xa
+    }
+    if (v > median(x)) {
+      xb <- (v2 >= v) * 1
+      out <- out + xb
+    }
+  }
+  else {
+    out <- out
+  }
+  return(which(out == 1))
 }
