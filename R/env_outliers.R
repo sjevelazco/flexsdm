@@ -9,36 +9,32 @@
 #' @param data data.frame or tibble with presences (or presence-absence) records, and coordinates
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
-#' @param id character. Column name with rows id. It is important that each row has its
+#' @param id character. Column name with rows id. Each row must have its
 #' own unique code.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
 #' @param env_layer SpatRaster. Raster with environmental variables
 #'
 #' @details
-#' This function will apply outliers detection method on presences occurrence data.
+#' This function will apply outliers detection methods on presences occurrence data.
 #' Box-plot and Reverse Jackknife method will test outliers for each variable individually, if a
-#' occurrence behave as outliers for at least one variables it will be highlighted as outliers.
-#' If use only presence data Support Vector Machine and Random Forest Methods will be
+#' occurrence behave as outliers for at least one variable it will be highlighted as outliers.
+#' If use only presence data, Support Vector Machine and Random Forest Methods will be
 #' not performed. Support Vector Machine and Random Forest are performed with default
-#' hyper-parameter values. In case of using a species records with < 7 occurrence function
+#' hyper-parameter values. In the case of using a species records with < 7 occurrence function
 #' will not perform any methods; nonetheless, it will return a tibble with the additional columns.
-#' Further information about this methods see Chapman (2005), Liu et al. (2018) and Velazco
+#' Further information about this methods see Chapman (2005), Liu et al. (2018), and Velazco
 #' et al. (in prep)
-#'
-#'   \item .out_jack: outliers detected with Reverse Jackknife
-#' Implements the Reverse Jackknife procedure as described by Chapman (2005). Used in outliers.
-#' In the following, we present the bullets of the list:
 #'
 #' @return A tibble object with the same database used in 'data' argument and with seven additional columns, where 1 and 0 denote that a presence was detected or not as outliers
 #' \itemize{
-#'   \item .out_bxpt: outliers detected with Box-plot method (denoted by 1)
-#'   \item .out_jack: outliers detected with Reverse Jackknife method (denoted by 1)
-#'   \item .out_svm: outliers detected with Support Vector Machine method (denoted by 1)
-#'   \item .out_rf: outliers detected with Random Forest method (denoted by 1)
-#'   \item .out_rfout: outliers detected with Random Forest Outliers method (denoted by 1)
-#'   \item .out_lof: outliers detected with Local outlier factor  method (denoted by 1)
+#'   \item .out_bxpt: outliers detected with Box-plot method
+#'   \item .out_jack: outliers detected with Reverse Jackknife method
+#'   \item .out_svm: outliers detected with Support Vector Machine method
+#'   \item .out_rf: outliers detected with Random Forest method
+#'   \item .out_rfout: outliers detected with Random Forest Outliers method
+#'   \item .out_lof: outliers detected with Local outlier factor  method
 #'   \item .out_sum: frequency of a presences records was detected as outliers
-#'   based on the previews methods.
+#'   based on the previews methods (values between 0 and 6).
 #'   }
 #'
 #' @references
@@ -47,6 +43,8 @@
 #'   Species- Occurrence Data. GBIF.
 #'   \item Liu, C., White, M., & Newell, G. (2018). Detecting outliers in species distribution
 #'   data. Journal of Biogeography, 45(1), 164 - 176. https://doi.org/10.1111/jbi.13122
+#'   \item Velazco, S.J.E., Bedrij, N.A., Rojas, J.L., Keller, H.A., & De Marco P. Quantifying the
+#'   role of protected areas regarding the economic and cultural value of biodiversity (in prep)
 #'   }
 #'
 #' @export
