@@ -1,4 +1,4 @@
-#' Several approaches for detecting outliers in the environmental space
+#' Integration of outliers detection methods in the environmental space
 #'
 #' @param data data.frame. Data.frame or tibble object with presences
 #' (or presence-absence) records, and coordinates
@@ -7,8 +7,6 @@
 #' @param id character. Column names with rows id. It is important that each row has its
 #' own unique code.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
-#' @param id character. Column names with rows id. It is important that each row has its
-#' own unique code.
 #' @param env_layer SpatRaster. Raster with environmental variables.
 #'
 #' @return
@@ -23,11 +21,83 @@
 #'
 #' @examples
 #' \dontrun{
+#' require(dplyr)
+#' require(terra)
+#' require(ggplot2)
+#'
+#' # Envirnomental variables
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(somevar)
+#'
+#' # Species occurrences
+#' data("spp")
+#' spp
+#' spp1 <- spp %>% dplyr::filter(species == "sp1")
+#'
+#' somevar[[1]] %>% plot()
+#' points(spp1 %>% filter(pr_ab==1) %>% select(x, y), col='blue', pch=19)
+#' points(spp1 %>% filter(pr_ab==0) %>% select(x, y), col='red', cex=0.5)
+#'
+#' spp1 <- spp1 %>% mutate(idd = 1:nrow(spp1))
+#'
+#' # Detect outliers
+#' outs_1 <- env_outliers(
+#'   data = spp1,
+#'   pr_ab = 'pr_ab',
+#'   x = "x",
+#'   y = "y",
+#'   id = "idd",
+#'   env_layer = somevar
+#' )
+#'
+#' # How many outliers were detected by different methods?
+#' out_pa <- outs_1 %>% dplyr::select(starts_with('.'), -.out_sum) %>%
+#'   apply(.,2,function(x) sum(x, na.rm = T))
+#' out_pa
+#'
+#' # How many outliers were detected by the sum of different methods?
+#' outs_1 %>% dplyr::group_by(.out_sum) %>% dplyr::count()
+#'
+#' # Let explor where are locate records highlighted as outliers
+#' outs_1 %>% dplyr::filter(pr_ab==1, .out_sum>0) %>%
+#'   ggplot(aes(x, y)) + geom_point(aes(col = factor(.out_sum))) +
+#'   facet_wrap(.~factor(.out_sum))
+#'
+#' # Detect outliers only with presences
+#' outs_2 <- env_outliers(
+#'   data = spp1 %>% dplyr::filter(pr_ab==1),
+#'   pr_ab = 'pr_ab',
+#'   x = "x",
+#'   y = "y",
+#'   id = "idd",
+#'   env_layer = somevar
+#' )
+#'
+#' # How many outliers were detected by different methods
+#' out_p <- outs_2 %>% dplyr::select(starts_with('.'), -.out_sum) %>%
+#'   apply(.,2,function(x) sum(x, na.rm = T))
+#'
+#' # How many outliers were detected by the sum of different methods?
+#' outs_2 %>% dplyr::group_by(.out_sum) %>% dplyr::count()
+#'
+#' # Let explor where are locate records highlighted as outliers
+#' outs_2 %>% dplyr::filter(pr_ab==1, .out_sum>0) %>%
+#'   ggplot(aes(x, y)) + geom_point(aes(col = factor(.out_sum))) +
+#'   facet_wrap(.~factor(.out_sum))
+#'
+#'
+#' # Comparison of function outputs when using it with
+#' # presences-absences or only presences data.
+#'
+#' bind_rows(out_p, out_pa)
+#' # Because the second case only were used presences, outliers methods
+#' # based in Random Forest (.out_rf) and Support Vector Machines (.out_svm)
+#' # were not performed.
 #' }
 env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
   . <- NULL
   # Select columns and rename them
+  data0 <- data
   data <- data[, c(id, x, y, pr_ab)]
   names(data) <- c("id", "x", "y", "pr_ab")
 
@@ -69,8 +139,6 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
 
   sp_env_1 <- sp_env_01 %>% dplyr::filter(pr_ab == 1)
   occ_sp_01 <- occ_sp_01 %>% dplyr::select(-x, -y, -pr_ab)
-  message('nrow sp_env_1 ', nrow(sp_env_1))
-  return(sp_env_1)
 
   p01 <- unique(sp_env_01$pr_ab) # vector for testing presence and absence
 
@@ -163,5 +231,8 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
   }
 
   out <- dplyr::bind_rows(out_list)
+  cn <- 'id'
+  names(cn) <- id
+  out <- dplyr::left_join(data0, out, by=cn)
   return(out)
 }
