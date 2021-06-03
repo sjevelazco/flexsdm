@@ -35,7 +35,6 @@
 #' @importFrom kernlab predict
 #' @importFrom stats predict median
 #' @importFrom terra vect crop mask as.data.frame values rast app lapp
-#' @examples
 sdm_predict <-
   function(models,
            pred,

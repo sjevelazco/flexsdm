@@ -2,13 +2,12 @@
 % Please edit documentation in R/env_outliers.R
 \name{env_outliers}
 \alias{env_outliers}
-\title{Several approaches for detecting outliers in the environmental space}
+\title{Integration of outliers detection methods in the environmental space}
 \usage{
 env_outliers(data, x, y, pr_ab, id, env_layer)
 }
 \arguments{
-\item{data}{data.frame. Data.frame or tibble object with presences
-(or presence-absence) records, and coordinates}
+\item{data}{data.frame or tibble with presences (or presence-absence) records, and coordinates}
 
 \item{x}{character. Column name with longitude data}
 
@@ -16,16 +15,45 @@ env_outliers(data, x, y, pr_ab, id, env_layer)
 
 \item{pr_ab}{character. Column name with presence and absence data (i.e. 1 and 0)}
 
-\item{id}{character. Column names with rows id. It is important that each row has its
+\item{id}{character. Column name with rows id. It is important that each row has its
 own unique code.}
 
-\item{env_layer}{SpatRaster. Raster with environmental variables.}
+\item{env_layer}{SpatRaster. Raster with environmental variables}
 }
 \value{
-
+A tibble object with the same database used in 'data' argument and with seven additional columns, where 1 and 0 denote that a presence was detected or not as outliers
+\itemize{
+  \item .out_bxpt: outliers detected with Box-plot method (denoted by 1)
+  \item .out_jack: outliers detected with Reverse Jackknife method (denoted by 1)
+  \item .out_svm: outliers detected with Support Vector Machine method (denoted by 1)
+  \item .out_rf: outliers detected with Random Forest method (denoted by 1)
+  \item .out_rfout: outliers detected with Random Forest Outliers method (denoted by 1)
+  \item .out_lof: outliers detected with Local outlier factor  method (denoted by 1)
+  \item .out_sum: frequency of a presences records was detected as outliers
+  based on the previews methods.
+  }
 }
 \description{
-Several approaches for detecting outliers in the environmental space
+This function performs different methods for detecting outliers in species
+distribution data based on the environmental conditions of occurrences. Some methods need
+presence and absence data (e.g. Two-class Support Vector Machine and Random Forest) while other
+only use presences (e.g. Reverse Jackknife Knife, Box-plot, and Random Forest outliers) .
+Outliers detection could be useful in occurrence data cleaning procedure (Chapman 2005, Liu et al., 2018).
+}
+\details{
+This function will apply outliers detection method on presences occurrence data.
+Box-plot and Reverse Jackknife method will test outliers for each variable individually, if a
+occurrence behave as outliers for at least one variables it will be highlighted as outliers.
+If use only presence data Support Vector Machine and Random Forest Methods will be
+not performed. Support Vector Machine and Random Forest are performed with default
+hyper-parameter values. In case of using a species records with < 7 occurrence function
+will not perform any methods; nonetheless, it will return a tibble with the additional columns.
+Further information about this methods see Chapman (2005), Liu et al. (2018) and Velazco
+et al. (in prep)
+
+  \item .out_jack: outliers detected with Reverse Jackknife
+Implements the Reverse Jackknife procedure as described by Chapman (2005). Used in outliers.
+In the following, we present the bullets of the list:
 }
 \examples{
 \dontrun{
@@ -43,15 +71,15 @@ spp
 spp1 <- spp \%>\% dplyr::filter(species == "sp1")
 
 somevar[[1]] \%>\% plot()
-points(spp1 \%>\% filter(pr_ab==1) \%>\% select(x, y), col='blue', pch=19)
-points(spp1 \%>\% filter(pr_ab==0) \%>\% select(x, y), col='red', cex=0.5)
+points(spp1 \%>\% filter(pr_ab == 1) \%>\% select(x, y), col = "blue", pch = 19)
+points(spp1 \%>\% filter(pr_ab == 0) \%>\% select(x, y), col = "red", cex = 0.5)
 
 spp1 <- spp1 \%>\% mutate(idd = 1:nrow(spp1))
 
 # Detect outliers
 outs_1 <- env_outliers(
   data = spp1,
-  pr_ab = 'pr_ab',
+  pr_ab = "pr_ab",
   x = "x",
   y = "y",
   id = "idd",
@@ -59,22 +87,27 @@ outs_1 <- env_outliers(
 )
 
 # How many outliers were detected by different methods?
-out_pa <- outs_1 \%>\% dplyr::select(starts_with('.'), -.out_sum) \%>\%
-  apply(.,2,function(x) sum(x, na.rm = T))
+out_pa <- outs_1 \%>\%
+  dplyr::select(starts_with("."), -.out_sum) \%>\%
+  apply(., 2, function(x) sum(x, na.rm = T))
 out_pa
 
 # How many outliers were detected by the sum of different methods?
-outs_1 \%>\% dplyr::group_by(.out_sum) \%>\% dplyr::count()
+outs_1 \%>\%
+  dplyr::group_by(.out_sum) \%>\%
+  dplyr::count()
 
 # Let explor where are locate records highlighted as outliers
-outs_1 \%>\% dplyr::filter(pr_ab==1, .out_sum>0) \%>\%
-  ggplot(aes(x, y)) + geom_point(aes(col = factor(.out_sum))) +
-  facet_wrap(.~factor(.out_sum))
+outs_1 \%>\%
+  dplyr::filter(pr_ab == 1, .out_sum > 0) \%>\%
+  ggplot(aes(x, y)) +
+  geom_point(aes(col = factor(.out_sum))) +
+  facet_wrap(. ~ factor(.out_sum))
 
 # Detect outliers only with presences
 outs_2 <- env_outliers(
-  data = spp1 \%>\% dplyr::filter(pr_ab==1),
-  pr_ab = 'pr_ab',
+  data = spp1 \%>\% dplyr::filter(pr_ab == 1),
+  pr_ab = "pr_ab",
   x = "x",
   y = "y",
   id = "idd",
@@ -82,16 +115,21 @@ outs_2 <- env_outliers(
 )
 
 # How many outliers were detected by different methods
-out_p <- outs_2 \%>\% dplyr::select(starts_with('.'), -.out_sum) \%>\%
-  apply(.,2,function(x) sum(x, na.rm = T))
+out_p <- outs_2 \%>\%
+  dplyr::select(starts_with("."), -.out_sum) \%>\%
+  apply(., 2, function(x) sum(x, na.rm = T))
 
 # How many outliers were detected by the sum of different methods?
-outs_2 \%>\% dplyr::group_by(.out_sum) \%>\% dplyr::count()
+outs_2 \%>\%
+  dplyr::group_by(.out_sum) \%>\%
+  dplyr::count()
 
 # Let explor where are locate records highlighted as outliers
-outs_2 \%>\% dplyr::filter(pr_ab==1, .out_sum>0) \%>\%
-  ggplot(aes(x, y)) + geom_point(aes(col = factor(.out_sum))) +
-  facet_wrap(.~factor(.out_sum))
+outs_2 \%>\%
+  dplyr::filter(pr_ab == 1, .out_sum > 0) \%>\%
+  ggplot(aes(x, y)) +
+  geom_point(aes(col = factor(.out_sum))) +
+  facet_wrap(. ~ factor(.out_sum))
 
 
 # Comparison of function outputs when using it with
@@ -102,4 +140,12 @@ bind_rows(out_p, out_pa)
 # based in Random Forest (.out_rf) and Support Vector Machines (.out_svm)
 # were not performed.
 }
+}
+\references{
+\itemize{
+  \item Chapman, A. D. (2005). Principles and methods of data cleaning: Primary Species and
+  Species- Occurrence Data. GBIF.
+  \item Liu, C., White, M., & Newell, G. (2018). Detecting outliers in species distribution
+  data. Journal of Biogeography, 45(1), 164 - 176. https://doi.org/10.1111/jbi.13122
+  }
 }

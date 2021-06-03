@@ -8,10 +8,6 @@
 #' pre_tr_te
 #'
 #' @noRd
-#'
-#' @examples
-#' \dontrun{
-#' }
 pre_tr_te <- function(data, p_names, h) {
   train <- list()
   test <- list()
@@ -62,9 +58,6 @@ inv_bio <- function(e, p) {
 #'
 #' @noRd
 #'
-#' @examples
-#' \dontrun{
-#' }
 inv_geo <- function(e, p, d) {
   colnames(p) <- c("x", "y")
   p <- terra::vect(p, geom=c("x", "y"))
@@ -80,10 +73,6 @@ inv_geo <- function(e, p, d) {
 #' enmSdm package.
 #'
 #' @noRd
-#'
-#' @examples
-#' \dontrun{
-#' }
 boyce <- function(pres,
                   contrast,
                   n_bins = 101,
@@ -153,10 +142,6 @@ boyce <- function(pres,
 #' Predict maxnet
 #'
 #' @noRd
-#'
-#' @examples
-#' \dontrun{
-#' }
 predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "exponential", "cloglog", "logistic"), ...) {
   if (clamp) {
     for (v in intersect(names(object$varmax), names(newdata))) {
@@ -212,9 +197,6 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
 #'
 #' @noRd
 #'
-#' @examples
-#' \dontrun{
-#' }
 rev_jack <- function(v){
   v2 <- v
   v <- unique(v)

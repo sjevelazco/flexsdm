@@ -31,6 +31,7 @@ Imports:
     nnet,
     randomForest,
     sp,
+    Rlof,
     terra,
     utils,
     GRaF
