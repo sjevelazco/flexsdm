@@ -189,8 +189,8 @@ ps1 <-
   )
 plot(regions, col = gray.colors(9))
 plot(ca_ps1, add = T)
-points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
+points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 
 
 ps1 <-
@@ -206,8 +206,8 @@ ps1 <-
   )
 plot(regions, col = gray.colors(9))
 plot(ca_ps1, add = T)
-points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
+points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 }
 }
 \seealso{

@@ -43,9 +43,8 @@
 #' @importFrom ape Moran.I
 #' @importFrom dplyr tibble pull group_by slice_sample select
 #' @importFrom flexclust dist2
-#' @importFrom sp coordinates
 #' @importFrom stats complete.cases sd
-#' @importFrom terra extract res ext crs vect extend values ncell cellFromXY geom
+#' @importFrom terra extract res ext vect crs extend values ncell cellFromXY geom
 #' @importFrom utils combn
 #'
 #' @seealso \code{\link{part}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
@@ -291,9 +290,7 @@ unique list values in pr_ab column are: ",
   presences2 <- data
 
   # Transform the presences points in a DataFrameSpatialPoints
-  sp::coordinates(presences2) <- presences2[, c("x", "y")]
-  terra::crs(presences2) <- terra::crs(mask)
-  presences2 <- terra::vect(presences2)
+  presences2 <- terra::vect(presences2, geom=c("x", "y"), crs=terra::crs(mask))
 
   #### Data partitioning using a grid approach ####
 
