@@ -1,7 +1,6 @@
 test_that("multiplication works", {
   require(dplyr)
   require(terra)
-  require(ggplot2)
 
   # Envirnomental variables
   somevar <- system.file("external/somevar.tif", package = "flexsdm")

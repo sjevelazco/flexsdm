@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Detection of outliers in the environmental space — env_outliers • flexsdm</title>
+<title>Integration of outliers detection methods in the environmental space — env_outliers • flexsdm</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -39,8 +39,12 @@
 
 
 
-<meta property="og:title" content="Detection of outliers in the environmental space — env_outliers" />
-<meta property="og:description" content="Detection of outliers in the environmental space" />
+<meta property="og:title" content="Integration of outliers detection methods in the environmental space — env_outliers" />
+<meta property="og:description" content="This function performs different methods for detecting outliers in species
+distribution data based on the environmental conditions of occurrences. Some methods need
+presence and absence data (e.g. Two-class Support Vector Machine and Random Forest) while other
+only use presences (e.g. Reverse Jackknife Knife, Box-plot, and Random Forest outliers) .
+Outliers detection could be useful in occurrence data cleaning procedure (Chapman 2005, Liu et al., 2018)." />
 
 
 
@@ -103,13 +107,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Detection of outliers in the environmental space</h1>
+    <h1>Integration of outliers detection methods in the environmental space</h1>
     
     <div class="hidden name"><code>env_outliers.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Detection of outliers in the environmental space</p>
+    <p>This function performs different methods for detecting outliers in species
+distribution data based on the environmental conditions of occurrences. Some methods need
+presence and absence data (e.g. Two-class Support Vector Machine and Random Forest) while other
+only use presences (e.g. Reverse Jackknife Knife, Box-plot, and Random Forest outliers) .
+Outliers detection could be useful in occurrence data cleaning procedure (Chapman 2005, Liu et al., 2018).</p>
     </div>
 
     <pre class="usage"><span class='fu'>env_outliers</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>pr_ab</span>, <span class='va'>id</span>, <span class='va'>env_layer</span><span class='op'>)</span></pre>
@@ -119,8 +127,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>data.frame. Data.frame or tibble object with presences
-(or presence-absence) records, and coordinates</p></td>
+      <td><p>data.frame or tibble with presences (or presence-absence) records, and coordinates</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -136,15 +143,138 @@
     </tr>
     <tr>
       <th>id</th>
-      <td><p>character. Column names with rows id. It is important that each row has its own unique code.</p></td>
+      <td><p>character. Column name with rows id. Each row must have its
+own unique code.</p></td>
     </tr>
     <tr>
       <th>env_layer</th>
-      <td><p>SpatRaster. Raster with environmental variables.</p></td>
+      <td><p>SpatRaster. Raster with environmental variables</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A tibble object with the same database used in 'data' argument and with seven additional columns, where 1 and 0 denote that a presence was detected or not as outliers</p><ul>
+<li><p>.out_bxpt: outliers detected with Box-plot method</p></li>
+<li><p>.out_jack: outliers detected with Reverse Jackknife method</p></li>
+<li><p>.out_svm: outliers detected with Support Vector Machine method</p></li>
+<li><p>.out_rf: outliers detected with Random Forest method</p></li>
+<li><p>.out_rfout: outliers detected with Random Forest Outliers method</p></li>
+<li><p>.out_lof: outliers detected with Local outlier factor  method</p></li>
+<li><p>.out_sum: frequency of a presences records was detected as outliers
+  based on the previews methods (values between 0 and 6).</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function will apply outliers detection methods on presences occurrence data.
+Box-plot and Reverse Jackknife method will test outliers for each variable individually, if a
+occurrence behave as outliers for at least one variable it will be highlighted as outliers.
+If use only presence data, Support Vector Machine and Random Forest Methods will be
+not performed. Support Vector Machine and Random Forest are performed with default
+hyper-parameter values. In the case of using a species records with &lt; 7 occurrence function
+will not perform any methods; nonetheless, it will return a tibble with the additional columns.
+Further information about this methods see Chapman (2005), Liu et al. (2018), and Velazco
+et al. (in prep)</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    
+<ul>
+<li><p>Chapman, A. D. (2005). Principles and methods of data cleaning: Primary Species and
+  Species- Occurrence Data. GBIF.</p></li>
+<li><p>Liu, C., White, M., &amp; Newell, G. (2018). Detecting outliers in species distribution
+  data. Journal of Biogeography, 45(1), 164 - 176. https://doi.org/10.1111/jbi.13122</p></li>
+<li><p>Velazco, S.J.E., Bedrij, N.A., Rojas, J.L., Keller, H.A., &amp; De Marco P. Quantifying the
+  role of protected areas regarding the economic and cultural value of biodiversity (in prep)</p></li>
+</ul>
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra'>terra</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+
+<span class='co'># Envirnomental variables</span>
+<span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/somevar.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
+<span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>)</span>
+
+<span class='co'># Species occurrences</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"spp"</span><span class='op'>)</span>
+<span class='va'>spp</span>
+<span class='va'>spp1</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span><span class='op'>)</span>
+
+<span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"blue"</span>, pch <span class='op'>=</span> <span class='fl'>19</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+
+<span class='va'>spp1</span> <span class='op'>&lt;-</span> <span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>idd <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/dimensions.html'>nrow</a></span><span class='op'>(</span><span class='va'>spp1</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># Detect outliers</span>
+<span class='va'>outs_1</span> <span class='op'>&lt;-</span> <span class='fu'>env_outliers</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>spp1</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  x <span class='op'>=</span> <span class='st'>"x"</span>,
+  y <span class='op'>=</span> <span class='st'>"y"</span>,
+  id <span class='op'>=</span> <span class='st'>"idd"</span>,
+  env_layer <span class='op'>=</span> <span class='va'>somevar</span>
+<span class='op'>)</span>
+
+<span class='co'># How many outliers were detected by different methods?</span>
+<span class='va'>out_pa</span> <span class='op'>&lt;-</span> <span class='va'>outs_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"."</span><span class='op'>)</span>, <span class='op'>-</span><span class='va'>.out_sum</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='fl'>2</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>out_pa</span>
+
+<span class='co'># How many outliers were detected by the sum of different methods?</span>
+<span class='va'>outs_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># Let explor where are locate records highlighted as outliers</span>
+<span class='va'>outs_1</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='va'>.out_sum</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='va'>.</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># Detect outliers only with presences</span>
+<span class='va'>outs_2</span> <span class='op'>&lt;-</span> <span class='fu'>env_outliers</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  x <span class='op'>=</span> <span class='st'>"x"</span>,
+  y <span class='op'>=</span> <span class='st'>"y"</span>,
+  id <span class='op'>=</span> <span class='st'>"idd"</span>,
+  env_layer <span class='op'>=</span> <span class='va'>somevar</span>
+<span class='op'>)</span>
+
+<span class='co'># How many outliers were detected by different methods</span>
+<span class='va'>out_p</span> <span class='op'>&lt;-</span> <span class='va'>outs_2</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"."</span><span class='op'>)</span>, <span class='op'>-</span><span class='va'>.out_sum</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/apply.html'>apply</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='fl'>2</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>x</span>, na.rm <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># How many outliers were detected by the sum of different methods?</span>
+<span class='va'>outs_2</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># Let explor where are locate records highlighted as outliers</span>
+<span class='va'>outs_2</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='va'>.out_sum</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='va'>.</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span>
+
+
+<span class='co'># Comparison of function outputs when using it with</span>
+<span class='co'># presences-absences or only presences data.</span>
+
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/bind.html'>bind_rows</a></span><span class='op'>(</span><span class='va'>out_p</span>, <span class='va'>out_pa</span><span class='op'>)</span>
+<span class='co'># Because the second case only were used presences, outliers methods</span>
+<span class='co'># based in Random Forest (.out_rf) and Support Vector Machines (.out_svm)</span>
+<span class='co'># were not performed.</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
