@@ -143,8 +143,8 @@ fit_ensemble <-
         (x * v)
       }, values, perf, SIMPLIFY = TRUE) %>%
         apply(., 1, function(x) {
-          mean(x, na.rm = TRUE)
-        })
+          sum(x, na.rm = TRUE)
+        }) / sum(v)
     }
     if (any("meansup" == ens_method)) {
       v[["meansup"]] <- apply(values[, perf >= mean(perf)], 1, function(x) {
