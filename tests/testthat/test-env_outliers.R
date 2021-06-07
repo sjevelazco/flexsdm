@@ -20,7 +20,6 @@ test_that("multiplication works", {
     id = "idd",
     env_layer = somevar
   )
-  expect_equal(ncol(outs_1 %>% select(starts_with('.'))), 7)
+  expect_equal(ncol(outs_1 %>% select(starts_with("."))), 7)
   expect_equal(sum(outs_1$.out_sum, na.rm = TRUE), 7)
 })
-

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_res.R
 \name{plot_res}
 \alias{plot_res}
-\title{Plot different resolutions to be used in block_partition}
+\title{Plot different resolutions to be used in part_sblock}
 \usage{
 plot_res(r, res_mult)
 }

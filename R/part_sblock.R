@@ -290,7 +290,7 @@ unique list values in pr_ab column are: ",
   presences2 <- data
 
   # Transform the presences points in a DataFrameSpatialPoints
-  presences2 <- terra::vect(presences2, geom=c("x", "y"), crs=terra::crs(mask))
+  presences2 <- terra::vect(presences2, geom = c("x", "y"), crs = terra::crs(mask))
 
   #### Data partitioning using a grid approach ####
 
@@ -403,7 +403,7 @@ unique list values in pr_ab column are: ",
     length(grid)
   ))
   for (i in 1:length(grid)) {
-    ncell[, i] <- terra::cellFromXY(grid[[i]], terra::geom(presences2)[,c('x', 'y')])
+    ncell[, i] <- terra::cellFromXY(grid[[i]], terra::geom(presences2)[, c("x", "y")])
   }
 
   # Performance of cells ----

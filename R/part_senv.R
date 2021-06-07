@@ -76,13 +76,13 @@
 #'   facet_wrap(. ~ pr_ab)
 #' }
 part_senv <- function(env_layer,
-                     data,
-                     x,
-                     y,
-                     pr_ab,
-                     min_n_groups = 2,
-                     max_n_groups = 10,
-                     prop = 0.5) {
+                      data,
+                      x,
+                      y,
+                      pr_ab,
+                      min_n_groups = 2,
+                      max_n_groups = 10,
+                      prop = 0.5) {
   group <- NULL
   # Select columns
   data <- data.frame(data)
@@ -93,7 +93,7 @@ part_senv <- function(env_layer,
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-paste(unique(data[, "pr_ab"]), collapse = " ")
+      paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 

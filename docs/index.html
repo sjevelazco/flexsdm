@@ -60,11 +60,133 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
+
 <div id="flexsdm" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#flexsdm" class="anchor"></a>flexsdm</h1></div>
-<p>This is a provisional version of ENMTML package. Here will be provided new tools and function that will be implemented to ENMTML. The idea of this repository is to recreate the ENMTML package from independent and user-accessible functions. So that there is still a main function that does “everything” but also many independent functions that give flexibility to the original package.</p>
+<div id="overview" class="section level3">
+<h3 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h3>
+<p>Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. This has led to defining a specific modeling process for a particular situation where the “click-and-run” is not a desirable option.</p>
+<p>One of the most exciting features of <strong>flexsdm</strong> is its high manipulation and parametrization capacity based on different functions and arguments manipulation. This enables users to define their own complete or partial modeling procedure specific for a modeling situation (e.g., number of variables, number of records, different algorithm and ensemble methods, algorithms tuning, etc.).</p>
+<hr>
 </div>
+<div id="set-of-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#set-of-functions" class="anchor"></a>Set of functions</h3>
+</div>
+<div id="1-pre-modeling-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#1-pre-modeling-functions" class="anchor"></a>1. Pre-modeling functions</h3>
+<p>Set tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).</p>
+<ul>
+<li>
+<code>calib_area</code> Delimit calibration area for constructing species distribution models</li>
+<li>
+<code>correct_colinvar</code> Perform collinearity reduction on predictors|</li>
+<li>
+<code>env_outliers</code> Integration of outliers detection methods in the environmental space</li>
+<li>
+<code>env_filtering</code> Perform environmental filtering on species occurrences</li>
+<li>
+<code>part</code> Data partitioning for training and testing models</li>
+<li>
+<code>part_sblock</code> Spatial block cross validation</li>
+<li>
+<code>plot_res</code> Plot different resolutions to be used in part_sblock</li>
+<li>
+<code>part_senv</code> Environmental and spatial cross validation</li>
+<li>
+<code>sample_background</code> Sample background points</li>
+<li>
+<code>sample_pseudoabs</code> Peseudo-absence allocation method</li>
+<li>
+<code>sdm_extract</code> Extract environmental data based on x and y coordinates</li>
+</ul>
+</div>
+<div id="2-modeling-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#2-modeling-functions" class="anchor"></a>2. Modeling functions</h3>
+<p>Set of function families for modeling. Several of them can be divided into <code>fit_*</code>, <code>tune_*</code>, and <code>esm_*</code> family functions. <code>fit_*</code> construct and validate models with default hyper-parameter values. <code>tune_*</code> construct and validate models searching for the best hyper-parameter values combination. <code>esm_</code> construct and validate Ensemble of Small Models.</p>
+<div id="fit_-functions-family" class="section level4">
+<h4 class="hasAnchor">
+<a href="#fit_-functions-family" class="anchor"></a><code>fit_*</code> functions family</h4>
+<ul>
+<li>
+<code>fit_gam</code> Fit and validate Generalized Additive Models</li>
+<li>
+<code>fit_gau</code> Fit and validate Gaussian Process models</li>
+<li>
+<code>fit_gbm</code> Fit and validate Generalized Boosted Regression models</li>
+<li>
+<code>fit_glm</code> Fit and validate Generalized Linear Models</li>
+<li>
+<code>fit_max</code> Fit and validate Maximum Entropy models</li>
+<li>
+<code>fit_net</code> Fit and validate Neural Networks models</li>
+<li>
+<code>fit_raf</code> Fit and validate Random Forest models</li>
+<li>
+<code>fit_svm</code> Fit and validate Support Vector Machine models</li>
+</ul>
+</div>
+<div id="tune_-functions-family" class="section level4">
+<h4 class="hasAnchor">
+<a href="#tune_-functions-family" class="anchor"></a><code>tune_*</code> functions family</h4>
+<ul>
+<li>
+<code>tune_gbm</code> Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters</li>
+<li>
+<code>tune_max</code> Fit and validate Maximum Entropy models with exploration of hyper-parameters</li>
+<li>
+<code>tune_net</code> Fit and validate Neural Networks models with exploration of hyper-parameters</li>
+<li>
+<code>tune_raf</code> Fit and validate Random Forest models with exploration of hyper-parameters</li>
+<li>
+<code>tune_svm</code> Fit and validate Support Vector Machine models with exploration of hyper-parameters</li>
+</ul>
+</div>
+<div id="esm_-functions-family" class="section level4">
+<h4 class="hasAnchor">
+<a href="#esm_-functions-family" class="anchor"></a><code>esm_*</code> functions family</h4>
+<ul>
+<li>
+<code>esm_gam</code> Fit and validate Generalized Additive Models with Ensemble of Small Model approach</li>
+<li>
+<code>esm_gau</code> Fit and validate Gaussian Process models Models with Ensemble of Small Model approach</li>
+<li>
+<code>esm_gbm</code> Fit and validate Generalized Boosted Regression models with Ensemble of Small Model approach</li>
+<li>
+<code>esm_glm</code> Fit and validate Generalized Linear Models with Ensemble of Small Model approach</li>
+<li>
+<code>esm_max</code> Fit and validate Maximum Entropy models with Ensemble of Small Model approach</li>
+<li>
+<code>esm_net</code> Fit and validate Neural Networks models with Ensemble of Small Model approach</li>
+<li>
+<code>esm_raf</code> Fit and validate Random Forest models with Ensemble of Small Model approach</li>
+<li>
+<code>esm_svm</code> Fit and validate Support Vector Machine models with Ensemble of Small Model approach</li>
+</ul>
+</div>
+</div>
+<div id="3-post-modeling-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#3-post-modeling-functions" class="anchor"></a>3. Post-modeling functions</h3>
+<p>Function for predicting, ensemble, and interpolate models.</p>
+<ul>
+<li>
+<code><a href="reference/sdm_predict.html">sdm_predict()</a></code> Spatial predictions of individual and ensemble model</li>
+<li>
+<code><a href="reference/inter.html">inter()</a></code> Raster interpolation between two time periods</li>
+</ul>
+<hr>
+<blockquote>
+<p>Test the package and give us feedback <a href="https://github.com/sjevelazco/flexsdm/issues">here</a> or send an e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
+</blockquote>
+</div>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -84,7 +206,13 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="http://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat" alt="License"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 

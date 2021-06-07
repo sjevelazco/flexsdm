@@ -60,7 +60,7 @@ inv_bio <- function(e, p) {
 #'
 inv_geo <- function(e, p, d) {
   colnames(p) <- c("x", "y")
-  p <- terra::vect(p, geom=c("x", "y"))
+  p <- terra::vect(p, geom = c("x", "y"))
   r <- terra::rasterize(p, e)
   b <- terra::buffer(r, width = d)
   e <- mask(e, b, maskvalues = 1)
@@ -197,7 +197,7 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
 #'
 #' @noRd
 #'
-rev_jack <- function(v){
+rev_jack <- function(v) {
   v2 <- v
   v <- unique(v)
   lgh <- length(v) - 1
@@ -214,7 +214,7 @@ rev_jack <- function(v){
     }
   }
   my <- mean(y)
-  z <- y/(sqrt(sum((y - my)^2)/lgh))
+  z <- y / (sqrt(sum((y - my)^2) / lgh))
   out <- rep(0, length(v2))
   if (any(z > t1)) {
     f <- which(z > t1)
