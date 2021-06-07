@@ -28,10 +28,10 @@ pre_tr_te <- function(data, p_names, h) {
     np2 <- max(data[p_names[h]])
 
     for (i in 1:np2) {
-      train[[i]] <- data[data[p_names[h]] == i, ] %>%
+      train[[i]] <- data[data[p_names[h]] != i, ] %>%
         dplyr::select(-p_names[!p_names == p_names[h]])
 
-      test[[i]] <- data[data[p_names[h]] != i, ] %>%
+      test[[i]] <- data[data[p_names[h]] == i, ] %>%
         dplyr::select(-p_names[!p_names == p_names[h]])
     }
   }

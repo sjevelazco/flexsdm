@@ -4,7 +4,7 @@
 #' @param data data.frame. Database with response (0,1) and predictors values.
 #' @param response character. Column name with species absence-presence data (0,1).
 #' @param predictors character. Vector with the column names of quantitative
-#' predictor variables (i.e. continuous or discrete variables).
+#' predictor variables (i.e. continuous variables).
 #' Usage predictors = c("aet", "cwd", "tmin")
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
