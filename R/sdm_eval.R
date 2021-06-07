@@ -208,7 +208,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     ) ==
       min(abs(performance$TPR - performance$TNR)))] %>% max()
 
-  thresholds$lpt <- max(performance$threshold[performance$TPR == 1])
+  suppressWarnings(thresholds$lpt <- max(performance$threshold[performance$TPR == 1]))
 
   thresholds$sensitivity <- performance$threshold[which(abs(
     performance$TPR - as.numeric(thr["sens"])
