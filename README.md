@@ -1,10 +1,11 @@
+[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html)
 # flexsdm
 
 ### Overview 
 Species distribution modeling has become a standard tool in several research areas such as ecology, 
 conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution 
 modeling is an area of active research in both theoretical and methodological aspects. This has 
-led to the need to define a specific modeling process for a given situation, where the 
+led to defining a specific modeling process for a particular situation where the 
 “click-and-run” is not a desirable option. 
 
 One of the most exciting features of **flexsdm** is its high manipulation and parametrization 
@@ -15,7 +16,8 @@ of variables, number of records, different algorithm and ensemble methods, algor
 --- ---
 ### Set of functions
 ### 1. Pre-modeling functions 
-Tools for pre-processing modeling inputs data or define modeling situation.
+Set tools for preparing and manipulating modeling input data (e.g., species occurrences, 
+sample pseudo-absences, define calibration area).
 
 * `calib_area` Delimit calibration area for constructing species distribution models
 * `correct_colinvar` Perform collinearity reduction on predictors|
@@ -31,7 +33,7 @@ Tools for pre-processing modeling inputs data or define modeling situation.
 
 
 ### 2. Modeling functions 
-Set of function families for modeling. Several of them can be divided in `fit_*`, `tune_*`, and 
+Set of function families for modeling. Several of them can be divided into `fit_*`, `tune_*`, and 
 `esm_*` family functions. `fit_*` construct and validate models with default hyper-parameter 
 values. `tune_*` construct and validate models searching for the best hyper-parameter values 
 combination. `esm_` construct and validate Ensemble of Small Models.
@@ -57,17 +59,20 @@ hyper-parameters
 #### `esm_*` functions family
 * `esm_gam` Fit and validate Generalized Additive Models with Ensemble of Small Model approach
 * `esm_gau` Fit and validate Gaussian Process models Models with Ensemble of Small Model approach
-* `esm_gbm` Fit and validate Generalized Boosted Regression models Models with Ensemble of Small 
+* `esm_gbm` Fit and validate Generalized Boosted Regression models with Ensemble of Small 
 Model approach
-* `esm_glm` Fit and validate Generalized Linear Models Models with Ensemble of Small Model approach
-* `esm_max` Fit and validate Maximum Entropy models Models with Ensemble of Small Model approach
-* `esm_net` Fit and validate Neural Networks models Models with Ensemble of Small Model approach
-* `esm_raf` Fit and validate Random Forest models Models with Ensemble of Small Model approach
-* `esm_svm` Fit and validate Support Vector Machine models Models with Ensemble of Small Model 
+* `esm_glm` Fit and validate Generalized Linear Models with Ensemble of Small Model approach
+* `esm_max` Fit and validate Maximum Entropy models with Ensemble of Small Model approach
+* `esm_net` Fit and validate Neural Networks models with Ensemble of Small Model approach
+* `esm_raf` Fit and validate Random Forest models with Ensemble of Small Model approach
+* `esm_svm` Fit and validate Support Vector Machine models with Ensemble of Small Model 
 approach
 
 ### 3. Post-modeling functions
-Function for predicting, perform ensembles, and interpolate models.
+Function for predicting, ensemble, and interpolate models.
 
 * `sdm_predict()` Spatial predictions of individual and ensemble model
 * `inter()` Raster interpolation between two time periods
+
+--- ---
+> Test the package and give us feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
