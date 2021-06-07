@@ -1,4 +1,4 @@
-#' Delimit calibration area for ecological niche models
+#' Delimit calibration area for constructing species distribution models
 #'
 #' @description This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, enm_predict, and enm_ensemble, among others
 #'

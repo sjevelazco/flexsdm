@@ -2,7 +2,7 @@
 % Please edit documentation in R/env_filtering.R
 \name{env_filtering}
 \alias{env_filtering}
-\title{Function to perform environmental filtering of species occurrence records}
+\title{Perform environmental filtering on species occurrences}
 \usage{
 env_filtering(data, x, y, id, env_layer, nbins, cores = 1)
 }
@@ -26,7 +26,7 @@ env_filtering(data, x, y, id, env_layer, nbins, cores = 1)
 A tibble object with filtered data
 }
 \description{
-Function to perform environmental filtering of species occurrence records
+Perform environmental filtering on species occurrences
 }
 \examples{
 \dontrun{

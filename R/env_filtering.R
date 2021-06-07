@@ -1,4 +1,4 @@
-#' Function to perform environmental filtering of species occurrence records
+#' Perform environmental filtering on species occurrences
 #'
 #' @param data data.frame. Data.frame or tibble object with presences
 #' (or presence-absence) records, and coordinates

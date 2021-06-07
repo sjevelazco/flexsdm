@@ -1,4 +1,4 @@
-#' Plot different resolutions to be used in block_partition
+#' Plot different resolutions to be used in part_sblock
 #'
 #' @description This function is useful to display the maximum and minimum resolution that you want to test with the block_partition function. Note that if the resolution to be tested is very fine, the plot display may take a long time.
 #'

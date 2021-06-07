@@ -2,7 +2,7 @@
 % Please edit documentation in R/calib_area.R
 \name{calib_area}
 \alias{calib_area}
-\title{Delimit calibration area for ecological niche models}
+\title{Delimit calibration area for constructing species distribution models}
 \usage{
 calib_area(data, x, y, method, groups = NULL, crs = NULL)
 }
