@@ -64,7 +64,6 @@ Model approach
 * `esm_glm` Fit and validate Generalized Linear Models with Ensemble of Small Model approach
 * `esm_max` Fit and validate Maximum Entropy models with Ensemble of Small Model approach
 * `esm_net` Fit and validate Neural Networks models with Ensemble of Small Model approach
-* `esm_raf` Fit and validate Random Forest models with Ensemble of Small Model approach
 * `esm_svm` Fit and validate Support Vector Machine models with Ensemble of Small Model 
 approach
 
