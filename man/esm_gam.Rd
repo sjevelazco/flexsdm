@@ -2,17 +2,17 @@
 % Please edit documentation in R/esm_gam.R
 \name{esm_gam}
 \alias{esm_gam}
-\title{Fit and validate Generalized Additive Models based Ensemble of Small Model approach}
+\title{Fit and validate Generalized Additive Models based Ensemble of Small of Model approach}
 \usage{
 esm_gam(data, response, predictors, partition, thr = NULL)
 }
 \arguments{
-\item{data}{data.frame. Database with response (0,1) and predictors values.}
+\item{data}{data.frame. Database with the response (0,1) and predictors values.}
 
-\item{response}{character. Column name with species absence-presence data (0,1).}
+\item{response}{character. Column name with species absence-presence data (0,1)}
 
 \item{predictors}{character. Vector with the column names of quantitative
-predictor variables (i.e. continuous variables).
+predictor variables (i.e. continuous variables). This function does not allow categorical variables
 Usage predictors = c("aet", "cwd", "tmin"). This function only can construct models with
 continuous variables.}
 
@@ -26,21 +26,31 @@ continuous variables.}
   \item max_sorensen: The threshold at which Sorensen is highest.
   \item max_fpb: The threshold at which FPB is highest.
   \item sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
   }
 In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 }
 \value{
 A list object with:
 \itemize{
-\item model: A list with "Gam" class object for each bivariate model. This object can be used for predicting ensemble of small model with \code{\link{sdm_predict}} function.
+\item model: A list with "Gam" class object for each bivariate model. This object can be used
+for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument.
 }
 }
 \description{
-Fit and validate Generalized Additive Models based Ensemble of Small Model approach
+This function constructs Generalized Additive Models using the
+Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
+}
+\details{
+This method consists of creating bivariate models with all the pair-wise combinations
+of predictors and perform an ensemble based on the average of suitability weighted by
+Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
+This function does not allow categorical variables because the use of these types of variables
+could be problematic when using with few occurrences. Further detail see
+Breiner et al. (2015, 2018)
 }
 \examples{
 \dontrun{
@@ -74,5 +84,14 @@ esm_gam_t1$model
 esm_gam_t1$predictors
 esm_gam_t1$performance
 }
-
+}
+\references{
+\itemize{
+\item Breiner, F. T., Guisan, A., Bergamini, A., & Nobis, M. P. (2015). Overcoming limitations of modelling rare species by using ensembles of small models. Methods in Ecology and Evolution, 6(10), 1210-218. https://doi.org/10.1111/2041-210X.12403
+\item Breiner, F. T., Nobis, M. P., Bergamini, A., & Guisan, A. (2018). Optimizing ensembles of small models for predicting the distribution of species with few occurrences. Methods in Ecology and Evolution, 9(4), 802-808. https://doi.org/10.1111/2041-210X.12957
+}
+}
+\seealso{
+\code{\link{esm_gau}}, \code{\link{esm_gbm}}, \code{\link{esm_glm}},
+\code{\link{esm_max}}, \code{\link{esm_net}}, and \code{\link{esm_svm}}.
 }

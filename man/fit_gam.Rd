@@ -121,3 +121,7 @@ gam_t3
 }
 
 }
+\seealso{
+\code{\link{fit_gau}}, \code{\link{fit_gbm}}, \code{\link{fit_glm}},
+\code{\link{fit_max}}, \code{\link{fit_net}}, and \code{\link{fit_svm}}.
+}
