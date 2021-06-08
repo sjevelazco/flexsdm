@@ -115,7 +115,7 @@ fit_ensemble <-
       for (i in 3:length(data_ens)) {
         data_ens2 <-
           dplyr::inner_join(data_ens2,
-            data_ens[[2]],
+            data_ens[[i]],
             by = c("rnames", "replicates", "part", "pr_ab")
           )
       }
