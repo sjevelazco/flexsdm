@@ -56,17 +56,21 @@ esm_gam <- function(data,
   # Fit models
   eval_esm <- list()
   list_esm <- list()
+  pb <- utils::txtProgressBar(min = 0, max = ncol(formula1), style = 3)
   for (f in 1:ncol(formula1)) {
-    message("Small model number: ", f)
-    list_esm[[f]] <- fit_gam(
-      data = data,
-      response = response,
-      predictors = unlist(formula1[, f]),
-      predictors_f = NULL,
-      partition = partition,
-      thr = thr
+    suppressMessages(
+      list_esm[[f]] <- fit_gam(
+        data = data,
+        response = response,
+        predictors = unlist(formula1[, f]),
+        predictors_f = NULL,
+        partition = partition,
+        thr = thr
+      )
     )
+    utils::setTxtProgressBar(pb, which(1:ncol(formula1) == f))
   }
+  close(pb)
 
   # Extract performance
   eval_esm <- lapply(list_esm, function(x) {
@@ -90,12 +94,12 @@ esm_gam <- function(data,
   pred_test_ens <- pred_test_ens[filt]
   mod <- mod[filt]
   names(mod) <- nms[filt]
-  pred_test_ens <-
+  list_esm <- list_esm[filt]
 
   # Perform weighted ensemble
-    data_ens <- sapply(mod, function(x) {
-      x["data_ens"]
-    })
+  data_ens <- sapply(list_esm, function(x) {
+    x["data_ens"]
+  })
 
   data_ens <- mapply(function(x, cn) {
     colnames(x)[colnames(x) %in% "pred"] <- cn
@@ -117,7 +121,7 @@ esm_gam <- function(data,
     for (i in 3:length(data_ens)) {
       data_ens2 <-
         dplyr::inner_join(data_ens2,
-                          data_ens[[2]],
+                          data_ens[[i]],
                           by = c("rnames", "replicates", "part", "pr_ab")
         )
     }
