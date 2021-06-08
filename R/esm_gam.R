@@ -49,151 +49,127 @@ esm_gam <- function(data,
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
-  data <- data.frame(data)
-  data <- data %>%
-    dplyr::select(
-      dplyr::all_of(response),
-      dplyr::all_of(predictors),
-      dplyr::starts_with(partition)
-    )
-  data <- data.frame(data)
-
-  # Remove NAs
-  complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
-  if (sum(!complete_vec) > 0) {
-    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
-    data <- data %>% dplyr::filter(complete_vec)
-  }
-  rm(complete_vec)
-
   # Formula
-  formula1 <- utils::combn(variables, 2) %>%
-    apply(., 2, function(x) {
-      formula1 <- c(paste("s(", x, ")", collapse = " + ", sep = ""))
-      formula1 <- stats::formula(paste(response, "~", formula1))
-      return(formula1)
-    })
+  formula1 <- utils::combn(variables, 2)
+  nms <- apply(utils::combn(variables, 2), 2, function(x) paste(x, collapse = "_"))
 
   # Fit models
-  np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
-  p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
-  eval_partial_list <- list()
-  pred_test_ens <- data %>%
-    dplyr::select(dplyr::starts_with(partition)) %>%
-    apply(., 2, unique) %>%
-    data.frame() %>%
-    as.list() %>%
-    lapply(., function(x) {
-      x <- stats::na.exclude(x)
-      x[!(x %in% c("train-test", "test"))] %>% as.list()
-    })
-
-
-  eval_esm <- as.list(rep(NA, length(formula1)))
-  names(eval_esm) <- apply(utils::combn(variables, 2), 2, function(x) paste(x[1], x[2], sep='||'))
-  for(f in 1:length(formula1)){
-    message("Small model number: ", f, "/", np)
-    for (h in 1:np) {
-      message("Replica number: ", h, "/", np)
-
-      out <- pre_tr_te(data, p_names, h)
-      train <- out$train
-      test <- out$test
-      np2 <- out$np2
-      rm(out)
-
-      eval_partial <- as.list(rep(NA, np2))
-      pred_test <- list()
-      mod <- list()
-
-      for (i in 1:np2) {
-        tryCatch({
-          suppressWarnings(mod[[i]] <-
-                             gam::gam(formula1[[f]],
-                                      data = train[[i]],
-                                      family = "binomial"))
-
-
-          # Predict for presences absences data
-          if (!is.null(predictors_f)) {
-            for (fi in 1:length(predictors_f)) {
-              lev <- as.character(unique(mod[[i]]$data[, predictors_f[fi]]))
-              lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-              test[[i]] <- test[[i]][lev_filt,]
-            }
-          }
-
-          pred_test <- data.frame(pr_ab = test[[i]][, response],
-                                  pred = suppressWarnings(
-                                    gam::predict.Gam(
-                                      mod[[i]],
-                                      newdata = test[[i]],
-                                      type = "response",
-                                      se.fit = FALSE
-                                    )
-                                  ))
-
-          pred_test_ens[[h]][[i]] <- pred_test %>%
-            dplyr::mutate(rnames = rownames(.))
-
-          # Validation of model
-          eval <-
-            sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                     a = pred_test$pred[pred_test$pr_ab == 0],
-                     thr = thr)
-          # eval_partial[[i]] <- dplyr::tibble(model = "gam", eval)
-        },
-        error = function(cond) {
-          message("It was not possible to fit this model")
-        })
-      }
-      names(eval_partial) <- 1:np2
-
-      # Create final database with parameter performance
-      eval_partial <- eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
-        dplyr::bind_rows(., .id = "partition")
-      eval_partial_list[[h]] <- eval_partial
-    }
-
-    eval_esm[[f]] <- eval_partial_list %>%
-      dplyr::bind_rows(., .id = "replica")
+  eval_esm <- list()
+  list_esm <- list()
+  for (f in 1:ncol(formula1)) {
+    message("Small model number: ", f)
+    list_esm[[f]] <- fit_gam(
+      data = data,
+      response = response,
+      predictors = unlist(formula1[, f]),
+      predictors_f = NULL,
+      partition = partition,
+      thr = thr
+    )
   }
 
-  eval_esm <- eval_esm %>%
-    dplyr::bind_rows(., .id = "esm")
+  # Extract performance
+  eval_esm <- lapply(list_esm, function(x) {
+    x <- x$performance
+    x$model <- 'esm_gam'
+    x
+  }) %>%
+    dplyr::bind_rows()
 
-  eval_esm <- eval_esm %>%
-    dplyr::group_by(esm) %>%
-    dplyr::summarise(dplyr::across(
-      TPR:IMAE,
-      list(mean = mean, sd = stats::sd)
-    ), .groups = "drop") %>%
-    dplyr::tibble(model = "esm_gam",.)
+  # Extract final models
+  mod <- lapply(list_esm, function(x) x$mode)
 
+  # Extract prediction for used occurrences database
+  pred_test_ens <- lapply(list_esm, function(x) x$data_ens)
 
-  # Fit final models with best settings
-  suppressWarnings(mod <- lapply(formula1, function(x)
-                     gam::gam(x,
-                              data = data,
-                              family = "binomial"
-                     ))
-  )
-
-  pred_test <- lapply(mod, function(x)
-    dplyr::tibble(
-    pr_ab = data[, response],
-    pred = suppressMessages(gam::predict.Gam(
-      x,
-      newdata = data,
-      type = "response"
-    ))
-  ))
+  # Calculate Somers' metric and remove small models with bad performance (AUC<0.5)
+  mtrc <- eval_esm[, "AUC_mean"][[1]]
+  D <- 2 * (mtrc - 0.5) #Somers'D
+  filt <- mtrc>=0.5
+  D <- D[filt]
+  pred_test_ens <- pred_test_ens[filt]
+  mod <- mod[filt]
+  names(mod) <- nms[filt]
+  pred_test_ens <-
 
   # Perform weighted ensemble
-  fun1 <- function(x1, x2){
-    x1[,2]*x2[1,]
+    data_ens <- sapply(mod, function(x) {
+      x["data_ens"]
+    })
+
+  data_ens <- mapply(function(x, cn) {
+    colnames(x)[colnames(x) %in% "pred"] <- cn
+    x
+  }, data_ens, nms, SIMPLIFY = FALSE)
+
+  data_ens <- lapply(data_ens, function(x) {
+    x %>% dplyr::mutate(pr_ab = pr_ab %>%
+                          as.character() %>%
+                          as.double())
+  })
+
+  data_ens2 <-
+    dplyr::inner_join(data_ens[[1]],
+                      data_ens[[2]],
+                      by = c("rnames", "replicates", "part", "pr_ab")
+    )
+  if (length(data_ens) > 2) {
+    for (i in 3:length(data_ens)) {
+      data_ens2 <-
+        dplyr::inner_join(data_ens2,
+                          data_ens[[2]],
+                          by = c("rnames", "replicates", "part", "pr_ab")
+        )
+    }
   }
-  pred_test
+  rm(data_ens)
+
+
+  data_ens <- sapply(mod, function(x) {
+    x$data_ens
+  })
+
+  data_ens <- mapply(function(x, nms) {
+    colnames(x)[colnames(x) %in% "pred"] <- nms
+    x
+  }, data_ens, nms, SIMPLIFY = FALSE)
+
+  data_ens <- lapply(data_ens, function(x) {
+    x %>% dplyr::mutate(pr_ab = pr_ab %>%
+                          as.character() %>%
+                          as.double())
+  })
+
+  data_ens2 <-
+    dplyr::inner_join(data_ens[[1]],
+                      data_ens[[2]],
+                      by = c("rnames", "replicates", "part", "pr_ab")
+    )
+  if (length(data_ens) > 2) {
+    for (i in 3:length(data_ens)) {
+      data_ens2 <-
+        dplyr::inner_join(data_ens2,
+                          data_ens[[2]],
+                          by = c("rnames", "replicates", "part", "pr_ab")
+        )
+    }
+  }
+  rm(data_ens)
+
+  data_ens <- sapply(pred_test_ens, function(x) {
+    x["pred"]
+  })
+  names(data_ens) <- nms
+  data_ens <- bind_cols(data_ens)
+  pred <- mapply(function(x, v) {
+    x * v
+  }, data_ens, D) %>%
+    apply(., 1, function(x) {
+      sum(x, na.rm = TRUE)
+    }) / sum(D)
+
+
+  pred_test <- tibble(pred_test[[1]][1], pred)
 
   threshold <- sdm_eval(
     p = pred_test$pred[pred_test$pr_ab == 1],

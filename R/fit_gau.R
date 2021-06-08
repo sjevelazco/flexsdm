@@ -48,7 +48,7 @@
 #' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "kfold", folds = 10)
+#'   method = c(method = "kfold", folds = 3)
 #' )
 #' abies_db2
 #'
@@ -200,12 +200,12 @@ fit_gau <- function(data,
     np2 <- out$np2
     rm(out)
 
-    eval_partial <- list()
+    eval_partial <- as.list(rep(NA, np2))
     pred_test <- list()
     mod <- list()
 
     # In the follow code function will substitutes absences by background points
-    # only in train database in order to fit gaup with presences and background
+    # only in train database in order to fit gau with presences and background
     # and validate models with presences and absences
     if (!is.null(background)) {
       background2 <- pre_tr_te(background, p_names, h)
@@ -216,15 +216,16 @@ fit_gau <- function(data,
     }
 
     for (i in 1:np2) {
+      tryCatch({
       message("Partition number: ", i, "/", np2)
       set.seed(1)
-      try(mod[[i]] <-
+      mod[[i]] <-
         GRaF::graf(
           y = train[[i]][, response],
           x = train[[i]][, c(predictors, predictors_f)],
           opt.l = FALSE,
           method = "Laplace"
-        ))
+        )
 
       # Predict for presences absences data
       ## Eliminate factor levels not used in fitting
@@ -241,8 +242,6 @@ fit_gau <- function(data,
           }
         }
       }
-
-
 
       # Predict for presences absences data
       pred_test <- data.frame(
@@ -294,11 +293,13 @@ fit_gau <- function(data,
           )
       }
       eval_partial[[i]] <- dplyr::tibble(model = "gau", eval)
+      })
     }
 
     # Create final database with parameter performance
     names(eval_partial) <- 1:np2
-    eval_partial <- eval_partial %>%
+    eval_partial <-
+      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
       dplyr::bind_rows(., .id = "partition")
     eval_partial_list[[h]] <- eval_partial
   }

@@ -185,66 +185,58 @@ fit_svm <- function(data,
     np2 <- out$np2
     rm(out)
 
-    eval_partial <- list()
+    eval_partial <- as.list(rep(NA, np2))
     pred_test <- list()
     mod <- list()
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      tryCatch(
-        {
-          if (sigma == "automatic") {
-            kpar_ <- "automatic"
-          } else {
-            kpar_ <- list(sigma = sigma)
-          }
+      tryCatch({
+        if (sigma == "automatic") {
+          kpar_ <- "automatic"
+        } else {
+          kpar_ <- list(sigma = sigma)
+        }
 
-          set.seed(1)
-          mod[[i]] <-
-            suppressMessages(
-              kernlab::ksvm(
-                formula1,
-                data = train[[i]],
-                type = "C-svc",
-                kernel = "rbfdot",
-                kpar = kpar_,
-                C = C,
-                prob.model = TRUE
-              )
+        set.seed(1)
+        mod[[i]] <-
+          suppressMessages(
+            kernlab::ksvm(
+              formula1,
+              data = train[[i]],
+              type = "C-svc",
+              kernel = "rbfdot",
+              kpar = kpar_,
+              C = C,
+              prob.model = TRUE
             )
-
-          pred_test <- data.frame(
-            pr_ab = test[[i]][, response],
-            pred = suppressMessages(kernlab::predict(
-              mod[[i]],
-              newdata = test[[i]],
-              type = "prob",
-            )[, 2])
           )
 
-          pred_test_ens[[h]][[i]] <- pred_test %>%
-            dplyr::mutate(rnames = rownames(.))
+        pred_test <- data.frame(pr_ab = test[[i]][, response],
+                                pred = suppressMessages(kernlab::predict(
+                                  mod[[i]],
+                                  newdata = test[[i]],
+                                  type = "prob",
+                                )[, 2]))
 
-          # Validation of model
-          eval <-
-            sdm_eval(
-              p = pred_test$pred[pred_test$pr_ab == 1],
-              a = pred_test$pred[pred_test$pr_ab == 0],
-              thr = thr
-            )
+        pred_test_ens[[h]][[i]] <- pred_test %>%
+          dplyr::mutate(rnames = rownames(.))
 
-          eval_partial[[i]] <- dplyr::tibble(model = "svm", eval)
+        # Validation of model
+        eval <-
+          sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
+                   a = pred_test$pred[pred_test$pr_ab == 0],
+                   thr = thr)
 
-          names(eval_partial) <- i
-        },
-        error = function(cond) {
-          message("It was not possible to fit this model")
-        }
-      )
+        eval_partial[[i]] <- dplyr::tibble(model = "svm", eval)
+
+        names(eval_partial) <- i
+      })
     }
 
     # Create final database with parameter performance
-    eval_partial <- eval_partial %>%
+    eval_partial <-
+      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
       dplyr::bind_rows(., .id = "partition")
     eval_partial_list[[h]] <- eval_partial
   }

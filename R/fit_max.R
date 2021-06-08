@@ -204,15 +204,14 @@ fit_max <- function(data,
       rm(background2)
     }
 
-    eval_partial <- list()
+    eval_partial <- as.list(rep(NA, np2))
     pred_test <- list()
     mod <- list()
 
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      tryCatch(
-        {
+      tryCatch({
           set.seed(1)
           mod[[i]] <-
             suppressMessages(
@@ -290,15 +289,13 @@ fit_max <- function(data,
           eval_partial[[i]] <- dplyr::tibble(model = "max", eval)
 
           names(eval_partial) <- i
-        },
-        error = function(cond) {
-          message("It was not possible to fit this model")
         }
       )
     }
 
     # Create final database with parameter performance
-    eval_partial <- eval_partial %>%
+    eval_partial <-
+      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
       dplyr::bind_rows(., .id = "partition")
     eval_partial_list[[h]] <- eval_partial
   }
