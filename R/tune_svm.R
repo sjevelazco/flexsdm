@@ -184,7 +184,7 @@ tune_svm <-
       np2 <- out$np2
       rm(out)
 
-      eval_partial <- list()
+      eval_partial <- as.list(rep(NA, np2))
 
       for (i in 1:np2) {
         message("Partition number: ", i, "/", np2)
@@ -250,7 +250,7 @@ tune_svm <-
 
       # Create final database with parameter performance
       names(eval_partial) <- 1:np2
-      eval_partial <- eval_partial %>%
+      eval_partial <- eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
         dplyr::bind_rows(., .id = "partition")
       eval_partial_list[[h]] <- eval_partial
     }

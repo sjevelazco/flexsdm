@@ -168,14 +168,15 @@ fit_raf <- function(data,
     np2 <- out$np2
     rm(out)
 
-    eval_partial <- list()
+    eval_partial <- as.list(rep(NA, np2))
     pred_test <- list()
     mod <- list()
 
+
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      set.seed(1)
-      try(
+      tryCatch({
+        set.seed(1)
         mod[[i]] <-
           randomForest::randomForest(
             formula1,
@@ -184,35 +185,30 @@ fit_raf <- function(data,
             ntree = 500,
             importance = FALSE,
           )
-      )
 
-      pred_test <- try(data.frame(
-        pr_ab = test[[i]][, response],
-        pred = suppressMessages(
-          stats::predict(
-            mod[[i]],
-            newdata = test[[i]],
-            type = "prob",
-          )[, 2]
-        )
-      ))
+        pred_test <- data.frame(pr_ab = test[[i]][, response],
+                                pred = suppressMessages(stats::predict(
+                                  mod[[i]],
+                                  newdata = test[[i]],
+                                  type = "prob",
+                                )[, 2]))
 
-      pred_test_ens[[h]][[i]] <- pred_test %>%
-        dplyr::mutate(rnames = rownames(.))
+        pred_test_ens[[h]][[i]] <- pred_test %>%
+          dplyr::mutate(rnames = rownames(.))
 
-      # Validation of model
-      eval <-
-        sdm_eval(
-          p = pred_test$pred[pred_test$pr_ab == 1],
-          a = pred_test$pred[pred_test$pr_ab == 0],
-          thr = thr
-        )
-      eval_partial[[i]] <- dplyr::tibble(model = "raf", eval)
+        # Validation of model
+        eval <-
+          sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
+                   a = pred_test$pred[pred_test$pr_ab == 0],
+                   thr = thr)
+        eval_partial[[i]] <- dplyr::tibble(model = "raf", eval)
+      })
     }
 
     # Create final database with parameter performance
     names(eval_partial) <- 1:np2
-    eval_partial <- eval_partial %>%
+    eval_partial <-
+      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
       dplyr::bind_rows(., .id = "partition")
     eval_partial_list[[h]] <- eval_partial
   }

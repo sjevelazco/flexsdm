@@ -20,7 +20,7 @@ fit_gam(
 \item{response}{character. Column name with species absence-presence data (0,1).}
 
 \item{predictors}{character. Vector with the column names of quantitative
-predictor variables (i.e. continuous or discrete variables).
+predictor variables (i.e. continuous variables).
 Usage predictors = c("aet", "cwd", "tmin")}
 
 \item{predictors_f}{character. Vector with the column names of qualitative

@@ -144,7 +144,7 @@ fit_ensemble <-
       }, values, perf, SIMPLIFY = TRUE) %>%
         apply(., 1, function(x) {
           sum(x, na.rm = TRUE)
-        }) / sum(v)
+        }) / sum(perf)
     }
     if (any("meansup" == ens_method)) {
       v[["meansup"]] <- apply(values[, perf >= mean(perf)], 1, function(x) {
@@ -202,24 +202,26 @@ fit_ensemble <-
           dplyr::filter(replicates == p_names[h])
         pred_test <- split(pred_test, f = pred_test$part)
         np2 <- length(pred_test)
-        eval_partial <- list()
+        eval_partial <- as.list(rep(NA, np2))
 
         for (i in 1:np2) {
           # message("Partition number: ", i, "/", np2)
           # Validation of model
-
-          eval <-
-            sdm_eval(
-              p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
-              a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
-              thr = thr
-            )
-          eval_partial[[i]] <- eval
-          names(eval_partial)[i] <- i
+          tryCatch({
+            suppressWarnings(eval <-
+              sdm_eval(
+                p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
+                a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
+                thr = thr
+              ))
+            eval_partial[[i]] <- eval
+            rm(eval)
+          },error = function(cond) {})
         }
+        names(eval_partial) <- 1:np2
 
         # Create final database with parameter performance
-        eval_partial <- eval_partial %>%
+        eval_partial <- eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
           dplyr::bind_rows(., .id = "partition")
         eval_partial_list[[h]] <- eval_partial
       }

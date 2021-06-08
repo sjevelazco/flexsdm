@@ -172,54 +172,50 @@ fit_net <- function(data,
     np2 <- out$np2
     rm(out)
 
-    eval_partial <- list()
+    eval_partial <- as.list(rep(NA, np2))
     pred_test <- list()
     mod <- list()
 
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
-      set.seed(1)
-      try(
+      tryCatch({
+        set.seed(1)
         mod[[i]] <-
-          nnet::nnet(
-            formula1,
-            data = train[[i]],
-            size = size, # revise and implement a formula to calculate it
-            rang = 0.1,
-            decay = decay,
-            maxit = 200,
-            trace = FALSE
-          )
-      )
+              nnet::nnet(
+                formula1,
+                data = train[[i]],
+                size = size,
+                # revise and implement a formula to calculate it
+                rang = 0.1,
+                decay = decay,
+                maxit = 200,
+                trace = FALSE
+              )
 
 
-      pred_test <- try(data.frame(
-        pr_ab = test[[i]][, response],
-        pred = suppressMessages(
-          stats::predict(
-            mod[[i]],
-            newdata = test[[i]],
-            type = "raw"
-          )
-        )
-      ))
+        pred_test <- data.frame(pr_ab = test[[i]][, response],
+                                    pred = suppressMessages(stats::predict(
+                                      mod[[i]],
+                                      newdata = test[[i]],
+                                      type = "raw"
+                                    )))
 
-      pred_test_ens[[h]][[i]] <- pred_test %>%
-        dplyr::mutate(rnames = rownames(.))
+        pred_test_ens[[h]][[i]] <- pred_test %>%
+          dplyr::mutate(rnames = rownames(.))
 
-      # Validation of model
-      eval <-
-        sdm_eval(
-          p = pred_test$pred[pred_test$pr_ab == 1],
-          a = pred_test$pred[pred_test$pr_ab == 0],
-          thr = thr
-        )
-      eval_partial[[i]] <- dplyr::tibble(model = "net", eval)
+        # Validation of model
+        eval <-
+          sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
+                   a = pred_test$pred[pred_test$pr_ab == 0],
+                   thr = thr)
+        eval_partial[[i]] <- dplyr::tibble(model = "net", eval)
+      })
     }
 
     # Create final database with parameter performance
     names(eval_partial) <- 1:np2
-    eval_partial <- eval_partial %>%
+    eval_partial <-
+      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
       dplyr::bind_rows(., .id = "partition")
     eval_partial_list[[h]] <- eval_partial
   }
