@@ -59,7 +59,8 @@ require(dplyr)
 
 # Using k-fold partition method
 set.seed(10)
-abies_db2 <- abies_db \%>\% na.omit \%>\%
+abies_db2 <- abies_db \%>\%
+  na.omit() \%>\%
   group_by(pr_ab) \%>\%
   dplyr::slice_sample(n = 10) \%>\%
   group_by()
@@ -83,6 +84,46 @@ esm_gam_t1 <- esm_gam(
 esm_gam_t1$model
 esm_gam_t1$predictors
 esm_gam_t1$performance
+
+# Test with other partition
+abies_db2 <- abies_db2 \%>\% select(-starts_with('.'))
+
+set.seed(10)
+abies_db2 <- part(
+  data = abies_db2,
+  pr_ab = "pr_ab",
+  method = c(method = "rep_kfold", folds = 3, replicates = 10)
+)
+abies_db2
+
+esm_gam_t2 <- esm_gam(
+  data = abies_db2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
+  partition = ".part",
+  thr = NULL
+)
+esm_gam_t2$performance
+
+# Test with other bootrap
+abies_db2 <- abies_db2 \%>\% select(-starts_with('.'))
+
+set.seed(10)
+abies_db2 <- part(
+  data = abies_db2,
+  pr_ab = "pr_ab",
+  method = c(method = "boot", replicates = 10, proportion = 0.7)
+)
+abies_db2
+
+esm_gam_t2 <- esm_gam(
+  data = abies_db2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
+  partition = ".part",
+  thr = NULL
+)
+esm_gam_t2$performance
 }
 }
 \references{
