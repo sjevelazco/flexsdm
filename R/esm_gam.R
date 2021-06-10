@@ -61,7 +61,8 @@
 #'
 #' # Using k-fold partition method
 #' set.seed(10)
-#' abies_db2 <- abies_db %>% na.omit %>%
+#' abies_db2 <- abies_db %>%
+#'   na.omit() %>%
 #'   group_by(pr_ab) %>%
 #'   dplyr::slice_sample(n = 10) %>%
 #'   group_by()
@@ -188,24 +189,48 @@ esm_gam <- function(data,
       sum(x, na.rm = TRUE)
     }) / sum(D)
 
-  pred_test <- dplyr::bind_cols(data_ens2, pred = pred)
+  pred_test <- dplyr::bind_cols(data_ens2, pred = pred) # This dataset will be use to calculate
+  # esm peformance
 
+  # Validate ensemble base on weighted average suitability, split data by
+  # replicates and partition
+  testlist <- pred_test %>% dplyr::distinct(replicates, part)
+  replicates <- as.list(unique(pred_test$replicates))
+  names(replicates) <- unique(pred_test$replicates)
+
+  for (r in unique(pred_test$replicates)) {
+    x0 <- pred_test %>% dplyr::filter(replicates == r)
+    replicates[[r]] <- lapply(
+      split(x0, x0$part),
+      function(x) {
+        sdm_eval(
+          p = x$pred[x$pr_ab == 1],
+          a = x$pred[x$pr_ab == 0],
+          thr = thr
+        )
+      }
+    ) %>%
+      dplyr::bind_rows(., .id = "part")
+  }
+
+  eval_esm <- dplyr::bind_rows(replicates, .id = "replicates")
+
+
+  eval_final <- eval_esm %>%
+    dplyr::group_by(threshold) %>%
+    dplyr::summarise(dplyr::across(
+      TPR:IMAE,
+      list(mean = mean, sd = stats::sd)
+    ), .groups = "drop")
+
+  # Calculate final threshold
   threshold <- sdm_eval(
     p = pred_test$pred[pred_test$pr_ab == 1],
     a = pred_test$pred[pred_test$pr_ab == 0],
     thr = thr
   )
 
-  eval_esm <- eval_esm %>% dplyr::select(model:n_absences, dplyr::ends_with("_mean"))
-  names(eval_esm) <- gsub("_mean", "", names(eval_esm))
-
-  eval_final <- eval_esm %>%
-    dplyr::group_by(model, threshold) %>%
-    dplyr::summarise(dplyr::across(
-      TPR:IMAE,
-      list(mean = mean, sd = stats::sd)
-    ), .groups = "drop")
-
+  # List of models used for prediction
   mod <- lapply(list_esm, function(x) x$mode)
   names(mod) <- gsub("[$.]", "", nms)
 
