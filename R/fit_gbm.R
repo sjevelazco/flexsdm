@@ -245,7 +245,10 @@ fit_gbm <- function(data,
   suppressMessages(mod <-
     gbm::gbm(formula1,
       data = data,
-      distribution = "bernoulli"
+      distribution = "bernoulli",
+      n.trees = n_trees,
+      n.minobsinnode = n_minobsinnode,
+      shrinkage = shrinkage
     ))
 
   pred_test <- data.frame(
