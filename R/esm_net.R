@@ -42,8 +42,8 @@
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument.
 #' }
 #'
-#' @seealso \code{\link{esm_gau}}, \code{\link{esm_gbm}}, \code{\link{esm_glm}},
-#' \code{\link{esm_max}}, \code{\link{esm_net}}, and \code{\link{esm_svm}}.
+#' @seealso \code{\link{esm_gam}}, \code{\link{esm_gau}}, \code{\link{esm_gbm}},
+#' \code{\link{esm_glm}}, \code{\link{esm_max}}, and \code{\link{esm_svm}}.
 #' @export
 #'
 #' @references
@@ -76,7 +76,7 @@
 #' )
 #' abies_db2
 #'
-#' # Without thrshold specification and with kfold
+#' # Without threshold specification and with kfold
 #' esm_net_t1 <- esm_net(
 #'   data = abies_db2,
 #'   response = "pr_ab",

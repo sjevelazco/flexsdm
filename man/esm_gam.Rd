@@ -72,7 +72,7 @@ abies_db2 <- part(
 )
 abies_db2
 
-# Without thrshold specification and with kfold
+# Without threshold specification and with kfold
 esm_gam_t1 <- esm_gam(
   data = abies_db2,
   response = "pr_ab",
