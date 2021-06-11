@@ -1,6 +1,6 @@
-#' Fit and validate Support Vector Machine models based Ensemble of Small of Model approach
+#' Fit and validate Generalized Additive Models based Ensemble of Small of Model approach
 #'
-#' @description This function constructs Support Vector Machine models using the
+#' @description This function constructs Generalized Additive Models using the
 #' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
 #'
 #' @param data data.frame. Database with the response (0,1) and predictors values.
@@ -21,24 +21,25 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
-#' @param sigma numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot".
-#' Default "automatic".
-#' @param C numeric. Cost of constraints violation this is the 'C'-constant of the regularization
-#' term in the Lagrange formulation. Default 1
+#' @param background data.frame. Database with response column only with 0 and predictors variables. All
+#' column names must be consistent with data
+#' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
+#' @param classes character. A single feature of any combinations of them. Features are symbolized by letters: l (linear), q (quadratic), h (hinge), p (product), and t (threshold). Usage classes = "lpq". Default "default" (see details).
+#' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
+#' @param regmult numeric. A constant to adjust regularization. Default 1.
 #'
 #' @details This method consists of creating bivariate models with all the pair-wise combinations
 #' of predictors and perform an ensemble based on the average of suitability weighted by
 #' Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 #' This function does not allow categorical variables because the use of these types of variables
 #' could be problematic when using with few occurrences. Further detail see
-#' Breiner et al. (2015, 2018). This function constructs 'C-svc' classification type and uses
-#' Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[kernlab]{ksvm}
+#' Breiner et al. (2015, 2018)
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A list with "ksvm" class object for each bivariate model. This object can be used
+#' \item model: A list with "Gam" class object for each bivariate model. This object can be used
 #' for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
@@ -75,30 +76,38 @@
 #' abies_db2 <- part(
 #'   data = abies_db2,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "rep_kfold", folds = 3, replicates=5)
+#'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
 #' )
 #' abies_db2
 #'
 #' # Without thrshold specification and with kfold
-#' esm_svm_t1 <- esm_gam(
+#' esm_max_t1 <- esm_max(
 #'   data = abies_db2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
 #'   partition = ".part",
-#'   thr = NULL
+#'   thr = NULL,
+#'   background = NULL,
+#'   clamp = TRUE,
+#'   classes = "default",
+#'   pred_type = "cloglog",
+#'   regmult = 1
 #' )
 #'
-#' esm_svm_t1$model %>% names # bivariate model
-#' esm_svm_t1$predictors
-#' esm_svm_t1$performance
+#' esm_max_t1$model %>% names # bivariate model
+#' esm_max_t1$predictors
+#' esm_max_t1$performance
 #' }
-esm_svm <- function(data,
+esm_max <- function(data,
                     response,
                     predictors,
                     partition,
                     thr = NULL,
-                    sigma = "automatic",
-                    C = 1) {
+                    background,
+                    clamp = TRUE,
+                    classes = "default",
+                    pred_type = "cloglog",
+                    regmult = 1) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
@@ -113,16 +122,19 @@ esm_svm <- function(data,
   pb <- utils::txtProgressBar(min = 0, max = ncol(formula1), style = 3)
   for (f in 1:ncol(formula1)) {
     suppressMessages(
-      list_esm[[f]] <- fit_svm(
+      list_esm[[f]] <- fit_max(
         data = data,
         response = response,
         predictors = unlist(formula1[, f]),
         predictors_f = NULL,
-        partition = partition,
-        thr = thr,
         fit_formula = NULL,
-        sigma = sigma,
-        C = C
+        partition = partition,
+        background = background,
+        thr = thr,
+        clamp = TRUE,
+        classes = classes,
+        pred_type = pred_type,
+        regmult = regmult
       )
     )
     utils::setTxtProgressBar(pb, which(1:ncol(formula1) == f))
@@ -132,7 +144,7 @@ esm_svm <- function(data,
   # Extract performance
   eval_esm <- lapply(list_esm, function(x) {
     x <- x$performance
-    x$model <- "esm_svm"
+    x$model <- "esm_max"
     x
   })
   names(eval_esm) <- nms
