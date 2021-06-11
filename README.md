@@ -16,7 +16,7 @@ of variables, number of records, different algorithm and ensemble methods, algor
 --- ---
 ### Set of functions
 ### 1. Pre-modeling functions 
-Set tools for preparing and manipulating modeling input data (e.g., species occurrences, 
+Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, 
 sample pseudo-absences, define calibration area).
 
 * `calib_area` Delimit calibration area for constructing species distribution models
