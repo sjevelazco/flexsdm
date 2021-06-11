@@ -135,7 +135,7 @@ esm_glm <- function(data,
   # Extract performance
   eval_esm <- lapply(list_esm, function(x) {
     x <- x$performance
-    x$model <- "esm_gam"
+    x$model <- "esm_glm"
     x
   })
   names(eval_esm) <- nms
