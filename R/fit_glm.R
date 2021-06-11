@@ -26,8 +26,8 @@
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments
 #' @param poly interger >= 2. If used with values >= 2 model will use polinomius
-#' for those continuous variables (i.e. used in predictors argument)
-#' @param inter_order interger >= 0. The interaction order between explanatory variables.
+#' for those continuous variables (i.e. used in predictors argument). Default is 0.
+#' @param inter_order interger >= 0. The interaction order between explanatory variables. Default is 0.
 #'
 #' @return
 #'

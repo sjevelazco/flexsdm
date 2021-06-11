@@ -1,6 +1,6 @@
-#' Fit and validate Generalized Boosted Regression models based Ensemble of Small of Model approach
+#' Fit and validate Generalized Linear Models based Ensemble of Small of Model approach
 #'
-#' @description This function constructs Generalized Boosted Regression using the
+#' @description This function constructs Generalized Linear Models using the
 #' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
 #'
 #' @param data data.frame. Database with the response (0,1) and predictors values.
@@ -21,18 +21,12 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
-#' @param n_trees Integer specifying the total number of trees to fit.
-#' This is equivalent to the number of iterations and the number of basis
-#' functions in the additive expansion. Default is 100.
-#' @param n_minobsinnode Integer. It specifies the minimum number of
-#' observations in the terminal nodes of the trees. Note that this
-#' is the actual number of observations, not the total weight. Because ESM are generally constructed
-#' with few occurrences by default will be used a value equal to nrow(data)*0.5/4.
-#' @param shrinkage Numeric. This parameter applied to each tree in the
-#' expansion. Also known as the learning rate or step-size reduction;
-#' 0.001 to 0.1 usually work, but a smaller learning rate typically
-#' requires more trees. Default is 0.1.
+#' @param poly interger >= 2. If used with values >= 2 model will use polinomius
+#' for those continuous variables (i.e. used in predictors argument). Default is 0. Because ESM are
+#' constructed with few occurrences it would be recommended no use polynomials to avoid overfitting.
 #'
+#' @param inter_order interger >= 0. The interaction order between explanatory variables.
+#' Default is 0. Because ESM are constructed with few occurrences it would be recommended no use interaction
 #'
 #' @details This method consists of creating bivariate models with all the pair-wise combinations
 #' of predictors and perform an ensemble based on the average of suitability weighted by
@@ -45,7 +39,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A list with "gbm" class object for each bivariate model. This object can be used
+#' \item model: A list with "glm" class object for each bivariate model. This object can be used
 #' for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
@@ -87,30 +81,27 @@
 #' abies_db2
 #'
 #' # Without thrshold specification and with kfold
-#' esm_gbm_t1 <- esm_gbm(
+#' esm_glm_t1 <- esm_glm(
 #'   data = abies_db2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
 #'   partition = ".part",
 #'   thr = NULL,
-#'   n_trees = 100,
-#'   n_minobsinnode = as.integer(nrow(data) * 0.5/4),
-#'   shrinkage = 0.1
+#'   poly = 0,
+#'   inter_order = 0
 #' )
 #'
-#' esm_gbm_t1$model %>% names # bivariate model
-#' esm_gbm_t1$predictors
-#' esm_gbm_t1$performance
-#'
+#' esm_glm_t1$model %>% names # bivariate model
+#' esm_glm_t1$predictors
+#' esm_glm_t1$performance
 #' }
-esm_gbm <- function(data,
+esm_glm <- function(data,
                     response,
                     predictors,
                     partition,
                     thr = NULL,
-                    n_trees = 100,
-                    n_minobsinnode = as.integer(nrow(data)*0.5/4),
-                    shrinkage = 0.1) {
+                    poly = 0,
+                    inter_order = 0) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
@@ -125,7 +116,7 @@ esm_gbm <- function(data,
   pb <- utils::txtProgressBar(min = 0, max = ncol(formula1), style = 3)
   for (f in 1:ncol(formula1)) {
     suppressMessages(
-      list_esm[[f]] <- fit_gbm(
+      list_esm[[f]] <- fit_glm(
         data = data,
         response = response,
         predictors = unlist(formula1[, f]),
@@ -133,9 +124,8 @@ esm_gbm <- function(data,
         partition = partition,
         thr = thr,
         fit_formula = NULL,
-        n_trees = 100,
-        n_minobsinnode = n_minobsinnode,  # TODO explicit that a value of n_minobsinnode = as.integer(nrow(data)*0.5/4) in documentation
-        shrinkage = 0.1
+        poly = poly,
+        inter_order = inter_order
       )
     )
     utils::setTxtProgressBar(pb, which(1:ncol(formula1) == f))
@@ -145,7 +135,7 @@ esm_gbm <- function(data,
   # Extract performance
   eval_esm <- lapply(list_esm, function(x) {
     x <- x$performance
-    x$model <- "esm_gbm"
+    x$model <- "esm_gam"
     x
   })
   names(eval_esm) <- nms
