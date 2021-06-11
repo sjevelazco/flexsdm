@@ -1,12 +1,9 @@
-#'
 #' Data partitioning for training and testing models
 #'
 #' @description This function provides different conventional partition methods based in folds (kfold, rep_kfold, and loocv), and bootstrap (boot)
 #'
 #' @param data data.frame. Database with presences, presence-absence, or pseudo-absence, records for a given species
 #' @param pr_ab character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0
-#' @param bg_data data.frame. Data frames with background points.
-#' @param bg_a character. Column name of "bg_data" with absences. Background must be repented by 0
 #' @param method character. Vector with partition method to be used:
 #' \itemize{
 #'   \item kfold: Random partition in k-fold cross-validation. Usage part=c(method= 'kfold', folds='5'). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. Usage method = c(method = "kfold", folds = 10).
@@ -16,7 +13,7 @@
 #'   }
 #'
 #' @return
-#' A tibble object with information used in 'data' and/or 'gb_data' arguments and a additional columns .part with partition group. In the case of boot partition partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric. In case of use 'data' and 'bg_data' will returned a list with partition data for each database with the names data and bg_data.
+#' A tibble object with information used in 'data' argument and a additional columns .part with partition group. In the case of boot partition partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric.
 #' @export
 #'
 #' @importFrom dplyr %>% group_by mutate n summarise filter select slice_sample full_join left_join tibble
@@ -33,8 +30,6 @@
 #' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
-#'   bg_data = NULL,
-#'   bg_a = NULL,
 #'   method = c(method = "kfold", folds = 10)
 #' )
 #' abies_db2
@@ -43,8 +38,6 @@
 #' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
-#'   bg_data = NULL,
-#'   bg_a = NULL,
 #'   method = c(method = "rep_kfold", folds = 10, replicates = 10)
 #' )
 #' abies_db2
@@ -53,8 +46,6 @@
 #' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
-#'   bg_data = NULL,
-#'   bg_a = NULL,
 #'   method = c(method = "loocv")
 #' )
 #' abies_db2
@@ -63,16 +54,15 @@
 #' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
-#'   bg_data = NULL,
-#'   bg_a = NULL,
 #'   method = c(method = "boot", replicates = 50, proportion = 0.7)
 #' )
 #' abies_db2
 #' abies_db2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
 #' }
 #'
-part <- function(data, pr_ab, bg_data = NULL, bg_a = NULL, method = NULL) {
+part <- function(data, pr_ab, method = NULL) {
   # TODO add conditional for testing misuse of aguments
+  # TODO write loovc documentation
   .part <- BOOT1 <- BOOT2 <- boot <- NULL
 
   # kfold
