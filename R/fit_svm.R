@@ -25,8 +25,10 @@
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
 #'
-#' @param sigma numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot". Default "automatic".
-#' @param C numeric. Cost of constraints violation this is the 'C'-constant of the regularization term in the Lagrange formulation. Default 1
+#' @param sigma numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot".
+#' Default "automatic".
+#' @param C numeric. Cost of constraints violation this is the 'C'-constant of the regularization
+#' term in the Lagrange formulation. Default 1
 #'
 #' @return
 #'
