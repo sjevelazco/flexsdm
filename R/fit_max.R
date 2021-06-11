@@ -13,7 +13,7 @@
 #' response, predictors, and predictors_f arguments. Default NULL.
 #' @param partition character. Column name with training and validation partition groups.
 #' @param background data.frame. Database with response column only with 0 and predictors variables. All
-#' column names must be consistent with data
+#' column names must be consistent with data. Default NULL
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
@@ -69,7 +69,7 @@ fit_max <- function(data,
                     predictors_f = NULL,
                     fit_formula = NULL,
                     partition,
-                    background,
+                    background = NULL,
                     thr = NULL,
                     clamp = TRUE,
                     classes = "default",
