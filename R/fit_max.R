@@ -60,6 +60,46 @@
 #'
 #' @examples
 #' \dontrun{
+#' data("abies_db")
+#' data("backg")
+#' abies_db # environmental conditions of presence-absence data
+#' backg # environmental conditions of background points
+#'
+#' # Using k-fold partition method
+#' # Remember that the partition method, number of folds or replications must
+#' # be the same for presence-absence and background points datasets
+#' abies_db2 <- part(
+#'   data = abies_db,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 5)
+#' )
+#' abies_db2
+#'
+#' backg2 <- part(
+#'   data = backg,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 5)
+#' )
+#' backg2
+#'
+#' max_t1 <- fit_max(
+#'   data = abies_db2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors_f = c("landform"),
+#'   partition = ".part",
+#'   background = backg2,
+#'   thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
+#'   clamp = TRUE,
+#'   classes = "default",
+#'   pred_type = "cloglog",
+#'   regmult = 1
+#' )
+#' length(max_t1)
+#' max_t1$model
+#' max_t1$predictors
+#' max_t1$performance
+#' max_t1$data_ens
 #'
 #' }
 #'

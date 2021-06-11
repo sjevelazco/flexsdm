@@ -17,10 +17,11 @@ It is recommended to use a layer with the same resolution and extent that enviro
 \item{calibarea}{shapefile. A SpatialPolygon or SpatialPolygonDataFrame which delimit the calibration area used for a given species (see calib_area function).}
 }
 \value{
-
+A tibble object with x y coordinates of sampled background points
 }
 \description{
-Sample background points
+Random sampling of background points with the possibility of
+using different geographical restrictions.
 }
 \examples{
 \dontrun{

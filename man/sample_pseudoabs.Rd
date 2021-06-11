@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_pseudoabs.R
 \name{sample_pseudoabs}
 \alias{sample_pseudoabs}
-\title{Peseudo-absence allocation method}
+\title{Pseudo-absence sampling method}
 \usage{
 sample_pseudoabs(
   data,
@@ -43,10 +43,11 @@ It is recommended to use a layer with the same resolution and extent that enviro
 \item{calibarea}{SpatVector A SpatVector which delimit the calibration area used for a given species (see \code{\link{calib_area}} function).}
 }
 \value{
-
+A tibble object with x y coordinates of sampled pseudo-absence points
 }
 \description{
-Peseudo-absence allocation method
+This function provide several methods of sampling pseudo-absences, for instance
+totally random sampling method, o with environmental and or geographical constraints.
 }
 \examples{
 \dontrun{

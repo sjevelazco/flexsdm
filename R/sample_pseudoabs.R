@@ -1,4 +1,7 @@
-#' Peseudo-absence allocation method
+#' Pseudo-absence sampling method
+#'
+#' @description This function provide several methods of sampling pseudo-absences, for instance
+#' totally random sampling method, o with environmental and or geographical constraints.
 #'
 #' @param data data.frame or tibble. Database with presences
 #' (or presence-absence, o presences-pseudo-absence) records, and coordinates
@@ -25,8 +28,8 @@
 #' @importFrom terra mask ext extract match as.data.frame
 #'
 #' @return
+#' A tibble object with x y coordinates of sampled pseudo-absence points
 #' @export
-#'
 #'
 #' @seealso \code{\link{sample_background}} and \code{\link{calib_area}}.
 #'

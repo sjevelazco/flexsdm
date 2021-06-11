@@ -90,9 +90,9 @@ glm_t1 <- fit_glm(
   inter_order = 0
 )
 glm_t1$model
+glm_t1$predictors
 glm_t1$performance
-glm_t1$selected_thresholds
-glm_t1$all_thresholds
+glm_t1$data_ens
 
 
 glm_t2 <- fit_glm(

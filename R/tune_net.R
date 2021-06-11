@@ -53,8 +53,6 @@
 #' abies_db2 <- part(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
-#'   bg_data = NULL,
-#'   bg_a = NULL,
 #'   method = c(method = "kfold", folds = 5)
 #' )
 #'

@@ -12,7 +12,7 @@ get_block(env_layer, best_grid)
 \item{best_grid}{raster. Raster object returned by block_partition or band_partition}
 }
 \value{
-
+A SpatRaster layer with the same resolution and extent than environmental variables
 }
 \description{
 Transform a spatial partition layer to the same spatial properties of environmental variables
