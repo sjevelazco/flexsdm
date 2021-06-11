@@ -48,7 +48,7 @@ response, predictors, and predictors_f arguments. Defaul NULL.}
   }
 In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 
-\item{size}{numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2 IMRPOVE THIS VALUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}
+\item{size}{numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2.}
 
 \item{decay}{numeric. Parameter for weight decay. Default 0.}
 }

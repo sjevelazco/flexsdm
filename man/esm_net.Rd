@@ -37,7 +37,7 @@ In the case of use more than one threshold type it is necessary concatenate thre
 \value{
 A list object with:
 \itemize{
-\item model: A list with "Gam" class object for each bivariate model. This object can be used
+\item model: A list with "nnet" class object for each bivariate model. This object can be used
 for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
@@ -72,7 +72,7 @@ abies_db2 <- abies_db \%>\%
 abies_db2 <- part(
   data = abies_db2,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 3, replicates = 10)
+  method = c(method = "rep_kfold", folds = 3, replicates = 5)
 )
 abies_db2
 
