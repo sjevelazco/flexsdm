@@ -182,6 +182,11 @@ esm_gam <- function(data,
   D <- 2 * (mtrc - 0.5) # Somers'D
   filt <- mtrc >= 0.5
 
+  if(sum(filt)==0) {
+    message("None bivariate model had Somer's D > 0.5. Try with another esm_* function. NA will be returned")
+    return(NA)
+  }
+
   # Filter data based on Somers<0.5
   D <- D[filt]
   list_esm <- list_esm[filt]
