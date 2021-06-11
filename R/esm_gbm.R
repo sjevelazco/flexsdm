@@ -1,6 +1,6 @@
-#' Fit and validate Generalized Additive Models based Ensemble of Small of Model approach
+#' Fit and validate Generalized Boosted Regression models based Ensemble of Small of Model approach
 #'
-#' @description This function constructs Generalized Additive Models using the
+#' @description This function constructs Generalized Boosted Regression using the
 #' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
 #'
 #' @param data data.frame. Database with the response (0,1) and predictors values.
@@ -33,7 +33,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A list with "Gam" class object for each bivariate model. This object can be used
+#' \item model: A list with "gbm" class object for each bivariate model. This object can be used
 #' for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
@@ -70,12 +70,12 @@
 #' abies_db2 <- part(
 #'   data = abies_db2,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "kfold", folds = 3)
+#'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
 #' )
 #' abies_db2
 #'
 #' # Without thrshold specification and with kfold
-#' esm_gam_t1 <- esm_gam(
+#' esm_gbm_t1 <- esm_gbm(
 #'   data = abies_db2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
@@ -83,55 +83,12 @@
 #'   thr = NULL
 #' )
 #'
-#' esm_gam_t1$model %>% names # bivariate model
-#' esm_gam_t1$predictors
-#' esm_gam_t1$performance
+#' esm_gbm_t1$model %>% names # bivariate model
+#' esm_gbm_t1$predictors
+#' esm_gbm_t1$performance
 #'
-#' # Test with rep_kfold partition
-#' abies_db2 <- abies_db2 %>% select(-starts_with('.'))
-#'
-#' set.seed(10)
-#' abies_db2 <- part(
-#'   data = abies_db2,
-#'   pr_ab = "pr_ab",
-#'   method = c(method = "rep_kfold", folds = 3, replicates = 10)
-#' )
-#' abies_db2
-#'
-#' esm_gam_t2 <- esm_gam(
-#'   data = abies_db2,
-#'   response = "pr_ab",
-#'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
-#'   partition = ".part",
-#'   thr = NULL
-#' )
-#' esm_gam_t2$model %>% names # bivariate model
-#' esm_gam_t2$predictors
-#' esm_gam_t2$performance
-#'
-#' # Test with other bootstrap
-#' abies_db2 <- abies_db2 %>% select(-starts_with('.'))
-#'
-#' set.seed(10)
-#' abies_db2 <- part(
-#'   data = abies_db2,
-#'   pr_ab = "pr_ab",
-#'   method = c(method = "boot", replicates = 10, proportion = 0.7)
-#' )
-#' abies_db2
-#'
-#' esm_gam_t3 <- esm_gam(
-#'   data = abies_db2,
-#'   response = "pr_ab",
-#'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
-#'   partition = ".part",
-#'   thr = NULL
-#' )
-#' esm_gam_t3$model %>% names # bivariate model
-#' esm_gam_t3$predictors
-#' esm_gam_t3$performance
 #' }
-esm_gam <- function(data,
+esm_gbm <- function(data,
                     response,
                     predictors,
                     partition,
@@ -150,13 +107,17 @@ esm_gam <- function(data,
   pb <- utils::txtProgressBar(min = 0, max = ncol(formula1), style = 3)
   for (f in 1:ncol(formula1)) {
     suppressMessages(
-      list_esm[[f]] <- fit_gam(
+      list_esm[[f]] <- fit_gbm(
         data = data,
         response = response,
         predictors = unlist(formula1[, f]),
         predictors_f = NULL,
         partition = partition,
-        thr = thr
+        thr = thr,
+        fit_formula = NULL,
+        n_trees = 100,
+        n_minobsinnode = as.integer(nrow(data)*0.5/4),  # TODO explicit that a value of n_minobsinnode = as.integer(nrow(data)*0.5/4) in documentation
+        shrinkage = 0.1
       )
     )
     utils::setTxtProgressBar(pb, which(1:ncol(formula1) == f))
@@ -166,7 +127,7 @@ esm_gam <- function(data,
   # Extract performance
   eval_esm <- lapply(list_esm, function(x) {
     x <- x$performance
-    x$model <- "esm_gam"
+    x$model <- "esm_gbm"
     x
   })
   names(eval_esm) <- nms
@@ -199,21 +160,21 @@ esm_gam <- function(data,
 
   data_ens <- lapply(data_ens, function(x) {
     x %>% dplyr::mutate(pr_ab = pr_ab %>%
-      as.character() %>%
-      as.double())
+                          as.character() %>%
+                          as.double())
   })
 
   data_ens2 <-
     dplyr::inner_join(data_ens[[1]],
-      data_ens[[2]],
-      by = c("rnames", "replicates", "part", "pr_ab")
+                      data_ens[[2]],
+                      by = c("rnames", "replicates", "part", "pr_ab")
     )
   if (length(data_ens) > 2) {
     for (i in 3:length(data_ens)) {
       data_ens2 <-
         dplyr::inner_join(data_ens2,
-          data_ens[[i]],
-          by = c("rnames", "replicates", "part", "pr_ab")
+                          data_ens[[i]],
+                          by = c("rnames", "replicates", "part", "pr_ab")
         )
     }
   }
