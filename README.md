@@ -74,4 +74,4 @@ Function for predicting, ensemble, and interpolate models.
 * `inter()` Raster interpolation between two time periods
 
 --- ---
-> Test the package and give us feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
+> Test the package and give us your feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
