@@ -101,6 +101,6 @@ esm_gau_t1$performance
 }
 }
 \seealso{
-\code{\link{esm_gau}}, \code{\link{esm_gbm}}, \code{\link{esm_glm}},
+\code{\link{esm_gam}}, \code{\link{esm_gbm}}, \code{\link{esm_glm}},
 \code{\link{esm_max}}, \code{\link{esm_net}}, and \code{\link{esm_svm}}.
 }

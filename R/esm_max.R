@@ -22,7 +22,7 @@
 #'   }
 #' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
 #' @param background data.frame. Database with response column only with 0 and predictors variables. All
-#' column names must be consistent with data
+#' column names must be consistent with data. Default NULL
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
 #' @param classes character. A single feature of any combinations of them. Features are symbolized by letters: l (linear), q (quadratic), h (hinge), p (product), and t (threshold). Usage classes = "lpq". Default "default" (see details).
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
@@ -46,8 +46,8 @@
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument.
 #' }
 #'
-#' @seealso \code{\link{esm_gau}}, \code{\link{esm_gbm}}, \code{\link{esm_glm}},
-#' \code{\link{esm_max}}, \code{\link{esm_net}}, and \code{\link{esm_svm}}.
+#' @seealso \code{\link{esm_gam}}, \code{\link{esm_gau}}, \code{\link{esm_gbm}},
+#' \code{\link{esm_glm}}, \code{\link{esm_net}}, and \code{\link{esm_svm}}.
 #' @export
 #'
 #' @references
@@ -63,6 +63,7 @@
 #' @examples
 #' \dontrun{
 #' data("abies_db")
+#' data("backg")
 #' require(dplyr)
 #'
 #' # Using k-fold partition method
@@ -80,14 +81,28 @@
 #' )
 #' abies_db2
 #'
-#' # Without thrshold specification and with kfold
+#' set.seed(10)
+#' backg2 <- backg %>%
+#'   na.omit() %>%
+#'   group_by(pr_ab) %>%
+#'   dplyr::slice_sample(n = 100) %>%
+#'   group_by()
+#'
+#' backg2 <- part(
+#'   data = backg2,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
+#' )
+#' backg2
+#'
+#' # Without threshold specification and with kfold
 #' esm_max_t1 <- esm_max(
 #'   data = abies_db2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
 #'   partition = ".part",
 #'   thr = NULL,
-#'   background = NULL,
+#'   background = backg2,
 #'   clamp = TRUE,
 #'   classes = "default",
 #'   pred_type = "cloglog",
@@ -103,7 +118,7 @@ esm_max <- function(data,
                     predictors,
                     partition,
                     thr = NULL,
-                    background,
+                    background = NULL,
                     clamp = TRUE,
                     classes = "default",
                     pred_type = "cloglog",
