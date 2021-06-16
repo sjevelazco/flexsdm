@@ -56,7 +56,7 @@ for modeling species with few records default value is 2.5}
 \value{
 A list object with:
 \itemize{
-\item model: A list with "Gam" class object for each bivariate model. This object can be used
+\item esm_model: A list with "Gam" class object for each bivariate model. This object can be used
 for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
@@ -125,7 +125,7 @@ esm_max_t1 <- esm_max(
   regmult = 1
 )
 
-esm_max_t1$model \%>\% names # bivariate model
+esm_max_t1$esm_model # bivariate model
 esm_max_t1$predictors
 esm_max_t1$performance
 }
