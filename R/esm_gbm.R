@@ -134,7 +134,7 @@ esm_gbm <- function(data,
         thr = thr,
         fit_formula = NULL,
         n_trees = 100,
-        n_minobsinnode = n_minobsinnode,  # TODO explicit that a value of n_minobsinnode = as.integer(nrow(data)*0.5/4) in documentation
+        n_minobsinnode = n_minobsinnode,
         shrinkage = 0.1
       )
     )

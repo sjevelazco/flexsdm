@@ -1,4 +1,4 @@
-#' Spatial predictions of individual and ensemble model
+#' Spatial predictions of individual and ensemble models
 #'
 #' @description This function allows the geographical prediction of one or more models constructed with fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of small models approach), or models constructed with fit_ensemble function. It can return continuous or continuous and binary predictions for one or more thresholds
 #'
@@ -36,7 +36,7 @@
 #' @importFrom stats predict median
 #' @importFrom terra vect crop mask as.data.frame values rast app lapp
 #'
-#' @example
+#' @examples
 #' \dontrun{
 #' require(dplyr)
 #' require(terra)
