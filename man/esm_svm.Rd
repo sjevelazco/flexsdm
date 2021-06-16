@@ -91,7 +91,8 @@ abies_db2
 esm_svm_t1 <- esm_gam(
   data = abies_db2,
   response = "pr_ab",
-  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
+  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja",
+  "pH", "awc", "depth", "percent_clay"),
   partition = ".part",
   thr = NULL
 )

@@ -6,19 +6,42 @@
 #' @param r2 SpatRaster. Raster object for the final year
 #' @param y1 numeric. Initial year
 #' @param y2 numeric. Final year
-#' @param rastername character. Word used as prefix in raster file name
-#' @param dir_save character. Directory path and name of the folder in which you want to save the raster files
-#' @param n_cores numeric. Number of cores use for parallelization
+#' @param rastername character. Word used as prefix in raster file name. Default NULL
+#' @param dir_save character. Directory path and name of the folder in which you want to
+#' save the raster files. If NULL, function will return a SpatRaster object, on the contrary, it
+#' will save raster in a given directory. Default NULL
+#' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #'
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach foreach
 #' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom terra rast nlyr writeRaster
 #'
-#' @return
+#' @return This function returns a SpatRaster if dir_save is used as NULL, If dirsave is used,
+#' function will return anythink
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' require(terra)
+#' require(dplyr)
+#'
+#' f <- system.file("external/abma_time_steps.tif", package = "flexsdm")
+#' abma <- terra::rast(f)
+#' plot(abma)
+#'
+#' int <- inter(
+#'   r1 = abma[[1]],
+#'   r2 = abma[[2]],
+#'   y1 = 2010,
+#'   y2 = 2020,
+#'   rastername = "Abies",
+#'   dir_save = NULL,
+#'   n_cores = 1
+#' )
+#'
+#' int
+#' }
 inter <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1) {
   # dir_save: character. Directory path and folder name where you want to save raster
 

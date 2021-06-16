@@ -98,7 +98,8 @@
 #'   TSS_mean,
 #'   col = factor(shrinkage)
 #' )) +
-#'   geom_errorbar(aes(ymin = TSS_mean - TSS_sd, ymax = TSS_mean + TSS_sd), width = 0.2, position = pg) +
+#'   geom_errorbar(aes(ymin = TSS_mean - TSS_sd, ymax = TSS_mean + TSS_sd),
+#'   width = 0.2, position = pg) +
 #'   geom_point(position = pg) +
 #'   geom_line(
 #'     data = gbm_t$tune_performance,

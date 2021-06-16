@@ -83,7 +83,8 @@
 #' esm_svm_t1 <- esm_gam(
 #'   data = abies_db2,
 #'   response = "pr_ab",
-#'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
+#'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja",
+#'   "pH", "awc", "depth", "percent_clay"),
 #'   partition = ".part",
 #'   thr = NULL
 #' )
@@ -99,7 +100,7 @@ esm_svm <- function(data,
                     thr = NULL,
                     sigma = "automatic",
                     C = 1) {
-  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
+  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
   # Formula
