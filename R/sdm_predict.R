@@ -534,6 +534,8 @@ sdm_predict <-
           } else {
             vfilter <- 0
           }
+        }else {
+          vfilter <- 0
         }
 
         if (sum(vfilter) > 0) {
