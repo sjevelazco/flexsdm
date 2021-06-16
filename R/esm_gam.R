@@ -281,12 +281,13 @@ esm_gam <- function(data,
 
   # List of models used for prediction
   mod <- lapply(list_esm, function(x) x$mode)
-  names(mod) <- gsub("[$.]", "", nms)
+  names(mod) <- D
 
   result <- list(
-    model = mod,
+    esm_model = mod,
     predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+    performance = dplyr::left_join(tibble(model = 'esm_gam', eval_final),
+                                   threshold[1:4], by = "threshold") %>%
       dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
   )
 

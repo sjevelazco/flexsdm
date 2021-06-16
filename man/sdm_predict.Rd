@@ -15,7 +15,7 @@ sdm_predict(
 )
 }
 \arguments{
-\item{models}{list of individual models or a fit_ensemble output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.}
+\item{models}{list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.}
 
 \item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.}
 
@@ -44,7 +44,7 @@ Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spe
 A list of SpatRaster with continuous and/or binary predictions
 }
 \description{
-This function allows the prediction of one or more models built with the fit_ or tune_ function set. It can return continuous or continuous and binary predictions for one or more thresholds
+This function allows the geographical prediction of one or more models constructed with fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of small models approach), or models constructed with fit_ensemble function. It can return continuous or continuous and binary predictions for one or more thresholds
 }
 \seealso{
 \code{\link{fit_ensemble}}
