@@ -116,7 +116,8 @@ ggplot(gbm_t$hyper_performance, aes(factor(n.minobsinnode),
   col = factor(shrinkage)
 )) +
   geom_errorbar(aes(ymin = TSS_mean - TSS_sd, ymax = TSS_mean + TSS_sd),
-  width = 0.2, position = pg) +
+    width = 0.2, position = pg
+  ) +
   geom_point(position = pg) +
   geom_line(
     data = gbm_t$tune_performance,

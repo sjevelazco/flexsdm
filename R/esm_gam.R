@@ -88,7 +88,7 @@
 #' esm_gam_t1$performance
 #'
 #' # Test with rep_kfold partition
-#' abies_db2 <- abies_db2 %>% select(-starts_with('.'))
+#' abies_db2 <- abies_db2 %>% select(-starts_with("."))
 #'
 #' set.seed(10)
 #' abies_db2 <- part(
@@ -110,7 +110,7 @@
 #' esm_gam_t2$performance
 #'
 #' # Test with other bootstrap
-#' abies_db2 <- abies_db2 %>% select(-starts_with('.'))
+#' abies_db2 <- abies_db2 %>% select(-starts_with("."))
 #'
 #' set.seed(10)
 #' abies_db2 <- part(
@@ -182,7 +182,7 @@ esm_gam <- function(data,
   D <- 2 * (mtrc - 0.5) # Somers'D
   filt <- mtrc >= 0.5
 
-  if(sum(filt)==0) {
+  if (sum(filt) == 0) {
     message("None bivariate model had Somer's D > 0.5. Try with another esm_* function. NA will be returned")
     return(NA)
   }
@@ -286,8 +286,10 @@ esm_gam <- function(data,
   result <- list(
     esm_model = mod,
     predictors = variables,
-    performance = dplyr::left_join(tibble(model = 'esm_gam', eval_final),
-                                   threshold[1:4], by = "threshold") %>%
+    performance = dplyr::left_join(tibble(model = "esm_gam", eval_final),
+      threshold[1:4],
+      by = "threshold"
+    ) %>%
       dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
   )
 

@@ -147,7 +147,7 @@ esm_gau <- function(data,
   D <- 2 * (mtrc - 0.5) # Somers'D
   filt <- mtrc >= 0.5
 
-  if(sum(filt)==0) {
+  if (sum(filt) == 0) {
     message("None bivariate model had Somer's D > 0.5. Try with another esm_* function. NA will be returned")
     return(NA)
   }
@@ -169,21 +169,21 @@ esm_gau <- function(data,
 
   data_ens <- lapply(data_ens, function(x) {
     x %>% dplyr::mutate(pr_ab = pr_ab %>%
-                          as.character() %>%
-                          as.double())
+      as.character() %>%
+      as.double())
   })
 
   data_ens2 <-
     dplyr::inner_join(data_ens[[1]],
-                      data_ens[[2]],
-                      by = c("rnames", "replicates", "part", "pr_ab")
+      data_ens[[2]],
+      by = c("rnames", "replicates", "part", "pr_ab")
     )
   if (length(data_ens) > 2) {
     for (i in 3:length(data_ens)) {
       data_ens2 <-
         dplyr::inner_join(data_ens2,
-                          data_ens[[i]],
-                          by = c("rnames", "replicates", "part", "pr_ab")
+          data_ens[[i]],
+          by = c("rnames", "replicates", "part", "pr_ab")
         )
     }
   }
@@ -251,8 +251,10 @@ esm_gau <- function(data,
   result <- list(
     esm_model = mod,
     predictors = variables,
-    performance = dplyr::left_join(tibble(model = 'esm_gau', eval_final),
-                                   threshold[1:4], by = "threshold") %>%
+    performance = dplyr::left_join(tibble(model = "esm_gau", eval_final),
+      threshold[1:4],
+      by = "threshold"
+    ) %>%
       dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
   )
 

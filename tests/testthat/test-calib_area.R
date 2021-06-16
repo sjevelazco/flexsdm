@@ -1,5 +1,4 @@
 test_that("multiplication works", {
-
   require(terra)
   require(dplyr)
   data("spp")
@@ -22,5 +21,4 @@ test_that("multiplication works", {
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
-
 })

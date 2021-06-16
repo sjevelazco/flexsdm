@@ -94,14 +94,13 @@
 #'   partition = ".part",
 #'   thr = NULL,
 #'   n_trees = 100,
-#'   n_minobsinnode = as.integer(nrow(data) * 0.5/4),
+#'   n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
 #'   shrinkage = 0.1
 #' )
 #'
 #' esm_gbm_t1$esm_model # bivariate model
 #' esm_gbm_t1$predictors
 #' esm_gbm_t1$performance
-#'
 #' }
 esm_gbm <- function(data,
                     response,
@@ -109,7 +108,7 @@ esm_gbm <- function(data,
                     partition,
                     thr = NULL,
                     n_trees = 100,
-                    n_minobsinnode = as.integer(nrow(data)*0.5/4),
+                    n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
                     shrinkage = 0.1) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
@@ -161,7 +160,7 @@ esm_gbm <- function(data,
   D <- 2 * (mtrc - 0.5) # Somers'D
   filt <- mtrc >= 0.5
 
-  if(sum(filt)==0) {
+  if (sum(filt) == 0) {
     message("None bivariate model had Somer's D > 0.5. Try with another esm_* function. NA will be returned")
     return(NA)
   }
@@ -183,21 +182,21 @@ esm_gbm <- function(data,
 
   data_ens <- lapply(data_ens, function(x) {
     x %>% dplyr::mutate(pr_ab = pr_ab %>%
-                          as.character() %>%
-                          as.double())
+      as.character() %>%
+      as.double())
   })
 
   data_ens2 <-
     dplyr::inner_join(data_ens[[1]],
-                      data_ens[[2]],
-                      by = c("rnames", "replicates", "part", "pr_ab")
+      data_ens[[2]],
+      by = c("rnames", "replicates", "part", "pr_ab")
     )
   if (length(data_ens) > 2) {
     for (i in 3:length(data_ens)) {
       data_ens2 <-
         dplyr::inner_join(data_ens2,
-                          data_ens[[i]],
-                          by = c("rnames", "replicates", "part", "pr_ab")
+          data_ens[[i]],
+          by = c("rnames", "replicates", "part", "pr_ab")
         )
     }
   }
@@ -265,8 +264,10 @@ esm_gbm <- function(data,
   result <- list(
     esm_model = mod,
     predictors = variables,
-    performance = dplyr::left_join(tibble(model = 'esm_gbm', eval_final),
-                                   threshold[1:4], by = "threshold") %>%
+    performance = dplyr::left_join(tibble(model = "esm_gbm", eval_final),
+      threshold[1:4],
+      by = "threshold"
+    ) %>%
       dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
   )
 

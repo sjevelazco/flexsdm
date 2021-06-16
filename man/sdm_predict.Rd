@@ -57,13 +57,13 @@ somevar <- terra::rast(somevar)
 
 # Extract data
 some_sp <- spp \%>\%
-  filter(species=='sp3')
+  filter(species == "sp3")
 
 some_sp <-
   sdm_extract(
     data = some_sp,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     env_layer = somevar
   )
 
@@ -75,25 +75,31 @@ some_sp <- part(
 )
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####          Create different type of models           ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 # Fit some models
-mglm <- fit_glm(data = some_sp,
-                response = "pr_ab",
-                predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-                partition = ".part",
-                poly = 2)
-mraf <- fit_raf(data = some_sp,
-                response = "pr_ab",
-                predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-                partition = ".part",)
-mgbm <- fit_gbm(data = some_sp,
-                response = "pr_ab",
-                predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-                partition = ".part")
+mglm <- fit_glm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  poly = 2
+)
+mraf <- fit_raf(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+)
+mgbm <- fit_gbm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part"
+)
 
 # Fit and ensemble
 mensemble <- fit_ensemble(
@@ -101,7 +107,8 @@ mensemble <- fit_ensemble(
   ens_method = "meansup",
   thr = NULL,
   thr_model = "max_sens_spec",
-  metric = "TSS")
+  metric = "TSS"
+)
 
 # Fit a model with a Wnsemble of Small Models approach
 # Without threshold specification and with kfold
@@ -114,11 +121,11 @@ msmall <- esm_gam(
 )
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####      Predict different kind of models models       ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 
 # sdm_predict can be used for predict one or more models fitted with fit_ or tune_ functions
 
@@ -159,7 +166,8 @@ small_p <- sdm_predict(
   con_thr = FALSE,
   predict_area = NULL
 )
-#' }
+#'
+}
 }
 \seealso{
 \code{\link{fit_ensemble}}

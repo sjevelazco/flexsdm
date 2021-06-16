@@ -83,7 +83,7 @@ abies_db2 <- abies_db \%>\%
 abies_db2 <- part(
   data = abies_db2,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 3, replicates=5)
+  method = c(method = "rep_kfold", folds = 3, replicates = 5)
 )
 abies_db2
 
@@ -91,8 +91,10 @@ abies_db2
 esm_svm_t1 <- esm_gam(
   data = abies_db2,
   response = "pr_ab",
-  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja",
-  "pH", "awc", "depth", "percent_clay"),
+  predictors = c(
+    "aet", "cwd", "tmin", "ppt_djf", "ppt_jja",
+    "pH", "awc", "depth", "percent_clay"
+  ),
   partition = ".part",
   thr = NULL
 )

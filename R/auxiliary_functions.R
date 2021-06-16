@@ -134,8 +134,10 @@ boyce <- function(pres,
   # PE <- PE[rm_nas]
 
   # calculate Boyce index
-  result <- stats::cor(x = ifelse(is.na(mean_pred), 0, mean_pred),
-                       y = ifelse(is.na(PE), 0, PE), method = "spearman")
+  result <- stats::cor(
+    x = ifelse(is.na(mean_pred), 0, mean_pred),
+    y = ifelse(is.na(PE), 0, PE), method = "spearman"
+  )
   return(result)
 }
 

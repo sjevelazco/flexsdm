@@ -88,7 +88,6 @@ esm_net_t1 <- esm_net(
 esm_net_t1$esm_model # bivariate model
 esm_net_t1$predictors
 esm_net_t1$performance
-
 }
 }
 \references{

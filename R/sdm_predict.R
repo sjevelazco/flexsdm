@@ -47,13 +47,13 @@
 #'
 #' # Extract data
 #' some_sp <- spp %>%
-#'   filter(species=='sp3')
+#'   filter(species == "sp3")
 #'
 #' some_sp <-
 #'   sdm_extract(
 #'     data = some_sp,
-#'     x = 'x',
-#'     y = 'y',
+#'     x = "x",
+#'     y = "y",
 #'     env_layer = somevar
 #'   )
 #'
@@ -65,25 +65,31 @@
 #' )
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####          Create different type of models           ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' # Fit some models
-#' mglm <- fit_glm(data = some_sp,
-#'                 response = "pr_ab",
-#'                 predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-#'                 partition = ".part",
-#'                 poly = 2)
-#' mraf <- fit_raf(data = some_sp,
-#'                 response = "pr_ab",
-#'                 predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-#'                 partition = ".part",)
-#' mgbm <- fit_gbm(data = some_sp,
-#'                 response = "pr_ab",
-#'                 predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-#'                 partition = ".part")
+#' mglm <- fit_glm(
+#'   data = some_sp,
+#'   response = "pr_ab",
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part",
+#'   poly = 2
+#' )
+#' mraf <- fit_raf(
+#'   data = some_sp,
+#'   response = "pr_ab",
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part",
+#' )
+#' mgbm <- fit_gbm(
+#'   data = some_sp,
+#'   response = "pr_ab",
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part"
+#' )
 #'
 #' # Fit and ensemble
 #' mensemble <- fit_ensemble(
@@ -91,7 +97,8 @@
 #'   ens_method = "meansup",
 #'   thr = NULL,
 #'   thr_model = "max_sens_spec",
-#'   metric = "TSS")
+#'   metric = "TSS"
+#' )
 #'
 #' # Fit a model with a Wnsemble of Small Models approach
 #' # Without threshold specification and with kfold
@@ -104,11 +111,11 @@
 #' )
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####      Predict different kind of models models       ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' # sdm_predict can be used for predict one or more models fitted with fit_ or tune_ functions
 #'
@@ -149,7 +156,8 @@
 #'   con_thr = FALSE,
 #'   predict_area = NULL
 #' )
-#' #' }
+#' #'
+#' }
 sdm_predict <-
   function(models,
            pred,
@@ -160,7 +168,7 @@ sdm_predict <-
            pred_type = "cloglog") {
     ca_1 <- . <- model <- threshold <- thr_value <- NULL
 
-    if(is.null(names(models))) {
+    if (is.null(names(models))) {
       message("Predicting list of individual models")
       ensembles <- NULL
       esm <- NULL
@@ -534,7 +542,7 @@ sdm_predict <-
           } else {
             vfilter <- 0
           }
-        }else {
+        } else {
           vfilter <- 0
         }
 
