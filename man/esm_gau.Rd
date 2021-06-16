@@ -36,7 +36,7 @@ column names must be consistent with data. Default NULL}
 \value{
 A list object with:
 \itemize{
-\item model: A list with "graf" class object for each bivariate model. This object can be used
+\item esm_model: A list with "graf" class object for each bivariate model. This object can be used
 for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
@@ -89,7 +89,7 @@ esm_gau_t1 <- esm_gau(
   regmult = 1
 )
 
-esm_gau_t1$model \%>\% names # bivariate model
+esm_gau_t1$esm_model # bivariate model
 esm_gau_t1$predictors
 esm_gau_t1$performance
 }

@@ -38,7 +38,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A list with "ksvm" class object for each bivariate model. This object can be used
+#' \item esm_model: A list with "ksvm" class object for each bivariate model. This object can be used
 #' for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
@@ -88,7 +88,7 @@
 #'   thr = NULL
 #' )
 #'
-#' esm_svm_t1$model %>% names # bivariate model
+#' esm_svm_t1$esm_model # bivariate model
 #' esm_svm_t1$predictors
 #' esm_svm_t1$performance
 #' }
@@ -247,12 +247,13 @@ esm_svm <- function(data,
 
   # List of models used for prediction
   mod <- lapply(list_esm, function(x) x$mode)
-  names(mod) <- gsub("[$.]", "", nms)
+  names(mod) <- D
 
   result <- list(
-    model = mod,
+    esm_model = mod,
     predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+    performance = dplyr::left_join(tibble(model = 'esm_svm', eval_final),
+                                   threshold[1:4], by = "threshold") %>%
       dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
   )
 
