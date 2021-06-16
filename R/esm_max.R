@@ -26,14 +26,16 @@
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
 #' @param classes character. A single feature of any combinations of them. Features are symbolized by letters: l (linear), q (quadratic), h (hinge), p (product), and t (threshold). Usage classes = "lpq". Default "default" (see details).
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"
-#' @param regmult numeric. A constant to adjust regularization. Default 1.
+#' @param regmult numeric. A constant to adjust regularization. Because ESM are used
+#' for modeling species with few records default value is 2.5
 #'
 #' @details This method consists of creating bivariate models with all the pair-wise combinations
 #' of predictors and perform an ensemble based on the average of suitability weighted by
 #' Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 #' This function does not allow categorical variables because the use of these types of variables
 #' could be problematic when using with few occurrences. Further detail see
-#' Breiner et al. (2015, 2018)
+#' Breiner et al. (2015, 2018). This function use a default regularization multiplier
+#' equal to 2.5 (see details in Breinter et al., 2018)
 #'
 #' @return
 #'
@@ -122,7 +124,8 @@ esm_max <- function(data,
                     clamp = TRUE,
                     classes = "default",
                     pred_type = "cloglog",
-                    regmult = 1) {
+                    regmult = 2.5) {
+
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 

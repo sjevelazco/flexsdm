@@ -14,7 +14,7 @@ esm_max(
   clamp = TRUE,
   classes = "default",
   pred_type = "cloglog",
-  regmult = 1
+  regmult = 2.5
 )
 }
 \arguments{
@@ -50,7 +50,8 @@ column names must be consistent with data. Default NULL}
 
 \item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog"}
 
-\item{regmult}{numeric. A constant to adjust regularization. Default 1.}
+\item{regmult}{numeric. A constant to adjust regularization. Because ESM are used
+for modeling species with few records default value is 2.5}
 }
 \value{
 A list object with:
@@ -72,7 +73,8 @@ of predictors and perform an ensemble based on the average of suitability weight
 Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 This function does not allow categorical variables because the use of these types of variables
 could be problematic when using with few occurrences. Further detail see
-Breiner et al. (2015, 2018)
+Breiner et al. (2015, 2018). This function use a default regularization multiplier
+equal to 2.5 (see details in Breinter et al., 2018)
 }
 \examples{
 \dontrun{
