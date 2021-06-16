@@ -13,7 +13,7 @@ fit_gbm(
   partition,
   thr = NULL,
   n_trees = 100,
-  n_minobsinnode = 10,
+  n_minobsinnode = as.integer(nrow(data) * 0.5/4),
   shrinkage = 0.1
 )
 }
@@ -55,7 +55,8 @@ functions in the additive expansion. Default is 100.}
 
 \item{n_minobsinnode}{Integer. It specifies the minimum number of
 observations in the terminal nodes of the trees. Note that this
-is the actual number of observations, not the total weight.}
+is the actual number of observations, not the total weight.
+By default will be used a value equal to nrow(data)*0.5/4}
 
 \item{shrinkage}{Numeric. This parameter applied to each tree in the
 expansion. Also known as the learning rate or step-size reduction;
