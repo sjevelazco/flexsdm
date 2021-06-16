@@ -207,16 +207,19 @@ fit_ensemble <-
         for (i in 1:np2) {
           # message("Partition number: ", i, "/", np2)
           # Validation of model
-          tryCatch({
-            suppressWarnings(eval <-
-              sdm_eval(
-                p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
-                a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
-                thr = thr
-              ))
-            eval_partial[[i]] <- eval
-            rm(eval)
-          },error = function(cond) {})
+          tryCatch(
+            {
+              suppressWarnings(eval <-
+                sdm_eval(
+                  p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
+                  a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
+                  thr = thr
+                ))
+              eval_partial[[i]] <- eval
+              rm(eval)
+            },
+            error = function(cond) {}
+          )
         }
         names(eval_partial) <- 1:np2
 

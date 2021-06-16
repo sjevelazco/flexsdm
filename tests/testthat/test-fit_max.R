@@ -1,5 +1,4 @@
 test_that("multiplication works", {
-
   data("abies_db")
 
   # Using k-fold partition method
@@ -42,7 +41,7 @@ test_that("multiplication works", {
     predictors = c("ppt_jja", "pH", "awc"),
     predictors_f = c("landform"),
     partition = ".part",
-    background= bg,
+    background = bg,
     thr = c(type = c("lpt", "max_sens_spec", "sensitivity"), sens = "0.8")
   )
 

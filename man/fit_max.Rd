@@ -128,7 +128,6 @@ max_t1$model
 max_t1$predictors
 max_t1$performance
 max_t1$data_ens
-
 }
 
 }

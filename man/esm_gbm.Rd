@@ -103,14 +103,13 @@ esm_gbm_t1 <- esm_gbm(
   partition = ".part",
   thr = NULL,
   n_trees = 100,
-  n_minobsinnode = as.integer(nrow(data) * 0.5/4),
+  n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
   shrinkage = 0.1
 )
 
 esm_gbm_t1$esm_model # bivariate model
 esm_gbm_t1$predictors
 esm_gbm_t1$performance
-
 }
 }
 \references{

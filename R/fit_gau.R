@@ -217,82 +217,82 @@ fit_gau <- function(data,
 
     for (i in 1:np2) {
       tryCatch({
-      message("Partition number: ", i, "/", np2)
-      set.seed(1)
-      mod[[i]] <-
-        GRaF::graf(
-          y = train[[i]][, response],
-          x = train[[i]][, c(predictors, predictors_f)],
-          opt.l = FALSE,
-          method = "Laplace"
-        )
+        message("Partition number: ", i, "/", np2)
+        set.seed(1)
+        mod[[i]] <-
+          GRaF::graf(
+            y = train[[i]][, response],
+            x = train[[i]][, c(predictors, predictors_f)],
+            opt.l = FALSE,
+            method = "Laplace"
+          )
 
-      # Predict for presences absences data
-      ## Eliminate factor levels not used in fitting
-      if (!is.null(predictors_f)) {
-        for (fi in 1:length(predictors_f)) {
-          lev <- train[[i]][, predictors_f[fi]] %>%
-            unique() %>%
-            as.character()
-          lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-          test[[i]] <- test[[i]][lev_filt, ]
-          if (!is.null(background)) {
-            lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
-            bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
+        # Predict for presences absences data
+        ## Eliminate factor levels not used in fitting
+        if (!is.null(predictors_f)) {
+          for (fi in 1:length(predictors_f)) {
+            lev <- train[[i]][, predictors_f[fi]] %>%
+              unique() %>%
+              as.character()
+            lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
+            test[[i]] <- test[[i]][lev_filt, ]
+            if (!is.null(background)) {
+              lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
+              bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
+            }
           }
         }
-      }
 
-      # Predict for presences absences data
-      pred_test <- data.frame(
-        pr_ab = test[[i]][, response],
-        pred = suppressWarnings(
-          GRaF::predict.graf(
-            mod[[i]],
-            newdata = test[[i]][c(predictors, predictors_f)],
-            type = "response",
-            CI = NULL
-          )[, 1]
+        # Predict for presences absences data
+        pred_test <- data.frame(
+          pr_ab = test[[i]][, response],
+          pred = suppressWarnings(
+            GRaF::predict.graf(
+              mod[[i]],
+              newdata = test[[i]][c(predictors, predictors_f)],
+              type = "response",
+              CI = NULL
+            )[, 1]
+          )
         )
-      )
 
-      pred_test_ens[[h]][[i]] <- pred_test %>%
-        dplyr::mutate(rnames = rownames(.))
+        pred_test_ens[[h]][[i]] <- pred_test %>%
+          dplyr::mutate(rnames = rownames(.))
 
-      # Predict for background data
-      if (!is.null(background)) {
-        bgt <-
-          data.frame(
-            pr_ab = bgt_test[[i]][, response],
-            pred = suppressWarnings(
-              GRaF::predict.graf(
-                mod[[i]],
-                newdata = bgt_test[[i]][c(predictors, predictors_f)],
-                type = "response",
-                CI = NULL
-              )[, 1]
+        # Predict for background data
+        if (!is.null(background)) {
+          bgt <-
+            data.frame(
+              pr_ab = bgt_test[[i]][, response],
+              pred = suppressWarnings(
+                GRaF::predict.graf(
+                  mod[[i]],
+                  newdata = bgt_test[[i]][c(predictors, predictors_f)],
+                  type = "response",
+                  CI = NULL
+                )[, 1]
+              )
             )
-          )
-      }
+        }
 
-      # Validation of model
-      if (is.null(background)) {
-        eval <-
-          sdm_eval(
-            p = pred_test$pred[pred_test$pr_ab == 1],
-            a = pred_test$pred[pred_test$pr_ab == 0],
-            thr = thr
-          )
-      } else {
-        eval <-
-          sdm_eval(
-            p = pred_test$pred[pred_test$pr_ab == 1],
-            a = pred_test$pred[pred_test$pr_ab == 0],
-            thr = thr,
-            bg = bgt$pred
-          )
-      }
-      eval_partial[[i]] <- dplyr::tibble(model = "gau", eval)
+        # Validation of model
+        if (is.null(background)) {
+          eval <-
+            sdm_eval(
+              p = pred_test$pred[pred_test$pr_ab == 1],
+              a = pred_test$pred[pred_test$pr_ab == 0],
+              thr = thr
+            )
+        } else {
+          eval <-
+            sdm_eval(
+              p = pred_test$pred[pred_test$pr_ab == 1],
+              a = pred_test$pred[pred_test$pr_ab == 0],
+              thr = thr,
+              bg = bgt$pred
+            )
+        }
+        eval_partial[[i]] <- dplyr::tibble(model = "gau", eval)
       })
     }
 

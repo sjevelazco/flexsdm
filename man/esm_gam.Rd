@@ -86,7 +86,7 @@ esm_gam_t1$predictors
 esm_gam_t1$performance
 
 # Test with rep_kfold partition
-abies_db2 <- abies_db2 \%>\% select(-starts_with('.'))
+abies_db2 <- abies_db2 \%>\% select(-starts_with("."))
 
 set.seed(10)
 abies_db2 <- part(
@@ -108,7 +108,7 @@ esm_gam_t2$predictors
 esm_gam_t2$performance
 
 # Test with other bootstrap
-abies_db2 <- abies_db2 \%>\% select(-starts_with('.'))
+abies_db2 <- abies_db2 \%>\% select(-starts_with("."))
 
 set.seed(10)
 abies_db2 <- part(

@@ -1,5 +1,4 @@
 test_that("multiplication works", {
-
   data("abies_db")
 
   # Using k-fold partition method
@@ -32,8 +31,8 @@ test_that("multiplication works", {
     partition = ".part",
     thr = "max_sens_spec",
     fit_formula = stats::formula(pr_ab ~ s(aet, df = 4) +
-                                   s(ppt_jja, df = 3) +
-                                   s(pH, df = 3) + landform)
+      s(ppt_jja, df = 3) +
+      s(pH, df = 3) + landform)
   )
 
   expect_equal(class(gam_t2), "list")

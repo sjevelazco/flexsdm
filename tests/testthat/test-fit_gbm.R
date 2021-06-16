@@ -1,5 +1,4 @@
 test_that("multiplication works", {
-
   data("abies_db")
 
   # Using k-fold partition method

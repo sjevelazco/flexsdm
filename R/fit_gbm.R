@@ -106,7 +106,7 @@ fit_gbm <- function(data,
                     partition,
                     thr = NULL,
                     n_trees = 100,
-                    n_minobsinnode = as.integer(nrow(data) * 0.5/4),
+                    n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
                     shrinkage = 0.1) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
@@ -192,24 +192,28 @@ fit_gbm <- function(data,
             )
           )
 
-        pred_test <- data.frame(pr_ab = test[[i]][, response],
-                                pred = suppressMessages(
-                                  gbm::predict.gbm(
-                                    mod[[i]],
-                                    newdata = test[[i]],
-                                    type = "response",
-                                    se.fit = FALSE
-                                  )
-                                ))
+        pred_test <- data.frame(
+          pr_ab = test[[i]][, response],
+          pred = suppressMessages(
+            gbm::predict.gbm(
+              mod[[i]],
+              newdata = test[[i]],
+              type = "response",
+              se.fit = FALSE
+            )
+          )
+        )
 
         pred_test_ens[[h]][[i]] <- pred_test %>%
           dplyr::mutate(rnames = rownames(.))
 
         # Validation of model
         eval <-
-          sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                   a = pred_test$pred[pred_test$pr_ab == 0],
-                   thr = thr)
+          sdm_eval(
+            p = pred_test$pred[pred_test$pr_ab == 1],
+            a = pred_test$pred[pred_test$pr_ab == 0],
+            thr = thr
+          )
         eval_partial[[i]] <- dplyr::tibble(model = "gbm", eval)
       })
     }
