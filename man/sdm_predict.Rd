@@ -166,7 +166,6 @@ small_p <- sdm_predict(
   con_thr = FALSE,
   predict_area = NULL
 )
-#'
 }
 }
 \seealso{
