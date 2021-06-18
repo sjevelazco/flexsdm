@@ -72,6 +72,8 @@ Function for predicting, ensemble, and interpolate models.
 
 * `sdm_predict()` Spatial predictions of individual and ensemble model
 * `inter()` Raster interpolation between two time periods
+* `extra_eval` Measure model extrapolation
+* `extra_correct` Constraint suitability values under a given extrapolation value
 
 --- ---
 > Test the package and give us your feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
