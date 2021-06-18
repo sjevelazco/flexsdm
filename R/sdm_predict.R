@@ -156,7 +156,6 @@
 #'   con_thr = FALSE,
 #'   predict_area = NULL
 #' )
-#' #'
 #' }
 sdm_predict <-
   function(models,
