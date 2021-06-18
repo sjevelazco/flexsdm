@@ -55,3 +55,36 @@ Those threshold dependent metrics are calculated based on the threshold specifie
 \description{
 Model assemble and validation
 }
+\examples{
+\dontrun{
+# Fit some models
+mglm <- fit_glm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  poly = 2
+)
+mraf <- fit_raf(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+)
+mgbm <- fit_gbm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part"
+)
+
+# Fit and ensemble
+mensemble <- fit_ensemble(
+  models = list(mglm, mraf, mgbm),
+  ens_method = "meansup",
+  thr = NULL,
+  thr_model = "max_sens_spec",
+  metric = "TSS"
+)
+}
+}
