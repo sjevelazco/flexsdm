@@ -51,20 +51,20 @@ combination. `esm_` construct and validate Ensemble of Small Models.
 #### `tune_*` functions family
 * `tune_gbm` Fit and validate Generalized Boosted Regression models with exploration of 
 hyper-parameters
-* `tune_max` Fit and validate Maximum Entropy models with exploration of hyper-parameters
-* `tune_net` Fit and validate Neural Networks models with exploration of hyper-parameters
-* `tune_raf` Fit and validate Random Forest models with exploration of hyper-parameters
-* `tune_svm` Fit and validate Support Vector Machine models with exploration of hyper-parameters
+* `tune_max()` Fit and validate Maximum Entropy models with exploration of hyper-parameters
+* `tune_net()` Fit and validate Neural Networks models with exploration of hyper-parameters
+* `tune_raf()` Fit and validate Random Forest models with exploration of hyper-parameters
+* `tune_svm()` Fit and validate Support Vector Machine models with exploration of hyper-parameters
 
 #### `esm_*` functions family
-* `esm_gam` Fit and validate Generalized Additive Models with Ensemble of Small Model approach
-* `esm_gau` Fit and validate Gaussian Process models Models with Ensemble of Small Model approach
-* `esm_gbm` Fit and validate Generalized Boosted Regression models with Ensemble of Small 
+* `esm_gam()` Fit and validate Generalized Additive Models with Ensemble of Small Model approach
+* `esm_gau()` Fit and validate Gaussian Process models Models with Ensemble of Small Model approach
+* `esm_gbm()` Fit and validate Generalized Boosted Regression models with Ensemble of Small 
 Model approach
-* `esm_glm` Fit and validate Generalized Linear Models with Ensemble of Small Model approach
-* `esm_max` Fit and validate Maximum Entropy models with Ensemble of Small Model approach
-* `esm_net` Fit and validate Neural Networks models with Ensemble of Small Model approach
-* `esm_svm` Fit and validate Support Vector Machine models with Ensemble of Small Model 
+* `esm_glm()` Fit and validate Generalized Linear Models with Ensemble of Small Model approach
+* `esm_max()` Fit and validate Maximum Entropy models with Ensemble of Small Model approach
+* `esm_net()` Fit and validate Neural Networks models with Ensemble of Small Model approach
+* `esm_svm()` Fit and validate Support Vector Machine models with Ensemble of Small Model 
 approach
 
 ### 3. Post-modeling functions
@@ -72,8 +72,8 @@ Function for predicting, ensemble, and interpolate models.
 
 * `sdm_predict()` Spatial predictions of individual and ensemble model
 * `inter()` Raster interpolation between two time periods
-* `extra_eval` Measure model extrapolation
-* `extra_correct` Constraint suitability values under a given extrapolation value
+* `extra_eval()` Measure model extrapolation
+* `extra_correct()` Constraint suitability values under a given extrapolation value
 
 --- ---
 > Test the package and give us your feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
