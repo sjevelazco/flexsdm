@@ -19,17 +19,17 @@ of variables, number of records, different algorithm and ensemble methods, algor
 Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, 
 sample pseudo-absences, define calibration area).
 
-* `calib_area` Delimit calibration area for constructing species distribution models
-* `correct_colinvar` Perform collinearity reduction on predictors|
-* `env_outliers` Integration of outliers detection methods in the environmental space
-* `env_filtering` Perform environmental filtering on species occurrences
-* `part` Data partitioning for training and testing models
-* `part_sblock` Spatial block cross validation
-* `plot_res` Plot different resolutions to be used in part_sblock
-* `part_senv` Environmental and spatial cross validation
-* `sample_background` Sample background points
-* `sample_pseudoabs` Peseudo-absence allocation method
-* `sdm_extract` Extract environmental data based on x and y coordinates
+* `calib_area()` Delimit calibration area for constructing species distribution models
+* `correct_colinvar()` Perform collinearity reduction on predictors|
+* `env_outliers()` Integration of outliers detection methods in the environmental space
+* `env_filtering()` Perform environmental filtering on species occurrences
+* `part()` Data partitioning for training and testing models
+* `part_sblock()` Spatial block cross validation
+* `plot_res()` Plot different resolutions to be used in part_sblock
+* `part_senv()` Environmental and spatial cross validation
+* `sample_background()` Sample background points
+* `sample_pseudoabs()` Peseudo-absence allocation method
+* `sdm_extract()` Extract environmental data based on x and y coordinates
 
 
 ### 2. Modeling functions 
@@ -39,17 +39,17 @@ values. `tune_*` construct and validate models searching for the best hyper-para
 combination. `esm_` construct and validate Ensemble of Small Models.
 
 #### `fit_*` functions family
-* `fit_gam` Fit and validate Generalized Additive Models
-* `fit_gau` Fit and validate Gaussian Process models
-* `fit_gbm` Fit and validate Generalized Boosted Regression models
-* `fit_glm` Fit and validate Generalized Linear Models
-* `fit_max` Fit and validate Maximum Entropy models
-* `fit_net` Fit and validate Neural Networks models
-* `fit_raf` Fit and validate Random Forest models
-* `fit_svm` Fit and validate Support Vector Machine models
+* `fit_gam()` Fit and validate Generalized Additive Models
+* `fit_gau()` Fit and validate Gaussian Process models
+* `fit_gbm()` Fit and validate Generalized Boosted Regression models
+* `fit_glm()` Fit and validate Generalized Linear Models
+* `fit_max()` Fit and validate Maximum Entropy models
+* `fit_net()` Fit and validate Neural Networks models
+* `fit_raf()` Fit and validate Random Forest models
+* `fit_svm()` Fit and validate Support Vector Machine models
 
 #### `tune_*` functions family
-* `tune_gbm` Fit and validate Generalized Boosted Regression models with exploration of 
+* `tune_gbm()` Fit and validate Generalized Boosted Regression models with exploration of 
 hyper-parameters
 * `tune_max()` Fit and validate Maximum Entropy models with exploration of hyper-parameters
 * `tune_net()` Fit and validate Neural Networks models with exploration of hyper-parameters
