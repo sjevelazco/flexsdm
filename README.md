@@ -57,7 +57,7 @@ hyper-parameters
 * `tune_svm()` Fit and validate Support Vector Machine models with exploration of hyper-parameters
 
 #### Model ensemble
-* `fit_ensemble()` Fit and validate ensemble models with different ensemble methdos
+* `fit_ensemble()` Fit and validate ensemble models with different ensemble methods
 
 #### `esm_*` functions family
 * `esm_gam()` Fit and validate Generalized Additive Models with Ensemble of Small Model approach
