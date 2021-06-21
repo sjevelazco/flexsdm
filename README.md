@@ -20,7 +20,7 @@ Set of tools for preparing and manipulating modeling input data (e.g., species o
 sample pseudo-absences, define calibration area).
 
 * `calib_area()` Delimit calibration area for constructing species distribution models
-* `correct_colinvar()` Perform collinearity reduction on predictors|
+* `correct_colinvar()` Perform collinearity reduction on predictors
 * `env_outliers()` Integration of outliers detection methods in the environmental space
 * `env_filtering()` Perform environmental filtering on species occurrences
 * `part()` Data partitioning for training and testing models
