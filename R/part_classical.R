@@ -60,7 +60,7 @@
 #' abies_db2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
 #' }
 #'
-part <- function(data, pr_ab, method = NULL) {
+part_classical <- function(data, pr_ab, method = NULL) {
   # TODO add conditional for testing misuse of aguments
   # TODO write loovc documentation
   .part <- BOOT1 <- BOOT2 <- boot <- NULL

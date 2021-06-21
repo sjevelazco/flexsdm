@@ -80,7 +80,7 @@
 #'
 #' # While higher the number of bins smaller the number of records retained
 #' }
-env_filtering <- function(data, x, y, id, env_layer, nbins, cores = 1) {
+occfilt_env <- function(data, x, y, id, env_layer, nbins, cores = 1) {
   s <- . <- l <- NULL
 
   da <- data[c(x, y, id)]
