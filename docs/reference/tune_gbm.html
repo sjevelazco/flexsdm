@@ -198,7 +198,7 @@ response, predictors, and predictors_f arguments. Default is NULL.</p></td>
 
 <span class='co'># We will partition the data with the k-fold method</span>
 
-<span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part.html'>part</a></span><span class='op'>(</span>
+<span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'>part</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies_db</span>,
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
