@@ -22,14 +22,15 @@ sample pseudo-absences, define calibration area).
 * `calib_area()` Delimit calibration area for constructing species distribution models
 * `correct_colinvar()` Perform collinearity reduction on predictors
 * `env_outliers()` Integration of outliers detection methods in the environmental space
-* `env_filtering()` Perform environmental filtering on species occurrences
-* `part()` Data partitioning for training and testing models
+* `part_classical()` Data partitioning for training and testing models
 * `part_sblock()` Spatial block cross validation
 * `plot_res()` Plot different resolutions to be used in part_sblock
 * `part_senv()` Environmental and spatial cross validation
 * `sample_background()` Sample background points
 * `sample_pseudoabs()` Peseudo-absence allocation method
 * `sdm_extract()` Extract environmental data based on x and y coordinates
+* `occfilt_env()` Perform environmental filtering on species occurrences
+* `occfilt_geo()` Perform geographical filtering on species occurrences
 
 
 ### 2. Modeling functions 
