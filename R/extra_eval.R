@@ -3,18 +3,60 @@
 #' @param env_calib SpatRaster with environmental conditions of the calibration area or the
 #' presence and absence points localities used for constructing models
 #' @param env_proj SpatRaster with environmental condition used for projecting a model
+#' @param n_cores numeric. Number of cores use for parallelization. Default 1
+#' @param aggreg_factor positive integer. Aggregation factor expressed as number of cells in each
+#'  direction to reduce raster resolution. Use value higher than 1 would be interesting when
+#'  measuring extrapolation with raster with a high number of cells. The resolution of output will be
+#'  the same as raster object used in "env_proj" argument. Default 1, i.e., by default, no changes
+#'  will be made to the resolution of the environmental variables.
+#'
 #'
 #' @return A SpatRaster object with extrapolation values measured in percentage
 #'
 #' @seealso \code{\link{extra_correct}}
 #'
+#' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr summarise_all
 #' @importFrom flexclust dist2
-#' @importFrom terra mask as.data.frame
+#' @importFrom foreach foreach
+#' @importFrom parallel makeCluster stopCluster
+#' @importFrom stats sd
+#' @importFrom terra mask aggregate as.data.frame resample
 #'
 #' @export
 #' @examples
-extra_eval <- function(env_calib, env_proj) {
+#' \dontrun{
+#' require(dplyr)
+#' require(terra)
+#'
+#' data(spp)
+#' f <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(f)
+#'
+#' spp$species %>% unique
+#' sp <- spp %>% dplyr::filter(species=='sp3', pr_ab==1) %>% dplyr::select(x, y)
+#'
+#' # Accessible area
+#' ca <- calib_area(sp, x= 'x', y='y', method = c("buffer", width = 30000))
+#'
+#' plot(somevar$CFP_1)
+#' points(sp)
+#' plot(ca, add=T)
+#'
+#' # Get environmental condition of calibration area
+#' somevar_ca <- somevar %>% crop(., ca) %>% mask(., ca)
+#' plot(somevar_ca)
+#'
+#' xp <-
+#'   extra_eval(
+#'     env_calib = somevar_ca,
+#'     env_proj = somevar,
+#'     n_cores = 1,
+#'     aggreg_factor = 3
+#'   )
+#' plot(xp)
+#' }
+extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
   # Get variable names
   v0 <- unique(c(names(env_calib), names(env_proj)))
   v0 <- sort(v0)
@@ -43,6 +85,15 @@ extra_eval <- function(env_calib, env_proj) {
   # Layer base
   extraraster <- terra::mask(!is.na(env_proj[[1]]), env_proj[[1]])
 
+  if(aggreg_factor==1){aggreg_factor <- NULL}
+  if(!is.null(aggreg_factor)){
+    disag <- extraraster
+    env_calib <- terra::aggregate(env_calib, fact = aggreg_factor, na.rm=TRUE)
+    env_proj <- terra::aggregate(env_proj, fact = aggreg_factor, na.rm=TRUE)
+    extraraster <- terra::aggregate(extraraster, fact = aggreg_factor, na.rm=TRUE)
+  }
+
+
   # Transform raster to df
   env_calib2 <-
     terra::as.data.frame(env_calib, xy = FALSE, na.rm = TRUE)
@@ -69,22 +120,40 @@ extra_eval <- function(env_calib, env_proj) {
     c(
       seq(
         1, nrow(env_proj2),
-        round(nrow(env_proj2) / 1000)
+        200
       ),
       nrow(env_proj2) + 1
     )
 
-  # TODO write code for processin this part in parallel
-  extra <- lapply(seq_len((length(set) - 1)), function(x) {
-    rowset <- set[x]:(set[x + 1] - 1)
-    auclidean <-
-      flexclust::dist2(
-        env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
-        env_calib2[v0]
-      ) # env_calib environmental conditions used as references
-    auclidean <- apply(auclidean, 1, min)
-    return(auclidean)
-  })
+  if(is.null(n_cores)){
+    extra <- lapply(seq_len((length(set) - 1)), function(x) {
+      rowset <- set[x]:(set[x + 1] - 1)
+      auclidean <-
+        flexclust::dist2(
+          env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
+          env_calib2[v0]
+        ) # env_calib environmental conditions used as references
+      auclidean <- sapply(data.frame(t(auclidean)), min)
+      return(auclidean)
+    })
+  } else {
+    cl <- parallel::makeCluster(n_cores)
+    doParallel::registerDoParallel(cl)
+
+    extra <- foreach::foreach(x = seq_len((length(
+      set
+    ) - 1)), .combine = 'c') %dopar% {
+      rowset <- set[x]:(set[x + 1] - 1)
+      auclidean <-
+        flexclust::dist2(env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
+                         env_calib2[v0])  # env_calib environmental conditions used as references
+      auclidean <- sapply(data.frame(t(auclidean)), min)
+      auclidean
+    }
+
+    parallel::stopCluster(cl)
+  }
+
 
   extra <- unlist(extra)
   env_proj2 <-
@@ -108,6 +177,11 @@ extra_eval <- function(env_calib, env_proj) {
 
   # Result -----
   extraraster[ncell] <- env_proj2[, "scaled_distace"]
+
+  if(!is.null(aggreg_factor)){
+    extraraster <- terra::resample(x = extraraster, y = disag)
+    extraraster <- terra::mask(extraraster, disag)
+  }
 
   return(extraraster)
 }
