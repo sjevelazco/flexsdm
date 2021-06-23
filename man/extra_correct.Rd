@@ -11,13 +11,18 @@ extra_correct(suit, extra, threshold = 50)
 
 \item{extra}{SpatRaster with extrapolation values measured in percentage (output from extra_eval function)}
 
-\item{threshold}{numeric. vector with one or more values used for correct extrapolation. Default 50%}
+\item{threshold}{numeric. vector with one or more values used for correct extrapolation. Default 50\%}
 }
 \value{
 A SpatRaster object with corrected suitability values
 }
 \description{
 Constraint suitability values under a given extrapolation value
+}
+\examples{
+\dontrun{
+# see examples in extra_eval function
+}
 }
 \seealso{
 \code{\link{extra_eval}}

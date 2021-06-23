@@ -39,7 +39,7 @@
 #' @importFrom terra extract
 #' @importFrom utils combn
 #'
-#' @seealso \code{\link{part}}, and \code{\link{part_sblock}}.
+#' @seealso \code{\link{part_classical}}, and \code{\link{part_sblock}}.
 #' @examples
 #' \dontrun{
 #' require(terra)

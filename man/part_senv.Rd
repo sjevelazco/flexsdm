@@ -94,5 +94,5 @@ ggplot(part1$part, aes(x, y, col = factor(.part))) +
 }
 }
 \seealso{
-\code{\link{part}}, and \code{\link{part_sblock}}.
+\code{\link{part_classical}}, and \code{\link{part_sblock}}.
 }

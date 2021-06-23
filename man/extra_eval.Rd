@@ -17,14 +17,15 @@ presence and absence points localities used for constructing models}
 \item{aggreg_factor}{positive integer. Aggregation factor expressed as number of cells in each
 direction to reduce raster resolution. Use value higher than 1 would be interesting when
 measuring extrapolation with raster with a high number of cells. The resolution of output will be
-the same as raster object used in "env_proj" argument. Default 1, i.e., by default, no changes
-will be made to the resolution of the environmental variables.}
+the same as raster object used in 'env_proj' argument. Default 1, i.e., by default, no changes
+will be made to the resolution of the environmental variables}
 }
 \value{
 A SpatRaster object with extrapolation values measured in percentage
 }
 \description{
-Measure model extrapolation
+Measure extrapolation comparing data used for modeling calibration and area for
+model projection. This function use the approach proposed by Velazco et al., in prep
 }
 \examples{
 \dontrun{
@@ -35,18 +36,22 @@ data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
 
-spp$species \%>\% unique
-sp <- spp \%>\% dplyr::filter(species=='sp3', pr_ab==1) \%>\% dplyr::select(x, y)
+spp$species \%>\% unique()
+sp <- spp \%>\%
+  dplyr::filter(species == "sp3", pr_ab == 1) \%>\%
+  dplyr::select(x, y)
 
 # Accessible area
-ca <- calib_area(sp, x= 'x', y='y', method = c("buffer", width = 30000))
+ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
 
 plot(somevar$CFP_1)
 points(sp)
-plot(ca, add=T)
+plot(ca, add = T)
 
 # Get environmental condition of calibration area
-somevar_ca <- somevar \%>\% crop(., ca) \%>\% mask(., ca)
+somevar_ca <- somevar \%>\%
+  crop(., ca) \%>\%
+  mask(., ca)
 plot(somevar_ca)
 
 xp <-

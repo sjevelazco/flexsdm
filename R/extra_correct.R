@@ -4,17 +4,20 @@
 #'
 #' @param suit SpatRaster with suitability values
 #' @param extra SpatRaster with extrapolation values measured in percentage (output from extra_eval function)
-#' @param threshold numeric. vector with one or more values used for correct extrapolation. Default 50%
+#' @param threshold numeric. vector with one or more values used for correct extrapolation. Default 50\%
+#'
+#' @returns
+#' A SpatRaster object with corrected suitability values
 #'
 #' @seealso \code{\link{extra_eval}}
-#'
-#' @return A SpatRaster object with corrected suitability values
+#' @export
 #'
 #' @importFrom terra rast
 #'
-#' @export
-#'
 #' @examples
+#' \dontrun{
+#' # see examples in extra_eval function
+#' }
 extra_correct <- function(suit, extra, threshold = 50) {
   names(suit) <- 'suit'
   l <- as.list(threshold)

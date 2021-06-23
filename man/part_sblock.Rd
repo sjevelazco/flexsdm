@@ -232,5 +232,5 @@ points(
 
 }
 \seealso{
-\code{\link{part}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+\code{\link{part_classical}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 }

@@ -1,5 +1,8 @@
 #' Measure model extrapolation
 #'
+#' @description Measure extrapolation comparing data used for modeling calibration and area for
+#' model projection. This function use the approach proposed by Velazco et al., in prep
+#'
 #' @param env_calib SpatRaster with environmental conditions of the calibration area or the
 #' presence and absence points localities used for constructing models
 #' @param env_proj SpatRaster with environmental condition used for projecting a model
@@ -7,13 +10,16 @@
 #' @param aggreg_factor positive integer. Aggregation factor expressed as number of cells in each
 #'  direction to reduce raster resolution. Use value higher than 1 would be interesting when
 #'  measuring extrapolation with raster with a high number of cells. The resolution of output will be
-#'  the same as raster object used in "env_proj" argument. Default 1, i.e., by default, no changes
-#'  will be made to the resolution of the environmental variables.
+#'  the same as raster object used in 'env_proj' argument. Default 1, i.e., by default, no changes
+#'  will be made to the resolution of the environmental variables
 #'
 #'
-#' @return A SpatRaster object with extrapolation values measured in percentage
+#' @return
+#' A SpatRaster object with extrapolation values measured in percentage
 #'
 #' @seealso \code{\link{extra_correct}}
+#'
+#' @export
 #'
 #' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr summarise_all
@@ -23,7 +29,6 @@
 #' @importFrom stats sd
 #' @importFrom terra mask aggregate as.data.frame resample
 #'
-#' @export
 #' @examples
 #' \dontrun{
 #' require(dplyr)
@@ -33,18 +38,22 @@
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)
 #'
-#' spp$species %>% unique
-#' sp <- spp %>% dplyr::filter(species=='sp3', pr_ab==1) %>% dplyr::select(x, y)
+#' spp$species %>% unique()
+#' sp <- spp %>%
+#'   dplyr::filter(species == "sp3", pr_ab == 1) %>%
+#'   dplyr::select(x, y)
 #'
 #' # Accessible area
-#' ca <- calib_area(sp, x= 'x', y='y', method = c("buffer", width = 30000))
+#' ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
 #'
 #' plot(somevar$CFP_1)
 #' points(sp)
-#' plot(ca, add=T)
+#' plot(ca, add = T)
 #'
 #' # Get environmental condition of calibration area
-#' somevar_ca <- somevar %>% crop(., ca) %>% mask(., ca)
+#' somevar_ca <- somevar %>%
+#'   crop(., ca) %>%
+#'   mask(., ca)
 #' plot(somevar_ca)
 #'
 #' xp <-
@@ -85,12 +94,14 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
   # Layer base
   extraraster <- terra::mask(!is.na(env_proj[[1]]), env_proj[[1]])
 
-  if(aggreg_factor==1){aggreg_factor <- NULL}
-  if(!is.null(aggreg_factor)){
+  if (aggreg_factor == 1) {
+    aggreg_factor <- NULL
+  }
+  if (!is.null(aggreg_factor)) {
     disag <- extraraster
-    env_calib <- terra::aggregate(env_calib, fact = aggreg_factor, na.rm=TRUE)
-    env_proj <- terra::aggregate(env_proj, fact = aggreg_factor, na.rm=TRUE)
-    extraraster <- terra::aggregate(extraraster, fact = aggreg_factor, na.rm=TRUE)
+    env_calib <- terra::aggregate(env_calib, fact = aggreg_factor, na.rm = TRUE)
+    env_proj <- terra::aggregate(env_proj, fact = aggreg_factor, na.rm = TRUE)
+    extraraster <- terra::aggregate(extraraster, fact = aggreg_factor, na.rm = TRUE)
   }
 
 
@@ -125,7 +136,7 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
       nrow(env_proj2) + 1
     )
 
-  if(is.null(n_cores)){
+  if (is.null(n_cores)) {
     extra <- lapply(seq_len((length(set) - 1)), function(x) {
       rowset <- set[x]:(set[x + 1] - 1)
       auclidean <-
@@ -142,11 +153,13 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
 
     extra <- foreach::foreach(x = seq_len((length(
       set
-    ) - 1)), .combine = 'c') %dopar% {
+    ) - 1)), .combine = "c") %dopar% {
       rowset <- set[x]:(set[x + 1] - 1)
       auclidean <-
-        flexclust::dist2(env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
-                         env_calib2[v0])  # env_calib environmental conditions used as references
+        flexclust::dist2(
+          env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
+          env_calib2[v0]
+        ) # env_calib environmental conditions used as references
       auclidean <- sapply(data.frame(t(auclidean)), min)
       auclidean
     }
@@ -175,10 +188,10 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
       env_proj2
     )
 
-  # Result -----
+  # Result
   extraraster[ncell] <- env_proj2[, "scaled_distace"]
 
-  if(!is.null(aggreg_factor)){
+  if (!is.null(aggreg_factor)) {
     extraraster <- terra::resample(x = extraraster, y = disag)
     extraraster <- terra::mask(extraraster, disag)
   }
