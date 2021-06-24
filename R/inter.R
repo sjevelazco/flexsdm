@@ -26,7 +26,7 @@
 #' require(terra)
 #' require(dplyr)
 #'
-#' f <- system.file("external/abma_time_steps.tif", package = "flexsdm")
+#' f <- system.file("external/suit_time_steps.tif", package = "flexsdm")
 #' abma <- terra::rast(f)
 #' plot(abma)
 #'
