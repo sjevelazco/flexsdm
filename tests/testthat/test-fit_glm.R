@@ -2,7 +2,7 @@ test_that("multiplication works", {
   data("abies_db")
 
   # Using k-fold partition method
-  abies_db2 <- part_classical(
+  abies_db2 <- part_random(
     data = abies_db,
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
@@ -36,7 +36,7 @@ test_that("multiplication works", {
   expect_equal(class(glm_t2), "list")
 
   # Using repeated k-fold partition method
-  abies_db2 <- part_classical(
+  abies_db2 <- part_random(
     data = abies_db,
     pr_ab = "pr_ab",
     method = c(method = "rep_kfold", folds = 3, replicates = 3)

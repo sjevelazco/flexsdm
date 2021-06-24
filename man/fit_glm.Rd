@@ -72,7 +72,7 @@ data("abies_db")
 abies_db
 
 # Using k-fold partition method
-abies_db2 <- part_classical(
+abies_db2 <- part_random(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
@@ -107,7 +107,7 @@ glm_t2 <- fit_glm(
 )
 
 # Using repeated k-fold partition method
-abies_db2 <- part_classical(
+abies_db2 <- part_random(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "rep_kfold", folds = 10, replicates = 10)

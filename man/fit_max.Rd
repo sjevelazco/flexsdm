@@ -96,14 +96,14 @@ backg # environmental conditions of background points
 # Using k-fold partition method
 # Remember that the partition method, number of folds or replications must
 # be the same for presence-absence and background points datasets
-abies_db2 <- part_classical(
+abies_db2 <- part_random(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
 )
 abies_db2
 
-backg2 <- part_classical(
+backg2 <- part_random(
   data = backg,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)

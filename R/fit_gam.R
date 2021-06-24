@@ -51,7 +51,7 @@
 #' data("abies_db")
 #'
 #' # Using k-fold partition method
-#' abies_db2 <- part_classical(
+#' abies_db2 <- part_random(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 10)
@@ -89,7 +89,7 @@
 #' gam_t2$performance %>% dplyr::select(ends_with("_mean"))
 #'
 #' # Using repeated k-fold partition method
-#' abies_db2 <- part_classical(
+#' abies_db2 <- part_random(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "rep_kfold", folds = 5, replicates = 5)

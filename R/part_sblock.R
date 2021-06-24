@@ -47,7 +47,7 @@
 #' @importFrom terra extract res ext vect crs extend values ncell cellFromXY geom
 #' @importFrom utils combn
 #'
-#' @seealso \code{\link{part_classical}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+#' @seealso \code{\link{part_random}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 #'
 #' @examples
 #' \dontrun{

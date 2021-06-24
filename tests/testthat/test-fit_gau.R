@@ -2,7 +2,7 @@ test_that("multiplication works", {
   data("abies_db")
 
   # Using k-fold partition method
-  abies_db2 <- part_classical(
+  abies_db2 <- part_random(
     data = abies_db,
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
@@ -26,7 +26,7 @@ test_that("multiplication works", {
   expect_equal(class(gaup_t1), "list")
 
   # Using bootstrap partition method and only with presence-absence
-  abies_db2 <- part_classical(
+  abies_db2 <- part_random(
     data = abies_db,
     pr_ab = "pr_ab",
     method = c(method = "boot", replicates = 5, proportion = 0.7)

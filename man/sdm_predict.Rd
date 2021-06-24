@@ -68,7 +68,7 @@ some_sp <-
   )
 
 # Partition
-some_sp <- part_classical(
+some_sp <- part_random(
   data = some_sp,
   pr_ab = "pr_ab",
   method = c(method = "rep_kfold", folds = 3, replicates = 5)

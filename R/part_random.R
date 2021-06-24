@@ -27,7 +27,7 @@
 #' abies_db <- tibble(abies_db)
 #'
 #' # K-fold method
-#' abies_db2 <- part_classical(
+#' abies_db2 <- part_random(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 10)
@@ -35,7 +35,7 @@
 #' abies_db2
 #'
 #' # Repeated K-fold method
-#' abies_db2 <- part_classical(
+#' abies_db2 <- part_random(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "rep_kfold", folds = 10, replicates = 10)
@@ -43,7 +43,7 @@
 #' abies_db2
 #'
 #' # Leave-one-out cross-validation (loocv) method
-#' abies_db2 <- part_classical(
+#' abies_db2 <- part_random(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "loocv")
@@ -51,7 +51,7 @@
 #' abies_db2
 #'
 #' # Bootstrap method
-#' abies_db2 <- part_classical(
+#' abies_db2 <- part_random(
 #'   data = abies_db,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "boot", replicates = 50, proportion = 0.7)
@@ -60,7 +60,7 @@
 #' abies_db2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
 #' }
 #'
-part_classical <- function(data, pr_ab, method = NULL) {
+part_random <- function(data, pr_ab, method = NULL) {
   # TODO add conditional for testing misuse of aguments
   # TODO write loovc documentation
   .part <- BOOT1 <- BOOT2 <- boot <- NULL

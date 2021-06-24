@@ -69,7 +69,7 @@ abies_db
 
 # We will partition the data with the k-fold method
 
-abies_db2 <- part_classical(
+abies_db2 <- part_random(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
