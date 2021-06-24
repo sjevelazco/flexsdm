@@ -102,7 +102,7 @@ esm_glm <- function(data,
                     thr = NULL,
                     poly = 0,
                     inter_order = 0) {
-  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
+  . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
   # Formula

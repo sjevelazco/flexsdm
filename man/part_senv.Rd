@@ -2,7 +2,7 @@
 % Please edit documentation in R/part_senv.R
 \name{part_senv}
 \alias{part_senv}
-\title{Environmental and spatial cross validation}
+\title{Environmental and spatial cross-validation}
 \usage{
 part_senv(
   env_layer,

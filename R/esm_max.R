@@ -125,7 +125,7 @@ esm_max <- function(data,
                     classes = "default",
                     pred_type = "cloglog",
                     regmult = 2.5) {
-  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
+  . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
   # Formula

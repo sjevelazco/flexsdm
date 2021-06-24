@@ -2,7 +2,7 @@
 % Please edit documentation in R/part_classical.R
 \name{part_classical}
 \alias{part_classical}
-\title{Data partitioning for training and testing models}
+\title{Conventional data partitioning methods}
 \usage{
 part_classical(data, pr_ab, method = NULL)
 }

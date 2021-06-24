@@ -100,7 +100,7 @@ esm_gau <- function(data,
                     partition,
                     thr = NULL,
                     background = NULL) {
-  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
+  . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
   # Formula

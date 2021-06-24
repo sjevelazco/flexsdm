@@ -110,7 +110,7 @@ esm_gbm <- function(data,
                     n_trees = 100,
                     n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
                     shrinkage = 0.1) {
-  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
+  . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
   # Formula

@@ -1,4 +1,4 @@
-#' Data partitioning for training and testing models
+#' Conventional data partitioning methods
 #'
 #' @description This function provides different conventional partition methods based in folds (kfold, rep_kfold, and loocv), and bootstrap (boot)
 #'

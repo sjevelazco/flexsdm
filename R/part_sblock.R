@@ -1,4 +1,4 @@
-#' Spatial block cross validation
+#' Spatial block cross-validation
 #'
 #' @description This function explores spatial blocks with different cell sizes and returns the
 #' best one suited for a given presence or presence-absences database. The selection of the best

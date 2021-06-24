@@ -66,6 +66,7 @@
 #' plot(xp)
 #' }
 extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
+  . <- x <- NULL
   # Get variable names
   v0 <- unique(c(names(env_calib), names(env_proj)))
   v0 <- sort(v0)

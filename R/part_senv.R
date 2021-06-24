@@ -1,4 +1,4 @@
-#' Environmental and spatial cross validation
+#' Environmental and spatial cross-validation
 #'
 #' @description This function explores different numbers of environmental partitions based on the
 #' K-mean cluster algorithm and returns the best one suited for a given presence or

@@ -2,7 +2,7 @@
 % Please edit documentation in R/part_sblock.R
 \name{part_sblock}
 \alias{part_sblock}
-\title{Spatial block cross validation}
+\title{Spatial block cross-validation}
 \usage{
 part_sblock(
   env_layer,
