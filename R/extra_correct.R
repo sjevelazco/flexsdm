@@ -19,7 +19,7 @@
 #' # see examples in extra_eval function
 #' }
 extra_correct <- function(suit, extra, threshold = 50) {
-  names(suit) <- 'suit'
+  names(suit) <- "suit"
   l <- as.list(threshold)
   for (i in 1:length(threshold)) {
     l[[i]] <- suit
