@@ -65,7 +65,7 @@ abies_db2 <- abies_db \%>\%
   dplyr::slice_sample(n = 10) \%>\%
   group_by()
 
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 3)
@@ -89,7 +89,7 @@ esm_gam_t1$performance
 abies_db2 <- abies_db2 \%>\% select(-starts_with("."))
 
 set.seed(10)
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db2,
   pr_ab = "pr_ab",
   method = c(method = "rep_kfold", folds = 3, replicates = 10)
@@ -111,7 +111,7 @@ esm_gam_t2$performance
 abies_db2 <- abies_db2 \%>\% select(-starts_with("."))
 
 set.seed(10)
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db2,
   pr_ab = "pr_ab",
   method = c(method = "boot", replicates = 10, proportion = 0.7)

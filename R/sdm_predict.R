@@ -58,7 +58,7 @@
 #'   )
 #'
 #' # Partition
-#' some_sp <- part(
+#' some_sp <- part_classical(
 #'   data = some_sp,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "rep_kfold", folds = 3, replicates = 5)

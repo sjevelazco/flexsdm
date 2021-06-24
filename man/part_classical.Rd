@@ -32,7 +32,7 @@ abies_db$partition <- NULL
 abies_db <- tibble(abies_db)
 
 # K-fold method
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
@@ -40,7 +40,7 @@ abies_db2 <- part(
 abies_db2
 
 # Repeated K-fold method
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "rep_kfold", folds = 10, replicates = 10)
@@ -48,7 +48,7 @@ abies_db2 <- part(
 abies_db2
 
 # Leave-one-out cross-validation (loocv) method
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "loocv")
@@ -56,7 +56,7 @@ abies_db2 <- part(
 abies_db2
 
 # Bootstrap method
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "boot", replicates = 50, proportion = 0.7)

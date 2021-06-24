@@ -76,7 +76,7 @@
 #'   dplyr::slice_sample(n = 10) %>%
 #'   group_by()
 #'
-#' abies_db2 <- part(
+#' abies_db2 <- part_classical(
 #'   data = abies_db2,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
@@ -90,7 +90,7 @@
 #'   dplyr::slice_sample(n = 100) %>%
 #'   group_by()
 #'
-#' backg2 <- part(
+#' backg2 <- part_classical(
 #'   data = backg2,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "rep_kfold", folds = 3, replicates = 5)

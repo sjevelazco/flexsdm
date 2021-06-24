@@ -67,7 +67,7 @@ Fit and validate Random Forest models
 data("abies_db")
 
 # Using k-fold partition method
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
@@ -91,7 +91,7 @@ rf_t1$all_thresholds
 
 # Using bootstrap partition method and only with presence-absence
 # and get performance for several method
-abies_db2 <- part(
+abies_db2 <- part_classical(
   data = abies_db,
   pr_ab = "pr_ab",
   method = c(method = "boot", replicates = 10, proportion = 0.7)
