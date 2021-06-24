@@ -140,7 +140,7 @@ esm_net <- function(data,
     dplyr::distinct(AUC_mean) %>%
     dplyr::pull()
   D <- 2 * (mtrc - 0.5) # Somers'D
-  filt <- mtrc >= 0.5
+  filt <- mtrc > 0
 
   if (sum(filt) == 0) {
     message("None bivariate model had Somer's D > 0.5. Try with another esm_* function. NA will be returned")
