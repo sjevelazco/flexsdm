@@ -4,10 +4,10 @@
 \alias{correct_colinvar}
 \title{Perform collinearity reduction on predictors}
 \usage{
-correct_colinvar(rstack, method, proj = NULL)
+correct_colinvar(env_layer, method, proj = NULL)
 }
 \arguments{
-\item{rstack}{SpatRaster An object of class SpatRaster containing the predictors.}
+\item{env_layer}{SpatRaster An object of class SpatRaster containing the predictors.}
 
 \item{method}{character. Collinearity reduction method. It is necessary to
 provide a vector for this argument. The next methods are implemented:
@@ -32,28 +32,28 @@ somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
 # Perform pearson collinearity control
-var <- correct_colinvar(rstack = somevar, method = c("pearson", th = "0.8"))
-var$rstack
+var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.8"))
+var$env_layer
 var$removed_variables
 var$correlation_table
 
 # Perform vif collinearity control
-var <- correct_colinvar(rstack = somevar, method = c("vif", th = "8"))
-var$rstack
+var <- correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))
+var$env_layer
 var$removed_variables
 var$correlation_table
 
 # Perform pca collinearity control
-var <- correct_colinvar(rstack = somevar, method = c("pca"))
-plot(var$rstack)
-var$rstack
-var$coeficients
+var <- correct_colinvar(env_layer = somevar, method = c("pca"))
+plot(var$env_layer)
+var$env_layer
+var$coefficient
 var$cumulative_variance
 
-# Perform fa collinearity control
+# Perform fa colinearity control
 # this method only will be performed if covariance matrix is invertible.
 # WRITE HERE A EXAMPLE THAT WORKS :)
-# var <- correct_colinvar(rstack = somevar, method = c("fa"))
+# var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 }
 
 }
