@@ -39,4 +39,29 @@ test_that("multiplication works", {
   )
 
   expect_equal(class(svm_t2), "list")
+
+  # Does the function work without predictors_f?
+  svm_t3 <- fit_svm(
+    data = abies_db2,
+    response = "pr_ab",
+    predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+    partition = ".part",
+    thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
+    fit_formula = NULL
+  )
+
+  expect_equal(class(svm_t3), "list")
+
+  # What about no predictors? Does not work
+  svm_t4 <- fit_svm(
+    data = abies_db2,
+    response = "pr_ab",
+    predictors_f = c("landform"),
+    partition = ".part",
+    thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
+    fit_formula = NULL
+  )
+
+  expect_equal(class(svm_t4), "list")
+
 })
