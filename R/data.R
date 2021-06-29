@@ -20,7 +20,7 @@
 
 #' A data set containing environmental conditions of background points
 #'
-#' @format A tibble object with 5000 rows and 11 variables:
+#' @format A tibble object with 5000 rows and 10 variables:
 #' \describe{
 #'   \item{pr_ab}{presence and absences denoted by 1 and 0 respectively}
 #'   \item{from column aet to landform}{columns with environmental variables}
@@ -36,7 +36,7 @@
 
 #' A data set containing environmental condition of an Abies species
 #'
-#' @format A tibble object with 5000 rows and 11 variables:
+#' @format A tibble object with 5000 rows and 10 variables:
 #' \describe{
 #'   \item{pr_ab}{presence and absences denoted by 1 and 0 respectively}
 #'   \item{from column aet to landform}{columns with environmental variables}

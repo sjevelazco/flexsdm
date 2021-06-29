@@ -93,7 +93,7 @@ esm_svm_t1 <- esm_gam(
   response = "pr_ab",
   predictors = c(
     "aet", "cwd", "tmin", "ppt_djf", "ppt_jja",
-    "pH", "awc", "depth", "percent_clay"
+    "pH", "awc", "depth"
   ),
   partition = ".part",
   thr = NULL

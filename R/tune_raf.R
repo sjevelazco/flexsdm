@@ -66,7 +66,7 @@
 #'     response = "pr_ab",
 #'     predictors = c(
 #'       "aet", "cwd", "tmin", "ppt_djf",
-#'       "ppt_jja", "pH", "awc", "depth", "percent_clay"
+#'       "ppt_jja", "pH", "awc", "depth"
 #'     ),
 #'     predictors_f = c("landform"),
 #'     partition = ".part",

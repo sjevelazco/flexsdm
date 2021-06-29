@@ -79,7 +79,7 @@ abies2
 esm_gau_t1 <- esm_gau(
   data = abies2,
   response = "pr_ab",
-  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
+  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
   partition = ".part",
   thr = NULL,
   background = NULL,
