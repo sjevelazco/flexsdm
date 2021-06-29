@@ -1,4 +1,4 @@
-#' Fit and validate Generalized Additive Models based Ensemble of Small of Model approach
+#' Fit and validate Generalized Additive Models based on Ensemble of Small of Model approach
 #'
 #' @description This function constructs Generalized Additive Models using the
 #' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
@@ -20,7 +20,7 @@
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
 #'   }
-#' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
+#' If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
 #' @param background data.frame. Database with response column only with 0 and predictors variables. All
 #' column names must be consistent with data. Default NULL
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
