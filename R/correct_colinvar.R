@@ -37,6 +37,13 @@
 #' \item cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)
 #' }
 #'
+#' If it used 'fa' method, it is returned a list with the next object:
+#' \itemize{
+#' \item env_layer: #TODO
+#' \item coefficient:: #TODO
+#' \item cumulative_variance:: #TODO
+#' }
+#'
 #' @export
 #' @importFrom stats cor lm prcomp factanal
 #' @importFrom terra as.data.frame subset predict rast scale writeRaster
@@ -75,7 +82,7 @@
 correct_colinvar <- function(env_layer,
                              method,
                              proj = NULL) {
-  #TODO write value in documentation
+  #TODO write documentation for fa methods and write details in methods!!!
   if (!any(c("pearson", "vif", "pca", "fa") %in% method)) {
     stop(
       "argument 'method' was misused, select one of the available methods: pearson, vif, pca, fa"
