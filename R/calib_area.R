@@ -21,7 +21,7 @@
 #'
 #' @importFrom grDevices chull
 #' @importFrom sp coordinates Polygon Polygons SpatialPolygons spTransform
-#' @importFrom terra vect buffer crs extract
+#' @importFrom terra vect buffer crs extract union
 #'
 #' @examples
 #' \dontrun{
@@ -156,7 +156,7 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
       result[[i]] <- terra::vect(data_pl)
     }
     if (length(result) > 1) {
-      result <- do.call(rbind, result)
+      result <- do.call(terra::union, result)
     } else {
       result <- result[[1]]
     }
@@ -179,7 +179,7 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     }
     if (length(result) > 1) {
       result <- sapply(result, terra::vect)
-      result <- do.call(terra:::rbind.SpatVector, result)
+      result <- do.call(terra::union, result)
     } else {
       result <- result[[1]]
     }
