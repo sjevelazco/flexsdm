@@ -224,7 +224,7 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
           kernel = "rbfdot",
           kpar = list(sigma = 0.1),
           C = 10,
-          prob.model = T
+          prob.model = TRUE
         )
       psv2 <-
         kernlab::predict(sv, sp_env_1, type = "probabilities")[, 2] # prediction for presences
