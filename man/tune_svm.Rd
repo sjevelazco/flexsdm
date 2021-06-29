@@ -64,13 +64,13 @@ Fit and validate Support Vector Machine models with exploration of hyper-paramet
 }
 \examples{
 \dontrun{
-data(abies_db)
-abies_db
+data(abies)
+abies
 
 # We will partition the data with the k-fold method
 
-abies_db2 <- part_random(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
 )
@@ -87,7 +87,7 @@ tune_grid <-
 
 svm_t <-
   tune_svm(
-    data = abies_db2,
+    data = abies2,
     response = "pr_ab",
     predictors = c(
       "aet", "cwd", "tmin", "ppt_djf",

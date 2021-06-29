@@ -64,18 +64,18 @@ Fit and validate Random Forest models
 }
 \examples{
 \dontrun{
-data("abies_db")
+data("abies")
 
 # Using k-fold partition method
-abies_db2 <- part_random(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
 )
-abies_db2
+abies2
 
 rf_t1 <- fit_raf(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
@@ -91,15 +91,15 @@ rf_t1$all_thresholds
 
 # Using bootstrap partition method and only with presence-absence
 # and get performance for several method
-abies_db2 <- part_random(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "boot", replicates = 10, proportion = 0.7)
 )
-abies_db2
+abies2
 
 rf_t2 <- fit_raf(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
