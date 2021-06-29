@@ -7,21 +7,43 @@
 correct_colinvar(env_layer, method, proj = NULL)
 }
 \arguments{
-\item{env_layer}{SpatRaster An object of class SpatRaster containing the predictors.}
+\item{env_layer}{SpatRaster An object of class SpatRaster containing the predictors.
+This function does not allow categorical variables}
 
 \item{method}{character. Collinearity reduction method. It is necessary to
 provide a vector for this argument. The next methods are implemented:
 \itemize{
-  \item pearson: Select variables by Pearson correlation, a threshold of maximum correlation must be specified by user. Otherwise a threshold of 0.7 is defined as default. Usage method = c('pearson', th='0.7').
-  \item vif: Select variables by Variance Inflation Factor, a threshold can be specified by user. Otherwise a threshold of 10 is defined as default.Usage method = c('vif', th = '10').
-  \item pca: Perform a Principal Component Analysis and use the principal components as the new predictors. The selected components account for 95% of the whole variation in the system.Usage method = c('pca').
-  \item fa: Perform a Factorial Analysis and select, from the original predictors, the ones with the highest correlation with the axis which account for 95% of the whole variation in the system.Usage method = c('fa').
+  \item pearson: Select variables by Pearson correlation, a threshold of maximum correlation
+  must be specified. Otherwise, a threshold of 0.7 is defined as default.
+  Usage method = c('pearson', th='0.7').
+  \item vif: Select variables by Variance Inflation Factor, a threshold can be specified by
+  user. Otherwise, a threshold of 10 is defined as default.Usage method = c('vif', th = '10').
+  \item pca: Perform a Principal Component Analysis and use the principal components as the
+  new predictors. The selected components account for 95% of the whole variation in the system.
+  Usage method = c('pca').
+  \item fa: Perform a Factorial Analysis and select, from the original predictors, the ones with
+   the highest correlation with the axis which accounts for 95% of the whole variation in the
+   system.Usage method = c('fa').
 }}
 
-\item{proj}{character. Path to a folder which contains sub-folders for the different projection scenarios. Only used for pca. Usage "C:/User/Desktop/Projections"}
+\item{proj}{character. Path to a folder that contains sub-folders for the different projection
+scenarios. Only used for pca. Usage proj = "C:/User/Desktop/Projections"}
 }
 \value{
+If it used 'pearson' or 'vif' method, it is returned a list with the next object:
+\itemize{
+\item env_layer: a SpatRaster object with selected environmental variables
+\item removed_variables: a character vector with removed environmental variables
+\item performance: a matrix with Pearson pairwise correlation between variables
+}
 
+If it used 'pca' method, it is returned a list with the next object:
+\itemize{
+\item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95% of the
+whole variation or original environmental variables
+\item coefficient: a matrix with the coefficient of principal component (PC) for predictors
+\item cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)
+}
 }
 \description{
 Perform collinearity reduction on predictors
