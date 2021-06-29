@@ -2,7 +2,7 @@
 % Please edit documentation in R/esm_net.R
 \name{esm_net}
 \alias{esm_net}
-\title{Fit and validate Neural Networks based Ensemble of Small of Model approach}
+\title{Fit and validate Neural Networks based on Ensemble of Small of Model approach}
 \usage{
 esm_net(data, response, predictors, partition, thr = NULL, size = 2, decay = 0)
 }
@@ -28,7 +28,7 @@ continuous variables.}
   \item sensitivity: Threshold based on a specified sensitivity value.
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
   }
-In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
+If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 
 \item{size}{numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2.}
 

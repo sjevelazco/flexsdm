@@ -2,7 +2,7 @@
 % Please edit documentation in R/esm_gau.R
 \name{esm_gau}
 \alias{esm_gau}
-\title{Fit and validate Gaussian Process models based Ensemble of Small of Model approach}
+\title{Fit and validate Gaussian Process models based on Ensemble of Small of Model approach}
 \usage{
 esm_gau(data, response, predictors, partition, thr = NULL, background = NULL)
 }
@@ -28,7 +28,7 @@ continuous variables.}
   \item sensitivity: Threshold based on a specified sensitivity value.
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
   }
-In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
+If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 
 \item{background}{data.frame. Database with response column only with 0 and predictors variables. All
 column names must be consistent with data. Default NULL}
@@ -49,7 +49,7 @@ Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
 }
 \details{
 This method consists of creating bivariate models with all the pair-wise combinations
-of predictors and perform an ensemble based on the average of suitability weighted by
+of predictors and performs an ensemble based on the average of suitability weighted by
 Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 This function does not allow categorical variables because the use of these types of variables
 could be problematic when using with few occurrences. Further detail see

@@ -30,19 +30,26 @@ provide a vector for this argument. The next methods are implemented:
 scenarios. Only used for pca. Usage proj = "C:/User/Desktop/Projections"}
 }
 \value{
-If it used 'pearson' or 'vif' method, it is returned a list with the next object:
+If 'pearson' or 'vif' method, returns a list with the following elements:
 \itemize{
 \item env_layer: a SpatRaster object with selected environmental variables
 \item removed_variables: a character vector with removed environmental variables
 \item performance: a matrix with Pearson pairwise correlation between variables
 }
 
-If it used 'pca' method, it is returned a list with the next object:
+If 'pca' method, returns a list with the following elements:
 \itemize{
 \item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95% of the
 whole variation or original environmental variables
 \item coefficient: a matrix with the coefficient of principal component (PC) for predictors
 \item cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)
+}
+
+If 'fa' method, returns a list with the following elements:
+\itemize{
+\item env_layer: #TODO
+\item coefficient:: #TODO
+\item cumulative_variance:: #TODO
 }
 }
 \description{
