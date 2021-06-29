@@ -54,27 +54,27 @@ Breiner et al. (2015, 2018)
 }
 \examples{
 \dontrun{
-data("abies_db")
+data("abies")
 require(dplyr)
 
 # Using k-fold partition method
 set.seed(10)
-abies_db2 <- abies_db \%>\%
+abies2 <- abies \%>\%
   na.omit() \%>\%
   group_by(pr_ab) \%>\%
   dplyr::slice_sample(n = 10) \%>\%
   group_by()
 
-abies_db2 <- part_random(
-  data = abies_db2,
+abies2 <- part_random(
+  data = abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 3)
 )
-abies_db2
+abies2
 
 # Without threshold specification and with kfold
 esm_gam_t1 <- esm_gam(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
   partition = ".part",
@@ -86,18 +86,18 @@ esm_gam_t1$predictors
 esm_gam_t1$performance
 
 # Test with rep_kfold partition
-abies_db2 <- abies_db2 \%>\% select(-starts_with("."))
+abies2 <- abies2 \%>\% select(-starts_with("."))
 
 set.seed(10)
-abies_db2 <- part_random(
-  data = abies_db2,
+abies2 <- part_random(
+  data = abies2,
   pr_ab = "pr_ab",
   method = c(method = "rep_kfold", folds = 3, replicates = 10)
 )
-abies_db2
+abies2
 
 esm_gam_t2 <- esm_gam(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
   partition = ".part",
@@ -108,18 +108,18 @@ esm_gam_t2$predictors
 esm_gam_t2$performance
 
 # Test with other bootstrap
-abies_db2 <- abies_db2 \%>\% select(-starts_with("."))
+abies2 <- abies2 \%>\% select(-starts_with("."))
 
 set.seed(10)
-abies_db2 <- part_random(
-  data = abies_db2,
+abies2 <- part_random(
+  data = abies2,
   pr_ab = "pr_ab",
   method = c(method = "boot", replicates = 10, proportion = 0.7)
 )
-abies_db2
+abies2
 
 esm_gam_t3 <- esm_gam(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
   partition = ".part",

@@ -60,20 +60,20 @@
 #'
 #' @examples
 #' \dontrun{
-#' data("abies_db")
+#' data("abies")
 #' data("backg")
-#' abies_db # environmental conditions of presence-absence data
+#' abies # environmental conditions of presence-absence data
 #' backg # environmental conditions of background points
 #'
 #' # Using k-fold partition method
 #' # Remember that the partition method, number of folds or replications must
 #' # be the same for presence-absence and background points datasets
-#' abies_db2 <- part_random(
-#'   data = abies_db,
+#' abies2 <- part_random(
+#'   data = abies,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 5)
 #' )
-#' abies_db2
+#' abies2
 #'
 #' backg2 <- part_random(
 #'   data = backg,
@@ -83,7 +83,7 @@
 #' backg2
 #'
 #' max_t1 <- fit_max(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),

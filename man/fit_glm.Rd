@@ -68,19 +68,19 @@ Fit and validate Generalized Linear Models
 }
 \examples{
 \dontrun{
-data("abies_db")
-abies_db
+data("abies")
+abies
 
 # Using k-fold partition method
-abies_db2 <- part_random(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
 )
-abies_db2
+abies2
 
 glm_t1 <- fit_glm(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
@@ -96,7 +96,7 @@ glm_t1$data_ens
 
 
 glm_t2 <- fit_glm(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
@@ -107,15 +107,15 @@ glm_t2 <- fit_glm(
 )
 
 # Using repeated k-fold partition method
-abies_db2 <- part_random(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "rep_kfold", folds = 10, replicates = 10)
 )
-abies_db2
+abies2
 
 glm_t3 <- fit_glm(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("ppt_jja", "pH", "awc"),
   predictors_f = c("landform"),

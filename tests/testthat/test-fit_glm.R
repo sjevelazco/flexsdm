@@ -1,15 +1,15 @@
 test_that("multiplication works", {
-  data("abies_db")
+  data("abies")
 
   # Using k-fold partition method
-  abies_db2 <- part_random(
-    data = abies_db,
+  abies2 <- part_random(
+    data = abies,
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
   )
 
   glm_t1 <- fit_glm(
-    data = abies_db2,
+    data = abies2,
     response = "pr_ab",
     predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
     predictors_f = c("landform"),
@@ -23,7 +23,7 @@ test_that("multiplication works", {
 
   # testing with polynomial and interaction term
   glm_t2 <- fit_glm(
-    data = abies_db2,
+    data = abies2,
     response = "pr_ab",
     predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
     predictors_f = c("landform"),
@@ -36,14 +36,14 @@ test_that("multiplication works", {
   expect_equal(class(glm_t2), "list")
 
   # Using repeated k-fold partition method
-  abies_db2 <- part_random(
-    data = abies_db,
+  abies2 <- part_random(
+    data = abies,
     pr_ab = "pr_ab",
     method = c(method = "rep_kfold", folds = 3, replicates = 3)
   )
 
   glm_t3 <- fit_glm(
-    data = abies_db2,
+    data = abies2,
     response = "pr_ab",
     predictors = c("ppt_jja", "pH", "awc"),
     predictors_f = c("landform"),

@@ -1,20 +1,20 @@
 test_that("multiplication works", {
-  data("abies_db")
+  data("abies")
 
   # Using k-fold partition method
-  abies_db2 <- part_random(
-    data = abies_db,
+  abies2 <- part_random(
+    data = abies,
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
   )
-  abies_db2
+  abies2
 
-  bg <- abies_db2
+  bg <- abies2
   bg$pr_ab <- 0
 
 
   gaup_t1 <- fit_gau(
-    data = abies_db2,
+    data = abies2,
     response = "pr_ab",
     predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
     predictors_f = c("landform"),
@@ -26,14 +26,14 @@ test_that("multiplication works", {
   expect_equal(class(gaup_t1), "list")
 
   # Using bootstrap partition method and only with presence-absence
-  abies_db2 <- part_random(
-    data = abies_db,
+  abies2 <- part_random(
+    data = abies,
     pr_ab = "pr_ab",
     method = c(method = "boot", replicates = 5, proportion = 0.7)
   )
 
   gaup_t2 <- fit_gau(
-    data = abies_db2,
+    data = abies2,
     response = "pr_ab",
     predictors = c("ppt_jja", "pH", "awc"),
     predictors_f = c("landform"),

@@ -58,27 +58,27 @@
 #'
 #' @examples
 #' \dontrun{
-#' data("abies_db")
+#' data("abies")
 #' require(dplyr)
 #'
 #' # Using k-fold partition method
 #' set.seed(10)
-#' abies_db2 <- abies_db %>%
+#' abies2 <- abies %>%
 #'   na.omit() %>%
 #'   group_by(pr_ab) %>%
 #'   dplyr::slice_sample(n = 10) %>%
 #'   group_by()
 #'
-#' abies_db2 <- part_random(
-#'   data = abies_db2,
+#' abies2 <- part_random(
+#'   data = abies2,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
 #' )
-#' abies_db2
+#' abies2
 #'
 #' # Without threshold specification and with kfold
 #' esm_net_t1 <- esm_net(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
 #'   partition = ".part",

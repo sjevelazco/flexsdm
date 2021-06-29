@@ -56,18 +56,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' data("abies_db")
+#' data("abies")
 #'
 #' # Using k-fold partition method
-#' abies_db2 <- part_random(
-#'   data = abies_db,
+#' abies2 <- part_random(
+#'   data = abies,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 10)
 #' )
-#' abies_db2
+#' abies2
 #'
 #' gbm_t1 <- fit_gbm(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
@@ -80,15 +80,15 @@
 #' gbm_t1$all_thresholds
 #'
 #' # Using bootstrap partition method
-#' abies_db2 <- part_random(
-#'   data = abies_db,
+#' abies2 <- part_random(
+#'   data = abies,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "boot", replicates = 10, proportion = 0.7)
 #' )
-#' abies_db2
+#' abies2
 #'
 #' gbm_t2 <- fit_gbm(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("ppt_jja", "pH", "awc"),
 #'   predictors_f = c("landform"),
