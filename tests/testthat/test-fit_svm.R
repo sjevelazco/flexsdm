@@ -42,7 +42,7 @@ test_that("multiplication works", {
 
   # Does the function work without predictors_f?
   svm_t3 <- fit_svm(
-    data = abies_db2,
+    data = abies2,
     response = "pr_ab",
     predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
     partition = ".part",
@@ -54,7 +54,7 @@ test_that("multiplication works", {
 
   # What about no predictors? Does not work
   svm_t4 <- fit_svm(
-    data = abies_db2,
+    data = abies2,
     response = "pr_ab",
     predictors_f = c("landform"),
     partition = ".part",
