@@ -1,4 +1,4 @@
-#' Fit and validate Support Vector Machine models based Ensemble of Small of Model approach
+#' Fit and validate Support Vector Machine models based on Ensemble of Small of Model approach
 #'
 #' @description This function constructs Support Vector Machine models using the
 #' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
@@ -20,7 +20,7 @@
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
 #'   }
-#' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
+#' If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
 #' @param sigma numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot".
 #' Default "automatic".
 #' @param C numeric. Cost of constraints violation this is the 'C'-constant of the regularization
