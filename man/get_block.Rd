@@ -7,9 +7,9 @@
 get_block(env_layer, best_grid)
 }
 \arguments{
-\item{env_layer}{raster. A raster, stack, or brick object with some environmental variables used in the block_partition or band_partition function. Function always will select the first layer}
+\item{env_layer}{SpatRaster object with some environmental variables used in the block_partition or band_partition function. Function always will select the first layer}
 
-\item{best_grid}{raster. Raster object returned by block_partition or band_partition}
+\item{best_grid}{SpatRaster object returned by block_partition or band_partition}
 }
 \value{
 A SpatRaster layer with the same resolution and extent than environmental variables

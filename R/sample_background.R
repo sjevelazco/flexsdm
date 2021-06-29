@@ -4,10 +4,10 @@
 #' using different geographical restrictions.
 #'
 #' @param n integer. Number of background point to be sampled
-#' @param rlayer raster. A raster layer used for sampling background-point.
+#' @param rlayer SpatRaster used for sampling background-point.
 #' It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint
 #' @param maskval integer or numeric. Values of the raster layer used for constraining the background points sampling
-#' @param calibarea shapefile. A SpatialPolygon or SpatialPolygonDataFrame which delimit the calibration area used for a given species (see calib_area function).
+#' @param calibarea SpatVect that delimits the calibration area used for a given species (see calib_area function).
 #'
 #' @return
 #' A tibble object with x y coordinates of sampled background points

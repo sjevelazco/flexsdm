@@ -42,7 +42,7 @@ pre_tr_te <- function(data, p_names, h) {
 
 # Inverse bioclim
 inv_bio <- function(e, p) {
-  e <- raster::stack(e)
+  e <- terra::rast(e)
   model <- dismo::bioclim(e, as.matrix(p))
   r <- terra::predict(model, e)
   r <- terra::rast(r)
