@@ -72,6 +72,8 @@
 #'
 #' merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
 #'
+#' merge_df
+#'
 #'}
 sdm_summarize <- function(models) {
 
