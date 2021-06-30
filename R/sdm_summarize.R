@@ -29,6 +29,8 @@
 #'   thr = "max_sens_spec"
 #' )
 #'
+#' gam_t1$performance
+#'
 #' # Build a generalized linear model using fit_glm
 #'
 #' glm_t1 <- fit_glm(
@@ -42,12 +44,14 @@
 #'   inter_order = 0
 #' )
 #'
+#' glm_t1$performance
+#'
 #' # Build a tuned random forest model using tune_raf
 #'
 #' tune_grid <-
 #'   expand.grid(mtry = seq(1, 7, 1))
 #'
-#' rf_t <-
+#' rf_t1 <-
 #'   tune_raf(
 #'     data = abies2,
 #'     response = "pr_ab",
@@ -61,6 +65,13 @@
 #'     thr = "max_sens_spec",
 #'     metric = "TSS",
 #'   )
+#'
+#'  rf_t1$performance
+#'
+#' # Merge sdm performance tables
+#'
+#' merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
+#'
 #'}
 sdm_summarize <- function(models) {
 
