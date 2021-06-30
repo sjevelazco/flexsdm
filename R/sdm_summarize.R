@@ -5,9 +5,11 @@
 #' @return
 #' @export
 #'
+#' @importFrom data.table rbindlist
+#'
 #' @examples
 #' \dontrun{
-#' #' data(abies)
+#' data(abies)
 #' abies
 #'
 #' # We will partition the data with the k-fold method
@@ -34,7 +36,7 @@
 #' # Build a generalized linear model using fit_glm
 #'
 #' glm_t1 <- fit_glm(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
@@ -81,14 +83,9 @@ sdm_summarize <- function(models) {
     stop("models must be a list object")
   }
 
-  perf <-
-    vector(mode = "list", length = length(models)) # initiate a list for the performance tables
+  perf <- sapply(models, function(x) x$performance)
 
-  for (i in 1:length(models)) {
-    perf[[i]] <- models[[i]]$performance
-  }
-
-  perf_tib <- rbindlist(perf, fill = TRUE) %>% as_tibble()
+  perf_tib <- dplyr::bind_rows(perf)
 
   return(perf_tib)
 }
