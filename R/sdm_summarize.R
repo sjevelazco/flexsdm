@@ -28,7 +28,7 @@
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
-#'   thr = "max_sens_spec"
+#'   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
 #' )
 #'
 #' gam_t1$performance
@@ -64,7 +64,7 @@
 #'     predictors_f = c("landform"),
 #'     partition = ".part",
 #'     grid = tune_grid,
-#'     thr = "max_sens_spec",
+#'     thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
 #'     metric = "TSS",
 #'   )
 #'
