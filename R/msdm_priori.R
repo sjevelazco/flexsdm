@@ -23,6 +23,8 @@
 #'
 #' See Mendes et al. (2020) for further methodological and performance details.
 #'
+#' If used one these constraining method cite Mendes et al 2020.
+#'
 #' @references
 #' \itemize{
 #' \item Mendes, P.; Velazco S.J.E.; Andrade, A.F.A.; De Marco, P. (2020) Dealing with overprediction in species distribution models: how adding distance constraints can improve model accuracy, Ecological Modelling, in press. https://doi.org/10.1016/j.ecolmodel.2020.109180
