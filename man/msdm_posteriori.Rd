@@ -9,8 +9,8 @@ msdm_posteriori(
   x,
   y,
   pr_ab,
-  method = c("OBR", "PRES", "LQ", "MCP", "BMCP"),
-  dirraster = NULL,
+  cont_suit,
+  method = c("obr", "pres", "lq", "mcp", "bmcp"),
   thr = "equal_sens_spec",
   buffer = NULL
 )
@@ -22,7 +22,12 @@ msdm_posteriori(
 
 \item{y}{character. Column name with latitude values.}
 
-\item{method}{character. A character string indicating which MSDM method must be used create.}
+\item{pr_ab}{character. Column name with presence and absence data (i.e. 1 and 0)}
+
+\item{cont_suit}{SpatRaster. Raster with continuous suitability predictions
+"species_specific" type calculates the minimum pairwise-distances between all occurrences and then selects the maximum distance, i.e., the value of the buffer will be the maximum distance from the minimum distance. This procedure depends on the presence of each species' occurrences; thus, for each species, a value of buffer width will be calculated (usage buffer="species_specific").}
+
+\item{method}{character. A character string indicating which constraint method must be used create.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 \itemize{
@@ -38,14 +43,13 @@ msdm_posteriori(
 In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
 Default "equal_sens_spec".}
 
-\item{buffer}{character. Type o buffer width use in BMCP approach. "single" type will be used a single buffer width for all species; this value is interpreted in km (e.g. buffer=c(type="single", km=126)).
-"species_specific" type calculates the minimum pairwise-distances between all occurrences and then selects the maximum distance, i.e., the value of the buffer will be the maximum distance from the minimum distance. This procedure depends on the presence of each species' occurrences; thus, for each species, a value of buffer width will be calculated (usage buffer="species_specific").}
+\item{buffer}{numeric. Buffer width use in 'bmcp' approach. The buffer width will be interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other cases. Usage buffer=50000. Default NULL}
 }
 \value{
-#TODO This function save raster files (with geotiff format) with continuous and binary species raster files separated in CONr and BINr folders respectively.
+# This function return a SpatRaster with continuous and binary prediction.
 }
 \description{
-These methods reduce overprediction of species distribution models based on *a posteriori* method (see Mendes et al 2019) the combination of the patterns of species occurrences and predicted suitability
+These methods reduce overprediction of species distribution models based on a posteriori method (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability
 }
 \details{
 Abbreviation list
@@ -63,7 +67,7 @@ based on the occurrences and suitability patterns of species
 (see 'thr' arguments)
 
 
-OBR(Occurrences based restriction)-
+Method 'obr' (Occurrences based restriction)-
 This method assumes that suitable patches intercepting species occurrences (l)
 are likely a part of species distributions than suitable patches that do not
 intercept any occurrence (k). Distance from all patches k species occurrences to the closest l
@@ -76,31 +80,32 @@ is a surrogate of the species-specific dispersal ability. If T is low, either th
 has been sampled throughout its distribution, or the species is geographically restricted,
 justifying a narrow inclusion of k patches (Mendes et al., 2020).
 
-PRES (Only occurrences based restriction). This is a more restrictive variant of the OBR method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).
+Method 'pres' (Only occurrences based restriction). This is a more restrictive variant of the 'obr' method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).
 
-LQ (Lower Quantile). This method is similar to the OBR method, except by the
+Method 'lq (Lower Quantile). This method is similar to the 'obr' method, except by the
 procedure to define a distance threshold to withdrawn k patches, which is the
 lower quartile distance between k patches to the closest l patch. Whenever a suitable
 pixel is within a k patch, i.e., not within this lower quartile, the suitability of the
 pixel is reduced to zero. This means that 75% of k patches were withdrawn from the model (Mendes et al., 2020).
 
-MCP (Minimum Convex Polygon). Compiled and adapted from
+Method 'mcp' (Minimum Convex Polygon). Compiled and adapted from
 Kremen et al. (2008), this method excludes from SDMs climate suitable
 pixels that do not intercept a minimum convex polygon,
 with interior angles smaller than 180, enclosing all occurrences of a species.
 
-BMCP (Buffered Minimum Convex Polygon). Compiled and adapted
-from Kremen et al. (2008), it is similar to the MCP except by the inclusion of a
+Method 'bmcp' (Buffered Minimum Convex Polygon). Compiled and adapted
+from Kremen et al. (2008), it is similar to the 'mcp' except by the inclusion of a
 buffer zone surrounding minimum convex polygons. When used with the "single" options for buffer argument
 function will ask for a value in km to be used as the buffer with. When used "species_specific" a buffer will be calculated for each species based on the presences occurrences patterns, assuming as buffer width
 the maximum distance in a vector of minimal pairwise distances between occurrences.
 
 Further methodological and performance information of these methods see Mendes et al. (2020).
+
+If used one these constraining method cite Mendes et al 2020.
 }
 \examples{
 \dontrun{
-require(MSDM)
-require(raster)
+require(terra)
 data("sp_sdm") # continuous species distribution models of five species
 data("occurrences") # presences data
 data("absences") # absences data
@@ -128,38 +133,38 @@ writeRaster(sp_sdm, file.path(dir_models, names(sp_sdm)),
 # shell.exec(dir_models)
 
 
-# BMCP method with a single buffer for all species----
+# 'bmcp' method with a single buffer for all species----
 MSDM_Posteriori(
   records = occurrences, absences = absences,
-  x = "x", y = "y", sp = "sp", method = "BMCP", buffer = c(type = "single", km = 150),
+  x = "x", y = "y", sp = "sp", method = "bmcp", buffer = c(type = "single", km = 150),
   dirraster = dir_models, thr = "spec_sens",
   dirsave = tmdir
 )
 
 d <- list.dirs(tmdir, recursive = FALSE)
-# Categorical models corrected by BMCP methods
+# Categorical models corrected by bmcp methods
 cat_bmcp <- stack(list.files(d[1], full.names = TRUE))
 plot(cat_bmcp)
-# Continuous models corrected by BMCP methods
+# Continuous models corrected by 'bmcp' methods
 con_bmcp <- stack(list.files(d[2], full.names = TRUE))
 plot(con_bmcp)
 # shell.exec(rdir)
 
 
-# OBR method----
+# 'obr' method----
 MSDM_Posteriori(
   records = occurrences, absences = absences,
-  x = "x", y = "y", sp = "sp", method = "OBR",
+  x = "x", y = "y", sp = "sp", method = "obr",
   dirraster = dir_models, thr = "spec_sens",
   dirsave = tmdir
 )
 
 d <- list.dirs(tmdir, recursive = FALSE)
 
-# Categorical models corrected by OBR methods
+# Categorical models corrected by 'obr' methods
 cat_obr <- stack(list.files(d[1], full.names = TRUE))
 plot(cat_obr)
-# Continuous models corrected by OBR methods
+# Continuous models corrected by 'obr' methods
 con_obr <- stack(list.files(d[2], full.names = TRUE))
 plot(con_obr)
 # shell.exec(rdir)
