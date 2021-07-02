@@ -32,69 +32,67 @@
 #' \item Bahn, V.; Mcgill, B. J. (2007). Can niche-based distribution models outperform spatial interpolation? Global Ecology and Biogeography, 16(6), 733-742. doi:10.1111/j.1466-8238.2007.00331.x
 #' }
 #'
-#'
-#'
 #' @examples
 #' \dontrun{
-# require(dplry)
-# require(terra)
-#
-# data("spp")
-# somevar <- system.file("external/somevar.tif", package = "flexsdm")
-# somevar <- terra::rast(somevar)
-#
-# # It will be select the presences of a species
-# occ <- spp %>%
-#   dplyr::filter(species == "sp3", pr_ab == 1)
-#
-# # It will select a raster layer to be used as a basic raster
-# a_variable <- somevar[[1]]
-# plot(a_variable)
-# points(sp2 %>% dplyr::select(x, y))
-#
-# ### xy method
-# m_xy <- msdm_priori(
-#   data = occ,
-#   x = "x",
-#   y = "y",
-#   method = "xy",
-#   env_layer = a_variable
-# )
-#
-# plot(m_xy)
-#
-# ### min method
-# m_min <- msdm_priori(
-#   data = occ,
-#   x = "x",
-#   y = "y",
-#   method = "min",
-#   env_layer = a_variable
-# )
-#
-# plot(m_min)
-#
-# ### cml method
-# m_cml <- msdm_priori(
-#   data = occ,
-#   x = "x",
-#   y = "y",
-#   method = "cml",
-#   env_layer = a_variable
-# )
-#
-# plot(m_cml)
-#
-# ### ker method
-# m_ker <- msdm_priori(
-#   data = occ,
-#   x = "x",
-#   y = "y",
-#   method = "ker",
-#   env_layer = a_variable
-# )
-#
-# plot(m_ker)
+#' require(dplry)
+#' require(terra)
+#'
+#' data("spp")
+#' somevar <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(somevar)
+#'
+#' # It will be select the presences of a species
+#' occ <- spp %>%
+#'   dplyr::filter(species == "sp3", pr_ab == 1)
+#'
+#' # It will select a raster layer to be used as a basic raster
+#' a_variable <- somevar[[1]]
+#' plot(a_variable)
+#' points(occ %>% dplyr::select(x, y))
+#'
+#' ### xy method
+#' m_xy <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "xy",
+#'   env_layer = a_variable
+#' )
+#'
+#' plot(m_xy)
+#'
+#' ### min method
+#' m_min <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "min",
+#'   env_layer = a_variable
+#' )
+#'
+#' plot(m_min)
+#'
+#' ### cml method
+#' m_cml <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "cml",
+#'   env_layer = a_variable
+#' )
+#'
+#' plot(m_cml)
+#'
+#' ### ker method
+#' m_ker <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "ker",
+#'   env_layer = a_variable
+#' )
+#'
+#' plot(m_ker)
 #' }
 #'
 #' @seealso \code{\link{msdm_posteriori}}
