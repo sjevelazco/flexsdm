@@ -34,9 +34,70 @@ ker (Kernel method). Also compiled and adapted from Allouche et al. (2008), this
 
 
 See Mendes et al. (2020) for further methodological and performance details.
+
+If used one these constraining method cite Mendes et al 2020.
 }
 \examples{
 \dontrun{
+require(dplry)
+require(terra)
+
+data("spp")
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+# It will be select the presences of a species
+occ <- spp \%>\%
+  dplyr::filter(species == "sp3", pr_ab == 1)
+
+# It will select a raster layer to be used as a basic raster
+a_variable <- somevar[[1]]
+plot(a_variable)
+points(occ \%>\% dplyr::select(x, y))
+
+### xy method
+m_xy <- msdm_priori(
+  data = occ,
+  x = "x",
+  y = "y",
+  method = "xy",
+  env_layer = a_variable
+)
+
+plot(m_xy)
+
+### min method
+m_min <- msdm_priori(
+  data = occ,
+  x = "x",
+  y = "y",
+  method = "min",
+  env_layer = a_variable
+)
+
+plot(m_min)
+
+### cml method
+m_cml <- msdm_priori(
+  data = occ,
+  x = "x",
+  y = "y",
+  method = "cml",
+  env_layer = a_variable
+)
+
+plot(m_cml)
+
+### ker method
+m_ker <- msdm_priori(
+  data = occ,
+  x = "x",
+  y = "y",
+  method = "ker",
+  env_layer = a_variable
+)
+
+plot(m_ker)
 }
 
 }
