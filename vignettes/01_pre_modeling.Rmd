@@ -1,0 +1,70 @@
+---
+title: "Overview of pre-modeling steps"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Overview of pre-modeling steps}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
+  echo = TRUE,
+  warning = FALSE,
+  eval = T
+)
+```
+
+## Introduction
+
+Species distribution modeling (SDM) has become a standard tool in ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological aspects. The *flexsdm* package provides users the ability to manipulate and parameterize models in a way that suits their unique research needs. 
+
+This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).
+
+In this vignette, users will learn about the first set of functions in the *flexsdm* package that fall under the "pre-modeling" umbrella. 
+
+## Installation
+
+First, let's install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
+
+```{r, message=FALSE, warning=FALSE}
+if (!require("remotes"))
+  install.packages("remotes")
+if (!require("flexsdm"))
+  remotes::install_github("sjevelazco/flexsdm")
+```
+
+
+## Data set-up 
+### Create folders
+1. Pre-modeling functions
+Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).
+
+calib_area() Delimit calibration area for constructing species distribution models
+correct_colinvar() Perform collinearity reduction on predictors
+env_outliers() Integration of outliers detection methods in the environmental space
+part_classical() Data partitioning for training and testing models
+part_sblock() Spatial block cross validation
+plot_res() Plot different resolutions to be used in part_sblock
+part_senv() Environmental and spatial cross validation
+sample_background() Sample background points
+sample_pseudoabs() Peseudo-absence allocation method
+sdm_extract() Extract environmental data based on x and y coordinates
+occfilt_env() Perform environmental filtering on species occurrences
+occfilt_geo() Perform geographical filtering on species occurrences
+
+
+```{r prepare data}
+# It will prepared data for modeling a species
+occ <- spp %>% 
+  dplyr::filter(species == "sp2") %>% # filter a species
+  sdm_extract(data = ., x = 'x', y = 'y', 
+              env_layer = somevar, filter_na = TRUE) %>% # extract variables values
+  part_random(.,pr_ab = 'pr_ab', 
+              method = c(method = 'kfold', folds = 10)) # add columns with partition
+```
