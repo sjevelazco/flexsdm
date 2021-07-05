@@ -19,3 +19,8 @@ steps:
 - uses: codecov/codecov-action@v1
   with:
     token: ${{ 9feb6a54-2c64-4da0-8207-0e7d620d0d48 }} # not required for public repos
+    files: ./coverage1.xml,./coverage2.xml # optional
+    flags: unittests # optional
+    name: codecov-umbrella # optional
+    fail_ci_if_error: true # optional (default = false)
+    verbose: true # optional (default = false)
