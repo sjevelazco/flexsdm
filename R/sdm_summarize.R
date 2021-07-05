@@ -81,14 +81,19 @@
 #'
 #'}
 sdm_summarize <- function(models) {
-
-  if (data.class(models ) != "list") {
+  if (data.class(models) != "list") {
     stop("models must be a list object")
   }
 
-  perf <- sapply(models, function(x) x$performance)
+  # list of model performance tables
+  perf <- sapply(models, function(x)
+    x$performance)
 
-  perf_tib <- dplyr::bind_rows(perf)
+  # add unique ID for each model
+  perf <- Map(cbind, perf, model_ID = (1:length(perf)))
+
+  perf_tib <-
+    dplyr::bind_rows(perf) %>% relocate(model_ID, .before = model)
 
   return(perf_tib)
 }
