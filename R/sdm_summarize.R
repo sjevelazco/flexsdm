@@ -89,8 +89,10 @@ sdm_summarize <- function(models) {
   perf <- sapply(models, function(x)
     x$performance)
 
-  # add unique ID for each model
-  perf <- Map(cbind, perf, model_ID = (1:length(perf)))
+  # add unique ID for each model if more than 1 model provided
+  ifelse(length(models) > 1,
+         perf <-
+           Map(cbind, perf, model_ID = (1:length(perf))), NA)
 
   perf_tib <-
     dplyr::bind_rows(perf) %>% relocate(model_ID, .before = model)
