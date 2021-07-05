@@ -57,7 +57,7 @@ test_that("multiplication works", {
 
   merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
 
-  expect_equal(data.class(merge_df), "data.frame")
+  expect_equal(data.class(merge_df), "tbl_df")
 
 
   # only provide one model to sdm_summarize
@@ -65,6 +65,6 @@ test_that("multiplication works", {
 
   merge_df2 <- sdm_summarize(models = list(gam_t1))
 
-  expect_equal(data.class(merge_df2), "data.frame")
+  expect_equal(data.class(merge_df2), "tbl_df")
 
 })

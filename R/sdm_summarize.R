@@ -97,7 +97,7 @@ sdm_summarize <- function(models) {
 
     # bind rows and move model_ID to first column
     perf_tib <-
-      dplyr::bind_rows(perf) %>% relocate(model_ID, .before = model)
+      dplyr::bind_rows(perf) %>% relocate(model_ID, .before = model) %>% tibble()
 
   } else {
     perf_tib <- models[[1]]$performance
