@@ -85,17 +85,22 @@ sdm_summarize <- function(models) {
     stop("models must be a list object")
   }
 
-  # list of model performance tables
-  perf <- sapply(models, function(x)
-    x$performance)
+  # if more than 1 model is provided
+  if (length(models) > 1) {
+    # list of each model's performance table
+    perf <- sapply(models, function(x)
+      x$performance)
 
-  # add unique ID for each model if more than 1 model provided
-  ifelse(length(models) > 1,
-         perf <-
-           Map(cbind, perf, model_ID = (1:length(perf))), NA)
+    # add unique idea for each model
+    perf <-
+      Map(cbind, perf, model_ID = (1:length(perf)))
 
-  perf_tib <-
-    dplyr::bind_rows(perf) %>% relocate(model_ID, .before = model)
+    # bind rows and move model_ID to first column
+    perf_tib <-
+      dplyr::bind_rows(perf) %>% relocate(model_ID, .before = model)
+  } else {
+    perf_tib <- models[[1]]$performance
+  }
 
   return(perf_tib)
 }
