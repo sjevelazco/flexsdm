@@ -88,7 +88,7 @@ sdm_summarize <- function(models) {
   # if more than 1 model is provided
   if (length(models) > 1) {
     # list of each model's performance table
-    perf <- sapply(models, function(x)
+    perf <- lapply(models, function(x)
       x$performance)
 
     # add unique idea for each model
@@ -98,6 +98,7 @@ sdm_summarize <- function(models) {
     # bind rows and move model_ID to first column
     perf_tib <-
       dplyr::bind_rows(perf) %>% relocate(model_ID, .before = model)
+
   } else {
     perf_tib <- models[[1]]$performance
   }
