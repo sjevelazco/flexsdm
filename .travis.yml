@@ -13,3 +13,9 @@ r_github_packages:
 
 after_success:
   - Rscript -e 'library(covr);codecov()'
+
+steps:
+- uses: actions/checkout@master
+- uses: codecov/codecov-action@v1
+  with:
+    token: ${{ 9feb6a54-2c64-4da0-8207-0e7d620d0d48 }} # not required for public repos
