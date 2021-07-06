@@ -207,10 +207,13 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
 
   suppressWarnings(thresholds$lpt <- max(performance$threshold[performance$TPR == 1]))
 
-  thresholds$sensitivity <- performance$threshold[which(abs(
-    performance$TPR - as.numeric(thr["sens"])
-  ) ==
-    min(abs(performance$TPR - as.numeric(thr["sens"]))))] %>% max()
+  if(any(thr=="sensitivity")){
+    thresholds$sensitivity <- performance$threshold[which(abs(
+      performance$TPR - as.numeric(thr["sens"])
+    ) ==
+      min(abs(performance$TPR - as.numeric(thr["sens"]))))] %>% max()
+  }
+
 
   thresholds <- dplyr::bind_cols(thresholds)
 

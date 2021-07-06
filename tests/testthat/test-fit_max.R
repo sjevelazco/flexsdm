@@ -19,7 +19,7 @@ test_that("multiplication works", {
     predictors_f = c("landform"),
     partition = ".part",
     background = bg,
-    thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen")
+    thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
   )
 
   expect_equal(class(max_t1), "list")
