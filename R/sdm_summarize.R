@@ -8,7 +8,7 @@
 #'
 #' @export
 #'
-#' @importFrom data.table rbindlist
+#' @importFrom dplyr bind_rows relocate tibble
 #'
 #' @examples
 #' \dontrun{
@@ -71,15 +71,14 @@
 #'     metric = "TSS",
 #'   )
 #'
-#'  rf_t1$performance
+#' rf_t1$performance
 #'
 #' # Merge sdm performance tables
 #'
 #' merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
 #'
 #' merge_df
-#'
-#'}
+#' }
 sdm_summarize <- function(models) {
   if (data.class(models) != "list") {
     stop("models must be a list object")
@@ -88,8 +87,9 @@ sdm_summarize <- function(models) {
   # if more than 1 model is provided
   if (length(models) > 1) {
     # list of each model's performance table
-    perf <- lapply(models, function(x)
-      x$performance)
+    perf <- lapply(models, function(x) {
+      x$performance
+    })
 
     # add unique idea for each model
     perf <-
@@ -97,8 +97,9 @@ sdm_summarize <- function(models) {
 
     # bind rows and move model_ID to first column
     perf_tib <-
-      dplyr::bind_rows(perf) %>% relocate(model_ID, .before = model) %>% tibble()
-
+      dplyr::bind_rows(perf) %>%
+      dplyr::relocate(model_ID, .before = model) %>%
+      dplyr::tibble()
   } else {
     perf_tib <- models[[1]]$performance
   }
