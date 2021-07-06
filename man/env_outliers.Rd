@@ -47,7 +47,7 @@ occurrence behaves as an outlier for at least one variable it will be highlighte
 If the user uses only presence data, Support Vector Machine and Random Forest Methods will not be
 performed. Support Vector Machine and Random Forest are performed with default
 hyper-parameter values. In the case of a species with < 7 occurrences, the function
-will not perform any methods; nonetheless, it will return a tibble with the additional columns.
+will not perform any methods (i.e. the additional columns will have 0 values); nonetheless, it will return a tibble with the additional columns with 0 and 1.
 For further information about these methods, see Chapman (2005), Liu et al. (2018), and Velazco
 et al. (in prep)
 }
@@ -57,7 +57,7 @@ require(dplyr)
 require(terra)
 require(ggplot2)
 
-# Envirnomental variables
+# Environmental variables
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 

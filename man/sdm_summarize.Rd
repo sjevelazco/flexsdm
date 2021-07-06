@@ -76,13 +76,12 @@ rf_t1 <-
     metric = "TSS",
   )
 
- rf_t1$performance
+rf_t1$performance
 
 # Merge sdm performance tables
 
 merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
 
 merge_df
-
 }
 }
