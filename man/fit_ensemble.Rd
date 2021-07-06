@@ -57,7 +57,35 @@ Model assemble and validation
 }
 \examples{
 \dontrun{
-# Fit some models
+require(dplyr)
+require(terra)
+
+# Environmental variables
+somevar <-
+  system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+# Species occurrences
+data("spp")
+set.seed(1)
+some_sp <- spp \%>\%
+  dplyr::filter(species == "sp2") \%>\%
+  sdm_extract(
+    data = .,
+    x = 'x',
+    y = 'y',
+    env_layer = somevar,
+    variables = names(somevar),
+    filter_na = TRUE
+  ) \%>\%
+  part_random(
+    data = .,
+    pr_ab = 'pr_ab',
+    method = c(method = "kfold", folds = 3)
+  )
+
+
+# gam
 mglm <- fit_glm(
   data = some_sp,
   response = "pr_ab",
@@ -78,7 +106,7 @@ mgbm <- fit_gbm(
   partition = ".part"
 )
 
-# Fit and ensemble
+# Fit and validate ensemble model
 mensemble <- fit_ensemble(
   models = list(mglm, mraf, mgbm),
   ens_method = "meansup",

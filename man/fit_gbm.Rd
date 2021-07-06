@@ -94,7 +94,7 @@ gbm_t1 <- fit_gbm(
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
   partition = ".part",
-  thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen")
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
 )
 gbm_t1$model
 gbm_t1$performance

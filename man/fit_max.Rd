@@ -117,7 +117,7 @@ max_t1 <- fit_max(
   predictors_f = c("landform"),
   partition = ".part",
   background = backg2,
-  thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   clamp = TRUE,
   classes = "default",
   pred_type = "cloglog",
