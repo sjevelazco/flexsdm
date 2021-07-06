@@ -264,8 +264,11 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        suppressWarnings(model_c[[i]] <-
-          GRaF::predict.graf(m[[i]], pred, type = "response", CI = NULL))
+        r <- pred[[1]]
+        terra::values(r) <- NA
+        suppressWarnings(r[as.numeric(rownames(pred_df))] <-
+          GRaF::predict.graf(m[[i]], pred_df, type = "response", CI = NULL))
+        model_c[[i]] <- r
       }
     }
 
