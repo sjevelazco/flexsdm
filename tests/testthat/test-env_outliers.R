@@ -2,7 +2,7 @@ test_that("test with sp > and < 15 occurrences", {
   require(dplyr)
   require(terra)
 
-  # Envirnomental variables
+  # Environmental variables
   somevar <- system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
 
@@ -29,7 +29,7 @@ test_that("test with dataset  with < 15 occurrences and only presence", {
   require(dplyr)
   require(terra)
 
-  # Envirnomental variables
+  # Environmental variables
   somevar <- system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
 
@@ -57,7 +57,7 @@ test_that("test NA filtering ", {
   require(dplyr)
   require(terra)
 
-  # Envirnomental variables
+  # Environmental variables
   somevar <- system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
 
@@ -77,4 +77,31 @@ test_that("test NA filtering ", {
   )
 
   expect_equal(sum(colSums(is.na(outs_1 %>% select(starts_with("."))))), 7)
+})
+
+
+test_that("test with occurrences fewer than 6", {
+  require(dplyr)
+  require(terra)
+
+  # Environmental variables
+  somevar <- system.file("external/somevar.tif", package = "flexsdm")
+  somevar <- terra::rast(somevar)
+
+  # Species occurrences
+  data("spp")
+  spp_ <- spp %>% dplyr::filter(species == "sp3", pr_ab==1)
+  spp_ <- spp_ %>% mutate(idd = 1:nrow(spp_))
+  spp_ <- spp_[1:5,]
+  outs_1 <- env_outliers(
+    data = spp_,
+    pr_ab = "pr_ab",
+    x = "x",
+    y = "y",
+    id = "idd",
+    env_layer = somevar
+  )
+
+  outs_1.1 <- outs_1 %>% select(starts_with(".")) %>% na.omit()
+  expect_true(all(colSums(outs_1.1==0)==4) )
 })

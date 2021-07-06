@@ -26,7 +26,7 @@
 #' require(terra)
 #' require(dplyr)
 #'
-#' # Envirnomental variables
+#' # Environmental variables
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)
 #'
@@ -44,7 +44,7 @@
 #'
 #'
 #' # 5 bins
-#' filtered_1 <- env_filtering(
+#' filtered_1 <- occfilt_env(
 #'   data = spp1,
 #'   x = "x",
 #'   y = "y",
@@ -55,7 +55,7 @@
 #' )
 #'
 #' # 8 bins
-#' filtered_2 <- env_filtering(
+#' filtered_2 <- occfilt_env(
 #'   data = spp1,
 #'   x = "x",
 #'   y = "y",
@@ -66,7 +66,7 @@
 #' )
 #'
 #' # 12 bins
-#' filtered_3 <- env_filtering(
+#' filtered_3 <- occfilt_env(
 #'   data = spp1,
 #'   x = "x",
 #'   y = "y",
@@ -142,7 +142,7 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins, cores = 1) {
     dplyr::select(dplyr::starts_with("f")) %>%
     names()
 
-  cl <- parallel::makeCluster(cores, outfile = "")
+  cl <- parallel::makeCluster(cores)
   doParallel::registerDoParallel(cl)
 
   groupID <- foreach::foreach(l = 1:nrow(real_p), .packages = c("dplyr"), .final = unlist) %dopar% {
