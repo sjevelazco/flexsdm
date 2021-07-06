@@ -2,9 +2,9 @@
 
 
 # potential arguments:
-sdm_directory <- function(){
-  fs::dir_create("./Project")
-  fs::dir_create(here::here("Output/Intermediate"))
-  fs::dir_create(here::here("Output/Report"))
-  fs::dir_create(here::here("Output/Figures"))
+sdm_directory <- function(project_name = "Flexsdm_output"){
+  dir.create("./Flexsdm_output")
+  dir.create("./Flexsdm_output/Intermediate")
+  dir.create("./Flexsdm_output/Report")
+  dir.create("./Flexsdm_output/Figures")
 }

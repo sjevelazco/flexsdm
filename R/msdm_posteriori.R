@@ -218,7 +218,7 @@ msdm_posteriori <- function(records,
                             method = c("obr", "pres", "lq", "mcp", "bmcp"),
                             thr = "equal_sens_spec",
                             buffer = NULL) {
-  thr_value <- NULL
+  . <- thr_value <- patch <- mindis <- NULL
   if (any(is.na(c(x, y)))) {
     stop("Complete 'x' or  'y' arguments")
   }

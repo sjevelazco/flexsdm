@@ -80,6 +80,7 @@
 #' merge_df
 #' }
 sdm_summarize <- function(models) {
+  model_ID <- model <- NULL
   if (data.class(models) != "list") {
     stop("models must be a list object")
   }
