@@ -82,7 +82,7 @@
 correct_colinvar <- function(env_layer,
                              method,
                              proj = NULL) {
-  #TODO write documentation for fa methods and write details in methods!!!
+  # TODO write documentation for fa methods and write details in methods!!!
   if (!any(c("pearson", "vif", "pca", "fa") %in% method)) {
     stop(
       "argument 'method' was misused, select one of the available methods: pearson, vif, pca, fa"

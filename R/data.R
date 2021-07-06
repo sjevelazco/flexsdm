@@ -13,7 +13,7 @@
 #' @examples
 #' \dontrun{
 #' require(dplyr)
-#' data('spp')
+#' data("spp")
 #' spp
 #' }
 "spp"
@@ -29,7 +29,7 @@
 #' @examples
 #' \dontrun{
 #' require(dplyr)
-#' data('backg')
+#' data("backg")
 #' spp
 #' }
 "backg"
@@ -45,7 +45,7 @@
 #' @examples
 #' \dontrun{
 #' require(dplyr)
-#' data('abies')
+#' data("abies")
 #' spp
 #' }
 "abies"

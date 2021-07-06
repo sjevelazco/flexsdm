@@ -127,14 +127,15 @@ msdm_priori <- function(data,
   data <- dplyr::tibble(data)
   records <-
     data %>% dplyr::select(dplyr::all_of(x), dplyr::all_of(y))
-  names(records) <- c('x', 'y')
+  names(records) <- c("x", "y")
 
 
   # Prepare data for calculation
-  if (any(method %in% c("min", "cml", "ker"))){
+  if (any(method %in% c("min", "cml", "ker"))) {
     spi <- terra::as.data.frame(env_layer,
-                                xy = TRUE,
-                                na.rm = TRUE) %>%
+      xy = TRUE,
+      na.rm = TRUE
+    ) %>%
       dplyr::select(x, y)
 
     r <- terra::cellFromXY(env_layer, xy = as.matrix(records))
@@ -149,9 +150,10 @@ msdm_priori <- function(data,
     # Extract coordinates of raster layer
     df <-
       terra::as.data.frame(env_layer,
-                           xy = TRUE,
-                           na.rm = TRUE,
-                           cells = TRUE)[1:3]
+        xy = TRUE,
+        na.rm = TRUE,
+        cells = TRUE
+      )[1:3]
     lon <- lat <- env_layer
     lon[df$cell] <- df$x
     lat[df$cell] <- df$y
@@ -181,7 +183,7 @@ msdm_priori <- function(data,
     distr <-
       flexclust::dist2(spi, r, method = "euclidean", p = 2)
     distr <- distr + 1
-    distr <- 1 / (1 / distr ^ 2)
+    distr <- 1 / (1 / distr^2)
     distr <- apply(distr, 1, sum)
     distr <- (distr - min(distr)) / (max(distr) - min(distr))
 
@@ -199,7 +201,7 @@ msdm_priori <- function(data,
       matrix(0, nrow(flexclust::dist2(r, r, method = "euclidean", p = 2)), 1)
 
     for (c in 1:nrow(distp)) {
-      vec <- distp[c,]
+      vec <- distp[c, ]
       distp1[c] <- min(vec[vec != min(vec)])
     }
     rm(vec)
@@ -208,14 +210,14 @@ msdm_priori <- function(data,
       flexclust::dist2(spi, r, method = "euclidean", p = 2)
     # distr2 <- distr
     distr <-
-      (1 / sqrt(2 * pi * sd_graus) * exp(-1 * (distr / (2 * sd_graus ^
-                                                          2))))
+      (1 / sqrt(2 * pi * sd_graus) * exp(-1 * (distr / (2 * sd_graus^
+        2))))
     distr <- apply(distr, 1, sum)
     distr <- (distr - min(distr)) / (max(distr) - min(distr))
     result <- env_layer
     result[!is.na(result)] <- distr
     rm(distr, spi, r)
-    names(result) <- 'msdm_ker'
+    names(result) <- "msdm_ker"
     return(result)
   }
 }

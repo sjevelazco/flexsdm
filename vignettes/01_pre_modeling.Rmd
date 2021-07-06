@@ -60,6 +60,13 @@ occfilt_geo() Perform geographical filtering on species occurrences
 
 
 ```{r prepare data}
+require(dplyr)
+require(terra)
+
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+
 # It will prepared data for modeling a species
 occ <- spp %>% 
   dplyr::filter(species == "sp2") %>% # filter a species

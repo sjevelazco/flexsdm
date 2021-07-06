@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Integration of outliers detection methods in the environmental space — env_outliers • flexsdm</title>
+<title>Integration of outliers detection methods in environmental space — env_outliers • flexsdm</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Integration of outliers detection methods in the environmental space — env_outliers" />
+<meta property="og:title" content="Integration of outliers detection methods in environmental space — env_outliers" />
 <meta property="og:description" content="This function performs different methods for detecting outliers in species
 distribution data based on the environmental conditions of occurrences. Some methods need
 presence and absence data (e.g. Two-class Support Vector Machine and Random Forest) while other
@@ -91,6 +91,18 @@ Outliers detection could be useful in occurrence data cleaning procedure (Chapma
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/01_pre_modeling.html">Overview of pre-modeling steps</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -107,7 +119,7 @@ Outliers detection could be useful in occurrence data cleaning procedure (Chapma
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Integration of outliers detection methods in the environmental space</h1>
+    <h1>Integration of outliers detection methods in environmental space</h1>
     
     <div class="hidden name"><code>env_outliers.Rd</code></div>
     </div>
@@ -168,13 +180,13 @@ own unique code.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function will apply outliers detection methods on presences occurrence data.
-Box-plot and Reverse Jackknife method will test outliers for each variable individually, if a
-occurrence behave as outliers for at least one variable it will be highlighted as outliers.
-If use only presence data, Support Vector Machine and Random Forest Methods will be
-not performed. Support Vector Machine and Random Forest are performed with default
-hyper-parameter values. In the case of using a species records with &lt; 7 occurrence function
-will not perform any methods; nonetheless, it will return a tibble with the additional columns.
-Further information about this methods see Chapman (2005), Liu et al. (2018), and Velazco
+Box-plot and Reverse Jackknife method will test outliers for each variable individually, if an
+occurrence behaves as an outlier for at least one variable it will be highlighted as an outlier.
+If the user uses only presence data, Support Vector Machine and Random Forest Methods will not be
+performed. Support Vector Machine and Random Forest are performed with default
+hyper-parameter values. In the case of a species with &lt; 7 occurrences, the function
+will not perform any methods (i.e. the additional columns will have 0 values); nonetheless, it will return a tibble with the additional columns with 0 and 1.
+For further information about these methods, see Chapman (2005), Liu et al. (2018), and Velazco
 et al. (in prep)</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -195,7 +207,7 @@ et al. (in prep)</p>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra'>terra</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
 
-<span class='co'># Envirnomental variables</span>
+<span class='co'># Environmental variables</span>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/somevar.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>)</span>
 

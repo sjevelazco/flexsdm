@@ -21,7 +21,7 @@ A data set containing environmental conditions of background points
 \examples{
 \dontrun{
 require(dplyr)
-data('backg')
+data("backg")
 spp
 }
 }

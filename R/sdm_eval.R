@@ -92,7 +92,7 @@
 sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   TPR <- TNR <- JACCARD <- SORENSEN <- threshold <- FPB <- TSS <- NULL
   if (any(
-    !(thr[is.na(suppressWarnings( as.numeric(thr)))]) %in% c(
+    !(thr[is.na(suppressWarnings(as.numeric(thr)))]) %in% c(
       "lpt",
       "max_sens_spec",
       "equal_sens_spec",
@@ -207,7 +207,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
 
   suppressWarnings(thresholds$lpt <- max(performance$threshold[performance$TPR == 1]))
 
-  if(any(thr=="sensitivity")){
+  if (any(thr == "sensitivity")) {
     thresholds$sensitivity <- performance$threshold[which(abs(
       performance$TPR - as.numeric(thr["sens"])
     ) ==
