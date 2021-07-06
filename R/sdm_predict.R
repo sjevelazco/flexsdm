@@ -267,7 +267,7 @@ sdm_predict <-
         r <- pred[[1]]
         terra::values(r) <- NA
         suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-          GRaF::predict.graf(m[[i]], pred_df, type = "response", CI = NULL))
+                           GRaF::predict.graf(m[[i]], pred_df, type = "response", CI = NULL))
         model_c[[i]] <- r
       }
     }
