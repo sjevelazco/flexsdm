@@ -23,6 +23,8 @@
 #'
 #' See Mendes et al. (2020) for further methodological and performance details.
 #'
+#' If used one these constraining method cite Mendes et al 2020.
+#'
 #' @references
 #' \itemize{
 #' \item Mendes, P.; Velazco S.J.E.; Andrade, A.F.A.; De Marco, P. (2020) Dealing with overprediction in species distribution models: how adding distance constraints can improve model accuracy, Ecological Modelling, in press. https://doi.org/10.1016/j.ecolmodel.2020.109180
@@ -30,69 +32,67 @@
 #' \item Bahn, V.; Mcgill, B. J. (2007). Can niche-based distribution models outperform spatial interpolation? Global Ecology and Biogeography, 16(6), 733-742. doi:10.1111/j.1466-8238.2007.00331.x
 #' }
 #'
-#'
-#'
 #' @examples
 #' \dontrun{
-# require(dplry)
-# require(terra)
-#
-# data("spp")
-# somevar <- system.file("external/somevar.tif", package = "flexsdm")
-# somevar <- terra::rast(somevar)
-#
-# # It will be select the presences of a species
-# occ <- spp %>%
-#   dplyr::filter(species == "sp3", pr_ab == 1)
-#
-# # It will select a raster layer to be used as a basic raster
-# a_variable <- somevar[[1]]
-# plot(a_variable)
-# points(sp2 %>% dplyr::select(x, y))
-#
-# ### xy method
-# m_xy <- msdm_priori(
-#   data = occ,
-#   x = "x",
-#   y = "y",
-#   method = "xy",
-#   env_layer = a_variable
-# )
-#
-# plot(m_xy)
-#
-# ### min method
-# m_min <- msdm_priori(
-#   data = occ,
-#   x = "x",
-#   y = "y",
-#   method = "min",
-#   env_layer = a_variable
-# )
-#
-# plot(m_min)
-#
-# ### cml method
-# m_cml <- msdm_priori(
-#   data = occ,
-#   x = "x",
-#   y = "y",
-#   method = "cml",
-#   env_layer = a_variable
-# )
-#
-# plot(m_cml)
-#
-# ### ker method
-# m_ker <- msdm_priori(
-#   data = occ,
-#   x = "x",
-#   y = "y",
-#   method = "ker",
-#   env_layer = a_variable
-# )
-#
-# plot(m_ker)
+#' require(dplry)
+#' require(terra)
+#'
+#' data("spp")
+#' somevar <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(somevar)
+#'
+#' # It will be select the presences of a species
+#' occ <- spp %>%
+#'   dplyr::filter(species == "sp3", pr_ab == 1)
+#'
+#' # It will select a raster layer to be used as a basic raster
+#' a_variable <- somevar[[1]]
+#' plot(a_variable)
+#' points(occ %>% dplyr::select(x, y))
+#'
+#' ### xy method
+#' m_xy <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "xy",
+#'   env_layer = a_variable
+#' )
+#'
+#' plot(m_xy)
+#'
+#' ### min method
+#' m_min <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "min",
+#'   env_layer = a_variable
+#' )
+#'
+#' plot(m_min)
+#'
+#' ### cml method
+#' m_cml <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "cml",
+#'   env_layer = a_variable
+#' )
+#'
+#' plot(m_cml)
+#'
+#' ### ker method
+#' m_ker <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "ker",
+#'   env_layer = a_variable
+#' )
+#'
+#' plot(m_ker)
 #' }
 #'
 #' @seealso \code{\link{msdm_posteriori}}
@@ -127,14 +127,15 @@ msdm_priori <- function(data,
   data <- dplyr::tibble(data)
   records <-
     data %>% dplyr::select(dplyr::all_of(x), dplyr::all_of(y))
-  names(records) <- c('x', 'y')
+  names(records) <- c("x", "y")
 
 
   # Prepare data for calculation
-  if (any(method %in% c("min", "cml", "ker"))){
+  if (any(method %in% c("min", "cml", "ker"))) {
     spi <- terra::as.data.frame(env_layer,
-                                xy = TRUE,
-                                na.rm = TRUE) %>%
+      xy = TRUE,
+      na.rm = TRUE
+    ) %>%
       dplyr::select(x, y)
 
     r <- terra::cellFromXY(env_layer, xy = as.matrix(records))
@@ -149,9 +150,10 @@ msdm_priori <- function(data,
     # Extract coordinates of raster layer
     df <-
       terra::as.data.frame(env_layer,
-                           xy = TRUE,
-                           na.rm = TRUE,
-                           cells = TRUE)[1:3]
+        xy = TRUE,
+        na.rm = TRUE,
+        cells = TRUE
+      )[1:3]
     lon <- lat <- env_layer
     lon[df$cell] <- df$x
     lat[df$cell] <- df$y
@@ -181,7 +183,7 @@ msdm_priori <- function(data,
     distr <-
       flexclust::dist2(spi, r, method = "euclidean", p = 2)
     distr <- distr + 1
-    distr <- 1 / (1 / distr ^ 2)
+    distr <- 1 / (1 / distr^2)
     distr <- apply(distr, 1, sum)
     distr <- (distr - min(distr)) / (max(distr) - min(distr))
 
@@ -199,7 +201,7 @@ msdm_priori <- function(data,
       matrix(0, nrow(flexclust::dist2(r, r, method = "euclidean", p = 2)), 1)
 
     for (c in 1:nrow(distp)) {
-      vec <- distp[c,]
+      vec <- distp[c, ]
       distp1[c] <- min(vec[vec != min(vec)])
     }
     rm(vec)
@@ -208,14 +210,14 @@ msdm_priori <- function(data,
       flexclust::dist2(spi, r, method = "euclidean", p = 2)
     # distr2 <- distr
     distr <-
-      (1 / sqrt(2 * pi * sd_graus) * exp(-1 * (distr / (2 * sd_graus ^
-                                                          2))))
+      (1 / sqrt(2 * pi * sd_graus) * exp(-1 * (distr / (2 * sd_graus^
+        2))))
     distr <- apply(distr, 1, sum)
     distr <- (distr - min(distr)) / (max(distr) - min(distr))
     result <- env_layer
     result[!is.na(result)] <- distr
     rm(distr, spi, r)
-    names(result) <- 'msdm_ker'
+    names(result) <- "msdm_ker"
     return(result)
   }
 }

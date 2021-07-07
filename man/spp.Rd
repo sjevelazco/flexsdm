@@ -23,7 +23,7 @@ A data set containing presences and absences of tree virtual species
 \examples{
 \dontrun{
 require(dplyr)
-data('spp')
+data("spp")
 spp
 }
 }

@@ -2,6 +2,7 @@
 
 
 # potential arguments:
+
 sdm_directory <- function(project_dir){
   dir.create("./Project/Predictors/PCA")
   dir.create("./Project/Projection") # proj_dir

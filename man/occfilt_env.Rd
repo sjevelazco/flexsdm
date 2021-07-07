@@ -33,7 +33,7 @@ Perform environmental filtering on species occurrences
 require(terra)
 require(dplyr)
 
-# Envirnomental variables
+# Environmental variables
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
@@ -51,7 +51,7 @@ spp1$idd <- 1:nrow(spp1)
 
 
 # 5 bins
-filtered_1 <- env_filtering(
+filtered_1 <- occfilt_env(
   data = spp1,
   x = "x",
   y = "y",
@@ -62,7 +62,7 @@ filtered_1 <- env_filtering(
 )
 
 # 8 bins
-filtered_2 <- env_filtering(
+filtered_2 <- occfilt_env(
   data = spp1,
   x = "x",
   y = "y",
@@ -73,7 +73,7 @@ filtered_2 <- env_filtering(
 )
 
 # 12 bins
-filtered_3 <- env_filtering(
+filtered_3 <- occfilt_env(
   data = spp1,
   x = "x",
   y = "y",

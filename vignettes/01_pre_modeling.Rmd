@@ -106,7 +106,13 @@ occfilt_env() Perform environmental filtering on species occurrences
 occfilt_geo() Perform geographical filtering on species occurrences
 
 
+
 ```{r prepare data, eval = FALSE}
+require(dplyr)
+require(terra)
+
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
 
 # It will prepared data for modeling a species
 occ <- spp %>% 

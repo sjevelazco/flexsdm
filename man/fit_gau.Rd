@@ -80,7 +80,7 @@ gaup_t1 <- fit_gau(
   predictors_f = c("landform"),
   partition = ".part",
   background = bg,
-  thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen")
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
 )
 
 gaup_t1$model

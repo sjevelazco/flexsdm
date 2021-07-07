@@ -92,7 +92,7 @@
 sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   TPR <- TNR <- JACCARD <- SORENSEN <- threshold <- FPB <- TSS <- NULL
   if (any(
-    !(thr[names(thr) != "sens"]) %in% c(
+    !(thr[is.na(suppressWarnings(as.numeric(thr)))]) %in% c(
       "lpt",
       "max_sens_spec",
       "equal_sens_spec",
@@ -118,11 +118,8 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     )
   }
 
-  if (any(thr[grep("type", names(thr))] %in% "sensitivity") &&
+  if (any(thr %in% "sensitivity") &&
     !any(names(thr) %in% "sens")) {
-    thr <- c(thr, sens = 0.9)
-  }
-  if (!any(thr[grep("type", names(thr))] %in% "sensitivity")) {
     thr <- c(thr, sens = 0.9)
   }
 
@@ -144,7 +141,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     tr <- c(tr, a)
   }
   tr <- sort(unique(round(tr, 8)))
-  if (any(thr[grep("type", names(thr))] %in% "sensitivity")) {
+  if (any(thr %in% "sensitivity")) {
     tr <- c(tr, as.numeric(thr["sens"]))
     tr <- sort(tr)
   }
@@ -210,10 +207,13 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
 
   suppressWarnings(thresholds$lpt <- max(performance$threshold[performance$TPR == 1]))
 
-  thresholds$sensitivity <- performance$threshold[which(abs(
-    performance$TPR - as.numeric(thr["sens"])
-  ) ==
-    min(abs(performance$TPR - as.numeric(thr["sens"]))))] %>% max()
+  if (any(thr == "sensitivity")) {
+    thresholds$sensitivity <- performance$threshold[which(abs(
+      performance$TPR - as.numeric(thr["sens"])
+    ) ==
+      min(abs(performance$TPR - as.numeric(thr["sens"]))))] %>% max()
+  }
+
 
   thresholds <- dplyr::bind_cols(thresholds)
 
