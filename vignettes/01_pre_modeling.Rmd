@@ -1,5 +1,5 @@
 ---
-title: "Overview of pre-modeling steps"
+title: "flexsdm: Overview of Pre-modeling Steps"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-Species distribution modeling (SDM) has become a standard tool in ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological aspects. The *flexsdm* package provides users the ability to manipulate and parameterize models in a way that suits their unique research needs. 
+Species distribution modeling (SDM) has become a standard tool in ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological applications. The *flexsdm* package provides users the ability to manipulate and parameterize models in a way that suits their unique research needs. 
 
 This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).
 
@@ -39,9 +39,56 @@ if (!require("flexsdm"))
   remotes::install_github("sjevelazco/flexsdm")
 ```
 
+## Project Directory Setup
 
-## Data set-up 
-### Create folders
+When building SDM's, organizing your folder directories will save time and confusion later. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. 
+
+```{r folder setup}
+proj_dir <- file.path("C:/Users/Brooke Rose/Google Drive/flexsdm_project") # customize the folder path for your workspace
+dir.create(proj_dir)
+```
+
+Within the project directory, you need folders for your 1) species occurrence data and 2) the environmental predictors you plan to use to build your model(s). Let's create those. 
+
+```{r folder setup 2}
+occ_dir <- file.path(proj_dir, "Occurrences")
+dir.create(occ_dir)
+
+pred_dir <- file.path(proj_dir, "Predictors")
+dir.create(pred_dir)
+```
+
+Check your project directory that the two folders were created:  
+
+![](C:/Users/Brooke Rose/Google Drive/Franklin_grant/project/images/folder_create_tutorial.png)
+
+## Data 
+
+In this tutorial, we will be using data that are available through the *flexsdm* package. However, if you want to use your own data, be sure to add your species occurrence data (example: csv file) and your environmental predictors (example: .tif or .asc files) to the folders you just created.
+
+### species occurrence data
+
+The "spp" example dataset includes presence (1) and absence (0) location (x,y) data for 3 species (sp1, sp2, sp3). You can load the spp data into your local R environment by using the code below:
+
+```{r occ data, eval = FALSE}
+data(spp)
+spp
+```
+
+### environmental predictors
+
+```{r env data}
+env_data <- terra::rast()
+```
+
+Below, we look at the occurrence data in geographic space. When building SDM's, or really any time you are working with spatial data, it is a good idea to visually check your data for errors. 
+```{r mapping occurrence points}
+#library(ggplot2)
+#ggplot() +  geom_point(data = spp,
+#                       aes(x = x, y = y),
+#                       color = "red")
+```
+
 1. Pre-modeling functions
 Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).
 
@@ -59,13 +106,13 @@ occfilt_env() Perform environmental filtering on species occurrences
 occfilt_geo() Perform geographical filtering on species occurrences
 
 
-```{r prepare data}
+
+```{r prepare data, eval = FALSE}
 require(dplyr)
 require(terra)
 
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
-
 
 # It will prepared data for modeling a species
 occ <- spp %>% 
