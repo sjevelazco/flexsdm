@@ -39,6 +39,29 @@ test_that("test raf", {
   )
 
   expect_equal(class(rf_t2), "list")
+
+  # Does the function work without predictors_f?
+  raf_t3 <- fit_raf(
+    data = abies2,
+    response = "pr_ab",
+    predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+    partition = ".part",
+    thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+    fit_formula = NULL
+  )
+
+  expect_equal(class(raf_t3), "list")
+
+  # What about no predictors? Does not work
+  expect_error(fit_raf(
+    data = abies2,
+    response = "pr_ab",
+    predictors_f = c("landform"),
+    partition = ".part",
+    thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+    fit_formula = NULL
+  ))
+
 })
 
 
