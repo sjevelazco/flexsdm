@@ -55,14 +55,14 @@ sdm_directory <-
         dir.create(file.path(main_dir, 'Results/Algorithm'))
         model_folders <-
           file.path(main_dir, 'Results/Algorithm', models)
-        sapply(dir.create, model_folders)
+        sapply(model_folders, dir.create)
       }
 
       if (!is.null(ensemble)) {
         dir.create(file.path(main_dir, 'Results/Ensemble'))
         ensemble_folders <-
           file.path(main_dir, 'Results/Ensemble', ensemble)
-        sapply(dir.create, ensemble_folders)
+        sapply(ensemble_folders, dir.create)
       }
 
       if (msdm != FALSE) {
