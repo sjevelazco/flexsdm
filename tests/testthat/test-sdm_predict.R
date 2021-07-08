@@ -3,9 +3,11 @@ test_that("test for fit_ function family", {
   require(terra)
 
   # Environmental variables
-  somevar <-
-    system.file("external/somevar.tif", package = "flexsdm")
-  somevar <- terra::rast(somevar)
+  somevar <- system.file("external/somevar.tif", package = "flexsdm") %>% terra::rast()
+  regions <- system.file("external/regions.tif", package = "flexsdm") %>% terra::rast()
+  levels(regions) <- c(unique(regions))
+  somevar <- terra::rast(x = list(regions, somevar))
+  rm(regions)
 
   # Species occurrences
   data("spp")
@@ -32,7 +34,7 @@ test_that("test for fit_ function family", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec")
   )
@@ -52,7 +54,7 @@ test_that("test for fit_ function family", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec")
   )
@@ -71,7 +73,7 @@ test_that("test for fit_ function family", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec")
   )
@@ -90,7 +92,7 @@ test_that("test for fit_ function family", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec")
   )
@@ -109,7 +111,7 @@ test_that("test for fit_ function family", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec")
   )
@@ -130,7 +132,7 @@ test_that("test for fit_ function family", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec"),
     size = 1
@@ -145,12 +147,34 @@ test_that("test for fit_ function family", {
   expect_true(class(p[[1]]) == "SpatRaster")
   rm(p)
 
+  # net with two factors
+  net2 <- fit_net(
+    data = spp_ %>% dplyr::mutate(category2=category),
+    response = "pr_ab",
+    predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+    predictors_f = c("category", "category2"),
+    partition = ".part",
+    thr = c("max_sens_spec"),
+    size = 1
+  )
+
+  somevar2 <- rast(list(somevar, category2=somevar$category))
+  names(somevar2)[6] <- "category2"
+  p <- sdm_predict(
+    models = net2,
+    pred = somevar2,
+    thr = NULL,
+    con_thr = FALSE
+  )
+  expect_true(class(p[[1]]) == "SpatRaster")
+  rm(p)
+
   # raf
   raf <- fit_raf(
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec")
   )
@@ -164,12 +188,32 @@ test_that("test for fit_ function family", {
   expect_true(class(p[[1]]) == "SpatRaster")
   rm(p)
 
+  # raf with two factors
+  raf2 <- fit_raf(
+    data = spp_ %>% dplyr::mutate(category2=category),
+    response = "pr_ab",
+    predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+    predictors_f = c("category", "category2"),
+    partition = ".part",
+    thr = c("max_sens_spec")
+  )
+
+  p <- sdm_predict(
+    models = raf2,
+    pred = somevar2,
+    thr = NULL,
+    con_thr = FALSE
+  )
+  expect_true(class(p[[1]]) == "SpatRaster")
+  rm(p)
+  rm(somevar2)
+
   # svm
   svm <- fit_svm(
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec")
   )
@@ -197,13 +241,13 @@ test_that("test for fit_ function family", {
 
 
 test_that("test for ensemble, mask, and suit. values above threshold", {
-  require(dplyr)
-  require(terra)
-
   # Environmental variables
-  somevar <-
-    system.file("external/somevar.tif", package = "flexsdm")
-  somevar <- terra::rast(somevar)
+  somevar <- system.file("external/somevar.tif", package = "flexsdm") %>% terra::rast()
+  regions <- system.file("external/regions.tif", package = "flexsdm") %>% terra::rast()
+  levels(regions) <- c(unique(regions))
+  somevar <- terra::rast(x = list(regions, somevar))
+  rm(regions)
+
 
   # Species occurrences
   data("spp")
@@ -231,7 +275,7 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part"
   )
 
@@ -240,7 +284,7 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part"
   )
 
@@ -249,7 +293,7 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-    predictors_f = NULL,
+    predictors_f = "category",
     partition = ".part"
   )
 
@@ -266,7 +310,7 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
     pred = somevar,
     thr = NULL,
     con_thr = FALSE,
-    predict_area = ca
+    predict_area = as(ca, "Spatial")
   )
 
   expect_true(class(p[[1]]) == "SpatRaster")
@@ -342,9 +386,11 @@ test_that("test for prdicting ensemble of small models", {
   require(terra)
 
   # Environmental variables
-  somevar <-
-    system.file("external/somevar.tif", package = "flexsdm")
-  somevar <- terra::rast(somevar)
+  somevar <- system.file("external/somevar.tif", package = "flexsdm") %>% terra::rast()
+  regions <- system.file("external/regions.tif", package = "flexsdm") %>% terra::rast()
+  levels(regions) <- c(unique(regions))
+  somevar <- terra::rast(x = list(regions, somevar))
+  rm(regions)
 
   # Species occurrences
   data("spp")

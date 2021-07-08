@@ -165,7 +165,8 @@ sdm_predict <-
            predict_area = NULL,
            clamp = TRUE,
            pred_type = "cloglog") {
-    ca_1 <- . <- model <- threshold <- thr_value <- NULL
+    . <- model <- threshold <- thr_value <- NULL
+
 
     if (is.null(names(models))) {
       message("Predicting list of individual models")
@@ -191,7 +192,7 @@ sdm_predict <-
     #### Prepare datasets ####
     # Crop and mask projection area
     if (!is.null(predict_area)) {
-      if (class(ca_1) %in% c("SpatialPolygons", "SpatialPolygonsDataFrame")) {
+      if (class(predict_area) %in% c("SpatialPolygons", "SpatialPolygonsDataFrame")) {
         predict_area <- terra::vect(predict_area)
       }
       pred <-
@@ -262,16 +263,20 @@ sdm_predict <-
     #### graf models ####
     wm <- which(clss == "graf")
     if (length(wm) > 0) {
+      na_mask <- (sum(is.na(pred))>1)
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
         terra::values(r) <- NA
         suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-                           GRaF::predict.graf(m[[i]], pred_df, type = "response", CI = NULL))
+                           GRaF::predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
+                                              type = "response", CI = NULL))
+        if(length(m[[i]]$facs)){
+          r[(na_mask+is.na(r))==1] <- 0
+        }
         model_c[[i]] <- r
       }
     }
-
 
     #### gam models ####
     wm <- which(clss == "gam")
@@ -448,6 +453,10 @@ sdm_predict <-
             stats::predict(m[[i]], pred_df, type = "raw")
         }
 
+        if (length(f) > 0) {
+          na_mask <- (sum(is.na(pred)) > 1)
+          r[(na_mask + is.na(r)) == 1] <- 0
+        }
         model_c[[i]] <- r
       }
     }
