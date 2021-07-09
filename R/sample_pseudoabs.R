@@ -218,7 +218,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
   # Random method
   if (any(method %in% "rnd")) {
-    cell_samp <- sample_background(n = n, rlayer = rlayer, maskval = maskval)
+    cell_samp <- sample_background(data = data, x = x, y = y, method =  "random", n = n, rlayer = rlayer, maskval = maskval)
   }
 
   # env_const method
@@ -233,13 +233,19 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
+      rlayer2[] <-
+        terra::extract(
+          envp,
+          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
+          method = "simple",
+          xy = TRUE
+        ) %>%
         dplyr::select(-c(ID, x, y))
       envp <- rlayer2
     }
 
     envp <- terra::mask(rlayer, envp)
-    cell_samp <- sample_background(n = n, rlayer = envp, maskval = maskval)
+    cell_samp <- sample_background(data = data, x = x, y = y, method =  "random", n = n, rlayer = envp, maskval = maskval)
   }
 
   # geo_const method
@@ -251,7 +257,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     # Restriction for a given region
     envp <- inv_geo(e = rlayer, p = data[, c(x, y)], d = as.numeric(method["width"]))
 
-    cell_samp <- sample_background(n = n, rlayer = envp, maskval = maskval)
+    cell_samp <- sample_background(data = data, x = x, y = y, method =  "random", n = n, rlayer = envp, maskval = maskval)
   }
 
   # geo_env_const method
@@ -267,14 +273,20 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp2, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
+      rlayer2[] <-
+        terra::extract(
+          envp2,
+          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
+          method = "simple",
+          xy = TRUE
+        ) %>%
         dplyr::select(-c(ID, x, y))
       envp2 <- rlayer2
     }
     envp <- (envp2 + envp)
     rm(envp2)
     envp <- terra::mask(rlayer, envp)
-    cell_samp <- sample_background(n = n, rlayer = envp, maskval = maskval)
+    cell_samp <- sample_background(data = data, x = x, y = y, method =  "random", n = n, rlayer = envp, maskval = maskval)
   }
 
   # geo_env_km_const
@@ -290,7 +302,13 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp2, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
+      rlayer2[] <-
+        terra::extract(
+          envp2,
+          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
+          method = "simple",
+          xy = TRUE
+        ) %>%
         dplyr::select(-c(ID, x, y))
       envp2 <- rlayer2
     }

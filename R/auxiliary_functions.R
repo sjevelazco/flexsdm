@@ -41,8 +41,10 @@ pre_tr_te <- function(data, p_names, h) {
 
 
 # Inverse bioclim
+# TODO create function for fit and estimate bioclim model
 inv_bio <- function(e, p) {
-  e <- terra::rast(e)
+  # e <- raster::rast(e)
+  e <- raster::stack(e)
   model <- dismo::bioclim(e, as.matrix(p))
   r <- terra::predict(model, e)
   r <- terra::rast(r)
