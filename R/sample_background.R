@@ -1,18 +1,25 @@
 #' Sample background points
 #'
-#' @description Random sampling of background points with the possibility of
-#' using different geographical restrictions.
+#' @description Sampling background points with the possibility of
+#' using different geographical restrictions and sampling method.
 #'
 #' @param data data.frame or tibble. Database with presences records, and coordinates
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
 #' @param n integer. Number of background point to be sampled
-#' @param method character.TODO
-#' @param rlayer SpatRaster used for sampling background-point.
+#' \itemize{
+#' \item random: Random allocation of background points. Usage method = 'random'.
+#' \item thickening: Thickening background point based on Vollering et al. (2019) method. For method, it is necessary to define a buffer width that will be used around presences points. It possible to define a buffer using the argument as method = c("thickening", width = 20000). Buffer width must be in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. If a width buffer is not provided function will use a width value equal to the mean distance of the pair-wise presences distance. In case of a width value is not provided, the argument must be used as method='thickening'. Usage method='thickening' or method = c("thickening", width = 20000).
+#' }
+#' @param rlayer SpatRaster used for sampling background points.
 #' It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint
 #' @param maskval integer or numeric. Values of the raster layer used for constraining the background points sampling
 #' @param calibarea SpatVect that delimits the calibration area used for a given species (see calib_area function).
-
+#'
+#' @references
+#' \itemize{
+#' \item Vollering, J., Halvorsen, R., Auestad, I., & Rydgren, K. (2019). Bunching up the background betters bias in species distribution models. Ecography, 42(10), 1717-1727. https://doi.org/10.1111/ecog.04503
+#' }
 #'
 #' @return
 #' A tibble object with x y coordinates of sampled background points
