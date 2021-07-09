@@ -5,6 +5,7 @@
 #' @param save_results logical. If TRUE, function will create a folder for model results. (default FALSE).
 #' @param models vector. Vector of model types that will be used. (default NULL)
 #' @param ensemble vector. Vector of methods used to ensemble different models. (default NULL)
+#' @param proj_folders vector. Vector of folder names for future scenarios/different regions/time periods to save model projections models.
 #' @param msdm logical. If TRUE, function will create a folder for the output of two methods for correcting SDM overprediction (see msdm_priori and msdm_posteriori). (default FALSE)
 #'
 #' @return None
@@ -35,7 +36,8 @@ sdm_directory <-
            save_results = FALSE,
            models = NULL,
            ensemble = NULL,
-           msdm = NULL) {
+           proj_folders = NULL,
+           msdm = FALSE) {
     if (!dir.exists(main_dir)) {
       stop("main directory does not exist")
     }
@@ -56,6 +58,22 @@ sdm_directory <-
         model_folders <-
           file.path(main_dir, 'Results/Algorithm', models)
         sapply(model_folders, dir.create)
+
+        if (proj_dir != FALSE) {
+          current_dir <- file.path(model_folders, 'Current')
+          sapply(current_dir, dir.create)
+
+          future_dir <- file.path(model_folders, 'Future')
+          sapply(future_dir, dir.create)
+
+          if (!is.null(proj_folders)) {
+            for (i in 1:length(future_dir)) {
+              future_dir2 <- file.path(future_dir[[i]], proj_folders)
+              sapply(future_dir2, dir.create)
+            }
+
+          }
+        }
       }
 
       if (!is.null(ensemble)) {
@@ -63,6 +81,22 @@ sdm_directory <-
         ensemble_folders <-
           file.path(main_dir, 'Results/Ensemble', ensemble)
         sapply(ensemble_folders, dir.create)
+
+        if (proj_dir != FALSE) {
+          current_dir <- file.path(ensemble_folders, 'Current')
+          sapply(current_dir, dir.create)
+
+          future_dir <- file.path(ensemble_folders, 'Future')
+          sapply(future_dir, dir.create)
+
+        }
+
+        if (!is.null(proj_folders)) {
+          for (i in 1:length(future_dir)) {
+            future_dir2 <- file.path(future_dir[[i]], proj_folders)
+            sapply(future_dir2, dir.create)
+          }
+        }
       }
 
       if (msdm != FALSE) {
