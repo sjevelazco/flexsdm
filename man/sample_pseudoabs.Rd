@@ -26,11 +26,11 @@ sample_pseudoabs(
 \item{n}{integer. Number of pseudo-absence to be sampled}
 
 \item{method}{character. Pseudo-absence allocation method. It is necessary to
-provide a vector for this argument. The next methods are implemented:
+provide a vector for this argument. The methods implemented are:
 \itemize{
-\item rnd: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='rnd'.
+\item random: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='random'.
 \item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster stack or brick object with environmental variables Usage method=c(method='env_const', env = somevar).
-\item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. For this method, it is necessary to provide a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_const', width='50000').
+\item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. Usage method=c('geo_const', width='50000').
 \item geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, it is necessary to provide a raster with environmental variables stored as SpatRaster object. Also it is necessary provide a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar)
 \item geo_env_km_const: Pseudo-absences are constrained on a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in the environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar)
 }}
@@ -75,7 +75,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = "rnd",
+    method = "random",
     rlayer = regions,
     maskval = NULL
   )
@@ -96,7 +96,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = "rnd",
+    method = "random",
     rlayer = regions,
     maskval = samp_here
   )
@@ -183,7 +183,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 50,
-    method = "rnd",
+    method = "random",
     rlayer = regions,
     maskval = NULL,
     calibarea = ca_ps1
@@ -200,7 +200,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 50,
-    method = "rnd",
+    method = "random",
     rlayer = regions,
     maskval = samp_here,
     calibarea = ca_ps1
