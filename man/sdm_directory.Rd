@@ -10,7 +10,8 @@ sdm_directory(
   save_results = FALSE,
   models = NULL,
   ensemble = NULL,
-  msdm = NULL
+  proj_folders = NULL,
+  msdm = FALSE
 )
 }
 \arguments{
@@ -23,6 +24,8 @@ sdm_directory(
 \item{models}{vector. Vector of model types that will be used. (default NULL)}
 
 \item{ensemble}{vector. Vector of methods used to ensemble different models. (default NULL)}
+
+\item{proj_folders}{vector. Vector of folder names for future scenarios/different regions/time periods to save model projections models.}
 
 \item{msdm}{logical. If TRUE, function will create a folder for the output of two methods for correcting SDM overprediction (see msdm_priori and msdm_posteriori). (default FALSE)}
 }
