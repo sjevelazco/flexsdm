@@ -1,16 +1,15 @@
 #' Create directories for saving the outputs of the flexsdm
 #'
-#' @param main_dir character. Directory path containing main folder for saving model inputs and outputs. If NULL function will assume as directory path the current working R session and will create a sub-folder with the names of 'flexsdm_results'. Default NULL
+#' @param main_dir character. Directory path containing main folder for saving model inputs and outputs. If NULL function assumes as directory path the current working R session and creates a sub-folder with the name of 'flexsdm_results'. Default NULL
 #' @param projections vector. Vector of folder names for future scenarios/different regions/time periods to save model projections models.
-#' @param algorithm vector. Vector of model names that will be used. Usage algorithm = c(gam, tune_max, tune_net, esm_glm). If is use "all" function creates folders with all algorithm available in flexsdm . i.e. 'gam', 'gau', 'gbm', 'glm', 'max', 'net', 'raf', and 'svm'. Default NULL
+#' @param algorithm vector. Vector of model names that will be used. Usage algorithm = c(gam, tune_max, tune_net, esm_glm). If is use "all" function creates folders with all algorithms available in flexsdm . i.e. 'gam', 'gau', 'gbm', 'glm', 'max', 'net', 'raf', and 'svm'. Default NULL
 #' @param calibration_area logical. If TRUE, function creates a folder in 1_Inputs for storing calibration area. Default TRUE
 #' @param ensemble vector. Vector of methods used to ensemble different models. Default NULL
-#' @param threshold logical. If true will be created sub-folders "/1_con", "/2_bin" within each algorithm and/or ensemble folder. This could be useful for storing continuous and binarized model separately. Default FALSE
-#' @param return_vector logical. If TRUE functions returns a vector with the path to all folders.
+#' @param threshold logical. If true will be created sub-folders "/1_con", "/2_bin" within each algorithm and/or ensemble folder. This could be useful for storing continuous and binarized models separately. Default FALSE
+#' @param return_vector logical. If TRUE function returns a vector with the path to all folders.
 #' Default TRUE
 #'
-#' @return A character vector with all the path to created folders
-#'
+#' @return A character vector with the paths to created folders
 #'
 #' @export
 #'
