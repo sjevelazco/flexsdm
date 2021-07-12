@@ -2,54 +2,71 @@
 % Please edit documentation in R/sdm_directory.R
 \name{sdm_directory}
 \alias{sdm_directory}
-\title{Create directories for saving the outputs of the flexsdm workflow}
+\title{Create directories for saving the outputs of the flexsdm}
 \usage{
 sdm_directory(
-  main_dir,
-  proj_dir = FALSE,
-  save_results = FALSE,
-  models = NULL,
+  main_dir = NULL,
+  projections = NULL,
+  calibration_area = TRUE,
+  algorithm = NULL,
   ensemble = NULL,
-  proj_folders = NULL,
-  msdm = FALSE
+  threshold = FALSE,
+  return_vector = TRUE
 )
 }
 \arguments{
-\item{main_dir}{character. Directory path containing main folder for saving model inputs and outputs}
+\item{main_dir}{character. Directory path containing main folder for saving model inputs and outputs. If NULL function will assume as directory path the current working R session and will create a sub-folder with the names of 'flexsdm_results'. Default NULL}
 
-\item{proj_dir}{logical. If TRUE, function will create a folder for predictors for different regions or time periods used to project models. (default FALSE).}
+\item{projections}{vector. Vector of folder names for future scenarios/different regions/time periods to save model projections models.}
 
-\item{save_results}{logical. If TRUE, function will create a folder for model results. (default FALSE).}
+\item{calibration_area}{logical. If TRUE, function creates a folder in 1_Inputs for storing calibration area. Default TRUE}
 
-\item{models}{vector. Vector of model types that will be used. (default NULL)}
+\item{algorithm}{vector. Vector of model names that will be used. Usage algorithm = c(gam, tune_max, tune_net, esm_glm). If is use "all" function creates folders with all algorithm available in flexsdm . i.e. 'gam', 'gau', 'gbm', 'glm', 'max', 'net', 'raf', and 'svm'. Default NULL}
 
-\item{ensemble}{vector. Vector of methods used to ensemble different models. (default NULL)}
+\item{ensemble}{vector. Vector of methods used to ensemble different models. Default NULL}
 
-\item{proj_folders}{vector. Vector of folder names for future scenarios/different regions/time periods to save model projections models.}
+\item{threshold}{logical. If true will be created sub-folders "/1_con", "/2_bin" within each algorithm and/or ensemble folder. This could be useful for storing continuous and binarized model separately. Default FALSE}
 
-\item{msdm}{logical. If TRUE, function will create a folder for the output of two methods for correcting SDM overprediction (see msdm_priori and msdm_posteriori). (default FALSE)}
+\item{return_vector}{logical. If TRUE functions returns a vector with the path to all folders.
+Default TRUE}
 }
 \value{
-None
+A character vector with all the path to created folders
 }
 \description{
-Create directories for saving the outputs of the flexsdm workflow
+Create directories for saving the outputs of the flexsdm
 }
 \examples{
+\dontrun{
+require(dplyr)
+# require(sf)
 
-# Create directory for SDM workflow
-my_dir <- file.path(getwd(), 'flexsdm_example')
-dir.create(my_dir)
+# Implement sdm_directory without specific path and project name
+dirs__1 <- sdm_directory(
+  main_dir = NULL,
+  projections = NULL,
+  calibration_area = TRUE,
+  algorithm = c("gam", "tune_max"),
+  ensemble = c('mean', 'meanthr'),
+  threshold = FALSE,
+  return_vector = TRUE
+)
+dirs_1
+dirs_1[1] \%>\% fs::dir_tree(.,recurse = TRUE)
 
-# Implement sdm_directory
-sdm_directory(main_dir = my_dir,
-proj_dir = TRUE,
-save_results = TRUE,
-models = c('GLM', 'GAM', 'RANDOM_FOREST'),
-ensemble = c('MEAN', "MEANSUP"),
-msdm = TRUE)
+# Implement sdm_directory without specific path and project name
+getwd() \%>\% dirname()
 
-
-
-
+dirs_2 <- sdm_directory(
+  main_dir = getwd() \%>\% dirname() \%>\% file.path(., 'my_project_name'),
+  projections = c(
+    'cnrm_rpc8.5_2050',
+    'cnrm_rpc4.5_2050'),
+  calibration_area = TRUE,
+  algorithm = 'all',
+  ensemble = c('mean', 'meanthr'),
+  threshold = TRUE
+)
+dirs_2[1] \%>\% fs::dir_tree(.,recurse = TRUE)
+}
 }
