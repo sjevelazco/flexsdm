@@ -80,7 +80,7 @@
 #' merge_df
 #' }
 sdm_summarize <- function(models) {
-  model_ID <- model <- NULL
+  . <- model_ID <- model <- NULL
   if (data.class(models) != "list") {
     stop("models must be a list object")
   }
@@ -94,7 +94,7 @@ sdm_summarize <- function(models) {
 
     # add unique idea for each model
     perf <-
-      Map(cbind, perf, model_ID = (1:length(perf)))
+      Map(cbind, perf, model_ID = 1:length(perf))
 
     # bind rows and move model_ID to first column
     perf_tib <-

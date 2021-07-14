@@ -26,7 +26,7 @@
 #'
 #' @importFrom dplyr %>% select starts_with bind_rows tibble group_by_at summarise across everything pull
 #' @importFrom nnet nnet
-#' @importFrom stats formula na.omit predict
+#' @importFrom stats formula na.omit
 #'
 #' @return
 #'

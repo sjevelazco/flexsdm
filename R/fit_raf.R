@@ -42,7 +42,7 @@
 #'
 #' @importFrom dplyr %>% select all_of starts_with bind_rows group_by summarise across everything
 #' @importFrom randomForest randomForest
-#' @importFrom stats formula predict sd
+#' @importFrom stats formula sd
 #'
 #' @examples
 #' \dontrun{

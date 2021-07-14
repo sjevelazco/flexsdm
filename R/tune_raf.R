@@ -27,7 +27,7 @@
 #'
 #' @importFrom dplyr %>% select starts_with bind_rows tibble group_by_at summarise across everything pull
 #' @importFrom randomForest randomForest
-#' @importFrom stats formula na.omit predict
+#' @importFrom stats formula na.omit
 #'
 #' @return
 #'

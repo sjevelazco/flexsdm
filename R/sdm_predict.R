@@ -33,7 +33,7 @@
 #' @importFrom gam predict.Gam
 #' @importFrom GRaF predict.graf
 #' @importFrom kernlab predict
-#' @importFrom stats predict median
+#' @importFrom stats median
 #' @importFrom terra vect crop mask as.data.frame values rast app lapp
 #'
 #' @examples

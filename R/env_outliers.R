@@ -53,7 +53,7 @@
 #' @importFrom kernlab ksvm predict
 #' @importFrom randomForest randomForest outlier
 #' @importFrom Rlof lof
-#' @importFrom stats predict quantile
+#' @importFrom stats quantile
 #' @importFrom terra extract
 #'
 #' @examples
