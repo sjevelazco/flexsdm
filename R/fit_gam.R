@@ -190,37 +190,42 @@ fit_gam <- function(data,
       # message("Partition number: ", i, "/", np2)
       tryCatch({
         suppressWarnings(mod[[i]] <-
-                           gam::gam(formula1,
-                                    data = train[[i]],
-                                    family = "binomial"))
+          gam::gam(formula1,
+            data = train[[i]],
+            family = "binomial"
+          ))
 
         # Predict for presences absences data
         if (!is.null(predictors_f)) {
           for (fi in 1:length(predictors_f)) {
             lev <- as.character(unique(mod[[i]]$data[, predictors_f[fi]]))
             lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-            test[[i]] <- test[[i]][lev_filt,]
+            test[[i]] <- test[[i]][lev_filt, ]
           }
         }
 
-        pred_test <- data.frame(pr_ab = test[[i]][, response],
-                                pred = suppressWarnings(
-                                  gam::predict.Gam(
-                                    mod[[i]],
-                                    newdata = test[[i]],
-                                    type = "response",
-                                    se.fit = FALSE
-                                  )
-                                ))
+        pred_test <- data.frame(
+          pr_ab = test[[i]][, response],
+          pred = suppressWarnings(
+            gam::predict.Gam(
+              mod[[i]],
+              newdata = test[[i]],
+              type = "response",
+              se.fit = FALSE
+            )
+          )
+        )
 
         pred_test_ens[[h]][[i]] <- pred_test %>%
           dplyr::mutate(rnames = rownames(.))
 
         # Validation of model
         eval <-
-          sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                   a = pred_test$pred[pred_test$pr_ab == 0],
-                   thr = thr)
+          sdm_eval(
+            p = pred_test$pred[pred_test$pr_ab == 1],
+            a = pred_test$pred[pred_test$pr_ab == 0],
+            thr = thr
+          )
         eval_partial[[i]] <- dplyr::tibble(model = "gam", eval)
       })
     }

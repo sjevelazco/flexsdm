@@ -3,7 +3,9 @@ test_that("multiplication works", {
   require(dplyr)
   data("spp")
   clusters <- system.file("external/clusters.shp", package = "flexsdm")
-  clusters <- terra::vect(clusters)
+  # clusters <- terra::vect(clusters)
+  # To see if it will be convert to SpatVector object
+  clusters <- rgdal::readOGR(clusters)
 
   single_spp <-
     spp %>%
@@ -17,8 +19,9 @@ test_that("multiplication works", {
     data = single_spp,
     x = "x",
     y = "y",
-    method = c("buffer", width = 40000),
+    method = c("mask", clusters, "clusters"),
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
+
 })

@@ -17,8 +17,9 @@ test_that("multiplication works", {
     data = single_spp,
     x = "x",
     y = "y",
-    method = c("buffer", width = 40000),
+    method = c("mcp", width = 40000),
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
+
 })

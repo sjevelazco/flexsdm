@@ -212,85 +212,84 @@ fit_max <- function(data,
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
       tryCatch({
-          set.seed(1)
-          mod[[i]] <-
-            suppressMessages(
-              maxnet::maxnet(
-                p = train[[i]][, response],
-                data = train[[i]][predictors],
-                f = formula1,
-                regmult = regmult
-              )
+        set.seed(1)
+        mod[[i]] <-
+          suppressMessages(
+            maxnet::maxnet(
+              p = train[[i]][, response],
+              data = train[[i]][predictors],
+              f = formula1,
+              regmult = regmult
             )
-
-
-          # Predict for presences absences data
-          ## Eliminate factor levels not used in fitting
-          # if (!is.null(predictors_f)) {
-          #   for (fi in 1:length(predictors_f)) {
-          #     lev <- as.character(unique(mod[[i]]$x[, predictors_f[fi]]))
-          #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-          #     test[[i]] <- test[[i]][lev_filt, ]
-          #     if (!is.null(background)) {
-          #       lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
-          #       bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
-          #     }
-          #   }
-          # }
-
-          # Predict for presences absences data
-          pred_test <- data.frame(
-            pr_ab = test[[i]][, response],
-            pred =
-              maxnet:::predict.maxnet(
-                mod[[i]],
-                newdata = test[[i]],
-                clamp = clamp,
-                type = pred_type
-              )
           )
 
-          pred_test_ens[[h]][[i]] <- pred_test %>%
-            dplyr::mutate(rnames = rownames(.))
 
-          # Predict for background data
-          if (!is.null(background)) {
-            bgt <-
-              data.frame(
-                pr_ab = bgt_test[[i]][, response],
-                pred =
-                  maxnet:::predict.maxnet(
-                    mod[[i]],
-                    newdata = bgt_test[[i]][c(predictors, predictors_f)],
-                    clamp = clamp,
-                    type = pred_type
-                  )
-              )
-          }
+        # Predict for presences absences data
+        ## Eliminate factor levels not used in fitting
+        # if (!is.null(predictors_f)) {
+        #   for (fi in 1:length(predictors_f)) {
+        #     lev <- as.character(unique(mod[[i]]$x[, predictors_f[fi]]))
+        #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
+        #     test[[i]] <- test[[i]][lev_filt, ]
+        #     if (!is.null(background)) {
+        #       lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
+        #       bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
+        #     }
+        #   }
+        # }
 
-          # Validation of model
-          if (is.null(background)) {
-            eval <-
-              sdm_eval(
-                p = pred_test$pred[pred_test$pr_ab == 1],
-                a = pred_test$pred[pred_test$pr_ab == 0],
-                thr = thr
-              )
-          } else {
-            eval <-
-              sdm_eval(
-                p = pred_test$pred[pred_test$pr_ab == 1],
-                a = pred_test$pred[pred_test$pr_ab == 0],
-                thr = thr,
-                bg = bgt$pred
-              )
-          }
+        # Predict for presences absences data
+        pred_test <- data.frame(
+          pr_ab = test[[i]][, response],
+          pred =
+            maxnet:::predict.maxnet(
+              mod[[i]],
+              newdata = test[[i]],
+              clamp = clamp,
+              type = pred_type
+            )
+        )
 
-          eval_partial[[i]] <- dplyr::tibble(model = "max", eval)
+        pred_test_ens[[h]][[i]] <- pred_test %>%
+          dplyr::mutate(rnames = rownames(.))
 
-          names(eval_partial) <- i
+        # Predict for background data
+        if (!is.null(background)) {
+          bgt <-
+            data.frame(
+              pr_ab = bgt_test[[i]][, response],
+              pred =
+                maxnet:::predict.maxnet(
+                  mod[[i]],
+                  newdata = bgt_test[[i]][c(predictors, predictors_f)],
+                  clamp = clamp,
+                  type = pred_type
+                )
+            )
         }
-      )
+
+        # Validation of model
+        if (is.null(background)) {
+          eval <-
+            sdm_eval(
+              p = pred_test$pred[pred_test$pr_ab == 1],
+              a = pred_test$pred[pred_test$pr_ab == 0],
+              thr = thr
+            )
+        } else {
+          eval <-
+            sdm_eval(
+              p = pred_test$pred[pred_test$pr_ab == 1],
+              a = pred_test$pred[pred_test$pr_ab == 0],
+              thr = thr,
+              bg = bgt$pred
+            )
+        }
+
+        eval_partial[[i]] <- dplyr::tibble(model = "max", eval)
+
+        names(eval_partial) <- i
+      })
     }
 
     # Create final database with parameter performance

@@ -181,33 +181,37 @@ fit_net <- function(data,
       tryCatch({
         set.seed(1)
         mod[[i]] <-
-              nnet::nnet(
-                formula1,
-                data = train[[i]],
-                size = size,
-                # revise and implement a formula to calculate it
-                rang = 0.1,
-                decay = decay,
-                maxit = 200,
-                trace = FALSE
-              )
+          nnet::nnet(
+            formula1,
+            data = train[[i]],
+            size = size,
+            # revise and implement a formula to calculate it
+            rang = 0.1,
+            decay = decay,
+            maxit = 200,
+            trace = FALSE
+          )
 
 
-        pred_test <- data.frame(pr_ab = test[[i]][, response],
-                                    pred = suppressMessages(stats::predict(
-                                      mod[[i]],
-                                      newdata = test[[i]],
-                                      type = "raw"
-                                    )))
+        pred_test <- data.frame(
+          pr_ab = test[[i]][, response],
+          pred = suppressMessages(stats::predict(
+            mod[[i]],
+            newdata = test[[i]],
+            type = "raw"
+          ))
+        )
 
         pred_test_ens[[h]][[i]] <- pred_test %>%
           dplyr::mutate(rnames = rownames(.))
 
         # Validation of model
         eval <-
-          sdm_eval(p = pred_test$pred[pred_test$pr_ab == 1],
-                   a = pred_test$pred[pred_test$pr_ab == 0],
-                   thr = thr)
+          sdm_eval(
+            p = pred_test$pred[pred_test$pr_ab == 1],
+            a = pred_test$pred[pred_test$pr_ab == 0],
+            thr = thr
+          )
         eval_partial[[i]] <- dplyr::tibble(model = "net", eval)
       })
     }
