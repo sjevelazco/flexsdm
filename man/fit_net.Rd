@@ -48,7 +48,7 @@ response, predictors, and predictors_f arguments. Defaul NULL.}
   }
 In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 
-\item{size}{numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2 IMRPOVE THIS VALUE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}
+\item{size}{numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2.}
 
 \item{decay}{numeric. Parameter for weight decay. Default 0.}
 }
@@ -67,23 +67,23 @@ Fit and validate Neural Networks models
 }
 \examples{
 \dontrun{
-data("abies_db")
+data("abies")
 
 # Using k-fold partition method
-abies_db2 <- part(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
 )
-abies_db2
+abies2
 
 nnet_t1 <- fit_net(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
   partition = ".part",
-  thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   fit_formula = NULL
 )
 
@@ -94,20 +94,20 @@ nnet_t1$all_thresholds
 
 # Using bootstrap partition method and only with presence-absence
 # and get performance for several method
-abies_db2 <- part(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "boot", replicates = 10, proportion = 0.7)
 )
-abies_db2
+abies2
 
 nnet_t2 <- fit_net(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
   partition = ".part",
-  thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   fit_formula = NULL
 )
 nnet_t2

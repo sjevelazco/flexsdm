@@ -1,4 +1,4 @@
-#' Integration of outliers detection methods in the environmental space
+#' Integration of outliers detection methods in environmental space
 #'
 #' @description This function performs different methods for detecting outliers in species
 #' distribution data based on the environmental conditions of occurrences. Some methods need
@@ -16,13 +16,13 @@
 #'
 #' @details
 #' This function will apply outliers detection methods on presences occurrence data.
-#' Box-plot and Reverse Jackknife method will test outliers for each variable individually, if a
-#' occurrence behave as outliers for at least one variable it will be highlighted as outliers.
-#' If use only presence data, Support Vector Machine and Random Forest Methods will be
-#' not performed. Support Vector Machine and Random Forest are performed with default
-#' hyper-parameter values. In the case of using a species records with < 7 occurrence function
-#' will not perform any methods; nonetheless, it will return a tibble with the additional columns.
-#' Further information about this methods see Chapman (2005), Liu et al. (2018), and Velazco
+#' Box-plot and Reverse Jackknife method will test outliers for each variable individually, if an
+#' occurrence behaves as an outlier for at least one variable it will be highlighted as an outlier.
+#' If the user uses only presence data, Support Vector Machine and Random Forest Methods will not be
+#' performed. Support Vector Machine and Random Forest are performed with default
+#' hyper-parameter values. In the case of a species with < 7 occurrences, the function
+#' will not perform any methods (i.e. the additional columns will have 0 values); nonetheless, it will return a tibble with the additional columns with 0 and 1.
+#' For further information about these methods, see Chapman (2005), Liu et al. (2018), and Velazco
 #' et al. (in prep)
 #'
 #' @return A tibble object with the same database used in 'data' argument and with seven additional columns, where 1 and 0 denote that a presence was detected or not as outliers
@@ -62,7 +62,7 @@
 #' require(terra)
 #' require(ggplot2)
 #'
-#' # Envirnomental variables
+#' # Environmental variables
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)
 #'
@@ -224,7 +224,7 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
           kernel = "rbfdot",
           kpar = list(sigma = 0.1),
           C = 10,
-          prob.model = T
+          prob.model = TRUE
         )
       psv2 <-
         kernlab::predict(sv, sp_env_1, type = "probabilities")[, 2] # prediction for presences

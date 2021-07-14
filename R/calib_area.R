@@ -1,6 +1,6 @@
 #' Delimit calibration area for constructing species distribution models
 #'
-#' @description This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, enm_predict, and enm_ensemble, among others
+#' @description This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others
 #'
 #' @param data data.frame or tibble. Database with presences
 #' @param x character. Column name with longitude data
@@ -10,18 +10,18 @@
 #' \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 #' \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.
 #' \item bmcp: calibration area is defined by buffed minimum convex polygon. Usage method = c('bmcp', width=40000).
-#' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatialPolygonDataFrame,  the third element is a character with the column name from SpatialPolygonDataFrame used for filtering polygons.
+#' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatVector, the third element is a character with the column name from SpatVector used for filtering polygons.
 #' }
 #' @param groups character. Column name with that differentiate set of points. This could be used with mcp and bmcp method. Default NULL
-#' @param crs character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatialPolygonDataFrame used
+#' @param crs character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatVector used
 #'
 #' @return
-#' A SpatialPolygon or SpatialPolygonDataFrame
+#' A SpatialPolygon
 #' @export
 #'
 #' @importFrom grDevices chull
 #' @importFrom sp coordinates Polygon Polygons SpatialPolygons spTransform
-#' @importFrom terra vect buffer crs extract
+#' @importFrom terra vect buffer crs extract union
 #'
 #' @examples
 #' \dontrun{
@@ -111,7 +111,7 @@
 #' }
 calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   if (!method[1] %in% c("buffer", "mcp", "bmcp", "mask")) {
-    stop("argument 'method' was misused, available methods buffer, mcp, bmpc, and maks")
+    stop("argument 'method' was misused, available methods buffer, mcp, bmpc, and mask")
   }
 
   if (method[1] %in% c("bmcp", "buffer")) {
@@ -156,7 +156,7 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
       result[[i]] <- terra::vect(data_pl)
     }
     if (length(result) > 1) {
-      result <- do.call(rbind, result)
+      result <- do.call(terra::union, result)
     } else {
       result <- result[[1]]
     }
@@ -179,7 +179,7 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     }
     if (length(result) > 1) {
       result <- sapply(result, terra::vect)
-      result <- do.call(terra:::rbind.SpatVector, result)
+      result <- do.call(terra::union, result)
     } else {
       result <- result[[1]]
     }

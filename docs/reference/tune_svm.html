@@ -87,6 +87,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/01_pre_modeling.html">flexsdm: Overview of Pre-modeling Steps</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -192,6 +204,7 @@ response, predictors, and predictors_f arguments. Default NULL</p></td>
     <div class='dont-index'><p><code><a href='tune_gbm.html'>tune_gbm</a></code>, <code><a href='tune_max.html'>tune_max</a></code>, <code><a href='tune_net.html'>tune_net</a></code>, and <code><a href='tune_raf.html'>tune_raf</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+<<<<<<< HEAD
     <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>abies_db</span><span class='op'>)</span>
 <span class='va'>abies_db</span>
@@ -209,13 +222,17 @@ response, predictors, and predictors_f arguments. Default NULL</p></td>
 #&gt; <span style='color: #BCBCBC;'> 9</span>     0  412.  208. -<span style='color: #BB0000;'>2.09</span>    455.    27.1   5.83 0.047<span style='text-decoration: underline;'>6</span> 174.          1.59
 #&gt; <span style='color: #BCBCBC;'>10</span>     1  500.  173. -<span style='color: #BB0000;'>1.74</span>    389.    25.6   6.14 0.058<span style='text-decoration: underline;'>1</span>  77.7         3.07
 #&gt; <span style='color: #949494;'># … with 1,299 more rows, and 1 more variable: landform &lt;fct&gt;</span></div><div class='input'>
+=======
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>abies</span><span class='op'>)</span>
+<span class='va'>abies</span>
+
+>>>>>>> main
 <span class='co'># We will partition the data with the k-fold method</span>
 
-<span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part.html'>part</a></span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>abies_db</span>,
+<span class='va'>abies2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part_random.html'>part_random</a></span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>abies</span>,
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
-  bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
-  bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 <span class='op'>)</span>
 
@@ -231,11 +248,11 @@ response, predictors, and predictors_f arguments. Default NULL</p></td>
 
 <span class='va'>svm_t</span> <span class='op'>&lt;-</span>
   <span class='fu'>tune_svm</span><span class='op'>(</span>
-    data <span class='op'>=</span> <span class='va'>abies_db2</span>,
+    data <span class='op'>=</span> <span class='va'>abies2</span>,
     response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
     predictors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>
       <span class='st'>"aet"</span>, <span class='st'>"cwd"</span>, <span class='st'>"tmin"</span>, <span class='st'>"ppt_djf"</span>,
-      <span class='st'>"ppt_jja"</span>, <span class='st'>"pH"</span>, <span class='st'>"awc"</span>, <span class='st'>"depth"</span>, <span class='st'>"percent_clay"</span>
+      <span class='st'>"ppt_jja"</span>, <span class='st'>"pH"</span>, <span class='st'>"awc"</span>, <span class='st'>"depth"</span>
     <span class='op'>)</span>,
     predictors_f <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"landform"</span><span class='op'>)</span>,
     partition <span class='op'>=</span> <span class='st'>".part"</span>,
@@ -243,6 +260,7 @@ response, predictors, and predictors_f arguments. Default NULL</p></td>
     thr <span class='op'>=</span> <span class='st'>"max_sens_spec"</span>,
     metric <span class='op'>=</span> <span class='st'>"TSS"</span>,
   <span class='op'>)</span>
+<<<<<<< HEAD
 </div><div class='output co'>#&gt; <span class='message'>Formula used for model fitting:</span>
 #&gt; <span class='message'>pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + percent_clay + landform</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 1/1</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 4/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 5/5</span></div><div class='output co'>#&gt; <span class='message'>Formula used for model fitting:</span>
 #&gt; <span class='message'>pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + percent_clay + landform</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 1/1</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 4/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 5/5</span></div><div class='input'>
@@ -306,6 +324,16 @@ response, predictors, and predictors_f arguments. Default NULL</p></td>
 #&gt; <span style='color: #BCBCBC;'> 9</span> 9      .part      1     0     0.058<span style='text-decoration: underline;'>0</span>
 #&gt; <span style='color: #BCBCBC;'>10</span> 10     .part      1     0     0.044<span style='text-decoration: underline;'>6</span>
 #&gt; <span style='color: #949494;'># … with 1,299 more rows</span></div><div class='input'><span class='co'># }</span>
+=======
+
+<span class='co'># Outputs</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>model</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>predictors</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>performance</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>hyper_performance</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>data_ens</span>
+<span class='op'>}</span>
+>>>>>>> main
 
 </div></pre>
   </div>
@@ -319,7 +347,7 @@ response, predictors, and predictors_f arguments. Default NULL</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Janet Franklin.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">

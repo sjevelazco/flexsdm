@@ -1,4 +1,4 @@
-#' Environmental and spatial cross validation
+#' Environmental and spatial cross-validation
 #'
 #' @description This function explores different numbers of environmental partitions based on the
 #' K-mean cluster algorithm and returns the best one suited for a given presence or
@@ -39,7 +39,7 @@
 #' @importFrom terra extract
 #' @importFrom utils combn
 #'
-#' @seealso \code{\link{part}}, and \code{\link{part_sblock}}.
+#' @seealso \code{\link{part_random}}, and \code{\link{part_sblock}}.
 #' @examples
 #' \dontrun{
 #' require(terra)

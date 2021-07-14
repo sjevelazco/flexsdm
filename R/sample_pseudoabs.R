@@ -1,4 +1,7 @@
-#' Peseudo-absence allocation method
+#' Pseudo-absence sampling method
+#'
+#' @description This function provide several methods of sampling pseudo-absences, for instance
+#' totally random sampling method, o with environmental and or geographical constraints.
 #'
 #' @param data data.frame or tibble. Database with presences
 #' (or presence-absence, o presences-pseudo-absence) records, and coordinates
@@ -6,11 +9,11 @@
 #' @param y character. Column name with latitude data
 #' @param n integer. Number of pseudo-absence to be sampled
 #' @param method character. Pseudo-absence allocation method. It is necessary to
-#' provide a vector for this argument. The next methods are implemented:
+#' provide a vector for this argument. The methods implemented are:
 #' \itemize{
-#' \item rnd: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='rnd'.
+#' \item random: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='random'.
 #' \item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster stack or brick object with environmental variables Usage method=c(method='env_const', env = somevar).
-#' \item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. For this method, it is necessary to provide a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_const', width='50000').
+#' \item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. Usage method=c('geo_const', width='50000').
 #' \item geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, it is necessary to provide a raster with environmental variables stored as SpatRaster object. Also it is necessary provide a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar)
 #' \item geo_env_km_const: Pseudo-absences are constrained on a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in the environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar)
 #' }
@@ -25,8 +28,8 @@
 #' @importFrom terra mask ext extract match as.data.frame
 #'
 #' @return
+#' A tibble object with x y coordinates of sampled pseudo-absence points
 #' @export
-#'
 #'
 #' @seealso \code{\link{sample_background}} and \code{\link{calib_area}}.
 #'
@@ -56,7 +59,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method = "rnd",
+#'     method = "random",
 #'     rlayer = regions,
 #'     maskval = NULL
 #'   )
@@ -77,7 +80,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method = "rnd",
+#'     method = "random",
 #'     rlayer = regions,
 #'     maskval = samp_here
 #'   )
@@ -164,7 +167,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 50,
-#'     method = "rnd",
+#'     method = "random",
 #'     rlayer = regions,
 #'     maskval = NULL,
 #'     calibarea = ca_ps1
@@ -181,7 +184,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 50,
-#'     method = "rnd",
+#'     method = "random",
 #'     rlayer = regions,
 #'     maskval = samp_here,
 #'     calibarea = ca_ps1
@@ -195,14 +198,14 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
   ID <- NULL
 
   if (!any(c(
-    "rnd",
+    "random",
     "env_const",
     "geo_const",
     "geo_env_const",
     "geo_env_km_const"
   ) %in% method)) {
     stop(
-      "argument 'method' was misused, available methods rnd, env_const, geo_const, geo_env_const, and geo_env_km_const"
+      "argument 'method' was misused, available methods random, env_const, geo_const, geo_env_const, and geo_env_km_const"
     )
   }
 
@@ -214,8 +217,8 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
   }
 
   # Random method
-  if (any(method %in% "rnd")) {
-    cell_samp <- sample_background(n = n, rlayer = rlayer, maskval = maskval)
+  if (any(method %in% "random")) {
+    cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = rlayer, maskval = maskval)
   }
 
   # env_const method
@@ -230,13 +233,19 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
+      rlayer2[] <-
+        terra::extract(
+          envp,
+          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
+          method = "simple",
+          xy = TRUE
+        ) %>%
         dplyr::select(-c(ID, x, y))
       envp <- rlayer2
     }
 
     envp <- terra::mask(rlayer, envp)
-    cell_samp <- sample_background(n = n, rlayer = envp, maskval = maskval)
+    cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = envp, maskval = maskval)
   }
 
   # geo_const method
@@ -248,7 +257,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     # Restriction for a given region
     envp <- inv_geo(e = rlayer, p = data[, c(x, y)], d = as.numeric(method["width"]))
 
-    cell_samp <- sample_background(n = n, rlayer = envp, maskval = maskval)
+    cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = envp, maskval = maskval)
   }
 
   # geo_env_const method
@@ -264,14 +273,20 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp2, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
+      rlayer2[] <-
+        terra::extract(
+          envp2,
+          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
+          method = "simple",
+          xy = TRUE
+        ) %>%
         dplyr::select(-c(ID, x, y))
       envp2 <- rlayer2
     }
     envp <- (envp2 + envp)
     rm(envp2)
     envp <- terra::mask(rlayer, envp)
-    cell_samp <- sample_background(n = n, rlayer = envp, maskval = maskval)
+    cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = envp, maskval = maskval)
   }
 
   # geo_env_km_const
@@ -287,7 +302,13 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
     if (terra::ext(env) != terra::ext(rlayer)) {
       rlayer2 <- rlayer
-      rlayer2[] <- terra::extract(envp2, coordinates(rlayer2), method = "simple", xy = TRUE) %>%
+      rlayer2[] <-
+        terra::extract(
+          envp2,
+          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
+          method = "simple",
+          xy = TRUE
+        ) %>%
         dplyr::select(-c(ID, x, y))
       envp2 <- rlayer2
     }

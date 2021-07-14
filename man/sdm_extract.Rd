@@ -23,7 +23,7 @@ environmental variables are removed from the returned tibble.}
 }
 \value{
 A tibble that returns the original data base with additional columns
-for the extracted environmental variables at each xy location from the SpatRast object used in 'env_layer'
+for the extracted environmental variables at each xy location from the SpatRaster object used in 'env_layer'
 }
 \description{
 Extract environmental data based on x and y coordinates

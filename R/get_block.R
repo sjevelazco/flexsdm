@@ -2,10 +2,10 @@
 #'
 #' @details Transform a layer originated from the function block_partition or band_partition to the same properties of environmental variables
 #'
-#' @param env_layer raster. A raster, stack, or brick object with some environmental variables used in the block_partition or band_partition function. Function always will select the first layer
-#' @param best_grid raster. Raster object returned by block_partition or band_partition
+#' @param env_layer SpatRaster object with some environmental variables used in the block_partition or band_partition function. Function always will select the first layer
+#' @param best_grid SpatRaster object returned by block_partition or band_partition
 #'
-#' @return
+#' @return A SpatRaster layer with the same resolution and extent than environmental variables
 #' @export
 #'
 #' @importFrom dplyr %>% select

@@ -47,6 +47,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/01_pre_modeling.html">flexsdm: Overview of Pre-modeling Steps</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -79,30 +91,32 @@
 <div id="1-pre-modeling-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#1-pre-modeling-functions" class="anchor"></a>1. Pre-modeling functions</h3>
-<p>Set tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).</p>
+<p>Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).</p>
 <ul>
 <li>
-<code>calib_area</code> Delimit calibration area for constructing species distribution models</li>
+<code><a href="reference/calib_area.html">calib_area()</a></code> Delimit calibration area for constructing species distribution models</li>
 <li>
-<code>correct_colinvar</code> Perform collinearity reduction on predictors|</li>
+<code><a href="reference/correct_colinvar.html">correct_colinvar()</a></code> Perform collinearity reduction on predictors</li>
 <li>
-<code>env_outliers</code> Integration of outliers detection methods in the environmental space</li>
+<code><a href="reference/env_outliers.html">env_outliers()</a></code> Integration of outliers detection methods in the environmental space</li>
 <li>
-<code>env_filtering</code> Perform environmental filtering on species occurrences</li>
+<code>part_classical()</code> Data partitioning for training and testing models</li>
 <li>
-<code>part</code> Data partitioning for training and testing models</li>
+<code><a href="reference/part_sblock.html">part_sblock()</a></code> Spatial block cross validation</li>
 <li>
-<code>part_sblock</code> Spatial block cross validation</li>
+<code><a href="reference/plot_res.html">plot_res()</a></code> Plot different resolutions to be used in part_sblock</li>
 <li>
-<code>plot_res</code> Plot different resolutions to be used in part_sblock</li>
+<code><a href="reference/part_senv.html">part_senv()</a></code> Environmental and spatial cross validation</li>
 <li>
-<code>part_senv</code> Environmental and spatial cross validation</li>
+<code><a href="reference/sample_background.html">sample_background()</a></code> Sample background points</li>
 <li>
-<code>sample_background</code> Sample background points</li>
+<code><a href="reference/sample_pseudoabs.html">sample_pseudoabs()</a></code> Peseudo-absence allocation method</li>
 <li>
-<code>sample_pseudoabs</code> Peseudo-absence allocation method</li>
+<code><a href="reference/sdm_extract.html">sdm_extract()</a></code> Extract environmental data based on x and y coordinates</li>
 <li>
-<code>sdm_extract</code> Extract environmental data based on x and y coordinates</li>
+<code><a href="reference/occfilt_env.html">occfilt_env()</a></code> Perform environmental filtering on species occurrences</li>
+<li>
+<code>occfilt_geo()</code> Perform geographical filtering on species occurrences</li>
 </ul>
 </div>
 <div id="2-modeling-functions" class="section level3">
@@ -114,21 +128,21 @@
 <a href="#fit_-functions-family" class="anchor"></a><code>fit_*</code> functions family</h4>
 <ul>
 <li>
-<code>fit_gam</code> Fit and validate Generalized Additive Models</li>
+<code><a href="reference/fit_gam.html">fit_gam()</a></code> Fit and validate Generalized Additive Models</li>
 <li>
-<code>fit_gau</code> Fit and validate Gaussian Process models</li>
+<code><a href="reference/fit_gau.html">fit_gau()</a></code> Fit and validate Gaussian Process models</li>
 <li>
-<code>fit_gbm</code> Fit and validate Generalized Boosted Regression models</li>
+<code><a href="reference/fit_gbm.html">fit_gbm()</a></code> Fit and validate Generalized Boosted Regression models</li>
 <li>
-<code>fit_glm</code> Fit and validate Generalized Linear Models</li>
+<code><a href="reference/fit_glm.html">fit_glm()</a></code> Fit and validate Generalized Linear Models</li>
 <li>
-<code>fit_max</code> Fit and validate Maximum Entropy models</li>
+<code><a href="reference/fit_max.html">fit_max()</a></code> Fit and validate Maximum Entropy models</li>
 <li>
-<code>fit_net</code> Fit and validate Neural Networks models</li>
+<code><a href="reference/fit_net.html">fit_net()</a></code> Fit and validate Neural Networks models</li>
 <li>
-<code>fit_raf</code> Fit and validate Random Forest models</li>
+<code><a href="reference/fit_raf.html">fit_raf()</a></code> Fit and validate Random Forest models</li>
 <li>
-<code>fit_svm</code> Fit and validate Support Vector Machine models</li>
+<code><a href="reference/fit_svm.html">fit_svm()</a></code> Fit and validate Support Vector Machine models</li>
 </ul>
 </div>
 <div id="tune_-functions-family" class="section level4">
@@ -136,15 +150,23 @@
 <a href="#tune_-functions-family" class="anchor"></a><code>tune_*</code> functions family</h4>
 <ul>
 <li>
-<code>tune_gbm</code> Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters</li>
+<code><a href="reference/tune_gbm.html">tune_gbm()</a></code> Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters</li>
 <li>
-<code>tune_max</code> Fit and validate Maximum Entropy models with exploration of hyper-parameters</li>
+<code><a href="reference/tune_max.html">tune_max()</a></code> Fit and validate Maximum Entropy models with exploration of hyper-parameters</li>
 <li>
-<code>tune_net</code> Fit and validate Neural Networks models with exploration of hyper-parameters</li>
+<code><a href="reference/tune_net.html">tune_net()</a></code> Fit and validate Neural Networks models with exploration of hyper-parameters</li>
 <li>
-<code>tune_raf</code> Fit and validate Random Forest models with exploration of hyper-parameters</li>
+<code><a href="reference/tune_raf.html">tune_raf()</a></code> Fit and validate Random Forest models with exploration of hyper-parameters</li>
 <li>
-<code>tune_svm</code> Fit and validate Support Vector Machine models with exploration of hyper-parameters</li>
+<code><a href="reference/tune_svm.html">tune_svm()</a></code> Fit and validate Support Vector Machine models with exploration of hyper-parameters</li>
+</ul>
+</div>
+<div id="model-ensemble" class="section level4">
+<h4 class="hasAnchor">
+<a href="#model-ensemble" class="anchor"></a>Model ensemble</h4>
+<ul>
+<li>
+<code><a href="reference/fit_ensemble.html">fit_ensemble()</a></code> Fit and validate ensemble models with different ensemble methods</li>
 </ul>
 </div>
 <div id="esm_-functions-family" class="section level4">
@@ -152,19 +174,23 @@
 <a href="#esm_-functions-family" class="anchor"></a><code>esm_*</code> functions family</h4>
 <ul>
 <li>
-<code>esm_gam</code> Fit and validate Generalized Additive Models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_gam.html">esm_gam()</a></code> Fit and validate Generalized Additive Models with Ensemble of Small Model approach</li>
 <li>
-<code>esm_gau</code> Fit and validate Gaussian Process models Models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_gau.html">esm_gau()</a></code> Fit and validate Gaussian Process models Models with Ensemble of Small Model approach</li>
 <li>
-<code>esm_gbm</code> Fit and validate Generalized Boosted Regression models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_gbm.html">esm_gbm()</a></code> Fit and validate Generalized Boosted Regression models with Ensemble of Small Model approach</li>
 <li>
-<code>esm_glm</code> Fit and validate Generalized Linear Models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_glm.html">esm_glm()</a></code> Fit and validate Generalized Linear Models with Ensemble of Small Model approach</li>
 <li>
-<code>esm_max</code> Fit and validate Maximum Entropy models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_max.html">esm_max()</a></code> Fit and validate Maximum Entropy models with Ensemble of Small Model approach</li>
 <li>
-<code>esm_net</code> Fit and validate Neural Networks models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_net.html">esm_net()</a></code> Fit and validate Neural Networks models with Ensemble of Small Model approach</li>
 <li>
+<<<<<<< HEAD
 <code>esm_svm</code> Fit and validate Support Vector Machine models with Ensemble of Small Model approach</li>
+=======
+<code><a href="reference/esm_svm.html">esm_svm()</a></code> Fit and validate Support Vector Machine models with Ensemble of Small Model approach</li>
+>>>>>>> main
 </ul>
 </div>
 </div>
@@ -177,10 +203,14 @@
 <code><a href="reference/sdm_predict.html">sdm_predict()</a></code> Spatial predictions of individual and ensemble model</li>
 <li>
 <code><a href="reference/inter.html">inter()</a></code> Raster interpolation between two time periods</li>
+<li>
+<code><a href="reference/extra_eval.html">extra_eval()</a></code> Measure model extrapolation</li>
+<li>
+<code><a href="reference/extra_correct.html">extra_correct()</a></code> Constraint suitability values under a given extrapolation value</li>
 </ul>
 <hr>
 <blockquote>
-<p>Test the package and give us feedback <a href="https://github.com/sjevelazco/flexsdm/issues">here</a> or send an e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
+<p>Test the package and give us your feedback <a href="https://github.com/sjevelazco/flexsdm/issues">here</a> or send an e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
 </blockquote>
 </div>
 </div>
@@ -200,6 +230,7 @@
 <li>Santiago J.E. Velazco <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7527-0967" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>André F.A. Andrade <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6134-3176" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Brooke Rose <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5269-3759" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ignacio Minoli <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6039-6962" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Janet Franklin <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0314-4598" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
@@ -208,6 +239,8 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="http://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat" alt="License"></a></li>
+<li><a href="https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/sjevelazco/flexsdm"><img src="https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 </div>
@@ -215,7 +248,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Janet Franklin.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">

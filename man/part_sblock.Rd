@@ -2,7 +2,7 @@
 % Please edit documentation in R/part_sblock.R
 \name{part_sblock}
 \alias{part_sblock}
-\title{Spatial block cross validation}
+\title{Spatial block cross-validation}
 \usage{
 part_sblock(
   env_layer,
@@ -232,5 +232,5 @@ points(
 
 }
 \seealso{
-\code{\link{part}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+\code{\link{part_random}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 }

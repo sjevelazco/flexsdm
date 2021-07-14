@@ -1,21 +1,53 @@
 #' Perform collinearity reduction on predictors
 #'
-#' @param rstack SpatRaster An object of class SpatRaster containing the predictors.
+#' @param env_layer SpatRaster An object of class SpatRaster containing the predictors.
+#' This function does not allow categorical variables
+#'
 #' @param method character. Collinearity reduction method. It is necessary to
 #' provide a vector for this argument. The next methods are implemented:
 #' \itemize{
-#'   \item pearson: Select variables by Pearson correlation, a threshold of maximum correlation must be specified by user. Otherwise a threshold of 0.7 is defined as default. Usage method = c('pearson', th='0.7').
-#'   \item vif: Select variables by Variance Inflation Factor, a threshold can be specified by user. Otherwise a threshold of 10 is defined as default.Usage method = c('vif', th = '10').
-#'   \item pca: Perform a Principal Component Analysis and use the principal components as the new predictors. The selected components account for 95% of the whole variation in the system.Usage method = c('pca').
-#'   \item fa: Perform a Factorial Analysis and select, from the original predictors, the ones with the highest correlation with the axis which account for 95% of the whole variation in the system.Usage method = c('fa').
+#'   \item pearson: Select variables by Pearson correlation, a threshold of maximum correlation
+#'   must be specified. Otherwise, a threshold of 0.7 is defined as default.
+#'   Usage method = c('pearson', th='0.7').
+#'   \item vif: Select variables by Variance Inflation Factor, a threshold can be specified by
+#'   user. Otherwise, a threshold of 10 is defined as default.Usage method = c('vif', th = '10').
+#'   \item pca: Perform a Principal Component Analysis and use the principal components as the
+#'   new predictors. The selected components account for 95% of the whole variation in the system.
+#'   Usage method = c('pca').
+#'   \item fa: Perform a Factorial Analysis and select, from the original predictors, the ones with
+#'    the highest correlation with the axis which accounts for 95% of the whole variation in the
+#'    system.Usage method = c('fa').
 #' }
-#' @param proj character. Path to a folder which contains sub-folders for the different projection scenarios. Only used for pca. Usage "C:/User/Desktop/Projections"
+#' @param proj character. Path to a folder that contains sub-folders for the different projection
+#' scenarios. Only used for pca. Usage proj = "C:/User/Desktop/Projections"
 #'
 #' @return
-#' @export
+#' If 'pearson' or 'vif' method, returns a list with the following elements:
+#' \itemize{
+#' \item env_layer: a SpatRaster object with selected environmental variables
+#' \item removed_variables: a character vector with removed environmental variables
+#' \item performance: a matrix with Pearson pairwise correlation between variables
+#' }
 #'
+#' If 'pca' method, returns a list with the following elements:
+#' \itemize{
+#' \item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95% of the
+#' whole variation or original environmental variables
+#' \item coefficient: a matrix with the coefficient of principal component (PC) for predictors
+#' \item cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)
+#' }
+#'
+#' If 'fa' method, returns a list with the following elements:
+#' \itemize{
+#' \item env_layer: #TODO
+#' \item coefficient:: #TODO
+#' \item cumulative_variance:: #TODO
+#' }
+#'
+#' @export
 #' @importFrom stats cor lm prcomp factanal
 #' @importFrom terra as.data.frame subset predict rast scale writeRaster
+#' @importFrom dplyr tibble
 #'
 #' @examples
 #' \dontrun{
@@ -23,40 +55,41 @@
 #' somevar <- terra::rast(somevar)
 #'
 #' # Perform pearson collinearity control
-#' var <- correct_colinvar(rstack = somevar, method = c("pearson", th = "0.8"))
-#' var$rstack
+#' var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.8"))
+#' var$env_layer
 #' var$removed_variables
 #' var$correlation_table
 #'
 #' # Perform vif collinearity control
-#' var <- correct_colinvar(rstack = somevar, method = c("vif", th = "8"))
-#' var$rstack
+#' var <- correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))
+#' var$env_layer
 #' var$removed_variables
 #' var$correlation_table
 #'
 #' # Perform pca collinearity control
-#' var <- correct_colinvar(rstack = somevar, method = c("pca"))
-#' plot(var$rstack)
-#' var$rstack
-#' var$coeficients
+#' var <- correct_colinvar(env_layer = somevar, method = c("pca"))
+#' plot(var$env_layer)
+#' var$env_layer
+#' var$coefficient
 #' var$cumulative_variance
 #'
-#' # Perform fa collinearity control
+#' # Perform fa colinearity control
 #' # this method only will be performed if covariance matrix is invertible.
 #' # WRITE HERE A EXAMPLE THAT WORKS :)
-#' # var <- correct_colinvar(rstack = somevar, method = c("fa"))
+#' # var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 #' }
 #'
-correct_colinvar <- function(rstack,
+correct_colinvar <- function(env_layer,
                              method,
                              proj = NULL) {
+  # TODO write documentation for fa methods and write details in methods!!!
   if (!any(c("pearson", "vif", "pca", "fa") %in% method)) {
     stop(
       "argument 'method' was misused, select one of the available methods: pearson, vif, pca, fa"
     )
   }
 
-  if (!class(rstack) %in% "SpatRaster") {
+  if (!class(env_layer) %in% "SpatRaster") {
     stop("Raster object must be from the class SpatRaster")
   }
 
@@ -67,7 +100,7 @@ correct_colinvar <- function(rstack,
       th <- as.numeric(method["th"])
     }
 
-    h <- terra::as.data.frame(rstack)
+    h <- terra::as.data.frame(env_layer)
     h <- abs(stats::cor(h, method = "pearson"))
     diag(h) <- 0
 
@@ -86,11 +119,11 @@ correct_colinvar <- function(rstack,
       length(x)
     })
     sel <- res[[sample(which(len == max(len)), 1)]]
-    rem <- names(rstack)[!names(rstack) %in% sel]
-    rstack <- terra::subset(rstack, subset = sel)
+    rem <- names(env_layer)[!names(env_layer) %in% sel]
+    env_layer <- terra::subset(env_layer, subset = sel)
 
     result <- list(
-      rstack = rstack,
+      env_layer = env_layer,
       removed_variables = rem,
       correlation_table = h
     )
@@ -103,7 +136,7 @@ correct_colinvar <- function(rstack,
       th <- as.numeric(method["th"])
     }
 
-    x <- terra::as.data.frame(rstack)
+    x <- terra::as.data.frame(env_layer)
     LOOP <- TRUE
     if (nrow(x) > 10000) {
       x <- x[sample(1:nrow(x), 10000), ]
@@ -140,18 +173,18 @@ correct_colinvar <- function(rstack,
     n$results <- data.frame(Variables = names(v), VIF = as.vector(v))
 
     diag(n$corMatrix) <- 0
-    rstack <-
-      terra::subset(rstack, subset = n$results$Variables)
+    env_layer <-
+      terra::subset(env_layer, subset = n$results$Variables)
 
     result <- list(
-      rstack = rstack,
+      env_layer = env_layer,
       removed_variables = n$excluded,
       correlation_table = n$corMatrix
     )
   }
 
   if (any(method %in% "pca")) {
-    p <- terra::as.data.frame(rstack, xy = FALSE, na.rm = TRUE)
+    p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
 
     p <- stats::prcomp(p,
       retx = TRUE,
@@ -168,12 +201,12 @@ correct_colinvar <- function(rstack,
       x >= 0.95
     }, cvar)
     cvar <- data.frame(cvar)
-    rstack <- terra::predict(rstack, p, index = 1:naxis)
+    env_layer <- terra::predict(env_layer, p, index = 1:naxis)
 
     result <- list(
-      rstack = rstack,
-      coeficients = cof,
-      cumulative_variance = cvar
+      env_layer = env_layer,
+      coefficients = cof,
+      cumulative_variance = dplyr::tibble(cvar)
     )
 
     if (!is.null(proj)) {
@@ -205,7 +238,7 @@ correct_colinvar <- function(rstack,
   }
 
   if (any(method %in% "fa")) {
-    p <- terra::scale(rstack, center = TRUE, scale = TRUE)
+    p <- terra::scale(env_layer, center = TRUE, scale = TRUE)
     p <- terra::as.data.frame(p, xy = FALSE, na.rm = TRUE)
 
     if (nrow(p) > 10000) {
@@ -245,10 +278,10 @@ correct_colinvar <- function(rstack,
     rem <-
       row.names(fit$loadings)[!row.names(fit$loadings) %in% sel]
 
-    rstack <- terra::subset(rstack, sel)
+    env_layer <- terra::subset(env_layer, sel)
 
     result <- list(
-      rstack = rstack,
+      env_layer = env_layer,
       removed_variables = rem,
       correlation_table = fit$loadings
     )

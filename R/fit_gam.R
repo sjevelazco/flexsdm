@@ -48,18 +48,18 @@
 #'
 #' @examples
 #' \dontrun{
-#' data("abies_db")
+#' data("abies")
 #'
 #' # Using k-fold partition method
-#' abies_db2 <- part(
-#'   data = abies_db,
+#' abies2 <- part_random(
+#'   data = abies,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 10)
 #' )
-#' abies_db2
+#' abies2
 #'
 #' gam_t1 <- fit_gam(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
@@ -73,7 +73,7 @@
 #' # Using our own formula
 #' require(gam)
 #' gam_t2 <- fit_gam(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
@@ -89,15 +89,15 @@
 #' gam_t2$performance %>% dplyr::select(ends_with("_mean"))
 #'
 #' # Using repeated k-fold partition method
-#' abies_db2 <- part(
-#'   data = abies_db,
+#' abies2 <- part_random(
+#'   data = abies,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "rep_kfold", folds = 5, replicates = 5)
 #' )
-#' abies_db2
+#' abies2
 #'
 #' gam_t3 <- fit_gam(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("ppt_jja", "pH", "awc"),
 #'   predictors_f = c("landform"),

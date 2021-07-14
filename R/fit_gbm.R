@@ -31,6 +31,7 @@
 #' @param n_minobsinnode Integer. It specifies the minimum number of
 #' observations in the terminal nodes of the trees. Note that this
 #' is the actual number of observations, not the total weight.
+#' By default will be used a value equal to nrow(data)*0.5/4
 #' @param shrinkage Numeric. This parameter applied to each tree in the
 #' expansion. Also known as the learning rate or step-size reduction;
 #' 0.001 to 0.1 usually work, but a smaller learning rate typically
@@ -55,23 +56,23 @@
 #'
 #' @examples
 #' \dontrun{
-#' data("abies_db")
+#' data("abies")
 #'
 #' # Using k-fold partition method
-#' abies_db2 <- part(
-#'   data = abies_db,
+#' abies2 <- part_random(
+#'   data = abies,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 10)
 #' )
-#' abies_db2
+#' abies2
 #'
 #' gbm_t1 <- fit_gbm(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
-#'   thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen")
+#'   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
 #' )
 #' gbm_t1$model
 #' gbm_t1$performance
@@ -79,15 +80,15 @@
 #' gbm_t1$all_thresholds
 #'
 #' # Using bootstrap partition method
-#' abies_db2 <- part(
-#'   data = abies_db,
+#' abies2 <- part_random(
+#'   data = abies,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "boot", replicates = 10, proportion = 0.7)
 #' )
-#' abies_db2
+#' abies2
 #'
 #' gbm_t2 <- fit_gbm(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c("ppt_jja", "pH", "awc"),
 #'   predictors_f = c("landform"),
@@ -105,7 +106,7 @@ fit_gbm <- function(data,
                     partition,
                     thr = NULL,
                     n_trees = 100,
-                    n_minobsinnode = 10,
+                    n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
                     shrinkage = 0.1) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
@@ -249,7 +250,10 @@ fit_gbm <- function(data,
   suppressMessages(mod <-
     gbm::gbm(formula1,
       data = data,
-      distribution = "bernoulli"
+      distribution = "bernoulli",
+      n.trees = n_trees,
+      n.minobsinnode = n_minobsinnode,
+      shrinkage = shrinkage
     ))
 
   pred_test <- data.frame(

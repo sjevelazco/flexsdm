@@ -11,6 +11,9 @@ Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut",
            person(given = "Brooke", family = "Rose", role = c("aut"),
            email = "mrose048@ucr.edu",
            comment = c(ORCID = "0000-0001-5269-3759")),
+           person(given = "Ignacio", family = "Minoli", role = c("aut"),
+           email = "minolicnp@gmail.com",
+           comment = c(ORCID = "0000-0002-6039-6962")),
            person(given = "Janet", family = "Franklin", role = c("aut"),
            email = "jfrankl@ucr.edu",
            comment = c(ORCID = "0000-0003-0314-4598")))
@@ -42,7 +45,8 @@ Description: More about what it does (maybe more than one line)
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1.9001
+RoxygenNote: 7.1.1
 Suggests: 
+    covr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

@@ -2,7 +2,7 @@
 % Please edit documentation in R/part_senv.R
 \name{part_senv}
 \alias{part_senv}
-\title{Environmental and spatial cross validation}
+\title{Environmental and spatial cross-validation}
 \usage{
 part_senv(
   env_layer,
@@ -94,5 +94,5 @@ ggplot(part1$part, aes(x, y, col = factor(.part))) +
 }
 }
 \seealso{
-\code{\link{part}}, and \code{\link{part_sblock}}.
+\code{\link{part_random}}, and \code{\link{part_sblock}}.
 }

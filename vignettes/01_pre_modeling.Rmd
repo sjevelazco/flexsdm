@@ -1,0 +1,124 @@
+---
+title: "flexsdm: Overview of Pre-modeling Steps"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Overview of pre-modeling steps}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%",
+  echo = TRUE,
+  warning = FALSE,
+  eval = T
+)
+```
+
+## Introduction
+
+Species distribution modeling (SDM) has become a standard tool in ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological applications. The *flexsdm* package provides users the ability to manipulate and parameterize models in a way that suits their unique research needs. 
+
+This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).
+
+In this vignette, users will learn about the first set of functions in the *flexsdm* package that fall under the "pre-modeling" umbrella. 
+
+## Installation
+
+First, let's install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
+
+```{r, message=FALSE, warning=FALSE}
+if (!require("remotes"))
+  install.packages("remotes")
+if (!require("flexsdm"))
+  remotes::install_github("sjevelazco/flexsdm")
+```
+
+## Project Directory Setup
+
+When building SDM's, organizing your folder directories will save time and confusion later. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. 
+
+```{r folder setup}
+proj_dir <- file.path("C:/Users/Brooke Rose/Google Drive/flexsdm_project") # customize the folder path for your workspace
+dir.create(proj_dir)
+```
+
+Within the project directory, you need folders for your 1) species occurrence data and 2) the environmental predictors you plan to use to build your model(s). Let's create those. 
+
+```{r folder setup 2}
+occ_dir <- file.path(proj_dir, "Occurrences")
+dir.create(occ_dir)
+
+pred_dir <- file.path(proj_dir, "Predictors")
+dir.create(pred_dir)
+```
+
+Check your project directory that the two folders were created:  
+
+![](C:/Users/Brooke Rose/Google Drive/Franklin_grant/project/images/folder_create_tutorial.png)
+
+## Data 
+
+In this tutorial, we will be using data that are available through the *flexsdm* package. However, if you want to use your own data, be sure to add your species occurrence data (example: csv file) and your environmental predictors (example: .tif or .asc files) to the folders you just created.
+
+### species occurrence data
+
+The "spp" example dataset includes presence (1) and absence (0) location (x,y) data for 3 species (sp1, sp2, sp3). You can load the spp data into your local R environment by using the code below:
+
+```{r occ data, eval = FALSE}
+data(spp)
+spp
+```
+
+### environmental predictors
+
+```{r env data}
+env_data <- terra::rast()
+```
+
+Below, we look at the occurrence data in geographic space. When building SDM's, or really any time you are working with spatial data, it is a good idea to visually check your data for errors. 
+```{r mapping occurrence points}
+#library(ggplot2)
+#ggplot() +  geom_point(data = spp,
+#                       aes(x = x, y = y),
+#                       color = "red")
+```
+
+1. Pre-modeling functions
+Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).
+
+calib_area() Delimit calibration area for constructing species distribution models
+correct_colinvar() Perform collinearity reduction on predictors
+env_outliers() Integration of outliers detection methods in the environmental space
+part_classical() Data partitioning for training and testing models
+part_sblock() Spatial block cross validation
+plot_res() Plot different resolutions to be used in part_sblock
+part_senv() Environmental and spatial cross validation
+sample_background() Sample background points
+sample_pseudoabs() Peseudo-absence allocation method
+sdm_extract() Extract environmental data based on x and y coordinates
+occfilt_env() Perform environmental filtering on species occurrences
+occfilt_geo() Perform geographical filtering on species occurrences
+
+
+
+```{r prepare data, eval = FALSE}
+require(dplyr)
+require(terra)
+
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+# It will prepared data for modeling a species
+occ <- spp %>% 
+  dplyr::filter(species == "sp2") %>% # filter a species
+  sdm_extract(data = ., x = 'x', y = 'y', 
+              env_layer = somevar, filter_na = TRUE) %>% # extract variables values
+  part_random(.,pr_ab = 'pr_ab', 
+              method = c(method = 'kfold', folds = 10)) # add columns with partition
+```

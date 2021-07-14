@@ -48,9 +48,11 @@ response, predictors, and predictors_f arguments}
   }
 In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 
-\item{sigma}{numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot". Default "automatic".}
+\item{sigma}{numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot".
+Default "automatic".}
 
-\item{C}{numeric. Cost of constraints violation this is the 'C'-constant of the regularization term in the Lagrange formulation. Default 1}
+\item{C}{numeric. Cost of constraints violation this is the 'C'-constant of the regularization
+term in the Lagrange formulation. Default 1}
 }
 \value{
 A list object with:
@@ -72,23 +74,23 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[k
 }
 \examples{
 \dontrun{
-data("abies_db")
+data("abies")
 
 # Using k-fold partition method
-abies_db2 <- part(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
 )
-abies_db2
+abies2
 
 svm_t1 <- fit_svm(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
   partition = ".part",
-  thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   fit_formula = NULL
 )
 
@@ -99,20 +101,20 @@ svm_t1$all_thresholds
 
 # Using bootstrap partition method and only with presence-absence
 # and get performance for several method
-abies_db2 <- part(
-  data = abies_db,
+abies2 <- part_random(
+  data = abies,
   pr_ab = "pr_ab",
   method = c(method = "boot", replicates = 10, proportion = 0.7)
 )
-abies_db2
+abies2
 
 svm_t2 <- fit_svm(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
   partition = ".part",
-  thr = c("max_sens_spec", "equal_sens_spec", "mas_sorensen"),
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   fit_formula = NULL
 )
 svm_t2

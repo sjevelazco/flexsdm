@@ -2,7 +2,7 @@
 % Please edit documentation in R/sdm_predict.R
 \name{sdm_predict}
 \alias{sdm_predict}
-\title{Spatial predictions of individual and ensemble model}
+\title{Spatial predictions of individual and ensemble models}
 \usage{
 sdm_predict(
   models,
@@ -15,7 +15,7 @@ sdm_predict(
 )
 }
 \arguments{
-\item{models}{list of individual models or a fit_ensemble output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.}
+\item{models}{list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.}
 
 \item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.}
 
@@ -44,7 +44,129 @@ Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spe
 A list of SpatRaster with continuous and/or binary predictions
 }
 \description{
-This function allows the prediction of one or more models built with the fit_ or tune_ function set. It can return continuous or continuous and binary predictions for one or more thresholds
+This function allows the geographical prediction of one or more models constructed with fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of small models approach), or models constructed with fit_ensemble function. It can return continuous or continuous and binary predictions for one or more thresholds
+}
+\examples{
+\dontrun{
+require(dplyr)
+require(terra)
+
+data("spp")
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+# Extract data
+some_sp <- spp \%>\%
+  filter(species == "sp3")
+
+some_sp <-
+  sdm_extract(
+    data = some_sp,
+    x = "x",
+    y = "y",
+    env_layer = somevar
+  )
+
+# Partition
+some_sp <- part_random(
+  data = some_sp,
+  pr_ab = "pr_ab",
+  method = c(method = "rep_kfold", folds = 3, replicates = 5)
+)
+
+
+## \%######################################################\%##
+#                                                          #
+####          Create different type of models           ####
+#                                                          #
+## \%######################################################\%##
+# Fit some models
+mglm <- fit_glm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  poly = 2
+)
+mraf <- fit_raf(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+)
+mgbm <- fit_gbm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part"
+)
+
+# Fit and ensemble
+mensemble <- fit_ensemble(
+  models = list(mglm, mraf, mgbm),
+  ens_method = "meansup",
+  thr = NULL,
+  thr_model = "max_sens_spec",
+  metric = "TSS"
+)
+
+# Fit a model with a Wnsemble of Small Models approach
+# Without threshold specification and with kfold
+msmall <- esm_gam(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  thr = NULL
+)
+
+
+## \%######################################################\%##
+#                                                          #
+####      Predict different kind of models models       ####
+#                                                          #
+## \%######################################################\%##
+
+# sdm_predict can be used for predict one or more models fitted with fit_ or tune_ functions
+
+# a single model
+ind_p <- sdm_predict(
+  models = mglm,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# a list of models
+list_p <- sdm_predict(
+  models = list(mglm, mraf, mgbm),
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# Predict an ensemble model
+# (only is possilbe use one fit_ensemble)
+ensemble_p <- sdm_predict(
+  models = mensemble,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# Predict an ensemble of small model
+# (only is possilbe use one ensemble of small model)
+small_p <- sdm_predict(
+  models = msmall,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+}
 }
 \seealso{
 \code{\link{fit_ensemble}}

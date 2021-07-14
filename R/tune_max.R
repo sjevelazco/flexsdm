@@ -222,7 +222,7 @@ tune_max <-
           lapply(mod, function(x) {
             data.frame(
               pr_ab = test[[i]][, response],
-              pred = maxnet:::predict.maxnet(
+              pred = predict_maxnet(
                 x,
                 newdata = test[[i]],
                 clamp = clamp,
@@ -333,7 +333,7 @@ tune_max <-
 
     pred_test <- data.frame(
       "pr_ab" = data[response],
-      "pred" = maxnet:::predict.maxnet(
+      "pred" = predict_maxnet(
         mod,
         newdata = data,
         clamp = TRUE,

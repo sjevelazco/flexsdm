@@ -13,7 +13,7 @@
 #' response, predictors, and predictors_f arguments. Default NULL.
 #' @param partition character. Column name with training and validation partition groups.
 #' @param background data.frame. Database with response column only with 0 and predictors variables. All
-#' column names must be consistent with data
+#' column names must be consistent with data. Default NULL
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
@@ -60,7 +60,46 @@
 #'
 #' @examples
 #' \dontrun{
+#' data("abies")
+#' data("backg")
+#' abies # environmental conditions of presence-absence data
+#' backg # environmental conditions of background points
 #'
+#' # Using k-fold partition method
+#' # Remember that the partition method, number of folds or replications must
+#' # be the same for presence-absence and background points datasets
+#' abies2 <- part_random(
+#'   data = abies,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 5)
+#' )
+#' abies2
+#'
+#' backg2 <- part_random(
+#'   data = backg,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 5)
+#' )
+#' backg2
+#'
+#' max_t1 <- fit_max(
+#'   data = abies2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors_f = c("landform"),
+#'   partition = ".part",
+#'   background = backg2,
+#'   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+#'   clamp = TRUE,
+#'   classes = "default",
+#'   pred_type = "cloglog",
+#'   regmult = 1
+#' )
+#' length(max_t1)
+#' max_t1$model
+#' max_t1$predictors
+#' max_t1$performance
+#' max_t1$data_ens
 #' }
 #'
 fit_max <- function(data,
@@ -69,7 +108,7 @@ fit_max <- function(data,
                     predictors_f = NULL,
                     fit_formula = NULL,
                     partition,
-                    background,
+                    background = NULL,
                     thr = NULL,
                     clamp = TRUE,
                     classes = "default",
@@ -242,7 +281,11 @@ fit_max <- function(data,
         pred_test <- data.frame(
           pr_ab = test[[i]][, response],
           pred =
+<<<<<<< HEAD
             maxnet:::predict.maxnet(
+=======
+            predict_maxnet(
+>>>>>>> main
               mod[[i]],
               newdata = test[[i]],
               clamp = clamp,
@@ -259,7 +302,11 @@ fit_max <- function(data,
             data.frame(
               pr_ab = bgt_test[[i]][, response],
               pred =
+<<<<<<< HEAD
                 maxnet:::predict.maxnet(
+=======
+                predict_maxnet(
+>>>>>>> main
                   mod[[i]],
                   newdata = bgt_test[[i]][c(predictors, predictors_f)],
                   clamp = clamp,
@@ -334,7 +381,7 @@ fit_max <- function(data,
 
   pred_test <- data.frame(
     "pr_ab" = data[response],
-    "pred" = maxnet:::predict.maxnet(
+    "pred" = predict_maxnet(
       mod,
       newdata = data,
       clamp = TRUE,
@@ -349,7 +396,7 @@ fit_max <- function(data,
       thr = thr
     )
   } else {
-    background <- maxnet:::predict.maxnet(
+    background <- predict_maxnet(
       mod,
       newdata = background[c(predictors, predictors_f)],
       clamp = clamp,

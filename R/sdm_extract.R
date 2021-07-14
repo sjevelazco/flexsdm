@@ -12,7 +12,7 @@
 #' @return
 #'
 #' A tibble that returns the original data base with additional columns
-#' for the extracted environmental variables at each xy location from the SpatRast object used in 'env_layer'
+#' for the extracted environmental variables at each xy location from the SpatRaster object used in 'env_layer'
 #'
 #' @importFrom dplyr %>% tibble select all_of filter
 #' @importFrom stats complete.cases

@@ -46,16 +46,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' data(abies_db)
-#' abies_db
+#' data(abies)
+#' abies
 #'
 #' # We will partition the data with the k-fold method
 #'
-#' abies_db2 <- part(
-#'   data = abies_db,
+#' abies2 <- part_random(
+#'   data = abies,
 #'   pr_ab = "pr_ab",
-#'   bg_data = NULL,
-#'   bg_a = NULL,
 #'   method = c(method = "kfold", folds = 5)
 #' )
 #'
@@ -64,11 +62,11 @@
 #'
 #' rf_t <-
 #'   tune_raf(
-#'     data = abies_db2,
+#'     data = abies2,
 #'     response = "pr_ab",
 #'     predictors = c(
 #'       "aet", "cwd", "tmin", "ppt_djf",
-#'       "ppt_jja", "pH", "awc", "depth", "percent_clay"
+#'       "ppt_jja", "pH", "awc", "depth"
 #'     ),
 #'     predictors_f = c("landform"),
 #'     partition = ".part",

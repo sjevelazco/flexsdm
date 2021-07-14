@@ -1,4 +1,4 @@
-#' Spatial block cross validation
+#' Spatial block cross-validation
 #'
 #' @description This function explores spatial blocks with different cell sizes and returns the
 #' best one suited for a given presence or presence-absences database. The selection of the best
@@ -47,7 +47,7 @@
 #' @importFrom terra extract res ext vect crs extend values ncell cellFromXY geom
 #' @importFrom utils combn
 #'
-#' @seealso \code{\link{part}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+#' @seealso \code{\link{part_random}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
 #'
 #' @examples
 #' \dontrun{

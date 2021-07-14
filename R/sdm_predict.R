@@ -1,8 +1,8 @@
-#' Spatial predictions of individual and ensemble model
+#' Spatial predictions of individual and ensemble models
 #'
-#' @description This function allows the prediction of one or more models built with the fit_ or tune_ function set. It can return continuous or continuous and binary predictions for one or more thresholds
+#' @description This function allows the geographical prediction of one or more models constructed with fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of small models approach), or models constructed with fit_ensemble function. It can return continuous or continuous and binary predictions for one or more thresholds
 #'
-#' @param models list of individual models or a fit_ensemble output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.
+#' @param models list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.
 #' @param pred SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is possible to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the models. The next threshold area available:
 #' \itemize{
@@ -35,6 +35,128 @@
 #' @importFrom kernlab predict
 #' @importFrom stats predict median
 #' @importFrom terra vect crop mask as.data.frame values rast app lapp
+#'
+#' @examples
+#' \dontrun{
+#' require(dplyr)
+#' require(terra)
+#'
+#' data("spp")
+#' somevar <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(somevar)
+#'
+#' # Extract data
+#' some_sp <- spp %>%
+#'   filter(species == "sp3")
+#'
+#' some_sp <-
+#'   sdm_extract(
+#'     data = some_sp,
+#'     x = "x",
+#'     y = "y",
+#'     env_layer = somevar
+#'   )
+#'
+#' # Partition
+#' some_sp <- part_random(
+#'   data = some_sp,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
+#' )
+#'
+#'
+#' ## %######################################################%##
+#' #                                                          #
+#' ####          Create different type of models           ####
+#' #                                                          #
+#' ## %######################################################%##
+#' # Fit some models
+#' mglm <- fit_glm(
+#'   data = some_sp,
+#'   response = "pr_ab",
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part",
+#'   poly = 2
+#' )
+#' mraf <- fit_raf(
+#'   data = some_sp,
+#'   response = "pr_ab",
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part",
+#' )
+#' mgbm <- fit_gbm(
+#'   data = some_sp,
+#'   response = "pr_ab",
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part"
+#' )
+#'
+#' # Fit and ensemble
+#' mensemble <- fit_ensemble(
+#'   models = list(mglm, mraf, mgbm),
+#'   ens_method = "meansup",
+#'   thr = NULL,
+#'   thr_model = "max_sens_spec",
+#'   metric = "TSS"
+#' )
+#'
+#' # Fit a model with a Wnsemble of Small Models approach
+#' # Without threshold specification and with kfold
+#' msmall <- esm_gam(
+#'   data = some_sp,
+#'   response = "pr_ab",
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part",
+#'   thr = NULL
+#' )
+#'
+#'
+#' ## %######################################################%##
+#' #                                                          #
+#' ####      Predict different kind of models models       ####
+#' #                                                          #
+#' ## %######################################################%##
+#'
+#' # sdm_predict can be used for predict one or more models fitted with fit_ or tune_ functions
+#'
+#' # a single model
+#' ind_p <- sdm_predict(
+#'   models = mglm,
+#'   pred = somevar,
+#'   thr = "max_fpb",
+#'   con_thr = FALSE,
+#'   predict_area = NULL
+#' )
+#'
+#' # a list of models
+#' list_p <- sdm_predict(
+#'   models = list(mglm, mraf, mgbm),
+#'   pred = somevar,
+#'   thr = "max_fpb",
+#'   con_thr = FALSE,
+#'   predict_area = NULL
+#' )
+#'
+#' # Predict an ensemble model
+#' # (only is possilbe use one fit_ensemble)
+#' ensemble_p <- sdm_predict(
+#'   models = mensemble,
+#'   pred = somevar,
+#'   thr = "max_fpb",
+#'   con_thr = FALSE,
+#'   predict_area = NULL
+#' )
+#'
+#' # Predict an ensemble of small model
+#' # (only is possilbe use one ensemble of small model)
+#' small_p <- sdm_predict(
+#'   models = msmall,
+#'   pred = somevar,
+#'   thr = "max_fpb",
+#'   con_thr = FALSE,
+#'   predict_area = NULL
+#' )
+#' }
 sdm_predict <-
   function(models,
            pred,
@@ -43,21 +165,34 @@ sdm_predict <-
            predict_area = NULL,
            clamp = TRUE,
            pred_type = "cloglog") {
-    ens <- ca_1 <- . <- model <- threshold <- thr_value <- NULL
+    . <- model <- threshold <- thr_value <- NULL
 
-    if (all(names(ens) %in% c("models", "thr_metric", "predictors", "performance"))) {
+
+    if (is.null(names(models))) {
+      message("Predicting list of individual models")
+      ensembles <- NULL
+      esm <- NULL
+    } else if (all(names(models) %in% c("models", "thr_metric", "predictors", "performance"))) {
       message("Predicting ensembles")
       ensembles <- models
       models <- NULL
+      esm <- NULL
+    } else if (all(names(models) %in% c("esm_model", "predictors", "performance"))) {
+      message("Predicting ensemble of small models")
+      esm <- models
+      models <- NULL
+      ensembles <- NULL
     } else {
       message("Predicting individual models")
+      models <- list(models)
       ensembles <- NULL
+      esm <- NULL
     }
 
     #### Prepare datasets ####
     # Crop and mask projection area
     if (!is.null(predict_area)) {
-      if (class(ca_1) %in% c("SpatialPolygons", "SpatialPolygonsDataFrame")) {
+      if (class(predict_area) %in% c("SpatialPolygons", "SpatialPolygonsDataFrame")) {
         predict_area <- terra::vect(predict_area)
       }
       pred <-
@@ -87,6 +222,7 @@ sdm_predict <-
         gsub(".formula", "", .)
     }
 
+    #### Ensemble predictions
     if (!is.null(ensembles)) {
       # Prepare model list
       m <- lapply(ensembles$models, function(x) x[["model"]])
@@ -100,6 +236,19 @@ sdm_predict <-
         gsub(".formula", "", .)
     }
 
+    #### ESM predictions
+    if (!is.null(esm)) {
+      # Prepare model list
+      m <- esm$esm_model
+      names(m) <- paste0("m_", 1:length(m))
+
+      # Extract model names object
+      clss <- sapply(m, function(x) {
+        class(x)[1]
+      }) %>%
+        tolower() %>%
+        gsub(".formula", "", .)
+    }
 
     ## %######################################################%##
     #                                                          #
@@ -114,13 +263,20 @@ sdm_predict <-
     #### graf models ####
     wm <- which(clss == "graf")
     if (length(wm) > 0) {
+      na_mask <- (sum(is.na(pred))>1)
       wm <- names(wm)
       for (i in wm) {
-        suppressWarnings(model_c[[i]] <-
-          GRaF::predict.graf(m[[i]], pred, type = "response", CI = NULL))
+        r <- pred[[1]]
+        terra::values(r) <- NA
+        suppressWarnings(r[as.numeric(rownames(pred_df))] <-
+                           GRaF::predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
+                                              type = "response", CI = NULL))
+        if(length(m[[i]]$facs)){
+          r[(na_mask+is.na(r))==1] <- 0
+        }
+        model_c[[i]] <- r
       }
     }
-
 
     #### gam models ####
     wm <- which(clss == "gam")
@@ -132,7 +288,7 @@ sdm_predict <-
 
         # Test factor levels
         f <- which(sapply(m[[i]]$data, class) == "factor")
-        if (f > 0) {
+        if (length(f) > 0) {
           for (ii in 1:length(f)) {
             vf <- m[[i]]$data[, f[ii]] %>% unique()
             vf2 <- pred_df[, names(f[ii])] %>% unique()
@@ -150,6 +306,8 @@ sdm_predict <-
           } else {
             vfilter <- 0
           }
+        } else {
+          vfilter <- 0
         }
 
         if (sum(vfilter) > 0) {
@@ -177,7 +335,7 @@ sdm_predict <-
 
         # Test factor levels
         f <- which(sapply(m[[i]]$data, class) == "factor")
-        if (f > 0) {
+        if (length(f) > 0) {
           for (ii in 1:length(f)) {
             vf <- m[[i]]$data[, f[ii]] %>% unique()
             vf2 <- pred_df[, names(f[ii])] %>% unique()
@@ -195,6 +353,8 @@ sdm_predict <-
           } else {
             vfilter <- 0
           }
+        } else {
+          vfilter <- 0
         }
 
         if (sum(vfilter) > 0) {
@@ -278,6 +438,8 @@ sdm_predict <-
           } else {
             vfilter <- 0
           }
+        } else {
+          vfilter <- 0
         }
 
         if (sum(vfilter) > 0) {
@@ -291,6 +453,10 @@ sdm_predict <-
             stats::predict(m[[i]], pred_df, type = "raw")
         }
 
+        if (length(f) > 0) {
+          na_mask <- (sum(is.na(pred)) > 1)
+          r[(na_mask + is.na(r)) == 1] <- 0
+        }
         model_c[[i]] <- r
       }
     }
@@ -329,6 +495,8 @@ sdm_predict <-
           } else {
             vfilter <- 0
           }
+        } else {
+          vfilter <- 0
         }
 
 
@@ -389,6 +557,8 @@ sdm_predict <-
           } else {
             vfilter <- 0
           }
+        } else {
+          vfilter <- 0
         }
 
         if (sum(vfilter) > 0) {
@@ -435,7 +605,11 @@ sdm_predict <-
 
 
 
-    # Predict ensemble
+    ## %######################################################%##
+    #                                                          #
+    ####                  Predict ensemble                  ####
+    #                                                          #
+    ## %######################################################%##
     if (!is.null(ensembles)) {
       model_c <- terra::rast(model_c) # stack individual models
       ens_perf <- ensembles[["performance"]] # get performance of ensembles
@@ -500,9 +674,36 @@ sdm_predict <-
       rm(ensemble_c)
     }
 
+    ## %######################################################%##
+    #                                                          #
+    ####       Predict ensemble of small models (esm)       ####
+    #                                                          #
+    ## %######################################################%##
+
+    if (!is.null(esm)) {
+      model_c <- terra::rast(model_c) # stack individual models
+      weight_data <- esm$esm_model %>%
+        names() %>%
+        as.numeric() # get performance of esm
+
+      ensemble_c <-
+        terra::app(model_c * weight_data, fun = mean, cores = 1)
+      names(ensemble_c) <- paste0("esm_", unique(names(model_c)))
+
+      model_c <- list(ensemble_c)
+      models <- list("performance" = esm["performance"])
+
+      rm(esm)
+      rm(ensemble_c)
+    }
 
 
-    #### Get binary predictions ####
+    ## %######################################################%##
+    #                                                          #
+    ####              Get binary predictions                ####
+    #                                                          #
+    ## %######################################################%##
+
     if (is.null(thr)) {
       return(model_c)
     } else {

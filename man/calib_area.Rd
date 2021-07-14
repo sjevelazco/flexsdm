@@ -18,18 +18,18 @@ calib_area(data, x, y, method, groups = NULL, crs = NULL)
 \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.
 \item bmcp: calibration area is defined by buffed minimum convex polygon. Usage method = c('bmcp', width=40000).
-\item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatialPolygonDataFrame,  the third element is a character with the column name from SpatialPolygonDataFrame used for filtering polygons.
+\item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatVector, the third element is a character with the column name from SpatVector used for filtering polygons.
 }}
 
 \item{groups}{character. Column name with that differentiate set of points. This could be used with mcp and bmcp method. Default NULL}
 
-\item{crs}{character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatialPolygonDataFrame used}
+\item{crs}{character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatVector used}
 }
 \value{
-A SpatialPolygon or SpatialPolygonDataFrame
+A SpatialPolygon
 }
 \description{
-This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, enm_predict, and enm_ensemble, among others
+This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others
 }
 \examples{
 \dontrun{

@@ -1,4 +1,4 @@
-#' Fit and validate Generalized Additive Models based Ensemble of Small of Model approach
+#' Fit and validate Generalized Additive Models based on Ensemble of Small of Model approach
 #'
 #' @description This function constructs Generalized Additive Models using the
 #' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
@@ -20,7 +20,7 @@
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
 #'   }
-#' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
+#' If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
 #'
 #' @details This method consists of creating bivariate models with all the pair-wise combinations
 #' of predictors and perform an ensemble based on the average of suitability weighted by
@@ -33,7 +33,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A list with "Gam" class object for each bivariate model. This object can be used
+#' \item esm_model: A list with "Gam" class object for each bivariate model. This object can be used
 #' for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
@@ -56,43 +56,91 @@
 #'
 #' @examples
 #' \dontrun{
-#' data("abies_db")
+#' data("abies")
 #' require(dplyr)
 #'
 #' # Using k-fold partition method
 #' set.seed(10)
+<<<<<<< HEAD
 #' abies_db2 <- abies_db %>%
+=======
+#' abies2 <- abies %>%
+>>>>>>> main
 #'   na.omit() %>%
 #'   group_by(pr_ab) %>%
 #'   dplyr::slice_sample(n = 10) %>%
 #'   group_by()
 #'
-#' abies_db2 <- part(
-#'   data = abies_db2,
+#' abies2 <- part_random(
+#'   data = abies2,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 3)
 #' )
-#' abies_db2
+#' abies2
 #'
-#' # Without thrshold specification and with kfold
+#' # Without threshold specification and with kfold
 #' esm_gam_t1 <- esm_gam(
-#'   data = abies_db2,
+#'   data = abies2,
 #'   response = "pr_ab",
-#'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth", "percent_clay"),
+#'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
 #'   partition = ".part",
 #'   thr = NULL
 #' )
 #'
-#' esm_gam_t1$model
+#' esm_gam_t1$esm_model # bivariate model
 #' esm_gam_t1$predictors
 #' esm_gam_t1$performance
+#'
+#' # Test with rep_kfold partition
+#' abies2 <- abies2 %>% select(-starts_with("."))
+#'
+#' set.seed(10)
+#' abies2 <- part_random(
+#'   data = abies2,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "rep_kfold", folds = 3, replicates = 10)
+#' )
+#' abies2
+#'
+#' esm_gam_t2 <- esm_gam(
+#'   data = abies2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
+#'   partition = ".part",
+#'   thr = NULL
+#' )
+#' esm_gam_t2$esm_model # bivariate model
+#' esm_gam_t2$predictors
+#' esm_gam_t2$performance
+#'
+#' # Test with other bootstrap
+#' abies2 <- abies2 %>% select(-starts_with("."))
+#'
+#' set.seed(10)
+#' abies2 <- part_random(
+#'   data = abies2,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "boot", replicates = 10, proportion = 0.7)
+#' )
+#' abies2
+#'
+#' esm_gam_t3 <- esm_gam(
+#'   data = abies2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
+#'   partition = ".part",
+#'   thr = NULL
+#' )
+#' esm_gam_t3$esm_model # bivariate model
+#' esm_gam_t3$predictors
+#' esm_gam_t3$performance
 #' }
 esm_gam <- function(data,
                     response,
                     predictors,
                     partition,
                     thr = NULL) {
-  . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
+  . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
   # Formula
@@ -136,7 +184,12 @@ esm_gam <- function(data,
     dplyr::distinct(AUC_mean) %>%
     dplyr::pull()
   D <- 2 * (mtrc - 0.5) # Somers'D
-  filt <- mtrc >= 0.5
+  filt <- mtrc > 0
+
+  if (sum(filt) == 0) {
+    message("None bivariate model had Somer's D > 0.5. Try with another esm_* function. NA will be returned")
+    return(NA)
+  }
 
   # Filter data based on Somers<0.5
   D <- D[filt]
@@ -189,31 +242,58 @@ esm_gam <- function(data,
       sum(x, na.rm = TRUE)
     }) / sum(D)
 
-  pred_test <- dplyr::bind_cols(data_ens2, pred = pred)
+  pred_test <- dplyr::bind_cols(data_ens2, pred = pred) # This dataset will be use to calculate
+  # esm peformance
 
+  # Validate ensemble base on weighted average suitability, split data by
+  # replicates and partition
+  testlist <- pred_test %>% dplyr::distinct(replicates, part)
+  replicates <- as.list(unique(pred_test$replicates))
+  names(replicates) <- unique(pred_test$replicates)
+
+  for (r in unique(pred_test$replicates)) {
+    x0 <- pred_test %>% dplyr::filter(replicates == r)
+    replicates[[r]] <- lapply(
+      split(x0, x0$part),
+      function(x) {
+        sdm_eval(
+          p = x$pred[x$pr_ab == 1],
+          a = x$pred[x$pr_ab == 0],
+          thr = thr
+        )
+      }
+    ) %>%
+      dplyr::bind_rows(., .id = "part")
+  }
+
+  eval_esm <- dplyr::bind_rows(replicates, .id = "replicates")
+
+
+  eval_final <- eval_esm %>%
+    dplyr::group_by(threshold) %>%
+    dplyr::summarise(dplyr::across(
+      TPR:IMAE,
+      list(mean = mean, sd = stats::sd)
+    ), .groups = "drop")
+
+  # Calculate final threshold
   threshold <- sdm_eval(
     p = pred_test$pred[pred_test$pr_ab == 1],
     a = pred_test$pred[pred_test$pr_ab == 0],
     thr = thr
   )
 
-  eval_esm <- eval_esm %>% dplyr::select(model:n_absences, dplyr::ends_with("_mean"))
-  names(eval_esm) <- gsub("_mean", "", names(eval_esm))
-
-  eval_final <- eval_esm %>%
-    dplyr::group_by(model, threshold) %>%
-    dplyr::summarise(dplyr::across(
-      TPR:IMAE,
-      list(mean = mean, sd = stats::sd)
-    ), .groups = "drop")
-
+  # List of models used for prediction
   mod <- lapply(list_esm, function(x) x$mode)
-  names(mod) <- gsub("[$.]", "", nms)
+  names(mod) <- D
 
   result <- list(
-    model = mod,
+    esm_model = mod,
     predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+    performance = dplyr::left_join(tibble(model = "esm_gam", eval_final),
+      threshold[1:4],
+      by = "threshold"
+    ) %>%
       dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
   )
 
