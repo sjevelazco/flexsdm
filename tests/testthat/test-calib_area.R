@@ -1,6 +1,7 @@
 test_that("mask method", {
   require(terra)
   require(dplyr)
+  require(rgdal)
   data("spp")
   clusters <- system.file("external/clusters.shp", package = "flexsdm")
   clusters <- terra::vect(clusters)
@@ -26,6 +27,7 @@ test_that("mask method", {
 test_that("mcp method", {
   require(terra)
   require(dplyr)
+  require(rgdal)
   data("spp")
   clusters <- system.file("external/clusters.shp", package = "flexsdm")
   clusters <- terra::vect(clusters)
@@ -51,6 +53,7 @@ test_that("mcp method", {
 test_that("bmcp method", {
   require(terra)
   require(dplyr)
+  require(rgdal)
   data("spp")
   clusters <- system.file("external/clusters.shp", package = "flexsdm")
   clusters <- terra::vect(clusters)
@@ -76,6 +79,7 @@ test_that("bmcp method", {
 test_that("bmcp method", {
   require(terra)
   require(dplyr)
+  require(rgdal)
   data("spp")
   clusters <- system.file("external/clusters.shp", package = "flexsdm")
   clusters <- terra::vect(clusters)
@@ -101,6 +105,7 @@ test_that("bmcp method", {
 test_that("bmcp method with groups", {
   require(terra)
   require(dplyr)
+  require(rgdal)
   data("spp")
   clusters <- system.file("external/clusters.shp", package = "flexsdm")
   clusters <- terra::vect(clusters)
@@ -128,6 +133,7 @@ test_that("bmcp method with groups", {
 test_that("mask method", {
   require(terra)
   require(dplyr)
+  require(rgdal)
   data("spp")
   clusters <- system.file("external/clusters.shp", package = "flexsdm")
   # clusters <- terra::vect(clusters)
@@ -162,6 +168,7 @@ test_that("mask method", {
 test_that("missuse method argument", {
   require(terra)
   require(dplyr)
+  require(rgdal)
   data("spp")
   clusters <- system.file("external/clusters.shp", package = "flexsdm")
   clusters <- terra::vect(clusters)

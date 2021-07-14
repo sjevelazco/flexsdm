@@ -9,7 +9,7 @@
 #' \itemize{
 #' \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 #' \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.
-#' \item bmcp: calibration area is defined by buffed minimum convex polygon. Usage method = c('bmcp', width=40000).
+#' \item bmcp: calibration area is defined by buffered minimum convex polygon. Usage method = c('bmcp', width=40000).
 #' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatVector, the third element is a character with the column name from SpatVector used for filtering polygons.
 #' }
 #' @param groups character. Column name with that differentiate set of points. This could be used with mcp and bmcp method. Default NULL
