@@ -181,7 +181,7 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
       result <- sapply(result, terra::vect)
       result <- do.call(terra::union, result)
     } else {
-      result <- result[[1]]
+      result <- terra::vect(result[[1]])
     }
   }
 

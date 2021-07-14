@@ -59,19 +59,13 @@ require(dplyr)
 
 # Using k-fold partition method
 set.seed(10)
-<<<<<<< HEAD
-<<<<<<< HEAD
 abies_db2 <- abies_db \%>\%
-=======
 abies2 <- abies \%>\%
->>>>>>> main
-=======
 abies2 <- abies \%>\%
->>>>>>> main
-  na.omit() \%>\%
-  group_by(pr_ab) \%>\%
-  dplyr::slice_sample(n = 10) \%>\%
-  group_by()
+na.omit() \%>\%
+group_by(pr_ab) \%>\%
+dplyr::slice_sample(n = 10) \%>\%
+group_by()
 
 abies2 <- part_random(
   data = abies2,
