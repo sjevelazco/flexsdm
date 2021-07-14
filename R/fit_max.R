@@ -282,7 +282,11 @@ fit_max <- function(data,
           pr_ab = test[[i]][, response],
           pred =
 <<<<<<< HEAD
+<<<<<<< HEAD
             maxnet:::predict.maxnet(
+=======
+            predict_maxnet(
+>>>>>>> main
 =======
             predict_maxnet(
 >>>>>>> main
@@ -303,7 +307,11 @@ fit_max <- function(data,
               pr_ab = bgt_test[[i]][, response],
               pred =
 <<<<<<< HEAD
+<<<<<<< HEAD
                 maxnet:::predict.maxnet(
+=======
+                predict_maxnet(
+>>>>>>> main
 =======
                 predict_maxnet(
 >>>>>>> main
