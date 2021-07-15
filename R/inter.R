@@ -60,8 +60,8 @@ inter <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL) {
     message("saving raster...")
     for(i in 1:terra::nlyr(rlist)){
       terra::writeRaster(
-        x = rlist[[i]],
-        filename = paste0(file.path(dir_save, names(rlist)[i]), ".tif"),
+        x = rlist,
+        filename = paste0(file.path(dir_save, names(rlist)), ".tif"),
         overwrite = TRUE
       )
     }
