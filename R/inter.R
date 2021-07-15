@@ -32,8 +32,7 @@
 #'   y1 = 2010,
 #'   y2 = 2020,
 #'   rastername = "Abies",
-#'   dir_save = NULL,
-#'   n_cores = 1
+#'   dir_save = NULL
 #' )
 #'
 #' int

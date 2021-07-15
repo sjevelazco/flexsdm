@@ -4,7 +4,7 @@
 \alias{inter}
 \title{Raster interpolation between two time periods}
 \usage{
-inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1)
+inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL)
 }
 \arguments{
 \item{r1}{SpatRaster. Raster object for the initial year}
@@ -20,8 +20,6 @@ inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1)
 \item{dir_save}{character. Directory path and name of the folder in which you want to
 save the raster files. If NULL, function will return a SpatRaster object, on the contrary, it
 will save raster in a given directory. Default NULL}
-
-\item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 }
 \value{
 This function returns a SpatRaster if dir_save is used as NULL, If dirsave is used,
@@ -45,8 +43,7 @@ int <- inter(
   y1 = 2010,
   y2 = 2020,
   rastername = "Abies",
-  dir_save = NULL,
-  n_cores = 1
+  dir_save = NULL
 )
 
 int
