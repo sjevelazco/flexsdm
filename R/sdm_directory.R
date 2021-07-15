@@ -56,6 +56,7 @@ sdm_directory <-
            ensemble = NULL,
            threshold = FALSE,
            return_vector = TRUE) {
+    . <- NULL
     if (is.null(main_dir)) {
       main_dir <- file.path(getwd(), "flexsdm_results")
       dir.create(main_dir)
