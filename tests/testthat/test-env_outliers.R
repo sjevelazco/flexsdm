@@ -35,7 +35,7 @@ test_that("test with dataset  with < 15 occurrences and only presence", {
 
   # Species occurrences
   data("spp")
-  spp_ <- spp %>% dplyr::filter(species == "sp2", pr_ab==1)
+  spp_ <- spp %>% dplyr::filter(species == "sp2", pr_ab == 1)
   spp_ <- spp_ %>% mutate(idd = 1:nrow(spp_))
 
   set.seed(1)
@@ -64,7 +64,7 @@ test_that("test NA filtering ", {
   # Species occurrences
   data("spp")
   spp
-  spp_ <- spp %>% dplyr::filter(species == "sp2", pr_ab==1)
+  spp_ <- spp %>% dplyr::filter(species == "sp2", pr_ab == 1)
   spp_ <- spp_ %>% mutate(idd = 1:nrow(spp_))
   spp_$x[1] <- (-300000)
   outs_1 <- env_outliers(
@@ -90,9 +90,9 @@ test_that("test with occurrences fewer than 6", {
 
   # Species occurrences
   data("spp")
-  spp_ <- spp %>% dplyr::filter(species == "sp3", pr_ab==1)
+  spp_ <- spp %>% dplyr::filter(species == "sp3", pr_ab == 1)
   spp_ <- spp_ %>% mutate(idd = 1:nrow(spp_))
-  spp_ <- spp_[1:5,]
+  spp_ <- spp_[1:5, ]
   outs_1 <- env_outliers(
     data = spp_,
     pr_ab = "pr_ab",
@@ -102,6 +102,8 @@ test_that("test with occurrences fewer than 6", {
     env_layer = somevar
   )
 
-  outs_1.1 <- outs_1 %>% select(starts_with(".")) %>% na.omit()
-  expect_true(all(colSums(outs_1.1==0)==4) )
+  outs_1.1 <- outs_1 %>%
+    select(starts_with(".")) %>%
+    na.omit()
+  expect_true(all(colSums(outs_1.1 == 0) == 4))
 })

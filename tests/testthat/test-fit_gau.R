@@ -1,7 +1,9 @@
 test_that("multiplication works", {
   data("abies")
   require(dplyr)
-  abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = 0.5)
+  abies %>%
+    dplyr::group_by(pr_ab) %>%
+    dplyr::slice_sample(prop = 0.5)
 
   # Using k-fold partition method
   abies2 <- part_random(
@@ -70,7 +72,9 @@ test_that("multiplication works", {
 test_that("test gau with NA, no factor variable and using formula", {
   data("abies")
   require(dplyr)
-  abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = 0.5)
+  abies %>%
+    dplyr::group_by(pr_ab) %>%
+    dplyr::slice_sample(prop = 0.5)
 
   # Using k-fold partition method
   abies2 <- part_random(
@@ -91,5 +95,3 @@ test_that("test gau with NA, no factor variable and using formula", {
 
   expect_equal(class(gaup_t1), "list")
 })
-
-

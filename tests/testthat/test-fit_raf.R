@@ -61,7 +61,6 @@ test_that("test raf", {
     thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
     fit_formula = NULL
   ))
-
 })
 
 
@@ -88,4 +87,3 @@ test_that("test raf with NA, no factor variable and using formula", {
 
   expect_equal(class(rf_t1), "list")
 })
-

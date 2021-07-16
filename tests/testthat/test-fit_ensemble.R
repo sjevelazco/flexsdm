@@ -14,15 +14,15 @@ test_that("multiplication works", {
     dplyr::filter(species == "sp2") %>%
     sdm_extract(
       data = .,
-      x = 'x',
-      y = 'y',
+      x = "x",
+      y = "y",
       env_layer = somevar,
       variables = names(somevar),
       filter_na = TRUE
     ) %>%
     part_random(
       data = .,
-      pr_ab = 'pr_ab',
+      pr_ab = "pr_ab",
       method = c(method = "kfold", folds = 3)
     )
 
@@ -57,7 +57,7 @@ test_that("multiplication works", {
     metric = "TSS"
   )
 
-  expect_equal(class(mensemble), 'list')
+  expect_equal(class(mensemble), "list")
   expect_equal(length(mensemble), 4)
   expect_equal(
     unique(mensemble$performance$model),

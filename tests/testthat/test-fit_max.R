@@ -66,7 +66,6 @@ test_that("multiplication works", {
     partition = ".part",
     thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
   ))
-
 })
 
 test_that("test max with NA, no factor variable and using formula", {

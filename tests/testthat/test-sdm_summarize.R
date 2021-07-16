@@ -1,5 +1,4 @@
 test_that("multiplication works", {
-
   data(abies)
 
   # We will partition the data with the k-fold method
@@ -43,8 +42,10 @@ test_that("multiplication works", {
     tune_raf(
       data = abies2,
       response = "pr_ab",
-      predictors = c("aet", "cwd", "tmin", "ppt_djf",
-                     "ppt_jja", "pH", "awc", "depth"),
+      predictors = c(
+        "aet", "cwd", "tmin", "ppt_djf",
+        "ppt_jja", "pH", "awc", "depth"
+      ),
       predictors_f = c("landform"),
       partition = ".part",
       grid = tune_grid,
@@ -66,5 +67,4 @@ test_that("multiplication works", {
   merge_df2 <- sdm_summarize(models = list(gam_t1))
 
   expect_equal(data.class(merge_df2), "tbl_df")
-
 })

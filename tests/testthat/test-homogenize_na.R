@@ -4,5 +4,5 @@ test_that("test homogenize_na", {
   somevar2 <- homogenize_na(somevar)
   sum1 <- terra::global(is.na(somevar[[2]]), sum)
   sum2 <- terra::global(is.na(somevar2[[2]]), sum)
-  expect_true(sum1<sum2)
+  expect_true(sum1 < sum2)
 })
