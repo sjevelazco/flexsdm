@@ -36,6 +36,8 @@ Imports:
     sp,
     Rlof,
     terra,
+    raster,
+    methods,
     utils,
     GRaF
 Remotes: 
@@ -48,6 +50,6 @@ LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
     covr,
-    rgdal,
+    rgeos,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

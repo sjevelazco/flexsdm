@@ -109,11 +109,11 @@ tune_net <-
 
     if (is.null(predictors_f)) {
       data <- data %>%
-        dplyr::select(response, predictors, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
       data <- data.frame(data)
     } else {
       data <- data %>%
-        dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
       data <- data.frame(data)
       for (i in predictors_f) {
         data[, i] <- as.factor(data[, i])

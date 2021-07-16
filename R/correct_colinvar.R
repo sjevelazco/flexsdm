@@ -83,6 +83,7 @@ correct_colinvar <- function(env_layer,
                              method,
                              proj = NULL) {
   # TODO write documentation for fa methods and write details in methods!!!
+  . <- NULL
   if (!any(c("pearson", "vif", "pca", "fa") %in% method)) {
     stop(
       "argument 'method' was misused, select one of the available methods: pearson, vif, pca, fa"
@@ -205,8 +206,8 @@ correct_colinvar <- function(env_layer,
 
     result <- list(
       env_layer = env_layer,
-      coefficients = cof,
-      cumulative_variance = dplyr::tibble(cvar)
+      coefficients = data.frame(cof) %>% dplyr::tibble(variable=rownames(.), .),
+      cumulative_variance = dplyr::tibble(PC=1:nrow(cvar), cvar)
     )
 
     if (!is.null(proj)) {

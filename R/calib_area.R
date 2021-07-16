@@ -1,4 +1,4 @@
-#' Delimit calibration area for constructing species distribution models
+##' Delimit calibration area for constructing species distribution models
 #'
 #' @description This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others
 #'
@@ -20,8 +20,9 @@
 #' @export
 #'
 #' @importFrom grDevices chull
-#' @importFrom sp coordinates Polygon Polygons SpatialPolygons spTransform
-#' @importFrom terra vect buffer crs extract union
+#' @importFrom methods as
+#' @importFrom raster buffer
+#' @importFrom terra vect union crs extract
 #'
 #' @examples
 #' \dontrun{
@@ -110,6 +111,7 @@
 #' points(single_spp[, 2:3], pch = 19, cex = 0.5, col = "red")
 #' }
 calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
+  . <- NULL
   if (!method[1] %in% c("buffer", "mcp", "bmcp", "mask")) {
     stop("argument 'method' was misused, available methods buffer, mcp, bmpc, and mask")
   }
@@ -136,9 +138,15 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   if (method[1] == "buffer") {
     data <- data[, c("x", "y")]
     data_sp <- data
-    sp::coordinates(data_sp) <- ~ x + y
-    result <- terra::buffer(data_sp, width = as.numeric(method["width"]))
-    result <- terra::vect(result)
+    if (is.null(crs)) {
+      data_sp <- terra::vect(data_sp, geom = names(data_sp))
+      result <- raster::buffer(methods::as(data_sp, "Spatial"), width = as.numeric(method["width"]))
+      result <- terra::vect(result)
+    } else {
+      data_sp <- terra::vect(data_sp, geom = names(data_sp), crs = crs)
+      result <- raster::buffer(methods::as(data_sp, "Spatial"), width = as.numeric(method["width"]))
+      result <- terra::vect(result)
+    }
   }
 
   if (method[1] == "mcp") {
@@ -150,13 +158,26 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     for (i in 1:length(data)) {
       data_pl <- data.frame(data[[i]][, c("x", "y")])
       data_pl <- data_pl[grDevices::chull(data_pl), ]
-      data_pl <- sp::Polygon(data_pl)
-      data_pl <- sp::Polygons(list(data_pl), ID = 1)
-      data_pl <- sp::SpatialPolygons(list(data_pl))
-      result[[i]] <- terra::vect(data_pl)
+      data_pl <- apply(data_pl, 1, function(x) {
+        paste(x[1], x[2])
+      }) %>%
+        paste(., collapse = ", ") %>%
+        paste("POLYGON", "((", ., "))")
+      if (is.null(crs)) {
+        data_pl <- terra::vect(data_pl)
+      } else {
+        data_pl <- terra::vect(data_pl, crs = crs)
+      }
+      result[[i]] <- data_pl
     }
     if (length(result) > 1) {
-      result <- do.call(terra::union, result)
+      result <- do.call(
+        terra::union,
+        sapply(result, function(x) {
+          methods::as(x, "Spatial")
+        })
+      ) %>%
+        terra::vect()
     } else {
       result <- result[[1]]
     }
@@ -171,10 +192,17 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     for (i in 1:length(data)) {
       data_pl <- data.frame(data[[i]][, c("x", "y")])
       data_pl <- data_pl[grDevices::chull(data_pl), ]
-      data_pl <- sp::Polygon(data_pl)
-      data_pl <- sp::Polygons(list(data_pl), ID = 1)
-      data_pl <- sp::SpatialPolygons(list(data_pl))
-      data_pl <- terra::buffer(data_pl, width = as.numeric(method["width"]))
+      data_pl <- apply(data_pl, 1, function(x) {
+        paste(x[1], x[2])
+      }) %>%
+        paste(., collapse = ", ") %>%
+        paste("POLYGON", "((", ., "))")
+      if (is.null(crs)) {
+        data_pl <- terra::vect(data_pl)
+      } else {
+        data_pl <- terra::vect(data_pl, crs = crs)
+      }
+      data_pl <- raster::buffer(methods::as(data_pl, "Spatial"), width = as.numeric(method["width"]))
       result[[i]] <- data_pl
     }
     if (length(result) > 1) {
@@ -190,10 +218,8 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     cname <- method[[3]]
     data <- data[, c("x", "y")]
     data_sp <- data
-    sp::coordinates(data_sp) <- ~ x + y
-    terra::crs(data_sp) <- terra::crs(polyc)
-    data_sp <- sp::spTransform(data_sp, terra::crs(polyc))
-    result <- terra::extract(polyc, vect(data_sp))[, cname] %>% unique()
+    data_sp <- terra::vect(data_sp, geom = names(data_sp), crs=terra::crs(polyc))
+    result <- terra::extract(polyc, data_sp)[, cname] %>% unique()
     result <- polyc[polyc[[cname]][, 1] %in% result, ]
   }
   return(result)
