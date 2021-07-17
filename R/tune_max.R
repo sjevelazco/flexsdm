@@ -116,15 +116,10 @@ tune_max <-
 
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
-      grid <- data.frame(regmult = 1, classes = "default")
-    }
-    if (class(grid) == "character") {
-      if (grid == "defalut") {
-        grid <- expand.grid(
-          regmult = seq(0.1, 3, 0.5),
-          classes = c("l", "lq", "lqh", "lqhp", "lqhpt")
-        )
-      }
+      grid <- expand.grid(
+        regmult = seq(0.1, 3, 0.5),
+        classes = c("l", "lq", "lqh", "lqhp", "lqhpt")
+      )
     }
 
     # Test hyperparameter names

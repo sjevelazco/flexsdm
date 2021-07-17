@@ -167,17 +167,12 @@ tune_gbm <-
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      grid <- data.frame(n.trees = 100, shrinkage = 0.1, n.minobsinnode = 10)
-    }
-    if (class(grid) == "character") {
-      nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      if (grid == "defalut") {
-        grid <- expand.grid(
-          n.trees = c(20, 50, 100, 200, 500),
-          shrinkage = c(0.01, 0.1, 0.3),
-          n.minobsinnode = c(1:10, 20, 30) # try define a best default tuning set
-        )
-      }
+      grid <- expand.grid(
+        n.trees = c(20, 50, 100, 200, 500),
+        shrinkage = c(0.01, 0.1, 0.3),
+        n.minobsinnode = c(1:10, 20, 30) # TODO try define a best default tuning set
+      )
+      message("Hyper-parameter values were not provided, default values will be used")
     }
 
     # Test hyper-parameters names

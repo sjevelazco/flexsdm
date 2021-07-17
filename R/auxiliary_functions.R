@@ -148,6 +148,19 @@ boyce <- function(pres,
 #'
 #' @noRd
 predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "exponential", "cloglog", "logistic"), ...) {
+  categoricalval <- function (x, category)
+  {
+    ifelse(x == category, 1, 0)
+  }
+  thresholdval <- function (x, knot)
+  {
+    ifelse(x >= knot, 1, 0)
+  }
+  hingeval <- function (x, min, max)
+  {
+    pmin(1, pmax(0, (x - min) / (max - min)))
+  }
+
   if (clamp) {
     for (v in intersect(names(object$varmax), names(newdata))) {
       newdata[, v] <- pmin(
