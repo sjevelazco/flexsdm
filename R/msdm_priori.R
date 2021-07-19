@@ -34,7 +34,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' require(dplry)
+#' require(dplyr)
 #' require(terra)
 #'
 #' data("spp")
@@ -108,9 +108,6 @@ msdm_priori <- function(data,
                         y,
                         method = c("xy", "min", "cml", "ker"),
                         env_layer) {
-  if (any(is.na(c(x, y))) & method != "xy") {
-    stop("Complete x, y and sp arguments to use 'min', 'cml' or 'ker' methods")
-  }
   if (is.null(env_layer)) {
     stop("Complete env_layer argument")
   }

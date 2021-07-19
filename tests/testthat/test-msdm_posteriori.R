@@ -195,7 +195,7 @@ test_that("missuse of function", {
     buffer = NULL
   ))
 
-  # miss use of threshold
+  # misuse of threshold
   expect_error(msdm_posteriori(
     records = occ,
     x = "x",
@@ -207,7 +207,7 @@ test_that("missuse of function", {
     buffer = 30000
   ))
 
-  # miss use of x y
+  # misuse of x y
   expect_error(msdm_posteriori(
     records = occ,
     x = "xXXXX",
@@ -219,10 +219,10 @@ test_that("missuse of function", {
     buffer = 30000
   ))
 
-  # miss use of x y
+  # misuse of x y
   expect_error(msdm_posteriori(
     records = occ,
-    x = NA,
+    # x = 'x',
     y = "y",
     pr_ab = "pr_ab",
     method = "bmcp",

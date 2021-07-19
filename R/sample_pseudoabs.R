@@ -120,7 +120,7 @@
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
-#' # Pseudo-absences sampled with environmental and geographical contraint
+#' # Pseudo-absences sampled with environmental and geographical constraint
 #' ps1 <-
 #'   sample_pseudoabs(
 #'     data = single_spp,
@@ -135,7 +135,7 @@
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
-#' # Pseudo-absences sampled with environmental and geographical contraint and with k-mean
+#' # Pseudo-absences sampled with environmental and geographical constraint and with k-mean
 #' ps1 <-
 #'   sample_pseudoabs(
 #'     data = single_spp,
@@ -223,27 +223,23 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
   # env_const method
   if (any(method == "env_const")) {
-    if (is.null(method["env"])) {
+    if (is.na(method["env"])) {
       stop("Provide a environmental stack/brick variables for env_const method, \ne.g. method = c('env_const', env=somevar)")
     }
 
     env <- method[["env"]]
+    # Test extent
+    if (!all(as.vector(terra::ext(env)) %in% as.vector(terra::ext(rlayer)))) {
+      message("Extents do not match, raster layers used were croped to minimum extent")
+      df_ext <- data.frame(as.vector(terra::ext(env)), as.vector(terra::ext(rlayer)))
+
+      e <- terra::ext(apply(df_ext, 1, function(x) x[which.min(abs(x))]))
+      env <- crop(env, e)
+      rlayer <- crop(rlayer, e)
+    }
 
     # Restriction for a given region
     envp <- inv_bio(e = env, p = data[, c(x, y)])
-    if (terra::ext(env) != terra::ext(rlayer)) {
-      rlayer2 <- rlayer
-      rlayer2[] <-
-        terra::extract(
-          envp,
-          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
-          method = "simple",
-          xy = TRUE
-        ) %>%
-        dplyr::select(-c(ID, x, y))
-      envp <- rlayer2
-    }
-
     envp <- terra::mask(rlayer, envp)
     cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = envp, maskval = maskval)
   }
@@ -268,21 +264,20 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
     env <- method[["env"]]
 
+    # Test extent
+    if (!all(as.vector(terra::ext(env)) %in% as.vector(terra::ext(rlayer)))) {
+      message("Extents do not match, raster layers used were croped to minimum extent")
+      df_ext <- data.frame(as.vector(terra::ext(env)), as.vector(terra::ext(rlayer)))
+
+      e <- terra::ext(apply(df_ext, 1, function(x) x[which.min(abs(x))]))
+      env <- crop(env, e)
+      rlayer <- crop(rlayer, e)
+    }
+
     # Restriction for a given region
     envp <- inv_geo(e = rlayer, p = data[, c(x, y)], d = as.numeric(method["width"]))
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
-    if (terra::ext(env) != terra::ext(rlayer)) {
-      rlayer2 <- rlayer
-      rlayer2[] <-
-        terra::extract(
-          envp2,
-          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
-          method = "simple",
-          xy = TRUE
-        ) %>%
-        dplyr::select(-c(ID, x, y))
-      envp2 <- rlayer2
-    }
+
     envp <- (envp2 + envp)
     rm(envp2)
     envp <- terra::mask(rlayer, envp)
@@ -297,21 +292,19 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
     env <- method[["env"]]
 
+    # Test extent
+    if (!all(as.vector(terra::ext(env)) %in% as.vector(terra::ext(rlayer)))) {
+      message("Extents do not match, raster layers used were croped to minimum extent")
+      df_ext <- data.frame(as.vector(terra::ext(env)), as.vector(terra::ext(rlayer)))
+
+      e <- terra::ext(apply(df_ext, 1, function(x) x[which.min(abs(x))]))
+      env <- crop(env, e)
+      rlayer <- crop(rlayer, e)
+    }
+
     # Restriction for a given region
     envp <- inv_geo(e = rlayer, p = data[, c(x, y)], d = as.numeric(method["width"]))
     envp2 <- inv_bio(e = env, p = data[, c(x, y)])
-    if (terra::ext(env) != terra::ext(rlayer)) {
-      rlayer2 <- rlayer
-      rlayer2[] <-
-        terra::extract(
-          envp2,
-          terra::as.data.frame(rlayer2, xy = TRUE, na.rm = TRUE)[1:2],
-          method = "simple",
-          xy = TRUE
-        ) %>%
-        dplyr::select(-c(ID, x, y))
-      envp2 <- rlayer2
-    }
     envp <- (envp2 + envp)
     envp <- terra::mask(rlayer, envp)
     rm(envp2)
@@ -330,10 +323,6 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp <- terra::mask(rlayer, envp)
 
     # K-mean procedure
-    if (terra::ext(env) != terra::ext(envp)) {
-      env <- crop(env, envp)
-    }
-
     env_changed <- terra::mask(env, envp)
     env_changed <- terra::as.data.frame(env_changed, xy = TRUE)
     env_changed <- stats::na.exclude(env_changed)
@@ -345,6 +334,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     cell_samp <-
       cell_samp %>% dplyr::mutate(val = val[, 1])
     cell_samp <- cell_samp[!is.na(cell_samp$val), -3]
+    cell_samp <- dplyr::tibble(cell_samp)
   }
   colnames(cell_samp) <- c(x, y)
   return(cell_samp)

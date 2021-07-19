@@ -219,9 +219,6 @@ msdm_posteriori <- function(records,
                             thr = "equal_sens_spec",
                             buffer = NULL) {
   . <- thr_value <- patch <- mindis <- NULL
-  if (any(is.na(c(x, y)))) {
-    stop("Complete 'x' or  'y' arguments")
-  }
   if (method == "bmcp" & is.null(buffer)) {
     stop("If 'bmcp' method is used, it is necessary to fill the 'buffer' argument, see the help of this function")
   }
