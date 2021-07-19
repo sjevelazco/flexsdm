@@ -278,15 +278,6 @@ unique list values in pr_ab column are: ",
   # Extract coordinates----
   mask2 <- mask
   mask2[] <- 0
-
-  # Eliminate any records with NA
-  filt <- stats::complete.cases(data[, c("x", "y")])
-  if (any(!filt)) {
-    message(sum(!filt), " rows were excluded from database because NAs were found in coordinates")
-    data <- data[filt, ]
-  }
-
-  rm(filt)
   presences2 <- data
 
   # Transform the presences points in a DataFrameSpatialPoints
@@ -484,11 +475,12 @@ unique list values in pr_ab column are: ",
         im <- sapply(
           data[filt, names(env_layer)],
           function(x) {
+            suppressMessages(
             ape::Moran.I(x,
               dist2,
               na.rm = TRUE,
               scaled = TRUE
-            )$observed
+            )$observed)
           }
         )
         imoran_grid_c[c] <- mean(abs(im))

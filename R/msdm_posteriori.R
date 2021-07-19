@@ -362,7 +362,7 @@ msdm_posteriori <- function(records,
         terra::distance(poly_absence, poly_presence) %>%
         data.frame() %>%
         dplyr::tibble()
-      colnames(pr_ab_poly_dist) <- poly_presence$patch
+      colnames(pr_ab_poly_dist) <- as.character(poly_presence$patch)
       pr_ab_poly_dist <- pr_ab_poly_dist %>%
         dplyr::mutate(patch = poly_absence$patch)
       pr_ab_poly_dist <-
