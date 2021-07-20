@@ -24,7 +24,7 @@ test_that("sample_pseudoabs", {
       rlayer = regions,
       maskval = NULL
     )
-  expect_equal(class(ps1)[1], 'tbl_df')
+  expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 
   # Pseudo-absences randomly sampled within a regions where a species occurs
@@ -43,7 +43,7 @@ test_that("sample_pseudoabs", {
       rlayer = regions,
       maskval = samp_here
     )
-  expect_equal(class(ps1)[1], 'tbl_df')
+  expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 
   # Pseudo-absences sampled with geographical constraint
@@ -57,7 +57,7 @@ test_that("sample_pseudoabs", {
       rlayer = regions,
       maskval = samp_here
     )
-  expect_equal(class(ps1)[1], 'tbl_df')
+  expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 
   # Pseudo-absences sampled with environmental constraint
@@ -68,11 +68,11 @@ test_that("sample_pseudoabs", {
       y = "y",
       n = nrow(single_spp) * 10,
       method = c("env_const", env = somevar),
-      rlayer = crop(regions, terra::ext(regions)-33000),
+      rlayer = crop(regions, terra::ext(regions) - 33000),
       maskval = samp_here
     )
 
-  expect_equal(class(ps1)[1], 'tbl_df')
+  expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 
   # Pseudo-absences sampled with environmental and geographical constraint
@@ -83,10 +83,10 @@ test_that("sample_pseudoabs", {
       y = "y",
       n = nrow(single_spp) * 10,
       method = c("geo_env_const", width = "50000", env = somevar),
-      rlayer = crop(regions, terra::ext(regions)-33000),
+      rlayer = crop(regions, terra::ext(regions) - 33000),
       maskval = samp_here
     )
-  expect_equal(class(ps1)[1], 'tbl_df')
+  expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 
   # Pseudo-absences sampled with environmental and geographical constraint and with k-mean
@@ -97,10 +97,10 @@ test_that("sample_pseudoabs", {
       y = "y",
       n = nrow(single_spp) * 10,
       method = c("geo_env_km_const", width = "50000", env = somevar),
-      rlayer = crop(regions, terra::ext(regions)-33000),
+      rlayer = crop(regions, terra::ext(regions) - 33000),
       maskval = samp_here
     )
-  expect_equal(class(ps1)[1], 'tbl_df')
+  expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 
   # Sampling pseudo-absence using a calibration area
@@ -122,7 +122,7 @@ test_that("sample_pseudoabs", {
       maskval = NULL,
       calibarea = ca_ps1
     )
-  expect_equal(class(ps1)[1], 'tbl_df')
+  expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 
   ps1 <-
@@ -136,7 +136,7 @@ test_that("sample_pseudoabs", {
       maskval = samp_here,
       calibarea = ca_ps1
     )
-  expect_equal(class(ps1)[1], 'tbl_df')
+  expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 })
 

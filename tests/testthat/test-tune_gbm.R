@@ -30,7 +30,8 @@ test_that("class and lenght of gbm_t object", {
       data = abies2,
       response = "pr_ab",
       predictors = c(
-        "aet", "cwd", "awc", "depth"),
+        "aet", "cwd", "awc", "depth"
+      ),
       predictors_f = c("landform"),
       partition = ".part",
       grid = tune_grid,
@@ -66,7 +67,8 @@ test_that("test of 0-1 response argument", {
       data = abies2,
       response = "aet",
       predictors = c(
-        "aet", "cwd",  "awc", "depth"),
+        "aet", "cwd", "awc", "depth"
+      ),
       predictors_f = c("landform"),
       partition = ".part",
       grid = tune_grid,
@@ -175,7 +177,8 @@ test_that("test fit_formula", {
       data = abies2,
       response = "pr_ab",
       predictors = c(
-        "aet", "ppt_jja", "depth"),
+        "aet", "ppt_jja", "depth"
+      ),
       predictors_f = c("landform"),
       fit_formula = formula("pr_ab ~ aet + ppt_jja + depth + landform"),
       partition = ".part",
@@ -183,7 +186,6 @@ test_that("test fit_formula", {
       thr = "max_sens_spec",
       metric = "TSS"
     ))
-
 })
 
 test_that("grid = NULL ", {
@@ -197,18 +199,18 @@ test_that("grid = NULL ", {
   )
 
   expect_message(gbm_t <-
-                   tune_gbm(
-                     data = abies2,
-                     response = "pr_ab",
-                     predictors = c(
-                       "aet", "awc", "depth"
-                     ),
-                     predictors_f = c("landform"),
-                     partition = ".part",
-                     grid = NULL,
-                     thr = "max_sens_spec",
-                     metric = "TSS"
-                   ))
+    tune_gbm(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c(
+        "aet", "awc", "depth"
+      ),
+      predictors_f = c("landform"),
+      partition = ".part",
+      grid = NULL,
+      thr = "max_sens_spec",
+      metric = "TSS"
+    ))
 })
 
 
@@ -231,16 +233,16 @@ test_that("missuse of grid ", {
     )
 
   expect_error(gbm_t <-
-                   tune_gbm(
-                     data = abies2,
-                     response = "pr_ab",
-                     predictors = c(
-                       "aet", "awc", "depth"
-                     ),
-                     predictors_f = c("landform"),
-                     partition = ".part",
-                     grid = grid,
-                     thr = "max_sens_spec",
-                     metric = "TSS"
-                   ))
+    tune_gbm(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c(
+        "aet", "awc", "depth"
+      ),
+      predictors_f = c("landform"),
+      partition = ".part",
+      grid = grid,
+      thr = "max_sens_spec",
+      metric = "TSS"
+    ))
 })

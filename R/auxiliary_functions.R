@@ -148,16 +148,13 @@ boyce <- function(pres,
 #'
 #' @noRd
 predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "exponential", "cloglog", "logistic"), ...) {
-  categoricalval <- function (x, category)
-  {
+  categoricalval <- function(x, category) {
     ifelse(x == category, 1, 0)
   }
-  thresholdval <- function (x, knot)
-  {
+  thresholdval <- function(x, knot) {
     ifelse(x >= knot, 1, 0)
   }
-  hingeval <- function (x, min, max)
-  {
+  hingeval <- function(x, min, max) {
     pmin(1, pmax(0, (x - min) / (max - min)))
   }
 
@@ -226,8 +223,7 @@ rev_jack <- function(v) {
     x1 <- x[i + 1]
     if (x[i] < mean(v)) {
       y[i] <- (x1 - x[i]) * (mean(v) - x[i])
-    }
-    else {
+    } else {
       y[i] <- (x1 - x[i]) * (x1 - mean(v))
     }
   }
@@ -245,8 +241,7 @@ rev_jack <- function(v) {
       xb <- (v2 >= v) * 1
       out <- out + xb
     }
-  }
-  else {
+  } else {
     out <- out
   }
   return(which(out == 1))

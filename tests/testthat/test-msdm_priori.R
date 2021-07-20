@@ -104,4 +104,4 @@ test_that("function misuse", {
     method = "xy",
     env_layer = a_variable
   ))
-  })
+})

@@ -22,7 +22,7 @@ test_that("part_senv", {
   # expect_equal(class(part1), 'list')
 
   # Only with presences
-  spp1 <- spp1 %>% dplyr::filter(pr_ab==1)
+  spp1 <- spp1 %>% dplyr::filter(pr_ab == 1)
   part2 <- part_senv(
     env_layer = somevar,
     data = spp1,
@@ -34,7 +34,7 @@ test_that("part_senv", {
     prop = 0.2
   )
 
-  expect_equal(class(part2), 'list')
+  expect_equal(class(part2), "list")
 })
 
 

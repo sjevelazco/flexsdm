@@ -26,27 +26,28 @@
 #'   projections = NULL,
 #'   calibration_area = TRUE,
 #'   algorithm = c("gam", "tune_max"),
-#'   ensemble = c('mean', 'meanthr'),
+#'   ensemble = c("mean", "meanthr"),
 #'   threshold = FALSE,
 #'   return_vector = TRUE
 #' )
 #' dirs_1
-#' dirs_1[1] %>% fs::dir_tree(.,recurse = TRUE)
+#' dirs_1[1] %>% fs::dir_tree(., recurse = TRUE)
 #'
 #' # Implement sdm_directory without specific path and project name
 #' getwd() %>% dirname()
 #'
 #' dirs_2 <- sdm_directory(
-#'   main_dir = getwd() %>% dirname() %>% file.path(., 'my_project_name'),
+#'   main_dir = getwd() %>% dirname() %>% file.path(., "my_project_name"),
 #'   projections = c(
-#'     'cnrm_rpc8.5_2050',
-#'     'cnrm_rpc4.5_2050'),
+#'     "cnrm_rpc8.5_2050",
+#'     "cnrm_rpc4.5_2050"
+#'   ),
 #'   calibration_area = TRUE,
-#'   algorithm = 'all',
-#'   ensemble = c('mean', 'meanthr'),
+#'   algorithm = "all",
+#'   ensemble = c("mean", "meanthr"),
 #'   threshold = TRUE
 #' )
-#' dirs_2[1] %>% fs::dir_tree(.,recurse = TRUE)
+#' dirs_2[1] %>% fs::dir_tree(., recurse = TRUE)
 #' }
 sdm_directory <-
   function(main_dir = NULL,
@@ -163,7 +164,7 @@ sdm_directory <-
 
     message("Directories were be created in:\n", main_dir)
 
-    if(return_vector){
+    if (return_vector) {
       results <- list.dirs(main_dir)
       # results <- gsub(getwd(), '.', results)
       return(results)

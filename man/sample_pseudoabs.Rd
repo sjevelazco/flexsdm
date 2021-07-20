@@ -136,7 +136,7 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
-# Pseudo-absences sampled with environmental and geographical contraint
+# Pseudo-absences sampled with environmental and geographical constraint
 ps1 <-
   sample_pseudoabs(
     data = single_spp,
@@ -151,7 +151,7 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
-# Pseudo-absences sampled with environmental and geographical contraint and with k-mean
+# Pseudo-absences sampled with environmental and geographical constraint and with k-mean
 ps1 <-
   sample_pseudoabs(
     data = single_spp,

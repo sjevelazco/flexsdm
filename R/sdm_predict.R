@@ -263,16 +263,17 @@ sdm_predict <-
     #### graf models ####
     wm <- which(clss == "graf")
     if (length(wm) > 0) {
-      na_mask <- (sum(is.na(pred))>1)
+      na_mask <- (sum(is.na(pred)) > 1)
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
         terra::values(r) <- NA
         suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-                           GRaF::predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
-                                              type = "response", CI = NULL))
-        if(length(m[[i]]$facs)){
-          r[(na_mask+is.na(r))==1] <- 0
+          GRaF::predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
+            type = "response", CI = NULL
+          ))
+        if (length(m[[i]]$facs)) {
+          r[(na_mask + is.na(r)) == 1] <- 0
         }
         model_c[[i]] <- r
       }

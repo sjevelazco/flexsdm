@@ -16,8 +16,8 @@ test_that("msdm_posteriori", {
       env_layer = somevar, filter_na = TRUE
     ) %>% # extrac variables values
     part_random(.,
-                pr_ab = "pr_ab",
-                method = c(method = "kfold", folds = 10)
+      pr_ab = "pr_ab",
+      method = c(method = "kfold", folds = 10)
     ) # add columns with partition
 
   # Lets fit and predict a model
@@ -120,8 +120,8 @@ test_that("use of other object class", {
       env_layer = somevar, filter_na = TRUE
     ) %>% # extrac variables values
     part_random(.,
-                pr_ab = "pr_ab",
-                method = c(method = "kfold", folds = 10)
+      pr_ab = "pr_ab",
+      method = c(method = "kfold", folds = 10)
     ) # add columns with partition
 
   # Lets fit and predict a model
@@ -167,8 +167,8 @@ test_that("missuse of function", {
       env_layer = somevar, filter_na = TRUE
     ) %>% # extrac variables values
     part_random(.,
-                pr_ab = "pr_ab",
-                method = c(method = "kfold", folds = 10)
+      pr_ab = "pr_ab",
+      method = c(method = "kfold", folds = 10)
     ) # add columns with partition
 
   # Lets fit and predict a model

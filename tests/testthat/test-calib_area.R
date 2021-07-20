@@ -20,7 +20,7 @@ test_that("buffer method", {
     x = "x",
     y = "y",
     method = c("buffer", width = 40000),
-    crs=NULL
+    crs = NULL
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
@@ -51,7 +51,6 @@ test_that("mcp method", {
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
-
 })
 
 

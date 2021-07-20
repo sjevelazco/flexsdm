@@ -11,10 +11,12 @@ test_that("test example tune_max", {
   data(abies)
   data(backg)
   set.seed(0)
-  abies <- abies %>% dplyr::group_by(pr_ab) %>%
+  abies <- abies %>%
+    dplyr::group_by(pr_ab) %>%
     dplyr::slice_sample(prop = .2)
   set.seed(0)
-  backg <- backg %>% dplyr::group_by(pr_ab) %>%
+  backg <- backg %>%
+    dplyr::group_by(pr_ab) %>%
     dplyr::slice_sample(prop = .2)
 
   abies2 <- part_random(
@@ -31,8 +33,10 @@ test_that("test example tune_max", {
 
   # Hyper-parameter values for tuning
   gridtest <-
-    expand.grid(regmult = seq(0.1, 3, 0.5),
-                classes = c("l", "lq"))
+    expand.grid(
+      regmult = seq(0.1, 3, 0.5),
+      classes = c("l", "lq")
+    )
 
   expect_message(max_t <-
     tune_max(
@@ -47,10 +51,8 @@ test_that("test example tune_max", {
       metric = "TSS",
       clamp = TRUE,
       pred_type = "cloglog"
-    )
-  )
-}
-)
+    ))
+})
 
 
 test_that("test NULL predictors_f and NULL grid", {
@@ -60,10 +62,12 @@ test_that("test NULL predictors_f and NULL grid", {
   data(abies)
   data(backg)
   set.seed(0)
-  abies <- abies %>% dplyr::group_by(pr_ab) %>%
+  abies <- abies %>%
+    dplyr::group_by(pr_ab) %>%
     dplyr::slice_sample(prop = .2)
   set.seed(0)
-  backg <- backg %>% dplyr::group_by(pr_ab) %>%
+  backg <- backg %>%
+    dplyr::group_by(pr_ab) %>%
     dplyr::slice_sample(prop = .2)
 
   # We will partition the data and background with the k-fold method
@@ -84,42 +88,41 @@ test_that("test NULL predictors_f and NULL grid", {
 
   # Hyper-parameter values for tuning
   gridtest <-
-    expand.grid(regmult = seq(0.1, 3,1),
-                classes = c("l", "lq"))
+    expand.grid(
+      regmult = seq(0.1, 3, 1),
+      classes = c("l", "lq")
+    )
 
   expect_message(max_t <-
-                   tune_max(
-                     data = abies2,
-                     response = "pr_ab",
-                     predictors = c("aet", "cwd", "tmin"),
-                     predictors_f = NULL,
-                     background = backg2,
-                     partition = ".part",
-                     grid = gridtest,
-                     thr = "max_sens_spec",
-                     metric = "TSS",
-                     clamp = TRUE,
-                     pred_type = "cloglog"
-                   )
-  )
+    tune_max(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "tmin"),
+      predictors_f = NULL,
+      background = backg2,
+      partition = ".part",
+      grid = gridtest,
+      thr = "max_sens_spec",
+      metric = "TSS",
+      clamp = TRUE,
+      pred_type = "cloglog"
+    ))
 
   expect_message(max_t <-
-                   tune_max(
-                     data = abies2,
-                     response = "pr_ab",
-                     predictors = c("aet", "cwd", "tmin"),
-                     predictors_f = NULL,
-                     background = backg2,
-                     partition = ".part",
-                     grid = NULL,
-                     thr = "max_sens_spec",
-                     metric = "TSS",
-                     clamp = TRUE,
-                     pred_type = "cloglog"
-                   )
-  )
-}
-)
+    tune_max(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "tmin"),
+      predictors_f = NULL,
+      background = backg2,
+      partition = ".part",
+      grid = NULL,
+      thr = "max_sens_spec",
+      metric = "TSS",
+      clamp = TRUE,
+      pred_type = "cloglog"
+    ))
+})
 
 test_that("test data with NA and without background", {
   require(maxnet)
@@ -128,14 +131,16 @@ test_that("test data with NA and without background", {
   data(abies)
   data(backg)
   set.seed(0)
-  abies <- abies %>% dplyr::group_by(pr_ab) %>%
+  abies <- abies %>%
+    dplyr::group_by(pr_ab) %>%
     dplyr::slice_sample(prop = .2)
   set.seed(0)
-  backg <- backg %>% dplyr::group_by(pr_ab) %>%
+  backg <- backg %>%
+    dplyr::group_by(pr_ab) %>%
     dplyr::slice_sample(prop = .2)
 
-  abies[c(1,50,100),2:ncol(abies)] <- NA
-  backg[c(1,50,100),2:ncol(backg)] <- NA
+  abies[c(1, 50, 100), 2:ncol(abies)] <- NA
+  backg[c(1, 50, 100), 2:ncol(backg)] <- NA
 
   # We will partition the data and background with the k-fold method
 
@@ -155,42 +160,41 @@ test_that("test data with NA and without background", {
 
   # Hyper-parameter values for tuning
   gridtest <-
-    expand.grid(regmult = seq(0.1, 3,1),
-                classes = c("l", "lq"))
+    expand.grid(
+      regmult = seq(0.1, 3, 1),
+      classes = c("l", "lq")
+    )
 
   expect_message(max_t <-
-                   tune_max(
-                     data = abies2,
-                     response = "pr_ab",
-                     predictors = c("aet", "cwd", "tmin"),
-                     predictors_f = NULL,
-                     background = backg2,
-                     partition = ".part",
-                     grid = gridtest,
-                     thr = "max_sens_spec",
-                     metric = "TSS",
-                     clamp = TRUE,
-                     pred_type = "cloglog"
-                   )
-  )
+    tune_max(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "tmin"),
+      predictors_f = NULL,
+      background = backg2,
+      partition = ".part",
+      grid = gridtest,
+      thr = "max_sens_spec",
+      metric = "TSS",
+      clamp = TRUE,
+      pred_type = "cloglog"
+    ))
 
   expect_message(max_t <-
-                   tune_max(
-                     data = abies2,
-                     response = "pr_ab",
-                     predictors = c("aet", "cwd", "tmin"),
-                     predictors_f = NULL,
-                     background = NULL,
-                     partition = ".part",
-                     grid = gridtest,
-                     thr = "max_sens_spec",
-                     metric = "TSS",
-                     clamp = TRUE,
-                     pred_type = "cloglog"
-                   )
-  )
-}
-)
+    tune_max(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "tmin"),
+      predictors_f = NULL,
+      background = NULL,
+      partition = ".part",
+      grid = gridtest,
+      thr = "max_sens_spec",
+      metric = "TSS",
+      clamp = TRUE,
+      pred_type = "cloglog"
+    ))
+})
 
 test_that("test background argument names not match
           lack of hyperparameter", {
@@ -225,44 +229,46 @@ test_that("test background argument names not match
 
   # Hyper-parameter values for tuning
   gridtest <-
-    expand.grid(regmult = seq(0.1, 31),
-                classes = c("l", "lq"))
+    expand.grid(
+      regmult = seq(0.1, 31),
+      classes = c("l", "lq")
+    )
 
   expect_error(max_t <-
-                 tune_max(
-                   data = abies2,
-                   response = "pr_ab",
-                   predictors = c("aet", "cwd", "tmin"),
-                   predictors_f = c("landform"),
-                   background = backg2,
-                   partition = ".part",
-                   grid = gridtest,
-                   thr = "max_sens_spec",
-                   metric = "TSS",
-                   clamp = TRUE,
-                   pred_type = "cloglog"
-                 )
-  )
+    tune_max(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "tmin"),
+      predictors_f = c("landform"),
+      background = backg2,
+      partition = ".part",
+      grid = gridtest,
+      thr = "max_sens_spec",
+      metric = "TSS",
+      clamp = TRUE,
+      pred_type = "cloglog"
+    ))
 
   gridtest <-
-    expand.grid(regmult = seq(0.1, 31),
-                classes = c("l", "lq"))
+    expand.grid(
+      regmult = seq(0.1, 31),
+      classes = c("l", "lq")
+    )
 
   expect_error(max_t <-
-                 tune_max(
-                   data = abies2,
-                   response = "pr_ab",
-                   predictors = c("aet", "cwd", "tmin"),
-                   predictors_f = c("landform"),
-                   background = backg2,
-                   partition = ".part",
-                   grid = gridtest[-1],
-                   thr = "max_sens_spec",
-                   metric = "TSS",
-                   clamp = TRUE,
-                   pred_type = "cloglog"
-                 )
-  )
+    tune_max(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "tmin"),
+      predictors_f = c("landform"),
+      background = backg2,
+      partition = ".part",
+      grid = gridtest[-1],
+      thr = "max_sens_spec",
+      metric = "TSS",
+      clamp = TRUE,
+      pred_type = "cloglog"
+    ))
 
   # Groups doesn't match
   backg2 <- part_random(
@@ -271,23 +277,18 @@ test_that("test background argument names not match
     method = c(method = "kfold", folds = 3)
   )
 
-expect_error(max_t <-
-               tune_max(
-                 data = abies2,
-                 response = "pr_ab",
-                 predictors = c("aet", "cwd", "tmin"),
-                 predictors_f = c("landform"),
-                 background = backg2,
-                 partition = ".part",
-                 grid = gridtest,
-                 thr = "max_sens_spec",
-                 metric = "TSS",
-                 clamp = TRUE,
-                 pred_type = "cloglog"
-               )
-)
-
-
-
-}
-)
+  expect_error(max_t <-
+    tune_max(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "tmin"),
+      predictors_f = c("landform"),
+      background = backg2,
+      partition = ".part",
+      grid = gridtest,
+      thr = "max_sens_spec",
+      metric = "TSS",
+      clamp = TRUE,
+      pred_type = "cloglog"
+    ))
+})

@@ -206,8 +206,8 @@ correct_colinvar <- function(env_layer,
 
     result <- list(
       env_layer = env_layer,
-      coefficients = data.frame(cof) %>% dplyr::tibble(variable=rownames(.), .),
-      cumulative_variance = dplyr::tibble(PC=1:nrow(cvar), cvar)
+      coefficients = data.frame(cof) %>% dplyr::tibble(variable = rownames(.), .),
+      cumulative_variance = dplyr::tibble(PC = 1:nrow(cvar), cvar)
     )
 
     if (!is.null(proj)) {

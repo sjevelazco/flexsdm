@@ -16,15 +16,15 @@ test_that("test for fit_ function family", {
     dplyr::filter(species == "sp2") %>%
     sdm_extract(
       data = .,
-      x = 'x',
-      y = 'y',
+      x = "x",
+      y = "y",
       env_layer = somevar,
       variables = names(somevar),
       filter_na = TRUE
     ) %>%
     part_random(
       data = .,
-      pr_ab = 'pr_ab',
+      pr_ab = "pr_ab",
       method = c(method = "kfold", folds = 3)
     )
 
@@ -149,7 +149,7 @@ test_that("test for fit_ function family", {
 
   # net with two factors
   net2 <- fit_net(
-    data = spp_ %>% dplyr::mutate(category2=category),
+    data = spp_ %>% dplyr::mutate(category2 = category),
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     predictors_f = c("category", "category2"),
@@ -158,7 +158,7 @@ test_that("test for fit_ function family", {
     size = 1
   )
 
-  somevar2 <- rast(list(somevar, category2=somevar$category))
+  somevar2 <- rast(list(somevar, category2 = somevar$category))
   names(somevar2)[6] <- "category2"
   p <- sdm_predict(
     models = net2,
@@ -190,7 +190,7 @@ test_that("test for fit_ function family", {
 
   # raf with two factors
   raf2 <- fit_raf(
-    data = spp_ %>% dplyr::mutate(category2=category),
+    data = spp_ %>% dplyr::mutate(category2 = category),
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     predictors_f = c("category", "category2"),
@@ -235,7 +235,7 @@ test_that("test for fit_ function family", {
     con_thr = FALSE
   )
   expect_true(length(p) == 2)
-  expect_equal(names(p) , c('svm', 'raf'))
+  expect_equal(names(p), c("svm", "raf"))
   rm(p)
 })
 
@@ -256,19 +256,19 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
     dplyr::filter(species == "sp2") %>%
     sdm_extract(
       data = .,
-      x = 'x',
-      y = 'y',
+      x = "x",
+      y = "y",
       env_layer = somevar,
       variables = names(somevar),
       filter_na = TRUE
     ) %>%
     part_random(
       data = .,
-      pr_ab = 'pr_ab',
+      pr_ab = "pr_ab",
       method = c(method = "kfold", folds = 3)
     )
 
-  ca <- calib_area(data = spp_, 'x', 'y', method = 'mcp')
+  ca <- calib_area(data = spp_, "x", "y", method = "mcp")
 
   # gau
   gau <- fit_gau(
@@ -298,11 +298,12 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
   )
 
   enm <-
-    fit_ensemble(models = list(gau, gbm, glm),
-                 ens_method = c("mean", "meanw", "meansup", "meanthr", "median"),
-                 metric="TSS",
-                 thr_model="equal_sens_spec"
-                 )
+    fit_ensemble(
+      models = list(gau, gbm, glm),
+      ens_method = c("mean", "meanw", "meansup", "meanthr", "median"),
+      metric = "TSS",
+      thr_model = "equal_sens_spec"
+    )
 
   # Test predict ensemble and with predict_area
   p <- sdm_predict(
@@ -348,19 +349,19 @@ test_that("test for all threshold", {
     dplyr::filter(species == "sp2") %>%
     sdm_extract(
       data = .,
-      x = 'x',
-      y = 'y',
+      x = "x",
+      y = "y",
       env_layer = somevar,
       variables = names(somevar),
       filter_na = TRUE
     ) %>%
     part_random(
       data = .,
-      pr_ab = 'pr_ab',
+      pr_ab = "pr_ab",
       method = c(method = "kfold", folds = 3)
     )
 
-  ca <- calib_area(data = spp_, 'x', 'y', method = 'mcp')
+  ca <- calib_area(data = spp_, "x", "y", method = "mcp")
 
   gam <- fit_gam(
     data = spp_,
@@ -399,19 +400,19 @@ test_that("test for prdicting ensemble of small models", {
     dplyr::filter(species == "sp2") %>%
     sdm_extract(
       data = .,
-      x = 'x',
-      y = 'y',
+      x = "x",
+      y = "y",
       env_layer = somevar,
       variables = names(somevar),
       filter_na = TRUE
     ) %>%
     part_random(
       data = .,
-      pr_ab = 'pr_ab',
+      pr_ab = "pr_ab",
       method = c(method = "kfold", folds = 3)
     )
 
-  ca <- calib_area(data = spp_, 'x', 'y', method = 'mcp')
+  ca <- calib_area(data = spp_, "x", "y", method = "mcp")
 
   gam <- esm_gam(
     data = spp_,

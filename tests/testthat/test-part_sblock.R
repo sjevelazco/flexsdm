@@ -55,7 +55,7 @@ test_that("only with presences", {
   somevar <- terra::rast(f)
 
   # Lest practice with a single species
-  single_spp <- spp %>% dplyr::filter(species == "sp1", pr_ab==1)
+  single_spp <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
   # plot(somevar$CFP_1)
   # single_spp[c('x', 'y')] %>% points
 
@@ -87,7 +87,7 @@ test_that("tese some errors", {
   somevar <- terra::rast(f)
 
   # Lest practice with a single species
-  single_spp <- spp %>% dplyr::filter(species == "sp3", pr_ab==1)
+  single_spp <- spp %>% dplyr::filter(species == "sp3", pr_ab == 1)
   single_spp$pr_ab[1:3] <- 1:3
 
   expect_error(part <- part_sblock(

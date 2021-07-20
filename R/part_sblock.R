@@ -476,11 +476,12 @@ unique list values in pr_ab column are: ",
           data[filt, names(env_layer)],
           function(x) {
             suppressMessages(
-            ape::Moran.I(x,
-              dist2,
-              na.rm = TRUE,
-              scaled = TRUE
-            )$observed)
+              ape::Moran.I(x,
+                dist2,
+                na.rm = TRUE,
+                scaled = TRUE
+              )$observed
+            )
           }
         )
         imoran_grid_c[c] <- mean(abs(im))

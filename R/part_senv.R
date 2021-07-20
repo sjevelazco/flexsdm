@@ -298,9 +298,9 @@ unique list values in pr_ab column are: ",
       break
     }
 
-    if ((length(unique(Opt2$spa_auto))==1) &&
-        (length(unique(Opt2$env_sim))==1) &&
-        (length(unique(Opt2$sd_p))==1)) {
+    if ((length(unique(Opt2$spa_auto)) == 1) &&
+      (length(unique(Opt2$env_sim)) == 1) &&
+      (length(unique(Opt2$sd_p)) == 1)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }

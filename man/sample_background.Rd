@@ -72,19 +72,19 @@ grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 plot(grid_env)
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####             Random background method               ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 
 # Sample background points throughout study area with random method
-spp_p <- spp_pa \%>\% dplyr::filter(pr_ab==1)
+spp_p <- spp_pa \%>\% dplyr::filter(pr_ab == 1)
 bg <-
   sample_background(
     data = spp_p,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     n = 1000,
     method = "random",
     rlayer = grid_env
@@ -96,8 +96,8 @@ points(bg)
 plot(grid_env)
 sample_background(
   data = spp_p,
-  x = 'x',
-  y = 'y',
+  x = "x",
+  y = "y",
   n = 1000,
   method = "random",
   rlayer = grid_env,
@@ -107,8 +107,8 @@ sample_background(
 plot(grid_env)
 sample_background(
   data = spp_p,
-  x = 'x',
-  y = 'y',
+  x = "x",
+  y = "y",
   n = 1000,
   method = "random",
   rlayer = grid_env,
@@ -118,8 +118,8 @@ sample_background(
 plot(grid_env)
 sample_background(
   data = spp_p,
-  x = 'x',
-  y = 'y',
+  x = "x",
+  y = "y",
   n = 1000,
   method = "random",
   rlayer = grid_env,
@@ -138,8 +138,8 @@ plot(ca_ps1, add = T)
 points(spp_pa[-1], col = "blue", cex = 0.7, pch = 19)
 sample_background(
   data = spp_p,
-  x = 'x',
-  y = 'y',
+  x = "x",
+  y = "y",
   n = 1000,
   method = "random",
   rlayer = grid_env,
@@ -150,19 +150,19 @@ sample_background(
 
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####            Thickening background method            ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 
 # Thickening background without containing them
 spp_p # presences database of a species
 grid_env # The raster layer used for sampling background
 bg <- sample_background(
   data = spp_p,
-  x = 'x',
-  y = 'y',
+  x = "x",
+  y = "y",
   n = 5000,
   method = "thickening",
   rlayer = grid_env,
@@ -178,8 +178,8 @@ spp_p # presences database of a species
 grid_env # The reaster layer used for sampling background
 bg <- sample_background(
   data = spp_p,
-  x = 'x',
-  y = 'y',
+  x = "x",
+  y = "y",
   n = 5000,
   method = c("thickening", width = 150000),
   rlayer = grid_env
@@ -192,8 +192,8 @@ bg \%>\%
 # Sample thickening background within a calibration area and constrained to a region
 bg <- sample_background(
   data = spp_p,
-  x = 'x',
-  y = 'y',
+  x = "x",
+  y = "y",
   n = 3000,
   method = "thickening",
   rlayer = grid_env,
@@ -202,10 +202,10 @@ bg <- sample_background(
 )
 
 plot(grid_env)
-plot(ca_ps1, add=T)
+plot(ca_ps1, add = T)
 bg \%>\%
-  points(col = "red", cex=0.3)
-points(spp_p[c('x', 'y')], pch=19)
+  points(col = "red", cex = 0.3)
+points(spp_p[c("x", "y")], pch = 19)
 }
 
 }

@@ -218,7 +218,7 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     cname <- method[[3]]
     data <- data[, c("x", "y")]
     data_sp <- data
-    data_sp <- terra::vect(data_sp, geom = names(data_sp), crs=terra::crs(polyc))
+    data_sp <- terra::vect(data_sp, geom = names(data_sp), crs = terra::crs(polyc))
     result <- terra::extract(polyc, data_sp)[, cname] %>% unique()
     result <- polyc[polyc[[cname]][, 1] %in% result, ]
   }

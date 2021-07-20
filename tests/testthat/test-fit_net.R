@@ -62,8 +62,6 @@ test_that("multiplication works", {
     thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
     fit_formula = NULL
   ))
-
-
 })
 
 test_that("test nnet with NA, no factor variable and using formula", {
@@ -89,4 +87,3 @@ test_that("test nnet with NA, no factor variable and using formula", {
 
   expect_equal(class(nnet_t1), "list")
 })
-

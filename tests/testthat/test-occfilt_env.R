@@ -23,19 +23,19 @@ test_that("test occfilt_env", {
     cores = 1
   )
 
-  expect_true(nrow(filtered_1)<nrow(spp1))
+  expect_true(nrow(filtered_1) < nrow(spp1))
 
-#
-#   # 5 bins conventional without use of cores
-#   filtered_2 <- occfilt_env(
-#     data = spp1,
-#     x = "x",
-#     y = "y",
-#     id = "idd",
-#     env_layer = somevar,
-#     nbins = 5,
-#     cores = 3
-#   )
-#
-#   expect_true(nrow(filtered_1)==nrow(filtered_2))
+  #
+  #   # 5 bins conventional without use of cores
+  #   filtered_2 <- occfilt_env(
+  #     data = spp1,
+  #     x = "x",
+  #     y = "y",
+  #     id = "idd",
+  #     env_layer = somevar,
+  #     nbins = 5,
+  #     cores = 3
+  #   )
+  #
+  #   expect_true(nrow(filtered_1)==nrow(filtered_2))
 })

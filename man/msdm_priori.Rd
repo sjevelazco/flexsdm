@@ -39,7 +39,7 @@ If used one these constraining method cite Mendes et al 2020.
 }
 \examples{
 \dontrun{
-require(dplry)
+require(dplyr)
 require(terra)
 
 data("spp")
