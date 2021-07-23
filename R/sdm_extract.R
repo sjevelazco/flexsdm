@@ -77,7 +77,7 @@ sdm_extract <-
     # extract environmental data at xy locations, if filter_na = FALSE, does not remove rows with NAs
     extract_data <- dplyr::tibble(
       data,
-      terra::extract(env_layer[variables],
+      terra::extract(env_layer[[variables]],
         sp_data,
         cells = FALSE
       ) %>%

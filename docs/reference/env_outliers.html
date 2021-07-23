@@ -99,7 +99,7 @@ Outliers detection could be useful in occurrence data cleaning procedure (Chapma
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01_pre_modeling.html">flexsdm: Overview of Pre-modeling Steps</a>
+      <a href="../articles/01_pre_modeling.html">flexsdm: Overview of Pre-modeling functions</a>
     </li>
   </ul>
 </li>
@@ -204,8 +204,8 @@ et al. (in prep)</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra'>terra</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra/'>terra</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>ggplot2</span><span class='op'>)</span>
 
 <span class='co'># Environmental variables</span>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/somevar.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
@@ -214,28 +214,7 @@ et al. (in prep)</p>
 <span class='co'># Species occurrences</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"spp"</span><span class='op'>)</span>
 <span class='va'>spp</span>
-<<<<<<< HEAD
-<<<<<<< HEAD
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,150 x 4</span>
-#&gt;    species        x        y pr_ab
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> sp1       -<span style='color: #BB0000; text-decoration: underline;'>5</span><span style='color: #BB0000;'>541.</span> -<span style='color: #BB0000; text-decoration: underline;'>145</span><span style='color: #BB0000;'>138.</span>     0
-#&gt; <span style='color: #BCBCBC;'> 2</span> sp1      -<span style='color: #BB0000; text-decoration: underline;'>51</span><span style='color: #BB0000;'>981.</span>   <span style='text-decoration: underline;'>16</span>322.     0
-#&gt; <span style='color: #BCBCBC;'> 3</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>269</span><span style='color: #BB0000;'>871.</span>   <span style='text-decoration: underline;'>69</span>512.     1
-#&gt; <span style='color: #BCBCBC;'> 4</span> sp1      -<span style='color: #BB0000; text-decoration: underline;'>96</span><span style='color: #BB0000;'>261.</span>  -<span style='color: #BB0000; text-decoration: underline;'>32</span><span style='color: #BB0000;'>008.</span>     0
-#&gt; <span style='color: #BCBCBC;'> 5</span> sp1      <span style='text-decoration: underline;'>269</span>589. -<span style='color: #BB0000; text-decoration: underline;'>566</span><span style='color: #BB0000;'>338.</span>     0
-#&gt; <span style='color: #BCBCBC;'> 6</span> sp1       <span style='text-decoration: underline;'>29</span>829. -<span style='color: #BB0000; text-decoration: underline;'>328</span><span style='color: #BB0000;'>468.</span>     0
-#&gt; <span style='color: #BCBCBC;'> 7</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>152</span><span style='color: #BB0000;'>691.</span>  <span style='text-decoration: underline;'>393</span>782.     0
-#&gt; <span style='color: #BCBCBC;'> 8</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>195</span><span style='color: #BB0000;'>081.</span>  <span style='text-decoration: underline;'>253</span>652.     0
-#&gt; <span style='color: #BCBCBC;'> 9</span> sp1        -<span style='color: #BB0000;'>951.</span> -<span style='color: #BB0000; text-decoration: underline;'>277</span><span style='color: #BB0000;'>978.</span>     0
-#&gt; <span style='color: #BCBCBC;'>10</span> sp1      <span style='text-decoration: underline;'>145</span>929. -<span style='color: #BB0000; text-decoration: underline;'>271</span><span style='color: #BB0000;'>498.</span>     0
-#&gt; <span style='color: #949494;'># … with 1,140 more rows</span></div><div class='input'><span class='va'>spp1</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span><span class='op'>)</span>
-=======
 <span class='va'>spp1</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span><span class='op'>)</span>
->>>>>>> main
-=======
-<span class='va'>spp1</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span><span class='op'>)</span>
->>>>>>> main
 
 <span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"blue"</span>, pch <span class='op'>=</span> <span class='fl'>19</span><span class='op'>)</span>
@@ -267,9 +246,9 @@ et al. (in prep)</p>
 <span class='co'># Let explor where are locate records highlighted as outliers</span>
 <span class='va'>outs_1</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='va'>.out_sum</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='va'>.</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='va'>.</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Detect outliers only with presences</span>
 <span class='va'>outs_2</span> <span class='op'>&lt;-</span> <span class='fu'>env_outliers</span><span class='op'>(</span>
@@ -294,9 +273,9 @@ et al. (in prep)</p>
 <span class='co'># Let explor where are locate records highlighted as outliers</span>
 <span class='va'>outs_2</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span>, <span class='va'>.out_sum</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='va'>.</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>ggplot</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_point</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>facet_wrap</span><span class='op'>(</span><span class='va'>.</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>.out_sum</span><span class='op'>)</span><span class='op'>)</span>
 
 
 <span class='co'># Comparison of function outputs when using it with</span>
