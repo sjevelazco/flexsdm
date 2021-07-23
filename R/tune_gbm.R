@@ -128,6 +128,12 @@ tune_gbm <-
 
     data <- data.frame(data)
 
+    # Test response variable
+    r_test <- (data %>% dplyr::pull(response) %>% unique()  %>% na.omit())
+    if((!all(r_test%in%c(0,1)))){
+      stop("values of response variable do not match with 0 and 1")
+    }
+
     if (is.null(predictors_f)) {
       data <- data %>%
         dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
@@ -173,6 +179,9 @@ tune_gbm <-
         n.minobsinnode = c(1:10, 20, 30) # TODO try define a best default tuning set
       )
       message("Hyper-parameter values were not provided, default values will be used")
+      message("n.trees = c(20, 50, 100, 200, 500")
+      message("shrinkage = c(0.01, 0.1, 0.3)")
+      message("n.minobsinnode = c(1:10, 20, 30)")
     }
 
     # Test hyper-parameters names

@@ -69,6 +69,58 @@ A list object with:
 \description{
 Fit and validate Maximum Entropy models with exploration of hyper-parameters
 }
+\examples{
+\dontrun{
+data("abies")
+data("backg")
+abies # environmental conditions of presence-absence data
+backg # environmental conditions of background points
+
+# Using k-fold partition method
+# Remember that the partition method, number of folds or replications must
+# be the same for presence-absence and background points datasets
+abies2 <- part_random(
+  data = abies,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+abies2
+
+backg2 <- part_random(
+  data = backg,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+backg
+
+
+gridtest <-
+  expand.grid(
+    regmult = seq(0.1, 3, 0.5),
+    classes = c("l", "lq", "lqhpt")
+  )
+
+max_t1 <- tune_max(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+  predictors_f = c("landform"),
+  partition = ".part",
+  background = backg2,
+  grid = gridtest,
+  thr = "max_sens_spec",
+  metric = "TSS",
+  clamp = TRUE,
+  pred_type = "cloglog"
+)
+
+length(max_t1)
+max_t1$model
+max_t1$predictors
+max_t1$performance
+max_t1$data_ens
+}
+}
 \seealso{
 \code{\link{tune_gbm}}, \code{\link{tune_net}}, \code{\link{tune_raf}}, and \code{\link{tune_svm}}.
 }
