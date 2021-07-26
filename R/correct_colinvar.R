@@ -74,9 +74,12 @@
 #' var$cumulative_variance
 #'
 #' # Perform fa colinearity control
-#' # this method only will be performed if covariance matrix is invertible.
-#' # WRITE HERE A EXAMPLE THAT WORKS :)
-#' # var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+
+#' var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+#' var$env_layer
+#' var$coefficient
+#' var$cumulative_variance
+
 #' }
 #'
 correct_colinvar <- function(env_layer,
@@ -188,9 +191,9 @@ correct_colinvar <- function(env_layer,
     p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
 
     p <- stats::prcomp(p,
-      retx = TRUE,
-      scale. = TRUE,
-      center = TRUE
+                       retx = TRUE,
+                       scale. = TRUE,
+                       center = TRUE
     )
 
     means <- p$center
@@ -233,7 +236,7 @@ correct_colinvar <- function(env_layer,
       }
 
       result <- list(result,
-        proj = dpca
+                     proj = dpca
       )
     }
   }
@@ -246,7 +249,7 @@ correct_colinvar <- function(env_layer,
       p <- p[sample(1:nrow(p), 10000), ]
     }
 
-    e <- eigen(terra::predict(p))
+    e <- eigen(stats::cor(p))
     len <- length(e$values)
     a <- NULL
     r <- NULL
@@ -264,12 +267,14 @@ correct_colinvar <- function(env_layer,
           x = p,
           factors = ns,
           rotation = "varimax",
-          lower = 0.01
+          lower = 0.001
         ),
         error = function(e) {
-          stop(
-            "Covariance matrix is not invertible. Consider choosing another method to control collinearity.",
-            call. = F
+          stats::factanal(
+            x = p,
+            factors = ns-1,
+            rotation = "varimax",
+            lower = 0.001
           )
         }
       )
