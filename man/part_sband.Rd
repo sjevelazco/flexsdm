@@ -80,7 +80,7 @@ part <- part_sband(
   x = "x",
   y = "y",
   pr_ab = "pr_ab",
-  type = "lon"
+  type = "lon",
   min_bands = 2,
   max_bands = 20,
   n_part = 2,
