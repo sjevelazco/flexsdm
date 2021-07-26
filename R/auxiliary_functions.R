@@ -5,6 +5,9 @@
 ## %######################################################%##
 
 
+#' pre_tr_te
+#'
+#' @noRd
 pre_tr_te <- function(data, p_names, h) {
   train <- list()
   test <- list()
@@ -25,10 +28,10 @@ pre_tr_te <- function(data, p_names, h) {
     np2 <- max(data[p_names[h]])
 
     for (i in 1:np2) {
-      train[[i]] <- data[data[p_names[h]] == i, ] %>%
+      train[[i]] <- data[data[p_names[h]] != i, ] %>%
         dplyr::select(-p_names[!p_names == p_names[h]])
 
-      test[[i]] <- data[data[p_names[h]] != i, ] %>%
+      test[[i]] <- data[data[p_names[h]] == i, ] %>%
         dplyr::select(-p_names[!p_names == p_names[h]])
     }
   }
@@ -38,7 +41,9 @@ pre_tr_te <- function(data, p_names, h) {
 
 
 # Inverse bioclim
+# TODO create function for fit and estimate bioclim model
 inv_bio <- function(e, p) {
+  # e <- raster::rast(e)
   e <- raster::stack(e)
   model <- dismo::bioclim(e, as.matrix(p))
   r <- terra::predict(model, e)
@@ -51,22 +56,25 @@ inv_bio <- function(e, p) {
 }
 
 
-# Inverse geo
+#' Inverse geo
+#'
+#' @noRd
+#'
 inv_geo <- function(e, p, d) {
-  colnames(p) <- c('x', 'y')
-  sp::coordinates(p) <- ~ x + y
-  p <- terra::vect(p)
+  colnames(p) <- c("x", "y")
+  p <- terra::vect(p, geom = c("x", "y"))
   r <- terra::rasterize(p, e)
   b <- terra::buffer(r, width = d)
-  e <- mask(e, b, maskvalues=1)
+  e <- mask(e, b, maskvalues = 1)
   return(e)
 }
 
-# Boyce
-# This function calculate Boyce index performance metric. Codes were adapted from enmSdm package. Boyce have
-# value between -1 and +1, with a value tending toward +1 indicating good to perfect predictions, values
-# around 0 indicating predictions no different from those obtained by chance,
-# and values toward -1 indicating counter-predictions.
+#' Boyce
+#'
+#' @description This function calculate Boyce index performance metric. Codes were adapted from
+#' enmSdm package.
+#'
+#' @noRd
 boyce <- function(pres,
                   contrast,
                   n_bins = 101,
@@ -112,7 +120,7 @@ boyce <- function(pres,
 
   # remove classes with 0 background frequency
   if (any(0 %in% freq_contrast)) {
-    zeros <- which(freqPres == 0)
+    zeros <- which(freq_pres == 0)
     mean_pred[zeros] <- NA
     freq_pres[zeros] <- NA
     freq_contrast[zeros] <- NA
@@ -124,64 +132,117 @@ boyce <- function(pres,
 
   # remove NAs
   rm_nas <- stats::complete.cases(data.frame(mean_pred, PE))
-  mean_pred <- mean_pred[rm_nas]
-  PE <- PE[rm_nas]
+  # mean_pred <- mean_pred[rm_nas]
+  # PE <- PE[rm_nas]
 
   # calculate Boyce index
-  result <- stats::cor(x = mean_pred, y = PE, method = "spearman")
+  result <- stats::cor(
+    x = ifelse(is.na(mean_pred), 0, mean_pred),
+    y = ifelse(is.na(PE), 0, PE), method = "spearman"
+  )
   return(result)
 }
 
 
-# Remove NAs
-rm_na <- function(x) {
-  n0 <- nrow(x)
-  x <- stats::na.exclude(x)
-  n1 <- nrow(x)
-  if (n0 > n1) {
-    message(n0 - n1, " rows were excluded from database because NAs were found")
+#' Predict maxnet
+#'
+#' @noRd
+predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "exponential", "cloglog", "logistic"), ...) {
+  categoricalval <- function(x, category) {
+    ifelse(x == category, 1, 0)
   }
-  return(x)
-}
+  thresholdval <- function(x, knot) {
+    ifelse(x >= knot, 1, 0)
+  }
+  hingeval <- function(x, min, max) {
+    pmin(1, pmax(0, (x - min) / (max - min)))
+  }
 
-
-##%######################################################%##
-#                                                          #
-####              Predict maxnet function               ####
-#                                                          #
-##%######################################################%##
-predict_maxnet <- function (object, newdata, clamp = TRUE, type = c("link", "exponential", "cloglog", "logistic"), ...)
-{
   if (clamp) {
     for (v in intersect(names(object$varmax), names(newdata))) {
-      newdata[, v] <- pmin(pmax(newdata[, v], object$varmin[v]),
-                           object$varmax[v])
+      newdata[, v] <- pmin(
+        pmax(newdata[, v], object$varmin[v]),
+        object$varmax[v]
+      )
     }
   }
-  terms <- sub("hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)",
-               names(object$betas))
-  terms <- sub("categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\\2)",
-               terms)
-  terms <- sub("thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)",
-               terms)
-  f <- formula(paste("~", paste(terms, collapse = " + "),
-                     "-1"))
-  hingeval <- function (x, min, max)
-  {
-    pmin(1, pmax(0, (x - min)/(max - min)))
+  terms <- sub(
+    "hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)",
+    names(object$betas)
+  )
+  terms <- sub(
+    "categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\\2)",
+    terms
+  )
+  terms <- sub(
+    "thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)",
+    terms
+  )
+  f <- formula(paste(
+    "~", paste(terms, collapse = " + "),
+    "-1"
+  ))
+  hingeval <- function(x, min, max) {
+    pmin(1, pmax(0, (x - min) / (max - min)))
   }
-  mm <- model.matrix(f, data.frame(newdata))
-  if (clamp)
-    mm <- t(pmin(pmax(t(mm), object$featuremins[names(object$betas)]),
-                 object$featuremaxs[names(object$betas)]))
+  mm <- stats::model.matrix(f, data.frame(newdata))
+  if (clamp) {
+    mm <- t(pmin(
+      pmax(t(mm), object$featuremins[names(object$betas)]),
+      object$featuremaxs[names(object$betas)]
+    ))
+  }
   link <- (mm %*% object$betas) + object$alpha
   type <- match.arg(type)
-  if (type == "link")
+  if (type == "link") {
     return(link)
-  if (type == "exponential")
+  }
+  if (type == "exponential") {
     return(exp(link))
-  if (type == "cloglog")
+  }
+  if (type == "cloglog") {
     return(1 - exp(0 - exp(object$entropy + link)))
-  if (type == "logistic")
-    return(1/(1 + exp(-object$entropy - link)))
+  }
+  if (type == "logistic") {
+    return(1 / (1 + exp(-object$entropy - link)))
+  }
+}
+
+#' Outliers with Reverse Jackknife
+#'
+#' @noRd
+#'
+rev_jack <- function(v) {
+  v2 <- v
+  v <- unique(v)
+  lgh <- length(v) - 1
+  t1 <- (0.95 * sqrt(length(v))) + 0.2
+  x <- sort(v)
+  y <- rep(0, lgh)
+  for (i in seq_len(lgh)) {
+    x1 <- x[i + 1]
+    if (x[i] < mean(v)) {
+      y[i] <- (x1 - x[i]) * (mean(v) - x[i])
+    } else {
+      y[i] <- (x1 - x[i]) * (x1 - mean(v))
+    }
+  }
+  my <- mean(y)
+  z <- y / (sqrt(sum((y - my)^2) / lgh))
+  out <- rep(0, length(v2))
+  if (any(z > t1)) {
+    f <- which(z > t1)
+    v <- x[f]
+    if (v < median(x)) {
+      xa <- (v2 <= v) * 1
+      out <- out + xa
+    }
+    if (v > median(x)) {
+      xb <- (v2 >= v) * 1
+      out <- out + xb
+    }
+  } else {
+    out <- out
+  }
+  return(which(out == 1))
 }

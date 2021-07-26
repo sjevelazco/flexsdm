@@ -74,10 +74,12 @@
 #' var$cumulative_variance
 #'
 #' # Perform fa colinearity control
+
 #' var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 #' var$env_layer
 #' var$coefficient
 #' var$cumulative_variance
+
 #' }
 #'
 correct_colinvar <- function(env_layer,
@@ -257,7 +259,7 @@ correct_colinvar <- function(env_layer,
       r[j] <- e$values[j] / (sum(e$values))
     }
 
-    ns <- length(which(r > a))
+    ns <- length(which(r > stats::cor))
 
     fit <-
       tryCatch(

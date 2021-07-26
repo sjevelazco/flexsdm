@@ -10,33 +10,50 @@ Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut",
            comment = c(ORCID = "0000-0002-6134-3176")),
            person(given = "Brooke", family = "Rose", role = c("aut"),
            email = "mrose048@ucr.edu",
-           comment = c(ORCID = "0000-0001-5269-3759")))
+           comment = c(ORCID = "0000-0001-5269-3759")),
+           person(given = "Ignacio", family = "Minoli", role = c("aut"),
+           email = "minolicnp@gmail.com",
+           comment = c(ORCID = "0000-0002-6039-6962")),
+           person(given = "Janet", family = "Franklin", role = c("aut"),
+           email = "jfrankl@ucr.edu",
+           comment = c(ORCID = "0000-0003-0314-4598")))
 Maintainer: Santiago J.E. Velazco <sjevelazco@gmail.com>
 Depends: R (>= 3.5.0)
 Imports: 
     ape,
     dismo,
+    doParallel,
     dplyr,
+    flexclust,
+    foreach,
+    gam,
     gbm,
+    grDevices,
     kernlab,
     maxnet,
     nnet,
-    nFactors,
     randomForest,
-    terra,
-    flexclust,
     sp,
-    grDevices,
-    gam,
-    foreach,
-    doParallel,
-    usdm,
+    Rlof,
+    terra,
+    raster,
+    methods,
+    utils,
     GRaF
-Remotes:  
+Remotes: 
     goldingn/GRaF
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
+Suggests: 
+    covr,
+    knitr,
+    rmarkdown,
+    rgeos,
+    testthat (>= 3.0.0)
+VignetteBuilder:
+    knitr
+Config/testthat/edition: 3

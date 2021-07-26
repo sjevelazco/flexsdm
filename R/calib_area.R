@@ -1,6 +1,6 @@
-#' Delimit calibration area for ecological niche models
+##' Delimit calibration area for constructing species distribution models
 #'
-#' @description This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, enm_predict, and enm_ensemble, among others
+#' @description This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others
 #'
 #' @param data data.frame or tibble. Database with presences
 #' @param x character. Column name with longitude data
@@ -9,19 +9,20 @@
 #' \itemize{
 #' \item buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).
 #' \item mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.
-#' \item bmcp: calibration area is defined by buffed minimum convex polygon. Usage method = c('bmcp', width=40000).
-#' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatialPolygonDataFrame,  the third element is a character with the column name from SpatialPolygonDataFrame used for filtering polygons.
+#' \item bmcp: calibration area is defined by buffered minimum convex polygon. Usage method = c('bmcp', width=40000).
+#' \item mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatVector, the third element is a character with the column name from SpatVector used for filtering polygons.
 #' }
 #' @param groups character. Column name with that differentiate set of points. This could be used with mcp and bmcp method. Default NULL
-#' @param crs character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatialPolygonDataFrame used
+#' @param crs character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatVector used
 #'
 #' @return
-#' A SpatialPolygon or SpatialPolygonDataFrame
+#' A SpatialPolygon
 #' @export
 #'
 #' @importFrom grDevices chull
-#' @importFrom sp coordinates Polygon Polygons SpatialPolygons spTransform
-#' @importFrom terra vect buffer crs extract
+#' @importFrom methods as
+#' @importFrom raster buffer
+#' @importFrom terra vect union crs extract
 #'
 #' @examples
 #' \dontrun{
@@ -61,7 +62,7 @@
 #' # mcp method for different groups
 #' single_spp <- single_spp %>% mutate(groups = ifelse(x > 150000, "a", "b"))
 #'
-#' plot(single_spp[, 2:3], pch = 19, col = 'blue')
+#' plot(single_spp[, 2:3], pch = 19, col = "blue")
 #' points(single_spp[single_spp$groups == "a", 2:3], col = "red", pch = 19)
 #' points(single_spp[, 2:3])
 #'
@@ -110,8 +111,9 @@
 #' points(single_spp[, 2:3], pch = 19, cex = 0.5, col = "red")
 #' }
 calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
+  . <- NULL
   if (!method[1] %in% c("buffer", "mcp", "bmcp", "mask")) {
-    stop("argument 'method' was misused, available methods buffer, mcp, bmpc, and maks")
+    stop("argument 'method' was misused, available methods buffer, mcp, bmpc, and mask")
   }
 
   if (method[1] %in% c("bmcp", "buffer")) {
@@ -121,11 +123,11 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   }
 
   if (method[1] %in% c("mask")) {
-    if (!class(clusters)%in%c("SpatialPolygonsDataFrame", "SpatVector")) {
+    if (!class(method[[2]]) %in% c("SpatialPolygonsDataFrame", "SpatVector")) {
       stop("provide a SpatVector or SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
     }
-    if(class(clusters)!="SpatVector"){
-      clusters <- terra::vect(clusters)
+    if (class(method[[2]]) != "SpatVector") {
+      method[[2]] <- terra::vect(method[[2]])
     }
   }
 
@@ -136,9 +138,15 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   if (method[1] == "buffer") {
     data <- data[, c("x", "y")]
     data_sp <- data
-    sp::coordinates(data_sp) <- ~ x + y
-    result <- terra::buffer(data_sp, width = as.numeric(method["width"]))
-    result <- terra::vect(result)
+    if (is.null(crs)) {
+      data_sp <- terra::vect(data_sp, geom = names(data_sp))
+      result <- raster::buffer(methods::as(data_sp, "Spatial"), width = as.numeric(method["width"]))
+      result <- terra::vect(result)
+    } else {
+      data_sp <- terra::vect(data_sp, geom = names(data_sp), crs = crs)
+      result <- raster::buffer(methods::as(data_sp, "Spatial"), width = as.numeric(method["width"]))
+      result <- terra::vect(result)
+    }
   }
 
   if (method[1] == "mcp") {
@@ -150,13 +158,26 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     for (i in 1:length(data)) {
       data_pl <- data.frame(data[[i]][, c("x", "y")])
       data_pl <- data_pl[grDevices::chull(data_pl), ]
-      data_pl <- sp::Polygon(data_pl)
-      data_pl <- sp::Polygons(list(data_pl), ID = 1)
-      data_pl <- sp::SpatialPolygons(list(data_pl))
-      result[[i]] <- terra::vect(data_pl)
+      data_pl <- apply(data_pl, 1, function(x) {
+        paste(x[1], x[2])
+      }) %>%
+        paste(., collapse = ", ") %>%
+        paste("POLYGON", "((", ., "))")
+      if (is.null(crs)) {
+        data_pl <- terra::vect(data_pl)
+      } else {
+        data_pl <- terra::vect(data_pl, crs = crs)
+      }
+      result[[i]] <- data_pl
     }
     if (length(result) > 1) {
-      result <- do.call(rbind, result)
+      result <- do.call(
+        terra::union,
+        sapply(result, function(x) {
+          methods::as(x, "Spatial")
+        })
+      ) %>%
+        terra::vect()
     } else {
       result <- result[[1]]
     }
@@ -171,16 +192,24 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     for (i in 1:length(data)) {
       data_pl <- data.frame(data[[i]][, c("x", "y")])
       data_pl <- data_pl[grDevices::chull(data_pl), ]
-      data_pl <- sp::Polygon(data_pl)
-      data_pl <- sp::Polygons(list(data_pl), ID = 1)
-      data_pl <- sp::SpatialPolygons(list(data_pl))
-      data_pl <- terra::buffer(data_pl, width = as.numeric(method["width"]))
+      data_pl <- apply(data_pl, 1, function(x) {
+        paste(x[1], x[2])
+      }) %>%
+        paste(., collapse = ", ") %>%
+        paste("POLYGON", "((", ., "))")
+      if (is.null(crs)) {
+        data_pl <- terra::vect(data_pl)
+      } else {
+        data_pl <- terra::vect(data_pl, crs = crs)
+      }
+      data_pl <- raster::buffer(methods::as(data_pl, "Spatial"), width = as.numeric(method["width"]))
       result[[i]] <- data_pl
     }
     if (length(result) > 1) {
-      result <- do.call(bind, result)
+      result <- sapply(result, terra::vect)
+      result <- do.call(terra::union, result)
     } else {
-      result <- result[[1]]
+      result <- terra::vect(result[[1]])
     }
   }
 
@@ -189,11 +218,9 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     cname <- method[[3]]
     data <- data[, c("x", "y")]
     data_sp <- data
-    sp::coordinates(data_sp) <- ~ x + y
-    terra::crs(data_sp) <- terra::crs(polyc)
-    data_sp <- sp::spTransform(data_sp, terra::crs(polyc))
-    result <- terra::extract(polyc, vect(data_sp))[, cname] %>% unique
-    result <- polyc[polyc[[cname]][,1] %in% result, ]
+    data_sp <- terra::vect(data_sp, geom = names(data_sp), crs = terra::crs(polyc))
+    result <- terra::extract(polyc, data_sp)[, cname] %>% unique()
+    result <- polyc[polyc[[cname]][, 1] %in% result, ]
   }
   return(result)
 }

@@ -2,4 +2,5 @@ title: flexsdm
 
 template:
   params:
-    bootswatch: yeti
+    bootswatch: united
+

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What the Package Does (Title Case))) • flexsdm</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -47,6 +47,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/01_pre_modeling.html">flexsdm: Overview of Pre-modeling functions</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -60,18 +72,152 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
+
 <div id="flexsdm" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#flexsdm" class="anchor"></a>flexsdm</h1></div>
-<p>This is a provisional version of ENMTML package. Here will be provided new tools and function that will be implemented to ENMTML. The idea of this repository is to recreate the ENMTML package from independent and user-accessible functions. So that there is still a main function that does “everything” but also many independent functions that give flexibility to the original package.</p>
+<div id="overview" class="section level3">
+<h3 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h3>
+<p>Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. This has led to defining a specific modeling process for a particular situation where the “click-and-run” is not a desirable option.</p>
+<p>One of the most exciting features of <strong>flexsdm</strong> is its high manipulation and parametrization capacity based on different functions and arguments manipulation. This enables users to define their own complete or partial modeling procedure specific for a modeling situation (e.g., number of variables, number of records, different algorithm and ensemble methods, algorithms tuning, etc.).</p>
+<hr>
 </div>
+<div id="set-of-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#set-of-functions" class="anchor"></a>Set of functions</h3>
+</div>
+<div id="1-pre-modeling-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#1-pre-modeling-functions" class="anchor"></a>1. Pre-modeling functions</h3>
+<p>Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).</p>
+<ul>
+<li>
+<code><a href="reference/calib_area.html">calib_area()</a></code> Delimit calibration area for constructing species distribution models</li>
+<li>
+<code><a href="reference/correct_colinvar.html">correct_colinvar()</a></code> Perform collinearity reduction on predictors</li>
+<li>
+<code><a href="reference/env_outliers.html">env_outliers()</a></code> Integration of outliers detection methods in the environmental space</li>
+<li>
+<code>part_classical()</code> Data partitioning for training and testing models</li>
+<li>
+<code><a href="reference/part_sblock.html">part_sblock()</a></code> Spatial block cross validation</li>
+<li>
+<code><a href="reference/plot_res.html">plot_res()</a></code> Plot different resolutions to be used in part_sblock</li>
+<li>
+<code><a href="reference/part_senv.html">part_senv()</a></code> Environmental and spatial cross validation</li>
+<li>
+<code><a href="reference/sample_background.html">sample_background()</a></code> Sample background points</li>
+<li>
+<code><a href="reference/sample_pseudoabs.html">sample_pseudoabs()</a></code> Peseudo-absence allocation method</li>
+<li>
+<code><a href="reference/sdm_extract.html">sdm_extract()</a></code> Extract environmental data based on x and y coordinates</li>
+<li>
+<code><a href="reference/occfilt_env.html">occfilt_env()</a></code> Perform environmental filtering on species occurrences</li>
+<li>
+<code>occfilt_geo()</code> Perform geographical filtering on species occurrences</li>
+</ul>
+</div>
+<div id="2-modeling-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#2-modeling-functions" class="anchor"></a>2. Modeling functions</h3>
+<p>Set of function families for modeling. Several of them can be divided into <code>fit_*</code>, <code>tune_*</code>, and <code>esm_*</code> family functions. <code>fit_*</code> construct and validate models with default hyper-parameter values. <code>tune_*</code> construct and validate models searching for the best hyper-parameter values combination. <code>esm_</code> construct and validate Ensemble of Small Models.</p>
+<div id="fit_-functions-family" class="section level4">
+<h4 class="hasAnchor">
+<a href="#fit_-functions-family" class="anchor"></a><code>fit_*</code> functions family</h4>
+<ul>
+<li>
+<code><a href="reference/fit_gam.html">fit_gam()</a></code> Fit and validate Generalized Additive Models</li>
+<li>
+<code><a href="reference/fit_gau.html">fit_gau()</a></code> Fit and validate Gaussian Process models</li>
+<li>
+<code><a href="reference/fit_gbm.html">fit_gbm()</a></code> Fit and validate Generalized Boosted Regression models</li>
+<li>
+<code><a href="reference/fit_glm.html">fit_glm()</a></code> Fit and validate Generalized Linear Models</li>
+<li>
+<code><a href="reference/fit_max.html">fit_max()</a></code> Fit and validate Maximum Entropy models</li>
+<li>
+<code><a href="reference/fit_net.html">fit_net()</a></code> Fit and validate Neural Networks models</li>
+<li>
+<code><a href="reference/fit_raf.html">fit_raf()</a></code> Fit and validate Random Forest models</li>
+<li>
+<code><a href="reference/fit_svm.html">fit_svm()</a></code> Fit and validate Support Vector Machine models</li>
+</ul>
+</div>
+<div id="tune_-functions-family" class="section level4">
+<h4 class="hasAnchor">
+<a href="#tune_-functions-family" class="anchor"></a><code>tune_*</code> functions family</h4>
+<ul>
+<li>
+<code><a href="reference/tune_gbm.html">tune_gbm()</a></code> Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters</li>
+<li>
+<code><a href="reference/tune_max.html">tune_max()</a></code> Fit and validate Maximum Entropy models with exploration of hyper-parameters</li>
+<li>
+<code><a href="reference/tune_net.html">tune_net()</a></code> Fit and validate Neural Networks models with exploration of hyper-parameters</li>
+<li>
+<code><a href="reference/tune_raf.html">tune_raf()</a></code> Fit and validate Random Forest models with exploration of hyper-parameters</li>
+<li>
+<code><a href="reference/tune_svm.html">tune_svm()</a></code> Fit and validate Support Vector Machine models with exploration of hyper-parameters</li>
+</ul>
+</div>
+<div id="model-ensemble" class="section level4">
+<h4 class="hasAnchor">
+<a href="#model-ensemble" class="anchor"></a>Model ensemble</h4>
+<ul>
+<li>
+<code><a href="reference/fit_ensemble.html">fit_ensemble()</a></code> Fit and validate ensemble models with different ensemble methods</li>
+</ul>
+</div>
+<div id="esm_-functions-family" class="section level4">
+<h4 class="hasAnchor">
+<a href="#esm_-functions-family" class="anchor"></a><code>esm_*</code> functions family</h4>
+<ul>
+<li>
+<code><a href="reference/esm_gam.html">esm_gam()</a></code> Fit and validate Generalized Additive Models with Ensemble of Small Model approach</li>
+<li>
+<code><a href="reference/esm_gau.html">esm_gau()</a></code> Fit and validate Gaussian Process models Models with Ensemble of Small Model approach</li>
+<li>
+<code><a href="reference/esm_gbm.html">esm_gbm()</a></code> Fit and validate Generalized Boosted Regression models with Ensemble of Small Model approach</li>
+<li>
+<code><a href="reference/esm_glm.html">esm_glm()</a></code> Fit and validate Generalized Linear Models with Ensemble of Small Model approach</li>
+<li>
+<code><a href="reference/esm_max.html">esm_max()</a></code> Fit and validate Maximum Entropy models with Ensemble of Small Model approach</li>
+<li>
+<code><a href="reference/esm_net.html">esm_net()</a></code> Fit and validate Neural Networks models with Ensemble of Small Model approach</li>
+<li>
+<code><a href="reference/esm_svm.html">esm_svm()</a></code> Fit and validate Support Vector Machine models with Ensemble of Small Model approach</li>
+</ul>
+</div>
+</div>
+<div id="3-post-modeling-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#3-post-modeling-functions" class="anchor"></a>3. Post-modeling functions</h3>
+<p>Function for predicting, ensemble, and interpolate models.</p>
+<ul>
+<li>
+<code><a href="reference/sdm_predict.html">sdm_predict()</a></code> Spatial predictions of individual and ensemble model</li>
+<li>
+<code><a href="reference/inter.html">inter()</a></code> Raster interpolation between two time periods</li>
+<li>
+<code><a href="reference/extra_eval.html">extra_eval()</a></code> Measure model extrapolation</li>
+<li>
+<code><a href="reference/extra_correct.html">extra_correct()</a></code> Constraint suitability values under a given extrapolation value</li>
+</ul>
+<hr>
+<blockquote>
+<p>Test the package and give us your feedback <a href="https://github.com/sjevelazco/flexsdm/issues">here</a> or send an e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
+</blockquote>
+</div>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li>What license is it under?</li>
+<li>GPL (&gt;= 3)</li>
 </ul>
 </div>
 <div class="developers">
@@ -80,15 +226,25 @@
 <li>Santiago J.E. Velazco <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7527-0967" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>André F.A. Andrade <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6134-3176" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Brooke Rose <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5269-3759" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ignacio Minoli <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6039-6962" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Janet Franklin <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0314-4598" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="http://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat" alt="License"></a></li>
+<li><a href="https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/sjevelazco/flexsdm"><img src="https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV" alt="Codecov test coverage"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">

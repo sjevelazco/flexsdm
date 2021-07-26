@@ -1,6 +1,7 @@
-pandoc: 2.11.2
+pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
-articles: {}
-last_built: 2021-05-12T16:50Z
+articles:
+  01_pre_modeling: 01_pre_modeling.html
+last_built: 2021-07-23T15:13Z
 

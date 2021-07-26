@@ -11,8 +11,7 @@ fit_gam(
   predictors_f = NULL,
   partition,
   thr = NULL,
-  fit_formula = NULL,
-  ...
+  fit_formula = NULL
 )
 }
 \arguments{
@@ -21,7 +20,7 @@ fit_gam(
 \item{response}{character. Column name with species absence-presence data (0,1).}
 
 \item{predictors}{character. Vector with the column names of quantitative
-predictor variables (i.e. continuous or discrete variables).
+predictor variables (i.e. continuous variables).
 Usage predictors = c("aet", "cwd", "tmin")}
 
 \item{predictors_f}{character. Vector with the column names of qualitative
@@ -31,19 +30,19 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
 \itemize{
-  \item lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').
-  \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).
-  \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
-  Usage thr=c(type='max_sens_spec').
-  \item max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').
-  \item max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').
-  \item max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').
-  \item max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').
-  \item specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.
-  }}
+  \item lpt: The highest threshold at which there is no omission.
+  \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
+  \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
+  \item max_jaccard: The threshold at which Jaccard is the highest.
+  \item max_sorensen: The threshold at which Sorensen is highest.
+  \item max_fpb: The threshold at which FPB is highest.
+  \item sensitivity: Threshold based on a specified sensitivity value.
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
+  }
+In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 
 \item{fit_formula}{formula. A formula object with response and predictor
-variables (e.g. forumla(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments}
 }
@@ -51,11 +50,10 @@ response, predictors, and predictors_f arguments}
 A list object with:
 \itemize{
 \item model: A "Gam" "glm" "lm"  class object. This object can be used for predicting.
-\item predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.
+\item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument .
-\item selected_thresholds: Value of the threshold selected.
-\item threshold_table: Value of all threshold.
+\item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 }
 }
 \description{
@@ -63,32 +61,32 @@ Fit and validate Generalized Additive Models
 }
 \examples{
 \dontrun{
-data("abies_db")
+data("abies")
 
 # Using k-fold partition method
-abies_db2 <- data_part(
-  data = abies_db,
-  p_a = "pr_ab",
+abies2 <- part_random(
+  data = abies,
+  pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 10)
 )
-abies_db2
+abies2
 
 gam_t1 <- fit_gam(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
   partition = ".part",
   thr = "max_sens_spec"
 )
-gam_t1$model \%>\% plot()
+gam_t1$model
+gam_t1$predictors
 gam_t1$performance
-gam_t1$selected_thresholds
-gam_t1$all_thresholds
 
 # Using our own formula
+require(gam)
 gam_t2 <- fit_gam(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
@@ -99,30 +97,31 @@ gam_t2 <- fit_gam(
     s(pH, df = 3) + landform)
 )
 
-gam_t2$model \%>\% plot()
+gam_t2$model
+gam_t2$predictors
 gam_t2$performance \%>\% dplyr::select(ends_with("_mean"))
-gam_t2$selected_thresholds
-gam_t2$threshold_table
 
 # Using repeated k-fold partition method
-abies_db2 <- data_part(
-  data = abies_db,
-  p_a = "pr_ab",
-  method = c(method = "rep_kfold", folds = 10, replicates = 10)
+abies2 <- part_random(
+  data = abies,
+  pr_ab = "pr_ab",
+  method = c(method = "rep_kfold", folds = 5, replicates = 5)
 )
-abies_db2
+abies2
 
 gam_t3 <- fit_gam(
-  data = abies_db2,
+  data = abies2,
   response = "pr_ab",
   predictors = c("ppt_jja", "pH", "awc"),
   predictors_f = c("landform"),
   partition = ".part",
-  thr = "max_sens_spec",
-  poly = 3,
-  inter_order = 2
+  thr = "max_sens_spec"
 )
-gam_t3$model \%>\% plot.Gam()
+gam_t3
 }
 
+}
+\seealso{
+\code{\link{fit_gau}}, \code{\link{fit_gbm}}, \code{\link{fit_glm}},
+\code{\link{fit_max}}, \code{\link{fit_net}}, and \code{\link{fit_svm}}.
 }

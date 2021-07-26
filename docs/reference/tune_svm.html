@@ -12,7 +12,7 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -87,6 +87,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/01_pre_modeling.html">flexsdm: Overview of Pre-modeling functions</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -117,11 +129,11 @@
   <span class='va'>response</span>,
   <span class='va'>predictors</span>,
   predictors_f <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fit_formula <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>partition</span>,
   grid <span class='op'>=</span> <span class='cn'>NULL</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>,
-  metric <span class='op'>=</span> <span class='st'>"TSS"</span>,
-  <span class='va'>...</span>
+  metric <span class='op'>=</span> <span class='st'>"TSS"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -137,11 +149,18 @@
     </tr>
     <tr>
       <th>predictors</th>
-      <td><p>character. Vector with the column names of quantitative predictor variables (i.e. continuous or discrete variables). Usage predictors = c("aet", "cwd", "tmin")</p></td>
+      <td><p>character. Vector with the column names of quantitative predictor variables (i.e. continuous variables). Usage predictors = c("aet", "cwd", "tmin")</p></td>
     </tr>
     <tr>
       <th>predictors_f</th>
       <td><p>character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")</p></td>
+    </tr>
+    <tr>
+      <th>fit_formula</th>
+      <td><p>formula. A formula object with response and predictor
+variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
+Note that the variables used here must be consistent with those used in
+response, predictors, and predictors_f arguments. Default NULL</p></td>
     </tr>
     <tr>
       <th>partition</th>
@@ -153,17 +172,16 @@
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1) useful for threshold-dependent performance metrics. It is possible not define a threshold or use more than one, in these cases, function will return the best model and the best threshold. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
-<li><p>lpt: The highest threshold at which there is no omission. Usage thr=c(type='lpt').</p></li>
-<li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal (aka threshold that maximizes the TSS).</p></li>
-<li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest.
-  Usage thr=c(type='max_sens_spec').</p></li>
-<li><p>max_kappa: The threshold at which Kappa is the highest ("max kappa"). Usage thr=c(type='max_kappa').</p></li>
-<li><p>max_jaccard: The threshold at which Jaccard is the highest. Usage thr=c(type='max_jaccard').</p></li>
-<li><p>max_sorensen: The threshold at which Sorensen is highest. Usage thr=c(type='max_sorensen').</p></li>
-<li><p>max_fpb: The threshold at which FPB is highest. Usage thr=c(type='max_fpb').</p></li>
-<li><p>specific: A threshold value specified by user. Usage thr=c(type='specific', sens='0.6'). 'sens' refers to models will be binarized using this suitability value.</p></li>
-</ul></td>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+<li><p>lpt: The highest threshold at which there is no omission.</p></li>
+<li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
+<li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).</p></li>
+<li><p>max_jaccard: The threshold at which Jaccard is the highest.</p></li>
+<li><p>max_sorensen: The threshold at which Sorensen is highest.</p></li>
+<li><p>max_fpb: The threshold at which FPB is highest.</p></li>
+<li><p>sensitivity: Threshold based on a specified sensitivity value.
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9</p></li>
+</ul><p>In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified</p></td>
     </tr>
     <tr>
       <th>metric</th>
@@ -175,29 +193,26 @@
 
     <p>A list object with:</p><ul>
 <li><p>model: A "ksvm" class object. This object can be used for predicting.</p></li>
-<li><p>predictors: A character with quantitative (elements names with c) and qualitative (elements names with f) variables use for modeling.</p></li>
-<li><p>tune_performance: Performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>) for each combination of the hyper-parameters.</p></li>
-<li><p>best_hyper_performance: Hyper-parameters values and performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>) for the best hyper-parameters combination.</p></li>
-<li><p>selected_thresholds: Value of the threshold selected.</p></li>
-<li><p>all_thresholds: Value of all threshold.</p></li>
+<li><p>predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.</p></li>
+<li><p>performance: Hyper-parameters values and performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>) for the best hyper-parameters combination.</p></li>
+<li><p>hyper_performance: Performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>) for each combination of the hyper-parameters.</p></li>
+<li><p>data_ens: Predicted suitability for each test partition based on the best model. This database is used in <code><a href='fit_ensemble.html'>fit_ensemble</a></code></p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='tune_gbm.html'>tune_gbm</a></code>, <code><a href='tune_mx.html'>tune_mx</a></code>, <code><a href='tune_nnet.html'>tune_nnet</a></code>, and <code><a href='tune_rf.html'>tune_rf</a></code>.</p></div>
+    <div class='dont-index'><p><code><a href='tune_gbm.html'>tune_gbm</a></code>, <code><a href='tune_max.html'>tune_max</a></code>, <code><a href='tune_net.html'>tune_net</a></code>, and <code><a href='tune_raf.html'>tune_raf</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>abies_db</span><span class='op'>)</span>
-<span class='va'>abies_db</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>abies</span><span class='op'>)</span>
+<span class='va'>abies</span>
 
 <span class='co'># We will partition the data with the k-fold method</span>
 
-<span class='va'>abies_db2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='data_part.html'>data_part</a></span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>abies_db</span>,
-  p_a <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
-  bg_data <span class='op'>=</span> <span class='cn'>NULL</span>,
-  bg_a <span class='op'>=</span> <span class='cn'>NULL</span>,
+<span class='va'>abies2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part_random.html'>part_random</a></span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>abies</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 <span class='op'>)</span>
 
@@ -213,11 +228,11 @@
 
 <span class='va'>svm_t</span> <span class='op'>&lt;-</span>
   <span class='fu'>tune_svm</span><span class='op'>(</span>
-    data <span class='op'>=</span> <span class='va'>abies_db2</span>,
+    data <span class='op'>=</span> <span class='va'>abies2</span>,
     response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
     predictors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>
       <span class='st'>"aet"</span>, <span class='st'>"cwd"</span>, <span class='st'>"tmin"</span>, <span class='st'>"ppt_djf"</span>,
-      <span class='st'>"ppt_jja"</span>, <span class='st'>"pH"</span>, <span class='st'>"awc"</span>, <span class='st'>"depth"</span>, <span class='st'>"percent_clay"</span>
+      <span class='st'>"ppt_jja"</span>, <span class='st'>"pH"</span>, <span class='st'>"awc"</span>, <span class='st'>"depth"</span>
     <span class='op'>)</span>,
     predictors_f <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"landform"</span><span class='op'>)</span>,
     partition <span class='op'>=</span> <span class='st'>".part"</span>,
@@ -228,10 +243,10 @@
 
 <span class='co'># Outputs</span>
 <span class='va'>svm_t</span><span class='op'>$</span><span class='va'>model</span>
-<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>tune_performance</span>
-<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>best_hyper</span>
-<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>selected_thresholds</span>
-<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>all_thresholds</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>predictors</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>performance</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>hyper_performance</span>
+<span class='va'>svm_t</span><span class='op'>$</span><span class='va'>data_ens</span>
 <span class='op'>}</span>
 
 </div></pre>
@@ -246,7 +261,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">

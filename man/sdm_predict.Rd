@@ -2,33 +2,172 @@
 % Please edit documentation in R/sdm_predict.R
 \name{sdm_predict}
 \alias{sdm_predict}
-\title{Spatial model prediction}
+\title{Spatial predictions of individual and ensemble models}
 \usage{
 sdm_predict(
   models,
   pred,
-  thr,
-  calib_area = NULL,
+  thr = NULL,
+  con_thr = FALSE,
+  predict_area = NULL,
   clamp = TRUE,
   pred_type = "cloglog"
 )
 }
 \arguments{
-\item{models}{list. A list a single or several models fitted with some of fit_ or tune_ functions}
+\item{models}{list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.}
 
 \item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.}
 
-\item{thr}{character. Binarize projection. Default NULL, i.e. function returns only continuous projection. If used with 'selected_thr', function returns continuous and binarized models used in the 'thr' argument of some of fit_ or tune_ functions. It used with "all_thr" , function returns continuous and binarized for all threshold types.}
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is possible to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the models. The next threshold area available:
+\itemize{
+  \item lpt: The highest threshold at which there is no omission.
+  \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
+  \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
+  \item max_jaccard: The threshold at which Jaccard is the highest.
+  \item max_sorensen: The threshold at which Sorensen is highest.
+  \item max_fpb: The threshold at which FPB is highest.
+  \item sensitivity: Threshold based on a specified sensitivity value used to fit the models.
+  \item all: Will be used all the threshold filled in the 'models' argument. It is not possible to combine with previews one
+  }
+Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spec', 'sensitivity'), or thr='all'. If no threshold is specified (i.e., thr = NULL) function will return continuous prediction only. Default NULL}
 
-\item{calib_area}{SpatialPolygon or SpatialPolygonDataFrame. Spatial polygon used for restrinc prediction into a given region. Default = NULL}
+\item{con_thr}{logical. If true will be returned predictions with suitability values above threshold/s. Default = FALSE}
+
+\item{predict_area}{SpatVector, SpatialPolygon, or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL}
 
 \item{clamp}{logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)}
 
 \item{pred_type}{character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)}
 }
 \value{
-A list of SpatRaster with continuous or continuous and binary predictions
+A list of SpatRaster with continuous and/or binary predictions
 }
 \description{
-This function allows the prediction of one or more models built with the fit_ or tune_ function set. It can return continuous or continuous and binary predictions for one or more thresholds
+This function allows the geographical prediction of one or more models constructed with fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of small models approach), or models constructed with fit_ensemble function. It can return continuous or continuous and binary predictions for one or more thresholds
+}
+\examples{
+\dontrun{
+require(dplyr)
+require(terra)
+
+data("spp")
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+# Extract data
+some_sp <- spp \%>\%
+  filter(species == "sp3")
+
+some_sp <-
+  sdm_extract(
+    data = some_sp,
+    x = "x",
+    y = "y",
+    env_layer = somevar
+  )
+
+# Partition
+some_sp <- part_random(
+  data = some_sp,
+  pr_ab = "pr_ab",
+  method = c(method = "rep_kfold", folds = 3, replicates = 5)
+)
+
+
+## \%######################################################\%##
+#                                                          #
+####          Create different type of models           ####
+#                                                          #
+## \%######################################################\%##
+# Fit some models
+mglm <- fit_glm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  poly = 2
+)
+mraf <- fit_raf(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+)
+mgbm <- fit_gbm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part"
+)
+
+# Fit and ensemble
+mensemble <- fit_ensemble(
+  models = list(mglm, mraf, mgbm),
+  ens_method = "meansup",
+  thr = NULL,
+  thr_model = "max_sens_spec",
+  metric = "TSS"
+)
+
+# Fit a model with a Wnsemble of Small Models approach
+# Without threshold specification and with kfold
+msmall <- esm_gam(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  thr = NULL
+)
+
+
+## \%######################################################\%##
+#                                                          #
+####      Predict different kind of models models       ####
+#                                                          #
+## \%######################################################\%##
+
+# sdm_predict can be used for predict one or more models fitted with fit_ or tune_ functions
+
+# a single model
+ind_p <- sdm_predict(
+  models = mglm,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# a list of models
+list_p <- sdm_predict(
+  models = list(mglm, mraf, mgbm),
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# Predict an ensemble model
+# (only is possilbe use one fit_ensemble)
+ensemble_p <- sdm_predict(
+  models = mensemble,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# Predict an ensemble of small model
+# (only is possilbe use one ensemble of small model)
+small_p <- sdm_predict(
+  models = msmall,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+}
+}
+\seealso{
+\code{\link{fit_ensemble}}
 }

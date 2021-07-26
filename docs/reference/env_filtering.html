@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to perform environmental filtering of species occurrence records — env_filtering • flexsdm</title>
+<title>Perform environmental filtering on species occurrences — env_filtering • flexsdm</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/yeti/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Function to perform environmental filtering of species occurrence records — env_filtering" />
-<meta property="og:description" content="Function to perform environmental filtering of species occurrence records" />
+<meta property="og:title" content="Perform environmental filtering on species occurrences — env_filtering" />
+<meta property="og:description" content="Perform environmental filtering on species occurrences" />
 
 
 
@@ -103,16 +103,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to perform environmental filtering of species occurrence records</h1>
+    <h1>Perform environmental filtering on species occurrences</h1>
     
     <div class="hidden name"><code>env_filtering.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function to perform environmental filtering of species occurrence records</p>
+    <p>Perform environmental filtering on species occurrences</p>
     </div>
 
-    <pre class="usage"><span class='fu'>env_filtering</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>id</span>, <span class='va'>variables</span>, <span class='va'>nbins</span>, cores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>env_filtering</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>id</span>, <span class='va'>env_layer</span>, <span class='va'>nbins</span>, cores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,7 +135,7 @@
       <td><p>character. Column names with rows id. It is important that each row has its own unique code.</p></td>
     </tr>
     <tr>
-      <th>variables</th>
+      <th>env_layer</th>
       <td><p>SpatRaste. Rasters with environmental conditions</p></td>
     </tr>
     <tr>
@@ -166,7 +166,28 @@
 <span class='co'># Species occurrences</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"spp"</span><span class='op'>)</span>
 <span class='va'>spp</span>
+<<<<<<< HEAD
+<<<<<<< HEAD
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,150 x 4</span>
+#&gt;    species        x        y pr_ab
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> sp1       -<span style='color: #BB0000; text-decoration: underline;'>5</span><span style='color: #BB0000;'>541.</span> -<span style='color: #BB0000; text-decoration: underline;'>145</span><span style='color: #BB0000;'>138.</span>     0
+#&gt; <span style='color: #BCBCBC;'> 2</span> sp1      -<span style='color: #BB0000; text-decoration: underline;'>51</span><span style='color: #BB0000;'>981.</span>   <span style='text-decoration: underline;'>16</span>322.     0
+#&gt; <span style='color: #BCBCBC;'> 3</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>269</span><span style='color: #BB0000;'>871.</span>   <span style='text-decoration: underline;'>69</span>512.     1
+#&gt; <span style='color: #BCBCBC;'> 4</span> sp1      -<span style='color: #BB0000; text-decoration: underline;'>96</span><span style='color: #BB0000;'>261.</span>  -<span style='color: #BB0000; text-decoration: underline;'>32</span><span style='color: #BB0000;'>008.</span>     0
+#&gt; <span style='color: #BCBCBC;'> 5</span> sp1      <span style='text-decoration: underline;'>269</span>589. -<span style='color: #BB0000; text-decoration: underline;'>566</span><span style='color: #BB0000;'>338.</span>     0
+#&gt; <span style='color: #BCBCBC;'> 6</span> sp1       <span style='text-decoration: underline;'>29</span>829. -<span style='color: #BB0000; text-decoration: underline;'>328</span><span style='color: #BB0000;'>468.</span>     0
+#&gt; <span style='color: #BCBCBC;'> 7</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>152</span><span style='color: #BB0000;'>691.</span>  <span style='text-decoration: underline;'>393</span>782.     0
+#&gt; <span style='color: #BCBCBC;'> 8</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>195</span><span style='color: #BB0000;'>081.</span>  <span style='text-decoration: underline;'>253</span>652.     0
+#&gt; <span style='color: #BCBCBC;'> 9</span> sp1        -<span style='color: #BB0000;'>951.</span> -<span style='color: #BB0000; text-decoration: underline;'>277</span><span style='color: #BB0000;'>978.</span>     0
+#&gt; <span style='color: #BCBCBC;'>10</span> sp1      <span style='text-decoration: underline;'>145</span>929. -<span style='color: #BB0000; text-decoration: underline;'>271</span><span style='color: #BB0000;'>498.</span>     0
+#&gt; <span style='color: #949494;'># … with 1,140 more rows</span></div><div class='input'><span class='va'>spp1</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span>, <span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>
+=======
 <span class='va'>spp1</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span>, <span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>
+>>>>>>> main
+=======
+<span class='va'>spp1</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span>, <span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>
+>>>>>>> main
 
 <span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
@@ -180,30 +201,30 @@
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
   id <span class='op'>=</span> <span class='st'>"idd"</span>,
-  variables <span class='op'>=</span> <span class='va'>somevar</span>,
+  env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
   nbins <span class='op'>=</span> <span class='fl'>5</span>,
   cores <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
 
-<span class='co'># 10 bins</span>
+<span class='co'># 8 bins</span>
 <span class='va'>filtered_2</span> <span class='op'>&lt;-</span> <span class='fu'>env_filtering</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp1</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
   id <span class='op'>=</span> <span class='st'>"idd"</span>,
-  variables <span class='op'>=</span> <span class='va'>somevar</span>,
-  nbins <span class='op'>=</span> <span class='fl'>10</span>,
+  env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
+  nbins <span class='op'>=</span> <span class='fl'>8</span>,
   cores <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
 
-<span class='co'># 20 bins</span>
+<span class='co'># 12 bins</span>
 <span class='va'>filtered_3</span> <span class='op'>&lt;-</span> <span class='fu'>env_filtering</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp1</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
   id <span class='op'>=</span> <span class='st'>"idd"</span>,
-  variables <span class='op'>=</span> <span class='va'>somevar</span>,
-  nbins <span class='op'>=</span> <span class='fl'>20</span>,
+  env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
+  nbins <span class='op'>=</span> <span class='fl'>12</span>,
   cores <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
 <span class='co'># note that while higher the nbins parameter higher the number of</span>
@@ -223,7 +244,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose.</p>
+  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">

@@ -4,7 +4,7 @@
 \alias{inter}
 \title{Raster interpolation between two time periods}
 \usage{
-inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1)
+inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL)
 }
 \arguments{
 \item{r1}{SpatRaster. Raster object for the initial year}
@@ -15,15 +15,37 @@ inter(r1, r2, y1, y2, rastername = NULL, dir_save = NULL, n_cores = 1)
 
 \item{y2}{numeric. Final year}
 
-\item{rastername}{character. Word used as prefix in raster file name}
+\item{rastername}{character. Word used as prefix in raster file name. Default NULL}
 
-\item{dir_save}{character. Directory path and name of the folder in which you want to save the raster files}
-
-\item{n_cores}{numeric. Number of cores use for parallelization}
+\item{dir_save}{character. Directory path and name of the folder in which you want to
+save the raster files. If NULL, function will return a SpatRaster object, on the contrary, it
+will save raster in a given directory. Default NULL}
 }
 \value{
-
+This function returns a SpatRaster if dir_save is used as NULL, If dirsave is used,
+function will return anythink
 }
 \description{
 This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values.
+}
+\examples{
+\dontrun{
+require(terra)
+require(dplyr)
+
+f <- system.file("external/suit_time_steps.tif", package = "flexsdm")
+abma <- terra::rast(f)
+plot(abma)
+
+int <- inter(
+  r1 = abma[[1]],
+  r2 = abma[[2]],
+  y1 = 2010,
+  y2 = 2020,
+  rastername = "Abies",
+  dir_save = NULL
+)
+
+int
+}
 }
