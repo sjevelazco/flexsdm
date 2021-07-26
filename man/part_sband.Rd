@@ -61,3 +61,46 @@ best one suited for a given presence or presence-absences database. The selectio
 number of bands is performed automatically considering spatial autocorrelation, environmental
 similarity, and the number of presence and absence records in each partition.
 }
+\examples{
+
+\dontrun{
+require(terra)
+require(dplyr)
+
+# Load datasets
+data(spp)
+f <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(f)
+
+# Lest practice with a single species
+single_spp <- spp \%>\% dplyr::filter(species == "sp3")
+part <- part_sband(
+  env_layer = somevar,
+  data = single_spp,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  type = "lon"
+  min_bands = 2,
+  max_bands = 20,
+  n_part = 2,
+  prop = 0.5
+)
+part
+
+part$part
+part$best_part_info
+part$grid
+
+# Lets explore Grid object
+
+plot(part$grid)
+points(part$part[c("x", "y")],
+  col = c("blue", "red")[part$part$.part],
+  cex = 0.5,
+  pch = 19
+)
+}
+
+
+}
