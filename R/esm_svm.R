@@ -80,7 +80,7 @@
 #' abies2
 #'
 #' # Without threshold specification and with kfold
-#' esm_svm_t1 <- esm_gam(
+#' esm_svm_t1 <- esm_svm(
 #'   data = abies2,
 #'   response = "pr_ab",
 #'   predictors = c(
@@ -94,6 +94,7 @@
 #' esm_svm_t1$esm_model # bivariate model
 #' esm_svm_t1$predictors
 #' esm_svm_t1$performance
+#'
 #' }
 esm_svm <- function(data,
                     response,

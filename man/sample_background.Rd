@@ -12,7 +12,8 @@ sample_background(
   method = "random",
   rlayer,
   maskval = NULL,
-  calibarea = NULL
+  calibarea = NULL,
+  rbias = NULL
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ It is recommended to use a layer with the same resolution and extent that enviro
 \item{maskval}{integer or numeric. Values of the raster layer used for constraining the background points sampling}
 
 \item{calibarea}{SpatVect that delimits the calibration area used for a given species (see calib_area function).}
+
+\item{rbias}{SpatRaster used for bias background points. When use 'biased' method must be provided the raster with
+with bias data. It is recommended that rbias match resolution and extent of rlayer.}
 }
 \value{
 A tibble object with x y coordinates of sampled background points
@@ -206,8 +210,75 @@ plot(ca_ps1, add = T)
 bg \%>\%
   points(col = "red", cex = 0.3)
 points(spp_p[c("x", "y")], pch = 19)
-}
 
+## \%######################################################\%##
+#                                                          #
+####             Biased background method               ####
+#                                                          #
+## \%######################################################\%##
+require(dplyr)
+require(terra)
+data(spp)
+
+# Lets select the presences of a species
+spp_p <- spp \%>\% dplyr::filter(species == "sp1", pr_ab == 1)
+
+# Raster layer with density of poinst to obtain a biased sampling background
+occ_density <- system.file("external/occ_density.tif", package = "flexsdm")
+occ_density <- terra::rast(occ_density)
+plot(occ_density)
+points(spp_p \%>\% dplyr::select(x, y), cex = 0.5)
+
+# A layer with region used to contraint background
+regions <- system.file("external/regions.tif", package = "flexsdm")
+regions <- terra::rast(regions)
+plot(regions)
+points(spp_p \%>\% dplyr::select(x, y), cex = 0.5)
+
+
+# Biased background points
+spp_p # presences database of a species
+bg <- sample_background(
+  data = spp_p,
+  x = "x",
+  y = "y",
+  n = 3000,
+  method = "biased",
+  rlayer = regions,
+  rbias = occ_density
+)
+
+plot(occ_density)
+bg \%>\%
+  points(col = "red", cex = 0.1)
+spp_p \%>\%
+  dplyr::select(x, y) \%>\%
+  points(., col = "black", pch = 19, cex = 0.5)
+
+
+# Biased background points constrained in a region
+# It will be selected region 6
+plot(regions)
+plot(regions \%in\% c(1, 6))
+
+bg <- sample_background(
+  data = spp_p,
+  x = "x",
+  y = "y",
+  n = 500,
+  method = "biased",
+  rlayer = regions,
+  rbias = occ_density,
+  maskval = c(1, 2)
+)
+
+plot(occ_density)
+bg \%>\%
+  points(col = "red", cex = 0.5)
+spp_p \%>\%
+  dplyr::select(x, y) \%>\%
+  points(., col = "black", pch = 19, cex = 0.5)
+}
 }
 \references{
 \itemize{

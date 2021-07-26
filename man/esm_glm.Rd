@@ -101,6 +101,7 @@ esm_glm_t1 <- esm_glm(
 esm_glm_t1$esm_model # bivariate model
 esm_glm_t1$predictors
 esm_glm_t1$performance
+
 }
 }
 \references{

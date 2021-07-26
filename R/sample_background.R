@@ -17,6 +17,8 @@
 #' It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint
 #' @param maskval integer or numeric. Values of the raster layer used for constraining the background points sampling
 #' @param calibarea SpatVect that delimits the calibration area used for a given species (see calib_area function).
+#' @param rbias SpatRaster used for bias background points. When use 'biased' method must be provided the raster with
+#' with bias data. It is recommended that rbias match resolution and extent of rlayer.
 #'
 #' @references
 #' \itemize{
@@ -195,8 +197,75 @@
 #' bg %>%
 #'   points(col = "red", cex = 0.3)
 #' points(spp_p[c("x", "y")], pch = 19)
-#' }
 #'
+#' ## %######################################################%##
+#' #                                                          #
+#' ####             Biased background method               ####
+#' #                                                          #
+#' ## %######################################################%##
+#' require(dplyr)
+#' require(terra)
+#' data(spp)
+#'
+#' # Lets select the presences of a species
+#' spp_p <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
+#'
+#' # Raster layer with density of poinst to obtain a biased sampling background
+#' occ_density <- system.file("external/occ_density.tif", package = "flexsdm")
+#' occ_density <- terra::rast(occ_density)
+#' plot(occ_density)
+#' points(spp_p %>% dplyr::select(x, y), cex = 0.5)
+#'
+#' # A layer with region used to contraint background
+#' regions <- system.file("external/regions.tif", package = "flexsdm")
+#' regions <- terra::rast(regions)
+#' plot(regions)
+#' points(spp_p %>% dplyr::select(x, y), cex = 0.5)
+#'
+#'
+#' # Biased background points
+#' spp_p # presences database of a species
+#' bg <- sample_background(
+#'   data = spp_p,
+#'   x = "x",
+#'   y = "y",
+#'   n = 3000,
+#'   method = "biased",
+#'   rlayer = regions,
+#'   rbias = occ_density
+#' )
+#'
+#' plot(occ_density)
+#' bg %>%
+#'   points(col = "red", cex = 0.1)
+#' spp_p %>%
+#'   dplyr::select(x, y) %>%
+#'   points(., col = "black", pch = 19, cex = 0.5)
+#'
+#'
+#' # Biased background points constrained in a region
+#' # It will be selected region 6
+#' plot(regions)
+#' plot(regions %in% c(1, 6))
+#'
+#' bg <- sample_background(
+#'   data = spp_p,
+#'   x = "x",
+#'   y = "y",
+#'   n = 500,
+#'   method = "biased",
+#'   rlayer = regions,
+#'   rbias = occ_density,
+#'   maskval = c(1, 2)
+#' )
+#'
+#' plot(occ_density)
+#' bg %>%
+#'   points(col = "red", cex = 0.5)
+#' spp_p %>%
+#'   dplyr::select(x, y) %>%
+#'   points(., col = "black", pch = 19, cex = 0.5)
+#' }
 sample_background <-
   function(data,
            x,
@@ -205,9 +274,14 @@ sample_background <-
            method = "random",
            rlayer,
            maskval = NULL,
-           calibarea = NULL) {
-    if (!method[1] %in% c("random", "thickening")) {
+           calibarea = NULL,
+           rbias = NULL) {
+    if (!method[1] %in% c("random", "thickening", "biased")) {
       stop("argument 'method' was misused, available methods 'random', 'thickening'")
+    }
+
+    if(method[1] %in% c("biased") & is.null(rbias)){
+      stop("for using 'random' method a raster layer with biases data must be provided in 'rbias' argument")
     }
 
     # Prepare datasets
@@ -219,7 +293,7 @@ sample_background <-
     data <- data[, c(x, y)]
 
     # Remove cell with presences
-    rlayer[terra::cellFromXY(rlayer, as.matrix(data))] <- NA
+    rlayer[na.omit(terra::cellFromXY(rlayer, as.matrix(data)))] <- NA
 
     # Mask to calibration area
     if (!is.null(calibarea)) {
@@ -235,6 +309,23 @@ sample_background <-
       }
       filt <- terra::match(rlayer, maskval)
       rlayer <- terra::mask(rlayer, filt)
+    }
+
+    # Correct rbias data in case it don't match resolution or extent of rlayer
+    if(method[1] %in% c("biased")){
+      if(any(!(ext(rlayer)[1:4]%in%ext(rbias)[1:4])) | all(!res(rlayer)%in%res(rbias))){
+        rbias2 <- rlayer
+        terra::values(rbias2) <- NA
+        df <- terra::as.data.frame(rlayer, xy=TRUE)
+        rbias2[as.numeric(rownames(df))] <-
+          terra::extract(rbias, df[c('x', 'y')])[,2]
+        rbias <- rbias2
+        rm(rbias2, df)
+      }
+    }
+
+    if(method[1] %in% c("biased")){
+      rlayer <- mask(rlayer, rbias)
     }
 
     ncellr <- terra::global(!is.na(rlayer), sum)
@@ -275,12 +366,20 @@ sample_background <-
             replace = FALSE,
             prob = NULL
           )
-      } else {
+      } else if (any(method == "thickening")){
         cell_samp <-
           sample(cell_samp,
             size = n,
             replace = FALSE,
             prob = buf_r[cell_samp][, 1]
+          )
+      } else if (any(method == "biased")){
+
+        cell_samp <-
+          sample(cell_samp,
+                 size = n,
+                 replace = FALSE,
+                 prob = rbias[cell_samp][, 1]
           )
       }
 
