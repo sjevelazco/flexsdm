@@ -98,6 +98,12 @@ tune_raf <-
 
     data <- data.frame(data)
 
+    # Test response variable
+    r_test <- (data %>% dplyr::pull(response) %>% unique()  %>% na.omit())
+    if((!all(r_test%in%c(0,1)))){
+      stop("values of response variable do not match with 0 and 1")
+    }
+
     # Transform response variable as factor
     data[, response] <- as.factor(data[, response])
 
@@ -141,12 +147,10 @@ tune_raf <-
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      grid <- data.frame(mtry = round(sqrt(nv)))
-    }
-    if (class(grid) == "character") {
-      nv <- length(stats::na.omit(c(predictors, predictors_f)))
       if (grid == "defalut") {
         grid <- expand.grid(mtry = seq(2, nv, 1))
+        message("Hyper-parameter values were not provided, default values will be used")
+        message(paste("mtry = ", paste(seq(2, paste(nv), 1), collapse = ',')))
       }
     }
 

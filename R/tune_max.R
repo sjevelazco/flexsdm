@@ -50,6 +50,56 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' data("abies")
+#' data("backg")
+#' abies # environmental conditions of presence-absence data
+#' backg # environmental conditions of background points
+#'
+#' # Using k-fold partition method
+#' # Remember that the partition method, number of folds or replications must
+#' # be the same for presence-absence and background points datasets
+#' abies2 <- part_random(
+#'   data = abies,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 3)
+#' )
+#' abies2
+#'
+#' backg2 <- part_random(
+#'   data = backg,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 3)
+#' )
+#' backg
+#'
+#'
+#' gridtest <-
+#'   expand.grid(
+#'     regmult = seq(0.1, 3, 0.5),
+#'     classes = c("l", "lq", "lqhpt")
+#'   )
+#'
+#' max_t1 <- tune_max(
+#'   data = abies2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors_f = c("landform"),
+#'   partition = ".part",
+#'   background = backg2,
+#'   grid = gridtest,
+#'   thr = "max_sens_spec",
+#'   metric = "TSS",
+#'   clamp = TRUE,
+#'   pred_type = "cloglog"
+#' )
+#'
+#' length(max_t1)
+#' max_t1$model
+#' max_t1$predictors
+#' max_t1$performance
+#' max_t1$data_ens
+#' }
 tune_max <-
   function(data,
            response,
@@ -64,6 +114,12 @@ tune_max <-
            pred_type = "cloglog") {
     . <- model <- TPR <- IMAE <- thr_value <- n_presences <- n_absences <- NULL
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
+
+    # Test response variable
+    r_test <- (data %>% dplyr::pull(response) %>% unique()  %>% na.omit())
+    if((!all(r_test%in%c(0,1)))){
+      stop("values of response variable do not match with 0 and 1")
+    }
 
     data <- data.frame(data)
     if (!is.null(background)) background <- data.frame(background)
@@ -120,6 +176,9 @@ tune_max <-
         regmult = seq(0.1, 3, 0.5),
         classes = c("l", "lq", "lqh", "lqhp", "lqhpt")
       )
+      message("Hyper-parameter values were not provided, default values will be used")
+      message("regmult = seq(0.1, 3, 0.5)")
+      message('classes = c("l", "lq", "lqh", "lqhp", "lqhpt")')
     }
 
     # Test hyperparameter names

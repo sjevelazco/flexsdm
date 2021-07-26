@@ -102,6 +102,12 @@ tune_net <-
     . <- model <- TPR <- IMAE <- thr_value <- n_presences <- n_absences <- NULL
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
+    # Test response variable
+    r_test <- (data %>% dplyr::pull(response) %>% unique()  %>% na.omit())
+    if((!all(r_test%in%c(0,1)))){
+      stop("values of response variable do not match with 0 and 1")
+    }
+
     data <- data.frame(data)
 
     # Transform response variable as factor
@@ -155,7 +161,10 @@ tune_net <-
         grid <- expand.grid(
           size = c(2, 4, 6, 8),
           decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10)
-        ) # revise this values
+        ) # TODO revise this values
+        message("Hyper-parameter values were not provided, default values will be used")
+        message("size = c(2, 4, 6, 8)")
+        message("decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10)")
       }
     }
 

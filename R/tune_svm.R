@@ -106,6 +106,12 @@ tune_svm <-
 
     data <- data.frame(data)
 
+    # Test response variable
+    r_test <- (data %>% dplyr::pull(response) %>% unique()  %>% na.omit() %>% na.omit)
+    if((!all(r_test%in%c(0,1)))){
+      stop("values of response variable do not match with 0 and 1")
+    }
+
     # Transform response variable as factor
     data[, response] <- as.factor(data[, response])
 
@@ -148,15 +154,13 @@ tune_svm <-
 
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
-      grid <- data.frame(C = 1, sigma = "automatic")
-    }
-    if (class(grid) == "character") {
-      if (grid == "defalut") {
-        grid <- expand.grid(
-          C = c(1, 2, 4, 8, 16),
-          sigma = c(0.001, 0.01, 0.1, 0.2)
-        )
-      }
+      grid <- expand.grid(
+        C = c(1, 2, 4, 8, 16),
+        sigma = c(0.001, 0.01, 0.1, 0.2)
+      )
+      message("Hyper-parameter values were not provided, default values will be used")
+      message("C = c(1, 2, 4, 8, 16)")
+      message('sigma = c(0.001, 0.01, 0.1, 0.2)')
     }
 
     # Test hyper-parameters names

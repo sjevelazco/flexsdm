@@ -1,9 +1,9 @@
 ---
-title: "flexsdm: Overview of Pre-modeling Steps"
+title: "flexsdm: Overview of Pre-modeling functions"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Overview of pre-modeling steps}
+  %\VignetteIndexEntry{flexsdm: Overview of Pre-modeling functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -32,20 +32,13 @@ In this vignette, users will learn about the first set of functions in the *flex
 
 First, let's install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
-```{r, message=FALSE, warning=FALSE}
-if (!require("remotes"))
-  install.packages("remotes")
-if (!require("flexsdm"))
-  remotes::install_github("sjevelazco/flexsdm")
-```
-
 ## Project Directory Setup
 
 When building SDM's, organizing your folder directories will save time and confusion later. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. 
 
 ```{r folder setup}
-proj_dir <- file.path("C:/Users/Brooke Rose/Google Drive/flexsdm_project") # customize the folder path for your workspace
-dir.create(proj_dir)
+proj_dir <- tempdir() # customize the folder path for your workspace
+# dir.create(proj_dir)
 ```
 
 Within the project directory, you need folders for your 1) species occurrence data and 2) the environmental predictors you plan to use to build your model(s). Let's create those. 
@@ -56,11 +49,12 @@ dir.create(occ_dir)
 
 pred_dir <- file.path(proj_dir, "Predictors")
 dir.create(pred_dir)
+
+# Check your project directory that the two folders were created:  
+proj_dir
+list.dirs(proj_dir)
 ```
 
-Check your project directory that the two folders were created:  
-
-![](C:/Users/Brooke Rose/Google Drive/Franklin_grant/project/images/folder_create_tutorial.png)
 
 ## Data 
 

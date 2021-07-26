@@ -67,7 +67,7 @@ sdm_directory <-
 
     # Create input directory
     file.path(main_dir, "1_Inputs") %>% dir.create()
-    file.path(main_dir, "1_Inputs/1_Ocurrences") %>% dir.create()
+    file.path(main_dir, "1_Inputs/1_Occurrences") %>% dir.create()
     file.path(main_dir, "1_Inputs/2_Predictors") %>% dir.create()
     if (!is.null(calibration_area)) {
       file.path(main_dir, "1_Inputs/3_Calibration_area") %>% dir.create()

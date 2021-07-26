@@ -211,7 +211,7 @@ sample_background <-
     }
 
     # Prepare datasets
-    if (class(rlayer) != "SpatRaster") {
+    if (class(rlayer)[1] != "SpatRaster") {
       rlayer <- terra::rast(rlayer)
     }
 
