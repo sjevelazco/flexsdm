@@ -43,7 +43,6 @@
 #'
 #' @examples
 #'
-#'
 #' \dontrun{
 #' require(terra)
 #' require(dplyr)
@@ -81,6 +80,7 @@
 #'   cex = 0.5,
 #'   pch = 19
 #' )
+#' }
 #'
 #'
 part_sband <- function(env_layer,
