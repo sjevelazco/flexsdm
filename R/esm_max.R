@@ -79,7 +79,7 @@
 #' abies2 <- part_random(
 #'   data = abies2,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
+#'   method = c(method = "rep_kfold", folds = 5, replicates = 5)
 #' )
 #' abies2
 #'
@@ -93,7 +93,7 @@
 #' backg2 <- part_random(
 #'   data = backg2,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
+#'   method = c(method = "rep_kfold", folds = 5, replicates = 5)
 #' )
 #' backg2
 #'
@@ -114,6 +114,7 @@
 #' esm_max_t1$esm_model # bivariate model
 #' esm_max_t1$predictors
 #' esm_max_t1$performance
+#'
 #' }
 esm_max <- function(data,
                     response,

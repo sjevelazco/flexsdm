@@ -26,8 +26,8 @@
 #' functions in the additive expansion. Default is 100.
 #' @param n_minobsinnode Integer. It specifies the minimum number of
 #' observations in the terminal nodes of the trees. Note that this
-#' is the actual number of observations, not the total weight. Because ESM are generally constructed
-#' with few occurrences by default will be used a value equal to nrow(data)*0.5/4.
+#' is the actual number of observations, not the total weight. If n_minobsinnode is NULL,
+#' this parameter will assume a value equal to nrow(data)*0.5/4. Default NULL, .
 #' @param shrinkage Numeric. This parameter applied to each tree in the
 #' expansion. Also known as the learning rate or step-size reduction;
 #' 0.001 to 0.1 usually work, but a smaller learning rate typically
@@ -94,7 +94,7 @@
 #'   partition = ".part",
 #'   thr = NULL,
 #'   n_trees = 100,
-#'   n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
+#'   n_minobsinnode = NULL,
 #'   shrinkage = 0.1
 #' )
 #'
@@ -108,10 +108,14 @@ esm_gbm <- function(data,
                     partition,
                     thr = NULL,
                     n_trees = 100,
-                    n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
+                    n_minobsinnode = NULL,
                     shrinkage = 0.1) {
   . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
+
+  if (is.null(n_minobsinnode)) {
+    n_minobsinnode <- as.integer(nrow(data) * 0.5 / 4)
+  }
 
   # Formula
   formula1 <- utils::combn(variables, 2)
