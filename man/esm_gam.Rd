@@ -59,9 +59,7 @@ require(dplyr)
 
 # Using k-fold partition method
 set.seed(10)
-abies_db2 <- abies_db \%>\%
-  abies2() <- abies \%>\%
-  abies2() <- abies \%>\%
+abies2 <- abies \%>\%
   na.omit() \%>\%
   group_by(pr_ab) \%>\%
   dplyr::slice_sample(n = 10) \%>\%

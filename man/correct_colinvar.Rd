@@ -80,9 +80,10 @@ var$coefficient
 var$cumulative_variance
 
 # Perform fa colinearity control
-# this method only will be performed if covariance matrix is invertible.
-# WRITE HERE A EXAMPLE THAT WORKS :)
-# var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+var$env_layer
+var$coefficient
+var$cumulative_variance
 }
 
 }
