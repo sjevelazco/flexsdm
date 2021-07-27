@@ -40,7 +40,6 @@
 #' \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
 #' }
 #'
-#' @importFrom dismo predict
 #' @importFrom dplyr %>% select starts_with filter pull bind_rows tibble group_by_at summarise across everything
 #' @importFrom maxnet maxnet maxnet.formula
 #'
@@ -291,7 +290,7 @@ tune_max <-
             lapply(mod, function(x) {
               data.frame(
                 pr_ab = bgt_test[[i]][, response],
-                pred = dismo::predict(
+                pred = predict_maxnet(
                   x,
                   newdata = bgt_test[[i]],
                   clamp = clamp,

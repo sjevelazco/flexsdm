@@ -1,4 +1,4 @@
-test_that("ESM Artifitial Neural Networks", {
+test_that("ESM Artificial Neural Networks", {
   data("abies")
   require(dplyr)
 
