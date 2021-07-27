@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("Artificial Neural Network", {
   data("abies")
 
   # Using k-fold partition method
