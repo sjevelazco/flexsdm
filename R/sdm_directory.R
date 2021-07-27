@@ -21,7 +21,7 @@
 #' # require(sf)
 #'
 #' # Implement sdm_directory without specific path and project name
-#' dirs__1 <- sdm_directory(
+#' dirs_1 <- sdm_directory(
 #'   main_dir = NULL,
 #'   projections = NULL,
 #'   calibration_area = TRUE,

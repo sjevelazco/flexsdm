@@ -86,7 +86,7 @@ Method 'lq (Lower Quantile). This method is similar to the 'obr' method, except 
 procedure to define a distance threshold to withdrawn k patches, which is the
 lower quartile distance between k patches to the closest l patch. Whenever a suitable
 pixel is within a k patch, i.e., not within this lower quartile, the suitability of the
-pixel is reduced to zero. This means that 75% of k patches were withdrawn from the model (Mendes et al., 2020).
+pixel is reduced to zero. This means that 75\% of k patches were withdrawn from the model (Mendes et al., 2020).
 
 Method 'mcp' (Minimum Convex Polygon). Compiled and adapted from
 Kremen et al. (2008), this method excludes from SDMs climate suitable

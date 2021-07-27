@@ -147,11 +147,11 @@ tune_raf <-
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      if (grid == "defalut") {
-        grid <- expand.grid(mtry = seq(2, nv, 1))
-        message("Hyper-parameter values were not provided, default values will be used")
-        message(paste("mtry = ", paste(seq(2, paste(nv), 1), collapse = ',')))
-      }
+      grid <- expand.grid(mtry = seq(2, nv, 1))
+      message("Hyper-parameter values were not provided, default values will be used")
+      message(paste("mtry = ", paste(seq(2, paste(
+        nv
+      ), 1), collapse = ',')))
     }
 
     # Test hyper-parameters names

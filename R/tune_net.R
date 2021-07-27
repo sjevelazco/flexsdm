@@ -152,12 +152,6 @@ tune_net <-
 
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
-      nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      grid <- data.frame(size = 2, decay = 0)
-    }
-    if (class(grid) == "character") {
-      nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      if (grid == "defalut") {
         grid <- expand.grid(
           size = c(2, 4, 6, 8),
           decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10)
@@ -166,7 +160,6 @@ tune_net <-
         message("size = c(2, 4, 6, 8)")
         message("decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10)")
       }
-    }
 
     # Test hyper-parameters names
     hyperp <- names(grid)
