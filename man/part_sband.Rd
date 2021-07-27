@@ -72,9 +72,9 @@ data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
 
-# Let's practice with a single species
-single_spp <- spp \%>\% dplyr::filter(species == "sp3")
-part <- part_sband(
+# Let's practice with two longitudinal partition with presences and absences
+single_spp <- spp \%>\% dplyr::filter(species == "sp1")
+part_1 <- part_sband(
   env_layer = somevar,
   data = single_spp,
   x = "x",
@@ -86,21 +86,45 @@ part <- part_sband(
   n_part = 2,
   prop = 0.5
 )
-part
 
-part$part
-part$best_part_info
-part$grid
+part_1$part
+part_1$best_part_info
+part_1$grid
 
-# Lets explore Grid object
+# Lets explore Grid object and presences and absences points
+plot(part_1$grid, col=gray.colors(20))
+points(part_1$part[c("x", "y")],
+       col = rainbow(8)[part_1$part$.part],
+       cex = 0.9,
+       pch = c(1,19)[part_1$part$pr_ab+1]
+)
 
-plot(part$grid)
-points(part$part[c("x", "y")],
-  col = c("blue", "red")[part$part$.part],
-  cex = 0.5,
-  pch = 19
+
+# Let's practice with four latitudinal partition and only with presences
+single_spp <- spp \%>\% dplyr::filter(species == "sp1", pr_ab == 1)
+part_2 <- part_sband(
+  env_layer = somevar,
+  data = single_spp,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  type = "lat",
+  min_bands = 8,
+  max_bands = 40,
+  n_part = 8,
+  prop = 0.5
+)
+
+part_2$part
+part_2$best_part_info
+part_2$grid
+
+# Lets explore Grid object and presences points
+plot(part_2$grid, col=gray.colors(20))
+points(part_2$part[c("x", "y")],
+       col = rainbow(8)[part_2$part$.part],
+       cex = 0.5,
+       pch = 19
 )
 }
-
-
 }

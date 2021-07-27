@@ -52,9 +52,9 @@
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)
 #'
-#' # Let's practice with a single species
-#' single_spp <- spp %>% dplyr::filter(species == "sp3")
-#' part <- part_sband(
+#' # Let's practice with two longitudinal partition with presences and absences
+#' single_spp <- spp %>% dplyr::filter(species == "sp1")
+#' part_1 <- part_sband(
 #'   env_layer = somevar,
 #'   data = single_spp,
 #'   x = "x",
@@ -66,23 +66,47 @@
 #'   n_part = 2,
 #'   prop = 0.5
 #' )
-#' part
 #'
-#' part$part
-#' part$best_part_info
-#' part$grid
+#' part_1$part
+#' part_1$best_part_info
+#' part_1$grid
 #'
-#' # Lets explore Grid object
+#' # Lets explore Grid object and presences and absences points
+#' plot(part_1$grid, col=gray.colors(20))
+#' points(part_1$part[c("x", "y")],
+#'        col = rainbow(8)[part_1$part$.part],
+#'        cex = 0.9,
+#'        pch = c(1,19)[part_1$part$pr_ab+1]
+#' )
 #'
-#' plot(part$grid)
-#' points(part$part[c("x", "y")],
-#'   col = c("blue", "red")[part$part$.part],
-#'   cex = 0.5,
-#'   pch = 19
+#'
+#' # Let's practice with four latitudinal partition and only with presences
+#' single_spp <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
+#' part_2 <- part_sband(
+#'   env_layer = somevar,
+#'   data = single_spp,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   type = "lat",
+#'   min_bands = 8,
+#'   max_bands = 40,
+#'   n_part = 8,
+#'   prop = 0.5
+#' )
+#'
+#' part_2$part
+#' part_2$best_part_info
+#' part_2$grid
+#'
+#' # Lets explore Grid object and presences points
+#' plot(part_2$grid, col=gray.colors(20))
+#' points(part_2$part[c("x", "y")],
+#'        col = rainbow(8)[part_2$part$.part],
+#'        cex = 0.5,
+#'        pch = 19
 #' )
 #' }
-#'
-#'
 part_sband <- function(env_layer,
                         data,
                         x,
@@ -214,21 +238,36 @@ unique list values in pr_ab column are: ",
 
 
   # In this section is assigned the group of each cell
-  for (i in 1:length(grid)) {
-    if (n_part %% 2 == 0) {
-      group <- c(
-        rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
-        rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
-      )
-    }
-    if (n_part %% 2 == 1) {
-      group <- c(
-        rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
-        rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
-      )
-    }
-    terra::values(grid[[i]]) <- rep(group, length.out = terra::ncell(grid[[i]]))
-  }
+   if (type == 'lon') {
+     for (i in 1:length(grid)) {
+       if (n_part %% 2 == 0) {
+         group <- c(rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
+                    rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]])
+       }
+       if (n_part %% 2 == 1) {
+         group <- c(rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
+                    rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]])
+       }
+       terra::values(grid[[i]]) <-
+         rep(group, length.out = terra::ncell(grid[[i]]))
+     }
+   }
+
+
+   if(type == 'lat') {
+     for (i in 1:length(grid)) {
+       if (n_part %% 2 == 0) {
+         group <- c(rep(1:n_part, DIM[i, 1])[1:DIM[i, 1]],
+                    rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 1])[1:DIM[i, 1]])
+       }
+       if (n_part %% 2 == 1) {
+         group <- c(rep(1:n_part, DIM[i, 1])[1:DIM[i, 1]],
+                    rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 1])[1:DIM[i, 1]])
+       }
+       terra::values(grid[[i]]) <-
+         rep(group, length.out = terra::ncell(grid[[i]]))
+     }
+   }
 
   # Matrix within each columns represent the partitions of points
   # for each option for number of bands
@@ -258,8 +297,33 @@ unique list values in pr_ab column are: ",
   part <- part[, pp]
   names(part) <- names(which(pp == TRUE))
 
+  ### Remove problematic grids based on presences
+  # Grids that assigned partitions less than the number of groups will be removed
+  if (any(unique(pa) == 0)) {
+    pa <- presences2$pr_ab # Vector with presences and absences
+    pp <- sapply(part[pa == 0, ], function(x) {
+      length(unique(x))
+    })
+    pp <- ifelse(pp == n_part, TRUE, FALSE)
+    # Elimination of those partition that have one record in some group
+    pf <- sapply(part[pa == 0, ], table)
+    if (is.list(pf) == TRUE) {
+      pf <- which(sapply(pf, min) <= 1)
+    } else {
+      pf <- which(apply(pf, 2, min) <= 1)
+    }
+    pp[pf] <- FALSE
+
+    n_bands <- n_bands[pp]
+    grid <- grid[pp]
+    part <- part[, pp]
+    names(part) <- names(which(pp == TRUE))
+  }
+
+
+
   if (ncol(part) == 0) {
-    message("It was not possible to find a good partition. Try to change values in 'n_part', or in 'min_band', 'max_band', or 'num_bands'")
+    message("It was not possible to find a good partition. Try to change values in 'n_part', or in 'min_band', or 'max_band'")
     return(NA)
   }
 
@@ -381,7 +445,7 @@ unique list values in pr_ab column are: ",
   # Cleaning those variances based in data divided in a number of partition less than
   # the number of groups
 
-  # SELLECTION OF THE BEST CELL SIZE----
+  # SELLECTION OF THE BEST BAND----
   Opt2 <- Opt
   rownames(Opt2) <- colnames(part)
   Dup <-
