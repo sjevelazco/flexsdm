@@ -5,42 +5,33 @@
 # flexsdm
 
 ### Overview 
-Species distribution modeling has become a standard tool in several research areas such as ecology, 
-conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution 
-modeling is an area of active research in both theoretical and methodological aspects. This has 
-led to defining a specific modeling process for a particular situation where the 
-“click-and-run” is not a desirable option. 
-
-One of the most exciting features of **flexsdm** is its high manipulation and parametrization 
-capacity based on different functions and arguments manipulation. This enables users to define 
-their own complete or partial modeling procedure specific for a modeling situation (e.g., number 
-of variables, number of records, different algorithm and ensemble methods, algorithms tuning, etc.).
+Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. This has led to defining a specific modeling process for a particular situation where the “click-and-run” is not a desirable option. One of the most exciting features of **flexsdm** is its high manipulation and parametrization capacity based on different functions and arguments. This enables users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).
 
 --- ---
 ### Set of functions
+The **flexsdm** package is organized, and functions are grouped into three modeling steps
 ### 1. Pre-modeling functions 
-Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, 
-sample pseudo-absences, define calibration area).
+Set tools that prepare modeling input data (e.g., species occurrences thinning, sample pseudo-absences or background points, delimitation of calibration area). 
 
 * `calib_area()` Delimit calibration area for constructing species distribution models
-* `correct_colinvar()` Perform collinearity reduction on predictors
+* `correct_colinvar()` Collinearity reduction on predictors
 * `env_outliers()` Integration of outliers detection methods in the environmental space
-* `part_classical()` Data partitioning for training and testing models
+* `part_random()` Data partitioning for training and testing models
 * `part_sblock()` Spatial block cross validation
+* `part_sband()` Spatial band cross validation
+* `part_senv()` Environmental cross-validation
 * `plot_res()` Plot different resolutions to be used in part_sblock
-* `part_senv()` Environmental and spatial cross validation
+* `get_block()` Transform a spatial partition layer to the same spatial properties of environmental variables
 * `sample_background()` Sample background points
-* `sample_pseudoabs()` Peseudo-absence allocation method
+* `sample_pseudoabs()` Sampel pseudo-absence 
+* `sdm_directory()` Create directories for saving the outputs of the flexsdm
 * `sdm_extract()` Extract environmental data based on x and y coordinates
 * `occfilt_env()` Perform environmental filtering on species occurrences
 * `occfilt_geo()` Perform geographical filtering on species occurrences
 
 
 ### 2. Modeling functions 
-Set of function families for modeling. Several of them can be divided into `fit_*`, `tune_*`, and 
-`esm_*` family functions. `fit_*` construct and validate models with default hyper-parameter 
-values. `tune_*` construct and validate models searching for the best hyper-parameter values 
-combination. `esm_` construct and validate Ensemble of Small Models.
+It includes functions related to modeling construction and validation. Several of them can be grouped into `fit_*`, `tune_*`, and `esm_*` family functions. `fit_*` construct and validate models with default hyper-parameter values. `tune_*` construct and validate models searching for the best hyper-parameter values combination. `esm_` construct and validate Ensemble of Small Models.
 
 #### `fit_*` functions family
 * `fit_gam()` Fit and validate Generalized Additive Models
@@ -75,12 +66,16 @@ Model approach
 approach
 
 ### 3. Post-modeling functions
-Function for predicting, ensemble, and interpolate models.
+Tools related to models’ geographical predictions, evaluation, and correction. 
 
 * `sdm_predict()` Spatial predictions of individual and ensemble model
+* `sdm_summarize()` Merge model performance tables
 * `inter()` Raster interpolation between two time periods
 * `extra_eval()` Measure model extrapolation
 * `extra_correct()` Constraint suitability values under a given extrapolation value
+* `msdm_priori()` Create spatial predictor variables to reduce overprediction of species distribution models
+* `msdm_posteriori()` Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.
 
 --- ---
 > Test the package and give us your feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
+
