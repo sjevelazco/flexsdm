@@ -12,7 +12,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%",
+  #out.width = "100%",
+  fig.width = 6,
+  fig.height = 6,
   echo = TRUE,
   warning = FALSE,
   eval = T
@@ -27,6 +29,7 @@ library(terra)
 library(dplyr)
 devtools::load_all()
 library(tidyverse)
+library(knitr)
 ```
 
 ## Introduction
@@ -81,13 +84,13 @@ sdm_directory(main_dir = my_project,
 
 In this tutorial, we will be using species occurrences and environmental data that are available through the *flexsdm* package. However, if you want to use your own data, be sure to add your species occurrence data (example: csv file) and your environmental predictors (example: .tif or .asc files) to the "1_Input" folder you just created. 
 
-### Species occurrence data
+### Species occurrence data 
 
-The "spp" example dataset includes presence (1) and absence (0) location (x,y) data for 3 plant species found in California. You can load the spp data into your local R environment by using the code below:
+The "spp" example dataset includes presence (1) and absence (0) location (x, y) data for 3 plant species found in California. You can load the spp data into your local R environment by using the code below:
 
-```{r occ data, eval = FALSE}
-library(knitr)
+```{r occ data}
 data(spp)
+knitr::kable(head(spp), align = c('l'))
 ```
 
 ### Environmental predictors
@@ -95,11 +98,14 @@ data(spp)
 ```{r env data}
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
-
-plot(somevar[[1]])
-points(spp[, 2:3], pch = 19, cex = 0.1)
+plot(somevar)
 ```
 
+How are the points distributed across our study area?
+```{r map}
+plot(somevar[[1]])
+points(spp[, 2:3], pch = 19, cex = 0.3, col = as.factor(spp$species))
+```
 
 ## Calibration area
 A big decision in SDM is delimiting your model's calibration area, or the geographic space you will use to train your model(s). Choice of calibration area affects other modeling steps, including sampling pseudo-absence and background points, performance metrics, and the geographic patterns of habitat suitability. You would not want to train an SDM using the extent of the United States if you are interested in the geographic distribution and environmental controls of a rare plant species that is only found on mountaintops in the Sierra Nevada! 
