@@ -2,7 +2,7 @@
 % Please edit documentation in R/correct_colinvar.R
 \name{correct_colinvar}
 \alias{correct_colinvar}
-\title{Perform collinearity reduction on predictors}
+\title{Collinearity reduction of predictor variables}
 \usage{
 correct_colinvar(env_layer, method, proj = NULL)
 }
@@ -53,7 +53,7 @@ If 'fa' method, returns a list with the following elements:
 }
 }
 \description{
-Perform collinearity reduction on predictors
+Collinearity reduction of predictor variables
 }
 \examples{
 \dontrun{

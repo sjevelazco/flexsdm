@@ -1,4 +1,4 @@
-#' Perform collinearity reduction on predictors
+#' Collinearity reduction of predictor variables
 #'
 #' @param env_layer SpatRaster An object of class SpatRaster containing the predictors.
 #' This function does not allow categorical variables

@@ -1,6 +1,6 @@
-#' Pseudo-absence sampling method
+#' Sample pseudo-absences
 #'
-#' @description This function provide several methods of sampling pseudo-absences, for instance
+#' @description This function provide several methods for sampling pseudo-absences, for instance
 #' totally random sampling method, o with environmental and or geographical constraints.
 #'
 #' @param data data.frame or tibble. Database with presences

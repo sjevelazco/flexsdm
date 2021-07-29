@@ -80,37 +80,43 @@
 <div id="overview" class="section level3">
 <h3 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h3>
-<p>Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. This has led to defining a specific modeling process for a particular situation where the “click-and-run” is not a desirable option.</p>
-<p>One of the most exciting features of <strong>flexsdm</strong> is its high manipulation and parametrization capacity based on different functions and arguments manipulation. This enables users to define their own complete or partial modeling procedure specific for a modeling situation (e.g., number of variables, number of records, different algorithm and ensemble methods, algorithms tuning, etc.).</p>
+<p>Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. This has led to defining a specific modeling process for a particular situation where the “click-and-run” is not a desirable option. One of the most exciting features of <strong>flexsdm</strong> is its high manipulation and parametrization capacity based on different functions and arguments. This enables users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).</p>
 <hr>
 </div>
 <div id="set-of-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#set-of-functions" class="anchor"></a>Set of functions</h3>
+<p>The <strong>flexsdm</strong> package is organized, and functions are grouped into three modeling steps</p>
 </div>
 <div id="1-pre-modeling-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#1-pre-modeling-functions" class="anchor"></a>1. Pre-modeling functions</h3>
-<p>Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).</p>
+<p>Set tools that prepare modeling input data (e.g., species occurrences thinning, sample pseudo-absences or background points, delimitation of calibration area).</p>
 <ul>
 <li>
 <code><a href="reference/calib_area.html">calib_area()</a></code> Delimit calibration area for constructing species distribution models</li>
 <li>
-<code><a href="reference/correct_colinvar.html">correct_colinvar()</a></code> Perform collinearity reduction on predictors</li>
+<code><a href="reference/correct_colinvar.html">correct_colinvar()</a></code> Collinearity reduction on predictors</li>
 <li>
 <code><a href="reference/env_outliers.html">env_outliers()</a></code> Integration of outliers detection methods in the environmental space</li>
 <li>
-<code>part_classical()</code> Data partitioning for training and testing models</li>
+<code><a href="reference/part_random.html">part_random()</a></code> Data partitioning for training and testing models</li>
 <li>
 <code><a href="reference/part_sblock.html">part_sblock()</a></code> Spatial block cross validation</li>
 <li>
+<code><a href="reference/part_sband.html">part_sband()</a></code> Spatial band cross validation</li>
+<li>
+<code><a href="reference/part_senv.html">part_senv()</a></code> Environmental cross-validation</li>
+<li>
 <code><a href="reference/plot_res.html">plot_res()</a></code> Plot different resolutions to be used in part_sblock</li>
 <li>
-<code><a href="reference/part_senv.html">part_senv()</a></code> Environmental and spatial cross validation</li>
+<code><a href="reference/get_block.html">get_block()</a></code> Transform a spatial partition layer to the same spatial properties of environmental variables</li>
 <li>
 <code><a href="reference/sample_background.html">sample_background()</a></code> Sample background points</li>
 <li>
-<code><a href="reference/sample_pseudoabs.html">sample_pseudoabs()</a></code> Peseudo-absence allocation method</li>
+<code><a href="reference/sample_pseudoabs.html">sample_pseudoabs()</a></code> Sampel pseudo-absence</li>
+<li>
+<code><a href="reference/sdm_directory.html">sdm_directory()</a></code> Create directories for saving the outputs of the flexsdm</li>
 <li>
 <code><a href="reference/sdm_extract.html">sdm_extract()</a></code> Extract environmental data based on x and y coordinates</li>
 <li>
@@ -122,7 +128,7 @@
 <div id="2-modeling-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#2-modeling-functions" class="anchor"></a>2. Modeling functions</h3>
-<p>Set of function families for modeling. Several of them can be divided into <code>fit_*</code>, <code>tune_*</code>, and <code>esm_*</code> family functions. <code>fit_*</code> construct and validate models with default hyper-parameter values. <code>tune_*</code> construct and validate models searching for the best hyper-parameter values combination. <code>esm_</code> construct and validate Ensemble of Small Models.</p>
+<p>It includes functions related to modeling construction and validation. Several of them can be grouped into <code>fit_*</code>, <code>tune_*</code>, and <code>esm_*</code> family functions. <code>fit_*</code> construct and validate models with default hyper-parameter values. <code>tune_*</code> construct and validate models searching for the best hyper-parameter values combination. <code>esm_</code> construct and validate Ensemble of Small Models.</p>
 <div id="fit_-functions-family" class="section level4">
 <h4 class="hasAnchor">
 <a href="#fit_-functions-family" class="anchor"></a><code>fit_*</code> functions family</h4>
@@ -193,16 +199,22 @@
 <div id="3-post-modeling-functions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#3-post-modeling-functions" class="anchor"></a>3. Post-modeling functions</h3>
-<p>Function for predicting, ensemble, and interpolate models.</p>
+<p>Tools related to models’ geographical predictions, evaluation, and correction.</p>
 <ul>
 <li>
 <code><a href="reference/sdm_predict.html">sdm_predict()</a></code> Spatial predictions of individual and ensemble model</li>
+<li>
+<code><a href="reference/sdm_summarize.html">sdm_summarize()</a></code> Merge model performance tables</li>
 <li>
 <code><a href="reference/inter.html">inter()</a></code> Raster interpolation between two time periods</li>
 <li>
 <code><a href="reference/extra_eval.html">extra_eval()</a></code> Measure model extrapolation</li>
 <li>
 <code><a href="reference/extra_correct.html">extra_correct()</a></code> Constraint suitability values under a given extrapolation value</li>
+<li>
+<code><a href="reference/msdm_priori.html">msdm_priori()</a></code> Create spatial predictor variables to reduce overprediction of species distribution models</li>
+<li>
+<code><a href="reference/msdm_posteriori.html">msdm_posteriori()</a></code> Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.</li>
 </ul>
 <hr>
 <blockquote>
