@@ -43,12 +43,12 @@ pre_tr_te <- function(data, p_names, h) {
 # Inverse bioclim
 # TODO create function for fit and estimate bioclim model
 
-bio <- function(data, env_layer){
+bio <- function(data, env_layer) {
   . <- NULL
-  if(class(data)[1]!="data.frame"){
+  if (class(data)[1] != "data.frame") {
     data <- data.frame(data)
   }
-  if(class(env_layer)!="SpatRaster"){
+  if (class(env_layer) != "SpatRaster") {
     env_layer <- terra::rast(env_layer)
   }
 
@@ -61,16 +61,17 @@ bio <- function(data, env_layer){
   maxv <- apply(data, 2, max)
   vnames <- names(data)
 
-  data_2 <- data %>% na.omit() %>%
+  data_2 <- data %>%
+    na.omit() %>%
     apply(., 2, sort) %>%
     data.frame()
 
   rnk <- function(x, y) {
-    b <- apply(y, 1, FUN=function(z) sum(x<z))
-    t <- apply(y, 1, FUN=function(z) sum(x==z))
-    r <- (b + 0.5 * t)/length(x)
+    b <- apply(y, 1, FUN = function(z) sum(x < z))
+    t <- apply(y, 1, FUN = function(z) sum(x == z))
+    r <- (b + 0.5 * t) / length(x)
     i <- which(r > 0.5)
-    r[i] <- 1-r[i]
+    r[i] <- 1 - r[i]
     r * 2
   }
 
@@ -78,13 +79,15 @@ bio <- function(data, env_layer){
   var_df <- na.omit(var_df)
 
   k <- (apply(t(var_df) >= minv, 2, all) &
-          apply(t(var_df) <= maxv, 2, all))
+    apply(t(var_df) <= maxv, 2, all))
 
   for (j in vnames) {
-    var_df[k,j] <- rnk(data_2[, j],
-                      var_df[k, j, drop = FALSE])
+    var_df[k, j] <- rnk(
+      data_2[, j],
+      var_df[k, j, drop = FALSE]
+    )
   }
-  var_df[!k,] <- 0
+  var_df[!k, ] <- 0
   res <- apply(var_df, 1, min)
   result[as.numeric(names(res))] <- res
   return(result)
@@ -98,7 +101,7 @@ inv_bio <- function(e, p) {
   r <- (r - terra::minmax(r)[1]) /
     (terra::minmax(r)[2] - terra::minmax(r)[1])
   r <- (1 - r) >= 0.99 # environmental constrain
-  r[which(r[,] == FALSE)] <- NA
+  r[which(r[, ] == FALSE)] <- NA
   return(r)
 }
 

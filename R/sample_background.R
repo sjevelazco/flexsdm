@@ -280,7 +280,7 @@ sample_background <-
       stop("argument 'method' was misused, available methods 'random', 'thickening'")
     }
 
-    if(method[1] %in% c("biased") & is.null(rbias)){
+    if (method[1] %in% c("biased") & is.null(rbias)) {
       stop("for using 'random' method a raster layer with biases data must be provided in 'rbias' argument")
     }
 
@@ -312,19 +312,19 @@ sample_background <-
     }
 
     # Correct rbias data in case it don't match resolution or extent of rlayer
-    if(method[1] %in% c("biased")){
-      if(any(!(ext(rlayer)[1:4]%in%ext(rbias)[1:4])) | all(!res(rlayer)%in%res(rbias))){
+    if (method[1] %in% c("biased")) {
+      if (any(!(ext(rlayer)[1:4] %in% ext(rbias)[1:4])) | all(!res(rlayer) %in% res(rbias))) {
         rbias2 <- rlayer
         terra::values(rbias2) <- NA
-        df <- terra::as.data.frame(rlayer, xy=TRUE)
+        df <- terra::as.data.frame(rlayer, xy = TRUE)
         rbias2[as.numeric(rownames(df))] <-
-          terra::extract(rbias, df[c('x', 'y')])[,2]
+          terra::extract(rbias, df[c("x", "y")])[, 2]
         rbias <- rbias2
         rm(rbias2, df)
       }
     }
 
-    if(method[1] %in% c("biased")){
+    if (method[1] %in% c("biased")) {
       rlayer <- mask(rlayer, rbias)
     }
 
@@ -366,20 +366,19 @@ sample_background <-
             replace = FALSE,
             prob = NULL
           )
-      } else if (any(method == "thickening")){
+      } else if (any(method == "thickening")) {
         cell_samp <-
           sample(cell_samp,
             size = n,
             replace = FALSE,
             prob = buf_r[cell_samp][, 1]
           )
-      } else if (any(method == "biased")){
-
+      } else if (any(method == "biased")) {
         cell_samp <-
           sample(cell_samp,
-                 size = n,
-                 replace = FALSE,
-                 prob = rbias[cell_samp][, 1]
+            size = n,
+            replace = FALSE,
+            prob = rbias[cell_samp][, 1]
           )
       }
 

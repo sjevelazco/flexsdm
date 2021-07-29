@@ -66,10 +66,10 @@ test_that("extra_eval wrong use", {
 
   names(somevar_ca) <- tolower(names(somevar_ca))
 
-    expect_error(extra_eval(
-      env_calib = somevar_ca,
-      env_proj = somevar,
-      n_cores = 1,
-      aggreg_factor = 3
-    ))
+  expect_error(extra_eval(
+    env_calib = somevar_ca,
+    env_proj = somevar,
+    n_cores = 1,
+    aggreg_factor = 3
+  ))
 })

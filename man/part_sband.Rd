@@ -62,7 +62,6 @@ number of bands is performed automatically considering spatial autocorrelation, 
 similarity, and the number of presence and absence records in each partition.
 }
 \examples{
-
 \dontrun{
 require(terra)
 require(dplyr)
@@ -92,11 +91,11 @@ part_1$best_part_info
 part_1$grid
 
 # Lets explore Grid object and presences and absences points
-plot(part_1$grid, col=gray.colors(20))
+plot(part_1$grid, col = gray.colors(20))
 points(part_1$part[c("x", "y")],
-       col = rainbow(8)[part_1$part$.part],
-       cex = 0.9,
-       pch = c(1,19)[part_1$part$pr_ab+1]
+  col = rainbow(8)[part_1$part$.part],
+  cex = 0.9,
+  pch = c(1, 19)[part_1$part$pr_ab + 1]
 )
 
 
@@ -120,11 +119,11 @@ part_2$best_part_info
 part_2$grid
 
 # Lets explore Grid object and presences points
-plot(part_2$grid, col=gray.colors(20))
+plot(part_2$grid, col = gray.colors(20))
 points(part_2$part[c("x", "y")],
-       col = rainbow(8)[part_2$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = rainbow(8)[part_2$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 }
 }

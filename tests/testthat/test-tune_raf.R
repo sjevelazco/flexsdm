@@ -166,18 +166,19 @@ test_that("test fit_formula", {
   tune_grid <-
     expand.grid(mtry = seq(1, 7, 1))
 
-    raf_t <-
-      tune_raf(
-        data = abies2,
-        response = "pr_ab",
-        predictors = c("aet", "ppt_jja", "depth"),
-        predictors_f = c("landform"),
-        fit_formula = formula("pr_ab ~ aet + ppt_jja + depth + landform"),
-        partition = ".part",
-        grid = tune_grid,
-        thr = "max_sens_spec",
-        metric = "TSS")
-    expect_equal(length(raf_t), 5)
+  raf_t <-
+    tune_raf(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "ppt_jja", "depth"),
+      predictors_f = c("landform"),
+      fit_formula = formula("pr_ab ~ aet + ppt_jja + depth + landform"),
+      partition = ".part",
+      grid = tune_grid,
+      thr = "max_sens_spec",
+      metric = "TSS"
+    )
+  expect_equal(length(raf_t), 5)
 })
 
 test_that("grid = NULL ", {

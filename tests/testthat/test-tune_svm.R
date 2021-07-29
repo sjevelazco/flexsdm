@@ -18,8 +18,10 @@ test_that("class and lenght of svm_t object", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(C = c(2, 8, 20),
-                sigma = c(0.01, 0.2, 0.5))
+    expand.grid(
+      C = c(2, 8, 20),
+      sigma = c(0.01, 0.2, 0.5)
+    )
 
   svm_t <-
     tune_svm(
@@ -50,8 +52,10 @@ test_that("test of 0-1 response argument", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(C = c(2, 8, 20),
-                sigma = c(0.01, 0.2, 0.5))
+    expand.grid(
+      C = c(2, 8, 20),
+      sigma = c(0.01, 0.2, 0.5)
+    )
 
   expect_error(
     svm_t <-
@@ -80,8 +84,10 @@ test_that("test NULL in predictors_f", {
   )
 
   tune_grid <-
-    expand.grid(C = c(2, 8, 20),
-                sigma = c(0.01, 0.2, 0.5))
+    expand.grid(
+      C = c(2, 8, 20),
+      sigma = c(0.01, 0.2, 0.5)
+    )
 
   svm_t <-
     tune_svm(
@@ -122,8 +128,10 @@ test_that("test if remove NAs rows works", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(C = c(2, 8, 20),
-                sigma = c(0.01, 0.2, 0.5))
+    expand.grid(
+      C = c(2, 8, 20),
+      sigma = c(0.01, 0.2, 0.5)
+    )
 
   # Insert NAs in rows 3 and 4 for response column.
   abies2[3:4, 1] <- NA
@@ -168,8 +176,10 @@ test_that("test fit_formula", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(C = c(2, 8, 20),
-                sigma = c(0.01, 0.2, 0.5))
+    expand.grid(
+      C = c(2, 8, 20),
+      sigma = c(0.01, 0.2, 0.5)
+    )
 
   expect_message(
     svm_t <-
@@ -225,9 +235,11 @@ test_that("missuse of grid ", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(n.trees = c(20, 50),
-                # sigma = c(0.1, 0.5),
-                n.minobsinnode = c(1, 3))
+    expand.grid(
+      n.trees = c(20, 50),
+      # sigma = c(0.1, 0.5),
+      n.minobsinnode = c(1, 3)
+    )
 
   expect_error(
     svm_t <-

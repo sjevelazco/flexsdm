@@ -61,7 +61,7 @@
 #' }
 #'
 part_random <- function(data, pr_ab, method = NULL) {
-  if(!method[1]%in%c('kfold', 'rep_kfold', 'loocv', 'boot')){
+  if (!method[1] %in% c("kfold", "rep_kfold", "loocv", "boot")) {
     stop("method argument was missused, available methods area 'kfold', 'rep-kfold', 'loocv', or 'boot'")
   }
   .part <- BOOT1 <- BOOT2 <- boot <- NULL

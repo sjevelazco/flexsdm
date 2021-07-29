@@ -27,8 +27,10 @@ test_that("extra_correct", {
       n_cores = 2,
       aggreg_factor = 5
     )
-  xp2 <- extra_correct(suit = somevar$CFP_1,
-                extra = xp,
-                threshold = 50)
+  xp2 <- extra_correct(
+    suit = somevar$CFP_1,
+    extra = xp,
+    threshold = 50
+  )
   expect_equal(class(xp2)[1], "SpatRaster")
 })

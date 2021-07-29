@@ -99,8 +99,8 @@ tune_raf <-
     data <- data.frame(data)
 
     # Test response variable
-    r_test <- (data %>% dplyr::pull(response) %>% unique()  %>% na.omit())
-    if((!all(r_test%in%c(0,1)))){
+    r_test <- (data %>% dplyr::pull(response) %>% unique() %>% na.omit())
+    if ((!all(r_test %in% c(0, 1)))) {
       stop("values of response variable do not match with 0 and 1")
     }
 
@@ -151,7 +151,7 @@ tune_raf <-
       message("Hyper-parameter values were not provided, default values will be used")
       message(paste("mtry = ", paste(seq(2, paste(
         nv
-      ), 1), collapse = ',')))
+      ), 1), collapse = ",")))
     }
 
     # Test hyper-parameters names

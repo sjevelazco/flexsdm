@@ -137,7 +137,7 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
       nrow(env_proj2) + 1
     )
 
-  if (n_cores==1) {
+  if (n_cores == 1) {
     extra <- lapply(seq_len((length(set) - 1)), function(x) {
       rowset <- set[x]:(set[x + 1] - 1)
       auclidean <-

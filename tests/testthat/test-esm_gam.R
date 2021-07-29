@@ -4,7 +4,7 @@ test_that("ESM generalized linear model ", {
 
   # Using k-fold partition method
   set.seed(10)
-    abies2 <- abies %>%
+  abies2 <- abies %>%
     na.omit() %>%
     group_by(pr_ab) %>%
     dplyr::slice_sample(n = 10) %>%

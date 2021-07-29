@@ -15,7 +15,7 @@ test_that("sdm_directory", {
   )
   expect_equal(class(dirs_1), "character")
   expect_equal(length(dirs_1), 15)
-  unlink(file.path(getwd(),  "flexsdm_results"), recursive =TRUE)
+  unlink(file.path(getwd(), "flexsdm_results"), recursive = TRUE)
 
   # Implement sdm_directory without specific path and project name
   dirs_2 <- sdm_directory(
@@ -31,5 +31,5 @@ test_that("sdm_directory", {
   )
   expect_equal(class(dirs_2), "character")
   expect_equal(length(dirs_2), 111)
-  unlink(tempdir() %>% file.path(., "my_project_name"), recursive =TRUE)
+  unlink(tempdir() %>% file.path(., "my_project_name"), recursive = TRUE)
 })

@@ -88,7 +88,6 @@
 #' esm_gau_t1$esm_model # bivariate model
 #' esm_gau_t1$predictors
 #' esm_gau_t1$performance
-#'
 #' }
 esm_gau <- function(data,
                     response,

@@ -42,7 +42,6 @@
 #' @importFrom utils combn
 #'
 #' @examples
-#'
 #' \dontrun{
 #' require(terra)
 #' require(dplyr)
@@ -72,11 +71,11 @@
 #' part_1$grid
 #'
 #' # Lets explore Grid object and presences and absences points
-#' plot(part_1$grid, col=gray.colors(20))
+#' plot(part_1$grid, col = gray.colors(20))
 #' points(part_1$part[c("x", "y")],
-#'        col = rainbow(8)[part_1$part$.part],
-#'        cex = 0.9,
-#'        pch = c(1,19)[part_1$part$pr_ab+1]
+#'   col = rainbow(8)[part_1$part$.part],
+#'   cex = 0.9,
+#'   pch = c(1, 19)[part_1$part$pr_ab + 1]
 #' )
 #'
 #'
@@ -100,23 +99,23 @@
 #' part_2$grid
 #'
 #' # Lets explore Grid object and presences points
-#' plot(part_2$grid, col=gray.colors(20))
+#' plot(part_2$grid, col = gray.colors(20))
 #' points(part_2$part[c("x", "y")],
-#'        col = rainbow(8)[part_2$part$.part],
-#'        cex = 0.5,
-#'        pch = 19
+#'   col = rainbow(8)[part_2$part$.part],
+#'   cex = 0.5,
+#'   pch = 19
 #' )
 #' }
 part_sband <- function(env_layer,
-                        data,
-                        x,
-                        y,
-                        pr_ab,
-                        type = 'lon',
-                        n_part = 2,
-                        min_bands = 2,
-                        max_bands = 20,
-                        prop = 0.5) {
+                       data,
+                       x,
+                       y,
+                       pr_ab,
+                       type = "lon",
+                       n_part = 2,
+                       min_bands = 2,
+                       max_bands = 20,
+                       prop = 0.5) {
 
   # Select columns
   data <- dplyr::tibble(data)
@@ -184,9 +183,9 @@ unique list values in pr_ab column are: ",
 
   DIM <-
     matrix(0, length(n_bands), 2) # Rows and columns
-   colnames(DIM) <- c("R", "C")
+  colnames(DIM) <- c("R", "C")
 
-  if (type == 'lon') {
+  if (type == "lon") {
     DIM[, 1] <- n_bands
     DIM[, 2] <- rep(1)
 
@@ -208,10 +207,9 @@ unique list values in pr_ab column are: ",
       grid[[i]] <- mask3
     }
     rm(list = c("mask3", "mask2", "mask"))
-
   }
 
-  if (type == 'lat'){
+  if (type == "lat") {
     DIM[, 1] <- rep(1)
     DIM[, 2] <- n_bands
 
@@ -233,41 +231,48 @@ unique list values in pr_ab column are: ",
       grid[[i]] <- mask3
     }
     rm(list = c("mask3", "mask2", "mask"))
-
   }
 
 
   # In this section is assigned the group of each cell
-   if (type == 'lon') {
-     for (i in 1:length(grid)) {
-       if (n_part %% 2 == 0) {
-         group <- c(rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
-                    rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]])
-       }
-       if (n_part %% 2 == 1) {
-         group <- c(rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
-                    rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]])
-       }
-       terra::values(grid[[i]]) <-
-         rep(group, length.out = terra::ncell(grid[[i]]))
-     }
-   }
+  if (type == "lon") {
+    for (i in 1:length(grid)) {
+      if (n_part %% 2 == 0) {
+        group <- c(
+          rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
+          rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
+        )
+      }
+      if (n_part %% 2 == 1) {
+        group <- c(
+          rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
+          rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
+        )
+      }
+      terra::values(grid[[i]]) <-
+        rep(group, length.out = terra::ncell(grid[[i]]))
+    }
+  }
 
 
-   if(type == 'lat') {
-     for (i in 1:length(grid)) {
-       if (n_part %% 2 == 0) {
-         group <- c(rep(1:n_part, DIM[i, 1])[1:DIM[i, 1]],
-                    rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 1])[1:DIM[i, 1]])
-       }
-       if (n_part %% 2 == 1) {
-         group <- c(rep(1:n_part, DIM[i, 1])[1:DIM[i, 1]],
-                    rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 1])[1:DIM[i, 1]])
-       }
-       terra::values(grid[[i]]) <-
-         rep(group, length.out = terra::ncell(grid[[i]]))
-     }
-   }
+  if (type == "lat") {
+    for (i in 1:length(grid)) {
+      if (n_part %% 2 == 0) {
+        group <- c(
+          rep(1:n_part, DIM[i, 1])[1:DIM[i, 1]],
+          rep(c((n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 1])[1:DIM[i, 1]]
+        )
+      }
+      if (n_part %% 2 == 1) {
+        group <- c(
+          rep(1:n_part, DIM[i, 1])[1:DIM[i, 1]],
+          rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 1])[1:DIM[i, 1]]
+        )
+      }
+      terra::values(grid[[i]]) <-
+        rep(group, length.out = terra::ncell(grid[[i]]))
+    }
+  }
 
   # Matrix within each columns represent the partitions of points
   # for each option for number of bands
@@ -416,9 +421,9 @@ unique list values in pr_ab column are: ",
           function(x) {
             suppressMessages(
               ape::Moran.I(x,
-                           dist2,
-                           na.rm = TRUE,
-                           scaled = TRUE
+                dist2,
+                na.rm = TRUE,
+                scaled = TRUE
               )$observed
             )
           }
@@ -489,7 +494,7 @@ unique list values in pr_ab column are: ",
     }
 
     if (unique(Opt2$spa_auto) &&
-        unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
+      unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }

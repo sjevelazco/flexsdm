@@ -129,8 +129,8 @@ tune_gbm <-
     data <- data.frame(data)
 
     # Test response variable
-    r_test <- (data %>% dplyr::pull(response) %>% unique()  %>% na.omit())
-    if((!all(r_test%in%c(0,1)))){
+    r_test <- (data %>% dplyr::pull(response) %>% unique() %>% na.omit())
+    if ((!all(r_test %in% c(0, 1)))) {
       stop("values of response variable do not match with 0 and 1")
     }
 

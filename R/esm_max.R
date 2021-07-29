@@ -114,7 +114,6 @@
 #' esm_max_t1$esm_model # bivariate model
 #' esm_max_t1$predictors
 #' esm_max_t1$performance
-#'
 #' }
 esm_max <- function(data,
                     response,

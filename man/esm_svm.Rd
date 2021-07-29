@@ -102,7 +102,6 @@ esm_svm_t1 <- esm_svm(
 esm_svm_t1$esm_model # bivariate model
 esm_svm_t1$predictors
 esm_svm_t1$performance
-
 }
 }
 \references{

@@ -87,7 +87,6 @@ esm_gau_t1 <- esm_gau(
 esm_gau_t1$esm_model # bivariate model
 esm_gau_t1$predictors
 esm_gau_t1$performance
-
 }
 }
 \references{

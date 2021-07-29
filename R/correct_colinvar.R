@@ -129,7 +129,7 @@ correct_colinvar <- function(env_layer,
     result <- list(
       env_layer = env_layer,
       removed_variables = rem,
-      correlation_table = dplyr::tibble(variable=rownames(h), data.frame(h))
+      correlation_table = dplyr::tibble(variable = rownames(h), data.frame(h))
     )
   }
 
@@ -183,7 +183,7 @@ correct_colinvar <- function(env_layer,
     result <- list(
       env_layer = env_layer,
       removed_variables = n$excluded,
-      correlation_table = dplyr::tibble(variable=rownames(n$corMatrix), data.frame(n$corMatrix))
+      correlation_table = dplyr::tibble(variable = rownames(n$corMatrix), data.frame(n$corMatrix))
     )
   }
 
@@ -270,7 +270,7 @@ correct_colinvar <- function(env_layer,
         error = function(e) {
           stats::factanal(
             x = p,
-            factors = ns-1,
+            factors = ns - 1,
             rotation = "varimax",
             lower = 0.001
           )
@@ -284,13 +284,15 @@ correct_colinvar <- function(env_layer,
 
     env_layer <- terra::subset(env_layer, sel)
 
-    h <- fit$loadings %>% matrix() %>% data.frame()
-    colnames(h) <- paste("Factor", 1:ncol(h), sep='_')
+    h <- fit$loadings %>%
+      matrix() %>%
+      data.frame()
+    colnames(h) <- paste("Factor", 1:ncol(h), sep = "_")
     result <- list(
       env_layer = env_layer,
       removed_variables = rem,
-      correlation_table = dplyr::tibble(variable=rownames(fit$correlation), data.frame(fit$correlation)),
-      variable_loading = dplyr::tibble(Variable=rownames(fit$loadings), h)
+      correlation_table = dplyr::tibble(variable = rownames(fit$correlation), data.frame(fit$correlation)),
+      variable_loading = dplyr::tibble(Variable = rownames(fit$loadings), h)
     )
   }
 
