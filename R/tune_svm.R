@@ -217,25 +217,28 @@ tune_svm <-
         # Predict for presences absences data
         pred_test <-
           lapply(mod, function(x) {
-            data.frame(
+            tryCatch(data.frame(
               pr_ab = test[[i]][, response],
               pred = kernlab::predict(
                 x,
                 newdata = test[[i]],
                 type = "prob"
               )[, 2]
-            )
+            ),
+            error = function(cond) {})
           })
 
         # Validation of parameter combination
         eval <- list()
         for (ii in 1:length(pred_test)) {
-          eval[[ii]] <-
-            sdm_eval(
-              p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
-              a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-              thr = thr
-            ) %>% dplyr::tibble(model = "svm", .)
+          if(!is.null(pred_test[[ii]])){
+            eval[[ii]] <-
+              sdm_eval(
+                p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+                a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+                thr = thr
+              ) %>% dplyr::tibble(model = "svm", .)
+          }
         }
 
         names(eval) <- tnames
@@ -254,7 +257,7 @@ tune_svm <-
       names(eval_partial) <- 1:np2
       eval_partial <- eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
         dplyr::bind_rows(., .id = "partition")
-      eval_partial_list[[h]] <- eval_partial
+      eval_partial_list[[h]] <- na.omit(eval_partial)
     }
 
     eval_partial <- eval_partial_list %>%
