@@ -28,7 +28,6 @@ library(GRaF)
 library(terra)
 library(dplyr)
 devtools::load_all()
-library(tidyverse)
 library(knitr)
 ```
 
