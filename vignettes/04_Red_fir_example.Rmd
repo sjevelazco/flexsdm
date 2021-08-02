@@ -27,7 +27,7 @@ library(devtools)
 library(GRaF)
 library(terra)
 library(dplyr)
-devtools::load_all()
+load_all()
 library(knitr)
 ```
 
@@ -106,8 +106,20 @@ points(
 
 ```
 ## Pseduo-absence/background points (using partition previously created as a mask)
+```{r pseudo-absence/background}
+bg <- sample_background
+
+# sample_background
+# sample_pseduoabs
+
+```
 ## Fit models with tune_max, fit_gau, and third one
+```{r fit models}
+```
 ## Create an ensemble
-## project the model
+```{r ensemble}
+
+```
+## Project the model
 ## Constrain it with msdm_posterior 
 
