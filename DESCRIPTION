@@ -1,6 +1,6 @@
 Package: flexsdm
 Type: Package
-Title: What the Package Does (Title Case)))
+Title: Tools for data preparation, fitting, prediction, evaluation, and post-processing of species distribution models
 Version: 0.0.1
 Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
            email = "sjevelazco@gmail.com",
@@ -21,7 +21,6 @@ Maintainer: Santiago J.E. Velazco <sjevelazco@gmail.com>
 Depends: R (>= 3.5.0)
 Imports: 
     ape,
-    dismo,
     doParallel,
     dplyr,
     flexclust,
@@ -36,6 +35,8 @@ Imports:
     sp,
     Rlof,
     terra,
+    raster,
+    methods,
     utils,
     GRaF
 Remotes: 
@@ -48,6 +49,10 @@ LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
     covr,
-    rgdal,
+    knitr,
+    rmarkdown,
+    rgeos,
     testthat (>= 3.0.0)
+VignetteBuilder:
+    knitr
 Config/testthat/edition: 3

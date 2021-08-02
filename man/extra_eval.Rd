@@ -10,7 +10,7 @@ extra_eval(env_calib, env_proj, n_cores = 1, aggreg_factor = 1)
 \item{env_calib}{SpatRaster with environmental conditions of the calibration area or the
 presence and absence points localities used for constructing models}
 
-\item{env_proj}{SpatRaster with environmental condition used for projecting a model}
+\item{env_proj}{SpatRaster with environmental condition used for projecting a model (e.g., a bigger region, other region, or time period)}
 
 \item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 

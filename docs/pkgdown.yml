@@ -1,18 +1,8 @@
 pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
-<<<<<<< HEAD
-<<<<<<< HEAD
-articles: {}
-last_built: 2021-07-14T17:15Z
-=======
 articles:
   01_pre_modeling: 01_pre_modeling.html
-last_built: 2021-07-09T15:48Z
->>>>>>> main
-=======
-articles:
-  01_pre_modeling: 01_pre_modeling.html
-last_built: 2021-07-09T15:48Z
->>>>>>> main
+  04_Red_fir_example: 04_Red_fir_example.html
+last_built: 2021-08-02T12:27Z
 

@@ -102,6 +102,12 @@ tune_net <-
     . <- model <- TPR <- IMAE <- thr_value <- n_presences <- n_absences <- NULL
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
+    # Test response variable
+    r_test <- (data %>% dplyr::pull(response) %>% unique() %>% na.omit())
+    if ((!all(r_test %in% c(0, 1)))) {
+      stop("values of response variable do not match with 0 and 1")
+    }
+
     data <- data.frame(data)
 
     # Transform response variable as factor
@@ -109,11 +115,11 @@ tune_net <-
 
     if (is.null(predictors_f)) {
       data <- data %>%
-        dplyr::select(response, predictors, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
       data <- data.frame(data)
     } else {
       data <- data %>%
-        dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
       data <- data.frame(data)
       for (i in predictors_f) {
         data[, i] <- as.factor(data[, i])
@@ -146,17 +152,13 @@ tune_net <-
 
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
-      nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      grid <- data.frame(size = 2, decay = 0)
-    }
-    if (class(grid) == "character") {
-      nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      if (grid == "defalut") {
-        grid <- expand.grid(
-          size = c(2, 4, 6, 8),
-          decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10)
-        ) # revise this values
-      }
+      grid <- expand.grid(
+        size = c(2, 4, 6, 8),
+        decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10)
+      ) # TODO revise this values
+      message("Hyper-parameter values were not provided, default values will be used")
+      message("size = c(2, 4, 6, 8)")
+      message("decay = c(0.01, 0.5, 0.1, 1, 2, 4, 6, 8, 10)")
     }
 
     # Test hyper-parameters names

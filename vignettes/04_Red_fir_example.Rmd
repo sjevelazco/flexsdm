@@ -1,0 +1,113 @@
+---
+title: 'flexsdm: Red Fir example'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{flexsdm: Red Fir example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  #out.width = "100%",
+  fig.width = 6,
+  fig.height = 6,
+  echo = TRUE,
+  warning = FALSE,
+  eval = T
+)
+```
+
+```{r dependencies, include = FALSE}
+library(devtools)
+#devtools::install_github('goldingn/GRaF')
+library(GRaF)
+library(terra)
+library(dplyr)
+devtools::load_all()
+library(knitr)
+```
+
+# Example of full modeling process
+
+## Study species & overview of methods
+
+Here, we used the *flexsdm* package to model the current and future distribution of California red fir (*Abies magnifica*) under two climate change scenarios. Red fir is a high-elevation conifer species that's geographic range extends through the Sierra Nevada in California into the southern portion of the Cascade Range of Oregon. For this species, we used presence data (2,537 locations) compiled by James Thorne, California Department of Fish and Wildlife, and Calflora. We built the distribution models using four climatic variables (climatic water deficit, summer precipitation, winter precipitation, and minimum temperature of the coldest month), three soil variables (percent clay, available water holding capacity, and depth), and a categorical terrain variable. We projected the models to 30-year summary climatic conditions for 2070-2099 under the HADGEM2-ES model with Representative Concentration Pathways (RCP) 4.5 and 8.5. All variables were resampled to a 270m spatial resolution. 
+
+## Occurrence filtering
+
+```{r raw data}
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar) # environmental data
+
+data(abies_df)
+
+somevar[[1]] %>% plot()
+points(abies_df %>% select(x, y))
+```
+
+```{r occurrence filtering}
+
+abies_df$id <- 1:nrow(abies_df) # adding unique id to each row
+
+filt <- abies_df %>%
+  occfilt_env(
+    data = .,
+    x = 'x',
+    y = 'y',
+    id = 'id',
+    nbins = 12,
+    env_layer = somevar,
+    cores = 5
+  ) %>%
+  left_join(abies_df, by = c('id', 'x', 'y'))
+
+
+
+somevar[[1]] %>% plot()
+points(filt %>% select('x', 'y'))
+```
+
+## Band/Block partition with >4 folds
+```{r}
+
+occ <- filt %>%
+  sdm_extract(
+    data = .,
+    x = 'x',
+    y = 'y',
+    env_layer = somevar,
+    filter_na = TRUE
+  ) %>% # extract variables values
+  part_sblock(
+    data = .,
+    env_layer = somevar,
+    pr_ab = 'pr_ab',
+    x = 'x',
+    y = 'y',
+    n_part = 5,
+    min_res_mult = 3,
+    max_res_mult = 200,
+    num_grids = 30,
+    prop = 1
+  ) # add columns with partition
+
+plot(occ$grid)
+points(
+  occ$part[c("x", "y")],
+  col = rainbow(5)[occ$part$.part],
+  cex = 1,
+  pch = 19
+)
+
+
+```
+## Pseduo-absence/background points (using partition previously created as a mask)
+## Fit models with tune_max, fit_gau, and third one
+## Create an ensemble
+## project the model
+## Constrain it with msdm_posterior 
+

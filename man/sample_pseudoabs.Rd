@@ -2,7 +2,7 @@
 % Please edit documentation in R/sample_pseudoabs.R
 \name{sample_pseudoabs}
 \alias{sample_pseudoabs}
-\title{Pseudo-absence sampling method}
+\title{Sample pseudo-absences}
 \usage{
 sample_pseudoabs(
   data,
@@ -46,7 +46,7 @@ It is recommended to use a layer with the same resolution and extent that enviro
 A tibble object with x y coordinates of sampled pseudo-absence points
 }
 \description{
-This function provide several methods of sampling pseudo-absences, for instance
+This function provide several methods for sampling pseudo-absences, for instance
 totally random sampling method, o with environmental and or geographical constraints.
 }
 \examples{
@@ -136,7 +136,7 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
-# Pseudo-absences sampled with environmental and geographical contraint
+# Pseudo-absences sampled with environmental and geographical constraint
 ps1 <-
   sample_pseudoabs(
     data = single_spp,
@@ -151,7 +151,7 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
-# Pseudo-absences sampled with environmental and geographical contraint and with k-mean
+# Pseudo-absences sampled with environmental and geographical constraint and with k-mean
 ps1 <-
   sample_pseudoabs(
     data = single_spp,

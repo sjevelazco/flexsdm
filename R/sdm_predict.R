@@ -263,16 +263,17 @@ sdm_predict <-
     #### graf models ####
     wm <- which(clss == "graf")
     if (length(wm) > 0) {
-      na_mask <- (sum(is.na(pred))>1)
+      na_mask <- (sum(is.na(pred)) > 1)
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
-        terra::values(r) <- NA
+        r[] <- NA
         suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-                           GRaF::predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
-                                              type = "response", CI = NULL))
-        if(length(m[[i]]$facs)){
-          r[(na_mask+is.na(r))==1] <- 0
+          GRaF::predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
+            type = "response", CI = NULL
+          ))
+        if (length(m[[i]]$facs)) {
+          r[(na_mask + is.na(r)) == 1] <- 0
         }
         model_c[[i]] <- r
       }
@@ -284,7 +285,7 @@ sdm_predict <-
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
-        terra::values(r) <- NA
+        r[] <- NA
 
         # Test factor levels
         f <- which(sapply(m[[i]]$data, class) == "factor")
@@ -331,7 +332,7 @@ sdm_predict <-
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
-        terra::values(r) <- NA
+        r[] <- NA
 
         # Test factor levels
         f <- which(sapply(m[[i]]$data, class) == "factor")
@@ -378,7 +379,7 @@ sdm_predict <-
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
-        terra::values(r) <- NA
+        r[] <- NA
         r[as.numeric(rownames(pred_df))] <-
           suppressMessages(stats::predict(m[[i]], pred_df, type = "response"))
 
@@ -394,7 +395,7 @@ sdm_predict <-
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
-        terra::values(r) <- NA
+        r[] <- NA
         r[as.numeric(rownames(pred_df))] <-
           predict_maxnet(
             object = m[[i]],
@@ -413,7 +414,7 @@ sdm_predict <-
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
-        terra::values(r) <- NA
+        r[] <- NA
 
         # Test factor levels
         f <- (m[[i]]$xlevels)
@@ -468,7 +469,7 @@ sdm_predict <-
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
-        terra::values(r) <- NA
+        r[] <- NA
 
         # Test factor levels
         f <-
@@ -527,7 +528,7 @@ sdm_predict <-
       wm <- names(wm)
       for (i in wm) {
         r <- pred[[1]]
-        terra::values(r) <- NA
+        r[] <- NA
 
         # Test factor levels
         f_n <- which(sapply(pred_df, class) == "factor") %>% names()

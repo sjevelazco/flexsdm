@@ -88,7 +88,7 @@ abies2 <- part_random(
 abies2
 
 # Without threshold specification and with kfold
-esm_svm_t1 <- esm_gam(
+esm_svm_t1 <- esm_svm(
   data = abies2,
   response = "pr_ab",
   predictors = c(

@@ -82,12 +82,7 @@
 #'   response = "pr_ab",
 #'   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
 #'   partition = ".part",
-#'   thr = NULL,
-#'   background = NULL,
-#'   clamp = TRUE,
-#'   classes = "default",
-#'   pred_type = "cloglog",
-#'   regmult = 1
+#'   thr = NULL
 #' )
 #'
 #' esm_gau_t1$esm_model # bivariate model

@@ -43,7 +43,7 @@ inter <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL) {
   annual <- (r1 - r2) / (y2 - y1)
 
   rlist <- list()
-  for(i in 1:(y2 - y1)){
+  for (i in 1:(y2 - y1)) {
     rlist[[i]] <- (r1 - (annual * (i - 1)))
   }
   i <- length(rlist)
@@ -58,7 +58,7 @@ inter <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL) {
   names(rlist) <- rastername
   if (!is.null(dir_save)) {
     message("saving raster...")
-    for(i in 1:terra::nlyr(rlist)){
+    for (i in 1:terra::nlyr(rlist)) {
       terra::writeRaster(
         x = rlist,
         filename = paste0(file.path(dir_save, names(rlist)), ".tif"),

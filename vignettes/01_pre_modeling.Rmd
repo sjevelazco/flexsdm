@@ -1,9 +1,8 @@
 ---
-title: "flexsdm: Overview of Pre-modeling Steps"
-date: "`r Sys.Date()`"
+title: "flexsdm: Overview of Pre-modeling functions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Overview of pre-modeling steps}
+  %\VignetteIndexEntry{flexsdm: Overview of Pre-modeling functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,107 +12,236 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%",
+  #out.width = "100%",
+  fig.width = 6,
+  fig.height = 6,
   echo = TRUE,
   warning = FALSE,
   eval = T
 )
 ```
 
+```{r dependencies, include = FALSE}
+library(devtools)
+#devtools::install_github('goldingn/GRaF')
+library(GRaF)
+library(terra)
+library(dplyr)
+devtools::load_all()
+library(tidyverse)
+library(knitr)
+```
+
 ## Introduction
 
-Species distribution modeling (SDM) has become a standard tool in ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological applications. The *flexsdm* package provides users the ability to manipulate and parameterize models in a way that suits their unique research needs. 
+Species distribution modeling (SDM) has become a standard tool in multiple research areas, including ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological applications. The *flexsdm* package provides users the ability to manipulate and parameterize models in a variety of ways that meet their unique research needs. 
 
 This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).
 
-In this vignette, users will learn about the first set of functions in the *flexsdm* package that fall under the "pre-modeling" umbrella. 
+In this vignette, users will learn about the first set of functions in the *flexsdm* package that fall under the "pre-modeling" umbrella (see below for full list). 
+
+1. sdm_directory(): 
+2. calib_area(): Delimit calibration area for constructing species distribution models
+3. correct_colinvar(): Perform collinearity reduction on predictors
+4. env_outliers(): Integration of outliers detection methods in the environmental space
+5. part_classical(): Data partitioning for training and testing models
+6. part_sblock(): Spatial block cross validation
+7. plot_res(): Plot different resolutions to be used in part_sblock
+8. part_senv(): Environmental and spatial cross validation
+9. sample_background(): Sample background points
+10. sample_pseudoabs(): Peseudo-absence allocation method
+11. sdm_extract(): Extract environmental data based on x and y coordinates
+12. occfilt_env(): Perform environmental filtering on species occurrences
+13. occfilt_geo(): Perform geographical filtering on species occurrences
 
 ## Installation
 
 First, let's install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
-```{r, message=FALSE, warning=FALSE}
-if (!require("remotes"))
-  install.packages("remotes")
-if (!require("flexsdm"))
-  remotes::install_github("sjevelazco/flexsdm")
+```{r download package}
+#devtools::install_github('sjevelazco/flexsdm')
 ```
 
 ## Project Directory Setup
 
-When building SDM's, organizing your folder directories will save time and confusion later. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. 
+When building SDM's, organizing your folder directories will save time and confusion later. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. The function sdm_directory() can do this for you, based on the types of model algorithms you want to use and/or the types of projections you would like to make. First you want to decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory) and then use dir.create() to create your main directory. Next, specify whether or not you want to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. 
 
-```{r folder setup}
-proj_dir <- file.path("C:/Users/Brooke Rose/Google Drive/flexsdm_project") # customize the folder path for your workspace
-dir.create(proj_dir)
+```{r sdm_directory}
+my_project <- file.path("/Users/brookerose/Google Drive/flex_sdm_project")
+dir.create(my_project)
+
+sdm_directory(main_dir = my_project,
+              projections = NULL,
+              calibration_area = TRUE,
+              algorithm = c("gam", "tune_max", "tune_raf"),
+              ensemble = c("mean"),
+              threshold = TRUE, 
+              return_vector = TRUE)
 ```
 
-Within the project directory, you need folders for your 1) species occurrence data and 2) the environmental predictors you plan to use to build your model(s). Let's create those. 
-
-```{r folder setup 2}
-occ_dir <- file.path(proj_dir, "Occurrences")
-dir.create(occ_dir)
-
-pred_dir <- file.path(proj_dir, "Predictors")
-dir.create(pred_dir)
-```
-
-Check your project directory that the two folders were created:  
-
-![](C:/Users/Brooke Rose/Google Drive/Franklin_grant/project/images/folder_create_tutorial.png)
 
 ## Data 
 
-In this tutorial, we will be using data that are available through the *flexsdm* package. However, if you want to use your own data, be sure to add your species occurrence data (example: csv file) and your environmental predictors (example: .tif or .asc files) to the folders you just created.
+In this tutorial, we will be using species occurrences and environmental data that are available through the *flexsdm* package. However, if you want to use your own data, be sure to add your species occurrence data (example: csv file) and your environmental predictors (example: .tif or .asc files) to the "1_Input" folder you just created. 
 
-### species occurrence data
+### Species occurrence data 
 
-The "spp" example dataset includes presence (1) and absence (0) location (x,y) data for 3 species (sp1, sp2, sp3). You can load the spp data into your local R environment by using the code below:
+The "spp" example dataset includes presence (1) and absence (0) location (x, y) data for 3 plant species found in California. You can load the spp data into your local R environment by using the code below:
 
-```{r occ data, eval = FALSE}
+```{r occ data}
 data(spp)
-spp
+knitr::kable(head(spp), align = c('l'))
 ```
 
-### environmental predictors
+### Environmental predictors
 
 ```{r env data}
-env_data <- terra::rast()
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+plot(somevar)
 ```
 
-Below, we look at the occurrence data in geographic space. When building SDM's, or really any time you are working with spatial data, it is a good idea to visually check your data for errors. 
-```{r mapping occurrence points}
-#library(ggplot2)
-#ggplot() +  geom_point(data = spp,
-#                       aes(x = x, y = y),
-#                       color = "red")
+How are the points distributed across our study area?
+```{r map}
+plot(somevar[[1]])
+points(spp[, 2:3], pch = 19, cex = 0.3, col = as.factor(spp$species))
 ```
 
-1. Pre-modeling functions
-Set of tools for preparing and manipulating modeling input data (e.g., species occurrences, sample pseudo-absences, define calibration area).
+## Calibration area
+A big decision in SDM is delimiting your model's calibration area, or the geographic space you will use to train your model(s). Choice of calibration area affects other modeling steps, including sampling pseudo-absence and background points, performance metrics, and the geographic patterns of habitat suitability. You would not want to train an SDM using the extent of the United States if you are interested in the geographic distribution and environmental controls of a rare plant species that is only found on mountaintops in the Sierra Nevada! 
 
-calib_area() Delimit calibration area for constructing species distribution models
-correct_colinvar() Perform collinearity reduction on predictors
-env_outliers() Integration of outliers detection methods in the environmental space
-part_classical() Data partitioning for training and testing models
-part_sblock() Spatial block cross validation
-plot_res() Plot different resolutions to be used in part_sblock
-part_senv() Environmental and spatial cross validation
-sample_background() Sample background points
-sample_pseudoabs() Peseudo-absence allocation method
-sdm_extract() Extract environmental data based on x and y coordinates
-occfilt_env() Perform environmental filtering on species occurrences
-occfilt_geo() Perform geographical filtering on species occurrences
+Let's use presence locations for one species in this exercise.
 
+```{r single_spp}
+single_spp <-
+  spp %>%
+  dplyr::filter(species == "sp1") %>%
+  dplyr::filter(pr_ab == 1) %>%
+  dplyr::select(-pr_ab)
+```
+
+The calib_area() function offers three methods for defining calibration area: buffer, mcp, bmcp, and mask. We will briefly go over each. 
+
+### 1. Buffer
+
+Here we define the calibration area using buffers around presence points. User's can specify the distance around points using the "width" argument. 
+
+```{r buffer method}
+ca_1 <- calib_area(
+  data = single_spp,
+  x = "x",
+  y = "y",
+  method = c("buffer", width = 40000),
+)
+plot(ca_1)
+points(single_spp[, 2:3], pch = 19, cex = 0.5)
+```
+
+### 2. Minimum convex polygon
+You can see that the minimum convex polygon (mcp) method produces a much simpler shape. 
+
+```{r mcp method}
+ca_2 <- calib_area(
+  data = single_spp,
+  x = "x",
+  y = "y",
+  method = c("mcp"),
+)
+plot(ca_2)
+points(single_spp[, 2:3], pch = 19, cex = 0.5)
+```
+
+### 3. Buffered minimum convex polygon
+You can also create a buffer around the minimum convex polygon. 
+
+```{r bmcp method}
+ca_3 <- calib_area(
+  data = single_spp,
+  x = "x",
+  y = "y",
+  method = c("bmcp", width = 40000),
+)
+plot(ca_3)
+points(single_spp[, 2:3], pch = 19, cex = 0.5)
+```
+
+### 4. Mask 
+
+The mask method allows you to select polygons that intersect with your species locations to delineate your calibration area. This might be useful if you are dealing with ecologically significant ecoregions or are interested in distributions within political boundaries. We will use a random set of polygons named "clusters" to illustrate the mask method. The original polygons are on the left and the polygons that contain points (our "mask" calibration area) are on the right. 
+
+```{r mask method}
+clusters <- system.file("external/clusters.shp", package = "flexsdm")
+clusters <- terra::vect(clusters)
+
+ca_4 <- calib_area(
+  data = single_spp,
+  x = "x",
+  y = "y",
+  method = c("mask", clusters, "clusters"),
+)
+
+par(mfrow=c(1,2))
+plot(clusters)
+plot(ca_4)
+points(single_spp[, 2:3], pch = 19, cex = 0.5)
+```
+
+## Reducing collinearity among the predictors
+
+Predictor collinearity is a common issue for SDMs, which can lead to model overfitting and errors in the estimative power of predictors (De Marco & Nóbrega, 2018; Dormann et al., 2013). This can be visualized with the pairs() function from the *terra* package. Several of our variables have pretty high collinearity (.89 for predictors CFP_3 and CFP_4)!
+
+```{r pairs plot}
+terra::pairs(somevar)
+```
+
+So how can we correct for or reduce this collinearity? The function correct_colinvar() has four methods to deal with collinearity: pearson, vif, pca, and fa. Each method returns 1) a raster object (SpatRaster) with the selected predictors and 2) other useful outputs relevant to each method. Let's look at each method:
+
+### 1. Pearson correlation 
+This method eliminates predictors with a Pearson correlation index higher than a determined threshold. The default threshold is 0.7, but users can specify a given threshold (x) with method = c('pearson', th = 'x'). Here, we can see that the "pearson" method retains the first two predictors (CFP_1 and CFP_2) and removes the second two (CFP_3 and CFP_4).
+
+```{r pearson collinearity reduction}
+pearson_var <- correct_colinvar(somevar, method = c("pearson", th="0.7"))
+pearson_var$env_layer
+pearson_var$removed_variables
+pearson_var$correlation_table
+```
+
+### 2. Variance inflation factor
+This method removes the predictors with a higher variance inflation factor than the chosen threshold. Again users can specify a threshold (the default is 10). This method retains the predictors CFP_1, CFP_3, and CFP_4 and removes CFP_2. 
+
+```{r vif collinearity reduction}
+vif_var <- correct_colinvar(somevar, method = c("vif", th = "10"))
+vif_var$env_layer
+vif_var$removed_variables
+vif_var$correlation_table
+```
+
+### 3. Factorial analysis 
+Selecting the "fa" method performs a factorial analysis to reduce dimensionality and selects the predictor(s) with the highest correlation to each axis. NOT WORKING
+
+```{r fa collinearity reduction, eval = FALSE}
+#fa_var <- correct_colinvar(somevar, method = c("fa"))
+#fa_var$env_layer
+#fa_var$removed_variables
+#fa_var$correlation_table
+```
+
+### 4. Principal component analysis 
+Finally, the “pca” method performs a principal components analysis on the predictors and returns the axis that accounts for 95% of the total variance in the system. 
+
+```{r pca collinearity reduction}
+pca_var <- correct_colinvar(somevar, method = c("pca"))
+pca_var$env_layer
+pca_var$coefficients
+pca_var$cumulative_variance
+```
+
+## Data cleaning
+
+## Data partitioning 
 
 
 ```{r prepare data, eval = FALSE}
-require(dplyr)
-require(terra)
-
-somevar <- system.file("external/somevar.tif", package = "flexsdm")
-somevar <- terra::rast(somevar)
-
 # It will prepared data for modeling a species
 occ <- spp %>% 
   dplyr::filter(species == "sp2") %>% # filter a species

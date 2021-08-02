@@ -5,7 +5,7 @@
 #'
 #' @param env_calib SpatRaster with environmental conditions of the calibration area or the
 #' presence and absence points localities used for constructing models
-#' @param env_proj SpatRaster with environmental condition used for projecting a model
+#' @param env_proj SpatRaster with environmental condition used for projecting a model (e.g., a bigger region, other region, or time period)
 #' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #' @param aggreg_factor positive integer. Aggregation factor expressed as number of cells in each
 #'  direction to reduce raster resolution. Use value higher than 1 would be interesting when
@@ -137,7 +137,7 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
       nrow(env_proj2) + 1
     )
 
-  if (is.null(n_cores)) {
+  if (n_cores == 1) {
     extra <- lapply(seq_len((length(set) - 1)), function(x) {
       rowset <- set[x]:(set[x + 1] - 1)
       auclidean <-
@@ -197,5 +197,6 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
     extraraster <- terra::mask(extraraster, disag)
   }
 
+  names(extraraster) <- "extrapolation"
   return(extraraster)
 }

@@ -40,7 +40,6 @@
 #'
 #' @export
 #'
-#' @importFrom dismo predict
 #' @importFrom dplyr %>% select all_of starts_with bind_rows group_by summarise across everything
 #' @importFrom nnet nnet
 #' @importFrom stats formula sd

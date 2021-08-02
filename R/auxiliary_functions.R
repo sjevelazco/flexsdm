@@ -42,12 +42,62 @@ pre_tr_te <- function(data, p_names, h) {
 
 # Inverse bioclim
 # TODO create function for fit and estimate bioclim model
+
+bio <- function(data, env_layer) {
+  . <- NULL
+  if (class(data)[1] != "data.frame") {
+    data <- data.frame(data)
+  }
+  if (class(env_layer) != "SpatRaster") {
+    env_layer <- terra::rast(env_layer)
+  }
+
+  data <- na.omit(data)
+
+  result <- env_layer[[1]]
+  result[] <- NA
+
+  minv <- apply(data, 2, min)
+  maxv <- apply(data, 2, max)
+  vnames <- names(data)
+
+  data_2 <- data %>%
+    na.omit() %>%
+    apply(., 2, sort) %>%
+    data.frame()
+
+  rnk <- function(x, y) {
+    b <- apply(y, 1, FUN = function(z) sum(x < z))
+    t <- apply(y, 1, FUN = function(z) sum(x == z))
+    r <- (b + 0.5 * t) / length(x)
+    i <- which(r > 0.5)
+    r[i] <- 1 - r[i]
+    r * 2
+  }
+
+  var_df <- terra::as.data.frame(env_layer)
+  var_df <- na.omit(var_df)
+
+  k <- (apply(t(var_df) >= minv, 2, all) &
+    apply(t(var_df) <= maxv, 2, all))
+
+  for (j in vnames) {
+    var_df[k, j] <- rnk(
+      data_2[, j],
+      var_df[k, j, drop = FALSE]
+    )
+  }
+  var_df[!k, ] <- 0
+  res <- apply(var_df, 1, min)
+  result[as.numeric(names(res))] <- res
+  return(result)
+}
+
 inv_bio <- function(e, p) {
-  # e <- raster::rast(e)
-  e <- raster::stack(e)
-  model <- dismo::bioclim(e, as.matrix(p))
-  r <- terra::predict(model, e)
-  r <- terra::rast(r)
+  if (class(e) != "SpatRaster") {
+    e <- terra::rast(e)
+  }
+  r <- bio(data = terra::extract(e, p)[-1], env_layer = e)
   r <- (r - terra::minmax(r)[1]) /
     (terra::minmax(r)[2] - terra::minmax(r)[1])
   r <- (1 - r) >= 0.99 # environmental constrain
@@ -148,6 +198,16 @@ boyce <- function(pres,
 #'
 #' @noRd
 predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "exponential", "cloglog", "logistic"), ...) {
+  categoricalval <- function(x, category) {
+    ifelse(x == category, 1, 0)
+  }
+  thresholdval <- function(x, knot) {
+    ifelse(x >= knot, 1, 0)
+  }
+  hingeval <- function(x, min, max) {
+    pmin(1, pmax(0, (x - min) / (max - min)))
+  }
+
   if (clamp) {
     for (v in intersect(names(object$varmax), names(newdata))) {
       newdata[, v] <- pmin(
@@ -213,8 +273,7 @@ rev_jack <- function(v) {
     x1 <- x[i + 1]
     if (x[i] < mean(v)) {
       y[i] <- (x1 - x[i]) * (mean(v) - x[i])
-    }
-    else {
+    } else {
       y[i] <- (x1 - x[i]) * (x1 - mean(v))
     }
   }
@@ -232,8 +291,7 @@ rev_jack <- function(v) {
       xb <- (v2 >= v) * 1
       out <- out + xb
     }
-  }
-  else {
+  } else {
     out <- out
   }
   return(which(out == 1))

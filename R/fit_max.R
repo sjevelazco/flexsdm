@@ -117,6 +117,12 @@ fit_max <- function(data,
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
+  # Test response variable
+  r_test <- (data %>% dplyr::pull(response) %>% unique() %>% na.omit())
+  if ((!all(r_test %in% c(0, 1)))) {
+    stop("values of response variable do not match with 0 and 1")
+  }
+
   data <- data.frame(data)
   if (!is.null(background)) background <- data.frame(background)
 

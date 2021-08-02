@@ -93,7 +93,7 @@ abies2 <- abies \%>\%
 abies2 <- part_random(
   data = abies2,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 3, replicates = 5)
+  method = c(method = "rep_kfold", folds = 5, replicates = 5)
 )
 abies2
 
@@ -107,7 +107,7 @@ backg2 <- backg \%>\%
 backg2 <- part_random(
   data = backg2,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 3, replicates = 5)
+  method = c(method = "rep_kfold", folds = 5, replicates = 5)
 )
 backg2
 

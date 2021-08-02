@@ -1,4 +1,4 @@
-#' Perform collinearity reduction on predictors
+#' Collinearity reduction of predictor variables
 #'
 #' @param env_layer SpatRaster An object of class SpatRaster containing the predictors.
 #' This function does not allow categorical variables
@@ -12,11 +12,11 @@
 #'   \item vif: Select variables by Variance Inflation Factor, a threshold can be specified by
 #'   user. Otherwise, a threshold of 10 is defined as default.Usage method = c('vif', th = '10').
 #'   \item pca: Perform a Principal Component Analysis and use the principal components as the
-#'   new predictors. The selected components account for 95% of the whole variation in the system.
+#'   new predictors. The selected components account for 95\% of the whole variation in the system.
 #'   Usage method = c('pca').
 #'   \item fa: Perform a Factorial Analysis and select, from the original predictors, the ones with
-#'    the highest correlation with the axis which accounts for 95% of the whole variation in the
-#'    system.Usage method = c('fa').
+#'    the highest correlation with the axis which accounts for 95\% of the whole variation in the
+#'    system. Usage method = c('fa').
 #' }
 #' @param proj character. Path to a folder that contains sub-folders for the different projection
 #' scenarios. Only used for pca. Usage proj = "C:/User/Desktop/Projections"
@@ -31,7 +31,7 @@
 #'
 #' If 'pca' method, returns a list with the following elements:
 #' \itemize{
-#' \item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95% of the
+#' \item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95\% of the
 #' whole variation or original environmental variables
 #' \item coefficient: a matrix with the coefficient of principal component (PC) for predictors
 #' \item cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)
@@ -45,12 +45,15 @@
 #' }
 #'
 #' @export
-#' @importFrom stats cor lm prcomp factanal
-#' @importFrom terra as.data.frame subset predict rast scale writeRaster
 #' @importFrom dplyr tibble
+#' @importFrom stats cor lm prcomp factanal
+#' @importFrom terra rast as.data.frame subset predict scale writeRaster
 #'
 #' @examples
 #' \dontrun{
+#' require(terra)
+#' require(dplyr)
+#'
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)
 #'
@@ -74,23 +77,24 @@
 #' var$cumulative_variance
 #'
 #' # Perform fa colinearity control
-#' # this method only will be performed if covariance matrix is invertible.
-#' # WRITE HERE A EXAMPLE THAT WORKS :)
-#' # var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+#' var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+#' var$env_layer
+#' var$coefficient
+#' var$cumulative_variance
 #' }
 #'
 correct_colinvar <- function(env_layer,
                              method,
                              proj = NULL) {
-  # TODO write documentation for fa methods and write details in methods!!!
+  . <- NULL
   if (!any(c("pearson", "vif", "pca", "fa") %in% method)) {
     stop(
       "argument 'method' was misused, select one of the available methods: pearson, vif, pca, fa"
     )
   }
 
-  if (!class(env_layer) %in% "SpatRaster") {
-    stop("Raster object must be from the class SpatRaster")
+  if (class(env_layer)[1] != "SpatRaster") {
+    env_layer <- terra::rast(env_layer)
   }
 
   if (any(method %in% "pearson")) {
@@ -104,8 +108,8 @@ correct_colinvar <- function(env_layer,
     h <- abs(stats::cor(h, method = "pearson"))
     diag(h) <- 0
 
-    res <- as.list(1:10000)
-    for (i in 1:10000) {
+    res <- as.list(1:100000)
+    for (i in 1:100000) {
       ord <- sample(1:ncol(h))
       h2 <- h[ord, ord]
       h2[upper.tri(h2)] <- 0
@@ -125,7 +129,7 @@ correct_colinvar <- function(env_layer,
     result <- list(
       env_layer = env_layer,
       removed_variables = rem,
-      correlation_table = h
+      correlation_table = dplyr::tibble(variable = rownames(h), data.frame(h))
     )
   }
 
@@ -138,8 +142,8 @@ correct_colinvar <- function(env_layer,
 
     x <- terra::as.data.frame(env_layer)
     LOOP <- TRUE
-    if (nrow(x) > 10000) {
-      x <- x[sample(1:nrow(x), 10000), ]
+    if (nrow(x) > 200000) {
+      x <- x[sample(1:nrow(x), 200000), ]
     }
     n <- list()
     n$variables <- colnames(x)
@@ -179,7 +183,7 @@ correct_colinvar <- function(env_layer,
     result <- list(
       env_layer = env_layer,
       removed_variables = n$excluded,
-      correlation_table = n$corMatrix
+      correlation_table = dplyr::tibble(variable = rownames(n$corMatrix), data.frame(n$corMatrix))
     )
   }
 
@@ -205,8 +209,8 @@ correct_colinvar <- function(env_layer,
 
     result <- list(
       env_layer = env_layer,
-      coefficients = cof,
-      cumulative_variance = dplyr::tibble(cvar)
+      coefficients = data.frame(cof) %>% dplyr::tibble(variable = rownames(.), .),
+      cumulative_variance = dplyr::tibble(PC = 1:nrow(cvar), cvar)
     )
 
     if (!is.null(proj)) {
@@ -222,12 +226,10 @@ correct_colinvar <- function(env_layer,
       for (i in 1:length(proj)) {
         scen <- terra::rast(list.files(proj[i], full.names = TRUE))
         scen <- terra::scale(scen, center = means, scale = stds)
-        scen <- predict(scen, p, index = 1:naxis)
+        scen <- terra::predict(scen, p, index = 1:naxis)
         terra::writeRaster(
           scen,
-          file.path(subfold[i], paste0(names(scen), ".tif")),
-          filetype = "GTiff",
-          NAflag = -9999
+          file.path(subfold[i], paste0(names(scen), ".tif"))
         )
       }
 
@@ -241,11 +243,11 @@ correct_colinvar <- function(env_layer,
     p <- terra::scale(env_layer, center = TRUE, scale = TRUE)
     p <- terra::as.data.frame(p, xy = FALSE, na.rm = TRUE)
 
-    if (nrow(p) > 10000) {
-      p <- p[sample(1:nrow(p), 10000), ]
+    if (nrow(p) > 200000) {
+      p <- p[sample(1:nrow(p), 200000), ]
     }
 
-    e <- eigen(terra::predict(p))
+    e <- eigen(stats::cor(p))
     len <- length(e$values)
     a <- NULL
     r <- NULL
@@ -255,7 +257,7 @@ correct_colinvar <- function(env_layer,
       r[j] <- e$values[j] / (sum(e$values))
     }
 
-    ns <- length(which(r > stats::cor))
+    ns <- length(which(r > a))
 
     fit <-
       tryCatch(
@@ -263,12 +265,14 @@ correct_colinvar <- function(env_layer,
           x = p,
           factors = ns,
           rotation = "varimax",
-          lower = 0.01
+          lower = 0.001
         ),
         error = function(e) {
-          stop(
-            "Covariance matrix is not invertible. Consider choosing another method to control collinearity.",
-            call. = F
+          stats::factanal(
+            x = p,
+            factors = ns - 1,
+            rotation = "varimax",
+            lower = 0.001
           )
         }
       )
@@ -280,10 +284,15 @@ correct_colinvar <- function(env_layer,
 
     env_layer <- terra::subset(env_layer, sel)
 
+    h <- fit$loadings %>%
+      matrix() %>%
+      data.frame()
+    colnames(h) <- paste("Factor", 1:ncol(h), sep = "_")
     result <- list(
       env_layer = env_layer,
       removed_variables = rem,
-      correlation_table = fit$loadings
+      correlation_table = dplyr::tibble(variable = rownames(fit$correlation), data.frame(fit$correlation)),
+      variable_loading = dplyr::tibble(Variable = rownames(fit$loadings), h)
     )
   }
 

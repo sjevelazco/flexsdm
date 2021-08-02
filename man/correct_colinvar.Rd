@@ -2,7 +2,7 @@
 % Please edit documentation in R/correct_colinvar.R
 \name{correct_colinvar}
 \alias{correct_colinvar}
-\title{Perform collinearity reduction on predictors}
+\title{Collinearity reduction of predictor variables}
 \usage{
 correct_colinvar(env_layer, method, proj = NULL)
 }
@@ -19,11 +19,11 @@ provide a vector for this argument. The next methods are implemented:
   \item vif: Select variables by Variance Inflation Factor, a threshold can be specified by
   user. Otherwise, a threshold of 10 is defined as default.Usage method = c('vif', th = '10').
   \item pca: Perform a Principal Component Analysis and use the principal components as the
-  new predictors. The selected components account for 95% of the whole variation in the system.
+  new predictors. The selected components account for 95\% of the whole variation in the system.
   Usage method = c('pca').
   \item fa: Perform a Factorial Analysis and select, from the original predictors, the ones with
-   the highest correlation with the axis which accounts for 95% of the whole variation in the
-   system.Usage method = c('fa').
+   the highest correlation with the axis which accounts for 95\% of the whole variation in the
+   system. Usage method = c('fa').
 }}
 
 \item{proj}{character. Path to a folder that contains sub-folders for the different projection
@@ -39,7 +39,7 @@ If 'pearson' or 'vif' method, returns a list with the following elements:
 
 If 'pca' method, returns a list with the following elements:
 \itemize{
-\item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95% of the
+\item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95\% of the
 whole variation or original environmental variables
 \item coefficient: a matrix with the coefficient of principal component (PC) for predictors
 \item cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)
@@ -53,10 +53,13 @@ If 'fa' method, returns a list with the following elements:
 }
 }
 \description{
-Perform collinearity reduction on predictors
+Collinearity reduction of predictor variables
 }
 \examples{
 \dontrun{
+require(terra)
+require(dplyr)
+
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
@@ -80,9 +83,10 @@ var$coefficient
 var$cumulative_variance
 
 # Perform fa colinearity control
-# this method only will be performed if covariance matrix is invertible.
-# WRITE HERE A EXAMPLE THAT WORKS :)
-# var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+var$env_layer
+var$coefficient
+var$cumulative_variance
 }
 
 }

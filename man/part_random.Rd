@@ -15,8 +15,8 @@ part_random(data, pr_ab, method = NULL)
 \itemize{
   \item kfold: Random partition in k-fold cross-validation. Usage part=c(method= 'kfold', folds='5'). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. Usage method = c(method = "kfold", folds = 10).
   \item rep_kfold: Random partition in repeated k-fold cross-validation. Usage method = c(method = "rep_kfold", folds = 10, replicates=10). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. 'replicate' refers to the number of replicates, it assumes a value >=1.
-  \item loocv: Leave-one-out cross-validation (a.k.a. Jackknife) WRITE METHOD HERE . Usage method = c(method = "loocv").
-  \item boot: Random bootstrap partition. Usage part=c(method='boot', replicates='2', proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value >=1. 'proportion' refers to the proportion of occurrences used for model fitting, it assumes a value >0 and <=1. In this example proportion='0.7' mean that 70% of data will be used for model training, while 30% for model testing. For this method function will returns .partX columns with "train" and "test" words
+  \item loocv: Leave-one-out cross-validation (a.k.a. Jackknife). It is an spetial k-fold cross validation case where the number of partitions is equal to the number of records. Usage method = c(method = "loocv").
+  \item boot: Random bootstrap partition. Usage part=c(method='boot', replicates='2', proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value >=1. 'proportion' refers to the proportion of occurrences used for model fitting, it assumes a value >0 and <=1. In this example proportion='0.7' mean that 70\% of data will be used for model training, while 30\% for model testing. For this method function will returns .partX columns with "train" and "test" words
   }}
 }
 \value{

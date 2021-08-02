@@ -106,16 +106,22 @@ tune_svm <-
 
     data <- data.frame(data)
 
+    # Test response variable
+    r_test <- (data %>% dplyr::pull(response) %>% unique() %>% na.omit() %>% na.omit())
+    if ((!all(r_test %in% c(0, 1)))) {
+      stop("values of response variable do not match with 0 and 1")
+    }
+
     # Transform response variable as factor
     data[, response] <- as.factor(data[, response])
 
     if (is.null(predictors_f)) {
       data <- data %>%
-        dplyr::select(response, predictors, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
       data <- data.frame(data)
     } else {
       data <- data %>%
-        dplyr::select(response, predictors, predictors_f, dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
       data <- data.frame(data)
       for (i in predictors_f) {
         data[, i] <- as.factor(data[, i])
@@ -148,15 +154,13 @@ tune_svm <-
 
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
-      grid <- data.frame(C = 1, sigma = "automatic")
-    }
-    if (class(grid) == "character") {
-      if (grid == "defalut") {
-        grid <- expand.grid(
-          C = c(1, 2, 4, 8, 16),
-          sigma = c(0.001, 0.01, 0.1, 0.2)
-        )
-      }
+      grid <- expand.grid(
+        C = c(1, 2, 4, 8, 16),
+        sigma = c(0.001, 0.01, 0.1, 0.2)
+      )
+      message("Hyper-parameter values were not provided, default values will be used")
+      message("C = c(1, 2, 4, 8, 16)")
+      message("sigma = c(0.001, 0.01, 0.1, 0.2)")
     }
 
     # Test hyper-parameters names
@@ -213,25 +217,28 @@ tune_svm <-
         # Predict for presences absences data
         pred_test <-
           lapply(mod, function(x) {
-            data.frame(
+            tryCatch(data.frame(
               pr_ab = test[[i]][, response],
               pred = kernlab::predict(
                 x,
                 newdata = test[[i]],
                 type = "prob"
               )[, 2]
-            )
+            ),
+            error = function(cond) {})
           })
 
         # Validation of parameter combination
         eval <- list()
         for (ii in 1:length(pred_test)) {
-          eval[[ii]] <-
-            sdm_eval(
-              p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
-              a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
-              thr = thr
-            ) %>% dplyr::tibble(model = "svm", .)
+          if(!is.null(pred_test[[ii]])){
+            eval[[ii]] <-
+              sdm_eval(
+                p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],
+                a = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 0],
+                thr = thr
+              ) %>% dplyr::tibble(model = "svm", .)
+          }
         }
 
         names(eval) <- tnames
@@ -250,7 +257,7 @@ tune_svm <-
       names(eval_partial) <- 1:np2
       eval_partial <- eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
         dplyr::bind_rows(., .id = "partition")
-      eval_partial_list[[h]] <- eval_partial
+      eval_partial_list[[h]] <- na.omit(eval_partial)
     }
 
     eval_partial <- eval_partial_list %>%

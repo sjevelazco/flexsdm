@@ -139,7 +139,7 @@ unique list values in pr_ab column are: ",
     dplyr::tibble(x, data[1]) %>%
       dplyr::group_by(x, pr_ab) %>%
       dplyr::count() %>%
-      dplyr::mutate(filt = n <= 2) # 2
+      dplyr::mutate(filt = (n <= 2)) # 2
   })
 
   filt <- sapply(n_records, function(x) any(x %>% dplyr::pull("filt")))
@@ -298,8 +298,9 @@ unique list values in pr_ab column are: ",
       break
     }
 
-    if (unique(Opt2$spa_auto) &&
-      unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
+    if ((length(unique(Opt2$spa_auto)) == 1) &&
+      (length(unique(Opt2$env_sim)) == 1) &&
+      (length(unique(Opt2$sd_p)) == 1)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }
