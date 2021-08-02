@@ -2,7 +2,7 @@
 title: 'flexsdm: Red Fir example'
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{flexsdm: Overview of Pre-modeling functions}
+  %\VignetteIndexEntry{flexsdm: Red Fir example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
