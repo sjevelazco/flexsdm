@@ -27,7 +27,7 @@ test_that("part_random", {
     pr_ab = "pr_ab",
     method = c(method = "loocv")
   )
-  expect_true(length(unique(abies2 %>% dplyr::filter(pr_ab == 0) %>% pull(.part))) == 251)
+  expect_true(length(unique(abies2 %>% dplyr::filter(pr_ab == 0) %>% pull(.part))) == 700)
 
   # Bootstrap method
   set.seed(10)

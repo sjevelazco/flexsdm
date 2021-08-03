@@ -99,8 +99,13 @@ part_random <- function(data, pr_ab, method = NULL) {
       dplyr::group_by(!!as.symbol(pr_ab)) %>%
       dplyr::summarise(max = max(.part))
     filtmi <- filt %>% dplyr::filter(max == min(max))
+    if(nrow(filtmi)>1){
+      filtmi <- filtmi[1,]
+    }
     filt <- data$.part > filtmi$max
-    data$.part[filt] <- rep(1:filtmi$max, length.out = sum(filt))
+    if(sum(filt)>0){
+      data$.part[filt] <- rep(1:filtmi$max, length.out = sum(filt))
+    }
   }
 
   # BOOOTSRAP
