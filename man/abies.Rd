@@ -7,7 +7,9 @@
 \format{
 A tibble object with 5000 rows and 10 variables:
 \describe{
+  \item{ID}{presence and absences records ID}
   \item{pr_ab}{presence and absences denoted by 1 and 0 respectively}
+  \item{x y}{columns with coordinates}
   \item{from column aet to landform}{columns with environmental variables}
   ...
 }
