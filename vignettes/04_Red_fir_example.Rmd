@@ -43,7 +43,8 @@ Here, we used the *flexsdm* package to model the current and future distribution
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
 
-data(abies_df)
+data(abies)
+abies_df <- abies %>% select(x, y)
 
 somevar[[1]] %>% plot()
 points(abies_df %>% select(x, y))
@@ -59,9 +60,9 @@ filt <- abies_df %>%
     x = 'x',
     y = 'y',
     id = 'id',
-    nbins = 12,
+    nbins = 8,
     env_layer = somevar,
-    cores = 5
+    cores = 1
   ) %>%
   left_join(abies_df, by = c('id', 'x', 'y'))
 
