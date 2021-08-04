@@ -81,6 +81,21 @@ Tools related to models’ geographical predictions, evaluation, and correction.
 * `msdm_priori()` Create spatial predictor variables to reduce overprediction of species distribution models
 * `msdm_posteriori()` Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.
 
+-- ---
+### Installation
+You can install the development version of **flexsdm** from
+[github](https://github.com/sjevelazco/flexsdm)
+
+``` r
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("sjevelazco/flexsdm")
+```
+
+--- ---
+### Package website
+
+See the package website (<https://sjevelazco.github.io/flexsdm/>) for functions explanation and vignettes.
+
 --- ---
 > Test the package and give us your feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
 
