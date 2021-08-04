@@ -38,19 +38,14 @@ e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_sp
 Function will use all thresholds if no threshold is specified}
 }
 \value{
-a list with two tibbles
+a tibble with next columns
 \itemize{
-\item "all_values". A tibble object with the performance metric for 90 threshold
-values >0 and <1.
-\item "all_thresholds". A tibble with the threshold values and the performance
-metric values for all thresholds.
-\item "selected_thresholds". It is similar to "all_threshold" with difference
-that it contains the thresholds and the performance metric values for the selected threshold.
+\item threshold: threshold names.
+\item thr_value: threshold value
+\item n_presences: threshold names.
+\item n_absences: threshold names.
+\item from TPR to IMAE: performance metrics
 }
-when thr argument is NULL function will return a list with "all_values", "all_thresholds"
-tibbles, when thr argument is used with one or more threshold function returns
-"selected_thresholds" and "all_thresholds" tibbles
-By default all thresholds will be calculated
 }
 \description{
 This function calculates threshold dependent and independent performance metric.

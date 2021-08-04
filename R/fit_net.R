@@ -67,9 +67,9 @@
 #' )
 #'
 #' nnet_t1$model
+#' nnet_t1$predictors
 #' nnet_t1$performance
-#' nnet_t1$selected_thresholds
-#' nnet_t1$all_thresholds
+#' nnet_t1$data_ens
 #'
 #' # Using bootstrap partition method and only with presence-absence
 #' # and get performance for several method

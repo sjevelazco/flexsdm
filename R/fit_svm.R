@@ -37,9 +37,8 @@
 #' \item model: A "ksvm" class object. This object can be used for predicting.
 #' \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
-#' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
-#' \item selected_thresholds: Value of the threshold selected.
-#' \item all_thresholds: Value of all threshold.
+#' Those threshold dependent metric are calculated based on the threshold specified in thr argument.
+#' \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
 #' }
 #'
 #' @details This function constructs 'C-svc' classification type and uses
@@ -58,7 +57,7 @@
 #' abies2 <- part_random(
 #'   data = abies,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "kfold", folds = 10)
+#'   method = c(method = "kfold", folds = 5)
 #' )
 #' abies2
 #'
@@ -72,10 +71,11 @@
 #'   fit_formula = NULL
 #' )
 #'
+#' names(svm_t1)
 #' svm_t1$model
+#' svm_t1$predictors
 #' svm_t1$performance
-#' svm_t1$selected_thresholds
-#' svm_t1$all_thresholds
+#' svm_t1$data_ens
 #'
 #' # Using bootstrap partition method and only with presence-absence
 #' # and get performance for several method

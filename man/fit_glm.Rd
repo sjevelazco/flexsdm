@@ -75,7 +75,7 @@ abies
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 10)
+  method = c(method = "kfold", folds = 5)
 )
 abies2
 
@@ -110,7 +110,7 @@ glm_t2 <- fit_glm(
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 10, replicates = 10)
+  method = c(method = "rep_kfold", folds = 3, replicates = 5)
 )
 abies2
 

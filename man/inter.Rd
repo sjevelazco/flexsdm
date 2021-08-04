@@ -33,7 +33,7 @@ This function calculates suitability values between two time periods with simple
 require(terra)
 require(dplyr)
 
-f <- system.file("external/suit_time_steps.tif", package = "flexsdm")
+f <- system.file("external/suit_time_step.tif", package = "flexsdm")
 abma <- terra::rast(f)
 plot(abma)
 

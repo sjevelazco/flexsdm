@@ -45,11 +45,10 @@ In the case of use more than one threshold type it is necessary concatenate thre
 A list object with:
 \itemize{
 \item models: A list of models used for performing ensemble.
+\item thr_metric: Threshold and metric specified in the function.
 \item predictors: A tibble of quantitative (column names with c) and qualitative (column names with f) variables used in each models.
 \item performance: A tibble with performance metric (see \code{\link{sdm_eval}}).
 Those threshold dependent metrics are calculated based on the threshold specified in thr argument .
-\item selected_thresholds: A tibble with value of the threshold selected.
-\item threshold_table: A tibble with all threshold values.
 }
 }
 \description{

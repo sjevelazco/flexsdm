@@ -67,9 +67,9 @@
 #' )
 #'
 #' rf_t1$model
+#' rf_t1$predictors
 #' rf_t1$performance
-#' rf_t1$selected_thresholds
-#' rf_t1$all_thresholds
+#' rf_t1$data_ens
 #'
 #' # Using bootstrap partition method and only with presence-absence
 #' # and get performance for several method
