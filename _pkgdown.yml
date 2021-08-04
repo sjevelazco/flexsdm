@@ -10,11 +10,11 @@ navbar:
   left:
     - text: "Functions"
       href: reference/index.html
-    - icon: fas fa-book
-      text: "Articles"
+    - text: "Articles"
       menu:
       -  text: "Overview of Pre-modeling functions"
          href: articles/01_pre_modeling.html
       -  text: "An example with Red Fir"
          href: articles/04_Red_fir_example.html
+components:
     home: ~
