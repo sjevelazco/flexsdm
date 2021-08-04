@@ -13,7 +13,7 @@ The function of **flexsdm** package are organized into three major modeling step
 
 
 
-<a href='https://sjevelazco.github.io/flexsdm'><img src="https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.png" align="centre" height="800"/></a>
+<a href='https://sjevelazco.github.io/flexsdm'><img src="https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.png" align="centre" height="550"/></a>
 
 ### 1. Pre-modeling functions 
 Set tools that prepare modeling input data (e.g., species occurrences thinning, sample pseudo-absences or background points, delimitation of calibration area). 
