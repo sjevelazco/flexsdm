@@ -22,10 +22,8 @@ knitr::opts_chunk$set(
 ```
 
 ```{r dependencies, include = FALSE}
-library(devtools)
 library(terra)
 library(dplyr)
-library(tidyverse)
 library(knitr)
 ```
 
