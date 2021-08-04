@@ -5,7 +5,7 @@
 # flexsdm
 
 ### Overview 
-Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. This has led to defining a specific modeling process for a particular situation where the “click-and-run” is not a desirable option. One of the most exciting features of **flexsdm** is its high manipulation and parametrization capacity based on different functions and arguments. This enables users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).
+Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. One of the most exciting features of **flexsdm** is its high manipulation and parametrization capacity based on different functions and arguments. These attributes enable users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).
 
 --- ---
 ### Structure of flexsdm
