@@ -87,7 +87,7 @@ You can install the development version of **flexsdm** from
 [github](https://github.com/sjevelazco/flexsdm)
 
 ``` r
-if (!require("devtools")) install.packages("devtools")
+# install.packages("devtools")
 devtools::install_github("sjevelazco/flexsdm")
 ```
 
