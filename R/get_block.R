@@ -47,6 +47,6 @@ get_block <- function(env_layer, best_grid) {
   rdf <- terra::as.data.frame(maskr, xy = TRUE)
   val <- terra::extract(best_grid, rdf[1:2])[, 2]
   maskr[as.numeric(rownames(rdf))] <- val
-  names(maskr) <- '.part'
+  names(maskr) <- ".part"
   return(maskr)
 }

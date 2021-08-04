@@ -54,6 +54,8 @@ dirs_1 <- sdm_directory(
 dirs_1
 dirs_1[1] \%>\% fs::dir_tree(., recurse = TRUE)
 
+unlink(dirs_1[1], recursive = TRUE) # this directory and sub-folder will be removed
+
 # Implement sdm_directory without specific path and project name
 getwd() \%>\% dirname()
 

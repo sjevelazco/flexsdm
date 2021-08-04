@@ -225,13 +225,14 @@ tune_svm <-
                 type = "prob"
               )[, 2]
             ),
-            error = function(cond) {})
+            error = function(cond) {}
+            )
           })
 
         # Validation of parameter combination
         eval <- list()
         for (ii in 1:length(pred_test)) {
-          if(!is.null(pred_test[[ii]])){
+          if (!is.null(pred_test[[ii]])) {
             eval[[ii]] <-
               sdm_eval(
                 p = pred_test[[ii]]$pred[pred_test[[ii]]$pr_ab == 1],

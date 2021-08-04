@@ -247,13 +247,13 @@ fit_gau <- function(data,
           pr_ab = test[[i]][, response],
           pred =
             suppressWarnings(
-            predict.graf(
-              mod[[i]],
-              newdata = test[[i]][c(predictors, predictors_f)],
-              type = "response",
-              CI = NULL
-            )[, 1]
-          )
+              predict.graf(
+                mod[[i]],
+                newdata = test[[i]][c(predictors, predictors_f)],
+                type = "response",
+                CI = NULL
+              )[, 1]
+            )
         )
 
         pred_test_ens[[h]][[i]] <- pred_test %>%
