@@ -11,7 +11,7 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
+  # fig.path = "man/figures/README-",
   #out.width = "100%",
   fig.width = 6,
   fig.height = 6,
@@ -23,11 +23,8 @@ knitr::opts_chunk$set(
 
 ```{r dependencies, include = FALSE}
 library(devtools)
-#devtools::install_github('goldingn/GRaF')
-library(GRaF)
 library(terra)
 library(dplyr)
-devtools::load_all()
 library(tidyverse)
 library(knitr)
 ```
@@ -67,7 +64,8 @@ First, let's install the flexsdm package. You can install the released version o
 When building SDM's, organizing your folder directories will save time and confusion later. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. The function sdm_directory() can do this for you, based on the types of model algorithms you want to use and/or the types of projections you would like to make. First you want to decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory) and then use dir.create() to create your main directory. Next, specify whether or not you want to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. 
 
 ```{r sdm_directory}
-my_project <- file.path("/Users/brookerose/Google Drive/flex_sdm_project")
+library(flexsdm)
+my_project <- file.path(tempdir(), 'flex_sdm_project')
 dir.create(my_project)
 
 sdm_directory(main_dir = my_project,
