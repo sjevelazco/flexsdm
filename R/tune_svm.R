@@ -35,7 +35,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "ksvm" class object. This object can be used for predicting.
-#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 #' \item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
 #' \item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
 #' \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}

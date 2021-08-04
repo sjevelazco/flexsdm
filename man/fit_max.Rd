@@ -66,7 +66,7 @@ In the case of use more than one threshold type it is necessary concatenate thre
 A list object with:
 \itemize{
 \item model: A "MaxEnt" class object. This object can be used for predicting.
-\item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
+\item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 \item selected_thresholds: Value of the threshold selected.
