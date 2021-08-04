@@ -23,7 +23,7 @@ A data set containing environmental conditions of background points
 \dontrun{
 require(dplyr)
 data("backg")
-spp
+backg
 }
 }
 \keyword{datasets}

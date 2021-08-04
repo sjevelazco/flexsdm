@@ -31,7 +31,7 @@
 #' \dontrun{
 #' require(dplyr)
 #' data("backg")
-#' spp
+#' backg
 #' }
 "backg"
 
@@ -49,6 +49,6 @@
 #' \dontrun{
 #' require(dplyr)
 #' data("abies")
-#' spp
+#' abies
 #' }
 "abies"

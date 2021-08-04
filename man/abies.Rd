@@ -24,7 +24,7 @@ A data set containing environmental condition of an Abies species
 \dontrun{
 require(dplyr)
 data("abies")
-spp
+abies
 }
 }
 \keyword{datasets}
