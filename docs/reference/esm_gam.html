@@ -193,7 +193,7 @@ Breiner et al. (2015, 2018)</p>
 <code><a href='esm_max.html'>esm_max</a></code>, <code><a href='esm_net.html'>esm_net</a></code>, and <code><a href='esm_svm.html'>esm_svm</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"abies"</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
@@ -211,7 +211,30 @@ Breiner et al. (2015, 2018)</p>
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies2</span>
-
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 14</span>
+#&gt;       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> <span style='text-decoration: underline;'>12</span>040     0 -<span style='color: #BB0000; text-decoration: underline;'>308</span><span style='color: #BB0000;'>909.</span>  <span style='text-decoration: underline;'>384</span>248.  573.  332.  4.84     521.   48.8   5.63 0.108 
+#&gt; <span style='color: #BCBCBC;'> 2</span> <span style='text-decoration: underline;'>10</span>361     0 -<span style='color: #BB0000; text-decoration: underline;'>254</span><span style='color: #BB0000;'>286.</span>  <span style='text-decoration: underline;'>417</span>158.  260.  469.  2.93     151.   15.1   6.20 0.095<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>9</span>402     0 -<span style='color: #BB0000; text-decoration: underline;'>286</span><span style='color: #BB0000;'>979.</span>  <span style='text-decoration: underline;'>386</span>206.  587.  376.  6.45     333.   15.7   5.5  0.160 
+#&gt; <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>9</span>815     0 -<span style='color: #BB0000; text-decoration: underline;'>291</span><span style='color: #BB0000;'>849.</span>  <span style='text-decoration: underline;'>445</span>595.  443.  455.  4.39     332.   19.1   6    0.070<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span> <span style='text-decoration: underline;'>10</span>524     0 -<span style='color: #BB0000; text-decoration: underline;'>256</span><span style='color: #BB0000;'>658.</span>  <span style='text-decoration: underline;'>184</span>438.  355.  568.  5.87     303.   10.6   5.20 0.080<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 6</span>  <span style='text-decoration: underline;'>8</span>860     0  <span style='text-decoration: underline;'>121</span>343. -<span style='color: #BB0000; text-decoration: underline;'>164</span><span style='color: #BB0000;'>170.</span>  354.  733.  3.97     182.    9.83  0    0     
+#&gt; <span style='color: #BCBCBC;'> 7</span>  <span style='text-decoration: underline;'>6</span>431     0  <span style='text-decoration: underline;'>107</span>903. -<span style='color: #BB0000; text-decoration: underline;'>122</span><span style='color: #BB0000;'>968.</span>  461.  578.  4.87     161.    7.66  5.90 0.090<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span> <span style='text-decoration: underline;'>11</span>730     0 -<span style='color: #BB0000; text-decoration: underline;'>333</span><span style='color: #BB0000;'>903.</span>  <span style='text-decoration: underline;'>431</span>238.  561.  364.  6.73     387.   25.2   5.80 0.130 
+#&gt; <span style='color: #BCBCBC;'> 9</span>   808     0 -<span style='color: #BB0000; text-decoration: underline;'>150</span><span style='color: #BB0000;'>163.</span>  <span style='text-decoration: underline;'>357</span>180.  339.  564.  2.64     220.   15.3   6.40 0.100 
+#&gt; <span style='color: #BCBCBC;'>10</span> <span style='text-decoration: underline;'>11</span>054     0 -<span style='color: #BB0000; text-decoration: underline;'>293</span><span style='color: #BB0000;'>663.</span>  <span style='text-decoration: underline;'>340</span>981.  477.  396.  3.89     332.   26.4   4.60 0.063<span style='text-decoration: underline;'>4</span>
+#&gt; <span style='color: #BCBCBC;'>11</span>  <span style='text-decoration: underline;'>2</span>960     1  -<span style='color: #BB0000; text-decoration: underline;'>49</span><span style='color: #BB0000;'>273.</span>  <span style='text-decoration: underline;'>181</span>752.  512.  275.  0.920    319.   17.3   5.92 0.090<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'>12</span>  <span style='text-decoration: underline;'>3</span>065     1  <span style='text-decoration: underline;'>126</span>907. -<span style='color: #BB0000; text-decoration: underline;'>198</span><span style='color: #BB0000;'>892.</span>  322.  544.  0.700    203.   10.6   5.60 0.110 
+#&gt; <span style='color: #BCBCBC;'>13</span>  <span style='text-decoration: underline;'>5</span>527     1  <span style='text-decoration: underline;'>116</span>751. -<span style='color: #BB0000; text-decoration: underline;'>181</span><span style='color: #BB0000;'>089.</span>  261.  537.  0.363    178.    7.43  0    0     
+#&gt; <span style='color: #BCBCBC;'>14</span>  <span style='text-decoration: underline;'>4</span>035     1  -<span style='color: #BB0000; text-decoration: underline;'>31</span><span style='color: #BB0000;'>777.</span>  <span style='text-decoration: underline;'>115</span>940.  394.  440.  2.07     298.   11.2   6.01 0.076<span style='text-decoration: underline;'>9</span>
+#&gt; <span style='color: #BCBCBC;'>15</span>  <span style='text-decoration: underline;'>4</span>081     1   -<span style='color: #BB0000; text-decoration: underline;'>5</span><span style='color: #BB0000;'>158.</span>   <span style='text-decoration: underline;'>90</span>159.  301.  502.  0.703    203.   14.6   6.11 0.063<span style='text-decoration: underline;'>3</span>
+#&gt; <span style='color: #BCBCBC;'>16</span>  <span style='text-decoration: underline;'>3</span>087     1  <span style='text-decoration: underline;'>102</span>151. -<span style='color: #BB0000; text-decoration: underline;'>143</span><span style='color: #BB0000;'>976.</span>  299.  425. -<span style='color: #BB0000;'>2.08</span>     205.   13.4   3.88 0.110 
+#&gt; <span style='color: #BCBCBC;'>17</span>  <span style='text-decoration: underline;'>3</span>495     1  -<span style='color: #BB0000; text-decoration: underline;'>19</span><span style='color: #BB0000;'>586.</span>   <span style='text-decoration: underline;'>89</span>803.  438.  419.  2.13     189.   15.2   6.19 0.095<span style='text-decoration: underline;'>9</span>
+#&gt; <span style='color: #BCBCBC;'>18</span>  <span style='text-decoration: underline;'>4</span>441     1   <span style='text-decoration: underline;'>49</span>405.  -<span style='color: #BB0000; text-decoration: underline;'>60</span><span style='color: #BB0000;'>502.</span>  362.  582.  2.42     218.    7.84  5.64 0.078<span style='text-decoration: underline;'>6</span>
+#&gt; <span style='color: #BCBCBC;'>19</span>   301     1 -<span style='color: #BB0000; text-decoration: underline;'>132</span><span style='color: #BB0000;'>516.</span>  <span style='text-decoration: underline;'>270</span>845.  367.  196. -<span style='color: #BB0000;'>2.56</span>     422.   26.3   6.70 0.030<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'>20</span>  <span style='text-decoration: underline;'>3</span>162     1   <span style='text-decoration: underline;'>59</span>905.  -<span style='color: #BB0000; text-decoration: underline;'>53</span><span style='color: #BB0000;'>634.</span>  319.  626.  1.99     212.    4.50  4.51 0.039<span style='text-decoration: underline;'>6</span>
+#&gt; <span style='color: #949494;'># ... with 3 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part &lt;int&gt;</span></div><div class='input'>
 <span class='co'># Without threshold specification and with kfold</span>
 <span class='va'>esm_gam_t1</span> <span class='op'>&lt;-</span> <span class='fu'>esm_gam</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies2</span>,
@@ -220,11 +243,223 @@ Breiner et al. (2015, 2018)</p>
   partition <span class='op'>=</span> <span class='st'>".part"</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%</div><div class='input'>
 <span class='va'>esm_gam_t1</span><span class='op'>$</span><span class='va'>esm_model</span> <span class='co'># bivariate model</span>
-<span class='va'>esm_gam_t1</span><span class='op'>$</span><span class='va'>predictors</span>
-<span class='va'>esm_gam_t1</span><span class='op'>$</span><span class='va'>performance</span>
-
+</div><div class='output co'>#&gt; $`0.259259259259259`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99998 Residual
+#&gt; Residual Deviance: 9.86509 
+#&gt; 
+#&gt; $`0.875`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`-0.398148148148148`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00021 Residual
+#&gt; Residual Deviance: 14.29457 
+#&gt; 
+#&gt; $`-0.1875`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99981 Residual
+#&gt; Residual Deviance: 19.34354 
+#&gt; 
+#&gt; $`-0.814814814814815`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00026 Residual
+#&gt; Residual Deviance: 18.79893 
+#&gt; 
+#&gt; $`-0.402777777777778`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00046 Residual
+#&gt; Residual Deviance: 18.90059 
+#&gt; 
+#&gt; $`0.377314814814815`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.0002 Residual
+#&gt; Residual Deviance: 0.79746 
+#&gt; 
+#&gt; $`0.888888888888889`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00012 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.497685185185185`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99978 Residual
+#&gt; Residual Deviance: 6.63526 
+#&gt; 
+#&gt; $`0.231481481481481`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00017 Residual
+#&gt; Residual Deviance: 9.81768 
+#&gt; 
+#&gt; $`-0.791666666666667`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99999 Residual
+#&gt; Residual Deviance: 18.03072 
+#&gt; 
+#&gt; $`-0.75`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99993 Residual
+#&gt; Residual Deviance: 18.02498 
+#&gt; 
+#&gt; $`0.273148148148148`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99984 Residual
+#&gt; Residual Deviance: 1.61772 
+#&gt; 
+#&gt; $`0.875`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9999 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.875`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99993 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.916666666666667`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9999 Residual
+#&gt; Residual Deviance: 1e-04 
+#&gt; 
+#&gt; $`1`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99999 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.875`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00001 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.231481481481481`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00017 Residual
+#&gt; Residual Deviance: 16.04344 
+#&gt; 
+#&gt; $`-0.233796296296296`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00003 Residual
+#&gt; Residual Deviance: 17.36921 
+#&gt; 
+#&gt; $`-0.0787037037037037`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00001 Residual
+#&gt; Residual Deviance: 16.74941 
+#&gt; 
+#&gt; $`0.564814814814815`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00003 Residual
+#&gt; Residual Deviance: 6.57265 
+#&gt; 
+#&gt; $`-0.391203703703704`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00007 Residual
+#&gt; Residual Deviance: 20.28762 
+#&gt; 
+#&gt; $`-0.0416666666666666`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99974 Residual
+#&gt; Residual Deviance: 18.81425 
+#&gt; 
+#&gt; $`0.569444444444444`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99977 Residual
+#&gt; Residual Deviance: 2.74366 
+#&gt; 
+#&gt; $`-0.884259259259259`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00011 Residual
+#&gt; Residual Deviance: 19.40843 
+#&gt; 
+#&gt; $`0.0972222222222221`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99984 Residual
+#&gt; Residual Deviance: 8.20297 
+#&gt; 
+#&gt; $`0.594907407407407`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9997 Residual
+#&gt; Residual Deviance: 3.09105 
+#&gt; </div><div class='input'><span class='va'>esm_gam_t1</span><span class='op'>$</span><span class='va'>predictors</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 8</span>
+#&gt;   c1    c2    c3    c4      c5      c6    c7    c8   
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth</div><div class='input'><span class='va'>esm_gam_t1</span><span class='op'>$</span><span class='va'>performance</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 25</span>
+#&gt;   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> esm_gam equal_sens_~     0.767          10         10        1      0        1
+#&gt; <span style='color: #BCBCBC;'>2</span> esm_gam lpt              0.767          10         10        1      0        1
+#&gt; <span style='color: #BCBCBC;'>3</span> esm_gam max_fpb          0.767          10         10        1      0        1
+#&gt; <span style='color: #BCBCBC;'>4</span> esm_gam max_jaccard      0.767          10         10        1      0        1
+#&gt; <span style='color: #BCBCBC;'>5</span> esm_gam max_sens_sp~     0.767          10         10        1      0        1
+#&gt; <span style='color: #BCBCBC;'>6</span> esm_gam max_sorensen     0.767          10         10        1      0        1
+#&gt; <span style='color: #BCBCBC;'>7</span> esm_gam sensitivity      0.991          10         10        1      0        1
+#&gt; <span style='color: #949494;'># ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></div><div class='input'>
 <span class='co'># Test with rep_kfold partition</span>
 <span class='va'>abies2</span> <span class='op'>&lt;-</span> <span class='va'>abies2</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"."</span><span class='op'>)</span><span class='op'>)</span>
 
@@ -235,7 +470,31 @@ Breiner et al. (2015, 2018)</p>
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"rep_kfold"</span>, folds <span class='op'>=</span> <span class='fl'>3</span>, replicates <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies2</span>
-
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 18</span>
+#&gt;       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> <span style='text-decoration: underline;'>12</span>040     0 -<span style='color: #BB0000; text-decoration: underline;'>308</span><span style='color: #BB0000;'>909.</span>  <span style='text-decoration: underline;'>384</span>248.  573.  332.  4.84     521.   48.8   5.63 0.108 
+#&gt; <span style='color: #BCBCBC;'> 2</span> <span style='text-decoration: underline;'>10</span>361     0 -<span style='color: #BB0000; text-decoration: underline;'>254</span><span style='color: #BB0000;'>286.</span>  <span style='text-decoration: underline;'>417</span>158.  260.  469.  2.93     151.   15.1   6.20 0.095<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>9</span>402     0 -<span style='color: #BB0000; text-decoration: underline;'>286</span><span style='color: #BB0000;'>979.</span>  <span style='text-decoration: underline;'>386</span>206.  587.  376.  6.45     333.   15.7   5.5  0.160 
+#&gt; <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>9</span>815     0 -<span style='color: #BB0000; text-decoration: underline;'>291</span><span style='color: #BB0000;'>849.</span>  <span style='text-decoration: underline;'>445</span>595.  443.  455.  4.39     332.   19.1   6    0.070<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span> <span style='text-decoration: underline;'>10</span>524     0 -<span style='color: #BB0000; text-decoration: underline;'>256</span><span style='color: #BB0000;'>658.</span>  <span style='text-decoration: underline;'>184</span>438.  355.  568.  5.87     303.   10.6   5.20 0.080<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 6</span>  <span style='text-decoration: underline;'>8</span>860     0  <span style='text-decoration: underline;'>121</span>343. -<span style='color: #BB0000; text-decoration: underline;'>164</span><span style='color: #BB0000;'>170.</span>  354.  733.  3.97     182.    9.83  0    0     
+#&gt; <span style='color: #BCBCBC;'> 7</span>  <span style='text-decoration: underline;'>6</span>431     0  <span style='text-decoration: underline;'>107</span>903. -<span style='color: #BB0000; text-decoration: underline;'>122</span><span style='color: #BB0000;'>968.</span>  461.  578.  4.87     161.    7.66  5.90 0.090<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span> <span style='text-decoration: underline;'>11</span>730     0 -<span style='color: #BB0000; text-decoration: underline;'>333</span><span style='color: #BB0000;'>903.</span>  <span style='text-decoration: underline;'>431</span>238.  561.  364.  6.73     387.   25.2   5.80 0.130 
+#&gt; <span style='color: #BCBCBC;'> 9</span>   808     0 -<span style='color: #BB0000; text-decoration: underline;'>150</span><span style='color: #BB0000;'>163.</span>  <span style='text-decoration: underline;'>357</span>180.  339.  564.  2.64     220.   15.3   6.40 0.100 
+#&gt; <span style='color: #BCBCBC;'>10</span> <span style='text-decoration: underline;'>11</span>054     0 -<span style='color: #BB0000; text-decoration: underline;'>293</span><span style='color: #BB0000;'>663.</span>  <span style='text-decoration: underline;'>340</span>981.  477.  396.  3.89     332.   26.4   4.60 0.063<span style='text-decoration: underline;'>4</span>
+#&gt; <span style='color: #BCBCBC;'>11</span>  <span style='text-decoration: underline;'>2</span>960     1  -<span style='color: #BB0000; text-decoration: underline;'>49</span><span style='color: #BB0000;'>273.</span>  <span style='text-decoration: underline;'>181</span>752.  512.  275.  0.920    319.   17.3   5.92 0.090<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'>12</span>  <span style='text-decoration: underline;'>3</span>065     1  <span style='text-decoration: underline;'>126</span>907. -<span style='color: #BB0000; text-decoration: underline;'>198</span><span style='color: #BB0000;'>892.</span>  322.  544.  0.700    203.   10.6   5.60 0.110 
+#&gt; <span style='color: #BCBCBC;'>13</span>  <span style='text-decoration: underline;'>5</span>527     1  <span style='text-decoration: underline;'>116</span>751. -<span style='color: #BB0000; text-decoration: underline;'>181</span><span style='color: #BB0000;'>089.</span>  261.  537.  0.363    178.    7.43  0    0     
+#&gt; <span style='color: #BCBCBC;'>14</span>  <span style='text-decoration: underline;'>4</span>035     1  -<span style='color: #BB0000; text-decoration: underline;'>31</span><span style='color: #BB0000;'>777.</span>  <span style='text-decoration: underline;'>115</span>940.  394.  440.  2.07     298.   11.2   6.01 0.076<span style='text-decoration: underline;'>9</span>
+#&gt; <span style='color: #BCBCBC;'>15</span>  <span style='text-decoration: underline;'>4</span>081     1   -<span style='color: #BB0000; text-decoration: underline;'>5</span><span style='color: #BB0000;'>158.</span>   <span style='text-decoration: underline;'>90</span>159.  301.  502.  0.703    203.   14.6   6.11 0.063<span style='text-decoration: underline;'>3</span>
+#&gt; <span style='color: #BCBCBC;'>16</span>  <span style='text-decoration: underline;'>3</span>087     1  <span style='text-decoration: underline;'>102</span>151. -<span style='color: #BB0000; text-decoration: underline;'>143</span><span style='color: #BB0000;'>976.</span>  299.  425. -<span style='color: #BB0000;'>2.08</span>     205.   13.4   3.88 0.110 
+#&gt; <span style='color: #BCBCBC;'>17</span>  <span style='text-decoration: underline;'>3</span>495     1  -<span style='color: #BB0000; text-decoration: underline;'>19</span><span style='color: #BB0000;'>586.</span>   <span style='text-decoration: underline;'>89</span>803.  438.  419.  2.13     189.   15.2   6.19 0.095<span style='text-decoration: underline;'>9</span>
+#&gt; <span style='color: #BCBCBC;'>18</span>  <span style='text-decoration: underline;'>4</span>441     1   <span style='text-decoration: underline;'>49</span>405.  -<span style='color: #BB0000; text-decoration: underline;'>60</span><span style='color: #BB0000;'>502.</span>  362.  582.  2.42     218.    7.84  5.64 0.078<span style='text-decoration: underline;'>6</span>
+#&gt; <span style='color: #BCBCBC;'>19</span>   301     1 -<span style='color: #BB0000; text-decoration: underline;'>132</span><span style='color: #BB0000;'>516.</span>  <span style='text-decoration: underline;'>270</span>845.  367.  196. -<span style='color: #BB0000;'>2.56</span>     422.   26.3   6.70 0.030<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'>20</span>  <span style='text-decoration: underline;'>3</span>162     1   <span style='text-decoration: underline;'>59</span>905.  -<span style='color: #BB0000; text-decoration: underline;'>53</span><span style='color: #BB0000;'>634.</span>  319.  626.  1.99     212.    4.50  4.51 0.039<span style='text-decoration: underline;'>6</span>
+#&gt; <span style='color: #949494;'># ... with 7 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part1 &lt;int&gt;,</span>
+#&gt; <span style='color: #949494;'>#   .part2 &lt;int&gt;, .part3 &lt;int&gt;, .part4 &lt;int&gt;, .part5 &lt;int&gt;</span></div><div class='input'>
 <span class='va'>esm_gam_t2</span> <span class='op'>&lt;-</span> <span class='fu'>esm_gam</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies2</span>,
   response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
@@ -243,10 +502,222 @@ Breiner et al. (2015, 2018)</p>
   partition <span class='op'>=</span> <span class='st'>".part"</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-<span class='va'>esm_gam_t2</span><span class='op'>$</span><span class='va'>esm_model</span> <span class='co'># bivariate model</span>
-<span class='va'>esm_gam_t2</span><span class='op'>$</span><span class='va'>predictors</span>
-<span class='va'>esm_gam_t2</span><span class='op'>$</span><span class='va'>performance</span>
-
+</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%</div><div class='input'><span class='va'>esm_gam_t2</span><span class='op'>$</span><span class='va'>esm_model</span> <span class='co'># bivariate model</span>
+</div><div class='output co'>#&gt; $`0.150925925925926`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99998 Residual
+#&gt; Residual Deviance: 9.86509 
+#&gt; 
+#&gt; $`0.917592592592593`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.2125`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00021 Residual
+#&gt; Residual Deviance: 14.29457 
+#&gt; 
+#&gt; $`-0.0745370370370371`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99981 Residual
+#&gt; Residual Deviance: 19.34354 
+#&gt; 
+#&gt; $`-0.236111111111111`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00026 Residual
+#&gt; Residual Deviance: 18.79893 
+#&gt; 
+#&gt; $`-0.358333333333333`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00046 Residual
+#&gt; Residual Deviance: 18.90059 
+#&gt; 
+#&gt; $`0.455555555555555`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.0002 Residual
+#&gt; Residual Deviance: 0.79746 
+#&gt; 
+#&gt; $`0.838425925925926`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00012 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.308796296296296`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99978 Residual
+#&gt; Residual Deviance: 6.63526 
+#&gt; 
+#&gt; $`0.318981481481482`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00017 Residual
+#&gt; Residual Deviance: 9.81768 
+#&gt; 
+#&gt; $`-0.267592592592593`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99999 Residual
+#&gt; Residual Deviance: 18.03072 
+#&gt; 
+#&gt; $`-0.271296296296296`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99993 Residual
+#&gt; Residual Deviance: 18.02498 
+#&gt; 
+#&gt; $`0.619907407407407`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99984 Residual
+#&gt; Residual Deviance: 1.61772 
+#&gt; 
+#&gt; $`0.816666666666667`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9999 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.930555555555556`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99993 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.851851851851852`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9999 Residual
+#&gt; Residual Deviance: 1e-04 
+#&gt; 
+#&gt; $`0.925`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99999 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.851851851851852`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00001 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.271759259259259`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00017 Residual
+#&gt; Residual Deviance: 16.04344 
+#&gt; 
+#&gt; $`0`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00003 Residual
+#&gt; Residual Deviance: 17.36921 
+#&gt; 
+#&gt; $`-0.0310185185185186`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00001 Residual
+#&gt; Residual Deviance: 16.74941 
+#&gt; 
+#&gt; $`0.277777777777778`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00003 Residual
+#&gt; Residual Deviance: 6.57265 
+#&gt; 
+#&gt; $`-0.0314814814814814`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00007 Residual
+#&gt; Residual Deviance: 20.28762 
+#&gt; 
+#&gt; $`-0.0337962962962963`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99974 Residual
+#&gt; Residual Deviance: 18.81425 
+#&gt; 
+#&gt; $`0.339351851851852`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99977 Residual
+#&gt; Residual Deviance: 2.74366 
+#&gt; 
+#&gt; $`-0.380555555555556`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00011 Residual
+#&gt; Residual Deviance: 19.40843 
+#&gt; 
+#&gt; $`0.311111111111111`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99984 Residual
+#&gt; Residual Deviance: 8.20297 
+#&gt; 
+#&gt; $`0.568518518518518`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9997 Residual
+#&gt; Residual Deviance: 3.09105 
+#&gt; </div><div class='input'><span class='va'>esm_gam_t2</span><span class='op'>$</span><span class='va'>predictors</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 8</span>
+#&gt;   c1    c2    c3    c4      c5      c6    c7    c8   
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth</div><div class='input'><span class='va'>esm_gam_t2</span><span class='op'>$</span><span class='va'>performance</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 25</span>
+#&gt;   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> esm_gam equal_sens_~     0.505          50         50    0.961  0.104    1    
+#&gt; <span style='color: #BCBCBC;'>2</span> esm_gam lpt              0.415          50         50    1      0        0.961
+#&gt; <span style='color: #BCBCBC;'>3</span> esm_gam max_fpb          0.415          50         50    1      0        0.961
+#&gt; <span style='color: #BCBCBC;'>4</span> esm_gam max_jaccard      0.415          50         50    1      0        0.961
+#&gt; <span style='color: #BCBCBC;'>5</span> esm_gam max_sens_sp~     0.415          50         50    0.961  0.104    1    
+#&gt; <span style='color: #BCBCBC;'>6</span> esm_gam max_sorensen     0.415          50         50    1      0        0.961
+#&gt; <span style='color: #BCBCBC;'>7</span> esm_gam sensitivity      0.711          50         50    1      0        0.961
+#&gt; <span style='color: #949494;'># ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></div><div class='input'>
 <span class='co'># Test with other bootstrap</span>
 <span class='va'>abies2</span> <span class='op'>&lt;-</span> <span class='va'>abies2</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>"."</span><span class='op'>)</span><span class='op'>)</span>
 
@@ -257,7 +728,32 @@ Breiner et al. (2015, 2018)</p>
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"boot"</span>, replicates <span class='op'>=</span> <span class='fl'>10</span>, proportion <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies2</span>
-
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 23</span>
+#&gt;       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> <span style='text-decoration: underline;'>12</span>040     0 -<span style='color: #BB0000; text-decoration: underline;'>308</span><span style='color: #BB0000;'>909.</span>  <span style='text-decoration: underline;'>384</span>248.  573.  332.  4.84     521.   48.8   5.63 0.108 
+#&gt; <span style='color: #BCBCBC;'> 2</span> <span style='text-decoration: underline;'>10</span>361     0 -<span style='color: #BB0000; text-decoration: underline;'>254</span><span style='color: #BB0000;'>286.</span>  <span style='text-decoration: underline;'>417</span>158.  260.  469.  2.93     151.   15.1   6.20 0.095<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>9</span>402     0 -<span style='color: #BB0000; text-decoration: underline;'>286</span><span style='color: #BB0000;'>979.</span>  <span style='text-decoration: underline;'>386</span>206.  587.  376.  6.45     333.   15.7   5.5  0.160 
+#&gt; <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>9</span>815     0 -<span style='color: #BB0000; text-decoration: underline;'>291</span><span style='color: #BB0000;'>849.</span>  <span style='text-decoration: underline;'>445</span>595.  443.  455.  4.39     332.   19.1   6    0.070<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span> <span style='text-decoration: underline;'>10</span>524     0 -<span style='color: #BB0000; text-decoration: underline;'>256</span><span style='color: #BB0000;'>658.</span>  <span style='text-decoration: underline;'>184</span>438.  355.  568.  5.87     303.   10.6   5.20 0.080<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 6</span>  <span style='text-decoration: underline;'>8</span>860     0  <span style='text-decoration: underline;'>121</span>343. -<span style='color: #BB0000; text-decoration: underline;'>164</span><span style='color: #BB0000;'>170.</span>  354.  733.  3.97     182.    9.83  0    0     
+#&gt; <span style='color: #BCBCBC;'> 7</span>  <span style='text-decoration: underline;'>6</span>431     0  <span style='text-decoration: underline;'>107</span>903. -<span style='color: #BB0000; text-decoration: underline;'>122</span><span style='color: #BB0000;'>968.</span>  461.  578.  4.87     161.    7.66  5.90 0.090<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span> <span style='text-decoration: underline;'>11</span>730     0 -<span style='color: #BB0000; text-decoration: underline;'>333</span><span style='color: #BB0000;'>903.</span>  <span style='text-decoration: underline;'>431</span>238.  561.  364.  6.73     387.   25.2   5.80 0.130 
+#&gt; <span style='color: #BCBCBC;'> 9</span>   808     0 -<span style='color: #BB0000; text-decoration: underline;'>150</span><span style='color: #BB0000;'>163.</span>  <span style='text-decoration: underline;'>357</span>180.  339.  564.  2.64     220.   15.3   6.40 0.100 
+#&gt; <span style='color: #BCBCBC;'>10</span> <span style='text-decoration: underline;'>11</span>054     0 -<span style='color: #BB0000; text-decoration: underline;'>293</span><span style='color: #BB0000;'>663.</span>  <span style='text-decoration: underline;'>340</span>981.  477.  396.  3.89     332.   26.4   4.60 0.063<span style='text-decoration: underline;'>4</span>
+#&gt; <span style='color: #BCBCBC;'>11</span>  <span style='text-decoration: underline;'>2</span>960     1  -<span style='color: #BB0000; text-decoration: underline;'>49</span><span style='color: #BB0000;'>273.</span>  <span style='text-decoration: underline;'>181</span>752.  512.  275.  0.920    319.   17.3   5.92 0.090<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'>12</span>  <span style='text-decoration: underline;'>3</span>065     1  <span style='text-decoration: underline;'>126</span>907. -<span style='color: #BB0000; text-decoration: underline;'>198</span><span style='color: #BB0000;'>892.</span>  322.  544.  0.700    203.   10.6   5.60 0.110 
+#&gt; <span style='color: #BCBCBC;'>13</span>  <span style='text-decoration: underline;'>5</span>527     1  <span style='text-decoration: underline;'>116</span>751. -<span style='color: #BB0000; text-decoration: underline;'>181</span><span style='color: #BB0000;'>089.</span>  261.  537.  0.363    178.    7.43  0    0     
+#&gt; <span style='color: #BCBCBC;'>14</span>  <span style='text-decoration: underline;'>4</span>035     1  -<span style='color: #BB0000; text-decoration: underline;'>31</span><span style='color: #BB0000;'>777.</span>  <span style='text-decoration: underline;'>115</span>940.  394.  440.  2.07     298.   11.2   6.01 0.076<span style='text-decoration: underline;'>9</span>
+#&gt; <span style='color: #BCBCBC;'>15</span>  <span style='text-decoration: underline;'>4</span>081     1   -<span style='color: #BB0000; text-decoration: underline;'>5</span><span style='color: #BB0000;'>158.</span>   <span style='text-decoration: underline;'>90</span>159.  301.  502.  0.703    203.   14.6   6.11 0.063<span style='text-decoration: underline;'>3</span>
+#&gt; <span style='color: #BCBCBC;'>16</span>  <span style='text-decoration: underline;'>3</span>087     1  <span style='text-decoration: underline;'>102</span>151. -<span style='color: #BB0000; text-decoration: underline;'>143</span><span style='color: #BB0000;'>976.</span>  299.  425. -<span style='color: #BB0000;'>2.08</span>     205.   13.4   3.88 0.110 
+#&gt; <span style='color: #BCBCBC;'>17</span>  <span style='text-decoration: underline;'>3</span>495     1  -<span style='color: #BB0000; text-decoration: underline;'>19</span><span style='color: #BB0000;'>586.</span>   <span style='text-decoration: underline;'>89</span>803.  438.  419.  2.13     189.   15.2   6.19 0.095<span style='text-decoration: underline;'>9</span>
+#&gt; <span style='color: #BCBCBC;'>18</span>  <span style='text-decoration: underline;'>4</span>441     1   <span style='text-decoration: underline;'>49</span>405.  -<span style='color: #BB0000; text-decoration: underline;'>60</span><span style='color: #BB0000;'>502.</span>  362.  582.  2.42     218.    7.84  5.64 0.078<span style='text-decoration: underline;'>6</span>
+#&gt; <span style='color: #BCBCBC;'>19</span>   301     1 -<span style='color: #BB0000; text-decoration: underline;'>132</span><span style='color: #BB0000;'>516.</span>  <span style='text-decoration: underline;'>270</span>845.  367.  196. -<span style='color: #BB0000;'>2.56</span>     422.   26.3   6.70 0.030<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'>20</span>  <span style='text-decoration: underline;'>3</span>162     1   <span style='text-decoration: underline;'>59</span>905.  -<span style='color: #BB0000; text-decoration: underline;'>53</span><span style='color: #BB0000;'>634.</span>  319.  626.  1.99     212.    4.50  4.51 0.039<span style='text-decoration: underline;'>6</span>
+#&gt; <span style='color: #949494;'># ... with 12 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part1 &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   .part2 &lt;chr&gt;, .part3 &lt;chr&gt;, .part4 &lt;chr&gt;, .part5 &lt;chr&gt;, .part6 &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   .part7 &lt;chr&gt;, .part8 &lt;chr&gt;, .part9 &lt;chr&gt;, .part10 &lt;chr&gt;</span></div><div class='input'>
 <span class='va'>esm_gam_t3</span> <span class='op'>&lt;-</span> <span class='fu'>esm_gam</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies2</span>,
   response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
@@ -265,10 +761,222 @@ Breiner et al. (2015, 2018)</p>
   partition <span class='op'>=</span> <span class='st'>".part"</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-<span class='va'>esm_gam_t3</span><span class='op'>$</span><span class='va'>esm_model</span> <span class='co'># bivariate model</span>
-<span class='va'>esm_gam_t3</span><span class='op'>$</span><span class='va'>predictors</span>
-<span class='va'>esm_gam_t3</span><span class='op'>$</span><span class='va'>performance</span>
-<span class='op'>}</span>
+</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%</div><div class='input'><span class='va'>esm_gam_t3</span><span class='op'>$</span><span class='va'>esm_model</span> <span class='co'># bivariate model</span>
+</div><div class='output co'>#&gt; $`0.577777777777778`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99998 Residual
+#&gt; Residual Deviance: 9.86509 
+#&gt; 
+#&gt; $`0.933333333333333`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.566666666666667`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00021 Residual
+#&gt; Residual Deviance: 14.29457 
+#&gt; 
+#&gt; $`0.633333333333333`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99981 Residual
+#&gt; Residual Deviance: 19.34354 
+#&gt; 
+#&gt; $`0.733333333333333`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00026 Residual
+#&gt; Residual Deviance: 18.79893 
+#&gt; 
+#&gt; $`0.711111111111111`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00046 Residual
+#&gt; Residual Deviance: 18.90059 
+#&gt; 
+#&gt; $`0.944444444444444`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.0002 Residual
+#&gt; Residual Deviance: 0.79746 
+#&gt; 
+#&gt; $`0.933333333333333`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00012 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.666666666666667`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99978 Residual
+#&gt; Residual Deviance: 6.63526 
+#&gt; 
+#&gt; $`0.733333333333333`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00017 Residual
+#&gt; Residual Deviance: 9.81768 
+#&gt; 
+#&gt; $`0.333333333333333`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99999 Residual
+#&gt; Residual Deviance: 18.03072 
+#&gt; 
+#&gt; $`0.422222222222222`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99993 Residual
+#&gt; Residual Deviance: 18.02498 
+#&gt; 
+#&gt; $`0.955555555555555`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99984 Residual
+#&gt; Residual Deviance: 1.61772 
+#&gt; 
+#&gt; $`0.922222222222222`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9999 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.955555555555555`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99993 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.966666666666667`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9999 Residual
+#&gt; Residual Deviance: 1e-04 
+#&gt; 
+#&gt; $`1`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99999 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.955555555555555`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00001 Residual
+#&gt; Residual Deviance: 0 
+#&gt; 
+#&gt; $`0.811111111111111`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00017 Residual
+#&gt; Residual Deviance: 16.04344 
+#&gt; 
+#&gt; $`0.644444444444444`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00003 Residual
+#&gt; Residual Deviance: 17.36921 
+#&gt; 
+#&gt; $`0.6`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00001 Residual
+#&gt; Residual Deviance: 16.74941 
+#&gt; 
+#&gt; $`0.866666666666667`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00003 Residual
+#&gt; Residual Deviance: 6.57265 
+#&gt; 
+#&gt; $`0.622222222222222`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00007 Residual
+#&gt; Residual Deviance: 20.28762 
+#&gt; 
+#&gt; $`0.644444444444444`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99974 Residual
+#&gt; Residual Deviance: 18.81425 
+#&gt; 
+#&gt; $`0.811111111111111`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99977 Residual
+#&gt; Residual Deviance: 2.74366 
+#&gt; 
+#&gt; $`0.477777777777778`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 11.00011 Residual
+#&gt; Residual Deviance: 19.40843 
+#&gt; 
+#&gt; $`0.811111111111111`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.99984 Residual
+#&gt; Residual Deviance: 8.20297 
+#&gt; 
+#&gt; $`0.955555555555555`
+#&gt; Call:
+#&gt; gam::gam(formula = formula1, family = "binomial", data = data)
+#&gt; 
+#&gt; Degrees of Freedom: 19 total; 10.9997 Residual
+#&gt; Residual Deviance: 3.09105 
+#&gt; </div><div class='input'><span class='va'>esm_gam_t3</span><span class='op'>$</span><span class='va'>predictors</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 8</span>
+#&gt;   c1    c2    c3    c4      c5      c6    c7    c8   
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth</div><div class='input'><span class='va'>esm_gam_t3</span><span class='op'>$</span><span class='va'>performance</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 25</span>
+#&gt;   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> esm_gam equal_sens_~     0.484          30         30    0.867  0.172    1    
+#&gt; <span style='color: #BCBCBC;'>2</span> esm_gam lpt              0.429          30         30    1      0        0.867
+#&gt; <span style='color: #BCBCBC;'>3</span> esm_gam max_fpb          0.429          30         30    1      0        0.867
+#&gt; <span style='color: #BCBCBC;'>4</span> esm_gam max_jaccard      0.429          30         30    1      0        0.867
+#&gt; <span style='color: #BCBCBC;'>5</span> esm_gam max_sens_sp~     0.484          30         30    0.867  0.172    1    
+#&gt; <span style='color: #BCBCBC;'>6</span> esm_gam max_sorensen     0.429          30         30    1      0        0.867
+#&gt; <span style='color: #BCBCBC;'>7</span> esm_gam sensitivity      0.565          30         30    1      0        0.867
+#&gt; <span style='color: #949494;'># ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></div><div class='input'><span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -181,7 +181,7 @@
     <div class='dont-index'><p><code><a href='fit_ensemble.html'>fit_ensemble</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra/'>terra</a></span><span class='op'>)</span>
 
@@ -200,7 +200,7 @@
     y <span class='op'>=</span> <span class='st'>"y"</span>,
     env_layer <span class='op'>=</span> <span class='va'>somevar</span>
   <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>4 rows were excluded from database because NAs were found</span></div><div class='input'>
 <span class='co'># Partition</span>
 <span class='va'>some_sp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part_random.html'>part_random</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>some_sp</span>,
@@ -222,19 +222,22 @@
   partition <span class='op'>=</span> <span class='st'>".part"</span>,
   poly <span class='op'>=</span> <span class='fl'>2</span>
 <span class='op'>)</span>
-<span class='va'>mraf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_raf.html'>fit_raf</a></span><span class='op'>(</span>
+</div><div class='output co'>#&gt; <span class='message'>Formula used for model fitting:</span>
+#&gt; <span class='message'>pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4 + I(CFP_1^2) + I(CFP_2^2) + I(CFP_3^2) + I(CFP_4^2)</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 1/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 2/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 3/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 4/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 5/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='input'><span class='va'>mraf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_raf.html'>fit_raf</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>some_sp</span>,
   response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   predictors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CFP_1"</span>, <span class='st'>"CFP_2"</span>, <span class='st'>"CFP_3"</span>, <span class='st'>"CFP_4"</span><span class='op'>)</span>,
   partition <span class='op'>=</span> <span class='st'>".part"</span>,
 <span class='op'>)</span>
-<span class='va'>mgbm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_gbm.html'>fit_gbm</a></span><span class='op'>(</span>
+</div><div class='output co'>#&gt; <span class='message'>Formula used for model fitting:</span>
+#&gt; <span class='message'>pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 1/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 2/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 3/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 4/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 5/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='input'><span class='va'>mgbm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_gbm.html'>fit_gbm</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>some_sp</span>,
   response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   predictors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"CFP_1"</span>, <span class='st'>"CFP_2"</span>, <span class='st'>"CFP_3"</span>, <span class='st'>"CFP_4"</span><span class='op'>)</span>,
   partition <span class='op'>=</span> <span class='st'>".part"</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>Formula used for model fitting:</span>
+#&gt; <span class='message'>pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 1/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 2/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 3/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 4/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 5/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='input'>
 <span class='co'># Fit and ensemble</span>
 <span class='va'>mensemble</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_ensemble.html'>fit_ensemble</a></span><span class='op'>(</span>
   models <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mglm</span>, <span class='va'>mraf</span>, <span class='va'>mgbm</span><span class='op'>)</span>,
@@ -243,7 +246,7 @@
   thr_model <span class='op'>=</span> <span class='st'>"max_sens_spec"</span>,
   metric <span class='op'>=</span> <span class='st'>"TSS"</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</div><div class='input'>
 <span class='co'># Fit a model with a Wnsemble of Small Models approach</span>
 <span class='co'># Without threshold specification and with kfold</span>
 <span class='va'>msmall</span> <span class='op'>&lt;-</span> <span class='fu'><a href='esm_gam.html'>esm_gam</a></span><span class='op'>(</span>
@@ -253,7 +256,7 @@
   partition <span class='op'>=</span> <span class='st'>".part"</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</div><div class='input'>
 
 <span class='co'>## %######################################################%##</span>
 <span class='co'>#                                                          #</span>
@@ -271,7 +274,7 @@
   con_thr <span class='op'>=</span> <span class='cn'>FALSE</span>,
   predict_area <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>Predicting individual models</span></div><div class='input'>
 <span class='co'># a list of models</span>
 <span class='va'>list_p</span> <span class='op'>&lt;-</span> <span class='fu'>sdm_predict</span><span class='op'>(</span>
   models <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mglm</span>, <span class='va'>mraf</span>, <span class='va'>mgbm</span><span class='op'>)</span>,
@@ -280,7 +283,7 @@
   con_thr <span class='op'>=</span> <span class='cn'>FALSE</span>,
   predict_area <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>Predicting list of individual models</span></div><div class='input'>
 <span class='co'># Predict an ensemble model</span>
 <span class='co'># (only is possilbe use one fit_ensemble)</span>
 <span class='va'>ensemble_p</span> <span class='op'>&lt;-</span> <span class='fu'>sdm_predict</span><span class='op'>(</span>
@@ -290,7 +293,7 @@
   con_thr <span class='op'>=</span> <span class='cn'>FALSE</span>,
   predict_area <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>Predicting ensembles</span></div><div class='input'>
 <span class='co'># Predict an ensemble of small model</span>
 <span class='co'># (only is possilbe use one ensemble of small model)</span>
 <span class='va'>small_p</span> <span class='op'>&lt;-</span> <span class='fu'>sdm_predict</span><span class='op'>(</span>
@@ -300,7 +303,7 @@
   con_thr <span class='op'>=</span> <span class='cn'>FALSE</span>,
   predict_area <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-<span class='op'>}</span>
+</div><div class='output co'>#&gt; <span class='message'>Predicting ensemble of small models</span></div><div class='input'><span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

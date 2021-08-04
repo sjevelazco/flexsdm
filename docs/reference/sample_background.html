@@ -196,7 +196,7 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
     <div class='dont-index'><p><code><a href='sample_pseudoabs.html'>sample_pseudoabs</a></code> and <code><a href='calib_area.html'>calib_area</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>spp</span><span class='op'>)</span>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/somevar.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
@@ -217,10 +217,11 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
   num_grids <span class='op'>=</span> <span class='fl'>10</span>,
   n_part <span class='op'>=</span> <span class='fl'>2</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>4 rows were excluded from database because NAs were found</span></div><div class='output co'>#&gt; <span class='message'>The following grid cell sizes will be tested:</span>
+#&gt; <span class='message'>189000 | 273000 | 357000 | 441000 | 525000 | 609000 | 693000 | 777000 | 861000 | 945000</span></div><div class='output co'>#&gt; <span class='message'>Creating basic raster mask...</span></div><div class='output co'>#&gt; <span class='message'>Searching for the optimal grid size...</span></div><div class='input'>
 <span class='va'>grid_env</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_block.html'>get_block</a></span><span class='op'>(</span>env_layer <span class='op'>=</span> <span class='va'>somevar</span>, best_grid <span class='op'>=</span> <span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-
+</div><div class='input'>
 
 <span class='co'>## %######################################################%##</span>
 <span class='co'>#                                                          #</span>
@@ -240,11 +241,11 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
     rlayer <span class='op'>=</span> <span class='va'>grid_env</span>
   <span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>bg</span><span class='op'>)</span>
-
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>bg</span><span class='op'>)</span>
+</div><div class='img'><img src='sample_background-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Sample random background points constrained to a region with a give set of values</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-<span class='fu'>sample_background</span><span class='op'>(</span>
+</div><div class='input'><span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
@@ -253,9 +254,9 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
   rlayer <span class='op'>=</span> <span class='va'>grid_env</span>,
   maskval <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='op'>)</span>
-
+</div><div class='img'><img src='sample_background-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-<span class='fu'>sample_background</span><span class='op'>(</span>
+</div><div class='input'><span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
@@ -264,9 +265,9 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
   rlayer <span class='op'>=</span> <span class='va'>grid_env</span>,
   maskval <span class='op'>=</span> <span class='fl'>2</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='op'>)</span>
-
+</div><div class='img'><img src='sample_background-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-<span class='fu'>sample_background</span><span class='op'>(</span>
+</div><div class='input'><span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
@@ -275,7 +276,7 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
   rlayer <span class='op'>=</span> <span class='va'>grid_env</span>,
   maskval <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='op'>)</span>
-
+</div><div class='img'><img src='sample_background-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Sample random background within a calibration area and constrained to a region</span>
 <span class='va'>ca_ps1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calib_area.html'>calib_area</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_pa</span>,
@@ -284,9 +285,9 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"buffer"</span>, width <span class='op'>=</span> <span class='fl'>50000</span><span class='op'>)</span>,
 <span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>ca_ps1</span>, add <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_pa</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span>, col <span class='op'>=</span> <span class='st'>"blue"</span>, cex <span class='op'>=</span> <span class='fl'>0.7</span>, pch <span class='op'>=</span> <span class='fl'>19</span><span class='op'>)</span>
-<span class='fu'>sample_background</span><span class='op'>(</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>ca_ps1</span>, add <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_pa</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>]</span>, col <span class='op'>=</span> <span class='st'>"blue"</span>, cex <span class='op'>=</span> <span class='fl'>0.7</span>, pch <span class='op'>=</span> <span class='fl'>19</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
@@ -297,7 +298,7 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
   calibarea <span class='op'>=</span> <span class='va'>ca_ps1</span>
 <span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
-
+</div><div class='img'><img src='sample_background-5.png' alt='' width='700' height='433' /></div><div class='input'>
 
 
 <span class='co'>## %######################################################%##</span>
@@ -308,8 +309,31 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 
 <span class='co'># Thickening background without containing them</span>
 <span class='va'>spp_p</span> <span class='co'># presences database of a species</span>
-<span class='va'>grid_env</span> <span class='co'># The raster layer used for sampling background</span>
-<span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 13 x 4</span>
+#&gt;    species        x        y pr_ab
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>26</span><span style='color: #BB0000;'>331.</span>  <span style='text-decoration: underline;'>209</span>912.     1
+#&gt; <span style='color: #BCBCBC;'> 2</span> sp3     -<span style='color: #BB0000; text-decoration: underline;'>134</span><span style='color: #BB0000;'>331.</span>  <span style='text-decoration: underline;'>195</span>332.     1
+#&gt; <span style='color: #BCBCBC;'> 3</span> sp3      <span style='text-decoration: underline;'>131</span>079. -<span style='color: #BB0000; text-decoration: underline;'>140</span><span style='color: #BB0000;'>548.</span>     1
+#&gt; <span style='color: #BCBCBC;'> 4</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>27</span><span style='color: #BB0000;'>411.</span>  <span style='text-decoration: underline;'>124</span>322.     1
+#&gt; <span style='color: #BCBCBC;'> 5</span> sp3      <span style='text-decoration: underline;'>106</span>509.  -<span style='color: #BB0000; text-decoration: underline;'>83</span><span style='color: #BB0000;'>308.</span>     1
+#&gt; <span style='color: #BCBCBC;'> 6</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>86</span><span style='color: #BB0000;'>811.</span>  <span style='text-decoration: underline;'>259</span>052.     1
+#&gt; <span style='color: #BCBCBC;'> 7</span> sp3      <span style='text-decoration: underline;'>134</span>049. -<span style='color: #BB0000; text-decoration: underline;'>154</span><span style='color: #BB0000;'>588.</span>     1
+#&gt; <span style='color: #BCBCBC;'> 8</span> sp3     -<span style='color: #BB0000; text-decoration: underline;'>124</span><span style='color: #BB0000;'>881.</span>  <span style='text-decoration: underline;'>263</span>372.     1
+#&gt; <span style='color: #BCBCBC;'> 9</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>71</span><span style='color: #BB0000;'>151.</span>  <span style='text-decoration: underline;'>213</span>152.     1
+#&gt; <span style='color: #BCBCBC;'>10</span> sp3        <span style='text-decoration: underline;'>2</span>289.    <span style='text-decoration: underline;'>9</span>572.     1
+#&gt; <span style='color: #BCBCBC;'>11</span> sp3       <span style='text-decoration: underline;'>31</span>989.   <span style='text-decoration: underline;'>37</span>922.     1
+#&gt; <span style='color: #BCBCBC;'>12</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>49</span><span style='color: #BB0000;'>551.</span>  <span style='text-decoration: underline;'>214</span>232.     1
+#&gt; <span style='color: #BCBCBC;'>13</span> sp3       -<span style='color: #BB0000; text-decoration: underline;'>4</span><span style='color: #BB0000;'>461.</span>  <span style='text-decoration: underline;'>176</span>702.     1</div><div class='input'><span class='va'>grid_env</span> <span class='co'># The raster layer used for sampling background</span>
+</div><div class='output co'>#&gt; class       : SpatRaster 
+#&gt; dimensions  : 558, 394, 1  (nrow, ncol, nlyr)
+#&gt; resolution  : 1890, 1890  (x, y)
+#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#&gt; source      : memory 
+#&gt; name        : .part 
+#&gt; min value   :     1 
+#&gt; max value   :     2 </div><div class='input'><span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
@@ -319,14 +343,37 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-<span class='va'>bg</span> <span class='op'>%&gt;%</span>
+</div><div class='input'><span class='va'>bg</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
-
+</div><div class='img'><img src='sample_background-6.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Thickening background without using a given buffer width</span>
 <span class='va'>spp_p</span> <span class='co'># presences database of a species</span>
-<span class='va'>grid_env</span> <span class='co'># The raster layer used for sampling background</span>
-<span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 13 x 4</span>
+#&gt;    species        x        y pr_ab
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>26</span><span style='color: #BB0000;'>331.</span>  <span style='text-decoration: underline;'>209</span>912.     1
+#&gt; <span style='color: #BCBCBC;'> 2</span> sp3     -<span style='color: #BB0000; text-decoration: underline;'>134</span><span style='color: #BB0000;'>331.</span>  <span style='text-decoration: underline;'>195</span>332.     1
+#&gt; <span style='color: #BCBCBC;'> 3</span> sp3      <span style='text-decoration: underline;'>131</span>079. -<span style='color: #BB0000; text-decoration: underline;'>140</span><span style='color: #BB0000;'>548.</span>     1
+#&gt; <span style='color: #BCBCBC;'> 4</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>27</span><span style='color: #BB0000;'>411.</span>  <span style='text-decoration: underline;'>124</span>322.     1
+#&gt; <span style='color: #BCBCBC;'> 5</span> sp3      <span style='text-decoration: underline;'>106</span>509.  -<span style='color: #BB0000; text-decoration: underline;'>83</span><span style='color: #BB0000;'>308.</span>     1
+#&gt; <span style='color: #BCBCBC;'> 6</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>86</span><span style='color: #BB0000;'>811.</span>  <span style='text-decoration: underline;'>259</span>052.     1
+#&gt; <span style='color: #BCBCBC;'> 7</span> sp3      <span style='text-decoration: underline;'>134</span>049. -<span style='color: #BB0000; text-decoration: underline;'>154</span><span style='color: #BB0000;'>588.</span>     1
+#&gt; <span style='color: #BCBCBC;'> 8</span> sp3     -<span style='color: #BB0000; text-decoration: underline;'>124</span><span style='color: #BB0000;'>881.</span>  <span style='text-decoration: underline;'>263</span>372.     1
+#&gt; <span style='color: #BCBCBC;'> 9</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>71</span><span style='color: #BB0000;'>151.</span>  <span style='text-decoration: underline;'>213</span>152.     1
+#&gt; <span style='color: #BCBCBC;'>10</span> sp3        <span style='text-decoration: underline;'>2</span>289.    <span style='text-decoration: underline;'>9</span>572.     1
+#&gt; <span style='color: #BCBCBC;'>11</span> sp3       <span style='text-decoration: underline;'>31</span>989.   <span style='text-decoration: underline;'>37</span>922.     1
+#&gt; <span style='color: #BCBCBC;'>12</span> sp3      -<span style='color: #BB0000; text-decoration: underline;'>49</span><span style='color: #BB0000;'>551.</span>  <span style='text-decoration: underline;'>214</span>232.     1
+#&gt; <span style='color: #BCBCBC;'>13</span> sp3       -<span style='color: #BB0000; text-decoration: underline;'>4</span><span style='color: #BB0000;'>461.</span>  <span style='text-decoration: underline;'>176</span>702.     1</div><div class='input'><span class='va'>grid_env</span> <span class='co'># The raster layer used for sampling background</span>
+</div><div class='output co'>#&gt; class       : SpatRaster 
+#&gt; dimensions  : 558, 394, 1  (nrow, ncol, nlyr)
+#&gt; resolution  : 1890, 1890  (x, y)
+#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#&gt; source      : memory 
+#&gt; name        : .part 
+#&gt; min value   :     1 
+#&gt; max value   :     2 </div><div class='input'><span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
@@ -336,9 +383,9 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-<span class='va'>bg</span> <span class='op'>%&gt;%</span>
+</div><div class='input'><span class='va'>bg</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
-
+</div><div class='img'><img src='sample_background-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Sample thickening background within a calibration area and constrained to a region</span>
 <span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
@@ -352,11 +399,11 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>ca_ps1</span>, add <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
-<span class='va'>bg</span> <span class='op'>%&gt;%</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>ca_ps1</span>, add <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+</div><div class='input'><span class='va'>bg</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span>, cex <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_p</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>, pch <span class='op'>=</span> <span class='fl'>19</span><span class='op'>)</span>
-
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_p</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>, pch <span class='op'>=</span> <span class='fl'>19</span><span class='op'>)</span>
+</div><div class='img'><img src='sample_background-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'>## %######################################################%##</span>
 <span class='co'>#                                                          #</span>
 <span class='co'>####             Biased background method               ####</span>
@@ -373,18 +420,31 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='va'>occ_density</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/occ_density.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
 <span class='va'>occ_density</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>occ_density</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>occ_density</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_p</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
-
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_p</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+</div><div class='img'><img src='sample_background-9.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># A layer with region used to contraint background</span>
 <span class='va'>regions</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/regions.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
 <span class='va'>regions</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>regions</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>regions</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_p</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
-
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_p</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+</div><div class='img'><img src='sample_background-10.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Biased background points</span>
 <span class='va'>spp_p</span> <span class='co'># presences database of a species</span>
-<span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 250 x 4</span>
+#&gt;    species        x        y pr_ab
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>269</span><span style='color: #BB0000;'>871.</span>   <span style='text-decoration: underline;'>69</span>512.     1
+#&gt; <span style='color: #BCBCBC;'> 2</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>149</span><span style='color: #BB0000;'>991.</span>  <span style='text-decoration: underline;'>267</span>962.     1
+#&gt; <span style='color: #BCBCBC;'> 3</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>126</span><span style='color: #BB0000;'>231.</span>  <span style='text-decoration: underline;'>196</span>142.     1
+#&gt; <span style='color: #BCBCBC;'> 4</span> sp1       <span style='text-decoration: underline;'>91</span>659. -<span style='color: #BB0000; text-decoration: underline;'>156</span><span style='color: #BB0000;'>748.</span>     1
+#&gt; <span style='color: #BCBCBC;'> 5</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>210</span><span style='color: #BB0000;'>471.</span>  <span style='text-decoration: underline;'>326</span>282.     1
+#&gt; <span style='color: #BCBCBC;'> 6</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>140</span><span style='color: #BB0000;'>541.</span>  <span style='text-decoration: underline;'>284</span>972.     1
+#&gt; <span style='color: #BCBCBC;'> 7</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>217</span><span style='color: #BB0000;'>491.</span>   <span style='text-decoration: underline;'>65</span>732.     1
+#&gt; <span style='color: #BCBCBC;'> 8</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>201</span><span style='color: #BB0000;'>831.</span>   <span style='text-decoration: underline;'>17</span>132.     1
+#&gt; <span style='color: #BCBCBC;'> 9</span> sp1      -<span style='color: #BB0000; text-decoration: underline;'>40</span><span style='color: #BB0000;'>101.</span>  <span style='text-decoration: underline;'>150</span>782.     1
+#&gt; <span style='color: #BCBCBC;'>10</span> sp1     -<span style='color: #BB0000; text-decoration: underline;'>178</span><span style='color: #BB0000;'>611.</span>  <span style='text-decoration: underline;'>225</span>032.     1
+#&gt; <span style='color: #949494;'># ... with 240 more rows</span></div><div class='input'><span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
   y <span class='op'>=</span> <span class='st'>"y"</span>,
@@ -395,18 +455,18 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>occ_density</span><span class='op'>)</span>
-<span class='va'>bg</span> <span class='op'>%&gt;%</span>
+</div><div class='input'><span class='va'>bg</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span>, cex <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>
-<span class='va'>spp_p</span> <span class='op'>%&gt;%</span>
+</div><div class='input'><span class='va'>spp_p</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>.</span>, col <span class='op'>=</span> <span class='st'>"black"</span>, pch <span class='op'>=</span> <span class='fl'>19</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
-
+</div><div class='img'><img src='sample_background-11.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># Biased background points constrained in a region</span>
 <span class='co'># It will be selected region 6</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>regions</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>regions</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
-
+</div><div class='img'><img src='sample_background-12.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>regions</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='sample_background-13.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp_p</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
@@ -419,12 +479,12 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>occ_density</span><span class='op'>)</span>
-<span class='va'>bg</span> <span class='op'>%&gt;%</span>
+</div><div class='input'><span class='va'>bg</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
-<span class='va'>spp_p</span> <span class='op'>%&gt;%</span>
+</div><div class='input'><span class='va'>spp_p</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>.</span>, col <span class='op'>=</span> <span class='st'>"black"</span>, pch <span class='op'>=</span> <span class='fl'>19</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
-<span class='op'>}</span>
+</div><div class='img'><img src='sample_background-14.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

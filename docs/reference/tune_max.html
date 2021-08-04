@@ -212,12 +212,39 @@ column names must be consistent with data</p></td>
     <div class='dont-index'><p><code><a href='tune_gbm.html'>tune_gbm</a></code>, <code><a href='tune_net.html'>tune_net</a></code>, <code><a href='tune_raf.html'>tune_raf</a></code>, and <code><a href='tune_svm.html'>tune_svm</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"abies"</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"backg"</span><span class='op'>)</span>
 <span class='va'>abies</span> <span class='co'># environmental conditions of presence-absence data</span>
-<span class='va'>backg</span> <span class='co'># environmental conditions of background points</span>
-
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,400 x 13</span>
+#&gt;       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span>   715     0  -<span style='color: #BB0000; text-decoration: underline;'>95</span><span style='color: #BB0000;'>417.</span>  <span style='text-decoration: underline;'>314</span>240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
+#&gt; <span style='color: #BCBCBC;'> 2</span>  <span style='text-decoration: underline;'>5</span>680     0   <span style='text-decoration: underline;'>98</span>987. -<span style='color: #BB0000; text-decoration: underline;'>159</span><span style='color: #BB0000;'>415.</span>  448.  815.  9.43   130.     6.43  5.60 0.160 
+#&gt; <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>7</span>907     0  <span style='text-decoration: underline;'>121</span>474.  -<span style='color: #BB0000; text-decoration: underline;'>99</span><span style='color: #BB0000;'>463.</span>  182.  271. -<span style='color: #BB0000;'>4.95</span>   151.    11.2   0    0     
+#&gt; <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>1</span>850     0  -<span style='color: #BB0000; text-decoration: underline;'>39</span><span style='color: #BB0000;'>976.</span>  -<span style='color: #BB0000; text-decoration: underline;'>17</span><span style='color: #BB0000;'>456.</span>  372.  946.  8.78   116.     2.70  6.41 0.097<span style='text-decoration: underline;'>2</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span>  <span style='text-decoration: underline;'>1</span>702     0  <span style='text-decoration: underline;'>111</span>372.  -<span style='color: #BB0000; text-decoration: underline;'>91</span><span style='color: #BB0000;'>404.</span>  209.  399. -<span style='color: #BB0000;'>4.03</span>   165.     9.27  0    0     
+#&gt; <span style='color: #BCBCBC;'> 6</span> <span style='text-decoration: underline;'>10</span>036     0 -<span style='color: #BB0000; text-decoration: underline;'>255</span><span style='color: #BB0000;'>715.</span>  <span style='text-decoration: underline;'>392</span>229.  308.  535.  4.66   166.    16.5   5.70 0.077<span style='text-decoration: underline;'>7</span>
+#&gt; <span style='color: #BCBCBC;'> 7</span> <span style='text-decoration: underline;'>12</span>384     0 -<span style='color: #BB0000; text-decoration: underline;'>311</span><span style='color: #BB0000;'>765.</span>  <span style='text-decoration: underline;'>380</span>213.  568.  352.  4.38   480.    41.2   5.80 0.110 
+#&gt; <span style='color: #BCBCBC;'> 8</span>  <span style='text-decoration: underline;'>6</span>513     0  <span style='text-decoration: underline;'>111</span>360. -<span style='color: #BB0000; text-decoration: underline;'>120</span><span style='color: #BB0000;'>229.</span>  327.  633.  4.93   163.     8.91  1.18 0.011<span style='text-decoration: underline;'>6</span>
+#&gt; <span style='color: #BCBCBC;'> 9</span>  <span style='text-decoration: underline;'>9</span>884     0 -<span style='color: #BB0000; text-decoration: underline;'>284</span><span style='color: #BB0000;'>326.</span>  <span style='text-decoration: underline;'>442</span>136.  377.  446.  3.99   296.    16.8   5.96 0.090<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'>10</span>  <span style='text-decoration: underline;'>8</span>651     0  <span style='text-decoration: underline;'>137</span>640. -<span style='color: #BB0000; text-decoration: underline;'>110</span><span style='color: #BB0000;'>538.</span>  215.  265. -<span style='color: #BB0000;'>4.62</span>   180.     9.57  0    0     
+#&gt; <span style='color: #949494;'># ... with 1,390 more rows, and 2 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;</span></div><div class='input'><span class='va'>backg</span> <span class='co'># environmental conditions of background points</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5,000 x 13</span>
+#&gt;    pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH     awc depth
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span>     0  <span style='text-decoration: underline;'>160</span>779. -<span style='color: #BB0000; text-decoration: underline;'>449</span><span style='color: #BB0000;'>968.</span>  280. <span style='text-decoration: underline;'>1</span>137. 13.5     71.3    1.19 0     0         0  
+#&gt; <span style='color: #BCBCBC;'> 2</span>     0   <span style='text-decoration: underline;'>36</span>849.   <span style='text-decoration: underline;'>24</span>152.  260.  382. -<span style='color: #BB0000;'>3.17</span>   171.    17.5  0.212 0.003<span style='text-decoration: underline;'>47</span> 201  
+#&gt; <span style='color: #BCBCBC;'> 3</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>240</span><span style='color: #BB0000;'>171.</span>   <span style='text-decoration: underline;'>90</span>032.  400.  700.  8.68   285.     5.02 5.72  0.080<span style='text-decoration: underline;'>4</span>   50.1
+#&gt; <span style='color: #BCBCBC;'> 4</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>152</span><span style='color: #BB0000;'>421.</span> -<span style='color: #BB0000; text-decoration: underline;'>143</span><span style='color: #BB0000;'>518.</span>  367.  843.  9.01    72.0    1.20 7.54  0.170   154. 
+#&gt; <span style='color: #BCBCBC;'> 5</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>193</span><span style='color: #BB0000;'>191.</span>   <span style='text-decoration: underline;'>24</span>152.  397.  842.  8.97   125.     1.98 6.20  0.131   122. 
+#&gt; <span style='color: #BCBCBC;'> 6</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>277</span><span style='color: #BB0000;'>971.</span>  <span style='text-decoration: underline;'>223</span>682.  385.  637.  4.93   226.     8.16 5.81  0.051<span style='text-decoration: underline;'>2</span>   56.2
+#&gt; <span style='color: #BCBCBC;'> 7</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>313</span><span style='color: #BB0000;'>341.</span>  <span style='text-decoration: underline;'>270</span>122.  582.  406.  6.29   334.    18.4  5.80  0.168   201  
+#&gt; <span style='color: #BCBCBC;'> 8</span>     0   <span style='text-decoration: underline;'>54</span>399.  -<span style='color: #BB0000; text-decoration: underline;'>15</span><span style='color: #BB0000;'>538.</span>  346.  195. -<span style='color: #BB0000;'>5.22</span>   142.    13.0  5.60  0.120   201  
+#&gt; <span style='color: #BCBCBC;'> 9</span>     0  <span style='text-decoration: underline;'>282</span>549. -<span style='color: #BB0000; text-decoration: underline;'>582</span><span style='color: #BB0000;'>268.</span>  285. <span style='text-decoration: underline;'>1</span>097. 11.4     56.3    1.39 6.57  0.135    68.4
+#&gt; <span style='color: #BCBCBC;'>10</span>     0  <span style='text-decoration: underline;'>104</span>079. -<span style='color: #BB0000; text-decoration: underline;'>178</span><span style='color: #BB0000;'>618.</span>  385.  871.  6.76   147.     7.80 6.10  0.030<span style='text-decoration: underline;'>0</span>   41  
+#&gt; <span style='color: #949494;'># ... with 4,990 more rows, and 2 more variables: percent_clay &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   landform &lt;fct&gt;</span></div><div class='input'>
 <span class='co'># Using k-fold partition method</span>
 <span class='co'># Remember that the partition method, number of folds or replications must</span>
 <span class='co'># be the same for presence-absence and background points datasets</span>
@@ -227,14 +254,42 @@ column names must be consistent with data</p></td>
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies2</span>
-
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,400 x 14</span>
+#&gt;       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span>   715     0  -<span style='color: #BB0000; text-decoration: underline;'>95</span><span style='color: #BB0000;'>417.</span>  <span style='text-decoration: underline;'>314</span>240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
+#&gt; <span style='color: #BCBCBC;'> 2</span>  <span style='text-decoration: underline;'>5</span>680     0   <span style='text-decoration: underline;'>98</span>987. -<span style='color: #BB0000; text-decoration: underline;'>159</span><span style='color: #BB0000;'>415.</span>  448.  815.  9.43   130.     6.43  5.60 0.160 
+#&gt; <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>7</span>907     0  <span style='text-decoration: underline;'>121</span>474.  -<span style='color: #BB0000; text-decoration: underline;'>99</span><span style='color: #BB0000;'>463.</span>  182.  271. -<span style='color: #BB0000;'>4.95</span>   151.    11.2   0    0     
+#&gt; <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>1</span>850     0  -<span style='color: #BB0000; text-decoration: underline;'>39</span><span style='color: #BB0000;'>976.</span>  -<span style='color: #BB0000; text-decoration: underline;'>17</span><span style='color: #BB0000;'>456.</span>  372.  946.  8.78   116.     2.70  6.41 0.097<span style='text-decoration: underline;'>2</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span>  <span style='text-decoration: underline;'>1</span>702     0  <span style='text-decoration: underline;'>111</span>372.  -<span style='color: #BB0000; text-decoration: underline;'>91</span><span style='color: #BB0000;'>404.</span>  209.  399. -<span style='color: #BB0000;'>4.03</span>   165.     9.27  0    0     
+#&gt; <span style='color: #BCBCBC;'> 6</span> <span style='text-decoration: underline;'>10</span>036     0 -<span style='color: #BB0000; text-decoration: underline;'>255</span><span style='color: #BB0000;'>715.</span>  <span style='text-decoration: underline;'>392</span>229.  308.  535.  4.66   166.    16.5   5.70 0.077<span style='text-decoration: underline;'>7</span>
+#&gt; <span style='color: #BCBCBC;'> 7</span> <span style='text-decoration: underline;'>12</span>384     0 -<span style='color: #BB0000; text-decoration: underline;'>311</span><span style='color: #BB0000;'>765.</span>  <span style='text-decoration: underline;'>380</span>213.  568.  352.  4.38   480.    41.2   5.80 0.110 
+#&gt; <span style='color: #BCBCBC;'> 8</span>  <span style='text-decoration: underline;'>6</span>513     0  <span style='text-decoration: underline;'>111</span>360. -<span style='color: #BB0000; text-decoration: underline;'>120</span><span style='color: #BB0000;'>229.</span>  327.  633.  4.93   163.     8.91  1.18 0.011<span style='text-decoration: underline;'>6</span>
+#&gt; <span style='color: #BCBCBC;'> 9</span>  <span style='text-decoration: underline;'>9</span>884     0 -<span style='color: #BB0000; text-decoration: underline;'>284</span><span style='color: #BB0000;'>326.</span>  <span style='text-decoration: underline;'>442</span>136.  377.  446.  3.99   296.    16.8   5.96 0.090<span style='text-decoration: underline;'>0</span>
+#&gt; <span style='color: #BCBCBC;'>10</span>  <span style='text-decoration: underline;'>8</span>651     0  <span style='text-decoration: underline;'>137</span>640. -<span style='color: #BB0000; text-decoration: underline;'>110</span><span style='color: #BB0000;'>538.</span>  215.  265. -<span style='color: #BB0000;'>4.62</span>   180.     9.57  0    0     
+#&gt; <span style='color: #949494;'># ... with 1,390 more rows, and 3 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;,</span>
+#&gt; <span style='color: #949494;'>#   .part &lt;int&gt;</span></div><div class='input'>
 <span class='va'>backg2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part_random.html'>part_random</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>backg</span>,
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>backg</span>
-
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5,000 x 13</span>
+#&gt;    pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH     awc depth
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span>     0  <span style='text-decoration: underline;'>160</span>779. -<span style='color: #BB0000; text-decoration: underline;'>449</span><span style='color: #BB0000;'>968.</span>  280. <span style='text-decoration: underline;'>1</span>137. 13.5     71.3    1.19 0     0         0  
+#&gt; <span style='color: #BCBCBC;'> 2</span>     0   <span style='text-decoration: underline;'>36</span>849.   <span style='text-decoration: underline;'>24</span>152.  260.  382. -<span style='color: #BB0000;'>3.17</span>   171.    17.5  0.212 0.003<span style='text-decoration: underline;'>47</span> 201  
+#&gt; <span style='color: #BCBCBC;'> 3</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>240</span><span style='color: #BB0000;'>171.</span>   <span style='text-decoration: underline;'>90</span>032.  400.  700.  8.68   285.     5.02 5.72  0.080<span style='text-decoration: underline;'>4</span>   50.1
+#&gt; <span style='color: #BCBCBC;'> 4</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>152</span><span style='color: #BB0000;'>421.</span> -<span style='color: #BB0000; text-decoration: underline;'>143</span><span style='color: #BB0000;'>518.</span>  367.  843.  9.01    72.0    1.20 7.54  0.170   154. 
+#&gt; <span style='color: #BCBCBC;'> 5</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>193</span><span style='color: #BB0000;'>191.</span>   <span style='text-decoration: underline;'>24</span>152.  397.  842.  8.97   125.     1.98 6.20  0.131   122. 
+#&gt; <span style='color: #BCBCBC;'> 6</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>277</span><span style='color: #BB0000;'>971.</span>  <span style='text-decoration: underline;'>223</span>682.  385.  637.  4.93   226.     8.16 5.81  0.051<span style='text-decoration: underline;'>2</span>   56.2
+#&gt; <span style='color: #BCBCBC;'> 7</span>     0 -<span style='color: #BB0000; text-decoration: underline;'>313</span><span style='color: #BB0000;'>341.</span>  <span style='text-decoration: underline;'>270</span>122.  582.  406.  6.29   334.    18.4  5.80  0.168   201  
+#&gt; <span style='color: #BCBCBC;'> 8</span>     0   <span style='text-decoration: underline;'>54</span>399.  -<span style='color: #BB0000; text-decoration: underline;'>15</span><span style='color: #BB0000;'>538.</span>  346.  195. -<span style='color: #BB0000;'>5.22</span>   142.    13.0  5.60  0.120   201  
+#&gt; <span style='color: #BCBCBC;'> 9</span>     0  <span style='text-decoration: underline;'>282</span>549. -<span style='color: #BB0000; text-decoration: underline;'>582</span><span style='color: #BB0000;'>268.</span>  285. <span style='text-decoration: underline;'>1</span>097. 11.4     56.3    1.39 6.57  0.135    68.4
+#&gt; <span style='color: #BCBCBC;'>10</span>     0  <span style='text-decoration: underline;'>104</span>079. -<span style='color: #BB0000; text-decoration: underline;'>178</span><span style='color: #BB0000;'>618.</span>  385.  871.  6.76   147.     7.80 6.10  0.030<span style='text-decoration: underline;'>0</span>   41  
+#&gt; <span style='color: #949494;'># ... with 4,990 more rows, and 2 more variables: percent_clay &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   landform &lt;fct&gt;</span></div><div class='input'>
 
 <span class='va'>gridtest</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>
@@ -255,13 +310,241 @@ column names must be consistent with data</p></td>
   clamp <span class='op'>=</span> <span class='cn'>TRUE</span>,
   pred_type <span class='op'>=</span> <span class='st'>"cloglog"</span>
 <span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='message'>Replica number: 1/1</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='output co'>#&gt; <span class='message'>Formula used for model fitting:</span>
+#&gt; <span class='message'>~aet + ppt_jja + pH + awc + depth + I(aet^2) + I(ppt_jja^2) + I(pH^2) + I(awc^2) + I(depth^2) + categorical(landform) - 1</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 1/1</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/3</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/3</span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/dimensions.html'>length</a></span><span class='op'>(</span><span class='va'>max_t1</span><span class='op'>)</span>
-<span class='va'>max_t1</span><span class='op'>$</span><span class='va'>model</span>
-<span class='va'>max_t1</span><span class='op'>$</span><span class='va'>predictors</span>
-<span class='va'>max_t1</span><span class='op'>$</span><span class='va'>performance</span>
-<span class='va'>max_t1</span><span class='op'>$</span><span class='va'>data_ens</span>
-<span class='op'>}</span>
+</div><div class='output co'>#&gt; [1] 5</div><div class='input'><span class='va'>max_t1</span><span class='op'>$</span><span class='va'>model</span>
+</div><div class='output co'>#&gt; 
+#&gt; Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
+#&gt; 
+#&gt;     Df  %Dev  Lambda
+#&gt; 1    0  0.00 1462.00
+#&gt; 2    0  0.00 1395.00
+#&gt; 3    0  0.00 1332.00
+#&gt; 4    0  0.00 1272.00
+#&gt; 5    0  0.00 1215.00
+#&gt; 6    0  0.00 1160.00
+#&gt; 7    0  0.00 1107.00
+#&gt; 8    0  0.00 1057.00
+#&gt; 9    0  0.00 1009.00
+#&gt; 10   0  0.00  963.60
+#&gt; 11   0  0.00  920.10
+#&gt; 12   0  0.00  878.40
+#&gt; 13   0  0.00  838.70
+#&gt; 14   0  0.00  800.80
+#&gt; 15   0  0.00  764.60
+#&gt; 16   0  0.00  730.00
+#&gt; 17   0  0.00  697.00
+#&gt; 18   0  0.00  665.40
+#&gt; 19   0  0.00  635.40
+#&gt; 20   0  0.00  606.60
+#&gt; 21   0  0.00  579.20
+#&gt; 22   0  0.00  553.00
+#&gt; 23   0  0.00  528.00
+#&gt; 24   0  0.00  504.10
+#&gt; 25   0  0.00  481.30
+#&gt; 26   0  0.00  459.50
+#&gt; 27   0  0.00  438.70
+#&gt; 28   0  0.00  418.90
+#&gt; 29   0  0.00  400.00
+#&gt; 30   0  0.00  381.90
+#&gt; 31   0  0.00  364.60
+#&gt; 32   0  0.00  348.10
+#&gt; 33   0  0.00  332.40
+#&gt; 34   0  0.00  317.30
+#&gt; 35   0  0.00  303.00
+#&gt; 36   0  0.00  289.30
+#&gt; 37   0  0.00  276.20
+#&gt; 38   0  0.00  263.70
+#&gt; 39   0  0.00  251.80
+#&gt; 40   0  0.00  240.40
+#&gt; 41   0  0.00  229.50
+#&gt; 42   0  0.00  219.10
+#&gt; 43   0  0.00  209.20
+#&gt; 44   0  0.00  199.80
+#&gt; 45   0  0.00  190.70
+#&gt; 46   0  0.00  182.10
+#&gt; 47   0  0.00  173.90
+#&gt; 48   0  0.00  166.00
+#&gt; 49   0  0.00  158.50
+#&gt; 50   0  0.00  151.30
+#&gt; 51   0  0.00  144.50
+#&gt; 52   0  0.00  137.90
+#&gt; 53   0  0.00  131.70
+#&gt; 54   0  0.00  125.70
+#&gt; 55   0  0.00  120.10
+#&gt; 56   0  0.00  114.60
+#&gt; 57   0  0.00  109.40
+#&gt; 58   0  0.00  104.50
+#&gt; 59   0  0.00   99.77
+#&gt; 60   0  0.00   95.26
+#&gt; 61   0  0.00   90.95
+#&gt; 62   0  0.00   86.83
+#&gt; 63   0  0.00   82.91
+#&gt; 64   0  0.00   79.16
+#&gt; 65   0  0.00   75.58
+#&gt; 66   0  0.00   72.16
+#&gt; 67   0  0.00   68.90
+#&gt; 68   0  0.00   65.78
+#&gt; 69   0  0.00   62.80
+#&gt; 70   0  0.00   59.96
+#&gt; 71   0  0.00   57.25
+#&gt; 72   0  0.00   54.66
+#&gt; 73   0  0.00   52.19
+#&gt; 74   0  0.00   49.83
+#&gt; 75   0  0.00   47.58
+#&gt; 76   0  0.00   45.42
+#&gt; 77   0  0.00   43.37
+#&gt; 78   0  0.00   41.41
+#&gt; 79   0  0.00   39.54
+#&gt; 80   0  0.00   37.75
+#&gt; 81   0  0.00   36.04
+#&gt; 82   0  0.00   34.41
+#&gt; 83   0  0.00   32.85
+#&gt; 84   0  0.00   31.37
+#&gt; 85   0  0.00   29.95
+#&gt; 86   0  0.00   28.59
+#&gt; 87   1  0.02   27.30
+#&gt; 88   1  0.16   26.07
+#&gt; 89   1  0.28   24.89
+#&gt; 90   1  0.40   23.76
+#&gt; 91   1  0.50   22.69
+#&gt; 92   1  0.59   21.66
+#&gt; 93   1  0.68   20.68
+#&gt; 94   2  0.76   19.75
+#&gt; 95   2  0.95   18.85
+#&gt; 96   2  1.12   18.00
+#&gt; 97   2  1.29   17.19
+#&gt; 98   2  1.43   16.41
+#&gt; 99   3  1.67   15.67
+#&gt; 100  3  1.91   14.96
+#&gt; 101  4  2.20   14.28
+#&gt; 102  3  2.47   13.64
+#&gt; 103  4  2.70   13.02
+#&gt; 104  4  2.95   12.43
+#&gt; 105  4  3.18   11.87
+#&gt; 106  4  3.39   11.33
+#&gt; 107  4  3.59   10.82
+#&gt; 108  4  3.77   10.33
+#&gt; 109  4  3.93    9.86
+#&gt; 110  4  4.08    9.42
+#&gt; 111  4  4.22    8.99
+#&gt; 112  4  4.35    8.58
+#&gt; 113  4  4.47    8.20
+#&gt; 114  5  4.60    7.82
+#&gt; 115  5  4.76    7.47
+#&gt; 116  5  4.91    7.13
+#&gt; 117  5  5.04    6.81
+#&gt; 118  5  5.16    6.50
+#&gt; 119  5  5.28    6.21
+#&gt; 120  6  5.39    5.93
+#&gt; 121  6  5.51    5.66
+#&gt; 122  6  5.62    5.40
+#&gt; 123  6  5.72    5.16
+#&gt; 124  6  5.81    4.93
+#&gt; 125  7  5.89    4.70
+#&gt; 126  7  6.00    4.49
+#&gt; 127  7  6.10    4.29
+#&gt; 128  7  6.19    4.09
+#&gt; 129  7  6.27    3.91
+#&gt; 130  7  6.35    3.73
+#&gt; 131  7  6.41    3.56
+#&gt; 132  8  6.48    3.40
+#&gt; 133  9  6.56    3.25
+#&gt; 134  9  6.64    3.10
+#&gt; 135  9  6.71    2.96
+#&gt; 136  9  6.78    2.83
+#&gt; 137 10  6.86    2.70
+#&gt; 138 11  7.07    2.58
+#&gt; 139 11  7.27    2.46
+#&gt; 140 12  7.44    2.35
+#&gt; 141 12  7.61    2.24
+#&gt; 142 12  7.76    2.14
+#&gt; 143 12  7.90    2.04
+#&gt; 144 12  8.03    1.95
+#&gt; 145 13  8.14    1.86
+#&gt; 146 13  8.24    1.78
+#&gt; 147 13  8.34    1.70
+#&gt; 148 13  8.43    1.62
+#&gt; 149 13  8.51    1.55
+#&gt; 150 14  8.58    1.48
+#&gt; 151 14  8.64    1.41
+#&gt; 152 14  8.71    1.35
+#&gt; 153 14  8.76    1.29
+#&gt; 154 14  8.81    1.23
+#&gt; 155 14  8.86    1.17
+#&gt; 156 14  8.90    1.12
+#&gt; 157 14  8.94    1.07
+#&gt; 158 14  8.98    1.02
+#&gt; 159 15  9.01    0.97
+#&gt; 160 16  9.10    0.93
+#&gt; 161 16  9.17    0.89
+#&gt; 162 16  9.24    0.85
+#&gt; 163 16  9.30    0.81
+#&gt; 164 16  9.37    0.77
+#&gt; 165 16  9.43    0.74
+#&gt; 166 17  9.48    0.71
+#&gt; 167 18  9.54    0.67
+#&gt; 168 19  9.59    0.64
+#&gt; 169 19  9.64    0.61
+#&gt; 170 19  9.69    0.59
+#&gt; 171 19  9.73    0.56
+#&gt; 172 20  9.78    0.53
+#&gt; 173 20  9.83    0.51
+#&gt; 174 20  9.87    0.49
+#&gt; 175 20  9.91    0.46
+#&gt; 176 20  9.95    0.44
+#&gt; 177 20  9.98    0.42
+#&gt; 178 20 10.02    0.40
+#&gt; 179 20 10.05    0.39
+#&gt; 180 20 10.08    0.37
+#&gt; 181 21 10.11    0.35
+#&gt; 182 21 10.14    0.34
+#&gt; 183 21 10.16    0.32
+#&gt; 184 21 10.19    0.31
+#&gt; 185 21 10.22    0.29
+#&gt; 186 21 10.24    0.28
+#&gt; 187 21 10.27    0.27
+#&gt; 188 21 10.29    0.25
+#&gt; 189 21 10.31    0.24
+#&gt; 190 21 10.33    0.23
+#&gt; 191 21 10.35    0.22
+#&gt; 192 21 10.36    0.21
+#&gt; 193 21 10.38    0.20
+#&gt; 194 21 10.39    0.19
+#&gt; 195 21 10.40    0.18
+#&gt; 196 21 10.42    0.18
+#&gt; 197 21 10.43    0.17
+#&gt; 198 21 10.44    0.16
+#&gt; 199 21 10.45    0.15
+#&gt; 200 21 10.46    0.15</div><div class='input'><span class='va'>max_t1</span><span class='op'>$</span><span class='va'>predictors</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span>
+#&gt;   c1    c2      c3    c4    c5    f       
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'>1</span> aet   ppt_jja pH    awc   depth landform</div><div class='input'><span class='va'>max_t1</span><span class='op'>$</span><span class='va'>performance</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 27</span>
+#&gt;   regmult classes model threshold     thr_value n_presences n_absences TPR_mean
+#&gt;     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>     0.6 lq      max   max_sens_spec     0.342         700        700    0.931
+#&gt; <span style='color: #949494;'># ... with 19 more variables: TPR_sd &lt;dbl&gt;, TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></div><div class='input'><span class='va'>max_t1</span><span class='op'>$</span><span class='va'>data_ens</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,400 x 5</span>
+#&gt;    rnames replicates part  pr_ab     pred
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> 1      .part      1         0 0.628   
+#&gt; <span style='color: #BCBCBC;'> 2</span> 3      .part      1         0 0.822   
+#&gt; <span style='color: #BCBCBC;'> 3</span> 5      .part      1         0 0.727   
+#&gt; <span style='color: #BCBCBC;'> 4</span> 7      .part      1         0 0.002<span style='text-decoration: underline;'>87</span> 
+#&gt; <span style='color: #BCBCBC;'> 5</span> 8      .part      1         0 0.780   
+#&gt; <span style='color: #BCBCBC;'> 6</span> 13     .part      1         0 0.150   
+#&gt; <span style='color: #BCBCBC;'> 7</span> 15     .part      1         0 0.856   
+#&gt; <span style='color: #BCBCBC;'> 8</span> 16     .part      1         0 0.000<span style='text-decoration: underline;'>272</span>
+#&gt; <span style='color: #BCBCBC;'> 9</span> 22     .part      1         0 0.126   
+#&gt; <span style='color: #BCBCBC;'>10</span> 23     .part      1         0 0.395   
+#&gt; <span style='color: #949494;'># ... with 1,390 more rows</span></div><div class='input'><span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

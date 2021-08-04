@@ -159,7 +159,7 @@ will be made to the resolution of the environmental variables</p></td>
     <div class='dont-index'><p><code><a href='extra_correct.html'>extra_correct</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra/'>terra</a></span><span class='op'>)</span>
 
@@ -168,7 +168,7 @@ will be made to the resolution of the environmental variables</p></td>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
 <span class='va'>spp</span><span class='op'>$</span><span class='va'>species</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/unique.html'>unique</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>sp</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span>
+</div><div class='output co'>#&gt; [1] "sp1" "sp2" "sp3"</div><div class='input'><span class='va'>sp</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp3"</span>, <span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>
 
@@ -176,15 +176,15 @@ will be made to the resolution of the environmental variables</p></td>
 <span class='va'>ca</span> <span class='op'>&lt;-</span> <span class='fu'><a href='calib_area.html'>calib_area</a></span><span class='op'>(</span><span class='va'>sp</span>, x <span class='op'>=</span> <span class='st'>"x"</span>, y <span class='op'>=</span> <span class='st'>"y"</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"buffer"</span>, width <span class='op'>=</span> <span class='fl'>30000</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>$</span><span class='va'>CFP_1</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>sp</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>ca</span>, add <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
-
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>sp</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>ca</span>, add <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+</div><div class='img'><img src='extra_eval-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Get environmental condition of calibration area</span>
 <span class='va'>somevar_ca</span> <span class='op'>&lt;-</span> <span class='va'>somevar</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/crop.html'>crop</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>ca</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/mask.html'>mask</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='va'>ca</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>somevar_ca</span><span class='op'>)</span>
-
+</div><div class='img'><img src='extra_eval-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='va'>xp</span> <span class='op'>&lt;-</span>
   <span class='fu'>extra_eval</span><span class='op'>(</span>
     env_calib <span class='op'>=</span> <span class='va'>somevar_ca</span>,
@@ -193,7 +193,7 @@ will be made to the resolution of the environmental variables</p></td>
     aggreg_factor <span class='op'>=</span> <span class='fl'>3</span>
   <span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>xp</span><span class='op'>)</span>
-<span class='op'>}</span>
+</div><div class='img'><img src='extra_eval-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
