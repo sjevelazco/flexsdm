@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Raster interpolation between two time periods — inter • flexsdm</title>
+<title>Transform a spatial partition layer to the same spatial properties of environmental variables — get_block • flexsdm</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Raster interpolation between two time periods — inter" />
-<meta property="og:description" content="This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values." />
+<meta property="og:title" content="Transform a spatial partition layer to the same spatial properties of environmental variables — get_block" />
+<meta property="og:description" content="Transform a spatial partition layer to the same spatial properties of environmental variables" />
 
 
 
@@ -112,73 +112,68 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Raster interpolation between two time periods</h1>
+    <h1>Transform a spatial partition layer to the same spatial properties of environmental variables</h1>
     
-    <div class="hidden name"><code>inter.Rd</code></div>
+    <div class="hidden name"><code>get_block.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values.</p>
+    <p>Transform a spatial partition layer to the same spatial properties of environmental variables</p>
     </div>
 
-    <pre class="usage"><span class='fu'>inter</span><span class='op'>(</span><span class='va'>r1</span>, <span class='va'>r2</span>, <span class='va'>y1</span>, <span class='va'>y2</span>, rastername <span class='op'>=</span> <span class='cn'>NULL</span>, dir_save <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_block</span><span class='op'>(</span><span class='va'>env_layer</span>, <span class='va'>best_grid</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>r1</th>
-      <td><p>SpatRaster. Raster object for the initial year</p></td>
+      <th>env_layer</th>
+      <td><p>SpatRaster object with some environmental variables used in the block_partition or band_partition function. Function always will select the first layer</p></td>
     </tr>
     <tr>
-      <th>r2</th>
-      <td><p>SpatRaster. Raster object for the final year</p></td>
-    </tr>
-    <tr>
-      <th>y1</th>
-      <td><p>numeric. Initial year</p></td>
-    </tr>
-    <tr>
-      <th>y2</th>
-      <td><p>numeric. Final year</p></td>
-    </tr>
-    <tr>
-      <th>rastername</th>
-      <td><p>character. Word used as prefix in raster file name. Default NULL</p></td>
-    </tr>
-    <tr>
-      <th>dir_save</th>
-      <td><p>character. Directory path and name of the folder in which you want to
-save the raster files. If NULL, function will return a SpatRaster object, on the contrary, it
-will save raster in a given directory. Default NULL</p></td>
+      <th>best_grid</th>
+      <td><p>SpatRaster object returned by block_partition or band_partition</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>This function returns a SpatRaster if dir_save is used as NULL, If dirsave is used,
-function will return anythink</p>
+    <p>A SpatRaster layer with the same resolution and extent than environmental variables</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Transform a layer originated from the function block_partition or band_partition to the same properties of environmental variables</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra/'>terra</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra/'>terra</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>spp</span><span class='op'>)</span>
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/somevar.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
+<span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
-<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/suit_time_step.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
-<span class='va'>abma</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>abma</span><span class='op'>)</span>
+<span class='co'># Lest practice with a single species</span>
+<span class='va'>single_spp</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp3"</span><span class='op'>)</span>
 
-<span class='va'>int</span> <span class='op'>&lt;-</span> <span class='fu'>inter</span><span class='op'>(</span>
-  r1 <span class='op'>=</span> <span class='va'>abma</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>,
-  r2 <span class='op'>=</span> <span class='va'>abma</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>,
-  y1 <span class='op'>=</span> <span class='fl'>2010</span>,
-  y2 <span class='op'>=</span> <span class='fl'>2020</span>,
-  rastername <span class='op'>=</span> <span class='st'>"Abies"</span>,
-  dir_save <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='va'>part</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part_sblock.html'>part_sblock</a></span><span class='op'>(</span>
+  env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
+  data <span class='op'>=</span> <span class='va'>single_spp</span>,
+  x <span class='op'>=</span> <span class='st'>"x"</span>,
+  y <span class='op'>=</span> <span class='st'>"y"</span>,
+  pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
+  min_res_mult <span class='op'>=</span> <span class='fl'>100</span>,
+  max_res_mult <span class='op'>=</span> <span class='fl'>500</span>,
+  num_grids <span class='op'>=</span> <span class='fl'>10</span>,
+  n_part <span class='op'>=</span> <span class='fl'>2</span>
 <span class='op'>)</span>
 
-<span class='va'>int</span>
+<span class='va'>grid_env</span> <span class='op'>&lt;-</span> <span class='fu'>get_block</span><span class='op'>(</span>env_layer <span class='op'>=</span> <span class='va'>somevar</span>, best_grid <span class='op'>=</span> <span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span><span class='op'>)</span>
+<span class='va'>grid_env</span>
+<span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span>
+
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
 <span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
