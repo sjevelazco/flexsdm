@@ -1,7 +1,8 @@
-test_that("multiplication works", {
+test_that("test Gaussian Process model", {
   data("abies")
   require(dplyr)
-  abies %>%
+  set.seed(10)
+  abies <- abies %>%
     dplyr::group_by(pr_ab) %>%
     dplyr::slice_sample(prop = 0.5)
 
@@ -30,6 +31,7 @@ test_that("multiplication works", {
   expect_equal(class(gaup_t1), "list")
 
   # Using bootstrap partition method and only with presence-absence
+  set.seed(10)
   abies2 <- part_random(
     data = abies,
     pr_ab = "pr_ab",

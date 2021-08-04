@@ -41,8 +41,6 @@ pre_tr_te <- function(data, p_names, h) {
 
 
 # Inverse bioclim
-# TODO create function for fit and estimate bioclim model
-
 bio <- function(data, env_layer) {
   . <- NULL
   if (class(data)[1] != "data.frame") {

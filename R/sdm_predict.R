@@ -31,7 +31,6 @@
 #'
 #' @importFrom dplyr %>% mutate across left_join pull bind_rows filter all_of select
 #' @importFrom gam predict.Gam
-#' @importFrom GRaF predict.graf
 #' @importFrom kernlab predict
 #' @importFrom stats median
 #' @importFrom terra vect crop mask as.data.frame values rast app lapp
@@ -269,7 +268,7 @@ sdm_predict <-
         r <- pred[[1]]
         r[] <- NA
         suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-          GRaF::predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
+          predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
             type = "response", CI = NULL
           ))
         if (length(m[[i]]$facs)) {

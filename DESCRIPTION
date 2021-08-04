@@ -37,10 +37,7 @@ Imports:
     terra,
     raster,
     methods,
-    utils,
-    GRaF
-Remotes: 
-    goldingn/GRaF
+    utils
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: GPL (>= 3)

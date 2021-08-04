@@ -28,7 +28,7 @@
 #' A list object with:
 #' \itemize{
 #' \item model: A "graf" class object. This object can be used for predicting.
-#' \item predictors: A tibble with quantitative (c colum names) and qualitative (f colum names) variables use for modeling.
+#' \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument .
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
@@ -37,8 +37,7 @@
 #' @export
 #'
 #' @importFrom dplyr %>% select all_of starts_with filter pull bind_rows mutate tibble group_by summarise across relocate left_join
-#' @importFrom GRaF graf predict.graf
-#' @importFrom stats sd
+#' @importFrom stats sd dist dnorm pnorm qnorm
 #'
 #' @examples
 #' \dontrun{
@@ -220,7 +219,7 @@ fit_gau <- function(data,
         message("Partition number: ", i, "/", np2)
         set.seed(1)
         mod[[i]] <-
-          GRaF::graf(
+          graf(
             y = train[[i]][, response],
             x = train[[i]][, c(predictors, predictors_f)],
             opt.l = FALSE,
@@ -246,8 +245,9 @@ fit_gau <- function(data,
         # Predict for presences absences data
         pred_test <- data.frame(
           pr_ab = test[[i]][, response],
-          pred = suppressWarnings(
-            GRaF::predict.graf(
+          pred =
+            suppressWarnings(
+            predict.graf(
               mod[[i]],
               newdata = test[[i]][c(predictors, predictors_f)],
               type = "response",
@@ -265,7 +265,7 @@ fit_gau <- function(data,
             data.frame(
               pr_ab = bgt_test[[i]][, response],
               pred = suppressWarnings(
-                GRaF::predict.graf(
+                predict.graf(
                   mod[[i]],
                   newdata = bgt_test[[i]][c(predictors, predictors_f)],
                   type = "response",
@@ -326,7 +326,7 @@ fit_gau <- function(data,
   # Fit final models with best settings
   set.seed(1)
   suppressMessages(mod <-
-    GRaF::graf(
+    graf(
       y = data[, response],
       x = data[, c(predictors, predictors_f)],
       opt.l = FALSE,
@@ -336,7 +336,7 @@ fit_gau <- function(data,
   suppressWarnings(pred_test <- data.frame(
     pr_ab = data[, response],
     pred = suppressMessages(
-      GRaF::predict.graf(
+      predict.graf(
         mod,
         newdata = data[, c(predictors, predictors_f)],
         type = "response",
@@ -352,7 +352,7 @@ fit_gau <- function(data,
       thr = thr
     )
   } else {
-    background <- suppressWarnings(GRaF::predict.graf(
+    background <- suppressWarnings(predict.graf(
       mod,
       newdata = background[c(predictors, predictors_f)],
       type = "response",

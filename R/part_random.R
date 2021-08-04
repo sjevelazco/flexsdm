@@ -113,6 +113,7 @@ part_random <- function(data, pr_ab, method = NULL) {
     reps <- as.numeric(method["replicates"])
     prop <- as.numeric(method["proportion"])
     prop2 <- 1 - prop
+    data <- data %>% dplyr::group_by()
     data <- data %>% dplyr::mutate(IDBOOT = 1:nrow(data))
     for (i in 1:reps) {
       data2 <- data %>% dplyr::select({{ pr_ab }}, "IDBOOT")

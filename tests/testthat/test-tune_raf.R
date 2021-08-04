@@ -18,7 +18,7 @@ test_that("class and lenght of raf_t object", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 7, 1))
+    expand.grid(mtry = seq(1, 4, 1))
 
   raf_t <-
     tune_raf(
@@ -49,7 +49,7 @@ test_that("test of 0-1 response argument", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 7, 1))
+    expand.grid(mtry = seq(1, 4, 1))
 
   expect_error(
     raf_t <-
@@ -78,7 +78,7 @@ test_that("test NULL in predictors_f", {
   )
 
   tune_grid <-
-    expand.grid(mtry = seq(1, 7, 1))
+    expand.grid(mtry = seq(1, 4, 1))
 
   raf_t <-
     tune_raf(
@@ -119,7 +119,7 @@ test_that("test if remove NAs rows works", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 7, 1))
+    expand.grid(mtry = seq(1, 4, 1))
 
   # Insert NAs in rows 3 and 4 for response column.
   abies2[3:4, 1] <- NA
@@ -164,7 +164,7 @@ test_that("test fit_formula", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 7, 1))
+    expand.grid(mtry = seq(1, 4, 1))
 
   raf_t <-
     tune_raf(
@@ -219,7 +219,7 @@ test_that("missuse of grid ", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 7, 1))
+    expand.grid(mtry = seq(1, 4, 1))
 
   expect_error(
     raf_t <-
