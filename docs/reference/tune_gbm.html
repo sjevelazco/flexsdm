@@ -207,23 +207,10 @@ response, predictors, and predictors_f arguments. Default is NULL.</p></td>
     <div class='dont-index'><p><code><a href='tune_max.html'>tune_max</a></code>, <code><a href='tune_net.html'>tune_net</a></code>, <code><a href='tune_raf.html'>tune_raf</a></code>, and <code><a href='tune_svm.html'>tune_svm</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>abies</span><span class='op'>)</span>
 <span class='va'>abies</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,400 x 13</span>
-#&gt;       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span>   715     0  -<span style='color: #BB0000; text-decoration: underline;'>95</span><span style='color: #BB0000;'>417.</span>  <span style='text-decoration: underline;'>314</span>240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
-#&gt; <span style='color: #BCBCBC;'> 2</span>  <span style='text-decoration: underline;'>5</span>680     0   <span style='text-decoration: underline;'>98</span>987. -<span style='color: #BB0000; text-decoration: underline;'>159</span><span style='color: #BB0000;'>415.</span>  448.  815.  9.43   130.     6.43  5.60 0.160 
-#&gt; <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>7</span>907     0  <span style='text-decoration: underline;'>121</span>474.  -<span style='color: #BB0000; text-decoration: underline;'>99</span><span style='color: #BB0000;'>463.</span>  182.  271. -<span style='color: #BB0000;'>4.95</span>   151.    11.2   0    0     
-#&gt; <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>1</span>850     0  -<span style='color: #BB0000; text-decoration: underline;'>39</span><span style='color: #BB0000;'>976.</span>  -<span style='color: #BB0000; text-decoration: underline;'>17</span><span style='color: #BB0000;'>456.</span>  372.  946.  8.78   116.     2.70  6.41 0.097<span style='text-decoration: underline;'>2</span>
-#&gt; <span style='color: #BCBCBC;'> 5</span>  <span style='text-decoration: underline;'>1</span>702     0  <span style='text-decoration: underline;'>111</span>372.  -<span style='color: #BB0000; text-decoration: underline;'>91</span><span style='color: #BB0000;'>404.</span>  209.  399. -<span style='color: #BB0000;'>4.03</span>   165.     9.27  0    0     
-#&gt; <span style='color: #BCBCBC;'> 6</span> <span style='text-decoration: underline;'>10</span>036     0 -<span style='color: #BB0000; text-decoration: underline;'>255</span><span style='color: #BB0000;'>715.</span>  <span style='text-decoration: underline;'>392</span>229.  308.  535.  4.66   166.    16.5   5.70 0.077<span style='text-decoration: underline;'>7</span>
-#&gt; <span style='color: #BCBCBC;'> 7</span> <span style='text-decoration: underline;'>12</span>384     0 -<span style='color: #BB0000; text-decoration: underline;'>311</span><span style='color: #BB0000;'>765.</span>  <span style='text-decoration: underline;'>380</span>213.  568.  352.  4.38   480.    41.2   5.80 0.110 
-#&gt; <span style='color: #BCBCBC;'> 8</span>  <span style='text-decoration: underline;'>6</span>513     0  <span style='text-decoration: underline;'>111</span>360. -<span style='color: #BB0000; text-decoration: underline;'>120</span><span style='color: #BB0000;'>229.</span>  327.  633.  4.93   163.     8.91  1.18 0.011<span style='text-decoration: underline;'>6</span>
-#&gt; <span style='color: #BCBCBC;'> 9</span>  <span style='text-decoration: underline;'>9</span>884     0 -<span style='color: #BB0000; text-decoration: underline;'>284</span><span style='color: #BB0000;'>326.</span>  <span style='text-decoration: underline;'>442</span>136.  377.  446.  3.99   296.    16.8   5.96 0.090<span style='text-decoration: underline;'>0</span>
-#&gt; <span style='color: #BCBCBC;'>10</span>  <span style='text-decoration: underline;'>8</span>651     0  <span style='text-decoration: underline;'>137</span>640. -<span style='color: #BB0000; text-decoration: underline;'>110</span><span style='color: #BB0000;'>538.</span>  215.  265. -<span style='color: #BB0000;'>4.62</span>   180.     9.57  0    0     
-#&gt; <span style='color: #949494;'># ... with 1,390 more rows, and 2 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;</span></div><div class='input'>
+
 <span class='co'># We will partition the data with the k-fold method</span>
 
 <span class='va'>abies2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part_random.html'>part_random</a></span><span class='op'>(</span>
@@ -257,63 +244,14 @@ response, predictors, and predictors_f arguments. Default is NULL.</p></td>
     thr <span class='op'>=</span> <span class='st'>"max_sens_spec"</span>,
     metric <span class='op'>=</span> <span class='st'>"TSS"</span>
   <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Formula used for model fitting:</span>
-#&gt; <span class='message'>pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + ppt_jja + pH + awc + depth + landform</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 1/1</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 4/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 5/5</span></div><div class='output co'>#&gt; <span class='message'>Formula used for model fitting:</span>
-#&gt; <span class='message'>pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + ppt_jja + pH + awc + depth + landform</span></div><div class='output co'>#&gt; <span class='message'>Replica number: 1/1</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 1/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 2/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 3/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 4/5</span></div><div class='output co'>#&gt; <span class='message'>Partition number: 5/5</span></div><div class='input'>
+
 <span class='co'># Outputs</span>
 <span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>model</span>
-</div><div class='output co'>#&gt; gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#&gt;     n.trees = best_hyperp$n.trees, interaction.depth = 1, n.minobsinnode = best_hyperp$n.minobsinnode, 
-#&gt;     shrinkage = best_hyperp$shrinkage)
-#&gt; A gradient boosted model with bernoulli loss function.
-#&gt; 50 iterations were performed.
-#&gt; There were 9 predictors of which 9 had non-zero influence.</div><div class='input'><span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>predictors</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 10</span>
-#&gt;   c1    c2    c3    c4      c5      c6      c7    c8    c9    f       
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
-#&gt; <span style='color: #BCBCBC;'>1</span> aet   cwd   tmin  ppt_djf ppt_jja ppt_jja pH    awc   depth landform</div><div class='input'><span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>performance</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 28</span>
-#&gt;   n.trees shrinkage n.minobsinnode model threshold     thr_value n_presences
-#&gt;     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>      50         1              9 gbm   max_sens_spec     0.458         700
-#&gt; <span style='color: #949494;'># ... with 21 more variables: n_absences &lt;int&gt;, TPR_mean &lt;dbl&gt;, TPR_sd &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   IMAE_sd &lt;dbl&gt;</span></div><div class='input'><span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>data_ens</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1,400 x 5</span>
-#&gt;    rnames replicates part  pr_ab    pred
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> 1      .part      1         0 0.005<span style='text-decoration: underline;'>69</span>
-#&gt; <span style='color: #BCBCBC;'> 2</span> 2      .part      1         0 0.104  
-#&gt; <span style='color: #BCBCBC;'> 3</span> 3      .part      1         0 0.125  
-#&gt; <span style='color: #BCBCBC;'> 4</span> 4      .part      1         0 0.008<span style='text-decoration: underline;'>53</span>
-#&gt; <span style='color: #BCBCBC;'> 5</span> 5      .part      1         0 0.025<span style='text-decoration: underline;'>7</span> 
-#&gt; <span style='color: #BCBCBC;'> 6</span> 6      .part      1         0 0.002<span style='text-decoration: underline;'>63</span>
-#&gt; <span style='color: #BCBCBC;'> 7</span> 7      .part      1         0 0.007<span style='text-decoration: underline;'>60</span>
-#&gt; <span style='color: #BCBCBC;'> 8</span> 8      .part      1         0 0.038<span style='text-decoration: underline;'>3</span> 
-#&gt; <span style='color: #BCBCBC;'> 9</span> 9      .part      1         0 0.187  
-#&gt; <span style='color: #BCBCBC;'>10</span> 10     .part      1         0 0.177  
-#&gt; <span style='color: #949494;'># ... with 1,390 more rows</span></div><div class='input'><span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>hyper_performance</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 45 x 25</span>
-#&gt;    n.trees shrinkage n.minobsinnode model threshold     TPR_mean TPR_sd TNR_mean
-#&gt;      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span>      20       0.1              1 gbm   max_sens_spec    0.906 0.018<span style='text-decoration: underline;'>5</span>    0.74 
-#&gt; <span style='color: #BCBCBC;'> 2</span>      20       0.1              3 gbm   max_sens_spec    0.906 0.018<span style='text-decoration: underline;'>5</span>    0.74 
-#&gt; <span style='color: #BCBCBC;'> 3</span>      20       0.1              5 gbm   max_sens_spec    0.906 0.018<span style='text-decoration: underline;'>5</span>    0.74 
-#&gt; <span style='color: #BCBCBC;'> 4</span>      20       0.1              7 gbm   max_sens_spec    0.906 0.018<span style='text-decoration: underline;'>5</span>    0.74 
-#&gt; <span style='color: #BCBCBC;'> 5</span>      20       0.1              9 gbm   max_sens_spec    0.906 0.018<span style='text-decoration: underline;'>5</span>    0.74 
-#&gt; <span style='color: #BCBCBC;'> 6</span>      20       0.5              1 gbm   max_sens_spec    0.88  0.030<span style='text-decoration: underline;'>5</span>    0.824
-#&gt; <span style='color: #BCBCBC;'> 7</span>      20       0.5              3 gbm   max_sens_spec    0.88  0.030<span style='text-decoration: underline;'>5</span>    0.824
-#&gt; <span style='color: #BCBCBC;'> 8</span>      20       0.5              5 gbm   max_sens_spec    0.88  0.030<span style='text-decoration: underline;'>5</span>    0.824
-#&gt; <span style='color: #BCBCBC;'> 9</span>      20       0.5              7 gbm   max_sens_spec    0.88  0.030<span style='text-decoration: underline;'>5</span>    0.824
-#&gt; <span style='color: #BCBCBC;'>10</span>      20       0.5              9 gbm   max_sens_spec    0.88  0.030<span style='text-decoration: underline;'>5</span>    0.824
-#&gt; <span style='color: #949494;'># ... with 35 more rows, and 17 more variables: TNR_sd &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></div><div class='input'>
+<span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>predictors</span>
+<span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>performance</span>
+<span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>data_ens</span>
+<span class='va'>gbm_t</span><span class='op'>$</span><span class='va'>hyper_performance</span>
+
 <span class='co'># Graphical exploration of performance of each hyper-parameter setting</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
 <span class='va'>pg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/position_dodge.html'>position_dodge</a></span><span class='op'>(</span>width <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
@@ -334,7 +272,7 @@ response, predictors, and predictors_f arguments. Default is NULL.</p></td>
   <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/facet_wrap.html'>facet_wrap</a></span><span class='op'>(</span><span class='va'>.</span> <span class='op'>~</span> <span class='va'>n.trees</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/theme.html'>theme</a></span><span class='op'>(</span>legend.position <span class='op'>=</span> <span class='st'>"bottom"</span><span class='op'>)</span>
-</div><div class='img'><img src='tune_gbm-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>
