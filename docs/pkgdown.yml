@@ -3,8 +3,9 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   01_pre_modeling: 01_pre_modeling.html
+  02_modeling: 02_modeling.html
   04_Red_fir_example: 04_Red_fir_example.html
-last_built: 2021-08-04T14:07Z
+last_built: 2021-08-04T20:25Z
 urls:
   reference: https://sjevelazco.github.io/flexsdm/reference
   article: https://sjevelazco.github.io/flexsdm/articles

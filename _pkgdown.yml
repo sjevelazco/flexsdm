@@ -14,6 +14,8 @@ navbar:
       menu:
       -  text: "Overview of Pre-modeling functions"
          href: articles/01_pre_modeling.html
+      -  text: "Overview of Modeling functions"
+         href: articles/02_modeling.html
       -  text: "An example with Red Fir"
          href: articles/04_Red_fir_example.html
 components:

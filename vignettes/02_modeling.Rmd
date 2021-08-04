@@ -1,0 +1,422 @@
+---
+title: "flexsdm: Overview of Modeling functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{flexsdm: Overview of Modeling functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  # fig.path = "man/figures/README-",
+  #out.width = "100%",
+  fig.width = 6,
+  fig.height = 6,
+  echo = TRUE,
+  warning = FALSE,
+  eval = T
+)
+```
+
+```{r dependencies, include = FALSE}
+library(terra)
+library(dplyr)
+library(knitr)
+library(flexsdm)
+```
+
+## Introduction
+
+Species distribution modeling (SDM) has become a standard tool in multiple research areas, including ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological applications. The *flexsdm* package provides users the ability to manipulate and parameterize models in a variety of ways that meet their unique research needs. 
+
+This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).
+
+In this vignette, users will learn about the second set of functions in the *flexsdm* package that fall under the "modeling" umbrella. These functions were designed to modeling construction and validation. Several of them can be grouped into fit_* , tune_* , and esm_* family functions.
+
+The fit_* functions are for construct and validate models with default hyper-parameter values. The tune_* functions for construct and validate models searching for the best hyper-parameter values combination and esm_ functions for construct and validate Ensemble of Small Models. Finally, the fit_ensemble() function is for fit and validate ensemble models.
+
+To sum up, these are the functions created for model construction and validation:
+
+**fit_* functions family**
+
++ fit_gam() Fit and validate Generalized Additive Models
+
++ fit_gau() Fit and validate Gaussian Process models
+
++ fit_gbm() Fit and validate Generalized Boosted Regression models
+
++ fit_glm() Fit and validate Generalized Linear Models
+
++ fit_max() Fit and validate Maximum Entropy models
+
++ fit_net() Fit and validate Neural Networks models
+
++ fit_raf() Fit and validate Random Forest models
+
++ fit_svm() Fit and validate Support Vector Machine models
+
+
+**tune_* functions family**
+
++ tune_gbm() Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters
+
++ tune_max() Fit and validate Maximum Entropy models with exploration of hyper-parameters
+
++ tune_net() Fit and validate Neural Networks models with exploration of hyper-parameters
+
++ tune_raf() Fit and validate Random Forest models with exploration of hyper-parameters
+
++ tune_svm() Fit and validate Support Vector Machine models with exploration of hyper-parameters
+
+
+**model ensemble**
+
++ fit_ensemble() Fit and validate ensemble models with different ensemble methods
+
+
+**esm_* functions family**
+
++ esm_gam() Fit and validate Generalized Additive Models with Ensemble of Small Model approach
+
++ esm_gau() Fit and validate Gaussian Process models Models with Ensemble of Small Model approach
+
++ esm_gbm() Fit and validate Generalized Boosted Regression models with Ensemble of Small Model approach
+
++ esm_glm() Fit and validate Generalized Linear Models with Ensemble of Small Model approach
+
++ esm_max() Fit and validate Maximum Entropy models with Ensemble of Small Model approach
+
++ esm_net() Fit and validate Neural Networks models with Ensemble of Small Model approach
+
++ esm_svm() Fit and validate Support Vector Machine models with Ensemble of Small Model approach
+
+
+## Installation
+
+First, let's install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
+
+```{r download package}
+#devtools::install_github('sjevelazco/flexsdm')
+```
+
+## Project directory setup
+
+First you want to decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html)
+
+```{r sdm_directory}
+my_project <- file.path(file.path(tempdir(), 'flex_sdm_project'))
+dir.create(my_project)
+
+project_directory <- sdm_directory(main_dir = my_project,
+              projections = NULL,
+              calibration_area = TRUE,
+              algorithm = c("fit_max", "tune_raf"),
+              ensemble = c("mean"),
+              threshold = TRUE, 
+              return_vector = TRUE)
+```
+
+## Data, species occurrence and background data
+
+In this tutorial, we will be using species occurrences and environmental data that are available through the *flexsdm* package. The "abies" example dataset includes pr_ab column (presence = 1, and absence = 0), location columns (x, y) and other environmental data. You can load the "abies" data into your local R environment by using the code below:
+
+```{r occ data}
+data("abies")
+data("backg")
+
+dplyr::glimpse(abies)
+dplyr::glimpse(backg)
+```
+
+If you want to replace the abies dataset with your own data, make sure that contains the environmental conditions related to presence-absence data. We use a pre-modeling family function for a k-fold partition method. In the partition method the number of folds or replications must be the same for presence-absence and for background points datasets.
+
+```{r occ partition}
+abies2 <- part_random(
+  data = abies,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
+)
+
+dplyr::glimpse(abies2)
+```
+
+Now, in abies2 object we have a new column called ".part" with the 5 k-folds (1, 2, 3, 4, 5). Next, we have to apply the same method to the environmental conditions of the background points.
+
+```{r background_points}
+backg2 <- part_random(
+  data = backg,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
+)
+
+dplyr::glimpse(backg2)
+```
+
+Finally, in backg2 object we have a new column called ".part" with the 5 k-folds (1, 2, 3, 4, 5).
+
+### 1. Fit and validate models
+
+We fit and validate models: I- a maximum entropy model with default hyper-parameter values (flexsdm::fit_max) and II- a random forest model with exploration of hyper-parameters (flexsdm::tune_raf).
+
+I- Maximum Entropy models with default hyper-parameter values.
+
+```{r fit_max}
+max_t1 <- fit_max(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+  predictors_f = c("landform"),
+  partition = ".part",
+  background = backg2,
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+  clamp = TRUE,
+  classes = "default",
+  pred_type = "cloglog",
+  regmult = 1
+)
+```
+
+Let's see what the output object contains. This function returns a list object with:
+
+```{r fit_max_model}
+options(max.print=20)
+max_t1$model
+```
+model: It's a "MaxEnt" class object. This object can be used for predicting.
+
+```{r fit_max_predictors}
+max_t1$predictors
+```
+predictors: It's a tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
+
+```{r fit_max_performance}
+max_t1$performance
+```
+performance: It's the performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
+
+```{r fit_max_data_ens}
+max_t1$data_ens
+```
+We can see the environmental conditions of presence-absence data with the prediction for each input row.
+
+II- Random forest models with exploration of hyper-parameters.
+
+First, we create a 	data.frame that provides hyper-parameters values to be tested. It Is recommended to generate this data.frame. Hyper-parameter needed for tuning is 'mtry'. The maximum mtry must be equal to total number of predictors.
+
+```{r tune_grid}
+tune_grid <-
+  expand.grid(mtry = seq(1, 7, 1))
+```
+
+We create use the same object abies2, with the same k-fold partition method:
+
+```{r tune_raf}
+rf_t <-
+  tune_raf(
+    data = abies2,
+    response = "pr_ab",
+    predictors = c(
+      "aet", "cwd", "tmin", "ppt_djf",
+      "ppt_jja", "pH", "awc", "depth"
+    ),
+    predictors_f = c("landform"),
+    partition = ".part",
+    grid = tune_grid,
+    thr = "max_sens_spec",
+    metric = "TSS",
+  )
+```
+
+Let's see what the output object contains. This function returns a list object with:
+
+```{r tune_raf_model}
+rf_t$model
+```
+model: It's a "randomForest" class object. This object can be used for formula details and predicting.
+
+```{r tune_raf_predictors}
+rf_t$predictors
+```
+predictors: It's a tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
+
+```{r tune_raf_performance}
+rf_t$performance
+```
+performance: It's the performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
+
+```{r tune_raf_data_ens}
+rf_t$data_ens
+```
+Predicted suitability for each test partition. This database is used in flexsdm::fit_ensemble().
+
+### 2. Model assemble
+
+```{r fit_ensemble}
+# First we need this libraries
+require(dplyr)
+require(terra)
+
+# Environmental variables
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+# Species occurrences
+data("spp")
+set.seed(1)
+some_sp <- spp %>%
+  dplyr::filter(species == "sp2") %>%
+  sdm_extract(
+    data = .,
+    x = "x",
+    y = "y",
+    env_layer = somevar,
+    variables = names(somevar),
+    filter_na = TRUE
+  ) %>%
+  part_random(
+    data = .,
+    pr_ab = "pr_ab",
+    method = c(method = "kfold", folds = 3)
+  )
+```
+
+```{r fit_ensemble_example}
+# Fit and validate ensemble model
+mensemble <- fit_ensemble(
+  models = list(max_t1, rf_t),
+  ens_method = "meansup",
+  thr = NULL,
+  thr_model = "max_sens_spec",
+  metric = "TSS"
+)
+```
+
+### 3. Fit and validate models with Ensemble of Small Model approach
+
+This method consists of creating bivariate models with all the pair-wise combinations of predictors and perform an ensemble based on the average of suitability weighted by Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences. This function does not allow categorical variables because the use of these types of variables could be problematic when using with few occurrences. Further detail see Breiner et al. (2015, 2018)
+
+```{r esm_subset_kfold}
+data("abies")
+library(dplyr)
+
+# Create a smaller subset of occurrences
+set.seed(10)
+abies2 <- abies %>%
+  na.omit() %>%
+  group_by(pr_ab) %>%
+  dplyr::slice_sample(n = 10) %>%
+  group_by()
+```
+
+We can use different methods in the flexsdm::part_random function according to our data. See [part_random](https://sjevelazco.github.io/flexsdm/reference/part_random.html) for more details.
+
+```{r using_kfold}
+# Using k-fold partition method
+abies2 <- part_random(
+  data = abies2,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+abies2
+```
+
+This function constructs Generalized Additive Models using the Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
+
+```{r esm_gam}
+# We set the model without threshold specification and with the kfold created above
+esm_gam_t1 <- esm_gam(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
+  partition = ".part",
+  thr = NULL
+)
+```
+
+This function returns a list object with:
+```{r esm_gam_t1_names}
+names(esm_gam_t1)
+```
+
+esm_model: A list with "GAM" class object for each bivariate model. This object can be used for predicting ensemble of small model with sdm_predict function.
+```{r esm_gam_t1_model}
+options(max.print=10) # If you don't want to see printed all the output
+esm_gam_t1$esm_model
+```
+
+predictors: A tibble with variables use for modeling.
+```{r esm_gam_t1_predictors}
+esm_gam_t1$predictors
+```
+
+performance: Performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in thr argument.
+```{r esm_gam_t1_performance}
+esm_gam_t1$performance
+```
+
+Now, we perform a test with the rep_kfold partition method. In this method 'folds' refers to the number of folds for data partitioning and 'replicate' refers to the number of replicates. Both assumes values >=1.
+
+```{r }
+# Remove the previous k-fold partition
+abies2 <- abies2 %>% select(-starts_with("."))
+
+# Test with rep_kfold partition using 3 folds and 5 replicates
+set.seed(10)
+abies2 <- part_random(
+  data = abies2,
+  pr_ab = "pr_ab",
+  method = c(method = "rep_kfold", folds = 3, replicates = 5)
+)
+abies2
+```
+
+We use the new rep_kfold partition in the gam model
+```{r esm_gam_t2}
+esm_gam_t2 <- esm_gam(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
+  partition = ".part",
+  thr = NULL
+)
+```
+
+Test with random bootstrap partition. This method 'replicate' refers to the number of replicates (assumes a value >=1), 'proportion' refers to the proportion of occurrences used for model fitting (assumes a value >0 and <=1). With this method we can configure the proportion of training and testing data according to the species occurrences. In this example proportion='0.7' mean that 70% of data will be used for model training, while 30% for model testing. For this method function will returns .partX columns with "train" and "test" words.
+
+```{r test_bootstrap}
+# Remove the previous k-fold partition
+abies2 <- abies2 %>% select(-starts_with("."))
+
+# Test with bootstrap partition using 10 replicates
+set.seed(10)
+abies2 <- part_random(
+  data = abies2,
+  pr_ab = "pr_ab",
+  method = c(method = "boot", replicates = 10, proportion = 0.7)
+)
+abies2
+```
+
+We use the new rep_kfold partition in the gam model
+
+```{r esm_gam_t3}
+esm_gam_t3 <- esm_gam(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
+  partition = ".part",
+  thr = NULL
+)
+```
+
+
+
+#=========#=========#=========#=========#=========#=========#=========#
+
+**Vignette still under construction and changes**
+
+#=========#=========#=========#=========#=========#=========#=========#
+
