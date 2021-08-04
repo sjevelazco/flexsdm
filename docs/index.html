@@ -39,13 +39,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
+  <a href="reference/index.html">Functions</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -55,10 +49,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/01_pre_modeling.html">flexsdm: Overview of Pre-modeling functions</a>
+      <a href="articles/01_pre_modeling.html">Overview of Pre-modeling functions</a>
     </li>
     <li>
-      <a href="articles/04_Red_fir_example.html">flexsdm: Red Fir example</a>
+      <a href="articles/04_Red_fir_example.html">An example with Red Fir</a>
     </li>
   </ul>
 </li>
@@ -83,7 +77,7 @@
 <div id="overview" class="section level3">
 <h3 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h3>
-<p>Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. This has led to defining a specific modeling process for a particular situation where the “click-and-run” is not a desirable option. One of the most exciting features of <strong>flexsdm</strong> is its high manipulation and parametrization capacity based on different functions and arguments. This enables users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).</p>
+<p>Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. One of the most exciting features of <strong>flexsdm</strong> is its high manipulation and parametrization capacity based on different functions and arguments. These attributes enable users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).</p>
 <hr>
 </div>
 <div id="structure-of-flexsdm" class="section level3">
@@ -220,6 +214,21 @@
 <li>
 <code><a href="reference/msdm_posteriori.html">msdm_posteriori()</a></code> Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.</li>
 </ul>
+<hr>
+</div>
+<div id="installation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h3>
+<p>You can install the development version of <strong>flexsdm</strong> from <a href="https://github.com/sjevelazco/flexsdm">github</a></p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"sjevelazco/flexsdm"</span><span class="op">)</span></code></pre></div>
+<hr>
+</div>
+<div id="package-website" class="section level3">
+<h3 class="hasAnchor">
+<a href="#package-website" class="anchor"></a>Package website</h3>
+<p>See the package website (<a href="https://sjevelazco.github.io/flexsdm/" class="uri">https://sjevelazco.github.io/flexsdm/</a>) for functions explanation and vignettes.</p>
 <hr>
 <blockquote>
 <p>Test the package and give us your feedback <a href="https://github.com/sjevelazco/flexsdm/issues">here</a> or send an e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
