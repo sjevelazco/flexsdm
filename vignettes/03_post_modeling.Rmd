@@ -1,0 +1,581 @@
+---
+title: "flexsdm: Overview of Post-modeling functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{flexsdm: Overview of Post-modeling functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  # fig.path = "man/figures/README-",
+  #out.width = "100%",
+  fig.width = 6,
+  fig.height = 6,
+  echo = TRUE,
+  warning = FALSE,
+  eval = T
+)
+```
+
+```{r dependencies, include = FALSE}
+library(terra)
+library(dplyr)
+library(knitr)
+```
+
+## Introduction
+
+Species distribution modeling (SDM) has become a standard tool in multiple research areas, including ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological applications. The *flexsdm* package provides users the ability to manipulate and parameterize models in a variety of ways that meet their unique research needs. 
+
+This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).
+
+In this vignette, users will learn about the post-modeling set of functions in the *flexsdm* package. These functions were designed with the aim of assisting the flexsdm user in models’ geographical predictions, evaluation, and correction.
+
+These are the functions created for model construction and validation:
+
+**Post-modeling functions**
+
++ sdm_predict() Spatial predictions of individual and ensemble model
+
++ sdm_summarize() Merge model performance tables
+
++ inter() Raster interpolation between two time periods
+
++ extra_eval() Measure model extrapolation
+
++ extra_correct() Constraint suitability values under a given extrapolation value
+
++ msdm_priori() Create spatial predictor variables to reduce overprediction of species distribution models
+
++ msdm_posteriori() Methods to correct overprediction of species distribution models based on occurrences and suitability patterns
+
+## Installation
+
+First, let's install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
+
+```{r download package}
+#devtools::install_github('sjevelazco/flexsdm')
+library(flexsdm)
+library(terra)
+library(dplyr)
+```
+
+## Project directory setup
+
+First you want to decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html)
+
+```{r sdm_directory}
+my_project <- file.path(file.path(tempdir(), 'flex_sdm_project'))
+dir.create(my_project)
+
+project_directory <- sdm_directory(main_dir = my_project,
+              projections = NULL,
+              calibration_area = TRUE,
+              algorithm = c("fit_glm", "fit_raf", "fit_gbm"),
+              ensemble = c("mean"),
+              threshold = TRUE, 
+              return_vector = TRUE)
+```
+
+## Species occurrence, presence/absense and environmental data
+
+In this tutorial, we will be using the "spp" example dataset which includes pr_ab (presence = 1, and absence = 0), location (x, y) data for 3 plant species found in California and a raster with environmental data. You can load these data into your local R environment by using the code below:
+
+```{r occ data}
+data("spp")
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+```
+
+If you want to replace the spp dataset with your own data, make sure that contains coordinates, presence = 1 / absence = 0 and a raster with environmental data. 
+
+First, prepare the occurrences, environmental conditions and partitions
+```{r prepare_dataset}
+# Select only one species
+some_sp <- spp %>%
+  filter(species == "sp3")
+
+# Extract the environmental condition from the rater for the sp3
+some_sp <-
+  sdm_extract(
+    data = some_sp,
+    x = "x",
+    y = "y",
+    env_layer = somevar
+  )
+
+# Make a partition defining the method, folds and replicates
+some_sp <- part_random(
+  data = some_sp,
+  pr_ab = "pr_ab",
+  method = c(method = "rep_kfold", folds = 3, replicates = 5)
+)
+```
+
+Next, fit different models
+```{r fit_models}
+# Fit and validate a [generalized linear model](https://sjevelazco.github.io/flexsdm/reference/fit_glm.html)
+mglm <- fit_glm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  poly = 2
+)
+
+# Fit and validate a [random forest model](https://sjevelazco.github.io/flexsdm/reference/fit_raf.html)
+mraf <- fit_raf(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+)
+
+# Fit and validate a [general boosted regression model](https://sjevelazco.github.io/flexsdm/reference/fit_gbm.html)
+mgbm <- fit_gbm(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part"
+)
+```
+
+### 1. Fit and ensemble the models above
+```{r fit_ensemble}
+# Fit and ensemble the models. To choose the arguments that best fit your own data, see all options available in [fit_ensemble](https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.html)
+mensemble <- fit_ensemble(
+  models = list(mglm, mraf, mgbm),
+  ens_method = "meansup",
+  thr = NULL,
+  thr_model = "max_sens_spec",
+  metric = "TSS"
+)
+```
+
+You can also fit a model using an ensemble of small model approach. In this example, we fit without threshold specification and with kfold.
+```{r ems_model}
+msmall <- esm_gam(
+  data = some_sp,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  thr = NULL
+)
+```
+
+Finally, we can predict different kind of models models from the same data (some_sp). [sdm_predict](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html) can be used for predict one or more models fitted with fit_ or tune_ functions. The output will be a list of SpatRaster with continuous and/or binary predictions.
+```{r sdm_predict}
+# Predict a single model
+ind_p <- sdm_predict(
+  models = mglm,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# Inspect the object. It's a SpatRaster with 2 layers: glm, max_fpb
+ind_p
+
+# Plot to see this layers
+ind_p_rst <- terra::rast(ind_p)
+plot(ind_p_rst)
+
+# Predict a list of models
+list_p <- sdm_predict(
+  models = list(mglm, mraf, mgbm),
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# Inspect the object. It's a list with 3 SpatRaster, each of which contains 2 layers.
+list_p
+
+# Plot to see this layers
+list_p_rst <- terra::rast(list_p)
+plot(list_p_rst)
+
+# Predict of an ensemble model. This is only possible using only one fit_ensemble object. It's not possible to include e.g., list(fit_ensemble1, fit_ensemble2) in the model argument.
+ensemble_p <- sdm_predict(
+  models = mensemble,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# Inspect the object.
+ensemble_p
+
+# Plot to see this layers
+ensemble_p_rst <- terra::rast(ensemble_p)
+plot(ensemble_p_rst)
+
+small_p <- sdm_predict(
+  models = msmall,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+
+# Inspect the object.
+small_p
+
+# Plot to see this layers
+small_p_rst <- terra::rast(small_p)
+plot(small_p_rst)
+```
+
+### 2. Merge model performance tables
+
+This function combine model performance table for all input models. in order to use this function is required a list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the fit_ensemble function.
+
+```{r prep_data}
+# Load abies data
+data(abies)
+abies
+
+# We will partition the data with the k-fold method
+abies2 <- part_random(
+  data = abies,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
+)
+```
+
+Next, build the models for the final performance merge
+```{r build_models}
+# Build a generalized linear and a generalized additive model using fit_ family functions
+gam_t1 <- fit_gam(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+  predictors_f = c("landform"),
+  partition = ".part",
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
+)
+
+glm_t1 <- fit_glm(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+  predictors_f = c("landform"),
+  partition = ".part",
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+  poly = 0,
+  inter_order = 0
+)
+
+# Build a tuned model using tune_ family functions
+
+# Prepare the grid object to use in grid argument
+tune_grid <-
+  expand.grid(mtry = seq(1, 7, 1))
+
+# Build a tuned random forest model
+rf_t1 <-
+  tune_raf(
+    data = abies2,
+    response = "pr_ab",
+    predictors = c(
+      "aet", "cwd", "tmin", "ppt_djf",
+      "ppt_jja", "pH", "awc", "depth"
+    ),
+    predictors_f = c("landform"),
+    partition = ".part",
+    grid = tune_grid,
+    thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+    metric = "TSS",
+  )
+```
+
+Finally, merge thee sdm performance tables
+
+```{r merge_tables}
+merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
+
+merge_df
+```
+
+### 3. Raster interpolation between two time periods
+
+This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values. This function returns a SpatRaster if dir_save is used as NULL, this function will return a SpatRaster object. On the contrary, it will save raster in a given directory.
+
+```{r interp_data}
+library(terra)
+library(dplyr)
+
+f <- system.file("external/suit_time_step.tif", package = "flexsdm")
+abma <- terra::rast(f)
+plot(abma)
+```
+
+
+This function will create an object of interpolation with n layers defined by the initial and final year. The resolution and dimensions of the result object, will remain the same.
+```{r interp}
+int <- inter(
+  r1 = abma[[1]], # set the raster of initial year
+  r2 = abma[[2]], # set the raster of final year
+  y1 = 2010, # set the numeric initial year
+  y2 = 2020, # set the numeric final year
+  rastername = "Abies",
+  dir_save = NULL
+)
+
+# Layers in the abma SpatRaster
+names(abma)
+plot(abma)
+
+# Layers in the int SpatRaster
+int
+plot(int)
+```
+
+### 4. Measure model extrapolation
+This function measures extrapolation comparing data used for modeling calibration and area for model projection. This function use the approach proposed by Velazco et al., in prep
+
+```{r measure_extrap}
+library(dplyr)
+library(terra)
+
+data(spp)
+f <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(f)
+
+# Inspect the unique values for species
+spp$species %>% unique()
+
+# Subset spp data into a tibble only with coordinates for sp3 and pr_ab == 1
+sp <- spp %>%
+  dplyr::filter(species == "sp3", pr_ab == 1) %>%
+  dplyr::select(x, y)
+
+# Define accessible area for sp3
+ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
+
+# Plot the SpatRaster, occurrences and accesible area
+plot(somevar$CFP_1)
+points(sp)
+plot(ca, add = T)
+
+```
+
+The created accessible area can be used to get the environmental conditions of calibration area.
+
+```{r get_env}
+somevar_ca <- somevar %>%
+  crop(., ca) %>%
+  mask(., ca)
+
+# Plot environmental conditions of the calibration area
+plot(somevar_ca)
+
+xp <-
+  extra_eval(
+    env_calib = somevar_ca,
+    env_proj = somevar,
+    n_cores = 1,
+    aggreg_factor = 3
+  )
+
+# Plot the SpatRaster object with the extrapolation values measured in percentage
+plot(xp)
+```
+
+### 5. Correction of suitability based on extrapolation
+
+
+### 6. Create spatial predictor variables to reduce overprediction of species distribution models
+
+This function creates geographical predictor variables that, together with environmental variables, can be used to construct constrained species distribution models. This function returns a SpatRaster object, which have to be used together with environmental variables at the moment to construct species distribution models. The 'xy' approach creates a single pair of raster layers that can be used for all species that share the same study region. Otherwise, 'cml', 'min', and 'ker' create a species-specific raster layer.
+
+```{r msdm_priori}
+library(dplyr)
+library(terra)
+
+data("spp")
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+# Select the presences of one species (sp3)
+occ <- spp %>%
+  dplyr::filter(species == "sp3", pr_ab == 1)
+
+# Select a raster layer to be used as a basic raster
+a_variable <- somevar[[1]]
+plot(a_variable)
+points(occ %>% dplyr::select(x, y))
+
+```
+
+Next, use different methods according to your data.
+
+```{r msdm_xy}
+# Use xy method
+m_xy <- msdm_priori(
+  data = occ,
+  x = "x",
+  y = "y",
+  method = "xy",
+  env_layer = a_variable
+)
+
+plot(m_xy)
+
+# Explore the object. This method assumes that spatial structure can partially explain species distribution (Bahn & Mcgill, 2007). Therefore, the result are two raster layers containing the latitude and longitude of pixels, respectively. This method could be used for all species set that share the same study area region.
+m_xy
+
+```
+
+```{r msdm_cml}
+m_cml <- msdm_priori(
+  data = occ,
+  x = "x",
+  y = "y",
+  method = "cml",
+  env_layer = a_variable
+)
+
+plot(m_cml)
+
+# Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species. 
+m_cml
+```
+
+### 7. Methods to correct overprediction of species distribution models based on occurrences and suitability patterns
+
+These methods are designed to reduce overprediction of species distribution models based on a posteriori method (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability.
+
+First, prepare the data
+```{r msdm_post_data}
+library(dplyr)
+library(terra)
+
+data("spp")
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+# It will prepared data for modeling a species
+set.seed(10)
+occ <- spp %>%
+  dplyr::filter(species == "sp2") %>% # filter using only sp2
+  sdm_extract(
+    data = ., x = "x", y = "y",
+    env_layer = somevar, filter_na = TRUE
+  ) %>% # extrac variables values from the raster layer
+  part_random(.,
+    pr_ab = "pr_ab",
+    method = c(method = "kfold", folds = 10)
+  ) # add columns with partition
+```
+
+Next, we fit and predict a model
+```{r msdm_post_model}
+m_glm <- fit_glm(
+  data = occ,
+  response = "pr_ab",
+  predictors = names(somevar),
+  partition = ".part",
+  thr = "equal_sens_spec",
+)
+```
+
+Next, let's predict this model and plot it in a map
+```{r msdm_post_predict}
+# Predict this model
+m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
+
+# Predicting individual models
+plot(m_pred[[1]])
+
+```
+
+Finally, perform correction to avoid models overpredictions.
+
+```{r msdm_post}
+# Using mcp method. The Minimum Convex Polygon (mcp) method excludes from SDMs climate suitable pixels that do not intercept a minimum convex polygon, with interior angles smaller than 180, enclosing all occurrences of a species.
+m_mcp <- msdm_posteriori(
+  records = occ,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  method = "mcp",
+  cont_suit = m_pred[[1]],
+  thr = "equal_sens_spec",
+  buffer = NULL
+)
+
+plot(m_mcp)
+
+# Using bmcp method. The Buffered Minimum Convex Polygon (bmcp) method is similar to the 'mcp' except by the inclusion of a buffer zone surrounding minimum convex polygons.
+m_bmcp <- msdm_posteriori(
+  records = occ,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  method = "bmcp",
+  cont_suit = m_pred[[1]],
+  thr = "equal_sens_spec",
+  buffer = 30000
+)
+
+plot(m_bmcp)
+
+# Using obr method. The Occurrences Based Restriction (obr) method assumes that suitable patches intercepting species occurrences are likely a part of species distributions than suitable patches that do not intercept any occurrence.
+m_obr <- msdm_posteriori(
+  records = occ,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  method = "obr",
+  cont_suit = m_pred[[1]],
+  thr = "equal_sens_spec",
+  buffer = NULL
+)
+
+plot(m_obr)
+
+# Using pres method. The Only occurrences based restriction (pres) method only retains those pixels in suitability patches intercepting occurrences.
+m_pres <- msdm_posteriori(
+  records = occ,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  method = "pres",
+  cont_suit = m_pred[[1]],
+  thr = "equal_sens_spec",
+  buffer = NULL
+)
+
+plot(m_pres)
+
+# Using lq method. The Lower Quantile (lq) method works whenever a suitable pixel is within a k patch, i.e., not within this lower quartile, the suitability of the pixel is reduced to zero. This means that 75% of k patches were withdrawn from the model.
+m_lq <- msdm_posteriori(
+  records = occ,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  method = "lq",
+  cont_suit = m_pred[[1]],
+  thr = "equal_sens_spec",
+  buffer = NULL
+)
+
+plot(m_lq)
+```
+
+
+
+#=========#=========#=========#=========#=========#=========#=========#
+
+**Vignette still under construction and changes**
+
+#=========#=========#=========#=========#=========#=========#=========#

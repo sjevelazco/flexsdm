@@ -1,6 +1,6 @@
 # data
 
-#' A data set containing presences and absences of tree virtual species
+#' A data set containing presences and absences of three virtual species
 #'
 #' @format A tibble with 1150 rows and 3 variables:
 #' \describe{

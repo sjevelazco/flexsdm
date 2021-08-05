@@ -12,11 +12,13 @@ navbar:
       href: reference/index.html
     - text: "Articles"
       menu:
-      -  text: "Overview of Pre-modeling functions"
+      -  text: "1. Overview of Pre-modeling functions"
          href: articles/01_pre_modeling.html
-      -  text: "Overview of Modeling functions"
+      -  text: "2. Overview of Modeling functions"
          href: articles/02_modeling.html
-      -  text: "An example with Red Fir"
+      -  text: "3. Overview of Post-modeling functions"
+         href: articles/03_post_modeling.html
+      -  text: "4. An example with Red Fir"
          href: articles/04_Red_fir_example.html
 components:
     home: ~
