@@ -1,5 +1,5 @@
 ---
-title: "flexsdm: Overview of Pre-modeling functions"
+title: "flexsdm: Overview of pre-modeling functions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{flexsdm: Overview of Pre-modeling functions}
@@ -75,23 +75,24 @@ First, let's install the flexsdm package. You can install the released version o
 
 ```{r download package}
 #devtools::install_github('sjevelazco/flexsdm')
+devtools::load_all() # can remove this when package is complete
 ```
 
 ## Project Directory Setup
 
 When building SDM's, organizing your folder directories will save time and confusion later. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. The function sdm_directory() can do this for you, based on the types of model algorithms you want to use and/or the types of projections you would like to make. First you want to decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory) and then use dir.create() to create your main directory. Next, specify whether or not you want to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. 
 
-```{r sdm_directory}
+```{r sdm_directory, eval = FALSE}
 my_project <- file.path(file.path(tempdir(), 'flex_sdm_project'))
 dir.create(my_project)
 
-#project_directory <- sdm_directory(main_dir = my_project,
-#              projections = NULL,
-#              calibration_area = TRUE,
-#              algorithm = c("fit_max", "tune_raf"),
-#              ensemble = c("mean"),
-#              threshold = TRUE, 
-#              return_vector = TRUE)
+project_directory <- sdm_directory(main_dir = my_project,
+             projections = NULL,
+              calibration_area = TRUE,
+              algorithm = c("fit_max", "tune_raf"),
+              ensemble = c("mean"),
+              threshold = TRUE, 
+              return_vector = TRUE)
 ```
 
 
@@ -355,7 +356,7 @@ sp_part1$.part %>% table()
 
 ```
 
-### 2. Spatial band cross-validation (part_sband)
+### 2. Spatial band cross-validation (part_sband) ERROR
 
 Both part_sband() and part_sblock() partition data based on their position in geographic space. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The funciton part_sband tests for different numbers of partitions using latitudinal or longitudinal bands and selects the best number of bands for a given presence, presence-absence, or presence-background dataset. This procedure is based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each band partition. The function's output is also very useful, as it provides users with 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. 
 
@@ -463,9 +464,9 @@ Presence-only occurrence data are quite common in ecology and researchers may no
 
 ### 1. Sample background
 
-The function sample_background() allows you to sample points based on different geographic restrictions and sampling methods. Here, we sample a set of background points based on our earlier spatial block partitioning using the "random" method. Using lapply() in this case ensures that we generate background points in each of our spatial blocks (n = 2). We are also specifying that we want ten times the amount of background points as our original occurrences and that our calibration area will be the buffer area around presence points (see section on "Calibration area". 
+The function sample_background() allows you to sample points based on different geographic restrictions and sampling methods. Here, we sample a set of background points based on our earlier spatial block partitioning using the "random" method. Using lapply() in this case ensures that we generate background points in each of our spatial blocks (n = 2). We are also specifying that we want ten times the amount of background points as our original occurrences and that our calibration area will be the buffer area around presence points (see section on "Calibration area"). 
 
-```{r sample background, eval = FALSE}
+```{r sample background}
 
 p_data <-
   sp_part3$part # presence data from spatial block partition example
@@ -486,18 +487,23 @@ bg <- lapply(1:2, function(x)
   bind_rows() %>%
   mutate(pr_ab = 0)
 
-plot(grid_env, main = "Sample background points based on spatial block partition and buffered calibration area")
+par(mfrow=c(2,1))
+
+plot(grid_env, main = "Presence points")
+plot(ca_1, add= TRUE)
+points(p_data, cex = .7, pch = 19)
+
+plot(grid_env, main = "Background points")
+plot(ca_1, add = TRUE)
 points(bg, cex = .1, pch = 19)
 
 ```
 
 ### 2. Sample pseudo-absences
 
-Similarly, the function sample_pseudoabs allows you to sample pseudo-absences randomly or based on environmental and/or geographical constraints. For example, specifying method = "env_const" selects pseudo-absences that are environmentally constrained to regions with lower suitability values as predicted by a Bioclim model. Here, we will test out the "geo_env_const" method, which selects pseudo-absences that are constrained environmentally (based on a Bioclm model) and are distributed a set distance from occurrence points (based on a buffer). Here we will use the "mask" calibration area based on polygons that contain presences (ca_4).   
+Similarly, the function sample_pseudoabs allows you to sample pseudo-absences randomly or based on environmental and/or geographical constraints. For example, specifying method = "env_const" selects pseudo-absences that are environmentally constrained to regions with lower suitability values as predicted by a Bioclim model. Here, we will test out this method. Additionally, this function allows users to specify a calibration area from which to generate pseudo-absence points. Here, we will use the buffer area around presence points (ca_1) to show what this might look like. As you can see, we have generated pseudo-absence points that are in the general vicinity of our presence points, but are concentrated in areas that have lower environmental suitability. The specific method chosen for sampling background and/or pseudo-absence points will vary depending on research goals. 
 
-ERROR: Number of background-points exceeds number of cell will be returned 0 background-points
-
-```{r sample pseudo-absences, eval= FALSE}
+```{r sample pseudo-absences}
 
 set.seed(10)
 psa <- lapply(1:2, function(x)
@@ -507,16 +513,23 @@ psa <- lapply(1:2, function(x)
     y = "y",
     n = sum(p_data == x),
     # number of pseudo-absence points to be sampled
-    method= c('geo_env_const', width='50000', env = somevar),
+    method= c('env_const', env = somevar),
     rlayer = grid_env,
     maskval = x,
-    calibarea = ca_4
+    calibarea = ca_1
   )) %>%
   bind_rows() %>%
   mutate(pr_ab = 0)
 
-plot(grid_env, main = "Sample pseudo-absence points based on spatial block partition")
-points(psa, cex = .1, pch = 19)
+par(mfrow=c(2,1))
+
+plot(grid_env, main = "Presence points")
+plot(ca_1, add= TRUE)
+points(p_data, cex = .7, pch = 19)
+
+plot(grid_env, main = "Pseudo-absence points")
+plot(ca_1, add= TRUE)
+points(psa, cex = .7, pch = 19)
 
 ```
 
@@ -534,7 +547,7 @@ ex_spp <- sdm_extract(
   y = "y",
   env_layer = somevar, # Raster with environmental variables
   variables = NULL, # Vector with the variable names of predictor variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.
-  filter_na = FALSE)
+  filter_na = TRUE)
 
 ex_spp
 
