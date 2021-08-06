@@ -41,7 +41,7 @@ Sample bias in species occurrence data has long been a recognized issue in SDM. 
 library(flexsdm)
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
-names(somevar) <- c('aet', 'cwd', 'tmx', 'tmn')
+names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 
 regions <- system.file("external/regions.tif", package = "flexsdm")
 regions <- terra::rast(regions)
@@ -59,18 +59,18 @@ abies_df$id <- 1:nrow(abies_df) # adding unique id to each row
 abies_df2 <- abies_df %>%
   occfilt_env(
     data = .,
-    x = 'x',
-    y = 'y',
-    id = 'id',
+    x = "x",
+    y = "y",
+    id = "id",
     nbins = 8,
     env_layer = somevar,
     cores = 1
   ) %>%
-  left_join(abies_df, by = c('id', 'x', 'y'))
+  left_join(abies_df, by = c("id", "x", "y"))
 
 
 somevar[[1]] %>% plot()
-points(abies_df2 %>% select('x', 'y'))
+points(abies_df2 %>% select("x", "y"))
 ```
 
 ## Block partition with 4 folds
@@ -82,9 +82,9 @@ occ_part <- abies_df2 %>%
   part_sblock(
     data = .,
     env_layer = somevar,
-    pr_ab = 'pr_ab',
-    x = 'x',
-    y = 'y',
+    pr_ab = "pr_ab",
+    x = "x",
+    y = "y",
     n_part = 4,
     min_res_mult = 3,
     max_res_mult = 200,
@@ -99,6 +99,7 @@ abies_df2 <- occ_part$part
 # predictor variables 
 block_layer <- get_block(env_layer = somevar, best_grid = occ_part$grid)
 plot(block_layer)
+points(abies_df2 %>% select("x", "y"))
 ```
 
 ## Pseduo-absence/background points (using partition previously created as a mask)
@@ -123,8 +124,7 @@ bg <- lapply(1:4, function(x) sample_background(
 plot(block_layer)
 points(bg)
 
-bg <- sdm_extract(data = bg, x='x', y='y', env_layer = block_layer)
-
+bg <- sdm_extract(data = bg, x="x", y="y", env_layer = block_layer)
 
 # Sampling a number of pseudo-absences equal to the presence in each partition
 set.seed(10)
@@ -140,7 +140,7 @@ psa <- lapply(1:4, function(x) sample_pseudoabs(
   bind_rows() %>% 
   mutate(pr_ab = 0)  
 
-psa <- sdm_extract(data = psa, x='x', y='y', env_layer = block_layer)
+psa <- sdm_extract(data = psa, x="x", y="y", env_layer = block_layer)
   
 plot(block_layer)
 points(psa)
@@ -151,7 +151,7 @@ abies_df2 <- bind_rows(abies_df2, psa)
 
 
 abies_df2 # Presence-Pseudo-absence database
-bg # Backgroun points
+bg # Background points
 
 ```
 
@@ -160,8 +160,8 @@ bg # Backgroun points
 abies_df2 <- abies_df2 %>%
   sdm_extract(
     data = .,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     env_layer = somevar,
     filter_na = TRUE
   ) 
@@ -169,35 +169,130 @@ abies_df2 <- abies_df2 %>%
 bg <- bg %>%
   sdm_extract(
     data = .,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     env_layer = somevar,
     filter_na = TRUE
   ) 
 
-plot(block_layer)
+par(mfrow=c(3,1))
+
+plot(block_layer, main = "Presence points")
 points(occ_part$part[c("x", "y")],
-       col = 'black',
+       col = "black",
        cex = 1,
        pch = 19)
+
+plot(block_layer, main = "Pseudo-absence points")
+points(psa[c("x", "y")] ,
+       col = "black",
+       cex = 1,
+       pch = 19)
+
+plot(block_layer, main = "Background points")
+points(bg[c("x", "y")] ,
+       col = "black",
+       cex = 1,
+       pch = 19)
+
 
 ```
 ## Fit models with tune_max, fit_gau, and third one
 Now it's time to fit our models! The *flexsdm* package offers a wide range of modeling options, from traditional statistical methods like GLMs and GAMs, to machine learning methods like random forest and support vector machines. For each modeling method, *flexsdm* provides both fit_ and tune_ functions, which allow users to adjust hyperparameters or use default settings depending on their modeling needs. Here, we will test out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian Process model), and fit_glm (fit Generalized Linear Model).
 
+*The AUC values are VERY low in this example and I am concerned we may want to do something different (i.e. add more predictors) in the mauscript example*
+
 ```{r fitting models}
-# t_1 <- tune_max(
-#   
-# )
+t_max <- tune_max(
+  data = abies_df2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  background = bg,
+  partition = ".part",
+  grid = expand.grid(
+    regmult = seq(0.1, 3, 0.5),
+    classes = c("l", "lq", "lqhpt")
+  ),
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+  metric = "TSS",
+  clamp = TRUE,
+  pred_type = "cloglog"
+)
+
+f_gau <- fit_gau(
+  data = abies_df2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  partition = ".part",
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
+)
+
+f_glm <- fit_glm(
+  data = abies_df2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  partition = ".part",
+  thr =  c("max_sens_spec", "equal_sens_spec", "max_sorensen")
+)
 
 ```
-## Create an ensemble
+
+The output of *flexsdm* model objects allows you to easily compare metrics across models, such as AUC or TSS. For example, we can the sdm_summarize() function to merge model performance tables.
+
+```{r}
+merge_df <- sdm_summarize(list(t_max, f_gau, f_glm))
+
+merge_df
+```
+
+## Create an ensemble model
+
 ```{r ensemble model}
+ens_m <- fit_ensemble(
+  models = list(t_max, f_gau, f_glm),
+  ens_method = "meanw",
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+  thr_model = "max_sens_spec",
+  metric = "TSS"
+)
+
+ens_m$performance
 ```
-## Project the model
+## Project the ensemble model
 ```{r project models}
-```
-## Constrain it with msdm_posterior 
-```{r constrain with msdm}
+pr_1 <- sdm_predict(
+  models = ens_m,
+  pred = somevar,
+  thr = "max_sens_spec",
+  con_thr = TRUE, 
+  predict_area = NULL
+)
+
+plot(pr_1$meanw)
 ```
 
+## Constrain it with msdm_posterior 
+
+Finally, *flexsdm* offers users function that help correct overprediction of SDM based on occurrences records and suitability patterns. 
+
+```{r constrain with msdm}
+
+m_obr <- msdm_posteriori(
+  records = abies_df2,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  cont_suit = pr_1$meanw[[1]],
+  method = c("obr"),
+  thr = "max_sens_spec",
+  buffer = NULL
+)
+
+plot(m_obr)
+```
+
+#=========#=========#=========#=========#=========#=========#=========#
+
+**Vignette still under construction and changes**
+
+#=========#=========#=========#=========#=========#=========#=========#
