@@ -151,7 +151,7 @@ ca_1 <- calib_area(
   y = "y",
   method = c("buffer", width = 40000),
 )
-plot(regions)
+plot(regions, main = "Buffer method")
 plot(ca_1, add = TRUE)
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
 ```
@@ -168,7 +168,7 @@ ca_2 <- calib_area(
   method = c("mcp"),
 )
 
-plot(regions)
+plot(regions, main = "Minimum convex polygon method")
 plot(ca_2, add = TRUE)
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
 ```
@@ -184,7 +184,7 @@ ca_3 <- calib_area(
   method = c("bmcp", width = 40000),
 )
 
-plot(regions)
+plot(regions, main = "Buffered minimum convex polygon")
 plot(ca_3, add = TRUE)
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
 ```
