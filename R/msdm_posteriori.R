@@ -257,7 +257,7 @@ msdm_posteriori <- function(records,
   colnames(records) <- c("pr_ab", "x", "y")
 
   # Extract values for one species and calculate the threshold
-  suit_point <- terra::extract(cont_suit, records[, c(x, y)])[, 2]
+  suit_point <- terra::extract(cont_suit, records[, c("x", "y")])[, 2]
   suit_point <-
     records %>%
     dplyr::mutate(suit_point)
