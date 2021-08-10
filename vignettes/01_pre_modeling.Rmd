@@ -75,7 +75,9 @@ First, let's install the flexsdm package. You can install the released version o
 
 ```{r download package}
 #devtools::install_github('sjevelazco/flexsdm')
-devtools::load_all() # can remove this when package is complete
+require(flexsdm)
+require(dplyr)
+require(terra)
 ```
 
 ## Project Directory Setup

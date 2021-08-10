@@ -100,6 +100,9 @@ First, let's install the flexsdm package. You can install the released version o
 
 ```{r download package}
 #devtools::install_github('sjevelazco/flexsdm')
+require(flexsdm)
+require(terra)
+require(dplyr)
 ```
 
 ## Project directory setup
