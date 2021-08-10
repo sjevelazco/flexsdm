@@ -227,7 +227,11 @@ fit_gam <- function(data,
             thr = thr
           )
         eval_partial[[i]] <- dplyr::tibble(model = "gam", eval)
-      })
+      },
+      error = function(cond) {
+        message('Sorry, but it was not possible to fit the model with this data')
+      }
+      )
     }
 
     # Create final database with parameter performance
@@ -236,6 +240,13 @@ fit_gam <- function(data,
       eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
       dplyr::bind_rows(., .id = "partition")
     eval_partial_list[[h]] <- eval_partial
+  }
+
+  # Stop function for those cases wh
+  if(length(unique(eval_partial$partition))<np2){
+    # opt <- options(show.error.messages = FALSE)
+    # on.exit(options(opt))
+    return(NULL)
   }
 
   eval_partial <- eval_partial_list %>%

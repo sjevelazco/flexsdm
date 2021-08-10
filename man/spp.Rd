@@ -3,7 +3,7 @@
 \docType{data}
 \name{spp}
 \alias{spp}
-\title{A data set containing presences and absences of tree virtual species}
+\title{A data set containing presences and absences of three virtual species}
 \format{
 A tibble with 1150 rows and 3 variables:
 \describe{
@@ -18,7 +18,7 @@ A tibble with 1150 rows and 3 variables:
 spp
 }
 \description{
-A data set containing presences and absences of tree virtual species
+A data set containing presences and absences of three virtual species
 }
 \examples{
 \dontrun{
