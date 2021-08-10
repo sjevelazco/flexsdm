@@ -33,7 +33,7 @@ Species distribution modeling (SDM) has become a standard tool in multiple resea
 
 This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).
 
-In this vignette, users will learn about the post-modeling set of functions in the *flexsdm* package. These functions were designed with the aim of assisting the flexsdm user in models’ geographical predictions, evaluation, and correction.
+In this vignette, users will learn about the post-modeling set of functions in the *flexsdm* package. These functions were designed with the aim of assisting the flexsdm user in predicting, evaluation, and correcting SDMs.
 
 These are the functions created for model construction and validation:
 
@@ -157,7 +157,7 @@ mensemble <- fit_ensemble(
 )
 ```
 
-You can also fit a model using an ensemble of small model approach. In this example, we fit without threshold specification and with kfold.
+You can also fit a model using an ensemble of small model approach. In this example, we fit without threshold specification and with k-fold cross-validation.
 ```{r ems_model}
 msmall <- esm_gam(
   data = some_sp,
@@ -168,7 +168,7 @@ msmall <- esm_gam(
 )
 ```
 
-Finally, we can predict different kind of models models from the same data (some_sp). [sdm_predict](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html) can be used for predict one or more models fitted with fit_ or tune_ functions. The output will be a list of SpatRaster with continuous and/or binary predictions.
+Finally, we can predict different kinds of models models from the same data (some_sp). [sdm_predict](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html) can be used for predicting one or more models fitted with fit_ or tune_ functions. The output will be a list of SpatRaster with continuous and/or binary predictions.
 ```{r sdm_predict}
 # Predict a single model
 ind_p <- sdm_predict(
@@ -236,7 +236,7 @@ plot(small_p_rst)
 
 ### 2. Merge model performance tables
 
-This function combine model performance table for all input models. in order to use this function is required a list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the fit_ensemble function.
+This function combines model performance table for all input models. This function requires a list of one or more models fitted with fit_ or tune_ functions, a fit_ensemble output, or a esm_ family function output.
 
 ```{r prep_data}
 # Load abies data
@@ -297,7 +297,7 @@ rf_t1 <-
   )
 ```
 
-Finally, merge thee sdm performance tables
+Finally, merge thee sdm performance tables. 
 
 ```{r merge_tables}
 merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
@@ -307,7 +307,7 @@ merge_df
 
 ### 3. Raster interpolation between two time periods
 
-This function calculates suitability values between two time periods with simple interpolation using two raster objects with suitability values. This function returns a SpatRaster if dir_save is used as NULL, this function will return a SpatRaster object. On the contrary, it will save raster in a given directory.
+This function is useful for calculating suitability values between two time periods with simple interpolation using two raster objects with suitability values. This function returns a SpatRaster if dir_save is used as NULL, this function will return a SpatRaster object. However, if the user specifies dir_save, the function will save the interpolated raster files in a given directory.
 
 ```{r interp_data}
 library(terra)
@@ -319,7 +319,7 @@ plot(abma)
 ```
 
 
-This function will create an object of interpolation with n layers defined by the initial and final year. The resolution and dimensions of the result object, will remain the same.
+This function will create an object of interpolation with n layers defined by the initial and final year. The resolution and dimensions of the result object will remain the same.
 ```{r interp}
 int <- inter(
   r1 = abma[[1]], # set the raster of initial year
@@ -340,7 +340,7 @@ plot(int)
 ```
 
 ### 4. Measure model extrapolation
-This function measures extrapolation comparing data used for modeling calibration and area for model projection. This function use the approach proposed by Velazco et al., in prep
+This function measures extrapolation comparing data used for modeling calibration and area for model projection using the approach proposed by Velazco et al., in prep
 
 ```{r measure_extrap}
 library(dplyr)
