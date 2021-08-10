@@ -34,11 +34,11 @@ Species distribution modeling (SDM) has become a standard tool in multiple resea
 
 This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).
 
-In this vignette, users will learn about the second set of functions in the *flexsdm* package that fall under the "modeling" umbrella. These functions were designed to modeling construction and validation. Several of them can be grouped into fit_* , tune_* , and esm_* family functions.
+In this vignette, users will learn about the second set of functions in the *flexsdm* package that fall under the "modeling" umbrella. These functions were designed to construct and validate different types of models and can be grouped into fit_* , tune_* , and esm_* family functions.
 
-The fit_* functions are for construct and validate models with default hyper-parameter values. The tune_* functions for construct and validate models searching for the best hyper-parameter values combination and esm_ functions for construct and validate Ensemble of Small Models. Finally, the fit_ensemble() function is for fit and validate ensemble models.
+The fit_* functions construct and validate models with default hyper-parameter values. The tune_* functions construct and validate models by searching for the best hyper-parameter values combination and esm_ functions can be used for constructing and validating Ensemble of Small Models. Finally, the fit_ensemble() function is for fitting and validating ensemble models.
 
-To sum up, these are the functions created for model construction and validation:
+These are the functions for model construction and validation:
 
 **fit_* functions family**
 
@@ -143,7 +143,7 @@ abies2 <- part_random(
 dplyr::glimpse(abies2)
 ```
 
-Now, in abies2 object we have a new column called ".part" with the 5 k-folds (1, 2, 3, 4, 5). Next, we have to apply the same method to the environmental conditions of the background points.
+Now, in the abies2 object we have a new column called ".part" with the 5 k-folds (1, 2, 3, 4, 5). Next, we have to apply the same method to the environmental conditions of the background points.
 
 ```{r background_points}
 backg2 <- part_random(
@@ -155,7 +155,7 @@ backg2 <- part_random(
 dplyr::glimpse(backg2)
 ```
 
-Finally, in backg2 object we have a new column called ".part" with the 5 k-folds (1, 2, 3, 4, 5).
+In backg2 object we have a new column called ".part" with the 5 k-folds (1, 2, 3, 4, 5).
 
 ### 1. Fit and validate models
 
@@ -185,17 +185,17 @@ Let's see what the output object contains. This function returns a list object w
 options(max.print=20)
 max_t1$model
 ```
-model: It's a "MaxEnt" class object. This object can be used for predicting.
+model: A "MaxEnt" class object. This object can be used for predicting.
 
 ```{r fit_max_predictors}
 max_t1$predictors
 ```
-predictors: It's a tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
+predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 
 ```{r fit_max_performance}
 max_t1$performance
 ```
-performance: It's the performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
+performance: The performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
 
 ```{r fit_max_data_ens}
 max_t1$data_ens
@@ -235,17 +235,17 @@ Let's see what the output object contains. This function returns a list object w
 ```{r tune_raf_model}
 rf_t$model
 ```
-model: It's a "randomForest" class object. This object can be used for formula details and predicting.
+model: A "randomForest" class object. This object can be used for formula details and predicting.
 
 ```{r tune_raf_predictors}
 rf_t$predictors
 ```
-predictors: It's a tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
+predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 
 ```{r tune_raf_performance}
 rf_t$performance
 ```
-performance: It's the performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
+performance: The performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
 
 ```{r tune_raf_data_ens}
 rf_t$data_ens
@@ -296,7 +296,7 @@ mensemble <- fit_ensemble(
 
 ### 3. Fit and validate models with Ensemble of Small Model approach
 
-This method consists of creating bivariate models with all the pair-wise combinations of predictors and perform an ensemble based on the average of suitability weighted by Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences. This function does not allow categorical variables because the use of these types of variables could be problematic when using with few occurrences. Further detail see Breiner et al. (2015, 2018)
+This method consists of creating bivariate models with all the pair-wise combinations of predictors and perform an ensemble based on the average of suitability weighted by Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences. This function does not allow categorical variables because the use of these types of variables could be problematic when applied to species with few occurrences. For more detail see Breiner et al. (2015, 2018)
 
 ```{r esm_subset_kfold}
 data("abies")
@@ -384,7 +384,7 @@ esm_gam_t2 <- esm_gam(
 )
 ```
 
-Test with random bootstrap partition. This method 'replicate' refers to the number of replicates (assumes a value >=1), 'proportion' refers to the proportion of occurrences used for model fitting (assumes a value >0 and <=1). With this method we can configure the proportion of training and testing data according to the species occurrences. In this example proportion='0.7' mean that 70% of data will be used for model training, while 30% for model testing. For this method function will returns .partX columns with "train" and "test" words.
+Test with random bootstrap partition. This method 'replicate' refers to the number of replicates (assumes a value >=1), 'proportion' refers to the proportion of occurrences used for model fitting (assumes a value >0 and <=1). With this method we can configure the proportion of training and testing data according to the species occurrences. In this example, proportion='0.7' indicates that 70% of data will be used for model training, while 30% will be used for model testing. For this method, the function will return .partX columns with "train" and "test" words.
 
 ```{r test_bootstrap}
 # Remove the previous k-fold partition
