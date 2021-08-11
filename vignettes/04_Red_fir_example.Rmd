@@ -203,6 +203,8 @@ points(bg[c("x", "y")] ,
 
 
 ```
+
+
 ## Fit models with tune_max, fit_gau, and third one
 
 Now it's time to fit our models. The *flexsdm* package offers a wide range of modeling options, from traditional statistical methods like GLMs and GAMs, to machine learning methods like random forest and support vector machines. For each modeling method, *flexsdm* provides both fit_ and tune_ functions, which allow users to use default settings or adjust hyperparameters depending on their research goals. Here, we will test out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian Process model), and fit_glm (fit Generalized Linear Model). For each model, we selected three threshold values to generate binary suitability predictions: the threshold that maximizes TSS (max_sens_spec), the threshold at which sensitivity and specificity are equal (equal_sens_spec), and the threshold at which Sorenson is highest (max_sorenson). In this example, we selected TSS as the performance metric used for selecting the best combination of hyper-parameter values in the tuned Maximum Entropy model. 
