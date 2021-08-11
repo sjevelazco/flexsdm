@@ -15,16 +15,15 @@ knitr::opts_chunk$set(
   #out.width = "100%",
   fig.width = 6,
   fig.height = 6,
+  # dpi = 60,
   echo = TRUE,
   warning = FALSE,
-  eval = T
+  eval = TRUE
 )
 ```
 
 ```{r dependencies, include = FALSE}
 #devtools::install_github('sjevelazco/flexsdm')
-library(terra)
-library(dplyr)
 library(knitr)
 ```
 
@@ -39,6 +38,11 @@ Here, we used the *flexsdm* package to model the current and future distribution
 Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing climatic redundancy (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to *flexsdm*, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering.
 
 ```{r raw data}
+#devtools::install_github('sjevelazco/flexsdm')
+library(flexsdm)
+library(terra)
+library(dplyr)
+
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
 names(somevar) <- c("aet", "cwd", "tmx", "tmn")

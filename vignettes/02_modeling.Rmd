@@ -15,17 +15,16 @@ knitr::opts_chunk$set(
   #out.width = "100%",
   fig.width = 6,
   fig.height = 6,
+  # dpi = 60,
   echo = TRUE,
   warning = FALSE,
-  eval = T
+  eval = TRUE
 )
 ```
 
 ```{r dependencies, include = FALSE}
-library(terra)
-library(dplyr)
 library(knitr)
-library(flexsdm)
+#devtools::install_github('sjevelazco/flexsdm')
 ```
 
 ## Introduction

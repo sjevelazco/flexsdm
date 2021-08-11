@@ -15,15 +15,14 @@ knitr::opts_chunk$set(
   #out.width = "100%",
   fig.width = 6,
   fig.height = 6,
+  # dpi = 60,
   echo = TRUE,
   warning = FALSE,
-  eval = T
+  eval = TRUE
 )
 ```
 
 ```{r dependencies, include = FALSE}
-library(terra)
-library(dplyr)
 library(knitr)
 ```
 
@@ -60,8 +59,8 @@ First, let's install the flexsdm package. You can install the released version o
 ```{r download package}
 #devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
-library(terra)
 library(dplyr)
+library(terra)
 ```
 
 ## Project directory setup

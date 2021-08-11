@@ -1,5 +1,5 @@
 ---
-title: "flexsdm: Overview of pre-modeling functions"
+title: "flexsdm: Overview of Pre-modeling functions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{flexsdm: Overview of Pre-modeling functions}
@@ -15,17 +15,16 @@ knitr::opts_chunk$set(
   #out.width = "100%",
   fig.width = 6,
   fig.height = 6,
+  # dpi = 60,
   echo = TRUE,
   warning = FALSE,
-  eval = T
+  eval = TRUE
 )
 ```
 
 ```{r dependencies, include = FALSE}
-library(terra)
-library(dplyr)
+#devtools::install_github('sjevelazco/flexsdm')
 library(knitr)
-library(flexsdm)
 ```
 
 ## Introduction
@@ -75,9 +74,9 @@ First, let's install the flexsdm package. You can install the released version o
 
 ```{r download package}
 #devtools::install_github('sjevelazco/flexsdm')
-require(flexsdm)
-require(dplyr)
-require(terra)
+library(flexsdm)
+library(dplyr)
+library(terra)
 ```
 
 ## Project Directory Setup
