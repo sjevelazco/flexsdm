@@ -89,10 +89,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01_pre_modeling.html">Overview of Pre-modeling functions</a>
+      <a href="../articles/01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
     </li>
     <li>
-      <a href="../articles/04_Red_fir_example.html">An example with Red Fir</a>
+      <a href="../articles/02_modeling.html">2. Overview of Modeling functions</a>
+    </li>
+    <li>
+      <a href="../articles/03_post_modeling.html">3. Overview of Post-modeling functions</a>
+    </li>
+    <li>
+      <a href="../articles/04_Red_fir_example.html">4. An example with Red Fir</a>
     </li>
   </ul>
 </li>
@@ -170,7 +176,7 @@ Default TRUE</p></td>
     <p>A character vector with the paths to created folders</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='co'># require(sf)</span>
 
@@ -184,43 +190,14 @@ Default TRUE</p></td>
   threshold <span class='op'>=</span> <span class='cn'>FALSE</span>,
   return_vector <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Directories were be created in:</span>
-#&gt; <span class='message'>C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results</span></div><div class='input'><span class='va'>dirs_1</span>
-</div><div class='output co'>#&gt;  [1] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results"                                       
-#&gt;  [2] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs"                              
-#&gt;  [3] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/1_Occurrences"                
-#&gt;  [4] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/2_Predictors"                 
-#&gt;  [5] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/2_Predictors/1_Current"       
-#&gt;  [6] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/3_Calibration_area"           
-#&gt;  [7] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs"                             
-#&gt;  [8] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/0_Model_performance"         
-#&gt;  [9] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current"                   
-#&gt; [10] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm"         
-#&gt; [11] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm/gam"     
-#&gt; [12] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm/tune_max"
-#&gt; [13] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble"          
-#&gt; [14] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble/mean"     
-#&gt; [15] "C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble/meanthr"  </div><div class='input'><span class='va'>dirs_1</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/dir_tree.html'>dir_tree</a></span><span class='op'>(</span><span class='va'>.</span>, recurse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #0000BB; font-weight: bold;'>C:/Users/santi/Documents/GitHub/flexsdm/docs/reference/flexsdm_results</span>
-#&gt; +-- <span style='color: #0000BB; font-weight: bold;'>1_Inputs</span>
-#&gt; |   +-- <span style='color: #0000BB; font-weight: bold;'>1_Occurrences</span>
-#&gt; |   +-- <span style='color: #0000BB; font-weight: bold;'>2_Predictors</span>
-#&gt; |   |   \-- <span style='color: #0000BB; font-weight: bold;'>1_Current</span>
-#&gt; |   \-- <span style='color: #0000BB; font-weight: bold;'>3_Calibration_area</span>
-#&gt; \-- <span style='color: #0000BB; font-weight: bold;'>2_Outputs</span>
-#&gt;     +-- <span style='color: #0000BB; font-weight: bold;'>0_Model_performance</span>
-#&gt;     \-- <span style='color: #0000BB; font-weight: bold;'>1_Current</span>
-#&gt;         +-- <span style='color: #0000BB; font-weight: bold;'>Algorithm</span>
-#&gt;         |   +-- <span style='color: #0000BB; font-weight: bold;'>gam</span>
-#&gt;         |   \-- <span style='color: #0000BB; font-weight: bold;'>tune_max</span>
-#&gt;         \-- <span style='color: #0000BB; font-weight: bold;'>Ensemble</span>
-#&gt;             +-- <span style='color: #0000BB; font-weight: bold;'>mean</span>
-#&gt;             \-- <span style='color: #0000BB; font-weight: bold;'>meanthr</span></div><div class='input'>
+<span class='va'>dirs_1</span>
+<span class='va'>dirs_1</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/dir_tree.html'>dir_tree</a></span><span class='op'>(</span><span class='va'>.</span>, recurse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>dirs_1</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>, recursive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='co'># this directory and sub-folder will be removed</span>
 
 <span class='co'># Implement sdm_directory without specific path and project name</span>
 <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "C:/Users/santi/Documents/GitHub/flexsdm/docs"</div><div class='input'>
+
 <span class='va'>dirs_2</span> <span class='op'>&lt;-</span> <span class='fu'>sdm_directory</span><span class='op'>(</span>
   main_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='va'>.</span>, <span class='st'>"my_project_name"</span><span class='op'>)</span>,
   projections <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>
@@ -232,119 +209,8 @@ Default TRUE</p></td>
   ensemble <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"meanthr"</span><span class='op'>)</span>,
   threshold <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Directories were be created in:</span>
-#&gt; <span class='message'>C:/Users/santi/Documents/GitHub/flexsdm/docs/my_project_name</span></div><div class='input'><span class='va'>dirs_2</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/dir_tree.html'>dir_tree</a></span><span class='op'>(</span><span class='va'>.</span>, recurse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #0000BB; font-weight: bold;'>C:/Users/santi/Documents/GitHub/flexsdm/docs/my_project_name</span>
-#&gt; +-- <span style='color: #0000BB; font-weight: bold;'>1_Inputs</span>
-#&gt; |   +-- <span style='color: #0000BB; font-weight: bold;'>1_Occurrences</span>
-#&gt; |   +-- <span style='color: #0000BB; font-weight: bold;'>2_Predictors</span>
-#&gt; |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_Current</span>
-#&gt; |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_Projection</span>
-#&gt; |   |       +-- <span style='color: #0000BB; font-weight: bold;'>cnrm_rpc4.5_2050</span>
-#&gt; |   |       \-- <span style='color: #0000BB; font-weight: bold;'>cnrm_rpc8.5_2050</span>
-#&gt; |   \-- <span style='color: #0000BB; font-weight: bold;'>3_Calibration_area</span>
-#&gt; \-- <span style='color: #0000BB; font-weight: bold;'>2_Outputs</span>
-#&gt;     +-- <span style='color: #0000BB; font-weight: bold;'>0_Model_performance</span>
-#&gt;     +-- <span style='color: #0000BB; font-weight: bold;'>1_Current</span>
-#&gt;     |   +-- <span style='color: #0000BB; font-weight: bold;'>Algorithm</span>
-#&gt;     |   |   +-- <span style='color: #0000BB; font-weight: bold;'>gam</span>
-#&gt;     |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |   |   +-- <span style='color: #0000BB; font-weight: bold;'>gau</span>
-#&gt;     |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |   |   +-- <span style='color: #0000BB; font-weight: bold;'>gbm</span>
-#&gt;     |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |   |   +-- <span style='color: #0000BB; font-weight: bold;'>glm</span>
-#&gt;     |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |   |   +-- <span style='color: #0000BB; font-weight: bold;'>max</span>
-#&gt;     |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |   |   +-- <span style='color: #0000BB; font-weight: bold;'>net</span>
-#&gt;     |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |   |   +-- <span style='color: #0000BB; font-weight: bold;'>raf</span>
-#&gt;     |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |   |   \-- <span style='color: #0000BB; font-weight: bold;'>svm</span>
-#&gt;     |   |       +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |   |       \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |   \-- <span style='color: #0000BB; font-weight: bold;'>Ensemble</span>
-#&gt;     |       +-- <span style='color: #0000BB; font-weight: bold;'>mean</span>
-#&gt;     |       |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |       |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     |       \-- <span style='color: #0000BB; font-weight: bold;'>meanthr</span>
-#&gt;     |           +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;     |           \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;     \-- <span style='color: #0000BB; font-weight: bold;'>2_Projection</span>
-#&gt;         +-- <span style='color: #0000BB; font-weight: bold;'>cnrm_rpc4.5_2050</span>
-#&gt;         |   +-- <span style='color: #0000BB; font-weight: bold;'>Algorithm</span>
-#&gt;         |   |   +-- <span style='color: #0000BB; font-weight: bold;'>gam</span>
-#&gt;         |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |   |   +-- <span style='color: #0000BB; font-weight: bold;'>gau</span>
-#&gt;         |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |   |   +-- <span style='color: #0000BB; font-weight: bold;'>gbm</span>
-#&gt;         |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |   |   +-- <span style='color: #0000BB; font-weight: bold;'>glm</span>
-#&gt;         |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |   |   +-- <span style='color: #0000BB; font-weight: bold;'>max</span>
-#&gt;         |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |   |   +-- <span style='color: #0000BB; font-weight: bold;'>net</span>
-#&gt;         |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |   |   +-- <span style='color: #0000BB; font-weight: bold;'>raf</span>
-#&gt;         |   |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |   |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |   |   \-- <span style='color: #0000BB; font-weight: bold;'>svm</span>
-#&gt;         |   |       +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |   |       \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |   \-- <span style='color: #0000BB; font-weight: bold;'>Ensemble</span>
-#&gt;         |       +-- <span style='color: #0000BB; font-weight: bold;'>mean</span>
-#&gt;         |       |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |       |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         |       \-- <span style='color: #0000BB; font-weight: bold;'>meanthr</span>
-#&gt;         |           +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;         |           \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;         \-- <span style='color: #0000BB; font-weight: bold;'>cnrm_rpc8.5_2050</span>
-#&gt;             +-- <span style='color: #0000BB; font-weight: bold;'>Algorithm</span>
-#&gt;             |   +-- <span style='color: #0000BB; font-weight: bold;'>gam</span>
-#&gt;             |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;             |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;             |   +-- <span style='color: #0000BB; font-weight: bold;'>gau</span>
-#&gt;             |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;             |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;             |   +-- <span style='color: #0000BB; font-weight: bold;'>gbm</span>
-#&gt;             |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;             |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;             |   +-- <span style='color: #0000BB; font-weight: bold;'>glm</span>
-#&gt;             |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;             |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;             |   +-- <span style='color: #0000BB; font-weight: bold;'>max</span>
-#&gt;             |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;             |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;             |   +-- <span style='color: #0000BB; font-weight: bold;'>net</span>
-#&gt;             |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;             |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;             |   +-- <span style='color: #0000BB; font-weight: bold;'>raf</span>
-#&gt;             |   |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;             |   |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;             |   \-- <span style='color: #0000BB; font-weight: bold;'>svm</span>
-#&gt;             |       +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;             |       \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;             \-- <span style='color: #0000BB; font-weight: bold;'>Ensemble</span>
-#&gt;                 +-- <span style='color: #0000BB; font-weight: bold;'>mean</span>
-#&gt;                 |   +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;                 |   \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span>
-#&gt;                 \-- <span style='color: #0000BB; font-weight: bold;'>meanthr</span>
-#&gt;                     +-- <span style='color: #0000BB; font-weight: bold;'>1_con</span>
-#&gt;                     \-- <span style='color: #0000BB; font-weight: bold;'>2_bin</span></div><div class='input'><span class='co'># }</span>
+<span class='va'>dirs_2</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/dir_tree.html'>dir_tree</a></span><span class='op'>(</span><span class='va'>.</span>, recurse <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

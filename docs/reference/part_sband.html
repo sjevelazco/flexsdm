@@ -92,10 +92,16 @@ similarity, and the number of presence and absence records in each partition." /
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01_pre_modeling.html">Overview of Pre-modeling functions</a>
+      <a href="../articles/01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
     </li>
     <li>
-      <a href="../articles/04_Red_fir_example.html">An example with Red Fir</a>
+      <a href="../articles/02_modeling.html">2. Overview of Modeling functions</a>
+    </li>
+    <li>
+      <a href="../articles/03_post_modeling.html">3. Overview of Post-modeling functions</a>
+    </li>
+    <li>
+      <a href="../articles/04_Red_fir_example.html">4. An example with Red Fir</a>
     </li>
   </ul>
 </li>
@@ -204,7 +210,7 @@ Default 0.5</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra/'>terra</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
@@ -227,44 +233,19 @@ Default 0.5</p></td>
   n_part <span class='op'>=</span> <span class='fl'>2</span>,
   prop <span class='op'>=</span> <span class='fl'>0.5</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>51 rows were excluded from database because NAs were found</span></div><div class='output co'>#&gt; <span class='message'>The following number of bands will be tested:</span>
-#&gt; <span class='message'>2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20</span></div><div class='output co'>#&gt; <span class='message'>Creating basic raster mask...</span></div><div class='output co'>#&gt; <span class='message'>Searching for the optimal number of bands...</span></div><div class='input'>
+
 <span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 949 x 4</span>
-#&gt;           x        y pr_ab .part
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span>   -<span style='color: #BB0000; text-decoration: underline;'>5</span><span style='color: #BB0000;'>541.</span> -<span style='color: #BB0000; text-decoration: underline;'>145</span><span style='color: #BB0000;'>138.</span>     0     2
-#&gt; <span style='color: #BCBCBC;'> 2</span>  -<span style='color: #BB0000; text-decoration: underline;'>51</span><span style='color: #BB0000;'>981.</span>   <span style='text-decoration: underline;'>16</span>322.     0     2
-#&gt; <span style='color: #BCBCBC;'> 3</span> -<span style='color: #BB0000; text-decoration: underline;'>269</span><span style='color: #BB0000;'>871.</span>   <span style='text-decoration: underline;'>69</span>512.     1     1
-#&gt; <span style='color: #BCBCBC;'> 4</span>  -<span style='color: #BB0000; text-decoration: underline;'>96</span><span style='color: #BB0000;'>261.</span>  -<span style='color: #BB0000; text-decoration: underline;'>32</span><span style='color: #BB0000;'>008.</span>     0     2
-#&gt; <span style='color: #BCBCBC;'> 5</span>  <span style='text-decoration: underline;'>269</span>589. -<span style='color: #BB0000; text-decoration: underline;'>566</span><span style='color: #BB0000;'>338.</span>     0     1
-#&gt; <span style='color: #BCBCBC;'> 6</span>   <span style='text-decoration: underline;'>29</span>829. -<span style='color: #BB0000; text-decoration: underline;'>328</span><span style='color: #BB0000;'>468.</span>     0     2
-#&gt; <span style='color: #BCBCBC;'> 7</span> -<span style='color: #BB0000; text-decoration: underline;'>152</span><span style='color: #BB0000;'>691.</span>  <span style='text-decoration: underline;'>393</span>782.     0     1
-#&gt; <span style='color: #BCBCBC;'> 8</span> -<span style='color: #BB0000; text-decoration: underline;'>195</span><span style='color: #BB0000;'>081.</span>  <span style='text-decoration: underline;'>253</span>652.     0     1
-#&gt; <span style='color: #BCBCBC;'> 9</span>    -<span style='color: #BB0000;'>951.</span> -<span style='color: #BB0000; text-decoration: underline;'>277</span><span style='color: #BB0000;'>978.</span>     0     2
-#&gt; <span style='color: #BCBCBC;'>10</span>  <span style='text-decoration: underline;'>145</span>929. -<span style='color: #BB0000; text-decoration: underline;'>271</span><span style='color: #BB0000;'>498.</span>     0     1
-#&gt; <span style='color: #949494;'># ... with 939 more rows</span></div><div class='input'><span class='va'>part_1</span><span class='op'>$</span><span class='va'>best_part_info</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span>
-#&gt;   n_grid n_bands spa_auto env_sim  sd_p  sd_a
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>      2       3    0.149    367.  73.5  14.8</div><div class='input'><span class='va'>part_1</span><span class='op'>$</span><span class='va'>grid</span>
-</div><div class='output co'>#&gt; class       : SpatRaster 
-#&gt; dimensions  : 1, 3, 1  (nrow, ncol, nlyr)
-#&gt; resolution  : 248220, 1054620  (x, y)
-#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
-#&gt; source      : memory 
-#&gt; name        : block 
-#&gt; min value   :     1 
-#&gt; max value   :     2 </div><div class='input'>
+<span class='va'>part_1</span><span class='op'>$</span><span class='va'>best_part_info</span>
+<span class='va'>part_1</span><span class='op'>$</span><span class='va'>grid</span>
+
 <span class='co'># Lets explore Grid object and presences and absences points</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>part_1</span><span class='op'>$</span><span class='va'>grid</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
   col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/palettes.html'>rainbow</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
   cex <span class='op'>=</span> <span class='fl'>0.9</span>,
   pch <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>19</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>pr_ab</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>]</span>
 <span class='op'>)</span>
-</div><div class='img'><img src='part_sband-1.png' alt='' width='700' height='433' /></div><div class='input'>
+
 
 <span class='co'># Let's practice with four latitudinal partition and only with presences</span>
 <span class='va'>single_spp</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span>, <span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>
@@ -280,44 +261,19 @@ Default 0.5</p></td>
   n_part <span class='op'>=</span> <span class='fl'>8</span>,
   prop <span class='op'>=</span> <span class='fl'>0.5</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>12 rows were excluded from database because NAs were found</span></div><div class='output co'>#&gt; <span class='message'>The following number of bands will be tested:</span>
-#&gt; <span class='message'>8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40</span></div><div class='output co'>#&gt; <span class='message'>Creating basic raster mask...</span></div><div class='output co'>#&gt; <span class='message'>Searching for the optimal number of bands...</span></div><div class='input'>
+
 <span class='va'>part_2</span><span class='op'>$</span><span class='va'>part</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 238 x 4</span>
-#&gt;           x        y pr_ab .part
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> -<span style='color: #BB0000; text-decoration: underline;'>269</span><span style='color: #BB0000;'>871.</span>   <span style='text-decoration: underline;'>69</span>512.     1     4
-#&gt; <span style='color: #BCBCBC;'> 2</span> -<span style='color: #BB0000; text-decoration: underline;'>149</span><span style='color: #BB0000;'>991.</span>  <span style='text-decoration: underline;'>267</span>962.     1     2
-#&gt; <span style='color: #BCBCBC;'> 3</span> -<span style='color: #BB0000; text-decoration: underline;'>126</span><span style='color: #BB0000;'>231.</span>  <span style='text-decoration: underline;'>196</span>142.     1     3
-#&gt; <span style='color: #BCBCBC;'> 4</span>   <span style='text-decoration: underline;'>91</span>659. -<span style='color: #BB0000; text-decoration: underline;'>156</span><span style='color: #BB0000;'>748.</span>     1     6
-#&gt; <span style='color: #BCBCBC;'> 5</span> -<span style='color: #BB0000; text-decoration: underline;'>210</span><span style='color: #BB0000;'>471.</span>  <span style='text-decoration: underline;'>326</span>282.     1     2
-#&gt; <span style='color: #BCBCBC;'> 6</span> -<span style='color: #BB0000; text-decoration: underline;'>140</span><span style='color: #BB0000;'>541.</span>  <span style='text-decoration: underline;'>284</span>972.     1     2
-#&gt; <span style='color: #BCBCBC;'> 7</span> -<span style='color: #BB0000; text-decoration: underline;'>217</span><span style='color: #BB0000;'>491.</span>   <span style='text-decoration: underline;'>65</span>732.     1     4
-#&gt; <span style='color: #BCBCBC;'> 8</span> -<span style='color: #BB0000; text-decoration: underline;'>201</span><span style='color: #BB0000;'>831.</span>   <span style='text-decoration: underline;'>17</span>132.     1     5
-#&gt; <span style='color: #BCBCBC;'> 9</span>  -<span style='color: #BB0000; text-decoration: underline;'>40</span><span style='color: #BB0000;'>101.</span>  <span style='text-decoration: underline;'>150</span>782.     1     3
-#&gt; <span style='color: #BCBCBC;'>10</span> -<span style='color: #BB0000; text-decoration: underline;'>178</span><span style='color: #BB0000;'>611.</span>  <span style='text-decoration: underline;'>225</span>032.     1     3
-#&gt; <span style='color: #949494;'># ... with 228 more rows</span></div><div class='input'><span class='va'>part_2</span><span class='op'>$</span><span class='va'>best_part_info</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 5</span>
-#&gt;   n_grid n_bands spa_auto env_sim  sd_p
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>      2      10     0.54    282.  21.0</div><div class='input'><span class='va'>part_2</span><span class='op'>$</span><span class='va'>grid</span>
-</div><div class='output co'>#&gt; class       : SpatRaster 
-#&gt; dimensions  : 10, 1, 1  (nrow, ncol, nlyr)
-#&gt; resolution  : 744660, 105462  (x, y)
-#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
-#&gt; source      : memory 
-#&gt; name        : block 
-#&gt; min value   :     1 
-#&gt; max value   :     8 </div><div class='input'>
+<span class='va'>part_2</span><span class='op'>$</span><span class='va'>best_part_info</span>
+<span class='va'>part_2</span><span class='op'>$</span><span class='va'>grid</span>
+
 <span class='co'># Lets explore Grid object and presences points</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>part_2</span><span class='op'>$</span><span class='va'>grid</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part_2</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part_2</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
   col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/palettes.html'>rainbow</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part_2</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
   cex <span class='op'>=</span> <span class='fl'>0.5</span>,
   pch <span class='op'>=</span> <span class='fl'>19</span>
 <span class='op'>)</span>
-</div><div class='img'><img src='part_sband-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

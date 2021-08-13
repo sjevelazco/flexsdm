@@ -90,10 +90,16 @@ Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01_pre_modeling.html">Overview of Pre-modeling functions</a>
+      <a href="../articles/01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
     </li>
     <li>
-      <a href="../articles/04_Red_fir_example.html">An example with Red Fir</a>
+      <a href="../articles/02_modeling.html">2. Overview of Modeling functions</a>
+    </li>
+    <li>
+      <a href="../articles/03_post_modeling.html">3. Overview of Post-modeling functions</a>
+    </li>
+    <li>
+      <a href="../articles/04_Red_fir_example.html">4. An example with Red Fir</a>
     </li>
   </ul>
 </li>
@@ -212,7 +218,7 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <code><a href='esm_glm.html'>esm_glm</a></code>, <code><a href='esm_max.html'>esm_max</a></code>,, and <code><a href='esm_net.html'>esm_net</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"abies"</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
@@ -230,31 +236,7 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
   method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"rep_kfold"</span>, folds <span class='op'>=</span> <span class='fl'>3</span>, replicates <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 <span class='op'>)</span>
 <span class='va'>abies2</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 20 x 18</span>
-#&gt;       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> <span style='text-decoration: underline;'>12</span>040     0 -<span style='color: #BB0000; text-decoration: underline;'>308</span><span style='color: #BB0000;'>909.</span>  <span style='text-decoration: underline;'>384</span>248.  573.  332.  4.84     521.   48.8   5.63 0.108 
-#&gt; <span style='color: #BCBCBC;'> 2</span> <span style='text-decoration: underline;'>10</span>361     0 -<span style='color: #BB0000; text-decoration: underline;'>254</span><span style='color: #BB0000;'>286.</span>  <span style='text-decoration: underline;'>417</span>158.  260.  469.  2.93     151.   15.1   6.20 0.095<span style='text-decoration: underline;'>0</span>
-#&gt; <span style='color: #BCBCBC;'> 3</span>  <span style='text-decoration: underline;'>9</span>402     0 -<span style='color: #BB0000; text-decoration: underline;'>286</span><span style='color: #BB0000;'>979.</span>  <span style='text-decoration: underline;'>386</span>206.  587.  376.  6.45     333.   15.7   5.5  0.160 
-#&gt; <span style='color: #BCBCBC;'> 4</span>  <span style='text-decoration: underline;'>9</span>815     0 -<span style='color: #BB0000; text-decoration: underline;'>291</span><span style='color: #BB0000;'>849.</span>  <span style='text-decoration: underline;'>445</span>595.  443.  455.  4.39     332.   19.1   6    0.070<span style='text-decoration: underline;'>0</span>
-#&gt; <span style='color: #BCBCBC;'> 5</span> <span style='text-decoration: underline;'>10</span>524     0 -<span style='color: #BB0000; text-decoration: underline;'>256</span><span style='color: #BB0000;'>658.</span>  <span style='text-decoration: underline;'>184</span>438.  355.  568.  5.87     303.   10.6   5.20 0.080<span style='text-decoration: underline;'>0</span>
-#&gt; <span style='color: #BCBCBC;'> 6</span>  <span style='text-decoration: underline;'>8</span>860     0  <span style='text-decoration: underline;'>121</span>343. -<span style='color: #BB0000; text-decoration: underline;'>164</span><span style='color: #BB0000;'>170.</span>  354.  733.  3.97     182.    9.83  0    0     
-#&gt; <span style='color: #BCBCBC;'> 7</span>  <span style='text-decoration: underline;'>6</span>431     0  <span style='text-decoration: underline;'>107</span>903. -<span style='color: #BB0000; text-decoration: underline;'>122</span><span style='color: #BB0000;'>968.</span>  461.  578.  4.87     161.    7.66  5.90 0.090<span style='text-decoration: underline;'>0</span>
-#&gt; <span style='color: #BCBCBC;'> 8</span> <span style='text-decoration: underline;'>11</span>730     0 -<span style='color: #BB0000; text-decoration: underline;'>333</span><span style='color: #BB0000;'>903.</span>  <span style='text-decoration: underline;'>431</span>238.  561.  364.  6.73     387.   25.2   5.80 0.130 
-#&gt; <span style='color: #BCBCBC;'> 9</span>   808     0 -<span style='color: #BB0000; text-decoration: underline;'>150</span><span style='color: #BB0000;'>163.</span>  <span style='text-decoration: underline;'>357</span>180.  339.  564.  2.64     220.   15.3   6.40 0.100 
-#&gt; <span style='color: #BCBCBC;'>10</span> <span style='text-decoration: underline;'>11</span>054     0 -<span style='color: #BB0000; text-decoration: underline;'>293</span><span style='color: #BB0000;'>663.</span>  <span style='text-decoration: underline;'>340</span>981.  477.  396.  3.89     332.   26.4   4.60 0.063<span style='text-decoration: underline;'>4</span>
-#&gt; <span style='color: #BCBCBC;'>11</span>  <span style='text-decoration: underline;'>2</span>960     1  -<span style='color: #BB0000; text-decoration: underline;'>49</span><span style='color: #BB0000;'>273.</span>  <span style='text-decoration: underline;'>181</span>752.  512.  275.  0.920    319.   17.3   5.92 0.090<span style='text-decoration: underline;'>0</span>
-#&gt; <span style='color: #BCBCBC;'>12</span>  <span style='text-decoration: underline;'>3</span>065     1  <span style='text-decoration: underline;'>126</span>907. -<span style='color: #BB0000; text-decoration: underline;'>198</span><span style='color: #BB0000;'>892.</span>  322.  544.  0.700    203.   10.6   5.60 0.110 
-#&gt; <span style='color: #BCBCBC;'>13</span>  <span style='text-decoration: underline;'>5</span>527     1  <span style='text-decoration: underline;'>116</span>751. -<span style='color: #BB0000; text-decoration: underline;'>181</span><span style='color: #BB0000;'>089.</span>  261.  537.  0.363    178.    7.43  0    0     
-#&gt; <span style='color: #BCBCBC;'>14</span>  <span style='text-decoration: underline;'>4</span>035     1  -<span style='color: #BB0000; text-decoration: underline;'>31</span><span style='color: #BB0000;'>777.</span>  <span style='text-decoration: underline;'>115</span>940.  394.  440.  2.07     298.   11.2   6.01 0.076<span style='text-decoration: underline;'>9</span>
-#&gt; <span style='color: #BCBCBC;'>15</span>  <span style='text-decoration: underline;'>4</span>081     1   -<span style='color: #BB0000; text-decoration: underline;'>5</span><span style='color: #BB0000;'>158.</span>   <span style='text-decoration: underline;'>90</span>159.  301.  502.  0.703    203.   14.6   6.11 0.063<span style='text-decoration: underline;'>3</span>
-#&gt; <span style='color: #BCBCBC;'>16</span>  <span style='text-decoration: underline;'>3</span>087     1  <span style='text-decoration: underline;'>102</span>151. -<span style='color: #BB0000; text-decoration: underline;'>143</span><span style='color: #BB0000;'>976.</span>  299.  425. -<span style='color: #BB0000;'>2.08</span>     205.   13.4   3.88 0.110 
-#&gt; <span style='color: #BCBCBC;'>17</span>  <span style='text-decoration: underline;'>3</span>495     1  -<span style='color: #BB0000; text-decoration: underline;'>19</span><span style='color: #BB0000;'>586.</span>   <span style='text-decoration: underline;'>89</span>803.  438.  419.  2.13     189.   15.2   6.19 0.095<span style='text-decoration: underline;'>9</span>
-#&gt; <span style='color: #BCBCBC;'>18</span>  <span style='text-decoration: underline;'>4</span>441     1   <span style='text-decoration: underline;'>49</span>405.  -<span style='color: #BB0000; text-decoration: underline;'>60</span><span style='color: #BB0000;'>502.</span>  362.  582.  2.42     218.    7.84  5.64 0.078<span style='text-decoration: underline;'>6</span>
-#&gt; <span style='color: #BCBCBC;'>19</span>   301     1 -<span style='color: #BB0000; text-decoration: underline;'>132</span><span style='color: #BB0000;'>516.</span>  <span style='text-decoration: underline;'>270</span>845.  367.  196. -<span style='color: #BB0000;'>2.56</span>     422.   26.3   6.70 0.030<span style='text-decoration: underline;'>0</span>
-#&gt; <span style='color: #BCBCBC;'>20</span>  <span style='text-decoration: underline;'>3</span>162     1   <span style='text-decoration: underline;'>59</span>905.  -<span style='color: #BB0000; text-decoration: underline;'>53</span><span style='color: #BB0000;'>634.</span>  319.  626.  1.99     212.    4.50  4.51 0.039<span style='text-decoration: underline;'>6</span>
-#&gt; <span style='color: #949494;'># ... with 7 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part1 &lt;int&gt;,</span>
-#&gt; <span style='color: #949494;'>#   .part2 &lt;int&gt;, .part3 &lt;int&gt;, .part4 &lt;int&gt;, .part5 &lt;int&gt;</span></div><div class='input'>
+
 <span class='co'># Without threshold specification and with kfold</span>
 <span class='va'>esm_svm_t1</span> <span class='op'>&lt;-</span> <span class='fu'>esm_svm</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies2</span>,
@@ -266,447 +248,11 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
   partition <span class='op'>=</span> <span class='st'>".part"</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%</div><div class='input'>
+
 <span class='va'>esm_svm_t1</span><span class='op'>$</span><span class='va'>esm_model</span> <span class='co'># bivariate model</span>
-</div><div class='output co'>#&gt; $`-0.277777777777778`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  2.28296261199967 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -12.5955 
-#&gt; Training error : 0.15 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.867592592592593`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  3.21964131577722 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -7.6598 
-#&gt; Training error : 0.05 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.143518518518518`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  3.6852805075912 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -12.4402 
-#&gt; Training error : 0.2 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.0814814814814815`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  0.923012952645775 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -15.0461 
-#&gt; Training error : 0.3 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.294907407407407`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  2.44540353471526 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -12.632 
-#&gt; Training error : 0.15 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.0833333333333334`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  2.11433378004438 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -13.3272 
-#&gt; Training error : 0.1 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.74537037037037`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  2.36704511225715 
-#&gt; 
-#&gt; Number of Support Vectors : 17 
-#&gt; 
-#&gt; Objective Function Value : -7.5493 
-#&gt; Training error : 0.05 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.863888888888889`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  1.10350006711814 
-#&gt; 
-#&gt; Number of Support Vectors : 16 
-#&gt; 
-#&gt; Objective Function Value : -7.8686 
-#&gt; Training error : 0.05 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.247222222222222`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  4.21128462232242 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -10.6597 
-#&gt; Training error : 0.05 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.0333333333333333`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  0.891663840185156 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -14.0863 
-#&gt; Training error : 0.2 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.219907407407407`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  3.15364895100329 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -14.3366 
-#&gt; Training error : 0.15 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.303703703703704`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  1.9059427923859 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -14.2805 
-#&gt; Training error : 0.2 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.436111111111111`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  0.890015879420413 
-#&gt; 
-#&gt; Number of Support Vectors : 16 
-#&gt; 
-#&gt; Objective Function Value : -8.9456 
-#&gt; Training error : 0.1 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.928703703703704`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  1.21113352969592 
-#&gt; 
-#&gt; Number of Support Vectors : 15 
-#&gt; 
-#&gt; Objective Function Value : -7.2926 
-#&gt; Training error : 0.05 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.968518518518519`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  6.69160658225889 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -8.2629 
-#&gt; Training error : 0 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.878240740740741`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  24.6256479156547 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -7.7436 
-#&gt; Training error : 0 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.874074074074074`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  2.76404088910699 
-#&gt; 
-#&gt; Number of Support Vectors : 17 
-#&gt; 
-#&gt; Objective Function Value : -8.1925 
-#&gt; Training error : 0 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`1`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  10.1022680516999 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -7.4825 
-#&gt; Training error : 0 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.149074074074074`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  1.18048826477138 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -14.509 
-#&gt; Training error : 0.35 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.283333333333333`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  3.20712982486606 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -12.1801 
-#&gt; Training error : 0.15 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`-0.0851851851851853`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  3.79903989091283 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -12.4707 
-#&gt; Training error : 0.15 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.169444444444445`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  1.14332635493013 
-#&gt; 
-#&gt; Number of Support Vectors : 16 
-#&gt; 
-#&gt; Objective Function Value : -9.7946 
-#&gt; Training error : 0.15 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.239351851851852`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  6.48807292162547 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -15.1365 
-#&gt; Training error : 0.15 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.0092592592592593`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  32.0153706984081 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -12.1117 
-#&gt; Training error : 0.05 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.381481481481482`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  0.495342417602049 
-#&gt; 
-#&gt; Number of Support Vectors : 15 
-#&gt; 
-#&gt; Objective Function Value : -10.3477 
-#&gt; Training error : 0.15 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.24212962962963`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  17.2551055210103 
-#&gt; 
-#&gt; Number of Support Vectors : 20 
-#&gt; 
-#&gt; Objective Function Value : -15.1682 
-#&gt; Training error : 0.2 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.379166666666667`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  9.36572774490608 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -9.8635 
-#&gt; Training error : 0.1 
-#&gt; Probability model included. 
-#&gt; 
-#&gt; $`0.529166666666667`
-#&gt; Support Vector Machine object of class "ksvm" 
-#&gt; 
-#&gt; SV type: C-svc  (classification) 
-#&gt;  parameter : cost C = 1 
-#&gt; 
-#&gt; Gaussian Radial Basis kernel function. 
-#&gt;  Hyperparameter : sigma =  3.23120038498244 
-#&gt; 
-#&gt; Number of Support Vectors : 19 
-#&gt; 
-#&gt; Objective Function Value : -8.8474 
-#&gt; Training error : 0.05 
-#&gt; Probability model included. 
-#&gt; </div><div class='input'><span class='va'>esm_svm_t1</span><span class='op'>$</span><span class='va'>predictors</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 8</span>
-#&gt;   c1    c2    c3    c4      c5      c6    c7    c8   
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth</div><div class='input'><span class='va'>esm_svm_t1</span><span class='op'>$</span><span class='va'>performance</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 7 x 25</span>
-#&gt;   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> esm_svm equal_sens_~     0.571          50         50    0.911  0.153    1    
-#&gt; <span style='color: #BCBCBC;'>2</span> esm_svm lpt              0.511          50         50    1      0        0.911
-#&gt; <span style='color: #BCBCBC;'>3</span> esm_svm max_fpb          0.571          50         50    1      0        0.911
-#&gt; <span style='color: #BCBCBC;'>4</span> esm_svm max_jaccard      0.571          50         50    1      0        0.911
-#&gt; <span style='color: #BCBCBC;'>5</span> esm_svm max_sens_sp~     0.571          50         50    0.911  0.153    1    
-#&gt; <span style='color: #BCBCBC;'>6</span> esm_svm max_sorensen     0.571          50         50    1      0        0.911
-#&gt; <span style='color: #BCBCBC;'>7</span> esm_svm sensitivity      0.602          50         50    1      0        0.911
-#&gt; <span style='color: #949494;'># ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></div><div class='input'><span class='co'># }</span>
+<span class='va'>esm_svm_t1</span><span class='op'>$</span><span class='va'>predictors</span>
+<span class='va'>esm_svm_t1</span><span class='op'>$</span><span class='va'>performance</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -89,10 +89,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/01_pre_modeling.html">Overview of Pre-modeling functions</a>
+      <a href="../articles/01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
     </li>
     <li>
-      <a href="../articles/04_Red_fir_example.html">An example with Red Fir</a>
+      <a href="../articles/02_modeling.html">2. Overview of Modeling functions</a>
+    </li>
+    <li>
+      <a href="../articles/03_post_modeling.html">3. Overview of Post-modeling functions</a>
+    </li>
+    <li>
+      <a href="../articles/04_Red_fir_example.html">4. An example with Red Fir</a>
     </li>
   </ul>
 </li>
@@ -174,7 +180,7 @@
     <div class='dont-index'><p><code><a href='msdm_posteriori.html'>msdm_posteriori</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra/'>terra</a></span><span class='op'>)</span>
 
@@ -189,8 +195,8 @@
 <span class='co'># It will select a raster layer to be used as a basic raster</span>
 <span class='va'>a_variable</span> <span class='op'>&lt;-</span> <span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>a_variable</span><span class='op'>)</span>
-</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>occ</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='msdm_priori-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>occ</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
+
 <span class='co'>### xy method</span>
 <span class='va'>m_xy</span> <span class='op'>&lt;-</span> <span class='fu'>msdm_priori</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>occ</span>,
@@ -201,7 +207,7 @@
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>m_xy</span><span class='op'>)</span>
-</div><div class='img'><img src='msdm_priori-2.png' alt='' width='700' height='433' /></div><div class='input'>
+
 <span class='co'>### min method</span>
 <span class='va'>m_min</span> <span class='op'>&lt;-</span> <span class='fu'>msdm_priori</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>occ</span>,
@@ -212,7 +218,7 @@
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>m_min</span><span class='op'>)</span>
-</div><div class='img'><img src='msdm_priori-3.png' alt='' width='700' height='433' /></div><div class='input'>
+
 <span class='co'>### cml method</span>
 <span class='va'>m_cml</span> <span class='op'>&lt;-</span> <span class='fu'>msdm_priori</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>occ</span>,
@@ -223,7 +229,7 @@
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>m_cml</span><span class='op'>)</span>
-</div><div class='img'><img src='msdm_priori-4.png' alt='' width='700' height='433' /></div><div class='input'>
+
 <span class='co'>### ker method</span>
 <span class='va'>m_ker</span> <span class='op'>&lt;-</span> <span class='fu'>msdm_priori</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>occ</span>,
@@ -234,7 +240,7 @@
 <span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>m_ker</span><span class='op'>)</span>
-</div><div class='img'><img src='msdm_priori-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>
