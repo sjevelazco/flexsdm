@@ -21,7 +21,7 @@ test_that("test with sp > and < 15 occurrences", {
   )
 
   expect_equal(ncol(outs_1 %>% select(starts_with("."))), 7)
-  expect_equal(sum(outs_1$.out_sum, na.rm = TRUE), 12)
+  expect_equal(sum(outs_1$.out_sum, na.rm = TRUE), 13)
 })
 
 

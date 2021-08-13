@@ -9,12 +9,12 @@ test_that("correct_colinvar Pearson", {
   var <-
     correct_colinvar(
       env_layer = somevar,
-      method = c("pearson", th = "0.8")
+      method = c("pearson", th = "0.5")
     )
 
   expect_equal(class(var), "list")
   expect_equal(class(var$env_layer)[1], "SpatRaster")
-  expect_equal(var$removed_variables, "CFP_3")
+  expect_equal(var$removed_variables, c("CFP_1", "CFP_4"))
   expect_equal(nrow(var$correlation_table), 4)
   expect_true(all(names(var) %in% c("env_layer", "removed_variables", "correlation_table")))
 })
@@ -28,13 +28,15 @@ test_that("correct_colinvar VIF", {
   somevar <- terra::rast(somevar)
 
   # Perform pearson collinearity control
+  somevar <- terra::rast(list(somevar, CPF_5=somevar[[2]]))
+  names(somevar)[5] <- "CPF_4"
   var <-
     correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))
 
   expect_equal(class(var), "list")
   expect_equal(class(var$env_layer)[1], "SpatRaster")
   expect_equal(var$removed_variables, "CFP_2")
-  expect_equal(nrow(var$correlation_table), 3)
+  expect_equal(nrow(var$correlation_table), 4)
   expect_true(all(names(var) %in% c("env_layer", "removed_variables", "correlation_table")))
 })
 
