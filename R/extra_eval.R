@@ -17,7 +17,7 @@
 #' @return
 #' A SpatRaster object with extrapolation values measured in percentage
 #'
-#' @seealso \code{\link{extra_correct}}
+#' @seealso \code{\link{extra_exclude}}
 #'
 #' @export
 #'
