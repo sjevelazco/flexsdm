@@ -68,7 +68,7 @@ abies_df2 <- abies_df %>%
     id = "id",
     nbins = 8,
     env_layer = somevar,
-    cores = 10
+    cores = 2
   ) %>%
   left_join(abies_df, by = c("id", "x", "y"))
 
@@ -124,8 +124,7 @@ bg <- lapply(1:4, function(x) sample_background(
     rlayer = block_layer, 
     maskval = x
   )) %>% 
-  bind_rows() %>% 
-  mutate(pr_ab = 0)
+  bind_rows() 
 
 plot(block_layer)
 points(bg)
@@ -143,8 +142,7 @@ psa <- lapply(1:4, function(x) sample_pseudoabs(
     rlayer = block_layer, 
     maskval = x
   )) %>% 
-  bind_rows() %>% 
-  mutate(pr_ab = 0)  
+  bind_rows() 
 
 psa <- sdm_extract(data = psa, x="x", y="y", env_layer = block_layer)
   

@@ -387,5 +387,6 @@ sample_background <-
         dplyr::tibble()
     }
     colnames(cell_samp) <- c("x", "y")
+    cell_samp$pr_ab <- 0
     return(cell_samp)
   }
