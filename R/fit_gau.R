@@ -257,7 +257,7 @@ fit_gau <- function(data,
         )
 
         pred_test_ens[[h]][[i]] <- pred_test %>%
-          dplyr::mutate(rnames = rownames(.))
+          dplyr::mutate(rnames = rownames(test[[i]]))
 
         # Predict for background data
         if (!is.null(background)) {

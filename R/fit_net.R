@@ -202,7 +202,7 @@ fit_net <- function(data,
         )
 
         pred_test_ens[[h]][[i]] <- pred_test %>%
-          dplyr::mutate(rnames = rownames(.))
+          dplyr::mutate(rnames = rownames(test[[i]]))
 
         # Validation of model
         eval <-

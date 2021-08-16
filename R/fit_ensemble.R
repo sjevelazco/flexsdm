@@ -37,7 +37,7 @@
 #' }
 #'
 #'
-#' @importFrom dplyr %>% filter all_of pull bind_rows mutate inner_join select starts_with bind_cols across group_by summarise left_join relocate
+#' @importFrom dplyr filter all_of pull bind_rows mutate full_join select starts_with bind_cols across group_by summarise left_join relocate
 #' @importFrom stats median sd
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
@@ -165,14 +165,14 @@ fit_ensemble <-
     })
 
     data_ens2 <-
-      dplyr::inner_join(data_ens[[1]],
+      dplyr::full_join(data_ens[[1]],
         data_ens[[2]],
         by = c("rnames", "replicates", "part", "pr_ab")
       )
     if (length(data_ens) > 2) {
       for (i in 3:length(data_ens)) {
         data_ens2 <-
-          dplyr::inner_join(data_ens2,
+          dplyr::full_join(data_ens2,
             data_ens[[i]],
             by = c("rnames", "replicates", "part", "pr_ab")
           )
