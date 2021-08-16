@@ -33,6 +33,7 @@ Imports:
     nnet,
     randomForest,
     sp,
+    spThin,
     Rlof,
     terra,
     raster,
