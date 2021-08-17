@@ -105,7 +105,7 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins, cores = 1) {
   classes <- list()
   for (i in 1:n) {
     ext1 <- range(env_layer[, i])
-    ext1[1] <- ext1[1] - .Machine$double.eps
+    ext1[1] <- ext1[1] - 1
     classes[[i]] <- seq(ext1[1], ext1[2], by = res[i])
   }
   classes <- expand.grid(classes)
