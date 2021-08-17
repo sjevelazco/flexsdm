@@ -157,14 +157,23 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins, cores = 1) {
     flt <- do.call("cbind", flt) %>%
       apply(., 1, all) %>%
       which()
-    real_p$groupID[l] <- classes$groupID[flt]
-    real_p$groupID[l]
+    if(length(flt)>0){
+      real_p$groupID[l] <- classes$groupID[flt]
+      real_p$groupID[l]
+    }else{
+      NA
+    }
   }
   real_p$groupID <- groupID
   parallel::stopCluster(cl)
 
-  final_points <- real_p[!duplicated(real_p$groupID), cnames]
-  coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y)]
+  if(any(is.na(real_p$groupID))){
+    nas <- da[is.na(real_p$groupID), c(id, x, y)]
+    no_nas <- da[!duplicated(real_p$groupID)&!is.na(real_p$groupID), c(id, x, y)]
+    coord_filter <- unique(dplyr::bind_rows(no_nas, nas))
+  }else{
+    coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y)]
+  }
 
   message("Number of filtered records: ", nrow(coord_filter))
   return(dplyr::tibble(coord_filter))
