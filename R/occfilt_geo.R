@@ -32,8 +32,6 @@
 #' \dontrun{
 #' require(terra)
 #' require(dplyr)
-#' require(ape)
-#' require(spThin)
 #'
 #' # Environmental variables
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
