@@ -86,7 +86,7 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins, cores = 1) {
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
 
-  message("Extracting values from raster ... ")
+  message("Extracting values from raster ...")
   env_layer <- terra::extract(env_layer, coord)
   env_layer$ID <- NULL
 
@@ -105,7 +105,7 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins, cores = 1) {
   classes <- list()
   for (i in 1:n) {
     ext1 <- range(env_layer[, i])
-    ext1[1] <- ext1[1] - 1
+    ext1[1] <- ext1[1] - .Machine$double.eps
     classes[[i]] <- seq(ext1[1], ext1[2], by = res[i])
   }
   classes <- expand.grid(classes)
