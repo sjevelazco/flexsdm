@@ -22,11 +22,12 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr tibble
-#' @importFrom stats complete.cases prcomp
-#' @importFrom terra extract vect project as.data.frame predict distance
 #' @importFrom ape Moran.I
+#' @importFrom dplyr tibble
 #' @importFrom spThin thin
+#' @importFrom stats complete.cases prcomp dist
+#' @importFrom terra vect project geom extract as.data.frame predict xyFromCell distance
+#' @importFrom utils capture.output
 #'
 #' @examples
 #' \dontrun{
@@ -87,7 +88,7 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
     da <- terra::vect(data, geom = c(x, y), prj)
     da <- terra::project(da, "+proj=longlat +datum=WGS84")
     da <- data.frame(terra::geom(da))
-    da <- tibble::tibble(cbind(da[c(x, y)], data[c(id)]))
+    da <- dplyr::tibble(cbind(da[c(x, y)], data[c(id)]))
 
     env_layer <- terra::project(env_layer, "+proj=longlat +datum=WGS84")
   } else {
@@ -141,7 +142,7 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
     coord <- lat2grd(coord)
 
     # Calculate distances & Define breaks
-    dists <- dist(coord)
+    dists <- stats::dist(coord)
     br <- max(dists) / 20
     br <- seq(from = br, to = max(dists), by = br)
 
@@ -150,8 +151,8 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
     for (i in 1:length(br)) {
       dists2 <- dists
       dists2[dists2 > br[i]] <- 0
-      diag(dists2) <- 0
       dists2 <- as.matrix(dists2)
+      diag(dists2) <- 0
       mor[i] <- abs(ape::Moran.I(x = vals, weight = dists2)$observed)
     }
 
