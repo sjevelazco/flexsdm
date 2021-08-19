@@ -19,7 +19,7 @@
 #' plot_res(r, res_mult = 200)
 #' }
 plot_res <- function(r, res_mult) {
-  r0 <- r
+  r0 <- r[[1]]
   r0[!is.na(r0)] <- 1
   r[] <- 0
   terra::res(r) <- terra::res(r) * res_mult
