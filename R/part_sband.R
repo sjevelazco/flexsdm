@@ -246,7 +246,7 @@ unique list values in pr_ab column are: ",
       if (n_part %% 2 == 1) {
         group <- c(
           rep(1:n_part, DIM[i, 2])[1:DIM[i, 2]],
-          rep(c((n_part / 3 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
+          rep(c(as.integer(n_part / 2 + 1):n_part, 1:(n_part / 2)), DIM[i, 2])[1:DIM[i, 2]]
         )
       }
       terra::values(grid[[i]]) <-
