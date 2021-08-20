@@ -306,6 +306,12 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
     length(unique(x))
   })
   pp <- ifelse(pp == n_part, TRUE, FALSE)
+
+  if(all(!pp)){
+    message("It was not possible to find a good partition. Try to change values in 'n_part', or in 'min_band', or 'max_band'")
+    return(NA)
+  }
+
   # Elimination of those partition that have one record in some group
   pf <- sapply(part[pa == 1, ], table)
   if (is.list(pf) == TRUE) {
