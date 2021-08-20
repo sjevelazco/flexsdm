@@ -17,6 +17,7 @@ test_that("sample_background random method", {
     min_res_mult = 100,
     max_res_mult = 500,
     num_grids = 10,
+    min_occ = 2,
     n_part = 2
   )
   grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
@@ -115,6 +116,7 @@ test_that("sample_background Thickening method", {
     min_res_mult = 100,
     max_res_mult = 500,
     num_grids = 10,
+    min_occ = 2,
     n_part = 2
   )
   grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
