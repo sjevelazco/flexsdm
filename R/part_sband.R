@@ -43,7 +43,7 @@
 #' \itemize{
 #' \item
 #' }
-#' #' @export
+#' @export
 #'
 #' @importFrom ape Moran.I
 #' @importFrom dplyr tibble pull group_by slice_sample select
@@ -122,6 +122,7 @@
 #'   pch = 19
 #' )
 #' }
+#'
 part_sband <- function(env_layer,
                        data,
                        x,

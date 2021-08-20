@@ -139,10 +139,10 @@ points(part_2$part[c("x", "y")],
   pch = 19
 )
 }
+
 }
 \references{
 \itemize{
 \item
 }
-#' @export
 }
