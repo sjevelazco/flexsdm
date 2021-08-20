@@ -135,9 +135,9 @@
 <code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: flexsdm</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: terra</span>
-<span class="co">#&gt; terra version 1.3.16</span>
+<span class="co">#&gt; terra version 1.3.4</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'terra'</span>
 <span class="co">#&gt; The following object is masked from 'package:knitr':</span>
@@ -173,7 +173,7 @@
               threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
               return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpWkGt1m/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp2pZSUk/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="data-species-occurrence-and-background-data" class="section level2">
 <h2 class="hasAnchor">
@@ -183,7 +183,7 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"backg"</span><span class="op">)</span>
 
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pillar/man/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span>
 <span class="co">#&gt; Rows: 1,400</span>
 <span class="co">#&gt; Columns: 13</span>
 <span class="co">#&gt; $ id       &lt;int&gt; 715, 5680, 7907, 1850, 1702, 10036, 12384, 6513, 9884, 8651, ~</span>
@@ -199,7 +199,7 @@
 <span class="co">#&gt; $ awc      &lt;dbl&gt; 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0~</span>
 <span class="co">#&gt; $ depth    &lt;dbl&gt; 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99~</span>
 <span class="co">#&gt; $ landform &lt;fct&gt; 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1~</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pillar/man/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">backg</span><span class="op">)</span>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">backg</span><span class="op">)</span>
 <span class="co">#&gt; Rows: 5,000</span>
 <span class="co">#&gt; Columns: 13</span>
 <span class="co">#&gt; $ pr_ab        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~</span>
@@ -223,7 +223,7 @@
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pillar/man/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">abies2</span><span class="op">)</span>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">abies2</span><span class="op">)</span>
 <span class="co">#&gt; Rows: 1,400</span>
 <span class="co">#&gt; Columns: 14</span>
 <span class="co">#&gt; $ id       &lt;int&gt; 715, 5680, 7907, 1850, 1702, 10036, 12384, 6513, 9884, 8651, ~</span>
@@ -239,7 +239,7 @@
 <span class="co">#&gt; $ awc      &lt;dbl&gt; 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0~</span>
 <span class="co">#&gt; $ depth    &lt;dbl&gt; 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99~</span>
 <span class="co">#&gt; $ landform &lt;fct&gt; 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1~</span>
-<span class="co">#&gt; $ .part    &lt;int&gt; 5, 1, 1, 5, 3, 3, 5, 1, 1, 1, 4, 1, 5, 1, 2, 4, 2, 1, 5, 2, 2~</span></code></pre></div>
+<span class="co">#&gt; $ .part    &lt;int&gt; 5, 5, 5, 2, 1, 2, 2, 4, 2, 5, 1, 5, 2, 2, 2, 2, 5, 3, 5, 2, 5~</span></code></pre></div>
 <p>Now, in the abies2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5). Next, we have to apply the same method to the environmental conditions of the background points.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">backg2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
@@ -248,7 +248,7 @@
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/pillar/man/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">backg2</span><span class="op">)</span>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">backg2</span><span class="op">)</span>
 <span class="co">#&gt; Rows: 5,000</span>
 <span class="co">#&gt; Columns: 14</span>
 <span class="co">#&gt; $ pr_ab        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~</span>
@@ -264,7 +264,7 @@
 <span class="co">#&gt; $ depth        &lt;dbl&gt; 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17~</span>
 <span class="co">#&gt; $ percent_clay &lt;dbl&gt; 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,~</span>
 <span class="co">#&gt; $ landform     &lt;fct&gt; 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, ~</span>
-<span class="co">#&gt; $ .part        &lt;int&gt; 2, 3, 1, 4, 3, 5, 1, 1, 1, 3, 1, 3, 4, 4, 3, 3, 2, 1, 4, ~</span></code></pre></div>
+<span class="co">#&gt; $ .part        &lt;int&gt; 3, 4, 5, 1, 4, 1, 3, 1, 5, 5, 1, 1, 2, 5, 1, 1, 3, 1, 4, ~</span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5).</p>
 <div id="fit-and-validate-models" class="section level3">
 <h3 class="hasAnchor">
@@ -300,13 +300,13 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;     Df  %Dev  Lambda</span>
-<span class="co">#&gt; 1    0  0.00 159.200</span>
-<span class="co">#&gt; 2    0  0.00 152.000</span>
-<span class="co">#&gt; 3    0  0.00 145.200</span>
-<span class="co">#&gt; 4    0  0.00 138.600</span>
-<span class="co">#&gt; 5    0  0.00 132.300</span>
-<span class="co">#&gt; 6    0  0.00 126.300</span>
+<span class="co">#&gt;     Df %Dev Lambda</span>
+<span class="co">#&gt; 1    0 0.00 80.300</span>
+<span class="co">#&gt; 2    0 0.00 76.670</span>
+<span class="co">#&gt; 3    0 0.00 73.200</span>
+<span class="co">#&gt; 4    0 0.00 69.890</span>
+<span class="co">#&gt; 5    0 0.00 66.730</span>
+<span class="co">#&gt; 6    0 0.00 63.710</span>
 <span class="co">#&gt;  [ reached getOption("max.print") -- omitted 194 rows ]</span></code></pre></div>
 <p>model: A “MaxEnt” class object. This object can be used for predicting.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -319,11 +319,11 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">performance</span>
 <span class="co">#&gt; # A tibble: 3 x 25</span>
-<span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 max   equal_sens_sp~     0.472         700        700    0.654 0.0148    0.657</span>
-<span class="co">#&gt; 2 max   max_sens_spec      0.563         700        700    0.883 0.0352    0.527</span>
-<span class="co">#&gt; 3 max   max_sorensen       0.273         700        700    0.933 0.0448    0.463</span>
+<span class="co">#&gt;   model threshold       thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 max   equal_sens_spec     0.591         700        700    0.671 0.0175    0.671</span>
+<span class="co">#&gt; 2 max   max_sens_spec       0.573         700        700    0.859 0.0402    0.569</span>
+<span class="co">#&gt; 3 max   max_sorensen        0.415         700        700    0.904 0.0260    0.519</span>
 <span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
@@ -333,18 +333,18 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">data_ens</span>
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
-<span class="co">#&gt;    rnames replicates part  pr_ab    pred</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2      .part      1         0 0.125  </span>
-<span class="co">#&gt;  2 3      .part      1         0 0.826  </span>
-<span class="co">#&gt;  3 8      .part      1         0 0.576  </span>
-<span class="co">#&gt;  4 9      .part      1         0 0.596  </span>
-<span class="co">#&gt;  5 10     .part      1         0 0.858  </span>
-<span class="co">#&gt;  6 12     .part      1         0 0.225  </span>
-<span class="co">#&gt;  7 14     .part      1         0 0.305  </span>
-<span class="co">#&gt;  8 18     .part      1         0 0.00470</span>
-<span class="co">#&gt;  9 27     .part      1         0 0.810  </span>
-<span class="co">#&gt; 10 37     .part      1         0 0.219  </span>
+<span class="co">#&gt;    rnames replicates part  pr_ab   pred</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 5      .part      1         0 0.792 </span>
+<span class="co">#&gt;  2 11     .part      1         0 0.216 </span>
+<span class="co">#&gt;  3 23     .part      1         0 0.667 </span>
+<span class="co">#&gt;  4 30     .part      1         0 0.0194</span>
+<span class="co">#&gt;  5 33     .part      1         0 0.0383</span>
+<span class="co">#&gt;  6 34     .part      1         0 0.346 </span>
+<span class="co">#&gt;  7 36     .part      1         0 0.113 </span>
+<span class="co">#&gt;  8 42     .part      1         0 0.286 </span>
+<span class="co">#&gt;  9 48     .part      1         0 0.120 </span>
+<span class="co">#&gt; 10 51     .part      1         0 0.0171</span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>We can see the environmental conditions of presence-absence data with the prediction for each input row.</p>
 <p>II- Random forest models with exploration of hyper-parameters.</p>
@@ -392,13 +392,13 @@
 <span class="co">#&gt;  randomForest(formula = formula1, data = data, mtry = best_hyperp$mtry,      ntree = 500, importance = TRUE) </span>
 <span class="co">#&gt;                Type of random forest: classification</span>
 <span class="co">#&gt;                      Number of trees: 500</span>
-<span class="co">#&gt; No. of variables tried at each split: 1</span>
+<span class="co">#&gt; No. of variables tried at each split: 2</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;         OOB estimate of  error rate: 11.43%</span>
+<span class="co">#&gt;         OOB estimate of  error rate: 10.93%</span>
 <span class="co">#&gt; Confusion matrix:</span>
 <span class="co">#&gt;     0   1 class.error</span>
-<span class="co">#&gt; 0 594 106  0.15142857</span>
-<span class="co">#&gt; 1  54 646  0.07714286</span></code></pre></div>
+<span class="co">#&gt; 0 606  94  0.13428571</span>
+<span class="co">#&gt; 1  59 641  0.08428571</span></code></pre></div>
 <p>model: A “randomForest” class object. This object can be used for formula details and predicting.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rf_t</span><span class="op">$</span><span class="va">predictors</span>
@@ -412,7 +412,7 @@
 <span class="co">#&gt; # A tibble: 1 x 26</span>
 <span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     1 raf   max_sens_spec     0.636         700        700    0.913 0.0467</span>
+<span class="co">#&gt; 1     2 raf   max_sens_spec      0.53         700        700     0.91 0.0193</span>
 <span class="co">#&gt; # ... with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
@@ -424,16 +424,16 @@
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
 <span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 2      .part      1     0     0.062</span>
-<span class="co">#&gt;  2 3      .part      1     0     0.078</span>
-<span class="co">#&gt;  3 8      .part      1     0     0.216</span>
-<span class="co">#&gt;  4 9      .part      1     0     0.454</span>
-<span class="co">#&gt;  5 10     .part      1     0     0.154</span>
-<span class="co">#&gt;  6 12     .part      1     0     0.394</span>
-<span class="co">#&gt;  7 14     .part      1     0     0.098</span>
-<span class="co">#&gt;  8 18     .part      1     0     0.016</span>
-<span class="co">#&gt;  9 27     .part      1     0     0.238</span>
-<span class="co">#&gt; 10 37     .part      1     0     0.126</span>
+<span class="co">#&gt;  1 5      .part      1     0     0.46 </span>
+<span class="co">#&gt;  2 11     .part      1     0     0.1  </span>
+<span class="co">#&gt;  3 23     .part      1     0     0.064</span>
+<span class="co">#&gt;  4 30     .part      1     0     0.018</span>
+<span class="co">#&gt;  5 33     .part      1     0     0.05 </span>
+<span class="co">#&gt;  6 34     .part      1     0     0.018</span>
+<span class="co">#&gt;  7 36     .part      1     0     0.024</span>
+<span class="co">#&gt;  8 42     .part      1     0     0.024</span>
+<span class="co">#&gt;  9 48     .part      1     0     0    </span>
+<span class="co">#&gt; 10 51     .part      1     0     0.24 </span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability for each test partition. This database is used in flexsdm::fit_ensemble().</p>
 </div>
@@ -443,7 +443,7 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># First we need this libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
 
 <span class="co"># Environmental variables</span>
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>

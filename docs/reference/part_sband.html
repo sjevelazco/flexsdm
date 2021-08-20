@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Spatial band cross-validation — part_sband" />
 <meta property="og:description" content="This function explores different numbers of spatial bands and returns the
-best one suited for a given presence or presence-absences database. The selection of the best
+most suitable value for a given presence or presence-absence database. The selection of the best
 number of bands is performed automatically considering spatial autocorrelation, environmental
 similarity, and the number of presence and absence records in each partition." />
 
@@ -128,7 +128,7 @@ similarity, and the number of presence and absence records in each partition." /
 
     <div class="ref-description">
     <p>This function explores different numbers of spatial bands and returns the
-best one suited for a given presence or presence-absences database. The selection of the best
+most suitable value for a given presence or presence-absence database. The selection of the best
 number of bands is performed automatically considering spatial autocorrelation, environmental
 similarity, and the number of presence and absence records in each partition.</p>
     </div>
@@ -143,6 +143,7 @@ similarity, and the number of presence and absence records in each partition.</p
   n_part <span class='op'>=</span> <span class='fl'>2</span>,
   min_bands <span class='op'>=</span> <span class='fl'>2</span>,
   max_bands <span class='op'>=</span> <span class='fl'>20</span>,
+  min_occ <span class='op'>=</span> <span class='fl'>10</span>,
   prop <span class='op'>=</span> <span class='fl'>0.5</span>
 <span class='op'>)</span></pre>
 
@@ -152,28 +153,28 @@ similarity, and the number of presence and absence records in each partition.</p
     <tr>
       <th>env_layer</th>
       <td><p>SpatRaster. Raster with environmental
-variable. This will be used to evaluate spatial autocorrelation and
-environmental similarity between training and testing partition. Because this function
-calculate dissimilarity based on euclidean distances, it can only handle continuous
-layers, do not use categorical layers as inputs</p></td>
+variable. Used to evaluate spatial autocorrelation and
+environmental similarity between training and testing partitions. Because this function
+calculate dissimilarity based on Euclidean distances, it can only be used with continuous environmental variables
+layers; do not use categorical layers as inputs</p></td>
     </tr>
     <tr>
       <th>data</th>
       <td><p>data.frame. Data.frame or tibble object with presences
-(or presence-absence, or presences-pseudo-absence) records, and coordinates</p></td>
+(or presence-absence, or presence-pseudo-absence) records, and coordinates</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>character. Column name with longitude data</p></td>
+      <td><p>character. Column name with spatial x coordinates</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>character. Column name with latitude data</p></td>
+      <td><p>character. Column name with spatial y coordinates</p></td>
     </tr>
     <tr>
       <th>pr_ab</th>
       <td><p>character. Column with presences, presence-absence,
-or pseudo-absence. Presences must be represented by 1 and absences by 0</p></td>
+or -pseudo-absence. Presences must be represented by 1 and absences by 0</p></td>
     </tr>
     <tr>
       <th>type</th>
@@ -193,8 +194,14 @@ or pseudo-absence. Presences must be represented by 1 and absences by 0</p></td>
       <td><p>integer. Maximum number of spatial bands to be tested, default 20.</p></td>
     </tr>
     <tr>
+      <th>min_occ</th>
+      <td><p>numeric. Minimum number of presences or absences in a partition fold.
+The min_occ value should be base on the amount of predictors in order to avoid over-fitting
+or error when fitting models for a given fold. Default 10.</p></td>
+    </tr>
+    <tr>
       <th>prop</th>
-      <td><p>numeric. Proportion of point used for testing autocorrelation between
+      <td><p>numeric. Proportion of points used for testing autocorrelation between
 groups (values &gt; 0 and &lt;=1). The smaller this number is, the faster the function will work.
 Default 0.5</p></td>
     </tr>
@@ -204,14 +211,24 @@ Default 0.5</p></td>
 
     <p>A list with:</p><ul>
 <li><p>part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.</p></li>
-<li><p>best_part_info: A tibble with information of the bets partition. It contains the number of the best partition (n_grid), number of bands (n_bands), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on euclidean distance (env_sim).</p></li>
+<li><p>best_part_info: A tibble with information about the best partition. It contains the number of the best partition (n_grid), number of bands (n_bands), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on Euclidean distance (env_sim).</p></li>
 <li><p>grid: A SpatRaster object with bands</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>(JF THINKS THIS FUNCTION NEEDS MORE EXPLANATION AND REFERENCES)</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    
+<ul>
+<li><p></p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra/'>terra</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra'>terra</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
 
 <span class='co'># Load datasets</span>
@@ -219,7 +236,7 @@ Default 0.5</p></td>
 <span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/somevar.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
-<span class='co'># Let's practice with two longitudinal partition with presences and absences</span>
+<span class='co'># Example of two longitudinal partitions with presences and absences</span>
 <span class='va'>single_spp</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span><span class='op'>)</span>
 <span class='va'>part_1</span> <span class='op'>&lt;-</span> <span class='fu'>part_sband</span><span class='op'>(</span>
   env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
@@ -231,14 +248,18 @@ Default 0.5</p></td>
   min_bands <span class='op'>=</span> <span class='fl'>2</span>,
   max_bands <span class='op'>=</span> <span class='fl'>20</span>,
   n_part <span class='op'>=</span> <span class='fl'>2</span>,
+  min_occ <span class='op'>=</span> <span class='fl'>10</span>,
   prop <span class='op'>=</span> <span class='fl'>0.5</span>
 <span class='op'>)</span>
 
-<span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span>
-<span class='va'>part_1</span><span class='op'>$</span><span class='va'>best_part_info</span>
-<span class='va'>part_1</span><span class='op'>$</span><span class='va'>grid</span>
+<span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span> <span class='co'># database with partition fold (.part)</span>
+<span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>pr_ab</span>, <span class='va'>.part</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/count.html'>count</a></span><span class='op'>(</span><span class='op'>)</span> <span class='co'># number of presences and absences in each fold</span>
+<span class='va'>part_1</span><span class='op'>$</span><span class='va'>best_part_info</span> <span class='co'># information of the best partition</span>
+<span class='va'>part_1</span><span class='op'>$</span><span class='va'>grid</span> <span class='co'># raster with folds</span>
 
-<span class='co'># Lets explore Grid object and presences and absences points</span>
+<span class='co'># Explore grid object and presences and absences points</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>part_1</span><span class='op'>$</span><span class='va'>grid</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
   col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/palettes.html'>rainbow</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part_1</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
@@ -247,7 +268,7 @@ Default 0.5</p></td>
 <span class='op'>)</span>
 
 
-<span class='co'># Let's practice with four latitudinal partition and only with presences</span>
+<span class='co'># Example of four latitudinal partition and only presences</span>
 <span class='va'>single_spp</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span>, <span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>part_2</span> <span class='op'>&lt;-</span> <span class='fu'>part_sband</span><span class='op'>(</span>
   env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
@@ -259,6 +280,7 @@ Default 0.5</p></td>
   min_bands <span class='op'>=</span> <span class='fl'>8</span>,
   max_bands <span class='op'>=</span> <span class='fl'>40</span>,
   n_part <span class='op'>=</span> <span class='fl'>8</span>,
+  min_occ <span class='op'>=</span> <span class='fl'>10</span>,
   prop <span class='op'>=</span> <span class='fl'>0.5</span>
 <span class='op'>)</span>
 
@@ -266,7 +288,7 @@ Default 0.5</p></td>
 <span class='va'>part_2</span><span class='op'>$</span><span class='va'>best_part_info</span>
 <span class='va'>part_2</span><span class='op'>$</span><span class='va'>grid</span>
 
-<span class='co'># Lets explore Grid object and presences points</span>
+<span class='co'># Explore Grid object and presences points</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>part_2</span><span class='op'>$</span><span class='va'>grid</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part_2</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
   col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/palettes.html'>rainbow</a></span><span class='op'>(</span><span class='fl'>8</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part_2</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
@@ -274,6 +296,7 @@ Default 0.5</p></td>
   pch <span class='op'>=</span> <span class='fl'>19</span>
 <span class='op'>)</span>
 <span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

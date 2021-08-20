@@ -40,10 +40,10 @@
     <loc>https://sjevelazco.github.io/flexsdm/reference/esm_svm.html</loc>
   </url>
   <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/extra_correct.html</loc>
+    <loc>https://sjevelazco.github.io/flexsdm/reference/extra_eval.html</loc>
   </url>
   <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/extra_eval.html</loc>
+    <loc>https://sjevelazco.github.io/flexsdm/reference/extra_exclude.html</loc>
   </url>
   <url>
     <loc>https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.html</loc>
@@ -89,6 +89,9 @@
   </url>
   <url>
     <loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_env.html</loc>
+  </url>
+  <url>
+    <loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.html</loc>
   </url>
   <url>
     <loc>https://sjevelazco.github.io/flexsdm/reference/part_random.html</loc>

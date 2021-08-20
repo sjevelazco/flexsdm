@@ -119,8 +119,8 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
-<span class="co">#&gt; terra version 1.3.16</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
+<span class="co">#&gt; terra version 1.3.4</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'terra'</span>
 <span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
@@ -146,7 +146,7 @@
               threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
               return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpMjrnSY/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp4QzTQq/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="species-occurrence-presenceabsense-and-environmental-data" class="section level2">
 <h2 class="hasAnchor">
@@ -387,8 +387,8 @@
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
 <span class="co">#&gt; names       :          gbm,      max_fpb </span>
-<span class="co">#&gt; min values  : 0.0001084728, 0.0000000000 </span>
-<span class="co">#&gt; max values  :    0.9982158,    1.0000000</span>
+<span class="co">#&gt; min values  : 0.0002949323, 0.0000000000 </span>
+<span class="co">#&gt; max values  :    0.9986537,    1.0000000</span>
 
 <span class="co"># Plot to see this layers</span>
 <span class="va">list_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">list_p</span><span class="op">)</span>
@@ -417,8 +417,8 @@
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
 <span class="co">#&gt; names       :      meansup,      max_fpb </span>
-<span class="co">#&gt; min values  : 5.423638e-05, 0.000000e+00 </span>
-<span class="co">#&gt; max values  :    0.9978713,    1.0000000</span>
+<span class="co">#&gt; min values  : 0.0001474662, 0.0000000000 </span>
+<span class="co">#&gt; max values  :    0.9972243,    1.0000000</span>
 
 <span class="co"># Plot to see this layers</span>
 <span class="va">ensemble_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">ensemble_p</span><span class="op">)</span>
@@ -446,8 +446,8 @@
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
 <span class="co">#&gt; names       :      esm_gam,      max_fpb </span>
-<span class="co">#&gt; min values  : 1.951628e-16, 0.000000e+00 </span>
-<span class="co">#&gt; max values  :    0.8789352,    1.0000000</span>
+<span class="co">#&gt; min values  : 2.024101e-16, 0.000000e+00 </span>
+<span class="co">#&gt; max values  :    0.9115741,    1.0000000</span>
 
 <span class="co"># Plot to see this layers</span>
 <span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span>
@@ -580,7 +580,7 @@
 <a href="#raster-interpolation-between-two-time-periods" class="anchor"></a>3. Raster interpolation between two time periods</h3>
 <p>This function is useful for calculating suitability values between two time periods with simple interpolation using two raster objects with suitability values. This function returns a SpatRaster if dir_save is used as NULL, this function will return a SpatRaster object. However, if the user specifies dir_save, the function will save the interpolated raster files in a given directory.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/suit_time_step.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
@@ -628,7 +628,7 @@
 <p>This function measures extrapolation comparing data used for modeling calibration and area for model projection using the approach proposed by Velazco et al., in prep</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">spp</span><span class="op">)</span>
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
@@ -685,7 +685,7 @@
 <p>This function creates geographical predictor variables that, together with environmental variables, can be used to construct constrained species distribution models. This function returns a SpatRaster object, which have to be used together with environmental variables at the moment to construct species distribution models. The ‘xy’ approach creates a single pair of raster layers that can be used for all species that share the same study region. Otherwise, ‘cml’, ‘min’, and ‘ker’ create a species-specific raster layer.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span>
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
@@ -759,7 +759,7 @@
 <p>First, prepare the data</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span>
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>

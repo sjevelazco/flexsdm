@@ -100,8 +100,8 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
-<span class="co">#&gt; terra version 1.3.16</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
+<span class="co">#&gt; terra version 1.3.4</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'terra'</span>
 <span class="co">#&gt; The following object is masked from 'package:knitr':</span>
@@ -144,14 +144,14 @@
     id <span class="op">=</span> <span class="st">"id"</span>,
     nbins <span class="op">=</span> <span class="fl">8</span>,
     env_layer <span class="op">=</span> <span class="va">somevar</span>,
-    cores <span class="op">=</span> <span class="fl">10</span>
+    cores <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">abies_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Extracting values from raster ...</span>
 <span class="co">#&gt; 27 records were removed because they have NAs for some variables</span>
 <span class="co">#&gt; Number of classes in the environmental space: 6561</span>
 <span class="co">#&gt; Number of unfiltered records: 673</span>
-<span class="co">#&gt; Number of filtered records: 219</span>
+<span class="co">#&gt; Number of filtered records: 214</span>
 
 
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
@@ -209,8 +209,7 @@
     rlayer <span class="op">=</span> <span class="va">block_layer</span>, 
     maskval <span class="op">=</span> <span class="va">x</span>
   <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>pr_ab <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> 
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">bg</span><span class="op">)</span></code></pre></div>
@@ -230,8 +229,7 @@
     rlayer <span class="op">=</span> <span class="va">block_layer</span>, 
     maskval <span class="op">=</span> <span class="va">x</span>
   <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>pr_ab <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>  
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> 
 
 <span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">psa</span>, x<span class="op">=</span><span class="st">"x"</span>, y<span class="op">=</span><span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
   
@@ -246,35 +244,35 @@
 
 
 <span class="va">abies_df2</span> <span class="co"># Presence-Pseudo-absence database</span>
-<span class="co">#&gt; # A tibble: 438 x 4</span>
+<span class="co">#&gt; # A tibble: 428 x 4</span>
 <span class="co">#&gt;          x        y pr_ab .part</span>
 <span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 -12558.   68530.     1     2</span>
-<span class="co">#&gt;  2 115217. -145937.     1     3</span>
-<span class="co">#&gt;  3   3634.   22501.     1     2</span>
-<span class="co">#&gt;  4  44972.  -60781.     1     3</span>
-<span class="co">#&gt;  5 -34463.  160313.     1     4</span>
-<span class="co">#&gt;  6  83108.  -27300.     1     3</span>
-<span class="co">#&gt;  7 124877. -176319.     1     3</span>
-<span class="co">#&gt;  8 118707. -179991.     1     3</span>
-<span class="co">#&gt;  9 126141. -176302.     1     3</span>
-<span class="co">#&gt; 10 -49722.  141124.     1     2</span>
-<span class="co">#&gt; # ... with 428 more rows</span>
+<span class="co">#&gt;  1 -12558.   68530.     1     3</span>
+<span class="co">#&gt;  2 115217. -145937.     1     2</span>
+<span class="co">#&gt;  3   3634.   22501.     1     1</span>
+<span class="co">#&gt;  4  44972.  -60781.     1     1</span>
+<span class="co">#&gt;  5 -34463.  160313.     1     3</span>
+<span class="co">#&gt;  6  83108.  -27300.     1     2</span>
+<span class="co">#&gt;  7 124877. -176319.     1     2</span>
+<span class="co">#&gt;  8 118707. -179991.     1     2</span>
+<span class="co">#&gt;  9 126141. -176302.     1     2</span>
+<span class="co">#&gt; 10 -49722.  141124.     1     3</span>
+<span class="co">#&gt; # ... with 418 more rows</span>
 <span class="va">bg</span> <span class="co"># Background points</span>
-<span class="co">#&gt; # A tibble: 2,190 x 4</span>
-<span class="co">#&gt;          x        y pr_ab .part</span>
-<span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1  41169. -235318.     0     1</span>
-<span class="co">#&gt;  2  48729. -303358.     0     1</span>
-<span class="co">#&gt;  3 311439. -462118.     0     1</span>
-<span class="co">#&gt;  4 224499. -488578.     0     1</span>
-<span class="co">#&gt;  5  35499. -344938.     0     1</span>
-<span class="co">#&gt;  6 273639. -569848.     0     1</span>
-<span class="co">#&gt;  7  50619. -257998.     0     1</span>
-<span class="co">#&gt;  8 126219. -254218.     0     1</span>
-<span class="co">#&gt;  9  67629. -394078.     0     1</span>
-<span class="co">#&gt; 10 318999. -465898.     0     1</span>
-<span class="co">#&gt; # ... with 2,180 more rows</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 2,140 x 4</span>
+<span class="co">#&gt;           x        y pr_ab .part</span>
+<span class="co">#&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 -153501.  343022.     0     1</span>
+<span class="co">#&gt;  2   16599.   10382.     0     1</span>
+<span class="co">#&gt;  3  -47661. -129478.     0     1</span>
+<span class="co">#&gt;  4 -110031. -148378.     0     1</span>
+<span class="co">#&gt;  5    -411.  -23638.     0     1</span>
+<span class="co">#&gt;  6   22269. -395968.     0     1</span>
+<span class="co">#&gt;  7 -161061.  276872.     0     1</span>
+<span class="co">#&gt;  8 -149721.  282542.     0     1</span>
+<span class="co">#&gt;  9  -34431.  -59548.     0     1</span>
+<span class="co">#&gt; 10 -113811. -133258.     0     1</span>
+<span class="co">#&gt; # ... with 2,130 more rows</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">abies_df2</span> <span class="op">&lt;-</span> <span class="va">abies_df2</span> <span class="op">%&gt;%</span>
@@ -341,11 +339,9 @@
 <span class="co">#&gt; Partition number: 1/4</span>
 <span class="co">#&gt; Partition number: 2/4</span>
 <span class="co">#&gt; Partition number: 3/4</span>
-<span class="co">#&gt; Error in intI(j, n = x@Dim[2], dn[[2]], give.dn = FALSE) : </span>
-<span class="co">#&gt;   index larger than maximal 150</span>
 <span class="co">#&gt; Partition number: 4/4</span>
 <span class="co">#&gt; Formula used for model fitting:</span>
-<span class="co">#&gt; ~aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2) + hinge(aet) + hinge(cwd) + hinge(tmx) + hinge(tmn) + thresholds(aet) + thresholds(cwd) + thresholds(tmx) + thresholds(tmn) + cwd:aet + tmx:aet + tmn:aet + tmx:cwd + tmn:cwd + tmn:tmx - 1</span>
+<span class="co">#&gt; ~aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2) - 1</span>
 <span class="co">#&gt; Replica number: 1/1</span>
 <span class="co">#&gt; Partition number: 1/4</span>
 <span class="co">#&gt; Partition number: 2/4</span>
@@ -385,15 +381,15 @@
 
 <span class="va">merge_df</span>
 <span class="co">#&gt; # A tibble: 7 x 28</span>
-<span class="co">#&gt;   regmult classes model_ID model threshold      thr_value n_presences n_absences</span>
-<span class="co">#&gt;     &lt;dbl&gt; &lt;fct&gt;      &lt;int&gt; &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;</span>
-<span class="co">#&gt; 1     2.6 lqhpt          1 max   max_sens_spec      0.253         219        219</span>
-<span class="co">#&gt; 2    NA   &lt;NA&gt;           2 gau   equal_sens_sp~     0.656         219        219</span>
-<span class="co">#&gt; 3    NA   &lt;NA&gt;           2 gau   max_sens_spec      0.577         219        219</span>
-<span class="co">#&gt; 4    NA   &lt;NA&gt;           2 gau   max_sorensen       0.496         219        219</span>
-<span class="co">#&gt; 5    NA   &lt;NA&gt;           3 glm   equal_sens_sp~     0.589         219        219</span>
-<span class="co">#&gt; 6    NA   &lt;NA&gt;           3 glm   max_sens_spec      0.421         219        219</span>
-<span class="co">#&gt; 7    NA   &lt;NA&gt;           3 glm   max_sorensen       0.421         219        219</span>
+<span class="co">#&gt;   regmult classes model_ID model threshold       thr_value n_presences n_absences</span>
+<span class="co">#&gt;     &lt;dbl&gt; &lt;fct&gt;      &lt;int&gt; &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;</span>
+<span class="co">#&gt; 1     1.6 lq             1 max   max_sens_spec       0.380         214        214</span>
+<span class="co">#&gt; 2    NA   &lt;NA&gt;           2 gau   equal_sens_spec     0.661         214        214</span>
+<span class="co">#&gt; 3    NA   &lt;NA&gt;           2 gau   max_sens_spec       0.544         214        214</span>
+<span class="co">#&gt; 4    NA   &lt;NA&gt;           2 gau   max_sorensen        0.379         214        214</span>
+<span class="co">#&gt; 5    NA   &lt;NA&gt;           3 glm   equal_sens_spec     0.595         214        214</span>
+<span class="co">#&gt; 6    NA   &lt;NA&gt;           3 glm   max_sens_spec       0.350         214        214</span>
+<span class="co">#&gt; 7    NA   &lt;NA&gt;           3 glm   max_sorensen        0.350         214        214</span>
 <span class="co">#&gt; # ... with 20 more variables: TPR_mean &lt;dbl&gt;, TPR_sd &lt;dbl&gt;, TNR_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
@@ -419,11 +415,11 @@
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ens_m<span class="sc">$</span>performance</span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 x 25</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_sp~     0.588         219        218    0.791 0.123     0.874</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec      0.509         219        218    0.890 0.151     0.835</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen       0.488         219        218    0.986 0.0182    0.738</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_s~     0.525         214        214    0.844 0.0328     0.854</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec     0.313         214        214    0.943 0.104      0.846</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen      0.270         214        214    0.996 0.00781    0.787</span></span>
 <span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
 <span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>

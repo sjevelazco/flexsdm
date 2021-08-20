@@ -88,20 +88,20 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Species distribution modeling (SDM) has become a standard tool in multiple research areas, including ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological applications. The <em>flexsdm</em> package provides users the ability to manipulate and parameterize models in a variety of ways that meet their unique research needs.</p>
-<p>This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).</p>
+<p>Species distribution modeling (SDM) has become a standard tool in many research areas, including ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an active area of theoretical and methodological research. The <em>flexsdm</em> package provides users the ability to manipulate and parameterize models in a variety of ways that meet their unique research needs.</p>
+<p>This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situation (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).</p>
 <p>In this vignette, users will learn about the first set of functions in the <em>flexsdm</em> package that fall under the “pre-modeling” umbrella (see below for full list).</p>
 <p><strong>pre-modeling functions</strong></p>
 <ul>
 <li><p>calib_area() Delimit calibration area for constructing species distribution models</p></li>
-<li><p>correct_colinvar() Collinearity reduction on predictors</p></li>
-<li><p>env_outliers() Integration of outliers detection methods in the environmental space</p></li>
+<li><p>correct_colinvar() Collinearity reduction for predictors</p></li>
+<li><p>env_outliers() Integration of outliers detection methods in environmental space</p></li>
 <li><p>part_random() Data partitioning for training and testing models</p></li>
 <li><p>part_sblock() Spatial block cross-validation</p></li>
 <li><p>part_sband() Spatial band cross-validation</p></li>
 <li><p>part_senv() Environmental cross-validation</p></li>
 <li><p>plot_res() Plot different resolutions to be used in part_sblock</p></li>
-<li><p>get_block() Transform a spatial partition layer to the same spatial properties of environmental variables</p></li>
+<li><p>get_block() Transform a spatial partition layer to the same spatial properties as the environmental variables</p></li>
 <li><p>sample_background() Sample background points</p></li>
 <li><p>sample_pseudoabs() Sample pseudo-absence</p></li>
 <li><p>sdm_directory() Create directories for saving the outputs of flexsdm</p></li>
@@ -113,7 +113,7 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>First, let’s install the flexsdm package. You can install the released version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm">github</a> with:</p>
+<p>First, install the flexsdm package. You can install the released version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm">github</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
@@ -126,8 +126,8 @@
 <span class="co">#&gt; The following objects are masked from 'package:base':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
-<span class="co">#&gt; terra version 1.3.16</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
+<span class="co">#&gt; terra version 1.3.4</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'terra'</span>
 <span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
@@ -140,7 +140,7 @@
 <div id="project-directory-setup" class="section level2">
 <h2 class="hasAnchor">
 <a href="#project-directory-setup" class="anchor"></a>Project Directory Setup</h2>
-<p>When building SDM’s, organizing your folder directories will save time and confusion later. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let’s create a project directory where your initial data and the model results will be stored. The function sdm_directory() can do this for you, based on the types of model algorithms you want to use and/or the types of projections you would like to make. First you want to decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory) and then use dir.create() to create your main directory. Next, specify whether or not you want to include folders for projections, calibration areas, algorithms, ensembles, and thresholds.</p>
+<p>When building SDM’s, organizing folders (directories) for a project will save time and confusion. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let’s create a project directory where your initial data and the model results will be stored. The function sdm_directory() can do this for you, based on the types of model algorithms you want to use and/or the types of projections you would like to make. First decide where on your computer you would like to store the inputs and outputs of the project (this will be the main directory) and then use dir.create() to create that main directory. Next, specify whether or not you want to include folders for projections, calibration areas, algorithms, ensembles, and thresholds.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_project</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">'flex_sdm_project'</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">my_project</span><span class="op">)</span>
@@ -179,7 +179,7 @@
 <div id="geographic-region" class="section level2">
 <h2 class="hasAnchor">
 <a href="#geographic-region" class="anchor"></a>Geographic region</h2>
-<p>Our species occurrences are located in the California Floristic Province. You can load the “regions” dataset to visualize the study area in geographic space.</p>
+<p>Our species occurrences are located in the California Floristic Province (far western USA). The “regions” dataset can be used to visualize the study area in geographic space.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
 <span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></code></pre></div>
@@ -192,7 +192,7 @@
 <div id="calibration-area" class="section level2">
 <h2 class="hasAnchor">
 <a href="#calibration-area" class="anchor"></a>Calibration area</h2>
-<p>A big decision in SDM is delimiting your model’s calibration area, or the geographic space you will use to train your model(s). Choice of calibration area affects other modeling steps, including sampling pseudo-absence and background points, performance metrics, and the geographic patterns of habitat suitability. You would not want to train an SDM using the extent of the United States if you are interested in the geographic distribution and environmental controls of a rare plant species that is only found on mountaintops in the Sierra Nevada!</p>
+<p>An important decision in SDM is how to delimit your model’s calibration area, or the geographic space you will use to train your model(s). Choice of calibration area affects other modeling steps, including sampling pseudo-absence and background points, performance metrics, and the geographic patterns of habitat suitability. You would not want to train an SDM using the entire extent of the United States if you are interested in the geographic distribution and environmental controls of a rare plant species that is only found on mountaintops in the Sierra Nevada, California!</p>
 <p>Let’s use presence locations for one species in this exercise.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -201,11 +201,11 @@
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp1"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pr_ab</span><span class="op">)</span></code></pre></div>
-<p>The calib_area() function offers three methods for defining calibration area: buffer, mcp, bmcp, and mask. We will briefly go over each.</p>
+<p>The calib_area() function offers three methods for defining a calibration area: buffer, mcp, bmcp, and mask. We will briefly go over each.</p>
 <div id="buffer" class="section level3">
 <h3 class="hasAnchor">
 <a href="#buffer" class="anchor"></a>1. Buffer</h3>
-<p>Here we define the calibration area using buffers around presence points. User’s can specify the distance around points using the “width” argument.</p>
+<p>Here the calibration area is defined using buffers around presence points. User’s can specify the distance around points using the “width” argument.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ca_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">single_spp</span>,
@@ -222,7 +222,7 @@
 <div id="minimum-convex-polygon" class="section level3">
 <h3 class="hasAnchor">
 <a href="#minimum-convex-polygon" class="anchor"></a>2. Minimum convex polygon</h3>
-<p>You can see that the minimum convex polygon (mcp) method produces a much simpler shape.</p>
+<p>The minimum convex polygon (mcp) method produces a much simpler shape.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ca_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">single_spp</span>,
@@ -256,7 +256,7 @@
 <div id="mask" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mask" class="anchor"></a>4. Mask</h3>
-<p>The mask method allows you to select polygons that intersect with your species locations to delineate your calibration area. This might be useful if you are dealing with ecologically significant ecoregions or are interested in distributions within political boundaries. We will use a random set of polygons named “clusters” to illustrate the mask method. The original polygons are on the left and the polygons that contain points (our “mask” calibration area) are on the right.</p>
+<p>The mask method allows polygons to be selected that intersect with your species locations to delineate the calibration area. This is useful if you expect species distributions to be associated with ecologically significant (and mapped) ecoregions, or are interested in distributions within political boundaries. We will use a random set of polygons named “clusters” to illustrate the mask method. The original polygons are on the left and the polygons that contain points (our “mask” calibration area) are on the right.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/clusters.shp"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
 <span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html">vect</a></span><span class="op">(</span><span class="va">clusters</span><span class="op">)</span>
@@ -270,7 +270,7 @@
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">clusters</span>, main <span class="op">=</span> <span class="st">"Original polygons"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ca_4</span>, main <span class="op">=</span> <span class="st">"Polygons that contain points (mask)"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ca_4</span>, main <span class="op">=</span> <span class="st">"Polygons with points (mask)"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="01_pre_modeling_files/figure-html/mask%20method-1.png" width="576"></p>
 </div>
@@ -278,7 +278,7 @@
 <div id="reducing-collinearity-among-the-predictors" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reducing-collinearity-among-the-predictors" class="anchor"></a>Reducing collinearity among the predictors</h2>
-<p>Predictor collinearity is a common issue for SDMs, which can lead to model overfitting and errors in the estimative power of predictors (De Marco &amp; Nóbrega, 2018; Dormann et al., 2013).</p>
+<p>Predictor collinearity is a common issue for SDMs, which can lead to model overfitting and inaccurate tests of significance for predictors (De Marco &amp; Nóbrega, 2018; Dormann et al., 2013).</p>
 <div id="environmental-predictors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#environmental-predictors" class="anchor"></a>Environmental predictors</h3>
@@ -292,7 +292,7 @@
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></code></pre></div>
 <p><img src="01_pre_modeling_files/figure-html/env%20data-1.png" width="576"></p>
-<p>The relationship between different environmental variables can be visualized with the pairs() function from the <em>terra</em> package. Several of our variables have pretty high collinearity (.89 for predictors tmx and tmn)!</p>
+<p>The relationship between different environmental variables can be visualized with the pairs() function from the <em>terra</em> package. Several of our variables are highly correlated (.89 for predictors tmx and tmn).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/pairs.html">pairs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></code></pre></div>
 <p><img src="01_pre_modeling_files/figure-html/pairs%20plot-1.png" width="576"></p>
@@ -301,7 +301,7 @@
 <div id="pearson-correlation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pearson-correlation" class="anchor"></a>1. Pearson correlation</h3>
-<p>This method eliminates predictors with a Pearson correlation index higher than a determined threshold. The default threshold is 0.7, but users can specify a given threshold (x) with method = c(‘pearson’, th = ‘x’). Here, we can see that the “pearson” method retains two predictors (aet and tmx) and removes cwd and tmn. The function also returns a list of removed variables and a correlation matrix of all input predictors.</p>
+<p>This method eliminates predictors with a Pearson correlation index higher than a determined threshold. The default threshold is 0.7, but users can specify a given threshold (x) with method = c(‘pearson’, th = ‘x’). Here, we can see that the “pearson” method retains two predictors and removes two. The function also returns a list of removed variables and a correlation matrix of all input predictors.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pearson_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th<span class="op">=</span><span class="st">"0.7"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">pearson_var</span><span class="op">$</span><span class="va">env_layer</span>
@@ -311,77 +311,78 @@
 <span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
 <span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
 <span class="co">#&gt; source      : somevar.tif </span>
-<span class="co">#&gt; names       :       aet,       cwd </span>
-<span class="co">#&gt; min values  :  77.20633,   0.00000 </span>
-<span class="co">#&gt; max values  :  772.8461, 1357.8647</span>
+<span class="co">#&gt; names       :       cwd,       tmx </span>
+<span class="co">#&gt; min values  :  -9.39489,  22.44685 </span>
+<span class="co">#&gt; max values  :  14.20047, 614.69125</span>
 <span class="va">pearson_var</span><span class="op">$</span><span class="va">removed_variables</span>
-<span class="co">#&gt; [1] "tmx" "tmn"</span>
+<span class="co">#&gt; [1] "aet" "tmn"</span>
 <span class="va">pearson_var</span><span class="op">$</span><span class="va">correlation_table</span>
 <span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;   variable    aet   cwd    tmx    tmn</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 aet      0      0.506 0.0685 0.0492</span>
-<span class="co">#&gt; 2 cwd      0.506  0     0.843  0.768 </span>
-<span class="co">#&gt; 3 tmx      0.0685 0.843 0      0.887 </span>
-<span class="co">#&gt; 4 tmn      0.0492 0.768 0.887  0</span></code></pre></div>
+<span class="co">#&gt;   variable   aet   cwd   tmx   tmn</span>
+<span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 aet      0     0.769 0.792 0.785</span>
+<span class="co">#&gt; 2 cwd      0.769 0     0.417 0.588</span>
+<span class="co">#&gt; 3 tmx      0.792 0.417 0     0.732</span>
+<span class="co">#&gt; 4 tmn      0.785 0.588 0.732 0</span></code></pre></div>
 </div>
 <div id="variance-inflation-factor" class="section level3">
 <h3 class="hasAnchor">
 <a href="#variance-inflation-factor" class="anchor"></a>2. Variance inflation factor</h3>
-<p>This method removes the predictors with a higher variance inflation factor than the chosen threshold. Again users can specify a threshold (the default is 10). This method retains the predictors aet, tmx, and tmn and removes cwd. The output for this method matches what is produced by the pearson method: 1) environmental layer of retained variables, 2) a list of removed variables, and 3) a correlation matrix of all variables.</p>
+<p>This method removes the predictors with a variance inflation factor higher than the chosen threshold. Again, users can specify a threshold (the default is 10). This method retains the predictors aet, tmx, and tmn and removes cwd. The output for this method matches what is produced by the pearson method: 1) environmental layer of retained variables, 2) a list of removed variables, and 3) a correlation matrix of all variables.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">vif_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"vif"</span>, th <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">vif_var</span><span class="op">$</span><span class="va">env_layer</span>
+<span class="co">#&gt; class       : SpatRaster </span>
+<span class="co">#&gt; dimensions  : 558, 394, 4  (nrow, ncol, nlyr)</span>
+<span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span>
+<span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
+<span class="co">#&gt; source      : somevar.tif </span>
+<span class="co">#&gt; names       :        aet,        cwd,        tmx,        tmn </span>
+<span class="co">#&gt; min values  :  0.0000000, -9.3948898, 22.4468510,  0.2591429 </span>
+<span class="co">#&gt; max values  : 1357.86469,   14.20047,  614.69125,   64.37476</span>
+<span class="va">vif_var</span><span class="op">$</span><span class="va">removed_variables</span>
+<span class="co">#&gt; NULL</span>
+<span class="va">vif_var</span><span class="op">$</span><span class="va">correlation_table</span>
+<span class="co">#&gt; # A tibble: 4 x 5</span>
+<span class="co">#&gt;   variable    aet    cwd    tmx    tmn</span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 aet       0      0.769 -0.792 -0.785</span>
+<span class="co">#&gt; 2 cwd       0.769  0     -0.417 -0.588</span>
+<span class="co">#&gt; 3 tmx      -0.792 -0.417  0      0.732</span>
+<span class="co">#&gt; 4 tmn      -0.785 -0.588  0.732  0</span></code></pre></div>
+</div>
+<div id="principal-component-analysis" class="section level3">
+<h3 class="hasAnchor">
+<a href="#principal-component-analysis" class="anchor"></a>3. Principal component analysis</h3>
+<p>Finally, the “pca” method performs a principal components analysis on the predictors and returns the axis that accounts for 95% of the total variance in the system. This method returns 1) a SpatRaster object with selected environmental variables, 2) a matrix with the coefficients of principal components for predictors, and 3) a tibble with the cumulative variance explained in selected principal components.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pca_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"pca"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">pca_var</span><span class="op">$</span><span class="va">env_layer</span>
 <span class="co">#&gt; class       : SpatRaster </span>
 <span class="co">#&gt; dimensions  : 558, 394, 3  (nrow, ncol, nlyr)</span>
 <span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span>
 <span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
 <span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
-<span class="co">#&gt; source      : somevar.tif </span>
-<span class="co">#&gt; names       :        aet,        tmx,        tmn </span>
-<span class="co">#&gt; min values  : 77.2063293, -0.6091755, -9.3948898 </span>
-<span class="co">#&gt; max values  :  772.84613,   29.84762,   14.27122</span>
-<span class="va">vif_var</span><span class="op">$</span><span class="va">removed_variables</span>
-<span class="co">#&gt; [1] "cwd"</span>
-<span class="va">vif_var</span><span class="op">$</span><span class="va">correlation_table</span>
-<span class="co">#&gt; # A tibble: 3 x 4</span>
-<span class="co">#&gt;   variable     aet     tmx    tmn</span>
-<span class="co">#&gt;   &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 aet       0      -0.0685 0.0492</span>
-<span class="co">#&gt; 2 tmx      -0.0685  0      0.887 </span>
-<span class="co">#&gt; 3 tmn       0.0492  0.887  0</span></code></pre></div>
-</div>
-<div id="principal-component-analysis" class="section level3">
-<h3 class="hasAnchor">
-<a href="#principal-component-analysis" class="anchor"></a>3. Principal component analysis</h3>
-<p>Finally, the “pca” method performs a principal components analysis on the predictors and returns the axis that accounts for 95% of the total variance in the system. This method returns 1) SpatRaster object with selected environmental variables, 2) a matrix with the coefficients of principal components for predictors, and 3) a tibble with the cumulative variance explained in selected principal components.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pca_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"pca"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pca_var</span><span class="op">$</span><span class="va">env_layer</span>
-<span class="co">#&gt; class       : SpatRaster </span>
-<span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span>
-<span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span>
-<span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
 <span class="co">#&gt; source      : memory </span>
-<span class="co">#&gt; names       :       PC1,       PC2 </span>
-<span class="co">#&gt; min values  : -6.436795, -4.089726 </span>
-<span class="co">#&gt; max values  :  3.433697,  4.116334</span>
+<span class="co">#&gt; names       :       PC1,       PC2,       PC3 </span>
+<span class="co">#&gt; min values  : -8.453273, -4.260147, -1.525085 </span>
+<span class="co">#&gt; max values  :  2.827164,  3.337545,  4.342864</span>
 <span class="va">pca_var</span><span class="op">$</span><span class="va">coefficients</span>
 <span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;   variable    PC1    PC2     PC3    PC4</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 aet      -0.178 -0.894  0.124   0.393</span>
-<span class="co">#&gt; 2 cwd       0.580  0.235  0.0566  0.778</span>
-<span class="co">#&gt; 3 tmx       0.575 -0.204  0.675  -0.415</span>
-<span class="co">#&gt; 4 tmn       0.550 -0.324 -0.725  -0.259</span>
+<span class="co">#&gt;   variable    PC1     PC2    PC3     PC4</span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 aet       0.550 -0.0722  0.296 -0.778 </span>
+<span class="co">#&gt; 2 cwd       0.450 -0.777   0.103  0.429 </span>
+<span class="co">#&gt; 3 tmx      -0.485 -0.594  -0.450 -0.459 </span>
+<span class="co">#&gt; 4 tmn      -0.511 -0.198   0.836 -0.0241</span>
 <span class="va">pca_var</span><span class="op">$</span><span class="va">cumulative_variance</span>
 <span class="co">#&gt; # A tibble: 4 x 2</span>
 <span class="co">#&gt;      PC  cvar</span>
 <span class="co">#&gt;   &lt;int&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     1 0.680</span>
-<span class="co">#&gt; 2     2 0.964</span>
-<span class="co">#&gt; 3     3 0.990</span>
+<span class="co">#&gt; 1     1 0.764</span>
+<span class="co">#&gt; 2     2 0.915</span>
+<span class="co">#&gt; 3     3 0.979</span>
 <span class="co">#&gt; 4     4 1</span></code></pre></div>
 </div>
 <div id="factorial-analysis" class="section level3">
@@ -398,11 +399,11 @@
 <div id="data-filtering" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-filtering" class="anchor"></a>Data filtering</h2>
-<p>Sample bias in species occurrence data is a common issue in ecological studies and filtering your occurrence data can reduce some of this bias. <em>flexsdm</em> provides two functions for different types of occurrence filtering, based on geographical or environmental “thinning”. This can improve model performance and reduce redundancy in your data.</p>
+<p>Sample bias in species occurrence data is a common issue in ecological studies and filtering the occurrence data can reduce some of this bias. <em>flexsdm</em> provides two functions for different types of filtering, based on geographical or environmental “thinning”, randomly removing points where they are dense (oversampling) in geographical or environmental space. This can improve model performance and reduce redundancy in your data.</p>
 <div id="environmental-filtering-with-5-bins" class="section level3">
 <h3 class="hasAnchor">
 <a href="#environmental-filtering-with-5-bins" class="anchor"></a>Environmental filtering with 5 bins</h3>
-<p>First, we will look at occfilt_env(), which performs environmental filtering on species occurrence data. This method basically reduces environmental redundancy in your data and is based on methods outlined in Valera et al. 2014. However, this function is unique to <em>flexsdm</em>, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering. In this example, we will use our original environmental data (somevar) and occurrence data for a single species (spp1). For filtering occurrences, it is important that each row in your species data has its own unique code (example: idd). This function also gives the user the option to specify the number classes used to split each environmental condition. Here we will explore the results using 5, 8, and 12 bins. Increasing the number of bins increases the number of occurrence points retained.</p>
+<p>The function occfilt_env(), which performs environmental filtering on species occurrence data. This method basically reduces environmental redundancy in your data and is based on methods outlined in Valera et al. (2014). However, this function is unique to <em>flexsdm</em>, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering. In this example, we will use our original environmental data (somevar) and occurrence data for a single species (spp1). For filtering occurrences, it is important that each row in the species data has its own unique code (example: idd). This function also gives the user the option of specifying the number classes used to split each environmental condition. Here we will explore the results using 5, 8, and 12 bins. Increasing the number of bins increases the number of occurrence points retained.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">spp1</span> <span class="op">&lt;-</span> <span class="va">spp</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp1"</span>, <span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
 <span class="va">spp1</span><span class="op">$</span><span class="va">idd</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">nrow</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">)</span>
@@ -420,7 +421,7 @@
 <span class="co">#&gt; 12 records were removed because they have NAs for some variables</span>
 <span class="co">#&gt; Number of classes in the environmental space: 1296</span>
 <span class="co">#&gt; Number of unfiltered records: 238</span>
-<span class="co">#&gt; Number of filtered records: 77</span>
+<span class="co">#&gt; Number of filtered records: 61</span>
 
 <span class="va">filt_env8</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">spp1</span>,
@@ -435,7 +436,7 @@
 <span class="co">#&gt; 12 records were removed because they have NAs for some variables</span>
 <span class="co">#&gt; Number of classes in the environmental space: 6561</span>
 <span class="co">#&gt; Number of unfiltered records: 238</span>
-<span class="co">#&gt; Number of filtered records: 140</span>
+<span class="co">#&gt; Number of filtered records: 119</span>
 
 <span class="va">filt_env12</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">spp1</span>,
@@ -450,7 +451,7 @@
 <span class="co">#&gt; 12 records were removed because they have NAs for some variables</span>
 <span class="co">#&gt; Number of classes in the environmental space: 28561</span>
 <span class="co">#&gt; Number of unfiltered records: 238</span>
-<span class="co">#&gt; Number of filtered records: 190</span>
+<span class="co">#&gt; Number of filtered records: 175</span>
 
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
@@ -463,7 +464,7 @@
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 12 bins"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">filt_env12</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="01_pre_modeling_files/figure-html/env%20occurrence%20filtering-1.png" width="576"></p>
-<p>Next, we will look at occfilt_geo(), which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of your predictors; finally, “determined” allows users to manually determine the distance threshold. ### METHOD NOT AVAILABLE YET</p>
+<p>Next, we will look at occfilt_geo(), which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of the predictors; finally, “determined” allows users to manually determine the distance threshold. ### METHOD NOT AVAILABLE YET</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># UPDATE</span></code></pre></div>
 </div>
@@ -475,8 +476,8 @@
 <div id="conventional-data-partitioning-methods-part_random" class="section level3">
 <h3 class="hasAnchor">
 <a href="#conventional-data-partitioning-methods-part_random" class="anchor"></a>1. Conventional data partitioning methods (part_random)</h3>
-<p>The part_random() function provides users the ability to divide their data based on conventional partition methods, including k-folds, repeating k-folds, leave-one-out cross-validation, and boostrap partitioning.</p>
-<p>Here, we use the “kfold” method with 10 folds to divide our data. As you can see this produce 10 folds of occurrence data with 25 observations in each fold.</p>
+<p>The part_random() function provides users the ability to divide species occurence data based on conventional partition methods including k-folds, repeated k-folds, leave-one-out cross-validation, and bootstrap partitioning.</p>
+<p>Here, we use the “kfold” method with 10 folds to divide our data. This results in 10 folds of occurrence data with 25 observations in each fold.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">sp_part1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
@@ -493,7 +494,7 @@
 <div id="spatial-band-cross-validation-part_sband-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#spatial-band-cross-validation-part_sband-error" class="anchor"></a>2. Spatial band cross-validation (part_sband) ERROR</h3>
-<p>Both part_sband() and part_sblock() partition data based on their position in geographic space. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The funciton part_sband tests for different numbers of partitions using latitudinal or longitudinal bands and selects the best number of bands for a given presence, presence-absence, or presence-background dataset. This procedure is based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each band partition. The function’s output is also very useful, as it provides users with 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid.</p>
+<p>Both part_sband() and part_sblock() partition data based on their position in geographic space. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The function part_sband tests for different numbers of spatial partitions using latitudinal or longitudinal bands and selects the best number of bands for a given presence, presence-absence, or presence-background dataset. This procedure is based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each band partition. The function’s output includes 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid.</p>
 <p>*throwing an error: It was not possible to find a good partition. Try to change values in ‘n_part’, or in ‘min_band’, or ‘max_band’"</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -521,7 +522,7 @@
 <div id="spatial-block-cross-validation-part_sblock" class="section level3">
 <h3 class="hasAnchor">
 <a href="#spatial-block-cross-validation-part_sblock" class="anchor"></a>3. Spatial block cross-validation (part_sblock)</h3>
-<p>The part_sblock() function is very similar but instead of bands it explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input dataset. Here, we can see the data divided into different “blocks” for training and testing.</p>
+<p>The part_sblock() function is very similar to part_sband() but instead of bands it explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input dataset. Here, we can see the data divided into different “blocks” for training and testing.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">sp_part3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sblock.html">part_sblock</a></span><span class="op">(</span>
@@ -549,10 +550,10 @@
   pch <span class="op">=</span> <span class="fl">19</span>
 <span class="op">)</span></code></pre></div>
 <p><img src="01_pre_modeling_files/figure-html/spatial%20block%20partition-1.png" width="576"></p>
-<p>However, we notice that the grid parititon produced by part_sblock has a different resolution than the original environmental variables. If you want a map layer with the same properties (i.e. resolution, extent, NAs) as your original environmental variables, you can use the get_block() function. This layer can be really useful for generating pseudo-absence or background sample points, which we will explore in the next section!</p>
+<p>However, we notice that the grid partition produced by part_sblock has a different resolution than the original environmental variables. If you want a map layer with the same properties (i.e. resolution, extent, NAs) as your original environmental variables, apply the get_block() function to the grid resulting from part_sblock(). This layer can be really useful for generating pseudo-absence or background sample points, which we will explore in the next section.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">res</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
-<span class="co">#&gt; [1] 817262.1 817262.1</span>
+<span class="co">#&gt; [1] 913065.5 913065.5</span>
 <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">res</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1890 1890</span>
 
@@ -570,7 +571,7 @@
 <div id="environmental-and-spatial-cross-validation-part_senv" class="section level3">
 <h3 class="hasAnchor">
 <a href="#environmental-and-spatial-cross-validation-part_senv" class="anchor"></a>4. Environmental and spatial cross-validation (part_senv)</h3>
-<p>The final partitioning function in <em>flexsdm</em> is part_senv(), which explores different numbers of environmental partitions based on the K-mean cluster algorithm and returns the one best-suited for a particular dataset, considering spatial autocorrelation, environmental similarity, and the number of presence and/or absence records in each partition. The map below shows partitioning based on these environmental and spatial factors.</p>
+<p>The final partitioning function in <em>flexsdm</em> is part_senv(), which explores different numbers of environmental partitions based on the K-means clustering algorithm and returns the one best-suited for a particular dataset, considering spatial autocorrelation, environmental similarity, and the number of presence and/or absence records in each partition. The map below shows partitioning based on these environmental and spatial factors.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">sp_part4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_senv.html">part_senv</a></span><span class="op">(</span>
@@ -600,11 +601,11 @@
 <div id="background-and-pseudo-absence-sampling" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background-and-pseudo-absence-sampling" class="anchor"></a>Background and pseudo-absence sampling</h2>
-<p>Presence-only occurrence data are quite common in ecology and researchers may not have adequate “absence” data for their species of interest. Sometimes in buidling species distribution models, we need to be able to generate background or pseudo-absence points for their modeling goals. The <em>flexsdm</em> package allows users to do this using sample_background() and sample_pseudoabs().</p>
+<p>Presence-only occurrence data are quite common in ecology and researchers may not have adequate “absence” data for their species of interest. Sometimes in building species distribution models, we need to be able to generate background or pseudo-absence points for the modeling goals. The <em>flexsdm</em> package allows users to do this using sample_background() and sample_pseudoabs().</p>
 <div id="sample-background" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sample-background" class="anchor"></a>1. Sample background</h3>
-<p>The function sample_background() allows you to sample points based on different geographic restrictions and sampling methods. Here, we sample a set of background points based on our earlier spatial block partitioning using the “random” method. Using lapply() in this case ensures that we generate background points in each of our spatial blocks (n = 2). We are also specifying that we want ten times the amount of background points as our original occurrences and that our calibration area will be the buffer area around presence points (see section on “Calibration area”).</p>
+<p>The function sample_background() allows slection of background sample points based on different geographic restrictions and sampling methods. Here, we sample a set of background points based on our earlier spatial block partitioning using the “random” method. Using lapply() in this case ensures that we generate background points in each of our spatial blocks (n = 2). We are also specifying that we want ten times the amount of background points as our original occurrences and that our calibration area will be the buffer area around presence points (see section on “Calibration area”).</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">p_data</span> <span class="op">&lt;-</span>
@@ -640,7 +641,7 @@
 <div id="sample-pseudo-absences" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sample-pseudo-absences" class="anchor"></a>2. Sample pseudo-absences</h3>
-<p>Similarly, the function sample_pseudoabs allows you to sample pseudo-absences randomly or based on environmental and/or geographical constraints. For example, specifying method = “env_const” selects pseudo-absences that are environmentally constrained to regions with lower suitability values as predicted by a Bioclim model. Here, we will test out this method. Additionally, this function allows users to specify a calibration area from which to generate pseudo-absence points. Here, we will use the buffer area around presence points (ca_1) to show what this might look like. As you can see, we have generated pseudo-absence points that are in the general vicinity of our presence points, but are concentrated in areas that have lower environmental suitability. The specific method chosen for sampling background and/or pseudo-absence points will vary depending on research goals.</p>
+<p>Similarly, the function sample_pseudoabs allows random pseudo-absence sampling or based on environmental and/or geographical constraints. For example, specifying method = “env_const” selects pseudo-absences that are environmentally constrained to regions with lower suitability values as predicted by a Bioclim model. Additionally, this function allows users to specify a calibration area from which to generate pseudo-absence points. Here, we will use the buffer area around presence points (ca_1) to show what this might look like. As you can see, we have generated pseudo-absence points that are in the general vicinity of our presence points, but are concentrated in areas that have lower environmental suitability. The specific method chosen for sampling background and/or pseudo-absence points will vary depending on research goals.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
@@ -674,7 +675,7 @@
 <div id="extracting-environmental-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#extracting-environmental-values" class="anchor"></a>Extracting environmental values</h2>
-<p>Finally, before modeling our species geographic distributions, we must extract environmental data at the presences + absences/pseudo-absences/background points. The function sdm_extract() extracts environmental data based on x and y coordinates and returns a tibble with the original data + additional columns for the extracted environmental variables at those locations. Let’s do this for our original presence points (spp1) and our background locations (bg).</p>
+<p>Finally, before modeling species geographic distributions, we must extract environmental data at the presences + absences/pseudo-absences/background point locations. The function sdm_extract() extracts environmental data values based on x and y coordinates and returns a tibble with the original data + additional columns for the extracted environmental variables at those locations. Let’s do this for our original presence points (spp1) and our background locations (bg).</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">all_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">idd</span><span class="op">)</span>, <span class="va">bg</span><span class="op">)</span> 
