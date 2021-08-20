@@ -14,25 +14,26 @@ part_sband(
   n_part = 2,
   min_bands = 2,
   max_bands = 20,
+  min_occ = 10,
   prop = 0.5
 )
 }
 \arguments{
 \item{env_layer}{SpatRaster. Raster with environmental
-variable. This will be used to evaluate spatial autocorrelation and
-environmental similarity between training and testing partition. Because this function
-calculate dissimilarity based on euclidean distances, it can only handle continuous
-layers, do not use categorical layers as inputs}
+variable. Used to evaluate spatial autocorrelation and
+environmental similarity between training and testing partitions. Because this function
+calculate dissimilarity based on Euclidean distances, it can only be used with continuous environmental variables
+layers; do not use categorical layers as inputs}
 
 \item{data}{data.frame. Data.frame or tibble object with presences
-(or presence-absence, or presences-pseudo-absence) records, and coordinates}
+(or presence-absence, or presence-pseudo-absence) records, and coordinates}
 
-\item{x}{character. Column name with longitude data}
+\item{x}{character. Column name with spatial x coordinates}
 
-\item{y}{character. Column name with latitude data}
+\item{y}{character. Column name with spatial y coordinates}
 
 \item{pr_ab}{character. Column with presences, presence-absence,
-or pseudo-absence. Presences must be represented by 1 and absences by 0}
+or -pseudo-absence. Presences must be represented by 1 and absences by 0}
 
 \item{type}{character. Specify bands across different degrees of longitude 'lon' or latitude 'lat'. Default is 'lon'.}
 
@@ -43,7 +44,11 @@ or pseudo-absence. Presences must be represented by 1 and absences by 0}
 
 \item{max_bands}{integer. Maximum number of spatial bands to be tested, default 20.}
 
-\item{prop}{numeric. Proportion of point used for testing autocorrelation between
+\item{min_occ}{numeric. Minimum number of presences or absences in a partition fold.
+The min_occ value should be base on the amount of predictors in order to avoid over-fitting
+or error when fitting models for a given fold. Default 10.}
+
+\item{prop}{numeric. Proportion of points used for testing autocorrelation between
 groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
 Default 0.5}
 }
@@ -51,15 +56,18 @@ Default 0.5}
 A list with:
 \itemize{
   \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
-  \item best_part_info: A tibble with information of the bets partition. It contains the number of the best partition (n_grid), number of bands (n_bands), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on euclidean distance (env_sim).
+  \item best_part_info: A tibble with information about the best partition. It contains the number of the best partition (n_grid), number of bands (n_bands), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on Euclidean distance (env_sim).
   \item grid: A SpatRaster object with bands
   }
 }
 \description{
 This function explores different numbers of spatial bands and returns the
-best one suited for a given presence or presence-absences database. The selection of the best
+most suitable value for a given presence or presence-absence database. The selection of the best
 number of bands is performed automatically considering spatial autocorrelation, environmental
 similarity, and the number of presence and absence records in each partition.
+}
+\details{
+(JF THINKS THIS FUNCTION NEEDS MORE EXPLANATION AND REFERENCES)
 }
 \examples{
 \dontrun{
@@ -71,7 +79,7 @@ data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
 
-# Let's practice with two longitudinal partition with presences and absences
+# Example of two longitudinal partitions with presences and absences
 single_spp <- spp \%>\% dplyr::filter(species == "sp1")
 part_1 <- part_sband(
   env_layer = somevar,
@@ -83,14 +91,18 @@ part_1 <- part_sband(
   min_bands = 2,
   max_bands = 20,
   n_part = 2,
+  min_occ = 10,
   prop = 0.5
 )
 
-part_1$part
-part_1$best_part_info
-part_1$grid
+part_1$part # database with partition fold (.part)
+part_1$part \%>\%
+  group_by(pr_ab, .part) \%>\%
+  count() # number of presences and absences in each fold
+part_1$best_part_info # information of the best partition
+part_1$grid # raster with folds
 
-# Lets explore Grid object and presences and absences points
+# Explore grid object and presences and absences points
 plot(part_1$grid, col = gray.colors(20))
 points(part_1$part[c("x", "y")],
   col = rainbow(8)[part_1$part$.part],
@@ -99,7 +111,7 @@ points(part_1$part[c("x", "y")],
 )
 
 
-# Let's practice with four latitudinal partition and only with presences
+# Example of four latitudinal partition and only presences
 single_spp <- spp \%>\% dplyr::filter(species == "sp1", pr_ab == 1)
 part_2 <- part_sband(
   env_layer = somevar,
@@ -111,6 +123,7 @@ part_2 <- part_sband(
   min_bands = 8,
   max_bands = 40,
   n_part = 8,
+  min_occ = 10,
   prop = 0.5
 )
 
@@ -118,7 +131,7 @@ part_2$part
 part_2$best_part_info
 part_2$grid
 
-# Lets explore Grid object and presences points
+# Explore Grid object and presences points
 plot(part_2$grid, col = gray.colors(20))
 points(part_2$part[c("x", "y")],
   col = rainbow(8)[part_2$part$.part],
@@ -126,4 +139,10 @@ points(part_2$part[c("x", "y")],
   pch = 19
 )
 }
+}
+\references{
+\itemize{
+\item
+}
+#' @export
 }

@@ -14,28 +14,27 @@ part_sblock(
   min_res_mult = 3,
   max_res_mult = 200,
   num_grids = 30,
+  min_occ = 10,
   prop = 0.5
 )
 }
 \arguments{
 \item{env_layer}{SpatRaster. Raster with environmental
-variable. This will be used to evaluate spatial autocorrelation and
-environmental similarity between training and testing partition. Because this function
-calculate dissimilarity based on euclidean distances, it can only handle continuous
-layers, do not use categorical layers as inputs}
+variable. Used to evaluate spatial autocorrelation and
+environmental similarity between training and testing partitions. Because this function
+calculate dissimilarity based on Euclidean distances, it can only be used with continuous environmental variables}
 
-\item{data}{data.frame. Data.frame or tibble object with presences
+\item{data}{data.frame. Data.frame or tibble object with presence
 (or presence-absence, or presences-pseudo-absence) records, and coordinates}
 
-\item{x}{character. Column name with longitude data}
+\item{x}{character. Column name with spatial x coordinates}
 
-\item{y}{character. Column name with latitude data}
+\item{y}{character. Column name with spatial y coordinates}
 
-\item{pr_ab}{character. Column with presences, presence-absence,
-or pseudo-absence. Presences must be represented by 1 and absences by 0}
+\item{pr_ab}{character. Column with presence, presence-absence,
+or pseudo-absence records. Presences must be represented by 1 and absences by 0}
 
-\item{n_part}{integer. Number of partition. Default 2, values other than
-2 has not yet been implemented.}
+\item{n_part}{integer. Number of partition. Default 2.}
 
 \item{min_res_mult}{integer. Minimum value used for multiplying
 raster resolution and define the finest resolution to be tested, default 3.}
@@ -46,21 +45,25 @@ raster resolution and define the coarsest resolution to be tested, default 200.}
 \item{num_grids}{integer. Number of grid to be tested between
 min_res_mult X (raster resolution) and max_res_mult X (raster resolution), default 30}
 
+\item{min_occ}{numeric. Minimum number of presences or absences in a partition fold.
+The min_occ value should be base on the amount of predictors in order to avoid over-fitting
+or error when fitting models for a given fold. Default 10.}
+
 \item{prop}{numeric. Proportion of point used for testing autocorrelation between
-groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
+groups (values > 0 and <=1). The smaller this proportion is, the faster the function will work.
 Default 0.5}
 }
 \value{
 A list with:
 \itemize{
   \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
-  \item best_part_info: A tibble with information of the bets partition. It contains the number of the best partition (n_grid), cell size (cell_size), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on euclidean distance (env_sim).
+  \item best_part_info: A tibble with information about the best partition. It contains the number of the best partition (n_grid), cell size (cell_size), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on Euclidean distance (env_sim).
   \item grid: A SpatRaster object with blocks
   }
 }
 \description{
 This function explores spatial blocks with different cell sizes and returns the
-best one suited for a given presence or presence-absences database. The selection of the best
+most suitable size for a given presence or presence-absences database. The selection of the best
 grid size is performed automatically considering spatial autocorrelation, environmental
 similarity, and the number of presence and absence records in each partition.
 }
@@ -77,7 +80,7 @@ data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
 
-# Lest practice with a single species
+# Example for one single species
 single_spp <- spp \%>\% dplyr::filter(species == "sp3")
 part <- part_sblock(
   env_layer = somevar,
@@ -89,21 +92,25 @@ part <- part_sblock(
   max_res_mult = 500,
   num_grids = 30,
   n_part = 2,
+  min_occ = 5,
   prop = 0.5
 )
 part
 
-part$part
-part$best_part_info
-part$grid
+part$part # database with partition fold (.part)
+part$part \%>\%
+  group_by(pr_ab, .part) \%>\%
+  count() # number of presences and absences in each fold
+part$best_part_info # information of the best partition
+part$grid # raster with folds
 
-# Lets explore Grid object
+# Explore the Grid object
 
 plot(part$grid)
 points(part$part[c("x", "y")],
-  col = c("blue", "red")[part$part$.part],
-  cex = 0.5,
-  pch = 19
+       col = c("blue", "red")[part$part$.part],
+       cex = 0.5,
+       pch = 19
 )
 
 terra::res(part$grid)
@@ -111,8 +118,8 @@ terra::res(somevar)
 
 # Note that is a layer with block partition, but it has a
 # different resolution than the original environmental variables.
-# In the case you wish have a layer with the same properties
-# (i.e. resolution, extent, NAs) than your original environmental
+# If you wish have a layer with the same properties
+# (i.e. resolution, extent, NAs) as your original environmental
 # variables you can use the \code{\link{get_block}} function.
 
 grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
@@ -120,16 +127,16 @@ grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
 points(part$part[c("x", "y")],
-  col = c("blue", "red")[part$part$.part],
-  cex = 0.5,
-  pch = 19
+       col = c("blue", "red")[part$part$.part],
+       cex = 0.5,
+       pch = 19
 )
-# This layer could be very useful in case you need sample
+# This layer is very useful if you need sample
 # pseudo_absence or background point
 # See examples in \code{\link{backgroudp}} and \code{\link{pseudoabs}}
 
 
-# Lest try with a higher number of partition
+# Example of a higher number of partitions
 part <- part_sblock(
   env_layer = somevar,
   data = single_spp,
@@ -140,19 +147,20 @@ part <- part_sblock(
   max_res_mult = 500,
   num_grids = 30,
   n_part = 4,
+  min_occ = 2,
   prop = 0.5
 )
 
-# Lets explore Grid object
+# Explore the Grid object
 plot(part$grid, col = gray.colors(4))
 points(part$part[c("x", "y")],
-  col = rainbow(n = 4)[part$part$.part],
-  cex = 0.5,
-  pch = 19
+       col = rainbow(n = 4)[part$part$.part],
+       cex = 0.5,
+       pch = 19
 )
 
 
-# Now lets learn use these functions with several species
+# Using these functions with several species
 spp2 <- split(spp, spp$species)
 class(spp2)
 length(spp2)
@@ -174,20 +182,24 @@ part_list <- lapply(spp2, function(x) {
   result
 })
 
-# Lets create a single database for all species
-occ_part <- dplyr::bind_rows(lapply(
-  part_list,
-  function(x) x[[1]]
-), .id = "species")
+part_list$sp3 # For this dataset a suitable partition was not find
+
+# Create a single database for all species
+occ_part <- lapply(part_list, function(x) {
+  if (!length(x) > 0) {
+    x[[1]]
+  }
+}) \%>\%
+  dplyr::bind_rows(.id = "species")
 occ_part
 
-# Lets get a the best grid info for all species
+# Get the best grid info for all species
 grid_info <- dplyr::bind_rows(lapply(
   part_list,
   function(x) x[[2]]
 ), .id = "species")
 
-# Lets get a the best grid layer for all species
+# Get the best grid layer for all species
 grid_layer <- lapply(part_list, function(x) x$grid)
 grid_layer2 <-
   lapply(grid_layer, function(x) {
@@ -200,7 +212,7 @@ plot(grid_layer2)
 
 # Block partition for presences-only database
 single_spp <- spp \%>\%
-  dplyr::filter(species == "sp2", pr_ab == 1)
+  dplyr::filter(species == "sp1", pr_ab == 1)
 single_spp
 single_spp$pr_ab \%>\% unique() # only presences
 
@@ -214,10 +226,11 @@ part <- part_sblock(
   max_res_mult = 500,
   num_grids = 30,
   n_part = 2,
+  min_occ = 10,
   prop = 0.5
 )
 
-part$part
+part$part \%>\% dim
 part$best_part_info
 part$grid
 
@@ -230,6 +243,11 @@ points(
 )
 }
 
+}
+\references{
+\itemize{
+\item
+}
 }
 \seealso{
 \code{\link{part_random}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.

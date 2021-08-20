@@ -24,6 +24,7 @@ test_that("conventional partition situtation", {
     max_res_mult = 500,
     num_grids = 30,
     n_part = 2,
+    min_occ = 5,
     prop = 0.5
   )
   expect_equal(class(part), "list")
@@ -100,6 +101,7 @@ test_that("tese some errors", {
     max_res_mult = 500,
     num_grids = 30,
     n_part = 2,
+    min_occ = 10,
     prop = 0.5
   ))
 })

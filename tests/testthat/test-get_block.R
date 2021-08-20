@@ -17,6 +17,7 @@ test_that("get_block", {
     min_res_mult = 100,
     max_res_mult = 500,
     num_grids = 10,
+    min_occ = 2,
     n_part = 2
   )
 

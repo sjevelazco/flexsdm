@@ -1,24 +1,26 @@
 #' Environmental and spatial cross-validation
 #'
 #' @description This function explores different numbers of environmental partitions based on the
-#' K-mean cluster algorithm and returns the best one suited for a given presence or
-#' presence-absences database. The selection of the best number of partition is performed
+#' K-means clustering algorithm and returns the number of partitions best suited for a given presence or
+#' presence-absences database. Selection of the best number of partitions is performed
 #' automatically considering spatial autocorrelation, environmental similarity, and the
 #' number of presence and/or absence records in each partition.
 #'
 #' @param env_layer SpatRaster. Raster with environmental
 #' variable. This will be used to evaluate spatial autocorrelation and
-#' environmental similarity between training and testing partition. Because this function
-#' calculate dissimilarity based on euclidean distances, it can only handle continuous
-#' layers, do not use categorical layers as inputs
-#' @param data data.frame. Data.frame or tibble object with presences
+#' environmental similarity between training and testing partitions. Because this function
+#' calculate dissimilarity based on Euclidean distances, it can only be used with continuous variables
+#' @param data data.frame. Data.frame or tibble object with presence
 #' (or presence-absence, or presences-pseudo-absence) records, and coordinates
-#' @param x character. Column name with longitude data
-#' @param y character. Column name with latitude data
+#' @param x character. Column name with spatial x coordinates
+#' @param y character. Column name with spatial y coordinates
 #' @param pr_ab character. Column with presences, presence-absence,
 #' or pseudo-absence. Presences must be represented by 1 and absences by 0
 #' @param min_n_groups integer. Minimum number of groups to be tested. Default 2.
 #' @param max_n_groups integer. Maximum number of groups to be tested. Default 10.
+#' @param min_occ numeric. Minimum number of presences or absences in a partition fold.
+#' The min_occ value should be base on the amount of predictors in order to avoid over-fitting
+#' or error when fitting models for a given fold. Default 10.
 #' @param prop numeric. Proportion of point used for testing autocorrelation between
 #' groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
 #' Default 0.5
@@ -27,9 +29,9 @@
 #' A list with:
 #' \itemize{
 #'   \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
-#'   \item best_part_info: A tibble with information of the bets partition. It contains the number of partition (n_groups), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto) and environmental similarity based on euclidean distance (env_sim)
+#'   \item best_part_info: A tibble with information about the best partition. It contains the number of partition (n_groups), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto) and environmental similarity based on Euclidean distance (env_sim)
 #'   }
-#' @details write here criteria used for performing the search of the best partition (metrics and quartil selection).
+#' @details write here criteria used for performing the search of the best partition (metrics and quartile selection).
 #'
 #' @export
 #' @importFrom ape Moran.I
@@ -42,38 +44,39 @@
 #' @seealso \code{\link{part_random}}, and \code{\link{part_sblock}}.
 #' @examples
 #' \dontrun{
-#' require(terra)
-#' require(ggplot2)
-#'
-#' f <- system.file("external/somevar.tif", package = "flexsdm")
-#' somevar <- terra::rast(f)
-#'
-#' # Select a species
-#' spp1 <- spp %>% dplyr::filter(species == "sp1")
-#'
-#' part1 <- part_senv(
-#'   env_layer = somevar,
-#'   data = spp1,
-#'   x = "x",
-#'   y = "y",
-#'   pr_ab = "pr_ab",
-#'   min_n_groups = 2,
-#'   max_n_groups = 10,
-#'   prop = 0.2
-#' )
-#'
-#' part1
-#'
-#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
-#'   geom_point(aes(shape = factor(pr_ab)))
-#'
-#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
-#'   geom_point(aes(shape = factor(pr_ab))) +
-#'   facet_wrap(. ~ .part)
-#'
-#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
-#'   geom_point(aes(shape = factor(pr_ab))) +
-#'   facet_wrap(. ~ pr_ab)
+# require(terra)
+# require(ggplot2)
+#
+# f <- system.file("external/somevar.tif", package = "flexsdm")
+# somevar <- terra::rast(f)
+#
+# # Select a species
+# spp1 <- spp %>% dplyr::filter(species == "sp1")
+#
+# part1 <- part_senv(
+#   env_layer = somevar,
+#   data = spp1,
+#   x = "x",
+#   y = "y",
+#   pr_ab = "pr_ab",
+#   min_n_groups = 2,
+#   max_n_groups = 10,
+#   min_occ = 10,
+#   prop = 0.2
+# )
+#
+# part1
+#
+# ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#   geom_point(aes(shape = factor(pr_ab)))
+#
+# ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#   geom_point(aes(shape = factor(pr_ab))) +
+#   facet_wrap(. ~ .part)
+#
+# ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#   geom_point(aes(shape = factor(pr_ab))) +
+#   facet_wrap(. ~ pr_ab)
 #' }
 part_senv <- function(env_layer,
                       data,
@@ -82,6 +85,7 @@ part_senv <- function(env_layer,
                       pr_ab,
                       min_n_groups = 2,
                       max_n_groups = 10,
+                      min_occ = 10,
                       prop = 0.5) {
   group <- NULL
   # Select columns
@@ -93,7 +97,7 @@ part_senv <- function(env_layer,
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-      paste(unique(data[, "pr_ab"]), collapse = " ")
+paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 
@@ -139,7 +143,7 @@ unique list values in pr_ab column are: ",
     dplyr::tibble(x, data[1]) %>%
       dplyr::group_by(x, pr_ab) %>%
       dplyr::count() %>%
-      dplyr::mutate(filt = (n <= 2)) # 2
+      dplyr::mutate(filt = (n <= min_occ)) # 2
   })
 
   filt <- sapply(n_records, function(x) any(x %>% dplyr::pull("filt")))
@@ -233,9 +237,9 @@ unique list values in pr_ab column are: ",
           data[filt, names(env_layer)],
           function(x) {
             ape::Moran.I(x,
-              dist2,
-              na.rm = TRUE,
-              scaled = TRUE
+                         dist2,
+                         na.rm = TRUE,
+                         scaled = TRUE
             )$observed
           }
         )
@@ -299,8 +303,8 @@ unique list values in pr_ab column are: ",
     }
 
     if ((length(unique(Opt2$spa_auto)) == 1) &&
-      (length(unique(Opt2$env_sim)) == 1) &&
-      (length(unique(Opt2$sd_p)) == 1)) {
+        (length(unique(Opt2$env_sim)) == 1) &&
+        (length(unique(Opt2$sd_p)) == 1)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }

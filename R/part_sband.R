@@ -1,27 +1,30 @@
 #' Spatial band cross-validation
 #'
 #' @description This function explores different numbers of spatial bands and returns the
-#' best one suited for a given presence or presence-absences database. The selection of the best
+#' most suitable value for a given presence or presence-absence database. The selection of the best
 #' number of bands is performed automatically considering spatial autocorrelation, environmental
 #' similarity, and the number of presence and absence records in each partition.
 #'
 #' @param env_layer SpatRaster. Raster with environmental
-#' variable. This will be used to evaluate spatial autocorrelation and
-#' environmental similarity between training and testing partition. Because this function
-#' calculate dissimilarity based on euclidean distances, it can only handle continuous
-#' layers, do not use categorical layers as inputs
+#' variable. Used to evaluate spatial autocorrelation and
+#' environmental similarity between training and testing partitions. Because this function
+#' calculate dissimilarity based on Euclidean distances, it can only be used with continuous environmental variables
+#' layers; do not use categorical layers as inputs
 #' @param data data.frame. Data.frame or tibble object with presences
-#' (or presence-absence, or presences-pseudo-absence) records, and coordinates
-#' @param x character. Column name with longitude data
-#' @param y character. Column name with latitude data
+#' (or presence-absence, or presence-pseudo-absence) records, and coordinates
+#' @param x character. Column name with spatial x coordinates
+#' @param y character. Column name with spatial y coordinates
 #' @param pr_ab character. Column with presences, presence-absence,
-#' or pseudo-absence. Presences must be represented by 1 and absences by 0
+#' or -pseudo-absence. Presences must be represented by 1 and absences by 0
 #' @param type character. Specify bands across different degrees of longitude 'lon' or latitude 'lat'. Default is 'lon'.
 #' @param n_part  integer. Number of partition. Default 2, values other than
 #' 2 has not yet been implemented.
 #' @param min_bands integer. Minimum number of spatial bands to be tested, default 2.
 #' @param max_bands integer. Maximum number of spatial bands to be tested, default 20.
-#' @param prop numeric. Proportion of point used for testing autocorrelation between
+#' @param min_occ numeric. Minimum number of presences or absences in a partition fold.
+#' The min_occ value should be base on the amount of predictors in order to avoid over-fitting
+#' or error when fitting models for a given fold. Default 10.
+#' @param prop numeric. Proportion of points used for testing autocorrelation between
 #' groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
 #' Default 0.5
 #'
@@ -29,10 +32,18 @@
 #' A list with:
 #' \itemize{
 #'   \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
-#'   \item best_part_info: A tibble with information of the bets partition. It contains the number of the best partition (n_grid), number of bands (n_bands), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on euclidean distance (env_sim).
+#'   \item best_part_info: A tibble with information about the best partition. It contains the number of the best partition (n_grid), number of bands (n_bands), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on Euclidean distance (env_sim).
 #'   \item grid: A SpatRaster object with bands
 #'   }
-#' @export
+#'
+#' @details
+#'(JF THINKS THIS FUNCTION NEEDS MORE EXPLANATION AND REFERENCES)
+#'
+#' @references
+#' \itemize{
+#' \item
+#' }
+#' #' @export
 #'
 #' @importFrom ape Moran.I
 #' @importFrom dplyr tibble pull group_by slice_sample select
@@ -51,7 +62,7 @@
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)
 #'
-#' # Let's practice with two longitudinal partition with presences and absences
+#' # Example of two longitudinal partitions with presences and absences
 #' single_spp <- spp %>% dplyr::filter(species == "sp1")
 #' part_1 <- part_sband(
 #'   env_layer = somevar,
@@ -63,14 +74,18 @@
 #'   min_bands = 2,
 #'   max_bands = 20,
 #'   n_part = 2,
+#'   min_occ = 10,
 #'   prop = 0.5
 #' )
 #'
-#' part_1$part
-#' part_1$best_part_info
-#' part_1$grid
+#' part_1$part # database with partition fold (.part)
+#' part_1$part %>%
+#'   group_by(pr_ab, .part) %>%
+#'   count() # number of presences and absences in each fold
+#' part_1$best_part_info # information of the best partition
+#' part_1$grid # raster with folds
 #'
-#' # Lets explore Grid object and presences and absences points
+#' # Explore grid object and presences and absences points
 #' plot(part_1$grid, col = gray.colors(20))
 #' points(part_1$part[c("x", "y")],
 #'   col = rainbow(8)[part_1$part$.part],
@@ -79,7 +94,7 @@
 #' )
 #'
 #'
-#' # Let's practice with four latitudinal partition and only with presences
+#' # Example of four latitudinal partition and only presences
 #' single_spp <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 #' part_2 <- part_sband(
 #'   env_layer = somevar,
@@ -91,6 +106,7 @@
 #'   min_bands = 8,
 #'   max_bands = 40,
 #'   n_part = 8,
+#'   min_occ = 10,
 #'   prop = 0.5
 #' )
 #'
@@ -98,7 +114,7 @@
 #' part_2$best_part_info
 #' part_2$grid
 #'
-#' # Lets explore Grid object and presences points
+#' # Explore Grid object and presences points
 #' plot(part_2$grid, col = gray.colors(20))
 #' points(part_2$part[c("x", "y")],
 #'   col = rainbow(8)[part_2$part$.part],
@@ -115,6 +131,7 @@ part_sband <- function(env_layer,
                        n_part = 2,
                        min_bands = 2,
                        max_bands = 20,
+                       min_occ = 10,
                        prop = 0.5) {
 
   # Select columns
@@ -126,7 +143,7 @@ part_sband <- function(env_layer,
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-      paste(unique(data[, "pr_ab"]), collapse = " ")
+paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 
@@ -291,9 +308,9 @@ unique list values in pr_ab column are: ",
   # Elimination of those partition that have one record in some group
   pf <- sapply(part[pa == 1, ], table)
   if (is.list(pf) == TRUE) {
-    pf <- which(sapply(pf, min) <= 1)
+    pf <- which(sapply(pf, min) < min_occ)
   } else {
-    pf <- which(apply(pf, 2, min) <= 1)
+    pf <- which(apply(pf, 2, min) < min_occ)
   }
   pp[pf] <- FALSE
 
@@ -313,9 +330,9 @@ unique list values in pr_ab column are: ",
     # Elimination of those partition that have one record in some group
     pf <- sapply(part[pa == 0, ], table)
     if (is.list(pf) == TRUE) {
-      pf <- which(sapply(pf, min) <= 1)
+      pf <- which(sapply(pf, min) < min_occ)
     } else {
-      pf <- which(apply(pf, 2, min) <= 1)
+      pf <- which(apply(pf, 2, min) < min_occ)
     }
     pp[pf] <- FALSE
 
@@ -421,9 +438,9 @@ unique list values in pr_ab column are: ",
           function(x) {
             suppressMessages(
               ape::Moran.I(x,
-                dist2,
-                na.rm = TRUE,
-                scaled = TRUE
+                           dist2,
+                           na.rm = TRUE,
+                           scaled = TRUE
               )$observed
             )
           }
@@ -494,7 +511,7 @@ unique list values in pr_ab column are: ",
     }
 
     if (unique(Opt2$spa_auto) &&
-      unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
+        unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }

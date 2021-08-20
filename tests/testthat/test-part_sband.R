@@ -58,6 +58,7 @@ test_that("part_sband lat", {
     min_bands = 8,
     max_bands = 10,
     n_part = 8,
+    min_occ = 2,
     prop = 0.5
   )
 
@@ -91,6 +92,7 @@ test_that("part_sband conditions for not finding a solution", {
     min_bands = 8,
     max_bands = 10,
     n_part = 8,
+    min_occ = 10,
     prop = 0.5
   ))
 })
