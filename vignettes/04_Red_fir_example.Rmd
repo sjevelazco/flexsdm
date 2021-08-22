@@ -303,7 +303,6 @@ m_obr <- msdm_posteriori(
 
 plot(m_obr)
 ```
-
 #=========#=========#=========#=========#=========#=========#=========#
 
 **Vignette still under construction and changes**
