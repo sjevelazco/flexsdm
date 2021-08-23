@@ -1,38 +1,38 @@
-#' Fit and validate Support Vector Machine models based on Ensemble of Small of Model approach
+#' Fit and validate Support Vector Machine models based on Ensembles of Small of Models approach
 #'
 #' @description This function constructs Support Vector Machine models using the
-#' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
+#' Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018).
 #'
 #' @param data data.frame. Database with the response (0,1) and predictors values.
-#' @param response character. Column name with species absence-presence data (0,1)
+#' @param response character. Column name with species absence-presence data (0,1).
 #' @param predictors character. Vector with the column names of quantitative
-#' predictor variables (i.e. continuous variables). This function does not allow categorical variables
-#' Usage predictors = c("aet", "cwd", "tmin"). This function only can construct models with
-#' continuous variables.
+#' predictor variables (i.e. continuous variables). This function only can construct models with continuous variables and does not allow categorical variables.
+#' Usage predictors = c("aet", "cwd", "tmin").
+#'
 #' @param partition character. Column name with training and validation partition groups.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
 #'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
-#'   \item max_jaccard: The threshold at which Jaccard is the highest.
-#'   \item max_sorensen: The threshold at which Sorensen is highest.
-#'   \item max_fpb: The threshold at which FPB is highest.
+#'   \item max_jaccard: The threshold at which the Jaccard index is the highest.
+#'   \item max_sorensen: The threshold at which the Sorensen index is highest.
+#'   \item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
-#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
+#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default is 0.9
 #'   }
 #' If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
 #' @param sigma numeric. Inverse kernel width for the Radial Basis kernel function "rbfdot".
 #' Default "automatic".
-#' @param C numeric. Cost of constraints violation this is the 'C'-constant of the regularization
+#' @param C numeric. Cost of constraints violation,  the 'C' constant of the regularization
 #' term in the Lagrange formulation. Default 1
 #'
 #' @details This method consists of creating bivariate models with all the pair-wise combinations
 #' of predictors and perform an ensemble based on the average of suitability weighted by
-#' Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
+#' Somers' D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 #' This function does not allow categorical variables because the use of these types of variables
 #' could be problematic when using with few occurrences. Further detail see
 #' Breiner et al. (2015, 2018). This function constructs 'C-svc' classification type and uses
-#' Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[kernlab]{ksvm}
+#' Radial Basis kernel "Gaussian" function (rbfdot). See details in \link[kernlab]{ksvm}
 #'
 #' @return
 #'

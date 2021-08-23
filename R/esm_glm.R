@@ -1,46 +1,45 @@
-#' Fit and validate Generalized Linear Models based on Ensemble of Small of Model approach
+#' Fit and validate Generalized Linear Models based on Ensembles of Small Models approach
 #'
 #' @description This function constructs Generalized Linear Models using the
-#' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
+#' Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018).
 #'
 #' @param data data.frame. Database with the response (0,1) and predictors values.
-#' @param response character. Column name with species absence-presence data (0,1)
+#' @param response character. Column name with species absence-presence data (0,1).
 #' @param predictors character. Vector with the column names of quantitative
-#' predictor variables (i.e. continuous variables). This function does not allow categorical variables
-#' Usage predictors = c("aet", "cwd", "tmin"). This function only can construct models with
-#' continuous variables.
+#' predictor variables (i.e. continuous variables). This can only construct models with continuous variables and does not allow categorical variables.
+#' Usage predictors = c("aet", "cwd", "tmin").
 #' @param partition character. Column name with training and validation partition groups.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
 #'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
 #'   \item max_jaccard: The threshold at which Jaccard is the highest.
 #'   \item max_sorensen: The threshold at which Sorensen is highest.
-#'   \item max_fpb: The threshold at which FPB is highest.
+#'   \item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
-#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
+#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default value is 0.9.
 #'   }
 #' If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
-#' @param poly interger >= 2. If used with values >= 2 model will use polinomius
+#' @param poly interger >= 2. If used with values >= 2 model will use polynomials
 #' for those continuous variables (i.e. used in predictors argument). Default is 0. Because ESM are
-#' constructed with few occurrences it would be recommended no use polynomials to avoid overfitting.
+#' constructed with few occurrences it is recommended no to use polynomials to avoid overfitting.
 #'
 #' @param inter_order interger >= 0. The interaction order between explanatory variables.
-#' Default is 0. Because ESM are constructed with few occurrences it would be recommended no use interaction
+#' Default is 0. Because ESM are constructed with few occurrences it is recommended not to use interaction terms.
 #'
 #' @details This method consists of creating bivariate models with all the pair-wise combinations
 #' of predictors and perform an ensemble based on the average of suitability weighted by
-#' Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
+#' Somers' D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 #' This function does not allow categorical variables because the use of these types of variables
-#' could be problematic when using with few occurrences. Further detail see
-#' Breiner et al. (2015, 2018)
+#' could be problematic when using with few occurrences. For further detail see
+#' Breiner et al. (2015, 2018).
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
 #' \item esm_model: A list with "glm" class object for each bivariate model. This object can be used
-#' for predicting ensemble of small model with \code{\link{sdm_predict}} function.
+#' for predicting ensembles of small models with \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument.
