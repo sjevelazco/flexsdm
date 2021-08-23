@@ -1,4 +1,4 @@
-' Fit and validate Maximum Entropy models
+#' Fit and validate Maximum Entropy models
 #'
 #' @param data data.frame. Database with response (0,1) and predictors values.
 #' @param response character. Column name with species absence-presence data (0,1).

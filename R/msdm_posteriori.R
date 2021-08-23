@@ -1,28 +1,28 @@
 #' Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.
 #'
-#' @description These methods reduce overprediction of species distribution models based on a posteriori method (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability
+#' @description These methods reduce overprediction of species distribution models based on a posteriori methods (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability
 #'
-#' @param records tibble or data.frame. A database with geographical coordinates of species presences and absences (or pseudo-absence) used to create species distribution models.
-#' @param x character. Column name with longitude values.
-#' @param y character. Column name with latitude values.
+#' @param records tibble or data.frame. A database with spatial coordinates of species presences and absences (or pseudo-absence) used to create species distribution models.
+#' @param x character. Column name with spatial x coordinates.
+#' @param y character. Column name with spatial y coordinates.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
-#' @param method character. A character string indicating which constraint method must be used create.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+#' @param method character. A character string indicating which constraint method will be used.
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
 #'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
-#'   \item max_jaccard: The threshold at which Jaccard is the highest.
-#'   \item max_sorensen: The threshold at which Sorensen is highest.
+#'   \item max_jaccard: The threshold at which the Jaccard index is the highest.
+#'   \item max_sorensen: The threshold at which the Sorensen index is highest.
 #'   \item max_fpb: The threshold at which FPB is highest.
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
-#' In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
+#' If more than one threshold type is used they are cancatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
 #' Default "equal_sens_spec".
 #' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other cases. Usage buffer=50000. Default NULL
 #' @param cont_suit SpatRaster. Raster with continuous suitability predictions
-#' "species_specific" type calculates the minimum pairwise-distances between all occurrences and then selects the maximum distance, i.e., the value of the buffer will be the maximum distance from the minimum distance. This procedure depends on the presence of each species' occurrences; thus, for each species, a value of buffer width will be calculated (usage buffer="species_specific").
+#' "species_specific" type calculates the minimum pairwise-distances between all occurrences and then selects the maximum distance, i.e., the value of the buffer will be the maximum distance from the minimum distance. This procedure depends on the spatial pattern of each species' occurrences; thus, for each species, a value of buffer width will be calculated (usage buffer="species_specific").
 #' @return # This function return a SpatRaster with continuous and binary prediction.
 #' @details
 #'
@@ -41,41 +41,41 @@
 #' (see 'thr' arguments)
 #'
 #'
-#' Method 'obr' (Occurrences based restriction)-
+#' Method 'obr' (Occurrences Based Restriction).
 #' This method assumes that suitable patches intercepting species occurrences (l)
-#' are likely a part of species distributions than suitable patches that do not
-#' intercept any occurrence (k). Distance from all patches k species occurrences to the closest l
-#' patch is calculated, later it is removed k patches that trespass a species-specific
+#' are more likely to be part of species distributions than suitable patches that do not
+#' intercept any occurrence (k). Distance from all k patches to the closest l
+#' patch is calculated, then k patches are removed that exceed a species-specific
 #' distance threshold from SDMs models. This threshold (T) is calculated as the
-#' maximum distance in a vector of minimal pairwise distances between occurrences.
-#' Whenever a suitable pixel is within a k patch distant from the closest l in less than T,
-#' the suitability of the pixel was reduced to zero. We assumed that this simple threshold
-#' is a surrogate of the species-specific dispersal ability. If T is low, either the species
+#' maximum distance in a vector of minimum pairwise distances between occurrences.
+#' Whenever a suitable pixel is within a k patch that is more than distance T from the closest l patch,
+#' the suitability of the pixel is reduced to zero. It is assumed that this simple threshold
+#' is a surrogate for the species-specific dispersal ability. If T is low, either the species
 #' has been sampled throughout its distribution, or the species is geographically restricted,
 #' justifying a narrow inclusion of k patches (Mendes et al., 2020).
 #'
-#' Method 'pres' (Only occurrences based restriction). This is a more restrictive variant of the 'obr' method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).
+#' Method 'pres' (only occurrences based restriction). This is a more restrictive variant of the 'obr' method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).
 #'
-#' Method 'lq (Lower Quantile). This method is similar to the 'obr' method, except by the
+#' Method 'lq' (Lower Quantile). This method is similar to the 'obr' method, except by the
 #' procedure to define a distance threshold to withdrawn k patches, which is the
 #' lower quartile distance between k patches to the closest l patch. Whenever a suitable
 #' pixel is within a k patch, i.e., not within this lower quartile, the suitability of the
 #' pixel is reduced to zero. This means that 75\% of k patches were withdrawn from the model (Mendes et al., 2020).
 #'
 #' Method 'mcp' (Minimum Convex Polygon). Compiled and adapted from
-#' Kremen et al. (2008), this method excludes from SDMs climate suitable
+#' Kremen et al. (2008), this method excludes from SDM predictions suitable
 #' pixels that do not intercept a minimum convex polygon,
 #' with interior angles smaller than 180, enclosing all occurrences of a species.
 #'
 #' Method 'bmcp' (Buffered Minimum Convex Polygon). Compiled and adapted
-#' from Kremen et al. (2008), it is similar to the 'mcp' except by the inclusion of a
-#' buffer zone surrounding minimum convex polygons. When used with the "single" options for buffer argument
-#' function will ask for a value in km to be used as the buffer with. When used "species_specific" a buffer will be calculated for each species based on the presences occurrences patterns, assuming as buffer width
+#' from Kremen et al. (2008), it is similar to the 'mcp' method except for the inclusion of a
+#' buffer zone surrounding minimum convex polygons. When used with the "single" option for the buffer argument
+#' function will ask for a value in km to be used as the buffer with. When "species_specific" is used, a buffer will be calculated for each species based on the pattern of presences, using as the buffer width
 #' the maximum distance in a vector of minimal pairwise distances between occurrences.
 #'
-#' Further methodological and performance information of these methods see Mendes et al. (2020).
+#' For further methodological and performance information of these methods see Mendes et al. (2020).
 #'
-#' If used one these constraining method cite Mendes et al 2020.
+#' If using one these constraining methods, cite Mendes et al (2020).
 #'
 #' @references
 #' \itemize{
@@ -106,7 +106,7 @@
 #' somevar <- terra::rast(somevar)
 #'
 #'
-#' # It will prepared data for modeling a species
+#' # Preparing data for modeling a species
 #' set.seed(10)
 #' occ <- spp %>%
 #'   dplyr::filter(species == "sp2") %>% # filter a species
@@ -119,7 +119,7 @@
 #'     method = c(method = "kfold", folds = 10)
 #'   ) # add columns with partition
 #'
-#' # Lets fit and predict a model
+#' # Fit a model
 #' m_glm <- fit_glm(
 #'   data = occ,
 #'   response = "pr_ab",

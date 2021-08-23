@@ -41,7 +41,7 @@
 #' \describe{
 #'   \item{ID}{presences and absences records ID}
 #'   \item{pr_ab}{presence and absences denoted by 1 and 0 respectively}
-#'   \item{x y}{columns with coordinates in State Plane coordinate reference system (CHECK THIS) }
+#'   \item{x y}{columns with coordinates in Albers Equal Area Conic coordinate system}
 #'   \item{from column aet to landform}{columns with values for environmental variables at each locality}
 #'   ...
 #' }
