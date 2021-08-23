@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit and validate Neural Networks based on Ensemble of Small of Model approach — esm_net • flexsdm</title>
+<title>Fit and validate Neural Networks based on Ensembles of Small of Models approach — esm_net • flexsdm</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,9 @@
 
 
 
-<meta property="og:title" content="Fit and validate Neural Networks based on Ensemble of Small of Model approach — esm_net" />
+<meta property="og:title" content="Fit and validate Neural Networks based on Ensembles of Small of Models approach — esm_net" />
 <meta property="og:description" content="This function constructs Neural Networks using the
-Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018)." />
+Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018)." />
 
 
 
@@ -119,14 +119,14 @@ Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit and validate Neural Networks based on Ensemble of Small of Model approach</h1>
+    <h1>Fit and validate Neural Networks based on Ensembles of Small of Models approach</h1>
     
     <div class="hidden name"><code>esm_net.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>This function constructs Neural Networks using the
-Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).</p>
+Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018).</p>
     </div>
 
     <pre class="usage"><span class='fu'>esm_net</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>predictors</span>, <span class='va'>partition</span>, thr <span class='op'>=</span> <span class='cn'>NULL</span>, size <span class='op'>=</span> <span class='fl'>2</span>, decay <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
@@ -145,9 +145,8 @@ Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).</p>
     <tr>
       <th>predictors</th>
       <td><p>character. Vector with the column names of quantitative
-predictor variables (i.e. continuous variables). This function does not allow categorical variables
-Usage predictors = c("aet", "cwd", "tmin"). This function only can construct models with
-continuous variables.</p></td>
+predictor variables (i.e. continuous variables). This function only can construct models with continuous variables and does not allow categorical variables.
+Usage predictors = c("aet", "cwd", "tmin").</p></td>
     </tr>
     <tr>
       <th>partition</th>
@@ -155,14 +154,14 @@ continuous variables.</p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:</p><ul>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).</p></li>
-<li><p>max_jaccard: The threshold at which Jaccard is the highest.</p></li>
-<li><p>max_sorensen: The threshold at which Sorensen is highest.</p></li>
-<li><p>max_fpb: The threshold at which FPB is highest.</p></li>
+<li><p>max_jaccard: The threshold at which the Jaccard index is the highest.</p></li>
+<li><p>max_sorensen: The threshold at which the Sorensen index is highest.</p></li>
+<li><p>max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.</p></li>
 <li><p>sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9</p></li>
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity values is not specified, the default used is 0.9</p></li>
 </ul><p>If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified</p></td>
     </tr>
     <tr>
@@ -189,10 +188,10 @@ Those threshold dependent metric are calculated based on the threshold specified
 
     <p>This method consists of creating bivariate models with all the pair-wise combinations
 of predictors and perform an ensemble based on the average of suitability weighted by
-Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
+Somers' D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 This function does not allow categorical variables because the use of these types of variables
 could be problematic when using with few occurrences. Further detail see
-Breiner et al. (2015, 2018)</p>
+Breiner et al. (2015, 2018).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     

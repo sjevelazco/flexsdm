@@ -170,16 +170,16 @@ column names must be consistent with data</p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1), useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. A vector must be provided for this argument. The following threshold criteria are available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission.</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).</p></li>
-<li><p>max_jaccard: The threshold at which Jaccard is the highest.</p></li>
-<li><p>max_sorensen: The threshold at which Sorensen is highest.</p></li>
-<li><p>max_fpb: The threshold at which FPB is highest.</p></li>
+<li><p>max_jaccard: The threshold at which the Jaccard index is the highest.</p></li>
+<li><p>max_sorensen: The threshold at which the Sorensen index is the highest.</p></li>
+<li><p>max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.</p></li>
 <li><p>sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9</p></li>
-</ul><p>In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified</p></td>
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default used is 0.9.</p></li>
+</ul><p>If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold criteria if none is specified.</p></td>
     </tr>
     </table>
 
@@ -188,8 +188,8 @@ column names must be consistent with data</p></td>
     <p>A list object with:</p><ul>
 <li><p>model: A "graf" class object. This object can be used for predicting.</p></li>
 <li><p>predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.</p></li>
-<li><p>performance: Performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>).
-Those threshold dependent metric are calculated based on the threshold specified in thr argument .</p></li>
+<li><p>performance: Performance metrics (see <code><a href='sdm_eval.html'>sdm_eval</a></code>).
+Threshold dependent metrics are calculated based on the threshold criteria specified in the argument.</p></li>
 <li><p>data_ens: Predicted suitability for each test partition. This database is used in <code><a href='fit_ensemble.html'>fit_ensemble</a></code></p></li>
 </ul>
 
@@ -225,7 +225,7 @@ Those threshold dependent metric are calculated based on the threshold specified
 <span class='va'>gaup_t1</span><span class='op'>$</span><span class='va'>performance</span>
 <span class='va'>gaup_t1</span><span class='op'>$</span><span class='va'>data_ens</span>
 
-<span class='co'># Using bootstrap partition method and only with presence-absence</span>
+<span class='co'># Using bootstrap partition method only with presence-absence</span>
 <span class='va'>abies2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part_random.html'>part_random</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies</span>,
   pr_ab <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
@@ -243,7 +243,6 @@ Those threshold dependent metric are calculated based on the threshold specified
 <span class='op'>)</span>
 <span class='va'>gaup_t2</span>
 <span class='op'>}</span>
-
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

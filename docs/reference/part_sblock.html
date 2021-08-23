@@ -155,7 +155,8 @@ similarity, and the number of presence and absence records in each partition.</p
       <td><p>SpatRaster. Raster with environmental
 variable. Used to evaluate spatial autocorrelation and
 environmental similarity between training and testing partitions. Because this function
-calculate dissimilarity based on Euclidean distances, it can only be used with continuous environmental variables</p></td>
+calculate dissimilarity based on Euclidean distances, it can only be used with continuous
+environmental variables</p></td>
     </tr>
     <tr>
       <th>data</th>
@@ -211,24 +212,61 @@ Default 0.5</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list with:</p><ul>
-<li><p>part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.</p></li>
-<li><p>best_part_info: A tibble with information about the best partition. It contains the number of the best partition (n_grid), cell size (cell_size), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on Euclidean distance (env_sim).</p></li>
+<li><p>part: A tibble object with information used in 'data' arguments and a additional column
+  .part with partition group.</p></li>
+<li><p>best_part_info: A tibble with information about the best partition. It contains the
+  number of the best partition (n_grid), cell size (cell_size), standard deviation of
+  presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation
+  (spa_auto), and environmental similarity based on Euclidean distance (env_sim).</p></li>
 <li><p>grid: A SpatRaster object with blocks</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>write here criteria used for performing the search of the best partition (metrics and quartil selection).</p>
+    <p>The part_sblock allows test with different numbers of partitions using square blocks
+(like a checkerboard). This function explores a range of block sizes and automatically selects
+the best size for a given given presence, presence-absences, or presence-pseudo-absences
+dataset. Such number of partition selection is based on an optimization procedure that
+explores partition size in three dimensions
+determined by spatial autocorrelation (measured by Moran's I), environmental similarity
+(Euclidean distance), and difference in the amount of data among partition groups
+(Standard Deviation - SD; Velazco et al., 2019). This procedure will cyclically select
+those partitions with autocorrelation values less than the lowest quartile of Morans I, then
+those with environmental similarity values greater than the third quartile of the Euclidean
+distances than those with a difference in the amount of data less than the lowest quartile of SD.
+This selection is repeated until only one partition is retained (Velazco et al., 2019). The
+main benefit of this partition selection are i) this is not subjective, ii) balances the
+environmental similarity and special autocorrelation between partitions, and iii) controls
+the partition selection with few data that may be problematic for model fitting
+("min_occ" argument)..</p>
+<p>Partitions geographically structured tend to evaluate model transferability more directly than
+conventional ones (e.g., those performed by <code><a href='part_random.html'>part_random</a></code>) (Roberts et al., 2017;
+Santini et al., 2021), being relevant for models that want to be used for projections in other
+regions outside the calibration area or for other periods.</p>
+<p>This function can interact with <code><a href='get_block.html'>get_block</a></code>, <code><a href='sample_background.html'>sample_background</a></code>,
+and <code><a href='sample_pseudoabs.html'>sample_pseudoabs</a></code> for sampling background points or pseudo-absences within
+spatial partition broups</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
 <ul>
-<li><p></p></li>
+<li><p>Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-Arroita, G.,
+Hauenstein, S., Lahoz-Monfort, J. J., Schroder, B., Thuiller, W., Warton, D. I., Wintle, B. A.,
+Hartig, F., &amp; Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial,
+ hierarchical, or phylogenetic structure. Ecography, 40,
+ 913-929. https://doi.org/10.1111/ecog.02881</p></li>
+<li><p>Santini, L., Benitez‐Lopez, A., Maiorano, L., Cengic, M., &amp; Huijbregts, M. A. J. (2021).
+ Assessing the reliability of species distribution projections in climate change research.
+ Diversity and Distributions, ddi.13252. https://doi.org/10.1111/ddi.13252</p></li>
+<li><p>Velazco, S. J. E., Villalobos, F., Galvao, F., &amp; De Marco Junior, P. (2019). A dark
+scenario for Cerrado plant species: Effects of future climate, land use and protected areas
+ineffectiveness. Diversity and Distributions, 25(4), 660-673. https://doi.org/10.1111/ddi.12886</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='part_random.html'>part_random</a></code>, <code><a href='part_senv.html'>part_senv</a></code>, <code><a href='get_block.html'>get_block</a></code>, and <code><a href='plot_res.html'>plot_res</a></code>.</p></div>
+    <div class='dont-index'><p><code><a href='part_random.html'>part_random</a></code>, <code><a href='part_sband.html'>part_sband</a></code>, <code><a href='part_senv.html'>part_senv</a></code>,
+<code><a href='get_block.html'>get_block</a></code>, and <code><a href='plot_res.html'>plot_res</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
@@ -268,9 +306,9 @@ Default 0.5</p></td>
 
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
-       col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue"</span>, <span class='st'>"red"</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
-       cex <span class='op'>=</span> <span class='fl'>0.5</span>,
-       pch <span class='op'>=</span> <span class='fl'>19</span>
+  col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue"</span>, <span class='st'>"red"</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
+  cex <span class='op'>=</span> <span class='fl'>0.5</span>,
+  pch <span class='op'>=</span> <span class='fl'>19</span>
 <span class='op'>)</span>
 
 <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/dimensions.html'>res</a></span><span class='op'>(</span><span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span><span class='op'>)</span>
@@ -287,9 +325,9 @@ Default 0.5</p></td>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span> <span class='co'># this is a block layer with the same layer</span>
 <span class='co'># properties as environmental variables.</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
-       col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue"</span>, <span class='st'>"red"</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
-       cex <span class='op'>=</span> <span class='fl'>0.5</span>,
-       pch <span class='op'>=</span> <span class='fl'>19</span>
+  col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue"</span>, <span class='st'>"red"</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
+  cex <span class='op'>=</span> <span class='fl'>0.5</span>,
+  pch <span class='op'>=</span> <span class='fl'>19</span>
 <span class='op'>)</span>
 <span class='co'># This layer is very useful if you need sample</span>
 <span class='co'># pseudo_absence or background point</span>
@@ -314,9 +352,9 @@ Default 0.5</p></td>
 <span class='co'># Explore the Grid object</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span>, col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"x"</span>, <span class='st'>"y"</span><span class='op'>)</span><span class='op'>]</span>,
-       col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/palettes.html'>rainbow</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
-       cex <span class='op'>=</span> <span class='fl'>0.5</span>,
-       pch <span class='op'>=</span> <span class='fl'>19</span>
+  col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/palettes.html'>rainbow</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span><span class='op'>[</span><span class='va'>part</span><span class='op'>$</span><span class='va'>part</span><span class='op'>$</span><span class='va'>.part</span><span class='op'>]</span>,
+  cex <span class='op'>=</span> <span class='fl'>0.5</span>,
+  pch <span class='op'>=</span> <span class='fl'>19</span>
 <span class='op'>)</span>
 
 
@@ -390,7 +428,7 @@ Default 0.5</p></td>
   prop <span class='op'>=</span> <span class='fl'>0.5</span>
 <span class='op'>)</span>
 
-<span class='va'>part</span><span class='op'>$</span><span class='va'>part</span> <span class='op'>%&gt;%</span> <span class='va'>dim</span>
+<span class='va'>part</span><span class='op'>$</span><span class='va'>part</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/dimensions.html'>dim</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='va'>part</span><span class='op'>$</span><span class='va'>best_part_info</span>
 <span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span>
 
