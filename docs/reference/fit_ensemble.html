@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Model assemble and validation — fit_ensemble • flexsdm</title>
+<title>Ensemble model fitting and validation — fit_ensemble • flexsdm</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Model assemble and validation — fit_ensemble" />
-<meta property="og:description" content="Model assemble and validation" />
+<meta property="og:title" content="Ensemble model fitting and validation — fit_ensemble" />
+<meta property="og:description" content="Ensemble model fitting and validation" />
 
 
 
@@ -118,13 +118,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Model assemble and validation</h1>
+    <h1>Ensemble model fitting and validation</h1>
     
     <div class="hidden name"><code>fit_ensemble.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Model assemble and validation</p>
+    <p>Ensemble model fitting and validation</p>
     </div>
 
     <pre class="usage"><span class='fu'>fit_ensemble</span><span class='op'>(</span>
@@ -140,30 +140,30 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>models</th>
-      <td><p>list. A list of models fitted with fit_ or tune_ function family. Models used for ensemble must have the same presences-absences records, partition methods, threshold types.</p></td>
+      <td><p>list. A list of models fitted with fit_ or tune_ function family. Models used for ensemble must have the same presences-absences records, partition methods, and threshold types.</p></td>
     </tr>
     <tr>
       <th>ens_method</th>
-      <td><p>character. Method used to ensemble different models. A vector must be provided for this argument. For meansup, meanw or pcasup method, it is necessary to provide an evaluation metric and threshold in 'metric' and 'thr_model' arguments respectively . By default will be performed all ensemble methods:</p><ul>
+      <td><p>character. Method used to create ensemble of different models. A vector must be provided for this argument. For meansup, meanw or pcasup method, it is necessary to provide an evaluation metric and threshold in 'metric' and 'thr_model' arguments respectively. By default all of the following ensemble methods will be performed:</p><ul>
 <li><p>mean: Simple average of the different models.</p></li>
-<li><p>meanw: Weighted average of models based on their performance. An evaluation metric and threshold type must be provided..</p></li>
-<li><p>meansup: Average of the best models (e.g., TSS over the average). An evaluation metric must be provided.</p></li>
-<li><p>meanthr: Average performed only with those cells with suitability values above the selected threshold.</p></li>
+<li><p>meanw: Weighted average of models based on their performance. An evaluation metric and threshold type must be provided.</p></li>
+<li><p>meansup: Average of the best models (those with the evaluation metric above the average). An evaluation metric must be provided.</p></li>
+<li><p>meanthr: Averaging performed only with those cells with suitability values above the selected threshold.</p></li>
 <li><p>median: Median of the different models.</p></li>
-</ul><p>Usage ensemble = "meanthr". In case is needed perform different ensemble method it is necessary concatenate them, e.g., ensemble = c("meanw", "meanthr", "median")</p></td>
+</ul><p>Usage ensemble = "meanthr". If several ensemble methods are to be implemented it is necessary to concatenate them, e.g., ensemble = c("meanw", "meanthr", "median")</p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold criterion. A vector must be provided for this argument. The following threshold criteria are available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission.</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).</p></li>
 <li><p>max_jaccard: The threshold at which Jaccard is the highest.</p></li>
 <li><p>max_sorensen: The threshold at which Sorensen is highest.</p></li>
-<li><p>max_fpb: The threshold at which FPB is highest.</p></li>
+<li><p>max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.</p></li>
 <li><p>sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9</p></li>
-</ul><p>In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified</p></td>
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity values is not specified, default is 0.9.</p></li>
+</ul><p>In the case of using more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.</p></td>
     </tr>
     <tr>
       <th>thr_model</th>
@@ -171,7 +171,7 @@
     </tr>
     <tr>
       <th>metric</th>
-      <td><p>character. Performance metric used for selecting the best combination of hyper-parameter values. One of the next metrics can be used SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, IMAE, and BOYCE. Default TSS. Usage metric = BOYCE</p></td>
+      <td><p>character. Performance metric used for selecting the best combination of hyper-parameter values. One of the following metrics can be used: SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, IMAE, and BOYCE. Default TSS. Usage metric = BOYCE</p></td>
     </tr>
     </table>
 
@@ -181,8 +181,8 @@
 <li><p>models: A list of models used for performing ensemble.</p></li>
 <li><p>thr_metric: Threshold and metric specified in the function.</p></li>
 <li><p>predictors: A tibble of quantitative (column names with c) and qualitative (column names with f) variables used in each models.</p></li>
-<li><p>performance: A tibble with performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>).
-Those threshold dependent metrics are calculated based on the threshold specified in thr argument .</p></li>
+<li><p>performance: A tibble with performance metrics (see <code><a href='sdm_eval.html'>sdm_eval</a></code>).
+Those metrics that are threshold-dependent are calculated based on the threshold specified in the argument.</p></li>
 </ul>
 
 

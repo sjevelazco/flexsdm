@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Methods to correct overprediction of species distribution models based on occurrences and suitability patterns. — msdm_posteriori" />
-<meta property="og:description" content="These methods reduce overprediction of species distribution models based on a posteriori method (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability" />
+<meta property="og:description" content="These methods reduce overprediction of species distribution models based on a posteriori methods (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability" />
 
 
 
@@ -124,7 +124,7 @@
     </div>
 
     <div class="ref-description">
-    <p>These methods reduce overprediction of species distribution models based on a posteriori method (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability</p>
+    <p>These methods reduce overprediction of species distribution models based on a posteriori methods (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability</p>
     </div>
 
     <pre class="usage"><span class='fu'>msdm_posteriori</span><span class='op'>(</span>
@@ -143,15 +143,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>records</th>
-      <td><p>tibble or data.frame. A database with geographical coordinates of species presences and absences (or pseudo-absence) used to create species distribution models.</p></td>
+      <td><p>tibble or data.frame. A database with spatial coordinates of species presences and absences (or pseudo-absence) used to create species distribution models.</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>character. Column name with longitude values.</p></td>
+      <td><p>character. Column name with spatial x coordinates.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>character. Column name with latitude values.</p></td>
+      <td><p>character. Column name with spatial y coordinates.</p></td>
     </tr>
     <tr>
       <th>pr_ab</th>
@@ -160,24 +160,24 @@
     <tr>
       <th>cont_suit</th>
       <td><p>SpatRaster. Raster with continuous suitability predictions
-"species_specific" type calculates the minimum pairwise-distances between all occurrences and then selects the maximum distance, i.e., the value of the buffer will be the maximum distance from the minimum distance. This procedure depends on the presence of each species' occurrences; thus, for each species, a value of buffer width will be calculated (usage buffer="species_specific").</p></td>
+"species_specific" type calculates the minimum pairwise-distances between all occurrences and then selects the maximum distance, i.e., the value of the buffer will be the maximum distance from the minimum distance. This procedure depends on the spatial pattern of each species' occurrences; thus, for each species, a value of buffer width will be calculated (usage buffer="species_specific").</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>character. A character string indicating which constraint method must be used create.</p></td>
+      <td><p>character. A character string indicating which constraint method will be used.</p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission.</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).</p></li>
-<li><p>max_jaccard: The threshold at which Jaccard is the highest.</p></li>
-<li><p>max_sorensen: The threshold at which Sorensen is highest.</p></li>
+<li><p>max_jaccard: The threshold at which the Jaccard index is the highest.</p></li>
+<li><p>max_sorensen: The threshold at which the Sorensen index is highest.</p></li>
 <li><p>max_fpb: The threshold at which FPB is highest.</p></li>
 <li><p>sensitivity: Threshold based on a specified sensitivity value.
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9</p></li>
-</ul><p>In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
+</ul><p>If more than one threshold type is used they are cancatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
 Default "equal_sens_spec".</p></td>
     </tr>
     <tr>
@@ -204,35 +204,35 @@ Default "equal_sens_spec".</p></td>
 based on the occurrences and suitability patterns of species
 (see 'thr' arguments)</p>
 
-<p>Method 'obr' (Occurrences based restriction)-
+<p>Method 'obr' (Occurrences Based Restriction).
 This method assumes that suitable patches intercepting species occurrences (l)
-are likely a part of species distributions than suitable patches that do not
-intercept any occurrence (k). Distance from all patches k species occurrences to the closest l
-patch is calculated, later it is removed k patches that trespass a species-specific
+are more likely to be part of species distributions than suitable patches that do not
+intercept any occurrence (k). Distance from all k patches to the closest l
+patch is calculated, then k patches are removed that exceed a species-specific
 distance threshold from SDMs models. This threshold (T) is calculated as the
-maximum distance in a vector of minimal pairwise distances between occurrences.
-Whenever a suitable pixel is within a k patch distant from the closest l in less than T,
-the suitability of the pixel was reduced to zero. We assumed that this simple threshold
-is a surrogate of the species-specific dispersal ability. If T is low, either the species
+maximum distance in a vector of minimum pairwise distances between occurrences.
+Whenever a suitable pixel is within a k patch that is more than distance T from the closest l patch,
+the suitability of the pixel is reduced to zero. It is assumed that this simple threshold
+is a surrogate for the species-specific dispersal ability. If T is low, either the species
 has been sampled throughout its distribution, or the species is geographically restricted,
 justifying a narrow inclusion of k patches (Mendes et al., 2020).</p>
-<p>Method 'pres' (Only occurrences based restriction). This is a more restrictive variant of the 'obr' method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).</p>
-<p>Method 'lq (Lower Quantile). This method is similar to the 'obr' method, except by the
+<p>Method 'pres' (only occurrences based restriction). This is a more restrictive variant of the 'obr' method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).</p>
+<p>Method 'lq' (Lower Quantile). This method is similar to the 'obr' method, except by the
 procedure to define a distance threshold to withdrawn k patches, which is the
 lower quartile distance between k patches to the closest l patch. Whenever a suitable
 pixel is within a k patch, i.e., not within this lower quartile, the suitability of the
 pixel is reduced to zero. This means that 75% of k patches were withdrawn from the model (Mendes et al., 2020).</p>
 <p>Method 'mcp' (Minimum Convex Polygon). Compiled and adapted from
-Kremen et al. (2008), this method excludes from SDMs climate suitable
+Kremen et al. (2008), this method excludes from SDM predictions suitable
 pixels that do not intercept a minimum convex polygon,
 with interior angles smaller than 180, enclosing all occurrences of a species.</p>
 <p>Method 'bmcp' (Buffered Minimum Convex Polygon). Compiled and adapted
-from Kremen et al. (2008), it is similar to the 'mcp' except by the inclusion of a
-buffer zone surrounding minimum convex polygons. When used with the "single" options for buffer argument
-function will ask for a value in km to be used as the buffer with. When used "species_specific" a buffer will be calculated for each species based on the presences occurrences patterns, assuming as buffer width
+from Kremen et al. (2008), it is similar to the 'mcp' method except for the inclusion of a
+buffer zone surrounding minimum convex polygons. When used with the "single" option for the buffer argument
+function will ask for a value in km to be used as the buffer with. When "species_specific" is used, a buffer will be calculated for each species based on the pattern of presences, using as the buffer width
 the maximum distance in a vector of minimal pairwise distances between occurrences.</p>
-<p>Further methodological and performance information of these methods see Mendes et al. (2020).</p>
-<p>If used one these constraining method cite Mendes et al 2020.</p>
+<p>For further methodological and performance information of these methods see Mendes et al. (2020).</p>
+<p>If using one these constraining methods, cite Mendes et al (2020).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -260,7 +260,7 @@ Taxa in Madagascar with High-Resolution Planning Tools. Science, 320(5873),
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>)</span>
 
 
-<span class='co'># It will prepared data for modeling a species</span>
+<span class='co'># Preparing data for modeling a species</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
 <span class='va'>occ</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp2"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># filter a species</span>
@@ -273,7 +273,7 @@ Taxa in Madagascar with High-Resolution Planning Tools. Science, 320(5873),
     method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"kfold"</span>, folds <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
   <span class='op'>)</span> <span class='co'># add columns with partition</span>
 
-<span class='co'># Lets fit and predict a model</span>
+<span class='co'># Fit a model</span>
 <span class='va'>m_glm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_glm.html'>fit_glm</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>occ</span>,
   response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,

@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Delimit calibration area for constructing species distribution models — calib_area" />
-<meta property="og:description" content="This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others" />
+<meta property="og:description" content="This function offers different methods to define the calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others" />
 
 
 
@@ -124,7 +124,7 @@
     </div>
 
     <div class="ref-description">
-    <p>This function offers different methods to define de calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others</p>
+    <p>This function offers different methods to define the calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others</p>
     </div>
 
     <pre class="usage"><span class='fu'>calib_area</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>method</span>, groups <span class='op'>=</span> <span class='cn'>NULL</span>, crs <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -146,26 +146,26 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>character. Pseudo-absence allocation method. Could be necessary concatenate (c()) different objects for this argument. The next methods are implemented:</p><ul>
+      <td><p>character. Method used for delimiting a calibration area. Could be necessary to concatenate (c()) different objects for this argument. The following methods are implemented:</p><ul>
 <li><p>buffer: calibration area is defined by a buffer around presences. Usage method = c('buffer', width=40000).</p></li>
 <li><p>mcp: calibration area is defined by a minimum convex polygon. Usage method = 'mcp'.</p></li>
-<li><p>bmcp: calibration area is defined by buffered minimum convex polygon. Usage method = c('bmcp', width=40000).</p></li>
-<li><p>mask: calibration area is defined by those polygons intersected by presences. Usage method = c("mask", clusters, "DN"). The second element concatenated must be a SpatVector, the third element is a character with the column name from SpatVector used for filtering polygons.</p></li>
+<li><p>bmcp: calibration area is defined by buffered minimum convex polygon with buffer width. Usage method = c('bmcp', width=40000).</p></li>
+<li><p>mask: calibration area is defined by selected polygons in a spatial vector object intersected by presences. Usage method = c("mask", clusters, "DN"). The second concatenated element must be a SpatVector, the third element is a character with the column name from SpatVector used for filtering polygons.</p></li>
 </ul></td>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>character. Column name with that differentiate set of points. This could be used with mcp and bmcp method. Default NULL</p></td>
+      <td><p>character. Column name indicating differentiated subsets of points. This could be used with mcp and bmcp method. Default NULL</p></td>
     </tr>
     <tr>
       <th>crs</th>
-      <td><p>character. Coordinate reference system used for transforming occurrences and outputs. In case it is set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as SpatVector used</p></td>
+      <td><p>character. Coordinate reference system used for transforming occurrences and outputs. If set as NULL, crs of result will be NA for buffer, mcp, and bmcp methods. For mask method, the result will have the same crs as the SpatVector used</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A SpatialPolygon</p>
+    <p>A SpatVector</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
