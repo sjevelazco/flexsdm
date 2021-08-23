@@ -31,9 +31,6 @@ based on a geographical distance criteria.The following methods are available:
 
 \item{prj}{character. Projection string (PROJ4) for occurrences. Not necessary if
 the projection use WGS84 ("+proj=longlat +datum=WGS84").}
-
-\item{id}{character. Column names with rows id. It is important that each row has its own
-unique code.}
 }
 \value{
 A tibble object with data filtered geographically

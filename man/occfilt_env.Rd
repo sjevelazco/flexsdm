@@ -10,23 +10,42 @@ occfilt_env(data, x, y, id, env_layer, nbins, cores = 1)
 \item{data}{data.frame. Data.frame or tibble object with presences
 (or presence-absence) records, and coordinates}
 
-\item{x}{character. Column name with longitude data}
+\item{x}{character. Column name with spatial x coordinates}
 
-\item{y}{character. Column name with latitude data}
+\item{y}{character. Column name with spatial y coordinates}
 
 \item{id}{character. Column names with rows id. It is important that each row has its own unique code.}
 
-\item{env_layer}{SpatRaste. Rasters with environmental conditions}
+\item{env_layer}{SpatRaster. Rasters with environmental conditions}
 
 \item{nbins}{integer. A number of classes used to split each environmental condition}
 
 \item{cores}{integer. Number of machine cores used for processing in parallel}
 }
 \value{
-A tibble object with filtered data
+A tibble object with data environmentally filtered
 }
 \description{
-Perform environmental filtering on species occurrences
+This function perform filtering on species occurrences based on their environmental conditions.
+}
+\details{
+This function uses an approach adapted to the proposed by Varela et al. (2014) approach.
+ It consists of filtering occurrences in the environmental space. First, a regular
+ multidimensional grid is created in the environmental space. This multidimensional
+ grid is determined by the environmental variables (always use continuous variables) the
+ grid cell size is defined by the number of bins, used for dividing variable range into
+ interval classes (Varela et al. 2014; Castellanos et al., 2019). The number of bins is set in
+ the "nbins" argument. Then a single occurrence is randomly selected within each cell of the
+ multivariate grid. Consider that there is a trade-off between the number of bins and the number
+ of filtered records because as the number of bins decreases, the cell size of the grids
+ increases, and the number of filtered records decreases (Castellanos et al., 2019).
+ occfilt_env works for any dimensions number and with the original variables without performing
+ a PCA beforehand.
+
+ The greater the number of predictor variables (i.e., the number of dimensions of the
+ multidimensional grid) and the greater the number of bins, the greater the time processing
+ and the computer memory used. Therefore, it is recommended to use a small number of bins
+ between 2-5 if more than ten variables are used.
 }
 \examples{
 \dontrun{
@@ -82,9 +101,25 @@ filtered_3 <- occfilt_env(
   nbins = 12,
   cores = 1
 )
-# note that while higher the nbins parameter higher the number of
-# classes to be processed (4 variables, 30 bins = 923521 classes)
+# note that the higher the nbins parameter the more
+# classes must be to be processed (4 variables, 30 bins = 923521 classes)
 
-# While higher the number of bins smaller the number of records retained
+# While greater the number of bins the fewer records retained
 }
+
+}
+\references{
+\itemize{
+\item Castellanos, A. A., Huntley, J. W., Voelker, G., & Lawing, A. M. (2019). Environmental
+filtering improves ecological niche models across multiple scales. Methods in Ecology and
+Evolution, 10(4), 481-492. https://doi.org/10.1111/2041-210X.13142
+
+\item Varela, S., Anderson, R. P., Garcia-Valdes, R., & Fernandez-Gonzalez, F. (2014).
+Environmental filters reduce the effects of sampling bias and improve predictions of
+ecological niche models. Ecography, 37, 1084-1091.
+https://doi.org/10.1111/j.1600-0587.2013.00441.x
+}
+}
+\seealso{
+\code{\link{occfilt_geo}}
 }

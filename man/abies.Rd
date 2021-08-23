@@ -3,14 +3,14 @@
 \docType{data}
 \name{abies}
 \alias{abies}
-\title{A data set containing environmental condition of an Abies species}
+\title{A data set containing localities and environmental condition of an Abies (fir tree) species in California, USA}
 \format{
 A tibble object with 5000 rows and 10 variables:
 \describe{
-  \item{ID}{presence and absences records ID}
+  \item{ID}{presences and absences records ID}
   \item{pr_ab}{presence and absences denoted by 1 and 0 respectively}
-  \item{x y}{columns with coordinates}
-  \item{from column aet to landform}{columns with environmental variables}
+  \item{x y}{columns with coordinates in Albers Equal Area Conic coordinate system}
+  \item{from column aet to landform}{columns with values for environmental variables at each locality}
   ...
 }
 }
@@ -18,7 +18,7 @@ A tibble object with 5000 rows and 10 variables:
 abies
 }
 \description{
-A data set containing environmental condition of an Abies species
+A data set containing localities and environmental condition of an Abies (fir tree) species in California, USA
 }
 \examples{
 \dontrun{
