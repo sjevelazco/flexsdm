@@ -1,33 +1,64 @@
 #' Perform geographical filtering on species occurrences
 #'
+#' @description This function perform geographical filtering of species occurrences.
+#'
 #' @param data data.frame. Data.frame or tibble object with presences
 #' (or presence-absence) records, and coordinates
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
-#' @param id character. Column names with rows id. It is important that each row has its own unique code.
+#' @param id character. Column names with rows id. It is important that each row has its own
+#' unique code.
 #' @param env_layer SpatRaster. Raster variables that will be used to fit the model
-#' @param method character. Method to perform geographical thinning. Pair of points are filtered based on a geographical distance criteria.The following methods are available:
+#' @param method character. Method to perform geographical thinning. Pair of points are filtered
+#' based on a geographical distance criteria.The following methods are available:
 #' \itemize{
-#'   \item moran: Points are filetered based on the smallest distance that reduces Moran's I to values lower than 0.1. Latlong = T if occurrences are in a gegraphical projection.
+#'   \item moran: records are filtered based on the smallest distance that reduces Moran's I to
+#'   values lower than 0.1. Latlong = TRUE if occurrences are in a geographical projection.
 #'   Usage method: method = c('moran').
-#'   \item cellsize: Points are filetered based on the environmental variables resolution. The factor can be specified.
+#'   \item cellsize: records are filtered based on the environmental variables resolution which
+#'   can be aggregated to coarser resolution defined by the factor.
 #'   Usage method: method = c('cellsize', factor = '2').
-#'   \item defined: Points are filetered based on a provided distance value in km.
+#'   \item defined: records are filtered based on a provided distance value in km.
 #'   Usage method: method = c('defined', d = 300).
 #' }
-#' @param prj character. Projection string (PROJ4) for occurrences. Not necessary if the projection is WGS84.
+#' @param prj character. Projection string (PROJ4) for occurrences. Not necessary if
+#' the projection use WGS84 ("+proj=longlat +datum=WGS84").
 #'
 #' @return
-#' A tibble object with filtered data
+#' A tibble object with data filtered geographically
+#'
+#' @details In this function are implemented three alternatives to determine the
+#' distance threshold between pair of points:
+#' 1-"moran" determines the threshold as the distance, which minimizes the spatial autocorrelation
+#' in occurrence data, following a Moran's semivariogram. A Principal Component Analysis with the
+#' environmental variables is performed and then is used first Principal Component to calculate
+#' the semivariograms. Sometimes, this method can greatly reduce the number of presences.
+#' 2-"cellsize" filters occurrences based on the predictors' resolution. This method will calculate
+#'  the distance between the first two cells of the environmental variable and use this distance
+#'  to filter occurrences. The resolution of a rater is aggregated based on the values used in
+#'  "factor". Thus, the distance used for filtering can be adjusted to represent a larger grid size.
+#' 3-"determined" this method uses any distance in km specified by the user.
+#'
+#'
+#' For the three method is used the "thin" function from spThin package
+#' (Aiello-Lammens et al., 2015) with the next argument settings reps = 20, write.files = FALSE,
+#' locs.thinned.list.return = TRUE, and write.log.file = FALSE.
+#'
+#'
+#' @references
+#' \itemize{
+#' \item Aiello-Lammens, M. E., Boria, R. A., Radosavljevic, A., Vilela, B., & Anderson,
+#' R. P. (2015). spThin: An R package for spatial thinning of species occurrence records for use
+#' in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/ecog.01132
+#' }
 #'
 #' @export
 #'
-#' @importFrom ape Moran.I
 #' @importFrom dplyr tibble
+#' @importFrom stats complete.cases prcomp
+#' @importFrom terra extract vect project as.data.frame predict distance
+#' @importFrom ape Moran.I
 #' @importFrom spThin thin
-#' @importFrom stats complete.cases prcomp dist
-#' @importFrom terra vect project geom extract as.data.frame predict xyFromCell distance
-#' @importFrom utils capture.output
 #'
 #' @examples
 #' \dontrun{
@@ -53,50 +84,67 @@
 #'   data = spp1,
 #'   x = "x",
 #'   y = "y",
-#'   id = "species",
 #'   env_layer = somevar,
 #'   method = c("moran"),
-#'   prj = crs(somevar, proj = T)
+#'   prj = crs(somevar)
 #' )
+#'
+#' somevar[[1]] %>% plot(col=gray.colors(10))
+#' points(spp1 %>% select(x, y)) #raw data
+#' points(filtered_1 %>% select(x, y), pch=19, col='yellow') #filtered data
 #'
 #' # Cellsize
 #' filtered_2 <- occfilt_geo(
 #'   data = spp1,
 #'   x = "x",
 #'   y = "y",
-#'   id = "species",
 #'   env_layer = somevar,
 #'   method = c("cellsize", factor = "3"),
-#'   prj = crs(somevar, proj = T)
+#'   prj = crs(somevar)
 #' )
+#'
+#' somevar[[1]] %>% plot(col=gray.colors(10))
+#' points(spp1 %>% select(x, y)) #raw data
+#' points(filtered_2 %>% select(x, y), pch=19, col='yellow') #filtered data
+#'
 #'
 #' # Defined
 #' filtered_3 <- occfilt_geo(
 #'   data = spp1,
 #'   x = "x",
 #'   y = "y",
-#'   id = "species",
 #'   env_layer = somevar,
 #'   method = c("defined", d = "30"),
-#'   prj = crs(somevar, proj = T)
+#'   prj = crs(somevar)
 #' )
+#'
+#' somevar[[1]] %>% plot(col=gray.colors(10))
+#' points(spp1 %>% select(x, y)) #raw data
+#' points(filtered_3 %>% select(x, y), pch=19, col='yellow') #filtered data
+#'
 #' }
-occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
-  data <- data[c(x, y, id)]
+#'
+#' @seealso \code{\link{occfilt_env}}
+#'
+occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
+  data <- data[c(x, y)]
 
-  if (!is.null(prj) || prj != "+proj=longlat +datum=WGS84") {
+
+  if(is.null(prj)) {
+    da <- data
+  } else if (!is.null(prj) || prj!="+proj=longlat +datum=WGS84") {
     da <- terra::vect(data, geom = c(x, y), prj)
     da <- terra::project(da, "+proj=longlat +datum=WGS84")
     da <- data.frame(terra::geom(da))
-    da <- dplyr::tibble(cbind(da[c(x, y)], data[c(id)]))
-
+    da <- dplyr::tibble(cbind(da[c(x, y)]))
+    if(!("moran" %in% method)){
+      env_layer <- env_layer[[1]]
+    }
     env_layer <- terra::project(env_layer, "+proj=longlat +datum=WGS84")
-  } else {
-    da <- data
   }
 
   # Remove NAs
-  da <- da[c(x, y, id)]
+  da <- da[c(x, y)]
   coord <- da[c(x, y)]
 
   message("Extracting values from raster ... ")
@@ -111,6 +159,9 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
     env <- env[filt, ]
   }
   rm(filt)
+
+  message("Number of unfiltered records: ", nrow(da))
+
 
   if ("moran" %in% method) {
     if (!all(grepl("PC", names(env_layer)))) {
@@ -169,18 +220,19 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
     options(warn = 1)
 
     # Thinning
+    da$.spp <- 'sp'
     invisible(utils::capture.output(
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = y,
-          long.col = x,
-          spec.col = id,
+          lat.col = 'y',
+          long.col = 'x',
+          spec.col = '.spp',
           thin.par = d,
           reps = 20,
-          write.files = F,
-          locs.thinned.list.return = T,
-          write.log.file = F
+          write.files = FALSE,
+          locs.thinned.list.return = TRUE,
+          write.log.file = FALSE
         )
     ))
     occT <-
@@ -189,10 +241,10 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
       }) == max(sapply(occT, function(x) {
         nrow(x)
       })))[1]]]
-    occPOS <- as.integer(row.names(occT))
+    occT <- as.integer(row.names(occT))
 
     # Select Thinned Occurrences
-    coord_filter <- data[occPOS, ]
+    coord_filter <- data[occT, ]
 
     # Results
     message("Distance threshold(km): ", round(br[pos], 3))
@@ -206,21 +258,22 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
     factor <- as.numeric(method["factor"])
     distance <-
       terra::xyFromCell(env_layer[[1]], 1:2)
-    distance <- as.numeric(abs(terra::distance(distance, lonlat = T) / 1000 * factor))
+    distance <- as.numeric(abs(terra::distance(distance, lonlat = TRUE) / 1000 * factor))
 
     # Thinning
+    da$.spp <- 'sp'
     invisible(utils::capture.output(
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = y,
-          long.col = x,
-          spec.col = id,
+          lat.col = 'y',
+          long.col = 'x',
+          spec.col = '.spp',
           thin.par = distance,
           reps = 20,
-          write.files = F,
-          locs.thinned.list.return = T,
-          write.log.file = F
+          write.files = FALSE,
+          locs.thinned.list.return = TRUE,
+          write.log.file = FALSE
         )
     ))
     occT <-
@@ -229,10 +282,10 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
       }) == max(sapply(occT, function(x) {
         nrow(x)
       })))[1]]]
-    occPOS <- as.integer(row.names(occT))
+    occT <- as.integer(row.names(occT))
 
     # Select Thinned Occurrences
-    coord_filter <- data[occPOS, ]
+    coord_filter <- data[occT, ]
     message("Distance threshold(km): ", round(distance, 3))
     message("Number of filtered records: ", nrow(coord_filter))
     return(dplyr::tibble(coord_filter))
@@ -241,18 +294,19 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
   if ("defined" %in% method) {
 
     # Thinning
+    da$.spp <- 'sp'
     invisible(utils::capture.output(
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = y,
-          long.col = x,
-          spec.col = id,
+          lat.col = 'y',
+          long.col = 'x',
+          spec.col = '.spp',
           thin.par = as.numeric(method["d"]),
           reps = 20,
-          write.files = F,
-          locs.thinned.list.return = T,
-          write.log.file = F
+          write.files = FALSE,
+          locs.thinned.list.return = TRUE,
+          write.log.file = FALSE
         )
     ))
     occT <-
@@ -261,10 +315,10 @@ occfilt_geo <- function(data, x, y, id, env_layer, method, prj = NULL) {
       }) == max(sapply(occT, function(x) {
         nrow(x)
       })))[1]]]
-    occPOS <- as.integer(row.names(occT))
+    occT <- as.integer(row.names(occT))
 
     # Select Thinned Occurrences
-    coord_filter <- data[occPOS, ]
+    coord_filter <- data[occT, ]
     message("Distance threshold(km): ", round(as.numeric(method["d"]), 3))
     message("Number of filtered records: ", nrow(coord_filter))
     return(dplyr::tibble(coord_filter))
