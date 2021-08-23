@@ -22,7 +22,8 @@ part_sblock(
 \item{env_layer}{SpatRaster. Raster with environmental
 variable. Used to evaluate spatial autocorrelation and
 environmental similarity between training and testing partitions. Because this function
-calculate dissimilarity based on Euclidean distances, it can only be used with continuous environmental variables}
+calculate dissimilarity based on Euclidean distances, it can only be used with continuous
+environmental variables}
 
 \item{data}{data.frame. Data.frame or tibble object with presence
 (or presence-absence, or presences-pseudo-absence) records, and coordinates}
@@ -56,8 +57,12 @@ Default 0.5}
 \value{
 A list with:
 \itemize{
-  \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
-  \item best_part_info: A tibble with information about the best partition. It contains the number of the best partition (n_grid), cell size (cell_size), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on Euclidean distance (env_sim).
+  \item part: A tibble object with information used in 'data' arguments and a additional column
+  .part with partition group.
+  \item best_part_info: A tibble with information about the best partition. It contains the
+  number of the best partition (n_grid), cell size (cell_size), standard deviation of
+  presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation
+  (spa_auto), and environmental similarity based on Euclidean distance (env_sim).
   \item grid: A SpatRaster object with blocks
   }
 }
@@ -68,7 +73,31 @@ grid size is performed automatically considering spatial autocorrelation, enviro
 similarity, and the number of presence and absence records in each partition.
 }
 \details{
-write here criteria used for performing the search of the best partition (metrics and quartil selection).
+The part_sblock allows test with different numbers of partitions using square blocks
+(like a checkerboard). This function explores a range of block sizes and automatically selects
+the best size for a given given presence, presence-absences, or presence-pseudo-absences
+dataset. Such number of partition selection is based on an optimization procedure that
+explores partition size in three dimensions
+determined by spatial autocorrelation (measured by Moran's I), environmental similarity
+(Euclidean distance), and difference in the amount of data among partition groups
+(Standard Deviation - SD; Velazco et al., 2019). This procedure will cyclically select
+those partitions with autocorrelation values less than the lowest quartile of Morans I, then
+those with environmental similarity values greater than the third quartile of the Euclidean
+distances than those with a difference in the amount of data less than the lowest quartile of SD.
+This selection is repeated until only one partition is retained (Velazco et al., 2019). The
+main benefit of this partition selection are i) this is not subjective, ii) balances the
+environmental similarity and special autocorrelation between partitions, and iii) controls
+the partition selection with few data that may be problematic for model fitting
+("min_occ" argument)..
+
+Partitions geographically structured tend to evaluate model transferability more directly than
+conventional ones (e.g., those performed by \code{\link{part_random}}) (Roberts et al., 2017;
+Santini et al., 2021), being relevant for models that want to be used for projections in other
+regions outside the calibration area or for other periods.
+
+This function can interact with \code{\link{get_block}}, \code{\link{sample_background}},
+and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-absences within
+spatial partition broups
 }
 \examples{
 \dontrun{
@@ -108,9 +137,9 @@ part$grid # raster with folds
 
 plot(part$grid)
 points(part$part[c("x", "y")],
-       col = c("blue", "red")[part$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = c("blue", "red")[part$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 
 terra::res(part$grid)
@@ -127,9 +156,9 @@ grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
 points(part$part[c("x", "y")],
-       col = c("blue", "red")[part$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = c("blue", "red")[part$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 # This layer is very useful if you need sample
 # pseudo_absence or background point
@@ -154,9 +183,9 @@ part <- part_sblock(
 # Explore the Grid object
 plot(part$grid, col = gray.colors(4))
 points(part$part[c("x", "y")],
-       col = rainbow(n = 4)[part$part$.part],
-       cex = 0.5,
-       pch = 19
+  col = rainbow(n = 4)[part$part$.part],
+  cex = 0.5,
+  pch = 19
 )
 
 
@@ -230,7 +259,7 @@ part <- part_sblock(
   prop = 0.5
 )
 
-part$part \%>\% dim
+part$part \%>\% dim()
 part$best_part_info
 part$grid
 
@@ -246,9 +275,20 @@ points(
 }
 \references{
 \itemize{
-\item
+\item Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-Arroita, G.,
+Hauenstein, S., Lahoz-Monfort, J. J., Schroder, B., Thuiller, W., Warton, D. I., Wintle, B. A.,
+Hartig, F., & Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial,
+ hierarchical, or phylogenetic structure. Ecography, 40,
+ 913-929. https://doi.org/10.1111/ecog.02881
+\item Santini, L., Benitez‐Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
+ Assessing the reliability of species distribution projections in climate change research.
+ Diversity and Distributions, ddi.13252. https://doi.org/10.1111/ddi.13252
+\item Velazco, S. J. E., Villalobos, F., Galvao, F., & De Marco Junior, P. (2019). A dark
+scenario for Cerrado plant species: Effects of future climate, land use and protected areas
+ineffectiveness. Diversity and Distributions, 25(4), 660-673. https://doi.org/10.1111/ddi.12886
 }
 }
 \seealso{
-\code{\link{part_random}}, \code{\link{part_senv}}, \code{\link{get_block}}, and \code{\link{plot_res}}.
+\code{\link{part_random}}, \code{\link{part_sband}}, \code{\link{part_senv}},
+\code{\link{get_block}}, and \code{\link{plot_res}}.
 }

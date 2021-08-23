@@ -6,8 +6,6 @@
 #' (or presence-absence) records, and coordinates
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
-#' @param id character. Column names with rows id. It is important that each row has its own
-#' unique code.
 #' @param env_layer SpatRaster. Raster variables that will be used to fit the model
 #' @param method character. Method to perform geographical thinning. Pair of points are filtered
 #' based on a geographical distance criteria.The following methods are available:
@@ -127,6 +125,7 @@
 #' @seealso \code{\link{occfilt_env}}
 #'
 occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
+  data0 <- data
   data <- data[c(x, y)]
 
 
@@ -244,12 +243,11 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     occT <- as.integer(row.names(occT))
 
     # Select Thinned Occurrences
-    coord_filter <- data[occT, ]
+    coord_filter <- data0[occT, ]
 
     # Results
     message("Distance threshold(km): ", round(br[pos], 3))
     message("Number of filtered records: ", nrow(coord_filter))
-    return(dplyr::tibble(coord_filter))
   }
 
   if ("cellsize" %in% method) {
@@ -285,10 +283,9 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     occT <- as.integer(row.names(occT))
 
     # Select Thinned Occurrences
-    coord_filter <- data[occT, ]
+    coord_filter <- data0[occT, ]
     message("Distance threshold(km): ", round(distance, 3))
     message("Number of filtered records: ", nrow(coord_filter))
-    return(dplyr::tibble(coord_filter))
   }
 
   if ("defined" %in% method) {
@@ -318,9 +315,9 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     occT <- as.integer(row.names(occT))
 
     # Select Thinned Occurrences
-    coord_filter <- data[occT, ]
+    coord_filter <- data0[occT, ]
     message("Distance threshold(km): ", round(as.numeric(method["d"]), 3))
     message("Number of filtered records: ", nrow(coord_filter))
-    return(dplyr::tibble(coord_filter))
   }
+    return(dplyr::tibble(coord_filter))
 }

@@ -8,8 +8,8 @@
 A tibble object with 5000 rows and 10 variables:
 \describe{
   \item{pr_ab}{background point denoted by 0}
-  \item{x y}{columns with coordinates}
-  \item{from column aet to landform}{columns with environmental variables}
+  \item{x y}{columns with geographical coordinates}
+  \item{from column aet to landform}{columns with values of environmental variables at coordinate locations}
   ...
 }
 }

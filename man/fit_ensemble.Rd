@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit_ensemble.R
 \name{fit_ensemble}
 \alias{fit_ensemble}
-\title{Model assemble and validation}
+\title{Ensemble model fitting and validation}
 \usage{
 fit_ensemble(
   models,
@@ -13,33 +13,33 @@ fit_ensemble(
 )
 }
 \arguments{
-\item{models}{list. A list of models fitted with fit_ or tune_ function family. Models used for ensemble must have the same presences-absences records, partition methods, threshold types.}
+\item{models}{list. A list of models fitted with fit_ or tune_ function family. Models used for ensemble must have the same presences-absences records, partition methods, and threshold types.}
 
-\item{ens_method}{character. Method used to ensemble different models. A vector must be provided for this argument. For meansup, meanw or pcasup method, it is necessary to provide an evaluation metric and threshold in 'metric' and 'thr_model' arguments respectively . By default will be performed all ensemble methods:
+\item{ens_method}{character. Method used to create ensemble of different models. A vector must be provided for this argument. For meansup, meanw or pcasup method, it is necessary to provide an evaluation metric and threshold in 'metric' and 'thr_model' arguments respectively. By default all of the following ensemble methods will be performed:
 \itemize{
 \item mean: Simple average of the different models.
-\item meanw: Weighted average of models based on their performance. An evaluation metric and threshold type must be provided..
-\item meansup: Average of the best models (e.g., TSS over the average). An evaluation metric must be provided.
-\item meanthr: Average performed only with those cells with suitability values above the selected threshold.
+\item meanw: Weighted average of models based on their performance. An evaluation metric and threshold type must be provided.
+\item meansup: Average of the best models (those with the evaluation metric above the average). An evaluation metric must be provided.
+\item meanthr: Averaging performed only with those cells with suitability values above the selected threshold.
 \item median: Median of the different models.}
-Usage ensemble = "meanthr". In case is needed perform different ensemble method it is necessary concatenate them, e.g., ensemble = c("meanw", "meanthr", "median")}
+Usage ensemble = "meanthr". If several ensemble methods are to be implemented it is necessary to concatenate them, e.g., ensemble = c("meanw", "meanthr", "median")}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold criterion. A vector must be provided for this argument. The following threshold criteria are available:
 \itemize{
   \item lpt: The highest threshold at which there is no omission.
   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
   \item max_jaccard: The threshold at which Jaccard is the highest.
   \item max_sorensen: The threshold at which Sorensen is highest.
-  \item max_fpb: The threshold at which FPB is highest.
+  \item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
   \item sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity values is not specified, default is 0.9.
   }
-In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
+In the case of using more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.}
 
 \item{thr_model}{character. This threshold is needed for conduct meanw, meandsup, and meanthr ensemble methods. It is mandatory to use only one threshold, and this must be the same threshold used to fit all the models used in the "models" argument. Usage thr_model = 'equal_sens_spec'}
 
-\item{metric}{character. Performance metric used for selecting the best combination of hyper-parameter values. One of the next metrics can be used SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, IMAE, and BOYCE. Default TSS. Usage metric = BOYCE}
+\item{metric}{character. Performance metric used for selecting the best combination of hyper-parameter values. One of the following metrics can be used: SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, IMAE, and BOYCE. Default TSS. Usage metric = BOYCE}
 }
 \value{
 A list object with:
@@ -47,12 +47,12 @@ A list object with:
 \item models: A list of models used for performing ensemble.
 \item thr_metric: Threshold and metric specified in the function.
 \item predictors: A tibble of quantitative (column names with c) and qualitative (column names with f) variables used in each models.
-\item performance: A tibble with performance metric (see \code{\link{sdm_eval}}).
-Those threshold dependent metrics are calculated based on the threshold specified in thr argument .
+\item performance: A tibble with performance metrics (see \code{\link{sdm_eval}}).
+Those metrics that are threshold-dependent are calculated based on the threshold specified in the argument.
 }
 }
 \description{
-Model assemble and validation
+Ensemble model fitting and validation
 }
 \examples{
 \dontrun{

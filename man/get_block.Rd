@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_block.R
 \name{get_block}
 \alias{get_block}
-\title{Transform a spatial partition layer to the same spatial properties of environmental variables}
+\title{Transform a spatial partition layer to the same spatial properties as environmental variables}
 \usage{
 get_block(env_layer, best_grid)
 }
@@ -12,13 +12,13 @@ get_block(env_layer, best_grid)
 \item{best_grid}{SpatRaster object returned by block_partition or band_partition}
 }
 \value{
-A SpatRaster layer with the same resolution and extent than environmental variables
+A SpatRaster layer with the same resolution and extent as the environmental variables
 }
 \description{
-Transform a spatial partition layer to the same spatial properties of environmental variables
+Transform a spatial partition layer to the same spatial properties as environmental variables
 }
 \details{
-Transform a layer originated from the function block_partition or band_partition to the same properties of environmental variables
+Transform a layer originating from the function block_partition or band_partition to the same spatial properties as the environmental variables
 }
 \examples{
 \dontrun{
@@ -28,7 +28,7 @@ data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
 
-# Lest practice with a single species
+# Example for a single species
 single_spp <- spp \%>\% dplyr::filter(species == "sp3")
 
 part <- part_sblock(
@@ -50,5 +50,4 @@ part$grid
 plot(part$grid)
 plot(grid_env)
 }
-
 }

@@ -30,25 +30,25 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
 
 \item{partition}{character. Column name with training and validation partition groups.}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be used. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{
   \item lpt: The highest threshold at which there is no omission.
   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
-  \item max_jaccard: The threshold at which Jaccard is the highest.
-  \item max_sorensen: The threshold at which Sorensen is highest.
-  \item max_fpb: The threshold at which FPB is highest.
+  \item max_jaccard: The threshold at which the Jaccard index is the highest.
+  \item max_sorensen: The threshold at which the Sorensen index is highest.
+  \item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
   \item sensitivity: Threshold based on a specified sensitivity value.
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
   }
-In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
+If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.}
 
 \item{fit_formula}{formula. A formula object with response and predictor
 variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments}
 
-\item{poly}{interger >= 2. If used with values >= 2 model will use polinomius
+\item{poly}{interger >= 2. If used with values >= 2 model will use polynomials
 for those continuous variables (i.e. used in predictors argument). Default is 0.}
 
 \item{inter_order}{interger >= 0. The interaction order between explanatory variables. Default is 0.}
@@ -58,8 +58,8 @@ A list object with:
 \itemize{
 \item model: A "glm" class object. This object can be used for predicting.
 \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
-\item performance: Performance metric (see \code{\link{sdm_eval}}).
-Those threshold dependent metric are calculated based on the threshold specified in thr argument .
+\item performance: Performance metrics (see \code{\link{sdm_eval}}).
+Threshold dependent metric are calculated based on the threshold specified in thr argument .
 \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 }
 }
@@ -94,7 +94,7 @@ glm_t1$predictors
 glm_t1$performance
 glm_t1$data_ens
 
-
+# Using second order polynomial terms and first-order interaction terms
 glm_t2 <- fit_glm(
   data = abies2,
   response = "pr_ab",
@@ -114,6 +114,7 @@ abies2 <- part_random(
 )
 abies2
 
+# Using third order polynomial terms and second-order interaction terms
 glm_t3 <- fit_glm(
   data = abies2,
   response = "pr_ab",
@@ -125,5 +126,4 @@ glm_t3 <- fit_glm(
   inter_order = 2
 )
 }
-
 }
