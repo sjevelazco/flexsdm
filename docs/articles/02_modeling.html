@@ -88,10 +88,10 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Species distribution modeling (SDM) has become a standard tool in multiple research areas, including ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active research in both theoretical and methodological applications. The <em>flexsdm</em> package provides users the ability to manipulate and parameterize models in a variety of ways that meet their unique research needs.</p>
+<p>Species distribution modeling (SDM) has become a standard tool in multiple research areas, including ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active theoretical and methodological research. The <em>flexsdm</em> package provides users the ability to manipulate and parameterize models in a variety of ways that meet their unique research needs.</p>
 <p>This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).</p>
-<p>In this vignette, users will learn about the second set of functions in the <em>flexsdm</em> package that fall under the “modeling” umbrella. These functions were designed to construct and validate different types of models and can be grouped into fit_* , tune_* , and esm_* family functions.</p>
-<p>The fit_* functions construct and validate models with default hyper-parameter values. The tune_* functions construct and validate models by searching for the best hyper-parameter values combination and esm_ functions can be used for constructing and validating Ensemble of Small Models. Finally, the fit_ensemble() function is for fitting and validating ensemble models.</p>
+<p>In this vignette, users will learn about the second set of functions in the <em>flexsdm</em> package that fall under the “modeling” umbrella. These functions were designed to construct and validate different types of models and can be grouped into fit_* , tune_* , and esm_* family functions. In addition there is a function to perform ensemble modeling.</p>
+<p>The fit_* functions construct and validate models with default hyper-parameter values. The tune_* functions construct and validate models by searching for the best combination of hyper-parameter values, and esm_ functions can be used for constructing and validating Ensemble of Small Models. Finally, the fit_ensemble() function is for fitting and validating ensemble models.</p>
 <p>These are the functions for model construction and validation:</p>
 <p><strong>fit_* functions family</strong></p>
 <ul>
@@ -130,7 +130,7 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>First, let’s install the flexsdm package. You can install the released version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm">github</a> with:</p>
+<p>First, install the flexsdm package. You can install the released version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm">github</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
@@ -160,7 +160,7 @@
 <div id="project-directory-setup" class="section level2">
 <h2 class="hasAnchor">
 <a href="#project-directory-setup" class="anchor"></a>Project directory setup</h2>
-<p>First you want to decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see <a href="https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html">Vignette 01_pre_modeling</a></p>
+<p>Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see <a href="https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html">Vignette 01_pre_modeling</a></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_project</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">'flex_sdm_project'</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">my_project</span><span class="op">)</span>
@@ -173,12 +173,13 @@
               threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
               return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp2pZSUk/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpolgKl0/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="data-species-occurrence-and-background-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-species-occurrence-and-background-data" class="anchor"></a>Data, species occurrence and background data</h2>
-<p>In this tutorial, we will be using species occurrences and environmental data that are available through the <em>flexsdm</em> package. The “abies” example dataset includes pr_ab column (presence = 1, and absence = 0), location columns (x, y) and other environmental data. You can load the “abies” data into your local R environment by using the code below:</p>
+<p>In this tutorial, we will be using species occurrences and environmental data that are available through the <em>flexsdm</em> package. The “abies” example dataset includes a pr_ab column (presence = 1, and absence = 0), location columns (x, y) and other environmental data. You can load the “abies” data into your local R environment by using the code below:</p>
+<p>(THIS EXAMPLE LOOKS A LITTLE STRANGE BECAUSE WE ARE ALSO USING BACKGROUND DATA, WHILE THE ABIES DATASET CLEARLY HAS ABSENCES…)</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"backg"</span><span class="op">)</span>
@@ -215,7 +216,7 @@
 <span class="co">#&gt; $ depth        &lt;dbl&gt; 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17~</span>
 <span class="co">#&gt; $ percent_clay &lt;dbl&gt; 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,~</span>
 <span class="co">#&gt; $ landform     &lt;fct&gt; 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, ~</span></code></pre></div>
-<p>If you want to replace the abies dataset with your own data, make sure that contains the environmental conditions related to presence-absence data. We use a pre-modeling family function for a k-fold partition method. In the partition method the number of folds or replications must be the same for presence-absence and for background points datasets.</p>
+<p>If you want to replace the abies dataset with your own data, make sure that your dataset contains the environmental conditions related to presence-absence data. We use a pre-modeling family function for a k-fold partition method (to be used for cross-validation). In the partition method the number of folds or replications must be the same for presence-absence and for background points datasets.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">abies</span>,
@@ -239,8 +240,8 @@
 <span class="co">#&gt; $ awc      &lt;dbl&gt; 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0~</span>
 <span class="co">#&gt; $ depth    &lt;dbl&gt; 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99~</span>
 <span class="co">#&gt; $ landform &lt;fct&gt; 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1~</span>
-<span class="co">#&gt; $ .part    &lt;int&gt; 5, 5, 5, 2, 1, 2, 2, 4, 2, 5, 1, 5, 2, 2, 2, 2, 5, 3, 5, 2, 5~</span></code></pre></div>
-<p>Now, in the abies2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5). Next, we have to apply the same method to the environmental conditions of the background points.</p>
+<span class="co">#&gt; $ .part    &lt;int&gt; 4, 3, 5, 2, 5, 3, 5, 4, 5, 5, 3, 5, 1, 1, 2, 2, 1, 4, 1, 1, 2~</span></code></pre></div>
+<p>Now, in the abies2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record (row) is a member of. Next, we have to apply the same partition method and number of folds to the environmental conditions of the background points.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">backg2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">backg</span>,
@@ -264,13 +265,13 @@
 <span class="co">#&gt; $ depth        &lt;dbl&gt; 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17~</span>
 <span class="co">#&gt; $ percent_clay &lt;dbl&gt; 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,~</span>
 <span class="co">#&gt; $ landform     &lt;fct&gt; 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, ~</span>
-<span class="co">#&gt; $ .part        &lt;int&gt; 3, 4, 5, 1, 4, 1, 3, 1, 5, 5, 1, 1, 2, 5, 1, 1, 3, 1, 4, ~</span></code></pre></div>
+<span class="co">#&gt; $ .part        &lt;int&gt; 2, 1, 1, 4, 3, 5, 2, 5, 3, 5, 4, 1, 4, 1, 5, 5, 4, 1, 2, ~</span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5).</p>
 <div id="fit-and-validate-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fit-and-validate-models" class="anchor"></a>1. Fit and validate models</h3>
-<p>We fit and validate models: I- a maximum entropy model with default hyper-parameter values (flexsdm::fit_max) and II- a random forest model with exploration of hyper-parameters (flexsdm::tune_raf).</p>
-<p>I- Maximum Entropy models with default hyper-parameter values.</p>
+<p>We fit and validate models: I. a maximum entropy model with default hyper-parameter values (flexsdm::fit_max) and II. a random forest model with exploration of hyper-parameters (flexsdm::tune_raf).</p>
+<p>I. Maximum Entropy models with default hyper-parameter values.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_max.html">fit_max</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">abies2</span>,
@@ -293,7 +294,8 @@
 <span class="co">#&gt; Partition number: 3/5</span>
 <span class="co">#&gt; Partition number: 4/5</span>
 <span class="co">#&gt; Partition number: 5/5</span></code></pre></div>
-<p>Let’s see what the output object contains. This function returns a list object with:</p>
+<p>This function returns a list object with the following elements:</p>
+<p>(I THINK YOU WANT TO RUN NAMES HERE) names(MAX_T1)</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>max.print<span class="op">=</span><span class="fl">20</span><span class="op">)</span>
 <span class="va">max_t1</span><span class="op">$</span><span class="va">model</span>
@@ -308,7 +310,7 @@
 <span class="co">#&gt; 5    0 0.00 66.730</span>
 <span class="co">#&gt; 6    0 0.00 63.710</span>
 <span class="co">#&gt;  [ reached getOption("max.print") -- omitted 194 rows ]</span></code></pre></div>
-<p>model: A “MaxEnt” class object. This object can be used for predicting.</p>
+<p>model: A “MaxEnt” class object. This object can be used for predicting. (I DO NOT THINK THE EXAMPLE SHOWN IS MAXENT. THIS IS A GLMNET) (ALSO YOU SHOULD PUT HTE DESCRIPTION OF EACH MODEL OBJECT ELEMENT BEFORE THE EXAMPLE NOT AFTER)</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">predictors</span>
 <span class="co">#&gt; # A tibble: 1 x 6</span>
@@ -321,38 +323,38 @@
 <span class="co">#&gt; # A tibble: 3 x 25</span>
 <span class="co">#&gt;   model threshold       thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 max   equal_sens_spec     0.591         700        700    0.671 0.0175    0.671</span>
-<span class="co">#&gt; 2 max   max_sens_spec       0.573         700        700    0.859 0.0402    0.569</span>
-<span class="co">#&gt; 3 max   max_sorensen        0.415         700        700    0.904 0.0260    0.519</span>
+<span class="co">#&gt; 1 max   equal_sens_spec     0.591         700        700    0.664 0.0262    0.666</span>
+<span class="co">#&gt; 2 max   max_sens_spec       0.573         700        700    0.849 0.0552    0.573</span>
+<span class="co">#&gt; 3 max   max_sorensen        0.415         700        700    0.944 0.0329    0.456</span>
 <span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></code></pre></div>
-<p>performance: The performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in the argument. We can see all the selected threshold values.</p>
+<p>performance: The performance metric (see sdm_eval). Those metrics that are threshold dependent are calculated based on the threshold specified in the argument. We can see all the selected threshold values.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">data_ens</span>
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
-<span class="co">#&gt;    rnames replicates part  pr_ab   pred</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 5      .part      1         0 0.792 </span>
-<span class="co">#&gt;  2 11     .part      1         0 0.216 </span>
-<span class="co">#&gt;  3 23     .part      1         0 0.667 </span>
-<span class="co">#&gt;  4 30     .part      1         0 0.0194</span>
-<span class="co">#&gt;  5 33     .part      1         0 0.0383</span>
-<span class="co">#&gt;  6 34     .part      1         0 0.346 </span>
-<span class="co">#&gt;  7 36     .part      1         0 0.113 </span>
-<span class="co">#&gt;  8 42     .part      1         0 0.286 </span>
-<span class="co">#&gt;  9 48     .part      1         0 0.120 </span>
-<span class="co">#&gt; 10 51     .part      1         0 0.0171</span>
+<span class="co">#&gt;    rnames replicates part  pr_ab    pred</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 13     .part      1         0 0.0376 </span>
+<span class="co">#&gt;  2 14     .part      1         0 0.407  </span>
+<span class="co">#&gt;  3 17     .part      1         0 0.574  </span>
+<span class="co">#&gt;  4 19     .part      1         0 0.705  </span>
+<span class="co">#&gt;  5 20     .part      1         0 0.291  </span>
+<span class="co">#&gt;  6 50     .part      1         0 0.00500</span>
+<span class="co">#&gt;  7 58     .part      1         0 0.00471</span>
+<span class="co">#&gt;  8 65     .part      1         0 0.798  </span>
+<span class="co">#&gt;  9 69     .part      1         0 0.0778 </span>
+<span class="co">#&gt; 10 77     .part      1         0 0.437  </span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
-<p>We can see the environmental conditions of presence-absence data with the prediction for each input row.</p>
+<p>Predicted suitability and test partition for each observation (row).</p>
 <p>II- Random forest models with exploration of hyper-parameters.</p>
 <p>First, we create a data.frame that provides hyper-parameters values to be tested. It Is recommended to generate this data.frame. Hyper-parameter needed for tuning is ‘mtry’. The maximum mtry must be equal to total number of predictors.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tune_grid</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>We create use the same object abies2, with the same k-fold partition method:</p>
+<p>We use the same data object abies2, with the same k-fold partition method:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rf_t</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/tune_raf.html">tune_raf</a></span><span class="op">(</span>
@@ -384,7 +386,8 @@
 <span class="co">#&gt; Partition number: 3/5</span>
 <span class="co">#&gt; Partition number: 4/5</span>
 <span class="co">#&gt; Partition number: 5/5</span></code></pre></div>
-<p>Let’s see what the output object contains. This function returns a list object with:</p>
+<p>Let’s see what the output object contains. This function returns a list object with the following elements:</p>
+<p>(I THINK YOU WANT TO RUN NAMES HERE) names(RF_T1)</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rf_t</span><span class="op">$</span><span class="va">model</span>
 <span class="co">#&gt; </span>
@@ -399,7 +402,7 @@
 <span class="co">#&gt;     0   1 class.error</span>
 <span class="co">#&gt; 0 606  94  0.13428571</span>
 <span class="co">#&gt; 1  59 641  0.08428571</span></code></pre></div>
-<p>model: A “randomForest” class object. This object can be used for formula details and predicting.</p>
+<p>model: A “randomForest” class object. This object can be used to see the formula details, a basic summary o fthe model, and for predicting.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rf_t</span><span class="op">$</span><span class="va">predictors</span>
 <span class="co">#&gt; # A tibble: 1 x 9</span>
@@ -412,34 +415,37 @@
 <span class="co">#&gt; # A tibble: 1 x 26</span>
 <span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     2 raf   max_sens_spec      0.53         700        700     0.91 0.0193</span>
+<span class="co">#&gt; 1     2 raf   max_sens_spec      0.53         700        700    0.924 0.0235</span>
 <span class="co">#&gt; # ... with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></code></pre></div>
-<p>performance: The performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in the argument. We can see all the selected threshold values.</p>
+<p>performance: The performance metric (see sdm_eval). Those metrics that are threshold dependent are calculated based on the threshold specified in the argument. We can see all the selected threshold values.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rf_t</span><span class="op">$</span><span class="va">data_ens</span>
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
 <span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 5      .part      1     0     0.46 </span>
-<span class="co">#&gt;  2 11     .part      1     0     0.1  </span>
-<span class="co">#&gt;  3 23     .part      1     0     0.064</span>
-<span class="co">#&gt;  4 30     .part      1     0     0.018</span>
-<span class="co">#&gt;  5 33     .part      1     0     0.05 </span>
-<span class="co">#&gt;  6 34     .part      1     0     0.018</span>
-<span class="co">#&gt;  7 36     .part      1     0     0.024</span>
-<span class="co">#&gt;  8 42     .part      1     0     0.024</span>
-<span class="co">#&gt;  9 48     .part      1     0     0    </span>
-<span class="co">#&gt; 10 51     .part      1     0     0.24 </span>
+<span class="co">#&gt;  1 13     .part      1     0     0.01 </span>
+<span class="co">#&gt;  2 14     .part      1     0     0.034</span>
+<span class="co">#&gt;  3 17     .part      1     0     0.102</span>
+<span class="co">#&gt;  4 19     .part      1     0     0.038</span>
+<span class="co">#&gt;  5 20     .part      1     0     0.384</span>
+<span class="co">#&gt;  6 50     .part      1     0     0.004</span>
+<span class="co">#&gt;  7 58     .part      1     0     0.014</span>
+<span class="co">#&gt;  8 65     .part      1     0     0.588</span>
+<span class="co">#&gt;  9 69     .part      1     0     0.038</span>
+<span class="co">#&gt; 10 77     .part      1     0     0.072</span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
-<p>Predicted suitability for each test partition. This database is used in flexsdm::fit_ensemble().</p>
+<p>Predicted suitability and test partition for each observation (row).</p>
+<p>These model objects can be used in flexsdm::fit_ensemble().</p>
 </div>
-<div id="model-assemble" class="section level3">
+<div id="model-ensemble" class="section level3">
 <h3 class="hasAnchor">
-<a href="#model-assemble" class="anchor"></a>2. Model assemble</h3>
+<a href="#model-ensemble" class="anchor"></a>2. Model Ensemble</h3>
+<p>In this example we fit and validate and ensemble model using the two model objects that were just created.</p>
+<p>(DO WE NEED TO SAY SOMETHING ABOUT THE NUMBER OF PARTITIONS CAN BE DIFFERENT THAN WHAT WAS USED FOR MODEL TUNING ABOVE?)</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># First we need this libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
@@ -485,7 +491,7 @@
 <div id="fit-and-validate-models-with-ensemble-of-small-model-approach" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fit-and-validate-models-with-ensemble-of-small-model-approach" class="anchor"></a>3. Fit and validate models with Ensemble of Small Model approach</h3>
-<p>This method consists of creating bivariate models with all the pair-wise combinations of predictors and perform an ensemble based on the average of suitability weighted by Somers’D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences. This function does not allow categorical variables because the use of these types of variables could be problematic when applied to species with few occurrences. For more detail see Breiner et al. (2015, 2018)</p>
+<p>This method consists of creating bivariate models with all pair-wise combinations of predictors and perform an ensemble based on the average of suitability weighted by Somers’ D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with very few occurrences. This function does not allow categorical variables because the use of these types of variables could be problematic when applied to species with few occurrences. For more detail see Breiner et al. (2015, 2018)</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
@@ -499,7 +505,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>We can use different methods in the flexsdm::part_random function according to our data. See <a href="https://sjevelazco.github.io/flexsdm/reference/part_random.html">part_random</a> for more details.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Using k-fold partition method</span>
+<code class="sourceCode R"><span class="co"># Using k-fold partition method for model cross validation</span>
 <span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">abies2</span>,
   pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
@@ -530,7 +536,7 @@
 <span class="co">#&gt; 19   301     1 -132516.  270845.  367.  196. -2.56     422.   26.3   6.70 0.0300</span>
 <span class="co">#&gt; 20  3162     1   59905.  -53634.  319.  626.  1.99     212.    4.50  4.51 0.0396</span>
 <span class="co">#&gt; # ... with 3 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part &lt;int&gt;</span></code></pre></div>
-<p>This function constructs Generalized Additive Models using the Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).</p>
+<p>This function constructs Generalized Additive Models using the Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018).</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We set the model without threshold specification and with the kfold created above</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>esm_gam_t1 <span class="ot">&lt;-</span> <span class="fu">esm_gam</span>(</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> abies2,</span>
@@ -598,11 +604,11 @@
 <span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================================</span>  <span class="er">|</span>  <span class="dv">96</span>%</span>
 <span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
 <span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
-<p>This function returns a list object with:</p>
+<p>This function returns a list object with the following elements:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">esm_gam_t1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "esm_model"   "predictors"  "performance"</span></code></pre></div>
-<p>esm_model: A list with “GAM” class object for each bivariate model. This object can be used for predicting ensemble of small model with sdm_predict function.</p>
+<p>esm_model: A list with “GAM” class object for each bivariate model. This object can be used for predicting using the ESM approachwith sdm_predict function.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>max.print<span class="op">=</span><span class="fl">10</span><span class="op">)</span> <span class="co"># If you don't want to see printed all the output</span>
 <span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">esm_model</span>
@@ -684,7 +690,7 @@
 <span class="co">#&gt;   c1    c2    c3    c4      c5      c6    c7    c8   </span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;</span>
 <span class="co">#&gt; 1 aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth</span></code></pre></div>
-<p>performance: Performance metric (see sdm_eval). Those threshold dependent metric are calculated based on the threshold specified in thr argument.</p>
+<p>performance: Performance metric (see sdm_eval). Those threshold dependent metrics are calculated based on the threshold specified in the argument.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">performance</span>
 <span class="co">#&gt; # A tibble: 7 x 25</span>
@@ -702,7 +708,7 @@
 <span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></code></pre></div>
-<p>Now, we perform a test with the rep_kfold partition method. In this method ‘folds’ refers to the number of folds for data partitioning and ‘replicate’ refers to the number of replicates. Both assumes values &gt;=1.</p>
+<p>Now, we test the rep_kfold partition method. In this method ‘folds’ refers to the number of partitions for data partitioning and ‘replicate’ refers to the number of replicates. Both assume values &gt;=1.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Remove the previous k-fold partition</span>
 <span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies2</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span><span class="op">)</span>
@@ -807,7 +813,7 @@
 <span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================================</span>  <span class="er">|</span>  <span class="dv">96</span>%</span>
 <span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
 <span id="cb27-66"><a href="#cb27-66" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
-<p>Test with random bootstrap partition. This method ‘replicate’ refers to the number of replicates (assumes a value &gt;=1), ‘proportion’ refers to the proportion of occurrences used for model fitting (assumes a value &gt;0 and &lt;=1). With this method we can configure the proportion of training and testing data according to the species occurrences. In this example, proportion=‘0.7’ indicates that 70% of data will be used for model training, while 30% will be used for model testing. For this method, the function will return .partX columns with “train” and “test” words.</p>
+<p>Test with random bootstrap partitioning. In method ‘replicate’ refers to the number of replicates (assumes a value &gt;=1), ‘proportion’ refers to the proportion of occurrences used for model fitting (assumes a value &gt;0 and &lt;=1). With this method we can configure the proportion of training and testing data according to the species occurrences. In this example, proportion=‘0.7’ indicates that 70% of data will be used for model training, while 30% will be used for model testing. For this method, the function will return .partX columns with “train” or “test” words as the entries.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Remove the previous k-fold partition</span>
 <span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies2</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span><span class="op">)</span>
@@ -846,7 +852,7 @@
 <span class="co">#&gt; # ... with 12 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part1 &lt;chr&gt;,</span>
 <span class="co">#&gt; #   .part2 &lt;chr&gt;, .part3 &lt;chr&gt;, .part4 &lt;chr&gt;, .part5 &lt;chr&gt;, .part6 &lt;chr&gt;,</span>
 <span class="co">#&gt; #   .part7 &lt;chr&gt;, .part8 &lt;chr&gt;, .part9 &lt;chr&gt;, .part10 &lt;chr&gt;</span></code></pre></div>
-<p>We use the new rep_kfold partition in the gam model</p>
+<p>Use the new rep_kfold partition in the gam model</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>esm_gam_t3 <span class="ot">&lt;-</span> <span class="fu">esm_gam</span>(</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> abies2,</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
