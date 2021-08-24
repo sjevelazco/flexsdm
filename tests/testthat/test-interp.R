@@ -11,7 +11,7 @@ test_that("original example 1- path difference 2-unable to find variable terra i
   f <- system.file("external/suit_time_step.tif", package = "flexsdm")
   abma <- terra::rast(f)
 
-  int <- inter(
+  int <- interp(
     r1 = abma[[1]],
     r2 = abma[[2]],
     y1 = 2010,
@@ -30,7 +30,7 @@ test_that("test save raster", {
   f <- system.file("external/suit_time_step.tif", package = "flexsdm")
   abma <- terra::rast(f)
 
-  expect_message(int <- inter(
+  expect_message(int <- interp(
     r1 = abma[[1]],
     r2 = abma[[2]],
     y1 = 2010,

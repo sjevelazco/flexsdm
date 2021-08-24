@@ -28,7 +28,7 @@
 #' abma <- terra::rast(f)
 #' plot(abma)
 #'
-#' int <- inter(
+#' int <- interp(
 #'   r1 = abma[[1]],
 #'   r2 = abma[[2]],
 #'   y1 = 2010,

@@ -80,7 +80,7 @@
 #' merge_df
 #' }
 sdm_summarize <- function(models) {
-  . <- model_ID <- model <- NULL
+  . <- model_ID <- model <- IMAE_sd <- NULL
   if (data.class(models) != "list") {
     stop("models must be a list object")
   }
@@ -103,6 +103,7 @@ sdm_summarize <- function(models) {
       dplyr::tibble()
   } else {
     perf_tib <- models[[1]]$performance
+    perf_tib$model_ID <- 1
   }
 
   perf_tib <- perf_tib %>%
