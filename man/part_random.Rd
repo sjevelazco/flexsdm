@@ -91,7 +91,6 @@ abies2$.part1 \%>\% table() # Note that for this method .partX columns have trai
 prediction errors in conservation presence/absence models. Environmental Conservation,
 24(1), 38-49. https://doi.org/10.1017/S0376892997000088
 }
-#' @export
 }
 \seealso{
 \code{\link{part_sblock}}, \code{\link{part_senv}}, \code{\link{sample_pseudoabs}}, \code{\link{sample_background}}

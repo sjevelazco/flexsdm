@@ -65,5 +65,5 @@ plot(xp)
 }
 }
 \seealso{
-\code{\link{extra_correct}}
+\code{\link{extra_exclude}}
 }

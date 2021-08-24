@@ -40,7 +40,7 @@
 #' prediction errors in conservation presence/absence models. Environmental Conservation,
 #' 24(1), 38-49. https://doi.org/10.1017/S0376892997000088
 #' }
-#' #' @export
+#' @export
 #'
 #' @importFrom dplyr %>% group_by mutate n summarise filter select slice_sample full_join left_join tibble
 #'
