@@ -1,28 +1,50 @@
 #' Sample background points
 #'
-#' @description Sampling background points with the possibility of
-#' using different geographical restrictions and sampling method.
+#' @description Sampling background points with the options of
+#' using different geographical restrictions and sampling methods.
 #'
 #' @param data data.frame or tibble. Database with presences records, and coordinates
-#' @param x character. Column name with longitude data
-#' @param y character. Column name with latitude data
+#' @param x character. Column name with spatial x coordinates
+#' @param y character. Column name with spatial y coordinates
 #' @param n integer. Number of background point to be sampled
 #' @param method character. Background allocation method. The methods implemented are:
 #' \itemize{
-#' \item random: Random allocation of background points. Usage method = 'random'.
-#' \item thickening: Thickening background points is based on Vollering et al. (2019) method. For this method, it is necessary to define a buffer width that will be used around presences points. It possible to define a buffer using the argument as method = c("thickening", width = 20000). Buffer width must be in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. If a width buffer is not provided function will use a width value equal to the mean distance of the pair-wise presences distance. In case of a width value is not provided, the argument must be used as method='thickening'.
+#' \item random: Random allocation of background points. Usage method = 'random'
+#' \item thickening: Thickening background points is based on the Vollering et al. (2019) method.
+#' For this method, a buffer width must be defined that will be used around presences points.
+#' A buffer can be defined using the argument as method = c("thickening", width = 20000).
+#' Buffer width must be in m if raster (used in rlayer) has a longitude/latitude CRS, or map
+#' units in other cases. If a buffer width is not provided the function will use a width value
+#' equal to the mean of the pair-wise presence distances. If a width value is not provided, the
+#' argument must be used as method = 'thickening'.
+#' \item biased: This method, similar to "thickening", sample background biased with the same
+#' bias of presences. However, the background points are sampled used a presences probability
+#' throughout the entire study area, and not restricting such bias within buffers as in the
+#' “thickening” approach. For using this method, it is necessary to provide a layer with presences
+#' bias in "rbias" argument (Phillips et al., 2009).
 #' }
 #' Usage method='thickening' or method = c("thickening", width = 20000). Default 'random'
 #' @param rlayer SpatRaster used for sampling background points.
-#' It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint
-#' @param maskval integer or numeric. Values of the raster layer used for constraining the background points sampling
-#' @param calibarea SpatVect that delimits the calibration area used for a given species (see calib_area function).
-#' @param rbias SpatRaster used for bias background points. When use 'biased' method must be provided the raster with
-#' with bias data. It is recommended that rbias match resolution and extent of rlayer.
+#' It is best to use a layer with the same resolution and extent that environmental variables that
+#' will be used for modeling. If using maskval argument, this raster layer must contain the values
+#'  to constrain sampling
+#' @param maskval integer or numeric. Values of the raster layer used for constraining sampling of
+#' background points
+#' @param calibarea SpatVect that delimits the calibration area used for a given species
+#' (see calib_area function).
+#' @param rbias SpatRaster used for choosing background points using the bias method. A raster
+#' with bias data must be provided. It is recommended that rbias match resolution and extent
+#' of rlayer.
 #'
 #' @references
 #' \itemize{
-#' \item Vollering, J., Halvorsen, R., Auestad, I., & Rydgren, K. (2019). Bunching up the background betters bias in species distribution models. Ecography, 42(10), 1717-1727. https://doi.org/10.1111/ecog.04503
+#' \item Phillips, S. J., Dudík, M., Elith, J., Graham, C. H., Lehmann, A., Leathwick, J., &
+#' Ferrier, S. (2009). Sample selection bias and presence-only distribution models:
+#' Implications for background and pseudo-absence data. Ecological Applications, 19(1), 181-197.
+#'
+#' \item Vollering, J., Halvorsen, R., Auestad, I., & Rydgren, K. (2019). Bunching up the
+#' background betters bias in species distribution models. Ecography, 42(10), 1717-1727.
+#' https://doi.org/10.1111/ecog.04503
 #' }
 #'
 #' @return
@@ -43,7 +65,7 @@
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)
 #'
-#' # Lest practice with a single species
+#' # Exampe for a single species
 #' spp_pa <- spp %>% dplyr::filter(species == "sp3")
 #'
 #' #
@@ -69,7 +91,7 @@
 #' #                                                          #
 #' ## %######################################################%##
 #'
-#' # Sample background points throughout study area with random method
+#' # Sample background points throughout study area with random sampling method
 #' spp_p <- spp_pa %>% dplyr::filter(pr_ab == 1)
 #' bg <-
 #'   sample_background(
@@ -147,7 +169,7 @@
 #' #                                                          #
 #' ## %######################################################%##
 #'
-#' # Thickening background without containing them
+#' # Thickening background without constraining them
 #' spp_p # presences database of a species
 #' grid_env # The raster layer used for sampling background
 #' bg <- sample_background(
@@ -164,7 +186,7 @@
 #'   points(col = "red")
 #'
 #'
-#' # Thickening background without using a given buffer width
+#' # Thickening background without using a given buffer width (IS THIS RIGHT? A WIDTH IS SPECIFIED)
 #' spp_p # presences database of a species
 #' grid_env # The raster layer used for sampling background
 #' bg <- sample_background(
@@ -207,16 +229,16 @@
 #' require(terra)
 #' data(spp)
 #'
-#' # Lets select the presences of a species
+#' # Select the presences of a species
 #' spp_p <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 #'
-#' # Raster layer with density of poinst to obtain a biased sampling background
+#' # Raster layer with density of points to obtain a biased sampling background
 #' occ_density <- system.file("external/occ_density.tif", package = "flexsdm")
 #' occ_density <- terra::rast(occ_density)
 #' plot(occ_density)
 #' points(spp_p %>% dplyr::select(x, y), cex = 0.5)
 #'
-#' # A layer with region used to contraint background
+#' # A layer with region used to contrain background sampling area
 #' regions <- system.file("external/regions.tif", package = "flexsdm")
 #' regions <- terra::rast(regions)
 #' plot(regions)
@@ -243,7 +265,7 @@
 #'   points(., col = "black", pch = 19, cex = 0.5)
 #'
 #'
-#' # Biased background points constrained in a region
+#' # Biased background points constrained to a region
 #' # It will be selected region 6
 #' plot(regions)
 #' plot(regions %in% c(1, 6))

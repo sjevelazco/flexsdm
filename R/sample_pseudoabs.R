@@ -1,25 +1,25 @@
 #' Sample pseudo-absences
 #'
 #' @description This function provide several methods for sampling pseudo-absences, for instance
-#' totally random sampling method, o with environmental and or geographical constraints.
+#' totally random sampling method, with the options of using different environmental and or geographical constraints.
 #'
 #' @param data data.frame or tibble. Database with presences
-#' (or presence-absence, o presences-pseudo-absence) records, and coordinates
-#' @param x character. Column name with longitude data
-#' @param y character. Column name with latitude data
-#' @param n integer. Number of pseudo-absence to be sampled
+#' (or presence-absence, or presences-pseudo-absence) records, and coordinates
+#' @param x character. Column name with spatial x coordinates
+#' @param y character. Column name with spatial y coordinates
+#' @param n integer. Number of pseudo-absences to be sampled
 #' @param method character. Pseudo-absence allocation method. It is necessary to
 #' provide a vector for this argument. The methods implemented are:
 #' \itemize{
 #' \item random: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='random'.
 #' \item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster stack or brick object with environmental variables Usage method=c(method='env_const', env = somevar).
 #' \item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. Usage method=c('geo_const', width='50000').
-#' \item geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, it is necessary to provide a raster with environmental variables stored as SpatRaster object. Also it is necessary provide a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar)
-#' \item geo_env_km_const: Pseudo-absences are constrained on a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in the environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar)
+#' \item geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, a raster with environmental variables stored as SpatRaster object should be provided. A value of the buffer width in m must be provided if raster (used in rlayer) has a longitude/latitude CRS, or in map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar)
+#' \item geo_env_km_const: Pseudo-absences are constrained using a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar)
 #' }
 #'
 #' @param rlayer SpatRaster. A raster layer used for sampling pseudo-absence
-#' It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint
+#' A layer with the same resolution and extent that environmental variables that will be used for modeling is recommended. In the case use maskval argument, this raster layer must contain the values used to constrain sampling
 #' @param maskval integer or numeric. Values of the raster layer used for constraining the pseudo-absence sampling
 #' @param calibarea SpatVector A SpatVector which delimit the calibration area used for a given species (see \code{\link{calib_area}} function).
 #'
@@ -27,15 +27,18 @@
 #' @importFrom stats na.exclude kmeans
 #' @importFrom terra mask ext extract match as.data.frame
 #'
-#' @return
-#' A tibble object with x y coordinates of sampled pseudo-absence points
+#' @return A tibble object with x y coordinates of sampled pseudo-absence points
+#'
 #' @export
 #'
 #' @seealso \code{\link{sample_background}} and \code{\link{calib_area}}.
 #'
 #' @examples
 #' \dontrun{
+#' require(terra)
+#' require(dplyr)
 #' data("spp")
+#'
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)
 #'
@@ -135,7 +138,7 @@
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
-#' # Pseudo-absences sampled with environmental and geographical constraint and with k-mean
+#' # Pseudo-absences sampled with environmental and geographical constraint and with k-mean clustering
 #' ps1 <-
 #'   sample_pseudoabs(
 #'     data = single_spp,

@@ -1,6 +1,8 @@
 #' Perform geographical filtering on species occurrences
 #'
-#' @description This function perform geographical filtering of species occurrences.
+#' @description This function perform geographical filtering of species occurrences based on
+#' different approach to define the minimum nearest-neighbour distance bteween points.
+#'
 #'
 #' @param data data.frame. Data.frame or tibble object with presences
 #' (or presence-absence) records, and coordinates
@@ -27,15 +29,17 @@
 #'
 #' @details In this function are implemented three alternatives to determine the
 #' distance threshold between pair of points:
-#' 1-"moran" determines the threshold as the distance, which minimizes the spatial autocorrelation
-#' in occurrence data, following a Moran's semivariogram. A Principal Component Analysis with the
-#' environmental variables is performed and then is used first Principal Component to calculate
-#' the semivariograms. Sometimes, this method can greatly reduce the number of presences.
+#' 1-"moran" determines the minimum nearest-neighbour distance, which minimizes the spatial
+#' autocorrelation in occurrence data, following a Moran's semivariogram. A Principal Component
+#' Analysis with the environmental variables is performed and then is used first Principal Component
+#' to calculate the semivariograms. Sometimes, this method can greatly reduce the number
+#' of presences.
 #' 2-"cellsize" filters occurrences based on the predictors' resolution. This method will calculate
-#'  the distance between the first two cells of the environmental variable and use this distance
-#'  to filter occurrences. The resolution of a rater is aggregated based on the values used in
-#'  "factor". Thus, the distance used for filtering can be adjusted to represent a larger grid size.
-#' 3-"determined" this method uses any distance in km specified by the user.
+#' the distance between the first two cells of the environmental variable and use this distance
+#' as minimum nearest-neighbor distance to filter occurrences.
+#' The resolution of a rater is aggregated based on the values used in "factor". Thus, the distance
+#' used for filtering can be adjusted to represent a larger grid size.
+#' 3-"determined" this method uses any minimum nearest-neighbour distance in km specified.
 #'
 #'
 #' For the three method is used the "thin" function from spThin package
