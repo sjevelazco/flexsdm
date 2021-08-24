@@ -15,8 +15,8 @@
 #'
 #' @return If dir_save is NULL, the function returns a SpatRaster with suitability interpolation for each year.
 #' If dir_save is used, function outputs are saved in the directory
-#' specified in dir_save. 
-#' 
+#' specified in dir_save.
+#'
 #' @export
 #'
 #' @examples
@@ -40,7 +40,6 @@
 #' int
 #' }
 interp <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL) {
-
   annual <- (r1 - r2) / (y2 - y1)
 
   rlist <- list()

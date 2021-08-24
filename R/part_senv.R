@@ -70,7 +70,7 @@
 #' Hartig, F., & Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial,
 #'  hierarchical, or phylogenetic structure. Ecography, 40,
 #'  913-929. https://doi.org/10.1111/ecog.02881
-#' \item Santini, L., Benitez‐Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
+#' \item Santini, L., Benitez-Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
 #'  Assessing the reliability of species distribution projections in climate change research.
 #'  Diversity and Distributions, ddi.13252. https://doi.org/10.1111/ddi.13252
 #' \item Velazco, S. J. E., Villalobos, F., Galvao, F., & De Marco Junior, P. (2019). A dark
@@ -143,7 +143,7 @@ part_senv <- function(env_layer,
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-paste(unique(data[, "pr_ab"]), collapse = " ")
+      paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 
@@ -283,9 +283,9 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
           data[filt, names(env_layer)],
           function(x) {
             ape::Moran.I(x,
-                         dist2,
-                         na.rm = TRUE,
-                         scaled = TRUE
+              dist2,
+              na.rm = TRUE,
+              scaled = TRUE
             )$observed
           }
         )
@@ -349,8 +349,8 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
     }
 
     if ((length(unique(Opt2$spa_auto)) == 1) &&
-        (length(unique(Opt2$env_sim)) == 1) &&
-        (length(unique(Opt2$sd_p)) == 1)) {
+      (length(unique(Opt2$env_sim)) == 1) &&
+      (length(unique(Opt2$sd_p)) == 1)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }

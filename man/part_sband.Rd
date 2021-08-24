@@ -179,7 +179,7 @@ Hauenstein, S., Lahoz-Monfort, J. J., Schroder, B., Thuiller, W., Warton, D. I.,
 Hartig, F., & Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial,
  hierarchical, or phylogenetic structure. Ecography, 40,
  913-929. https://doi.org/10.1111/ecog.02881
-\item Santini, L., Benitez‐Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
+\item Santini, L., Benitez-Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
  Assessing the reliability of species distribution projections in climate change research.
  Diversity and Distributions, ddi.13252. https://doi.org/10.1111/ddi.13252
 \item Velazco, S. J. E., Villalobos, F., Galvao, F., & De Marco Junior, P. (2019). A dark
