@@ -1,11 +1,24 @@
 #' Create directories for saving the outputs of the flexsdm
 #'
-#' @param main_dir character. Directory path containing main folder for saving model inputs and outputs. If NULL function assumes as directory path the current working R session and creates a sub-folder with the name of 'flexsdm_results'. Default NULL
-#' @param projections vector. Vector of folder names for future scenarios/different regions/time periods to save model projections models.
-#' @param algorithm vector. Vector of model names that will be used. Usage algorithm = c(gam, tune_max, tune_net, esm_glm). If is use "all" function creates folders with all algorithms available in flexsdm . i.e. 'gam', 'gau', 'gbm', 'glm', 'max', 'net', 'raf', and 'svm'. Default NULL
-#' @param calibration_area logical. If TRUE, function creates a folder in 1_Inputs for storing calibration area. Default TRUE
-#' @param ensemble vector. Vector of methods used to ensemble different models. Default NULL
-#' @param threshold logical. If true will be created sub-folders "/1_con", "/2_bin" within each algorithm and/or ensemble folder. This could be useful for storing continuous and binarized models separately. Default FALSE
+#' @description This function assists in creating a directory system with different sub-folders to
+#' assist in the organisation of the modelling process outputs.
+#'
+#' @param main_dir character. Directory path containing main folder for saving model inputs and
+#' outputs. If NULL function assumes as directory path the current working R session and creates
+#' a sub-folder with the name of 'flexsdm_results'. Default NULL
+#' @param projections vector. Vector of folder names for future scenarios/different regions/time
+#' periods to save model projections output.
+#' @param algorithm vector. Vector of model names that will be used. Usage algorithm =
+#' c(gam, tune_max, tune_net, esm_glm). If  "all" is used the function creates folders with all
+#' algorithms available in flexsdm . i.e. 'gam', 'gau', 'gbm', 'glm', 'max', 'net', 'raf', and
+#' 'svm'. Default NULL
+#' @param calibration_area logical. If TRUE, function creates a folder in 1_Inputs for storing
+#' calibration area. Default TRUE
+#' @param ensemble vector. Vector of methods used to ensemble different models.
+#' Usage ensemble = c("mean", "meanthr"). Default NULL
+#' @param threshold logical. If TRUE sub-folders "/1_con", "/2_bin" will be created within each
+#' algorithm and/or ensemble folder. Used for storing continuous and binarized models separately.
+#' Default FALSE
 #' @param return_vector logical. If TRUE function returns a vector with the path to all folders.
 #' Default TRUE
 #'
@@ -35,7 +48,7 @@
 #'
 #' unlink(dirs_1[1], recursive = TRUE) # this directory and sub-folder will be removed
 #'
-#' # Implement sdm_directory without specific path and project name
+#' # Implement sdm_directory with specific path and project name
 #' getwd() %>% dirname()
 #'
 #' dirs_2 <- sdm_directory(
