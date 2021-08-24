@@ -21,41 +21,54 @@ tune_net(
 
 \item{response}{character. Column name with species absence-presence data (0,1).}
 
-\item{predictors}{character. Vector with the column names of quantitative predictor variables (i.e. continuous variables). Usage predictors = c("aet", "cwd", "tmin")}
+\item{predictors}{character. Vector with the column names of quantitative predictor variables
+(i.e. continuous variables). Usage predictors = c("aet", "cwd", "tmin")}
 
-\item{predictors_f}{character. Vector with the column names of qualitative predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")}
+\item{predictors_f}{character. Vector with the column names of qualitative predictor variables
+(i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")}
 
 \item{fit_formula}{formula. A formula object with response and predictor
 variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
-Note that the variables used here must be consistent with those used in
+Note that the variable names used here must be consistent with those used in
 response, predictors, and predictors_f arguments. Defaul NULL.}
 
 \item{partition}{character. Column name with training and validation partition groups.}
 
-\item{grid}{data.frame. Provide a data frame object with algorithm hyper-parameters values to be tested. It Is recommended to generate this data.frame with grid() function. Hyper-parameters needed for tuning are 'size' and 'decay'.}
-
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\item{grid}{data.frame.  A data frame object with algorithm hyper-parameters values to be
+tested. It is recommended to generate this data.frame with the grid() function. More than one
+threshold type can be used. It is necessary to provide a vector for this argument. The following
+threshold types are available:
 \itemize{
   \item lpt: The highest threshold at which there is no omission.
   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
-  \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
-  \item max_jaccard: The threshold at which Jaccard is the highest.
-  \item max_sorensen: The threshold at which Sorensen is highest.
-  \item max_fpb: The threshold at which FPB is highest.
+  \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the
+  highest (aka threshold that maximizes the TSS).
+  \item max_jaccard: The threshold at which the Jaccard index is the highest.
+  \item max_sorensen: The threshold at which the Sorensen index is highest.
+  \item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
   \item sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to
+  sensitivity value. If it is not specified a sensitivity values, function will use by default
+  0.9.
   }
-In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
+If using more than one threshold type concatenate them, e.g., thr=c('lpt', 'max_sens_spec',
+'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt',
+'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.}
 
-\item{metric}{character. Performance metric used for selecting the best combination of hyper-parameter values. Can be used one of the next metrics SORENSEN, JACCARD, FPB, TSS, KAPPA, AUC, and BOYCE. TSS is used as default.}
+\item{metric}{character. Performance metric used for selecting the best combination of
+hyper-parameter values. One of the following metrics can be used: SORENSEN, JACCARD, FPB, TSS,
+KAPPA, AUC, and BOYCE. TSS is used as default.}
 }
 \value{
 A list object with:
 \itemize{
 \item model: A "nnet" class object. This object can be used for predicting.
-\item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
-\item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}}) for the best hyper-parameters combination.
-\item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of the hyper-parameters.
+\item predictors: A tibble with quantitative (c column names) and qualitative (f column names)
+variables use for modeling.
+\item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}})
+for the best hyper-parameters combination.
+\item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of
+the hyper-parameters.
 \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
 }
 }
@@ -67,7 +80,7 @@ Fit and validate Neural Networks models with exploration of hyper-parameters
 data(abies)
 abies
 
-# We will partition the data with the k-fold method
+# Partitioning the data with the k-fold method
 
 abies2 <- part_random(
   data = abies,
