@@ -40,11 +40,8 @@
 
 
 <meta property="og:title" content="Calculate different model performance metrics — sdm_eval" />
-<meta property="og:description" content="This function calculates threshold dependent and independent performance metric.
-It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate,
-also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic)
-KAPPA, AUC (Area Under Curve), BOYCE, IMAE (Inverse Mean Absolute Error, i.e.
-1-Mean Absolute Error)." />
+<meta property="og:description" content="This function calculates threshold dependent and independent model performance
+metrics." />
 
 
 
@@ -128,11 +125,8 @@ KAPPA, AUC (Area Under Curve), BOYCE, IMAE (Inverse Mean Absolute Error, i.e.
     </div>
 
     <div class="ref-description">
-    <p>This function calculates threshold dependent and independent performance metric.
-It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate,
-also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic)
-KAPPA, AUC (Area Under Curve), BOYCE, IMAE (Inverse Mean Absolute Error, i.e.
-1-Mean Absolute Error).</p>
+    <p>This function calculates threshold dependent and independent model performance
+metrics.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sdm_eval</span><span class='op'>(</span><span class='va'>p</span>, <span class='va'>a</span>, bg <span class='op'>=</span> <span class='cn'>NULL</span>, thr <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -146,48 +140,76 @@ KAPPA, AUC (Area Under Curve), BOYCE, IMAE (Inverse Mean Absolute Error, i.e.
     </tr>
     <tr>
       <th>a</th>
-      <td><p>numeric. Predicted suitability for presences absences</p></td>
+      <td><p>numeric. Predicted suitability for absences</p></td>
     </tr>
     <tr>
       <th>bg</th>
-      <td><p>numeric. Predicted suitability for background points. It is used for BOYCE metric.
-It bg is set as null BOYCE metric will be calculated with presences and absences suitability
+      <td><p>numeric. Predicted suitability for background points, used for BOYCE metric.
+It bg is set as NULL, BOYCE metric will be calculated with presences and absences suitabilities
 values</p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1).
-It is useful for threshold-dependent performance metrics.
+      <td><p>character. Threshold criterion used to get binary suitability values (i.e. 0,1).
+Used for threshold-dependent performance metrics.
 It is possible to use more than one threshold type.
-It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+A vector must be provided for this argument. The following threshold criteria are available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission.</p></li>
-<li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
-<li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity
-  is the highest (aka threshold that maximizes the TSS).</p></li>
-<li><p>max_jaccard: The threshold at which Jaccard is the highest.</p></li>
-<li><p>max_sorensen: The threshold at which Sorensen is highest.</p></li>
-<li><p>max_fpb: The threshold at which FPB is highest.</p></li>
-<li><p>sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers
-  to sensitivity value. If it is not specified a sensitivity values, function will use
-  by default 0.9</p></li>
-</ul><p>In the case of use more than one threshold type it is necessary concatenate threshold types,
+<li><p>equal_sens_spec: Threshold at which the Sensitivity and Specificity are equal.</p></li>
+<li><p>max_sens_spec: Threshold at which the sum of the Sensitivity and Specificity
+is the highest (aka threshold that maximizes the TSS).</p></li>
+<li><p>max_jaccard: The threshold at which the Jaccard index is the highest.</p></li>
+<li><p>max_sorensen: The threshold at which the Sorensen index is highest.</p></li>
+<li><p>max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.</p></li>
+<li><p>sensitivity: Threshold based on a specified Sensitivity value.
+Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers
+to Sensitivity value. If a sensitivity value is not specified, the
+default value is 0.9</p></li>
+</ul><p>If more than one threshold type is used, concatenate threshold types,
 e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec',
 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity').
-Function will use all thresholds if no threshold is specified</p></td>
+Function will use all thresholds if no threshold type is specified</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>a tibble with next columns</p><ul>
-<li><p>threshold: threshold names.</p></li>
-<li><p>thr_value: threshold value</p></li>
-<li><p>n_presences: threshold names.</p></li>
-<li><p>n_absences: threshold names.</p></li>
+<li><p>threshold: threshold names</p></li>
+<li><p>thr_value: threshold values</p></li>
+<li><p>n_presences: number of presences</p></li>
+<li><p>n_absences: number of absences</p></li>
 <li><p>from TPR to IMAE: performance metrics</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function is used for evaluating different models approaches base on the combination
+of presence-absences or presence-pseudo-absences and background point data and
+suitability predicted by any model or flexsdm modeling function families (fit_, esm_, and tune_.)</p>
+<p>It calculates the next performance metric:</p><table class='table'>
+<tr><td>Performance metric</td><td>Threshold dependent</td><td>Values ranges</td></tr>
+<tr><td>TPR (True Positive Rate, also called Sensitivity)</td><td>yes</td><td>0 - 1</td></tr>
+<tr><td>TNR (True Negative Rate, also called Specificity)</td><td>yes</td><td>0 - 1</td></tr>
+<tr><td>SORENSEN</td><td>yes</td><td>0 - 1</td></tr>
+<tr><td>JACCARD</td><td>yes</td><td>0 - 1</td></tr>
+<tr><td>FPB (F-measure on presence-background)</td><td>yes</td><td>0 - 2</td></tr>
+<tr><td>OR (Omission Rate)</td><td>yes</td><td>0 - 1</td></tr>
+<tr><td>TSS (True Skill Statistic)</td><td>yes</td><td>-1 - 1</td></tr>
+<tr><td>KAPPA</td><td>yes</td><td>0 - 1</td></tr>
+<tr><td>AUC (Area Under Curve)</td><td>no</td><td>0 - 1</td></tr>
+<tr><td>BOYCE  (continuous Boyce index)*</td><td>no</td><td>-1 - 1</td></tr>
+<tr><td>IMAE (Inverse Mean Absolute Error)**</td><td>no</td><td>0 - 1</td></tr>
+</table>
+
+
+
+<p>\* BOYCE is calculated based on presences and background points, in case that background points
+is not provided it is calculated using presences and absences. The codes for calculating
+this metric is and adaptation of enmSdm package (https://github.com/adamlilith/enmSdm)</p>
+<p>\** IMAE is calculated as 1-(Mean Absolute Error) in order to be consistent with the other
+metrics where the higher the value of a given performance metric, the greater the model's
+accuracy</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
@@ -222,7 +244,7 @@ Function will use all thresholds if no threshold is specified</p></td>
 <span class='fu'>sdm_eval</span><span class='op'>(</span><span class='va'>p</span>, <span class='va'>a</span>, thr <span class='op'>=</span> <span class='st'>"max_sens_spec"</span><span class='op'>)</span>
 <span class='fu'>sdm_eval</span><span class='op'>(</span><span class='va'>p</span>, <span class='va'>a</span>, thr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"max_sens_spec"</span><span class='op'>)</span>, bg <span class='op'>=</span> <span class='va'>backg</span><span class='op'>)</span>
 
-<span class='co'># I the case it is needed use background for calculate all other metric</span>
+<span class='co'># If background will be used to calculate all other metrics</span>
 <span class='co'># background values can be used in "a" argument</span>
 <span class='fu'>sdm_eval</span><span class='op'>(</span><span class='va'>p</span>, <span class='va'>backg</span>, thr <span class='op'>=</span> <span class='st'>"max_sens_spec"</span><span class='op'>)</span>
 <span class='op'>}</span>

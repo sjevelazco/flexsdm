@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Perform geographical filtering on species occurrences — occfilt_geo" />
-<meta property="og:description" content="This function perform geographical filtering of species occurrences." />
+<meta property="og:description" content="This function perform geographical filtering of species occurrences based on
+different approach to define the minimum nearest-neighbour distance bteween points." />
 
 
 
@@ -124,7 +125,8 @@
     </div>
 
     <div class="ref-description">
-    <p>This function perform geographical filtering of species occurrences.</p>
+    <p>This function perform geographical filtering of species occurrences based on
+different approach to define the minimum nearest-neighbour distance bteween points.</p>
     </div>
 
     <pre class="usage"><span class='fu'>occfilt_geo</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>env_layer</span>, <span class='va'>method</span>, prj <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -177,15 +179,17 @@ the projection use WGS84 ("+proj=longlat +datum=WGS84").</p></td>
 
     <p>In this function are implemented three alternatives to determine the
 distance threshold between pair of points:
-1-"moran" determines the threshold as the distance, which minimizes the spatial autocorrelation
-in occurrence data, following a Moran's semivariogram. A Principal Component Analysis with the
-environmental variables is performed and then is used first Principal Component to calculate
-the semivariograms. Sometimes, this method can greatly reduce the number of presences.
+1-"moran" determines the minimum nearest-neighbour distance, which minimizes the spatial
+autocorrelation in occurrence data, following a Moran's semivariogram. A Principal Component
+Analysis with the environmental variables is performed and then is used first Principal Component
+to calculate the semivariograms. Sometimes, this method can greatly reduce the number
+of presences.
 2-"cellsize" filters occurrences based on the predictors' resolution. This method will calculate
- the distance between the first two cells of the environmental variable and use this distance
- to filter occurrences. The resolution of a rater is aggregated based on the values used in
- "factor". Thus, the distance used for filtering can be adjusted to represent a larger grid size.
-3-"determined" this method uses any distance in km specified by the user.</p>
+the distance between the first two cells of the environmental variable and use this distance
+as minimum nearest-neighbor distance to filter occurrences.
+The resolution of a rater is aggregated based on the values used in "factor". Thus, the distance
+used for filtering can be adjusted to represent a larger grid size.
+3-"determined" this method uses any minimum nearest-neighbour distance in km specified.</p>
 
 <p>For the three method is used the "thin" function from spThin package
 (Aiello-Lammens et al., 2015) with the next argument settings reps = 20, write.files = FALSE,
@@ -232,9 +236,9 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
   prj <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/crs.html'>crs</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span>col<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='co'>#raw data</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>filtered_1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, pch<span class='op'>=</span><span class='fl'>19</span>, col<span class='op'>=</span><span class='st'>'yellow'</span><span class='op'>)</span> <span class='co'>#filtered data</span>
+<span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># raw data</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>filtered_1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, pch <span class='op'>=</span> <span class='fl'>19</span>, col <span class='op'>=</span> <span class='st'>"yellow"</span><span class='op'>)</span> <span class='co'># filtered data</span>
 
 <span class='co'># Cellsize</span>
 <span class='va'>filtered_2</span> <span class='op'>&lt;-</span> <span class='fu'>occfilt_geo</span><span class='op'>(</span>
@@ -246,9 +250,9 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
   prj <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/crs.html'>crs</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span>col<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='co'>#raw data</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>filtered_2</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, pch<span class='op'>=</span><span class='fl'>19</span>, col<span class='op'>=</span><span class='st'>'yellow'</span><span class='op'>)</span> <span class='co'>#filtered data</span>
+<span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># raw data</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>filtered_2</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, pch <span class='op'>=</span> <span class='fl'>19</span>, col <span class='op'>=</span> <span class='st'>"yellow"</span><span class='op'>)</span> <span class='co'># filtered data</span>
 
 
 <span class='co'># Defined</span>
@@ -261,10 +265,9 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
   prj <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/crs.html'>crs</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span>col<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='co'>#raw data</span>
-<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>filtered_3</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, pch<span class='op'>=</span><span class='fl'>19</span>, col<span class='op'>=</span><span class='st'>'yellow'</span><span class='op'>)</span> <span class='co'>#filtered data</span>
-
+<span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/grDevices/gray.colors.html'>gray.colors</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># raw data</span>
+<span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>filtered_3</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, pch <span class='op'>=</span> <span class='fl'>19</span>, col <span class='op'>=</span> <span class='st'>"yellow"</span><span class='op'>)</span> <span class='co'># filtered data</span>
 <span class='op'>}</span>
 
 </div></pre>

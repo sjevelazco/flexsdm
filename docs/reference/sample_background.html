@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="Sample background points — sample_background" />
-<meta property="og:description" content="Sampling background points with the possibility of
-using different geographical restrictions and sampling method." />
+<meta property="og:description" content="Sampling background points with the options of
+using different geographical restrictions and sampling methods." />
 
 
 
@@ -125,8 +125,8 @@ using different geographical restrictions and sampling method." />
     </div>
 
     <div class="ref-description">
-    <p>Sampling background points with the possibility of
-using different geographical restrictions and sampling method.</p>
+    <p>Sampling background points with the options of
+using different geographical restrictions and sampling methods.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sample_background</span><span class='op'>(</span>
@@ -150,11 +150,11 @@ using different geographical restrictions and sampling method.</p>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>character. Column name with longitude data</p></td>
+      <td><p>character. Column name with spatial x coordinates</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>character. Column name with latitude data</p></td>
+      <td><p>character. Column name with spatial y coordinates</p></td>
     </tr>
     <tr>
       <th>n</th>
@@ -163,27 +163,43 @@ using different geographical restrictions and sampling method.</p>
     <tr>
       <th>method</th>
       <td><p>character. Background allocation method. The methods implemented are:</p><ul>
-<li><p>random: Random allocation of background points. Usage method = 'random'.</p></li>
-<li><p>thickening: Thickening background points is based on Vollering et al. (2019) method. For this method, it is necessary to define a buffer width that will be used around presences points. It possible to define a buffer using the argument as method = c("thickening", width = 20000). Buffer width must be in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. If a width buffer is not provided function will use a width value equal to the mean distance of the pair-wise presences distance. In case of a width value is not provided, the argument must be used as method='thickening'.</p></li>
+<li><p>random: Random allocation of background points. Usage method = 'random'</p></li>
+<li><p>thickening: Thickening background points is based on the Vollering et al. (2019) method.
+For this method, a buffer width must be defined that will be used around presences points.
+A buffer can be defined using the argument as method = c("thickening", width = 20000).
+Buffer width must be in m if raster (used in rlayer) has a longitude/latitude CRS, or map
+units in other cases. If a buffer width is not provided the function will use a width value
+equal to the mean of the pair-wise presence distances. If a width value is not provided, the
+argument must be used as method = 'thickening'.</p></li>
+<li><p>biased: This method, similar to "thickening", sample background biased with the same
+bias of presences. However, the background points are sampled used a presences probability
+throughout the entire study area, and not restricting such bias within buffers as in the
+“thickening” approach. For using this method, it is necessary to provide a layer with presences
+bias in "rbias" argument (Phillips et al., 2009).</p></li>
 </ul><p>Usage method='thickening' or method = c("thickening", width = 20000). Default 'random'</p></td>
     </tr>
     <tr>
       <th>rlayer</th>
       <td><p>SpatRaster used for sampling background points.
-It is recommended to use a layer with the same resolution and extent that environmental variables that will be used for modeling. In the case use maskval argument, this raster layer must contain the values to sampling constraint</p></td>
+It is best to use a layer with the same resolution and extent that environmental variables that
+will be used for modeling. If using maskval argument, this raster layer must contain the values
+ to constrain sampling</p></td>
     </tr>
     <tr>
       <th>maskval</th>
-      <td><p>integer or numeric. Values of the raster layer used for constraining the background points sampling</p></td>
+      <td><p>integer or numeric. Values of the raster layer used for constraining sampling of
+background points</p></td>
     </tr>
     <tr>
       <th>calibarea</th>
-      <td><p>SpatVect that delimits the calibration area used for a given species (see calib_area function).</p></td>
+      <td><p>SpatVect that delimits the calibration area used for a given species
+(see calib_area function).</p></td>
     </tr>
     <tr>
       <th>rbias</th>
-      <td><p>SpatRaster used for bias background points. When use 'biased' method must be provided the raster with
-with bias data. It is recommended that rbias match resolution and extent of rlayer.</p></td>
+      <td><p>SpatRaster used for choosing background points using the bias method. A raster
+with bias data must be provided. It is recommended that rbias match resolution and extent
+of rlayer.</p></td>
     </tr>
     </table>
 
@@ -194,7 +210,12 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 
     
 <ul>
-<li><p>Vollering, J., Halvorsen, R., Auestad, I., &amp; Rydgren, K. (2019). Bunching up the background betters bias in species distribution models. Ecography, 42(10), 1717-1727. https://doi.org/10.1111/ecog.04503</p></li>
+<li><p>Phillips, S. J., Dudík, M., Elith, J., Graham, C. H., Lehmann, A., Leathwick, J., &amp;
+Ferrier, S. (2009). Sample selection bias and presence-only distribution models:
+Implications for background and pseudo-absence data. Ecological Applications, 19(1), 181-197.</p></li>
+<li><p>Vollering, J., Halvorsen, R., Auestad, I., &amp; Rydgren, K. (2019). Bunching up the
+background betters bias in species distribution models. Ecography, 42(10), 1717-1727.
+https://doi.org/10.1111/ecog.04503</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -208,7 +229,7 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/somevar.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>)</span>
 
-<span class='co'># Lest practice with a single species</span>
+<span class='co'># Exampe for a single species</span>
 <span class='va'>spp_pa</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp3"</span><span class='op'>)</span>
 
 <span class='co'>#</span>
@@ -234,7 +255,7 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='co'>#                                                          #</span>
 <span class='co'>## %######################################################%##</span>
 
-<span class='co'># Sample background points throughout study area with random method</span>
+<span class='co'># Sample background points throughout study area with random sampling method</span>
 <span class='va'>spp_p</span> <span class='op'>&lt;-</span> <span class='va'>spp_pa</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>bg</span> <span class='op'>&lt;-</span>
   <span class='fu'>sample_background</span><span class='op'>(</span>
@@ -312,7 +333,7 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='co'>#                                                          #</span>
 <span class='co'>## %######################################################%##</span>
 
-<span class='co'># Thickening background without containing them</span>
+<span class='co'># Thickening background without constraining them</span>
 <span class='va'>spp_p</span> <span class='co'># presences database of a species</span>
 <span class='va'>grid_env</span> <span class='co'># The raster layer used for sampling background</span>
 <span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
@@ -329,7 +350,7 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span>col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
 
 
-<span class='co'># Thickening background without using a given buffer width</span>
+<span class='co'># Thickening background without using a given buffer width (IS THIS RIGHT? A WIDTH IS SPECIFIED)</span>
 <span class='va'>spp_p</span> <span class='co'># presences database of a species</span>
 <span class='va'>grid_env</span> <span class='co'># The raster layer used for sampling background</span>
 <span class='va'>bg</span> <span class='op'>&lt;-</span> <span class='fu'>sample_background</span><span class='op'>(</span>
@@ -372,16 +393,16 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://rspatial.org/terra'>terra</a></span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>spp</span><span class='op'>)</span>
 
-<span class='co'># Lets select the presences of a species</span>
+<span class='co'># Select the presences of a species</span>
 <span class='va'>spp_p</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp1"</span>, <span class='va'>pr_ab</span> <span class='op'>==</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='co'># Raster layer with density of poinst to obtain a biased sampling background</span>
+<span class='co'># Raster layer with density of points to obtain a biased sampling background</span>
 <span class='va'>occ_density</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/occ_density.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
 <span class='va'>occ_density</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>occ_density</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>occ_density</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp_p</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
 
-<span class='co'># A layer with region used to contraint background</span>
+<span class='co'># A layer with region used to contrain background sampling area</span>
 <span class='va'>regions</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/regions.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
 <span class='va'>regions</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>regions</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>regions</span><span class='op'>)</span>
@@ -408,7 +429,7 @@ with bias data. It is recommended that rbias match resolution and extent of rlay
   <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>.</span>, col <span class='op'>=</span> <span class='st'>"black"</span>, pch <span class='op'>=</span> <span class='fl'>19</span>, cex <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
 
 
-<span class='co'># Biased background points constrained in a region</span>
+<span class='co'># Biased background points constrained to a region</span>
 <span class='co'># It will be selected region 6</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>regions</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>regions</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
