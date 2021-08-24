@@ -88,9 +88,9 @@ filtered_1 <- occfilt_geo(
   prj = crs(somevar)
 )
 
-somevar[[1]] \%>\% plot(col=gray.colors(10))
-points(spp1 \%>\% select(x, y)) #raw data
-points(filtered_1 \%>\% select(x, y), pch=19, col='yellow') #filtered data
+somevar[[1]] \%>\% plot(col = gray.colors(10))
+points(spp1 \%>\% select(x, y)) # raw data
+points(filtered_1 \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
 
 # Cellsize
 filtered_2 <- occfilt_geo(
@@ -102,9 +102,9 @@ filtered_2 <- occfilt_geo(
   prj = crs(somevar)
 )
 
-somevar[[1]] \%>\% plot(col=gray.colors(10))
-points(spp1 \%>\% select(x, y)) #raw data
-points(filtered_2 \%>\% select(x, y), pch=19, col='yellow') #filtered data
+somevar[[1]] \%>\% plot(col = gray.colors(10))
+points(spp1 \%>\% select(x, y)) # raw data
+points(filtered_2 \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
 
 
 # Defined
@@ -117,10 +117,9 @@ filtered_3 <- occfilt_geo(
   prj = crs(somevar)
 )
 
-somevar[[1]] \%>\% plot(col=gray.colors(10))
-points(spp1 \%>\% select(x, y)) #raw data
-points(filtered_3 \%>\% select(x, y), pch=19, col='yellow') #filtered data
-
+somevar[[1]] \%>\% plot(col = gray.colors(10))
+points(spp1 \%>\% select(x, y)) # raw data
+points(filtered_3 \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
 }
 
 }

@@ -91,9 +91,9 @@
 #'   prj = crs(somevar)
 #' )
 #'
-#' somevar[[1]] %>% plot(col=gray.colors(10))
-#' points(spp1 %>% select(x, y)) #raw data
-#' points(filtered_1 %>% select(x, y), pch=19, col='yellow') #filtered data
+#' somevar[[1]] %>% plot(col = gray.colors(10))
+#' points(spp1 %>% select(x, y)) # raw data
+#' points(filtered_1 %>% select(x, y), pch = 19, col = "yellow") # filtered data
 #'
 #' # Cellsize
 #' filtered_2 <- occfilt_geo(
@@ -105,9 +105,9 @@
 #'   prj = crs(somevar)
 #' )
 #'
-#' somevar[[1]] %>% plot(col=gray.colors(10))
-#' points(spp1 %>% select(x, y)) #raw data
-#' points(filtered_2 %>% select(x, y), pch=19, col='yellow') #filtered data
+#' somevar[[1]] %>% plot(col = gray.colors(10))
+#' points(spp1 %>% select(x, y)) # raw data
+#' points(filtered_2 %>% select(x, y), pch = 19, col = "yellow") # filtered data
 #'
 #'
 #' # Defined
@@ -120,10 +120,9 @@
 #'   prj = crs(somevar)
 #' )
 #'
-#' somevar[[1]] %>% plot(col=gray.colors(10))
-#' points(spp1 %>% select(x, y)) #raw data
-#' points(filtered_3 %>% select(x, y), pch=19, col='yellow') #filtered data
-#'
+#' somevar[[1]] %>% plot(col = gray.colors(10))
+#' points(spp1 %>% select(x, y)) # raw data
+#' points(filtered_3 %>% select(x, y), pch = 19, col = "yellow") # filtered data
 #' }
 #'
 #' @seealso \code{\link{occfilt_env}}
@@ -133,14 +132,14 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
   data <- data[c(x, y)]
 
 
-  if(is.null(prj)) {
+  if (is.null(prj)) {
     da <- data
-  } else if (!is.null(prj) || prj!="+proj=longlat +datum=WGS84") {
+  } else if (!is.null(prj) || prj != "+proj=longlat +datum=WGS84") {
     da <- terra::vect(data, geom = c(x, y), prj)
     da <- terra::project(da, "+proj=longlat +datum=WGS84")
     da <- data.frame(terra::geom(da))
     da <- dplyr::tibble(cbind(da[c(x, y)]))
-    if(!("moran" %in% method)){
+    if (!("moran" %in% method)) {
       env_layer <- env_layer[[1]]
     }
     env_layer <- terra::project(env_layer, "+proj=longlat +datum=WGS84")
@@ -223,14 +222,14 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     options(warn = 1)
 
     # Thinning
-    da$.spp <- 'sp'
+    da$.spp <- "sp"
     invisible(utils::capture.output(
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = 'y',
-          long.col = 'x',
-          spec.col = '.spp',
+          lat.col = "y",
+          long.col = "x",
+          spec.col = ".spp",
           thin.par = d,
           reps = 20,
           write.files = FALSE,
@@ -263,14 +262,14 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     distance <- as.numeric(abs(terra::distance(distance, lonlat = TRUE) / 1000 * factor))
 
     # Thinning
-    da$.spp <- 'sp'
+    da$.spp <- "sp"
     invisible(utils::capture.output(
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = 'y',
-          long.col = 'x',
-          spec.col = '.spp',
+          lat.col = "y",
+          long.col = "x",
+          spec.col = ".spp",
           thin.par = distance,
           reps = 20,
           write.files = FALSE,
@@ -295,14 +294,14 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
   if ("defined" %in% method) {
 
     # Thinning
-    da$.spp <- 'sp'
+    da$.spp <- "sp"
     invisible(utils::capture.output(
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = 'y',
-          long.col = 'x',
-          spec.col = '.spp',
+          lat.col = "y",
+          long.col = "x",
+          spec.col = ".spp",
           thin.par = as.numeric(method["d"]),
           reps = 20,
           write.files = FALSE,
@@ -323,5 +322,5 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     message("Distance threshold(km): ", round(as.numeric(method["d"]), 3))
     message("Number of filtered records: ", nrow(coord_filter))
   }
-    return(dplyr::tibble(coord_filter))
+  return(dplyr::tibble(coord_filter))
 }

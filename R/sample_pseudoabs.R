@@ -340,6 +340,6 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     cell_samp <- dplyr::tibble(cell_samp)
     cell_samp$pr_ab <- 0
   }
-  colnames(cell_samp) <- c(x, y, 'pr_ab')
+  colnames(cell_samp) <- c(x, y, "pr_ab")
   return(cell_samp)
 }

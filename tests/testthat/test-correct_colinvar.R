@@ -28,7 +28,7 @@ test_that("correct_colinvar VIF", {
   somevar <- terra::rast(somevar)
 
   # Perform pearson collinearity control
-  somevar <- terra::rast(list(somevar, CPF_5=somevar[[2]]))
+  somevar <- terra::rast(list(somevar, CPF_5 = somevar[[2]]))
   names(somevar)[5] <- "CPF_4"
   var <-
     correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))

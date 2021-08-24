@@ -19,7 +19,7 @@ test_that("part_senv", {
     prop = 0.2
   )
 
-  expect_equal(class(part1), 'list')
+  expect_equal(class(part1), "list")
 
   # Only with presences
   spp1 <- spp1 %>% dplyr::filter(pr_ab == 1)
@@ -58,5 +58,4 @@ test_that("misuse of arguments", {
     max_n_groups = 10,
     prop = 0.2
   ))
-
-  })
+})

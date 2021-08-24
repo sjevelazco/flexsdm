@@ -77,7 +77,7 @@
 #' Hartig, F., & Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial,
 #'  hierarchical, or phylogenetic structure. Ecography, 40,
 #'  913-929. https://doi.org/10.1111/ecog.02881
-#' \item Santini, L., Benitez‐Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
+#' \item Santini, L., Benitez-Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
 #'  Assessing the reliability of species distribution projections in climate change research.
 #'  Diversity and Distributions, ddi.13252. https://doi.org/10.1111/ddi.13252
 #' \item Velazco, S. J. E., Villalobos, F., Galvao, F., & De Marco Junior, P. (2019). A dark
@@ -189,7 +189,7 @@ part_sband <- function(env_layer,
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-paste(unique(data[, "pr_ab"]), collapse = " ")
+      paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 
@@ -352,7 +352,7 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
   })
   pp <- ifelse(pp == n_part, TRUE, FALSE)
 
-  if(all(!pp)){
+  if (all(!pp)) {
     message("It was not possible to find a good partition. Try to change values in 'n_part', or in 'min_band', or 'max_band'")
     return(NA)
   }
@@ -490,9 +490,9 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
           function(x) {
             suppressMessages(
               ape::Moran.I(x,
-                           dist2,
-                           na.rm = TRUE,
-                           scaled = TRUE
+                dist2,
+                na.rm = TRUE,
+                scaled = TRUE
               )$observed
             )
           }
@@ -563,7 +563,7 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
     }
 
     if (unique(Opt2$spa_auto) &&
-        unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
+      unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }
