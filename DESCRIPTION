@@ -1,6 +1,6 @@
 Package: flexsdm
 Type: Package
-Title: Tools for data preparation, fitting, prediction, evaluation, and post-processing of species distribution models
+Title: Tools for Data Preparation, Fitting, Prediction, Evaluation, and Post-Processing of Species Distribution Models
 Version: 0.0.1
 Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
            email = "sjevelazco@gmail.com",
@@ -39,8 +39,9 @@ Imports:
     raster,
     methods,
     utils
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: flexsdm assists in the construction of flexible species distribution workflow 
+    by incorporating comprehensive tools for data preparation, model fitting, 
+    prediction, evaluation, and model post-processing.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
