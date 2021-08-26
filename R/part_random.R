@@ -7,10 +7,10 @@
 #' for a given species
 #' @param pr_ab character. Column name of "data" with presences, presence-absence, or
 #' pseudo-absence. Presences must be represented by 1 and absences by 0
-#' @param method character. Vector with data partitioning method to be used:
+#' @param method character. Vector with data partitioning method to be used. Usage
+#'   part=c(method= 'kfold', folds='5'). Methods include:
 #' \itemize{
-#'   \item kfold: Random partitioning into k-folds for cross-validation. Usage
-#'   part=c(method= 'kfold', folds='5'). 'folds' refers to the number of folds for data
+#'   \item kfold: Random partitioning into k-folds for cross-validation. 'folds' refers to the number of folds for data
 #'   partitioning, it assumes value >=1. Usage method = c(method = "kfold", folds = 10).
 #'   \item rep_kfold: Random partitioning into repeated k-folds for  cross-validation.
 #'   Usage method = c(method = "rep_kfold", folds = 10, replicates=10). 'folds' refers to the
@@ -23,15 +23,15 @@
 #'   proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value >=1.
 #'   'proportion' refers to the proportion of occurrences used for model fitting, it assumes a
 #'   value >0 and <=1. In this example proportion='0.7' mean that 70\% of data will be used for
-#'   model training, while 30\% for model testing.
+#'   model training, while 30\% will be used for model testing.
 #'   }
 #'
 #' @return
 #' A tibble object with information used in the 'data' argument and additional columns named .part
 #' containing the partition groups. The rep_kfold and boot method will return as many ".part"
 #' columns as replicated defined. For the rest of the methods, a single .part column is returned.
-#' For kfold, rep_kfold, and loocv methods partition, groups are defined by integers.
-#' On the contrary, for boot method, the partition groups are defined by the characters
+#' For kfold, rep_kfold, and loocv partition methods, groups are defined by integers.
+#' In contrast, for boot method, the partition groups are defined by the characters
 #' 'train' and 'test'.
 #'
 #' @references
