@@ -1,7 +1,7 @@
 #' Perform geographical filtering on species occurrences
 #'
 #' @description This function perform geographical filtering of species occurrences based on
-#' different approach to define the minimum nearest-neighbour distance bteween points.
+#' different approach to define the minimum nearest-neighbor distance between points.
 #'
 #'
 #' @param data data.frame. Data.frame or tibble object with presences
@@ -9,41 +9,41 @@
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
 #' @param env_layer SpatRaster. Raster variables that will be used to fit the model
-#' @param method character. Method to perform geographical thinning. Pair of points are filtered
+#' @param method character. Method to perform geographical thinning. Pairs of points are filtered
 #' based on a geographical distance criteria.The following methods are available:
 #' \itemize{
 #'   \item moran: records are filtered based on the smallest distance that reduces Moran's I to
 #'   values lower than 0.1. Latlong = TRUE if occurrences are in a geographical projection.
 #'   Usage method: method = c('moran').
-#'   \item cellsize: records are filtered based on the environmental variables resolution which
+#'   \item cellsize: records are filtered based on the resolution of the environmental variables which
 #'   can be aggregated to coarser resolution defined by the factor.
 #'   Usage method: method = c('cellsize', factor = '2').
-#'   \item defined: records are filtered based on a provided distance value in km.
+#'   \item defined: records are filtered based on a  distance value (d) provided in km.
 #'   Usage method: method = c('defined', d = 300).
 #' }
 #' @param prj character. Projection string (PROJ4) for occurrences. Not necessary if
-#' the projection use WGS84 ("+proj=longlat +datum=WGS84").
+#' the projection used is WGS84 ("+proj=longlat +datum=WGS84").
 #'
 #' @return
 #' A tibble object with data filtered geographically
 #'
-#' @details In this function are implemented three alternatives to determine the
+#' @details In this function three alternatives are implemented to determine the
 #' distance threshold between pair of points:
-#' 1-"moran" determines the minimum nearest-neighbour distance, which minimizes the spatial
+#' 1-"moran" determines the minimum nearest-neighbor distance that minimizes the spatial
 #' autocorrelation in occurrence data, following a Moran's semivariogram. A Principal Component
-#' Analysis with the environmental variables is performed and then is used first Principal Component
-#' to calculate the semivariograms. Sometimes, this method can greatly reduce the number
+#' Analysis with the environmental variables is performed and then the first Principal Component is used
+#' to calculate the semivariograms. Sometimes, this method can (too) greatly reduce the number
 #' of presences.
 #' 2-"cellsize" filters occurrences based on the predictors' resolution. This method will calculate
 #' the distance between the first two cells of the environmental variable and use this distance
 #' as minimum nearest-neighbor distance to filter occurrences.
-#' The resolution of a rater is aggregated based on the values used in "factor". Thus, the distance
+#' The resolution of the raster is aggregated based on the values used in "factor". Thus, the distance
 #' used for filtering can be adjusted to represent a larger grid size.
-#' 3-"determined" this method uses any minimum nearest-neighbour distance in km specified.
+#' 3-"determined" this method uses any minimum nearest-neighbor distance specified in km.
 #'
 #'
-#' For the three method is used the "thin" function from spThin package
-#' (Aiello-Lammens et al., 2015) with the next argument settings reps = 20, write.files = FALSE,
+#' For the third method the "thin" function from spThin package is used
+#' (Aiello-Lammens et al., 2015) with the following argument settings reps = 20, write.files = FALSE,
 #' locs.thinned.list.return = TRUE, and write.log.file = FALSE.
 #'
 #'
@@ -81,7 +81,7 @@
 #' somevar[[1]] %>% plot()
 #' points(spp1 %>% select(x, y))
 #'
-#' # Moran
+#' # Using Moran method
 #' filtered_1 <- occfilt_geo(
 #'   data = spp1,
 #'   x = "x",
@@ -95,7 +95,7 @@
 #' points(spp1 %>% select(x, y)) # raw data
 #' points(filtered_1 %>% select(x, y), pch = 19, col = "yellow") # filtered data
 #'
-#' # Cellsize
+#' # Using cellsize method
 #' filtered_2 <- occfilt_geo(
 #'   data = spp1,
 #'   x = "x",
@@ -110,7 +110,7 @@
 #' points(filtered_2 %>% select(x, y), pch = 19, col = "yellow") # filtered data
 #'
 #'
-#' # Defined
+#' # Using defined method
 #' filtered_3 <- occfilt_geo(
 #'   data = spp1,
 #'   x = "x",
