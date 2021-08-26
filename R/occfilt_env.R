@@ -14,7 +14,7 @@
 #' @return
 #' A tibble object with data environmentally filtered
 #'
-#' @details This function uses an approach adapted to the proposed by Varela et al. (2014) approach.
+#' @details This function uses an approach adapted from that proposed by Varela et al. (2014) approach.
 #'  It consists of filtering occurrences in the environmental space. First, a regular
 #'  multidimensional grid is created in the environmental space. This multidimensional
 #'  grid is determined by the environmental variables (always use continuous variables) the
