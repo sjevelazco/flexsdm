@@ -36,31 +36,31 @@ response, predictors, and predictors_f arguments. Default is NULL.}
 
 \item{partition}{character. Column name with training and validation partition groups.}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1) needed for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{
   \item lpt: The highest threshold at which there is no omission.
   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
-  \item max_jaccard: The threshold at which Jaccard is the highest.
-  \item max_sorensen: The threshold at which Sorensen is highest.
-  \item max_fpb: The threshold at which FPB is highest.
+  \item max_jaccard: The threshold at which the Jaccard index is the highest.
+  \item max_sorensen: The threshold at which the Sorensen index is highest.
+  \item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
   \item sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default used is 0.9
   }
-In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
+If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.}
 
 \item{n_trees}{Integer specifying the total number of trees to fit.
 This is equivalent to the number of iterations and the number of basis
 functions in the additive expansion. Default is 100.}
 
-\item{n_minobsinnode}{Integer. It specifies the minimum number of
+\item{n_minobsinnode}{Integer specifying the minimum number of
 observations in the terminal nodes of the trees. Note that this
 is the actual number of observations, not the total weight.
-By default will be used a value equal to nrow(data)*0.5/4}
+The default value used is nrow(data)*0.5/4}
 
 \item{shrinkage}{Numeric. This parameter applied to each tree in the
 expansion. Also known as the learning rate or step-size reduction;
-0.001 to 0.1 usually work, but a smaller learning rate typically
+0.001 to 0.1 usually works, but a smaller learning rate typically
 requires more trees. Default is 0.1.}
 }
 \value{
@@ -69,7 +69,7 @@ A list object with:
 \item model: A "gbm" class object. This object can be used for predicting.
 \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
-Those threshold dependent metric are calculated based on the threshold specified in thr argument.
+Threshold dependent metrics are calculated based on the threshold specified in thr argument.
 \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
 }
 }
@@ -119,5 +119,4 @@ gbm_t2 <- fit_gbm(
 )
 gbm_t2
 }
-
 }

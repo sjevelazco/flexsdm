@@ -1,15 +1,16 @@
 #' Environmental and spatial cross-validation
 #'
-#' @description This function explores different numbers of environmental partitions based on the
-#' K-means clustering algorithm and returns the number of partitions best suited for a given presence or
-#' presence-absences database. Selection of the best number of partitions is performed
-#' automatically considering spatial autocorrelation, environmental similarity, and the
-#' number of presence and/or absence records in each partition.
+#' @description This function explores different numbers of environmental partitions (clusters)
+#' based on the K-means clustering algorithm and returns the number of partitions best suited for
+#' a given presence, presence-absences, or presence-pseudo-absences database. Selection of the
+#' best number of partitions is performed automatically considering spatial autocorrelation,
+#' environmental similarity, and the number of presence and/or absence records in each partition.
 #'
 #' @param env_layer SpatRaster. Raster with environmental
 #' variable. This will be used to evaluate spatial autocorrelation and
 #' environmental similarity between training and testing partitions. Because this function
-#' calculate dissimilarity based on Euclidean distances, it can only be used with continuous variables
+#' calculate dissimilarity based on Euclidean distances, it can only be used with continuous
+#' variables
 #' @param data data.frame. Data.frame or tibble object with presence
 #' (or presence-absence, or presences-pseudo-absence) records, and coordinates
 #' @param x character. Column name with spatial x coordinates
@@ -28,10 +29,54 @@
 #' @return
 #' A list with:
 #' \itemize{
-#'   \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
-#'   \item best_part_info: A tibble with information about the best partition. It contains the number of partition (n_groups), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto) and environmental similarity based on Euclidean distance (env_sim)
+#'   \item part: A tibble object with information used in 'data' arguments and a additional column
+#'   .part with partition group.
+#'   \item best_part_info: A tibble with information about the best partition. It contains the
+#'   number of partition (n_groups), standard deviation of presences (sd_p), standard deviation
+#'   of absences (sd_a), Moran's I spatial autocorrelation (spa_auto) and environmental similarity
+#'   based on Euclidean distance (env_sim)
 #'   }
-#' @details write here criteria used for performing the search of the best partition (metrics and quartile selection).
+#'
+#' @details The part_sblock allows test with different numbers of partitions defined in the
+#' envirnomental clusters delimited the K-mean cluster algorithm. This function explores a range
+#' of environmental clusters and automatically selects best number of cluster for a given given
+#' presence, presence-absences, or presence-pseudo-absences dataset. Such selection of number of
+#' clusters is based on an optimization procedure that explores partition size in three dimensions
+#' determined by spatial autocorrelation (measured by Moran's I), environmental similarity
+#' (Euclidean distance), and difference in the amount of data among clusters
+#' (Standard Deviation - SD; Velazco et al., 2019). This procedure will cyclically select
+#' those partitions with autocorrelation values less than the lowest quartile of Morans I, then
+#' those with environmental similarity values greater than the third quartile of the Euclidean
+#' distances than those with a difference in the amount of data less than the lowest quartile of SD.
+#' This selection is repeated until only one partition is retained (Velazco et al., 2019). The
+#' main benefit of this partition selection are i) this is not subjective, ii) balances the
+#' environmental similarity and special autocorrelation between partitions, and iii) controls
+#' the partition selection with few data that may be problematic for model fitting
+#' ("min_occ" argument)..
+#'
+#' Partitions geographically structured tend to evaluate model transferability more directly than
+#' conventional ones (e.g., those performed by \code{\link{part_random}}) (Roberts et al., 2017;
+#' Santini et al., 2021), being relevant for models that want to be used for projections in other
+#' regions outside the calibration area or for other periods.
+#'
+#' This function can interact with \code{\link{get_block}}, \code{\link{sample_background}},
+#' and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-absences within
+#' spatial partition broups
+#'
+#' @references
+#' \itemize{
+#' \item Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-Arroita, G.,
+#' Hauenstein, S., Lahoz-Monfort, J. J., Schroder, B., Thuiller, W., Warton, D. I., Wintle, B. A.,
+#' Hartig, F., & Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial,
+#'  hierarchical, or phylogenetic structure. Ecography, 40,
+#'  913-929. https://doi.org/10.1111/ecog.02881
+#' \item Santini, L., Benitez-Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
+#'  Assessing the reliability of species distribution projections in climate change research.
+#'  Diversity and Distributions, ddi.13252. https://doi.org/10.1111/ddi.13252
+#' \item Velazco, S. J. E., Villalobos, F., Galvao, F., & De Marco Junior, P. (2019). A dark
+#' scenario for Cerrado plant species: Effects of future climate, land use and protected areas
+#' ineffectiveness. Diversity and Distributions, 25(4), 660-673. https://doi.org/10.1111/ddi.12886
+#' }
 #'
 #' @export
 #' @importFrom ape Moran.I
@@ -41,42 +86,43 @@
 #' @importFrom terra extract
 #' @importFrom utils combn
 #'
-#' @seealso \code{\link{part_random}}, and \code{\link{part_sblock}}.
+#' @seealso \code{\link{part_random}}, \code{\link{part_sblock}}, and \code{\link{part_sband}}
+#'
 #' @examples
 #' \dontrun{
-# require(terra)
-# require(ggplot2)
-#
-# f <- system.file("external/somevar.tif", package = "flexsdm")
-# somevar <- terra::rast(f)
-#
-# # Select a species
-# spp1 <- spp %>% dplyr::filter(species == "sp1")
-#
-# part1 <- part_senv(
-#   env_layer = somevar,
-#   data = spp1,
-#   x = "x",
-#   y = "y",
-#   pr_ab = "pr_ab",
-#   min_n_groups = 2,
-#   max_n_groups = 10,
-#   min_occ = 10,
-#   prop = 0.2
-# )
-#
-# part1
-#
-# ggplot(part1$part, aes(x, y, col = factor(.part))) +
-#   geom_point(aes(shape = factor(pr_ab)))
-#
-# ggplot(part1$part, aes(x, y, col = factor(.part))) +
-#   geom_point(aes(shape = factor(pr_ab))) +
-#   facet_wrap(. ~ .part)
-#
-# ggplot(part1$part, aes(x, y, col = factor(.part))) +
-#   geom_point(aes(shape = factor(pr_ab))) +
-#   facet_wrap(. ~ pr_ab)
+#' require(terra)
+#' require(ggplot2)
+#'
+#' f <- system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(f)
+#'
+#' # Select a species
+#' spp1 <- spp %>% dplyr::filter(species == "sp1")
+#'
+#' part1 <- part_senv(
+#'   env_layer = somevar,
+#'   data = spp1,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   min_n_groups = 2,
+#'   max_n_groups = 10,
+#'   min_occ = 10,
+#'   prop = 0.2
+#' )
+#'
+#' part1
+#'
+#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#'   geom_point(aes(shape = factor(pr_ab)))
+#'
+#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#'   geom_point(aes(shape = factor(pr_ab))) +
+#'   facet_wrap(. ~ .part)
+#'
+#' ggplot(part1$part, aes(x, y, col = factor(.part))) +
+#'   geom_point(aes(shape = factor(pr_ab))) +
+#'   facet_wrap(. ~ pr_ab)
 #' }
 part_senv <- function(env_layer,
                       data,
@@ -97,7 +143,7 @@ part_senv <- function(env_layer,
     stop(
       "values in pr_ab column did not match with 0 and 1:
 unique list values in pr_ab column are: ",
-paste(unique(data[, "pr_ab"]), collapse = " ")
+      paste(unique(data[, "pr_ab"]), collapse = " ")
     )
   }
 
@@ -237,9 +283,9 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
           data[filt, names(env_layer)],
           function(x) {
             ape::Moran.I(x,
-                         dist2,
-                         na.rm = TRUE,
-                         scaled = TRUE
+              dist2,
+              na.rm = TRUE,
+              scaled = TRUE
             )$observed
           }
         )
@@ -303,8 +349,8 @@ paste(unique(data[, "pr_ab"]), collapse = " ")
     }
 
     if ((length(unique(Opt2$spa_auto)) == 1) &&
-        (length(unique(Opt2$env_sim)) == 1) &&
-        (length(unique(Opt2$sd_p)) == 1)) {
+      (length(unique(Opt2$env_sim)) == 1) &&
+      (length(unique(Opt2$sd_p)) == 1)) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }

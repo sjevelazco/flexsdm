@@ -10,7 +10,7 @@ A tibble with 1150 rows and 3 variables:
   \item{species}{virtual species names}
   \item{x}{longitude of species occurrences}
   \item{y}{latitude of species occurrences}
-  \item{pr_ab}{presence and absences denoted by 1 and 0 respectively}
+  \item{pr_ab}{presences and absences denoted by 1 and 0 respectively}
   ...
 }
 }

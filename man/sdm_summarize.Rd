@@ -7,7 +7,7 @@
 sdm_summarize(models)
 }
 \arguments{
-\item{models}{list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.}
+\item{models}{list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function. Usage models = list(mod1, mod2, mod3)}
 }
 \value{
 Combined model performance table for all input models. Models fit with tune will include model performance for the best hyperparameters.
@@ -20,7 +20,7 @@ Merge model performance tables
 data(abies)
 abies
 
-# We will partition the data with the k-fold method
+# In this example we will partition the data using the k-fold method
 
 abies2 <- part_random(
   data = abies,

@@ -1,6 +1,6 @@
 #' Merge model performance tables
 #'
-#' @param models list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.
+#' @param models list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function. Usage models = list(mod1, mod2, mod3)
 #'
 #' @return
 #'
@@ -15,7 +15,7 @@
 #' data(abies)
 #' abies
 #'
-#' # We will partition the data with the k-fold method
+#' # In this example we will partition the data using the k-fold method
 #'
 #' abies2 <- part_random(
 #'   data = abies,
@@ -80,7 +80,7 @@
 #' merge_df
 #' }
 sdm_summarize <- function(models) {
-  . <- model_ID <- model <- NULL
+  . <- model_ID <- model <- IMAE_sd <- NULL
   if (data.class(models) != "list") {
     stop("models must be a list object")
   }
@@ -103,7 +103,16 @@ sdm_summarize <- function(models) {
       dplyr::tibble()
   } else {
     perf_tib <- models[[1]]$performance
+    perf_tib$model_ID <- 1
   }
 
+  perf_tib <- perf_tib %>%
+    dplyr::relocate(
+      dplyr::all_of(
+        names(
+          dplyr::select(perf_tib, model_ID:IMAE_sd)
+        )
+      )
+    )
   return(perf_tib)
 }

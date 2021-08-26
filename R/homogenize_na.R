@@ -1,5 +1,7 @@
 #' Homogenize cells with NAs across all layers
 #'
+#' @details Homogenize cells with NAs across all layers in a SpatRaster so that in the resulting SpatRaster all layers have the same cells with NAa
+#'
 #' @param x A SpatRaster.
 #'
 #' @return a SpatRaster

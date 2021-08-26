@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Perform environmental filtering on species occurrences — occfilt_env" />
-<meta property="og:description" content="Perform environmental filtering on species occurrences" />
+<meta property="og:description" content="This function perform filtering on species occurrences based on their environmental conditions." />
 
 
 
@@ -124,7 +124,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Perform environmental filtering on species occurrences</p>
+    <p>This function perform filtering on species occurrences based on their environmental conditions.</p>
     </div>
 
     <pre class="usage"><span class='fu'>occfilt_env</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>id</span>, <span class='va'>env_layer</span>, <span class='va'>nbins</span>, cores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
@@ -139,11 +139,11 @@
     </tr>
     <tr>
       <th>x</th>
-      <td><p>character. Column name with longitude data</p></td>
+      <td><p>character. Column name with spatial x coordinates</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>character. Column name with latitude data</p></td>
+      <td><p>character. Column name with spatial y coordinates</p></td>
     </tr>
     <tr>
       <th>id</th>
@@ -151,7 +151,7 @@
     </tr>
     <tr>
       <th>env_layer</th>
-      <td><p>SpatRaste. Rasters with environmental conditions</p></td>
+      <td><p>SpatRaster. Rasters with environmental conditions</p></td>
     </tr>
     <tr>
       <th>nbins</th>
@@ -165,7 +165,41 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble object with filtered data</p>
+    <p>A tibble object with data environmentally filtered</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This function uses an approach adapted to the proposed by Varela et al. (2014) approach.
+ It consists of filtering occurrences in the environmental space. First, a regular
+ multidimensional grid is created in the environmental space. This multidimensional
+ grid is determined by the environmental variables (always use continuous variables) the
+ grid cell size is defined by the number of bins, used for dividing variable range into
+ interval classes (Varela et al. 2014; Castellanos et al., 2019). The number of bins is set in
+ the "nbins" argument. Then a single occurrence is randomly selected within each cell of the
+ multivariate grid. Consider that there is a trade-off between the number of bins and the number
+ of filtered records because as the number of bins decreases, the cell size of the grids
+ increases, and the number of filtered records decreases (Castellanos et al., 2019).
+ occfilt_env works for any dimensions number and with the original variables without performing
+ a PCA beforehand.</p>
+<p>The greater the number of predictor variables (i.e., the number of dimensions of the
+ multidimensional grid) and the greater the number of bins, the greater the time processing
+ and the computer memory used. Therefore, it is recommended to use a small number of bins
+ between 2-5 if more than ten variables are used.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    
+<ul>
+<li><p>Castellanos, A. A., Huntley, J. W., Voelker, G., &amp; Lawing, A. M. (2019). Environmental
+filtering improves ecological niche models across multiple scales. Methods in Ecology and
+Evolution, 10(4), 481-492. https://doi.org/10.1111/2041-210X.13142</p></li>
+<li><p>Varela, S., Anderson, R. P., Garcia-Valdes, R., &amp; Fernandez-Gonzalez, F. (2014).
+Environmental filters reduce the effects of sampling bias and improve predictions of
+ecological niche models. Ecography, 37, 1084-1091.
+https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='occfilt_geo.html'>occfilt_geo</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
@@ -221,11 +255,12 @@
   nbins <span class='op'>=</span> <span class='fl'>12</span>,
   cores <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
-<span class='co'># note that while higher the nbins parameter higher the number of</span>
-<span class='co'># classes to be processed (4 variables, 30 bins = 923521 classes)</span>
+<span class='co'># note that the higher the nbins parameter the more</span>
+<span class='co'># classes must be to be processed (4 variables, 30 bins = 923521 classes)</span>
 
-<span class='co'># While higher the number of bins smaller the number of records retained</span>
+<span class='co'># While greater the number of bins the fewer records retained</span>
 <span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

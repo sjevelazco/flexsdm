@@ -2,31 +2,34 @@
 % Please edit documentation in R/sdm_extract.R
 \name{sdm_extract}
 \alias{sdm_extract}
-\title{Extract environmental data based on x and y coordinates}
+\title{Extract environmental data values from a spatial raster based on x and y coordinates}
 \usage{
 sdm_extract(data, x, y, env_layer, variables = NULL, filter_na = TRUE)
 }
 \arguments{
-\item{data}{data.frame. Database with presences, presence-absence, or pseudo-absence, records with x and y coordinates}
+\item{data}{data.frame. Database with species presence, presence-absence, or pseudo-absence
+records with x and y coordinates}
 
-\item{x}{character. Column name with longitude data}
+\item{x}{character. Column name with spatial x coordinates}
 
-\item{y}{character. Column name with latitude data}
+\item{y}{character. Column name with spatial y coordinates}
 
-\item{env_layer}{SpatRaster. Raster with environmental variables.}
+\item{env_layer}{SpatRaster. Raster or raster stack with environmental variables.}
 
-\item{variables}{character. Vector with the variable names of predictor variables
-Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers. Default NULL}
+\item{variables}{character. Vector with the variable names of predictor (environmental) variables
+Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will
+return data for all layers. Default NULL}
 
 \item{filter_na}{logical. If filter_na = TRUE (default), the rows with NA values for any of the
 environmental variables are removed from the returned tibble.}
 }
 \value{
 A tibble that returns the original data base with additional columns
-for the extracted environmental variables at each xy location from the SpatRaster object used in 'env_layer'
+for the extracted environmental variables at each xy location from the SpatRaster object used
+in 'env_layer'
 }
 \description{
-Extract environmental data based on x and y coordinates
+Extract environmental data values from a spatial raster based on x and y coordinates
 }
 \examples{
 \dontrun{
@@ -37,7 +40,7 @@ data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
 
-# Extract environmental data from somevar for all species locations in spp
+# Extract environmental data from somevar for all locations in spp
 ex_spp <-
   sdm_extract(
     data = spp,

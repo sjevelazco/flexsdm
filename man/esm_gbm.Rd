@@ -2,7 +2,7 @@
 % Please edit documentation in R/esm_gbm.R
 \name{esm_gbm}
 \alias{esm_gbm}
-\title{Fit and validate Generalized Boosted Regression models based Ensemble of Small of Model approach}
+\title{Fit and validate Generalized Boosted Regression models based on Ensembles of Small Models approach}
 \usage{
 esm_gbm(
   data,
@@ -21,59 +21,58 @@ esm_gbm(
 \item{response}{character. Column name with species absence-presence data (0,1)}
 
 \item{predictors}{character. Vector with the column names of quantitative
-predictor variables (i.e. continuous variables). This function does not allow categorical variables
-Usage predictors = c("aet", "cwd", "tmin"). This function only can construct models with
-continuous variables.}
+predictor variables (i.e. continuous variables). This can only construct models with continuous variables and does not allow categorical variables.
+Usage predictors = c("aet", "cwd", "tmin")}
 
 \item{partition}{character. Column name with training and validation partition groups.}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{
   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
-  \item max_jaccard: The threshold at which Jaccard is the highest.
-  \item max_sorensen: The threshold at which Sorensen is highest.
-  \item max_fpb: The threshold at which FPB is highest.
+  \item max_jaccard: The threshold at which the Jaccard index is the highest.
+  \item max_sorensen: The threshold at which the Sorensen index is highest.
+  \item max_fpb: The threshold at which FPB  (F-measure on presence-background data) is highest.
   \item sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default value is 0.9.
   }
-In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
+In the case of use more than one threshold type it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.}
 
 \item{n_trees}{Integer specifying the total number of trees to fit.
 This is equivalent to the number of iterations and the number of basis
 functions in the additive expansion. Default is 100.}
 
-\item{n_minobsinnode}{Integer. It specifies the minimum number of
+\item{n_minobsinnode}{Integer specifying the minimum number of
 observations in the terminal nodes of the trees. Note that this
 is the actual number of observations, not the total weight. If n_minobsinnode is NULL,
-this parameter will assume a value equal to nrow(data)*0.5/4. Default NULL, .}
+this parameter will assume a value equal to nrow(data)*0.5/4. Default is NULL.}
 
 \item{shrinkage}{Numeric. This parameter applied to each tree in the
 expansion. Also known as the learning rate or step-size reduction;
-0.001 to 0.1 usually work, but a smaller learning rate typically
+0.001 to 0.1 usually works, but a smaller learning rate typically
 requires more trees. Default is 0.1.}
 }
 \value{
 A list object with:
 \itemize{
 \item esm_model: A list with "gbm" class object for each bivariate model. This object can be used
-for predicting ensemble of small model with \code{\link{sdm_predict}} function.
+for predicting ensembles of small models with \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
-\item performance: Performance metric (see \code{\link{sdm_eval}}).
-Those threshold dependent metric are calculated based on the threshold specified in thr argument.
+\item performance: Performance metrics (see \code{\link{sdm_eval}}).
+Threshold dependent metrics are calculated based on the threshold specified in thr argument.
 }
 }
 \description{
 This function constructs Generalized Boosted Regression using the
-Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
+Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018).
 }
 \details{
 This method consists of creating bivariate models with all the pair-wise combinations
 of predictors and perform an ensemble based on the average of suitability weighted by
-Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
+Somers' D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 This function does not allow categorical variables because the use of these types of variables
-could be problematic when using with few occurrences. Further detail see
-Breiner et al. (2015, 2018)
+could be problematic when using with few occurrences. For further detail see
+Breiner et al. (2015, 2018).
 }
 \examples{
 \dontrun{

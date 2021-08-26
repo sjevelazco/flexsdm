@@ -1,26 +1,25 @@
-#' Fit and validate Generalized Additive Models based on Ensemble of Small of Model approach
+#' Fit and validate Maximum Entropy Models based on Ensemble of Small of Model approach
 #'
-#' @description This function constructs Generalized Additive Models using the
+#' @description This function constructs Maxent Models using the
 #' Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).
 #'
 #' @param data data.frame. Database with the response (0,1) and predictors values.
 #' @param response character. Column name with species absence-presence data (0,1)
 #' @param predictors character. Vector with the column names of quantitative
-#' predictor variables (i.e. continuous variables). This function does not allow categorical variables
-#' Usage predictors = c("aet", "cwd", "tmin"). This function only can construct models with
-#' continuous variables.
+#' predictor variables (i.e. continuous variables). This function can only construct models with continuous variables, and does not allow categorical variables
+#' Usage predictors = c("aet", "cwd", "tmin").
 #' @param partition character. Column name with training and validation partition groups.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
 #'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
 #'   \item max_jaccard: The threshold at which Jaccard is the highest.
 #'   \item max_sorensen: The threshold at which Sorensen is highest.
-#'   \item max_fpb: The threshold at which FPB is highest.
+#'   \item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
-#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9
+#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If no sensitivity value is specified, the default is 0.9
 #'   }
-#' If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
+#' If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
 #' @param background data.frame. Database with response column only with 0 and predictors variables. All
 #' column names must be consistent with data. Default NULL
 #' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training.
@@ -31,21 +30,21 @@
 #'
 #' @details This method consists of creating bivariate models with all the pair-wise combinations
 #' of predictors and perform an ensemble based on the average of suitability weighted by
-#' Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
+#' Somers' D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 #' This function does not allow categorical variables because the use of these types of variables
-#' could be problematic when using with few occurrences. Further detail see
+#' could be problematic when using with few occurrences. For further detail see
 #' Breiner et al. (2015, 2018). This function use a default regularization multiplier
-#' equal to 2.5 (see details in Breinter et al., 2018)
+#' equal to 2.5 (see  Breiner et al., 2018)
 #'
 #' @return
 #'
 #' A list object with:
 #' \itemize{
-#' \item esm_model: A list with "Gam" class object for each bivariate model. This object can be used
-#' for predicting ensemble of small model with \code{\link{sdm_predict}} function.
+#' \item esm_model: A list with "maxent" class object for each bivariate model. This object can be used
+#' for predicting ensembles of small models with \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
-#' \item performance: Performance metric (see \code{\link{sdm_eval}}).
-#' Those threshold dependent metric are calculated based on the threshold specified in thr argument.
+#' \item performance: Performance metrics (see \code{\link{sdm_eval}}).
+#' Those threshold dependent metric are calculated based on the threshold specified in the argument.
 #' }
 #'
 #' @seealso \code{\link{esm_gam}}, \code{\link{esm_gau}}, \code{\link{esm_gbm}},

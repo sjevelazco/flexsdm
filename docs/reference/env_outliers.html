@@ -43,8 +43,8 @@
 <meta property="og:description" content="This function performs different methods for detecting outliers in species
 distribution data based on the environmental conditions of occurrences. Some methods need
 presence and absence data (e.g. Two-class Support Vector Machine and Random Forest) while other
-only use presences (e.g. Reverse Jackknife Knife, Box-plot, and Random Forest outliers) .
-Outliers detection could be useful in occurrence data cleaning procedure (Chapman 2005, Liu et al., 2018)." />
+only use presences (e.g. Reverse Jackknife, Box-plot, and Random Forest outliers) .
+Outlier detection can be a useful procedure in occurrence data cleaning (Chapman 2005, Liu et al., 2018)." />
 
 
 
@@ -131,8 +131,8 @@ Outliers detection could be useful in occurrence data cleaning procedure (Chapma
     <p>This function performs different methods for detecting outliers in species
 distribution data based on the environmental conditions of occurrences. Some methods need
 presence and absence data (e.g. Two-class Support Vector Machine and Random Forest) while other
-only use presences (e.g. Reverse Jackknife Knife, Box-plot, and Random Forest outliers) .
-Outliers detection could be useful in occurrence data cleaning procedure (Chapman 2005, Liu et al., 2018).</p>
+only use presences (e.g. Reverse Jackknife, Box-plot, and Random Forest outliers) .
+Outlier detection can be a useful procedure in occurrence data cleaning (Chapman 2005, Liu et al., 2018).</p>
     </div>
 
     <pre class="usage"><span class='fu'>env_outliers</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>pr_ab</span>, <span class='va'>id</span>, <span class='va'>env_layer</span><span class='op'>)</span></pre>
@@ -142,15 +142,15 @@ Outliers detection could be useful in occurrence data cleaning procedure (Chapma
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>data.frame or tibble with presences (or presence-absence) records, and coordinates</p></td>
+      <td><p>data.frame or tibble with presence (or presence-absence) records, and coordinates</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>character. Column name with longitude data</p></td>
+      <td><p>character. Column name with longitude data (DOES IT REALLY HAVE TO BE LON / LAT GEOGR COORDINATES OR JUST SAY 'WITH X-CCORDINATE DATA'?)</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>character. Column name with latitude data</p></td>
+      <td><p>character. Column name with latitude data (DITTO -- PROBABLY RHE X,Y HAS TO HAVE THE SAME CRS AS THE SPATRASTER ENV_LAYER...?)</p></td>
     </tr>
     <tr>
       <th>pr_ab</th>
@@ -158,7 +158,7 @@ Outliers detection could be useful in occurrence data cleaning procedure (Chapma
     </tr>
     <tr>
       <th>id</th>
-      <td><p>character. Column name with rows id. Each row must have its
+      <td><p>character. Column name with row id. Each row (record) must have its
 own unique code.</p></td>
     </tr>
     <tr>
@@ -182,7 +182,7 @@ own unique code.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function will apply outliers detection methods on presences occurrence data.
+    <p>This function will apply outliers detection methods to occurrence data.
 Box-plot and Reverse Jackknife method will test outliers for each variable individually, if an
 occurrence behaves as an outlier for at least one variable it will be highlighted as an outlier.
 If the user uses only presence data, Support Vector Machine and Random Forest Methods will not be
@@ -190,17 +190,19 @@ performed. Support Vector Machine and Random Forest are performed with default
 hyper-parameter values. In the case of a species with &lt; 7 occurrences, the function
 will not perform any methods (i.e. the additional columns will have 0 values); nonetheless, it will return a tibble with the additional columns with 0 and 1.
 For further information about these methods, see Chapman (2005), Liu et al. (2018), and Velazco
-et al. (in prep)</p>
+et al. (in prep).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
 <ul>
 <li><p>Chapman, A. D. (2005). Principles and methods of data cleaning: Primary Species and
-  Species- Occurrence Data. GBIF.</p></li>
+  Species- Occurrence Data. version 1.0. Report for the Global Biodiversity Information
+  Facility, Copenhagen. p72.  http://www.gbif.org/document/80528</p></li>
 <li><p>Liu, C., White, M., &amp; Newell, G. (2018). Detecting outliers in species distribution
   data. Journal of Biogeography, 45(1), 164 - 176. https://doi.org/10.1111/jbi.13122</p></li>
-<li><p>Velazco, S.J.E., Bedrij, N.A., Rojas, J.L., Keller, H.A., &amp; De Marco P. Quantifying the
-  role of protected areas regarding the economic and cultural value of biodiversity (in prep)</p></li>
+<li><p>Velazco, S.J.E., Bedrij, N.A., Rojas, J.L., Keller, H.A., &amp; De Marco P. Quantifying
+   the role of protected areas for saveguarding the economic and cultural value of
+    biodiversity (in prep)</p></li>
 </ul>
 
 

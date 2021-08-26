@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Spatial predictions of individual and ensemble models — sdm_predict • flexsdm</title>
+<title>Spatial predictions from individual and ensemble models — sdm_predict • flexsdm</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,11 @@
 
 
 
-<meta property="og:title" content="Spatial predictions of individual and ensemble models — sdm_predict" />
-<meta property="og:description" content="This function allows the geographical prediction of one or more models constructed with fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of small models approach), or models constructed with fit_ensemble function. It can return continuous or continuous and binary predictions for one or more thresholds" />
+<meta property="og:title" content="Spatial predictions from individual and ensemble models — sdm_predict" />
+<meta property="og:description" content="This function allows the geographical prediction of one or more models constructed
+with the fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of
+small models approach), or models constructed with fit_ensemble function. It can return
+continuous or continuous and binary predictions for one or more thresholds" />
 
 
 
@@ -118,13 +121,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Spatial predictions of individual and ensemble models</h1>
+    <h1>Spatial predictions from individual and ensemble models</h1>
     
     <div class="hidden name"><code>sdm_predict.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function allows the geographical prediction of one or more models constructed with fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of small models approach), or models constructed with fit_ensemble function. It can return continuous or continuous and binary predictions for one or more thresholds</p>
+    <p>This function allows the geographical prediction of one or more models constructed
+with the fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of
+small models approach), or models constructed with fit_ensemble function. It can return
+continuous or continuous and binary predictions for one or more thresholds</p>
     </div>
 
     <pre class="usage"><span class='fu'>sdm_predict</span><span class='op'>(</span>
@@ -142,40 +148,53 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>models</th>
-      <td><p>list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the <code><a href='fit_ensemble.html'>fit_ensemble</a></code> function.</p></td>
+      <td><p>list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble
+output, or a esm_ family function output. A list a single or several models fitted with some of
+fit_ or tune_ functions or object returned by the <code><a href='fit_ensemble.html'>fit_ensemble</a></code> function. Usage models = mglm or models = list(mglm, mraf, mgbm)</p></td>
     </tr>
     <tr>
       <th>pred</th>
-      <td><p>SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.</p></td>
+      <td><p>SpatRaster. Raster layer with predictor variables. Names of layers must exactly
+match those used in model fitting. Usage pred =</p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is possible to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the models. The next threshold area available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is possible
+to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the
+models. The following threshold types are available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission.</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
-<li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).</p></li>
-<li><p>max_jaccard: The threshold at which Jaccard is the highest.</p></li>
-<li><p>max_sorensen: The threshold at which Sorensen is highest.</p></li>
+<li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the
+  highest (aka threshold that maximizes the TSS).</p></li>
+<li><p>max_jaccard: The threshold at which the Jaccard index is the highest.</p></li>
+<li><p>max_sorensen: The threshold at which the Sorensen index is highest.</p></li>
 <li><p>max_fpb: The threshold at which FPB is highest.</p></li>
 <li><p>sensitivity: Threshold based on a specified sensitivity value used to fit the models.</p></li>
-<li><p>all: Will be used all the threshold filled in the 'models' argument. It is not possible to combine with previews one</p></li>
-</ul><p>Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spec', 'sensitivity'), or thr='all'. If no threshold is specified (i.e., thr = NULL) function will return continuous prediction only. Default NULL</p></td>
+<li><p>all: All the threshold used in the model outputs used in 'models' argument will be used.</p></li>
+</ul><p>Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spec',
+'sensitivity'), or thr='all'. If no threshold is specified (i.e., thr = NULL) function
+will return continuous prediction only. Default NULL</p></td>
     </tr>
     <tr>
       <th>con_thr</th>
-      <td><p>logical. If true will be returned predictions with suitability values above threshold/s. Default = FALSE</p></td>
+      <td><p>logical. If true predictions with suitability values above threshold/s will be
+returned. Default = FALSE</p></td>
     </tr>
     <tr>
       <th>predict_area</th>
-      <td><p>SpatVector, SpatialPolygon, or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL</p></td>
+      <td><p>SpatVector, SpatialPolygon, or SpatialPolygonDataFrame. Spatial polygon
+used for restring prediction into only a given region. Default = NULL</p></td>
     </tr>
     <tr>
       <th>clamp</th>
-      <td><p>logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)</p></td>
+      <td><p>logical. It is set with TRUE, predictors and features are restricted to the range
+seen during model training. Only valid for Maxent model (see tune_mx and fit_mx). Default TRUE.</p></td>
     </tr>
     <tr>
       <th>pred_type</th>
-      <td><p>character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)</p></td>
+      <td><p>character. Type of response required available "link", "exponential",
+"cloglog" and "logistic". Only valid for Maxent model (see tune_mx and fit_mx).
+Default "cloglog".</p></td>
     </tr>
     </table>
 
@@ -241,7 +260,7 @@
   partition <span class='op'>=</span> <span class='st'>".part"</span>
 <span class='op'>)</span>
 
-<span class='co'># Fit and ensemble</span>
+<span class='co'># Fit an ensemble model</span>
 <span class='va'>mensemble</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fit_ensemble.html'>fit_ensemble</a></span><span class='op'>(</span>
   models <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>mglm</span>, <span class='va'>mraf</span>, <span class='va'>mgbm</span><span class='op'>)</span>,
   ens_method <span class='op'>=</span> <span class='st'>"meansup"</span>,
@@ -250,7 +269,7 @@
   metric <span class='op'>=</span> <span class='st'>"TSS"</span>
 <span class='op'>)</span>
 
-<span class='co'># Fit a model with a Wnsemble of Small Models approach</span>
+<span class='co'># Fit a model with the Ensembles of Small Models approach</span>
 <span class='co'># Without threshold specification and with kfold</span>
 <span class='va'>msmall</span> <span class='op'>&lt;-</span> <span class='fu'><a href='esm_gam.html'>esm_gam</a></span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>some_sp</span>,
@@ -263,7 +282,7 @@
 
 <span class='co'>## %######################################################%##</span>
 <span class='co'>#                                                          #</span>
-<span class='co'>####      Predict different kind of models models       ####</span>
+<span class='co'>####      Predict different kind of models       ####</span>
 <span class='co'>#                                                          #</span>
 <span class='co'>## %######################################################%##</span>
 
@@ -297,8 +316,8 @@
   predict_area <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
-<span class='co'># Predict an ensemble of small model</span>
-<span class='co'># (only is possilbe use one ensemble of small model)</span>
+<span class='co'># Predict an ensemble of small models</span>
+<span class='co'># (only is possible to use one ensemble of small models)</span>
 <span class='va'>small_p</span> <span class='op'>&lt;-</span> <span class='fu'>sdm_predict</span><span class='op'>(</span>
   models <span class='op'>=</span> <span class='va'>msmall</span>,
   pred <span class='op'>=</span> <span class='va'>somevar</span>,
@@ -307,6 +326,7 @@
   predict_area <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 <span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

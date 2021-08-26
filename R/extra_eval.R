@@ -1,21 +1,21 @@
 #' Measure model extrapolation
 #'
-#' @description Measure extrapolation comparing data used for modeling calibration and area for
+#' @description Measure extrapolation comparing environmental data used for modeling calibration and area for
 #' model projection. This function use the approach proposed by Velazco et al., in prep
 #'
 #' @param env_calib SpatRaster with environmental conditions of the calibration area or the
 #' presence and absence points localities used for constructing models
-#' @param env_proj SpatRaster with environmental condition used for projecting a model (e.g., a bigger region, other region, or time period)
+#' @param env_proj SpatRaster with environmental condition used for projecting a model (e.g., a larger, encompassing region, a spatially separate region, or a different time period)
 #' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #' @param aggreg_factor positive integer. Aggregation factor expressed as number of cells in each
-#'  direction to reduce raster resolution. Use value higher than 1 would be interesting when
-#'  measuring extrapolation with raster with a high number of cells. The resolution of output will be
+#'  direction to reduce raster resolution. Use value higher than 1 would be useful when
+#'  measuring extrapolation using a raster with a high number of cells. The resolution of output will be
 #'  the same as raster object used in 'env_proj' argument. Default 1, i.e., by default, no changes
-#'  will be made to the resolution of the environmental variables
+#'  will be made to the resolution of the environmental variables.
 #'
 #'
 #' @return
-#' A SpatRaster object with extrapolation values measured in percentage
+#' A SpatRaster object with extrapolation values measured in percentage (PERCENTAGE OF WHAT?)
 #'
 #' @seealso \code{\link{extra_exclude}}
 #'
@@ -43,7 +43,7 @@
 #'   dplyr::filter(species == "sp3", pr_ab == 1) %>%
 #'   dplyr::select(x, y)
 #'
-#' # Accessible area
+#' # Accessible area based on some criterion such as dispersal ability
 #' ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
 #'
 #' plot(somevar$CFP_1)

@@ -341,7 +341,7 @@ Next, we will look at occfilt_geo(), which has three alternatives to determine t
 Data partitioning, or splitting data into testing and training groups, is a key step in building SDMs. *flexsdm* offers multiple options for data partitioning, including part_random(), part_sband(), part_sblock(), and part_senv(). Let's explore each of these methods. 
 
 ### 1. Conventional data partitioning methods (part_random)
-The part_random() function provides users the ability to divide species occurence data based on conventional partition methods including k-folds, repeated k-folds, leave-one-out cross-validation, and bootstrap partitioning. 
+The part_random() function provides users the ability to divide species occurrence data based on conventional partition methods including k-folds, repeated k-folds, leave-one-out cross-validation, and bootstrap partitioning. 
 
 Here, we use the "kfold" method with 10 folds to divide our data. This results in 10 folds of occurrence data with 25 observations in each fold. 
 

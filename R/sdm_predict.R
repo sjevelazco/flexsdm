@@ -1,29 +1,43 @@
-#' Spatial predictions of individual and ensemble models
+#' Spatial predictions from individual and ensemble models
 #'
-#' @description This function allows the geographical prediction of one or more models constructed with fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of small models approach), or models constructed with fit_ensemble function. It can return continuous or continuous and binary predictions for one or more thresholds
+#' @description This function allows the geographical prediction of one or more models constructed
+#' with the fit_ or tune_ function set, models fitted with esm_ function set (i.e., ensemble of
+#' small models approach), or models constructed with fit_ensemble function. It can return
+#' continuous or continuous and binary predictions for one or more thresholds
 #'
-#' @param models list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble output, a esm_ family function output. A list a single or several models fitted with some of fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function.
-#' @param pred SpatRaster. Raster layer with predictor variables. Names of layers must exactly match those used in model fitting.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is possible to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the models. The next threshold area available:
+#' @param models list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble
+#' output, or a esm_ family function output. A list a single or several models fitted with some of
+#' fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function. Usage models = mglm or models = list(mglm, mraf, mgbm)
+#' @param pred SpatRaster. Raster layer with predictor variables. Names of layers must exactly
+#' match those used in model fitting. Usage pred =
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is possible
+#' to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the
+#' models. The following threshold types are available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
-#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
-#'   \item max_jaccard: The threshold at which Jaccard is the highest.
-#'   \item max_sorensen: The threshold at which Sorensen is highest.
+#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the
+#'   highest (aka threshold that maximizes the TSS).
+#'   \item max_jaccard: The threshold at which the Jaccard index is the highest.
+#'   \item max_sorensen: The threshold at which the Sorensen index is highest.
 #'   \item max_fpb: The threshold at which FPB is highest.
 #'   \item sensitivity: Threshold based on a specified sensitivity value used to fit the models.
-#'   \item all: Will be used all the threshold filled in the 'models' argument. It is not possible to combine with previews one
+#'   \item all: All the threshold used in the model outputs used in 'models' argument will be used.
 #'   }
-#' Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spec', 'sensitivity'), or thr='all'. If no threshold is specified (i.e., thr = NULL) function will return continuous prediction only. Default NULL
-#' @param con_thr logical. If true will be returned predictions with suitability values above threshold/s. Default = FALSE
-#' @param predict_area SpatVector, SpatialPolygon, or SpatialPolygonDataFrame. Spatial polygon used for restring prediction into a given region. Default = NULL
-#' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range seen during model training. Only valid for Maxent model (see tune_mx and fit_mx)
-#' @param pred_type character. Type of response required available "link", "exponential", "cloglog" and "logistic". Default "cloglog". Only valid for Maxent model (see tune_mx and fit_mx)
+#' Usage thr = c('lpt', 'max_sens_spec', 'max_jaccard'), thr=c('lpt', 'max_sens_spec',
+#' 'sensitivity'), or thr='all'. If no threshold is specified (i.e., thr = NULL) function
+#' will return continuous prediction only. Default NULL
+#' @param con_thr logical. If true predictions with suitability values above threshold/s will be
+#' returned. Default = FALSE
+#' @param predict_area SpatVector, SpatialPolygon, or SpatialPolygonDataFrame. Spatial polygon
+#' used for restring prediction into only a given region. Default = NULL
+#' @param clamp logical. It is set with TRUE, predictors and features are restricted to the range
+#' seen during model training. Only valid for Maxent model (see tune_mx and fit_mx). Default TRUE.
+#' @param pred_type character. Type of response required available "link", "exponential",
+#' "cloglog" and "logistic". Only valid for Maxent model (see tune_mx and fit_mx).
+#' Default "cloglog".
 #'
-#' @return
-#'
-#' A list of SpatRaster with continuous and/or binary predictions
+#' @return A list of SpatRaster with continuous and/or binary predictions
 #'
 #' @export
 #'
@@ -90,7 +104,7 @@
 #'   partition = ".part"
 #' )
 #'
-#' # Fit and ensemble
+#' # Fit an ensemble model
 #' mensemble <- fit_ensemble(
 #'   models = list(mglm, mraf, mgbm),
 #'   ens_method = "meansup",
@@ -99,7 +113,7 @@
 #'   metric = "TSS"
 #' )
 #'
-#' # Fit a model with a Wnsemble of Small Models approach
+#' # Fit a model with the Ensembles of Small Models approach
 #' # Without threshold specification and with kfold
 #' msmall <- esm_gam(
 #'   data = some_sp,
@@ -112,7 +126,7 @@
 #'
 #' ## %######################################################%##
 #' #                                                          #
-#' ####      Predict different kind of models models       ####
+#' ####      Predict different kind of models       ####
 #' #                                                          #
 #' ## %######################################################%##
 #'
@@ -146,8 +160,8 @@
 #'   predict_area = NULL
 #' )
 #'
-#' # Predict an ensemble of small model
-#' # (only is possilbe use one ensemble of small model)
+#' # Predict an ensemble of small models
+#' # (only is possible to use one ensemble of small models)
 #' small_p <- sdm_predict(
 #'   models = msmall,
 #'   pred = somevar,
@@ -156,6 +170,7 @@
 #'   predict_area = NULL
 #' )
 #' }
+#'
 sdm_predict <-
   function(models,
            pred,

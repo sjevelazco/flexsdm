@@ -1,18 +1,21 @@
-#' Extract environmental data based on x and y coordinates
+#' Extract environmental data values from a spatial raster based on x and y coordinates
 #'
-#' @param data data.frame. Database with presences, presence-absence, or pseudo-absence, records with x and y coordinates
-#' @param x character. Column name with longitude data
-#' @param y character. Column name with latitude data
-#' @param env_layer SpatRaster. Raster with environmental variables.
-#' @param variables character. Vector with the variable names of predictor variables
-#' Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers. Default NULL
+#' @param data data.frame. Database with species presence, presence-absence, or pseudo-absence
+#' records with x and y coordinates
+#' @param x character. Column name with spatial x coordinates
+#' @param y character. Column name with spatial y coordinates
+#' @param env_layer SpatRaster. Raster or raster stack with environmental variables.
+#' @param variables character. Vector with the variable names of predictor (environmental) variables
+#' Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will
+#' return data for all layers. Default NULL
 #' @param filter_na logical. If filter_na = TRUE (default), the rows with NA values for any of the
 #' environmental variables are removed from the returned tibble.
 #'
 #' @return
 #'
 #' A tibble that returns the original data base with additional columns
-#' for the extracted environmental variables at each xy location from the SpatRaster object used in 'env_layer'
+#' for the extracted environmental variables at each xy location from the SpatRaster object used
+#' in 'env_layer'
 #'
 #' @importFrom dplyr %>% tibble select all_of filter
 #' @importFrom stats complete.cases
@@ -29,7 +32,7 @@
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)
 #'
-#' # Extract environmental data from somevar for all species locations in spp
+#' # Extract environmental data from somevar for all locations in spp
 #' ex_spp <-
 #'   sdm_extract(
 #'     data = spp,

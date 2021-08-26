@@ -1,44 +1,71 @@
 #' Calculate different model performance metrics
 #'
-#' @description This function calculates threshold dependent and independent performance metric.
-#' It calculates TPR (True Positive Rate, also called sensitivity), TNR (True Negative Rate,
-#' also called specificity), SORENSEN, JACCARD, FPB, OR (Omission Rate), TSS (True Skill Statistic)
-#' KAPPA, AUC (Area Under Curve), BOYCE, IMAE (Inverse Mean Absolute Error, i.e.
-#' 1-Mean Absolute Error).
+#' @description This function calculates threshold dependent and independent model performance
+#' metrics.
+#'
 #' @param p numeric. Predicted suitability for presences
-#' @param a numeric. Predicted suitability for presences absences
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1).
-#' It is useful for threshold-dependent performance metrics.
+#' @param a numeric. Predicted suitability for absences
+#' @param thr character. Threshold criterion used to get binary suitability values (i.e. 0,1).
+#' Used for threshold-dependent performance metrics.
 #' It is possible to use more than one threshold type.
-#' It is necessary to provide a vector for this argument. The next threshold area available:
+#' A vector must be provided for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
-#'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
-#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity
+#'   \item equal_sens_spec: Threshold at which the Sensitivity and Specificity are equal.
+#'   \item max_sens_spec: Threshold at which the sum of the Sensitivity and Specificity
 #'   is the highest (aka threshold that maximizes the TSS).
-#'   \item max_jaccard: The threshold at which Jaccard is the highest.
-#'   \item max_sorensen: The threshold at which Sorensen is highest.
-#'   \item max_fpb: The threshold at which FPB is highest.
-#'   \item sensitivity: Threshold based on a specified sensitivity value.
+#'   \item max_jaccard: The threshold at which the Jaccard index is the highest.
+#'   \item max_sorensen: The threshold at which the Sorensen index is highest.
+#'   \item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
+#'   \item sensitivity: Threshold based on a specified Sensitivity value.
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers
-#'   to sensitivity value. If it is not specified a sensitivity values, function will use
-#'   by default 0.9
+#'   to Sensitivity value. If a sensitivity value is not specified, the
+#'    default value is 0.9
 #'   }
-#' In the case of use more than one threshold type it is necessary concatenate threshold types,
+#' If more than one threshold type is used, concatenate threshold types,
 #' e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec',
 #' 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity').
-#' Function will use all thresholds if no threshold is specified
-#'
-#' @param bg numeric. Predicted suitability for background points. It is used for BOYCE metric.
-#' It bg is set as null BOYCE metric will be calculated with presences and absences suitability
+#' Function will use all thresholds if no threshold type is specified
+#' @param bg numeric. Predicted suitability for background points, used for BOYCE metric.
+#' It bg is set as NULL, BOYCE metric will be calculated with presences and absences suitabilities
 #' values
+#'
+#' @details This function is used for evaluating different models approaches base on the combination
+#' of presence-absences or presence-pseudo-absences and background point data and
+#' suitability predicted by any model or flexsdm modeling function families (fit_, esm_, and tune_.)
+#'
+#' It calculates the next performance metric:
+#'
+#'   | Performance metric | Threshold dependent   | Values ranges  |
+#'   | :------------- |:-------------:| -----:|
+#'   | TPR (True Positive Rate, also called Sensitivity) | yes | 0 - 1 |
+#'   | TNR (True Negative Rate, also called Specificity) | yes | 0 - 1 |
+#'   | SORENSEN                                          | yes | 0 - 1 |
+#'   | JACCARD                                           | yes | 0 - 1 |
+#'   | FPB (F-measure on presence-background)            | yes | 0 - 2 |
+#'   | OR (Omission Rate)                                | yes | 0 - 1 |
+#'   | TSS (True Skill Statistic)                        | yes | -1 - 1 |
+#'   | KAPPA                                             | yes | 0 - 1 |
+#'   | AUC (Area Under Curve)                            | no | 0 - 1 |
+#'   | BOYCE  (continuous Boyce index)*                  | no | -1 - 1 |
+#'   | IMAE (Inverse Mean Absolute Error)**              | no | 0 - 1 |
+#'
+#' \* BOYCE is calculated based on presences and background points, in case that background points
+#' is not provided it is calculated using presences and absences. The codes for calculating
+#' this metric is and adaptation of enmSdm package (https://github.com/adamlilith/enmSdm)
+#'
+#' \** IMAE is calculated as 1-(Mean Absolute Error) in order to be consistent with the other
+#' metrics where the higher the value of a given performance metric, the greater the model's
+#' accuracy
+#'
+#' @md
 #'
 #' @return a tibble with next columns
 #' \itemize{
-#' \item threshold: threshold names.
-#' \item thr_value: threshold value
-#' \item n_presences: threshold names.
-#' \item n_absences: threshold names.
+#' \item threshold: threshold names
+#' \item thr_value: threshold values
+#' \item n_presences: number of presences
+#' \item n_absences: number of absences
 #' \item from TPR to IMAE: performance metrics
 #' }
 #'
@@ -81,7 +108,7 @@
 #' sdm_eval(p, a, thr = "max_sens_spec")
 #' sdm_eval(p, a, thr = c("max_sens_spec"), bg = backg)
 #'
-#' # I the case it is needed use background for calculate all other metric
+#' # If background will be used to calculate all other metrics
 #' # background values can be used in "a" argument
 #' sdm_eval(p, backg, thr = "max_sens_spec")
 #' }

@@ -22,8 +22,8 @@ part_sband(
 \item{env_layer}{SpatRaster. Raster with environmental
 variable. Used to evaluate spatial autocorrelation and
 environmental similarity between training and testing partitions. Because this function
-calculate dissimilarity based on Euclidean distances, it can only be used with continuous environmental variables
-layers; do not use categorical layers as inputs}
+calculate dissimilarity based on Euclidean distances, it can only be used with continuous
+environmental variables}
 
 \item{data}{data.frame. Data.frame or tibble object with presences
 (or presence-absence, or presence-pseudo-absence) records, and coordinates}
@@ -35,7 +35,8 @@ layers; do not use categorical layers as inputs}
 \item{pr_ab}{character. Column with presences, presence-absence,
 or -pseudo-absence. Presences must be represented by 1 and absences by 0}
 
-\item{type}{character. Specify bands across different degrees of longitude 'lon' or latitude 'lat'. Default is 'lon'.}
+\item{type}{character. Specify bands across different degrees of longitude 'lon' or latitude
+'lat'. Default is 'lon'.}
 
 \item{n_part}{integer. Number of partition. Default 2, values other than
 2 has not yet been implemented.}
@@ -55,8 +56,12 @@ Default 0.5}
 \value{
 A list with:
 \itemize{
-  \item part: A tibble object with information used in 'data' arguments and a additional column .part with partition group.
-  \item best_part_info: A tibble with information about the best partition. It contains the number of the best partition (n_grid), number of bands (n_bands), standard deviation of presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation (spa_auto), and environmental similarity based on Euclidean distance (env_sim).
+  \item part: A tibble object with information used in 'data' arguments and a additional column
+  .part with partition group.
+  \item best_part_info: A tibble with information about the best partition. It contains the
+  number of the best partition (n_grid), number of bands (n_bands), standard deviation of
+  presences (sd_p), standard deviation of absences (sd_a), Moran's I spatial autocorrelation
+  (spa_auto), and environmental similarity based on Euclidean distance (env_sim).
   \item grid: A SpatRaster object with bands
   }
 }
@@ -67,7 +72,33 @@ number of bands is performed automatically considering spatial autocorrelation, 
 similarity, and the number of presence and absence records in each partition.
 }
 \details{
-(JF THINKS THIS FUNCTION NEEDS MORE EXPLANATION AND REFERENCES)
+The part_sbands allows test with different numbers of partitions using a range of
+latitudinal or longitudinal bands. This function explores a range of number of band for agiven
+number of partition and automatically selects
+the best number of bands for a given presence, presence-absences, or presence-pseudo-absences
+dataset. Such number of bands
+selection is based on an optimization procedure that explores partition in three dimensions
+determined by spatial autocorrelation (measured by Moran's I), environmental similarity
+(Euclidean distance), and difference in the amount of data among partition groups
+(Standard Deviation - SD; Velazco et al., 2019). This procedure will cyclically select
+those partitions with autocorrelation values less than the lowest quartile of Morans I, then
+those with environmental similarity values greater than the third quartile of the Euclidean
+distances than those with a difference in the amount of data less than the lowest quartile of SD.
+This selection is repeated until only one partition is retained (Velazco et al., 2019). The
+main benefit of this partition selection are i) this is not subjective, ii) balances the
+environmental similarity and special autocorrelation between partitions groups, and iii) controls
+the partition selection with few data that may be problematic for model fitting ("min_occ" argument).
+
+Partitions geographically structured tend to evaluate model transferability more directly than
+conventional ones (e.g., those performed by \code{\link{part_random}}) (Roberts et al., 2017;
+Santini et al., 2021), being relevant for models that want to be used for projections in other
+regions outside the calibration area or for other periods. Bands partition can be an option
+for those species that no best partition is found with part_sblock or for species with
+that distribute linearly (e.g., species that inhabit coastal areas).
+
+This function can interact with \code{\link{get_block}}, \code{\link{sample_background}},
+and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-absences within
+spatial partition broups
 }
 \examples{
 \dontrun{
@@ -143,6 +174,20 @@ points(part_2$part[c("x", "y")],
 }
 \references{
 \itemize{
-\item
+\item Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-Arroita, G.,
+Hauenstein, S., Lahoz-Monfort, J. J., Schroder, B., Thuiller, W., Warton, D. I., Wintle, B. A.,
+Hartig, F., & Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial,
+ hierarchical, or phylogenetic structure. Ecography, 40,
+ 913-929. https://doi.org/10.1111/ecog.02881
+\item Santini, L., Benitez-Lopez, A., Maiorano, L., Cengic, M., & Huijbregts, M. A. J. (2021).
+ Assessing the reliability of species distribution projections in climate change research.
+ Diversity and Distributions, ddi.13252. https://doi.org/10.1111/ddi.13252
+\item Velazco, S. J. E., Villalobos, F., Galvao, F., & De Marco Junior, P. (2019). A dark
+scenario for Cerrado plant species: Effects of future climate, land use and protected areas
+ineffectiveness. Diversity and Distributions, 25(4), 660-673. https://doi.org/10.1111/ddi.12886
 }
+}
+\seealso{
+\code{\link{part_random}}, \code{\link{part_sblock}}, \code{\link{part_senv}},
+and \code{\link{get_block}}
 }

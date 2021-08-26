@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit and validate Generalized Additive Models based on Ensemble of Small of Model approach — esm_max • flexsdm</title>
+<title>Fit and validate Maximum Entropy Models based on Ensemble of Small of Model approach — esm_max • flexsdm</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Fit and validate Generalized Additive Models based on Ensemble of Small of Model approach — esm_max" />
-<meta property="og:description" content="This function constructs Generalized Additive Models using the
+<meta property="og:title" content="Fit and validate Maximum Entropy Models based on Ensemble of Small of Model approach — esm_max" />
+<meta property="og:description" content="This function constructs Maxent Models using the
 Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018)." />
 
 
@@ -119,13 +119,13 @@ Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit and validate Generalized Additive Models based on Ensemble of Small of Model approach</h1>
+    <h1>Fit and validate Maximum Entropy Models based on Ensemble of Small of Model approach</h1>
     
     <div class="hidden name"><code>esm_max.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function constructs Generalized Additive Models using the
+    <p>This function constructs Maxent Models using the
 Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).</p>
     </div>
 
@@ -156,9 +156,8 @@ Ensemble of Small Model (ESM) approach (Breiner et al., 2015, 2018).</p>
     <tr>
       <th>predictors</th>
       <td><p>character. Vector with the column names of quantitative
-predictor variables (i.e. continuous variables). This function does not allow categorical variables
-Usage predictors = c("aet", "cwd", "tmin"). This function only can construct models with
-continuous variables.</p></td>
+predictor variables (i.e. continuous variables). This function can only construct models with continuous variables, and does not allow categorical variables
+Usage predictors = c("aet", "cwd", "tmin").</p></td>
     </tr>
     <tr>
       <th>partition</th>
@@ -166,15 +165,15 @@ continuous variables.</p></td>
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The next threshold area available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:</p><ul>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).</p></li>
 <li><p>max_jaccard: The threshold at which Jaccard is the highest.</p></li>
 <li><p>max_sorensen: The threshold at which Sorensen is highest.</p></li>
-<li><p>max_fpb: The threshold at which FPB is highest.</p></li>
+<li><p>max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.</p></li>
 <li><p>sensitivity: Threshold based on a specified sensitivity value.
-  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, the function will use by default 0.9</p></li>
-</ul><p>If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified</p></td>
+  Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If no sensitivity value is specified, the default is 0.9</p></li>
+</ul><p>If the user wants to include more than one threshold type, it is necessary concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.</p></td>
     </tr>
     <tr>
       <th>background</th>
@@ -203,22 +202,22 @@ for modeling species with few records default value is 2.5</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list object with:</p><ul>
-<li><p>esm_model: A list with "Gam" class object for each bivariate model. This object can be used
-for predicting ensemble of small model with <code><a href='sdm_predict.html'>sdm_predict</a></code> function.</p></li>
+<li><p>esm_model: A list with "maxent" class object for each bivariate model. This object can be used
+for predicting ensembles of small models with <code><a href='sdm_predict.html'>sdm_predict</a></code> function.</p></li>
 <li><p>predictors: A tibble with variables use for modeling.</p></li>
-<li><p>performance: Performance metric (see <code><a href='sdm_eval.html'>sdm_eval</a></code>).
-Those threshold dependent metric are calculated based on the threshold specified in thr argument.</p></li>
+<li><p>performance: Performance metrics (see <code><a href='sdm_eval.html'>sdm_eval</a></code>).
+Those threshold dependent metric are calculated based on the threshold specified in the argument.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This method consists of creating bivariate models with all the pair-wise combinations
 of predictors and perform an ensemble based on the average of suitability weighted by
-Somers'D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
+Somers' D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species with few occurrences.
 This function does not allow categorical variables because the use of these types of variables
-could be problematic when using with few occurrences. Further detail see
+could be problematic when using with few occurrences. For further detail see
 Breiner et al. (2015, 2018). This function use a default regularization multiplier
-equal to 2.5 (see details in Breinter et al., 2018)</p>
+equal to 2.5 (see  Breiner et al., 2018)</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     

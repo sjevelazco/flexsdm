@@ -7,23 +7,42 @@
 part_random(data, pr_ab, method = NULL)
 }
 \arguments{
-\item{data}{data.frame. Database with presences, presence-absence, or pseudo-absence, records for a given species}
+\item{data}{data.frame. Database with presences, presence-absence, or pseudo-absence, records
+for a given species}
 
-\item{pr_ab}{character. Column name of "data" with presences, presence-absence, or pseudo-absence. Presences must be represented by 1 and absences by 0}
+\item{pr_ab}{character. Column name of "data" with presences, presence-absence, or
+pseudo-absence. Presences must be represented by 1 and absences by 0}
 
-\item{method}{character. Vector with partition method to be used:
+\item{method}{character. Vector with data partitioning method to be used:
 \itemize{
-  \item kfold: Random partition in k-fold cross-validation. Usage part=c(method= 'kfold', folds='5'). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. Usage method = c(method = "kfold", folds = 10).
-  \item rep_kfold: Random partition in repeated k-fold cross-validation. Usage method = c(method = "rep_kfold", folds = 10, replicates=10). 'folds' refers to the number of folds for data partitioning, it assumes value >=1. 'replicate' refers to the number of replicates, it assumes a value >=1.
-  \item loocv: Leave-one-out cross-validation (a.k.a. Jackknife). It is an spetial k-fold cross validation case where the number of partitions is equal to the number of records. Usage method = c(method = "loocv").
-  \item boot: Random bootstrap partition. Usage part=c(method='boot', replicates='2', proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value >=1. 'proportion' refers to the proportion of occurrences used for model fitting, it assumes a value >0 and <=1. In this example proportion='0.7' mean that 70\% of data will be used for model training, while 30\% for model testing. For this method function will returns .partX columns with "train" and "test" words
+  \item kfold: Random partitioning into k-folds for cross-validation. Usage
+  part=c(method= 'kfold', folds='5'). 'folds' refers to the number of folds for data
+  partitioning, it assumes value >=1. Usage method = c(method = "kfold", folds = 10).
+  \item rep_kfold: Random partitioning into repeated k-folds for  cross-validation.
+  Usage method = c(method = "rep_kfold", folds = 10, replicates=10). 'folds' refers to the
+  number of folds for data partitioning, it assumes value >=1. 'replicate' refers to the
+  number of replicates, it assumes a value >=1.
+  \item loocv: Leave-one-out cross-validation (a.k.a. Jackknife). It is a special case of k-fold
+  cross validation where the number of partitions is equal to the number of records.
+  Usage method = c(method = "loocv").
+  \item boot: Random bootstrap partitioning. Usage part=c(method='boot', replicates='2',
+  proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value >=1.
+  'proportion' refers to the proportion of occurrences used for model fitting, it assumes a
+  value >0 and <=1. In this example proportion='0.7' mean that 70\% of data will be used for
+  model training, while 30\% for model testing.
   }}
 }
 \value{
-A tibble object with information used in 'data' argument and a additional columns .part with partition group. In the case of boot partition partition data will be stored with 'train' and 'test' words, for all other methods partition groups will be stored as numeric.
+A tibble object with information used in the 'data' argument and additional columns named .part
+containing the partition groups. The rep_kfold and boot method will return as many ".part"
+columns as replicated defined. For the rest of the methods, a single .part column is returned.
+For kfold, rep_kfold, and loocv methods partition, groups are defined by integers.
+On the contrary, for boot method, the partition groups are defined by the characters
+'train' and 'test'.
 }
 \description{
-This function provides different conventional partition methods based in folds (kfold, rep_kfold, and loocv), and bootstrap (boot)
+This function provides different conventional (randomized, non-spatial) partitioning
+methods based on cross validation folds (kfold, rep_kfold, and loocv), as well as bootstrap (boot)
 }
 \examples{
 \dontrun{
@@ -65,6 +84,13 @@ abies2
 abies2$.part1 \%>\% table() # Note that for this method .partX columns have train and test words.
 }
 
+}
+\references{
+\itemize{
+\item Fielding, A. H., & Bell, J. F. (1997). A review of methods for the assessment of
+prediction errors in conservation presence/absence models. Environmental Conservation,
+24(1), 38-49. https://doi.org/10.1017/S0376892997000088
+}
 }
 \seealso{
 \code{\link{part_sblock}}, \code{\link{part_senv}}, \code{\link{sample_pseudoabs}}, \code{\link{sample_background}}

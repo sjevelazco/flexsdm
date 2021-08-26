@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transform a spatial partition layer to the same spatial properties of environmental variables — get_block • flexsdm</title>
+<title>Transform a spatial partition layer to the same spatial properties as environmental variables — get_block • flexsdm</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Transform a spatial partition layer to the same spatial properties of environmental variables — get_block" />
-<meta property="og:description" content="Transform a spatial partition layer to the same spatial properties of environmental variables" />
+<meta property="og:title" content="Transform a spatial partition layer to the same spatial properties as environmental variables — get_block" />
+<meta property="og:description" content="Transform a spatial partition layer to the same spatial properties as environmental variables" />
 
 
 
@@ -118,13 +118,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transform a spatial partition layer to the same spatial properties of environmental variables</h1>
+    <h1>Transform a spatial partition layer to the same spatial properties as environmental variables</h1>
     
     <div class="hidden name"><code>get_block.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Transform a spatial partition layer to the same spatial properties of environmental variables</p>
+    <p>Transform a spatial partition layer to the same spatial properties as environmental variables</p>
     </div>
 
     <pre class="usage"><span class='fu'>get_block</span><span class='op'>(</span><span class='va'>env_layer</span>, <span class='va'>best_grid</span><span class='op'>)</span></pre>
@@ -144,10 +144,10 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A SpatRaster layer with the same resolution and extent than environmental variables</p>
+    <p>A SpatRaster layer with the same resolution and extent as the environmental variables</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Transform a layer originated from the function block_partition or band_partition to the same properties of environmental variables</p>
+    <p>Transform a layer originating from the function block_partition or band_partition to the same spatial properties as the environmental variables</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
@@ -157,7 +157,7 @@
 <span class='va'>f</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"external/somevar.tif"</span>, package <span class='op'>=</span> <span class='st'>"flexsdm"</span><span class='op'>)</span>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
-<span class='co'># Lest practice with a single species</span>
+<span class='co'># Example for a single species</span>
 <span class='va'>single_spp</span> <span class='op'>&lt;-</span> <span class='va'>spp</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>species</span> <span class='op'>==</span> <span class='st'>"sp3"</span><span class='op'>)</span>
 
 <span class='va'>part</span> <span class='op'>&lt;-</span> <span class='fu'><a href='part_sblock.html'>part_sblock</a></span><span class='op'>(</span>
@@ -179,7 +179,6 @@
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>part</span><span class='op'>$</span><span class='va'>grid</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>grid_env</span><span class='op'>)</span>
 <span class='op'>}</span>
-
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
