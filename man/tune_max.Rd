@@ -15,7 +15,8 @@ tune_max(
   thr = NULL,
   metric = "TSS",
   clamp = TRUE,
-  pred_type = "cloglog"
+  pred_type = "cloglog",
+  n_cores = 1
 )
 }
 \arguments{
@@ -70,6 +71,8 @@ model training.}
 
 \item{pred_type}{character. Type of response required available "link", "exponential", "cloglog"
 and "logistic". Default "cloglog"}
+
+\item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 }
 \value{
 A list object with:
@@ -130,7 +133,8 @@ max_t1 <- tune_max(
   thr = "max_sens_spec",
   metric = "TSS",
   clamp = TRUE,
-  pred_type = "cloglog"
+  pred_type = "cloglog",
+  n_cores = 1
 )
 
 length(max_t1)

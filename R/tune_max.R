@@ -43,6 +43,7 @@
 #'  model training.
 #' @param pred_type character. Type of response required available "link", "exponential", "cloglog"
 #' and "logistic". Default "cloglog"
+#' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #'
 #' @return
 #'
@@ -59,8 +60,12 @@
 #' database is used in \code{\link{fit_ensemble}}
 #' }
 #'
-#' @importFrom dplyr %>% select starts_with filter pull bind_rows tibble group_by_at summarise across everything
+#' @importFrom doParallel registerDoParallel
+#' @importFrom dplyr bind_rows pull select all_of starts_with filter tibble left_join mutate group_by_at summarise across relocate
+#' @importFrom foreach foreach
 #' @importFrom maxnet maxnet maxnet.formula
+#' @importFrom parallel makeCluster stopCluster
+#' @importFrom stats complete.cases
 #'
 #' @seealso \code{\link{tune_gbm}}, \code{\link{tune_net}}, \code{\link{tune_raf}}, and \code{\link{tune_svm}}.
 #'
@@ -109,7 +114,8 @@
 #'   thr = "max_sens_spec",
 #'   metric = "TSS",
 #'   clamp = TRUE,
-#'   pred_type = "cloglog"
+#'   pred_type = "cloglog",
+#'   n_cores = 1
 #' )
 #'
 #' length(max_t1)
@@ -129,7 +135,8 @@ tune_max <-
            thr = NULL,
            metric = "TSS",
            clamp = TRUE,
-           pred_type = "cloglog") {
+           pred_type = "cloglog",
+           n_cores = 1) {
     . <- model <- TPR <- IMAE <- thr_value <- n_presences <- n_absences <- NULL
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
@@ -244,6 +251,9 @@ tune_max <-
       predictors <- c(predictors, predictors_f)
     }
 
+    cl <- parallel::makeCluster(n_cores)
+    doParallel::registerDoParallel(cl)
+
     for (h in 1:np) {
       message("Replica number: ", h, "/", np)
 
@@ -268,21 +278,20 @@ tune_max <-
 
       for (i in 1:np2) {
         message("Partition number: ", i, "/", np2)
-        mod <- as.list(rep(NA, nrow(grid)))
-        names(mod) <- 1:nrow(grid)
-        for (ii in 1:nrow(grid)) {
+        mod <- foreach::foreach(ii =  1:nrow(grid)) %dopar% {
           set.seed(1)
-          try(mod[[ii]] <-
+          try(
             maxnet::maxnet(
               p = train[[i]][, response],
               data = train[[i]][predictors],
               f = maxnet::maxnet.formula(train[[i]][response],
-                train[[i]][predictors],
-                classes = grid$classes[ii]
+                                         train[[i]][predictors],
+                                         classes = grid$classes[ii]
               ),
               regmult = grid$regmult[ii]
             ))
         }
+        names(mod) <- 1:nrow(grid)
 
         filt <- sapply(mod, function(x) length(class(x)) == 3)
         mod <- mod[filt]
@@ -344,8 +353,8 @@ tune_max <-
 
         eval <-
           dplyr::tibble(dplyr::left_join(dplyr::mutate(grid2, tnames),
-            eval,
-            by = "tnames"
+                                         eval,
+                                         by = "tnames"
           )) %>%
           dplyr::select(-tnames)
         eval_partial[[i]] <- eval
@@ -356,6 +365,7 @@ tune_max <-
         dplyr::bind_rows(., .id = "partition")
       eval_partial_list[[h]] <- eval_partial
     }
+    parallel::stopCluster(cl)
 
     # Create final database with parameter performance 2
     eval_partial <- eval_partial_list %>%
@@ -397,8 +407,8 @@ tune_max <-
         p = data[, response],
         data = data[predictors],
         f = maxnet::maxnet.formula(data[response],
-          data[predictors],
-          classes = best_hyperp$classes
+                                   data[predictors],
+                                   classes = best_hyperp$classes
         ),
         regmult = best_hyperp$regmult
       )
