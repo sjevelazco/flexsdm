@@ -152,6 +152,7 @@ psa <- lapply(1:4, function(x) sample_pseudoabs(
   bind_rows() 
 
 psa <- sdm_extract(data = psa, x="x", y="y", env_layer = block_layer)
+bg <- sdm_extract(data = bg, x="x", y="y", env_layer = block_layer)
   
 plot(block_layer)
 points(psa)

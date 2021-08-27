@@ -68,7 +68,7 @@ A list with:
 }
 \description{
 This function explores spatial blocks with different cell sizes and returns the
-most suitable size for a given presence or presence-absences database. The selection of the best
+most suitable size for a given presence or presence-absence database. The selection of the best
 grid size is performed automatically considering spatial autocorrelation, environmental
 similarity, and the number of presence and absence records in each partition.
 }
@@ -76,24 +76,24 @@ similarity, and the number of presence and absence records in each partition.
 The part_sblock allows test with different numbers of partitions using square blocks
 (like a checkerboard). This function explores a range of block sizes and automatically selects
 the best size for a given given presence, presence-absences, or presence-pseudo-absences
-dataset. Such number of partition selection is based on an optimization procedure that
+dataset. Number of partition selection is based on an optimization procedure that
 explores partition size in three dimensions
 determined by spatial autocorrelation (measured by Moran's I), environmental similarity
 (Euclidean distance), and difference in the amount of data among partition groups
-(Standard Deviation - SD; Velazco et al., 2019). This procedure will cyclically select
+(Standard Deviation - SD; Velazco et al., 2019). This procedure will iteratively select partitions, first
 those partitions with autocorrelation values less than the lowest quartile of Morans I, then
 those with environmental similarity values greater than the third quartile of the Euclidean
 distances than those with a difference in the amount of data less than the lowest quartile of SD.
 This selection is repeated until only one partition is retained (Velazco et al., 2019). The
-main benefit of this partition selection are i) this is not subjective, ii) balances the
+main benefit of this partition selection are that it i) is not subjective, ii) balances the
 environmental similarity and special autocorrelation between partitions, and iii) controls
-the partition selection with few data that may be problematic for model fitting
-("min_occ" argument)..
+the selection of partitions with too few data that may be problematic for model fitting
+("min_occ" argument).
 
-Partitions geographically structured tend to evaluate model transferability more directly than
+Geographically structured partitions tend to evaluate model transferability more directly than
 conventional ones (e.g., those performed by \code{\link{part_random}}) (Roberts et al., 2017;
-Santini et al., 2021), being relevant for models that want to be used for projections in other
-regions outside the calibration area or for other periods.
+Santini et al., 2021), and are relevant for models that are to be used for projections in other
+regions outside the calibration area or for other time periods.
 
 This function can interact with \code{\link{get_block}}, \code{\link{sample_background}},
 and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-absences within
@@ -145,7 +145,7 @@ points(part$part[c("x", "y")],
 terra::res(part$grid)
 terra::res(somevar)
 
-# Note that is a layer with block partition, but it has a
+# Note that this is a layer with block partition, but it has a
 # different resolution than the original environmental variables.
 # If you wish have a layer with the same properties
 # (i.e. resolution, extent, NAs) as your original environmental
@@ -160,7 +160,7 @@ points(part$part[c("x", "y")],
   cex = 0.5,
   pch = 19
 )
-# This layer is very useful if you need sample
+# This layer is very useful if you need to sample
 # pseudo_absence or background point
 # See examples in \code{\link{backgroudp}} and \code{\link{pseudoabs}}
 
@@ -211,7 +211,7 @@ part_list <- lapply(spp2, function(x) {
   result
 })
 
-part_list$sp3 # For this dataset a suitable partition was not find
+part_list$sp3 # For this dataset a suitable partition was not found
 
 # Create a single database for all species
 occ_part <- lapply(part_list, function(x) {

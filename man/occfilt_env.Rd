@@ -29,21 +29,21 @@ A tibble object with data environmentally filtered
 This function perform filtering on species occurrences based on their environmental conditions.
 }
 \details{
-This function uses an approach adapted to the proposed by Varela et al. (2014) approach.
- It consists of filtering occurrences in the environmental space. First, a regular
- multidimensional grid is created in the environmental space. This multidimensional
+This function uses an approach adapted from the approach proposed by Varela et al. (2014).
+ It consists of filtering occurrences in  environmental space. First, a regular
+ multidimensional grid is created in  environmental space. This multidimensional
  grid is determined by the environmental variables (always use continuous variables) the
  grid cell size is defined by the number of bins, used for dividing variable range into
  interval classes (Varela et al. 2014; Castellanos et al., 2019). The number of bins is set in
- the "nbins" argument. Then a single occurrence is randomly selected within each cell of the
+ the "nbins" argument. Then, a single occurrence is randomly selected within each cell of the
  multivariate grid. Consider that there is a trade-off between the number of bins and the number
  of filtered records because as the number of bins decreases, the cell size of the grids
  increases, and the number of filtered records decreases (Castellanos et al., 2019).
- occfilt_env works for any dimensions number and with the original variables without performing
+ occfilt_env works for any number of dimensions (variables) and with the original variables without performing
  a PCA beforehand.
 
  The greater the number of predictor variables (i.e., the number of dimensions of the
- multidimensional grid) and the greater the number of bins, the greater the time processing
+ multidimensional environmental grid) and the greater the number of bins, the greater the time processing
  and the computer memory used. Therefore, it is recommended to use a small number of bins
  between 2-5 if more than ten variables are used.
 }
@@ -69,7 +69,7 @@ points(spp1 \%>\% select(x, y))
 spp1$idd <- 1:nrow(spp1)
 
 
-# 5 bins
+# split environmental variables into 5 bins
 filtered_1 <- occfilt_env(
   data = spp1,
   x = "x",
@@ -80,7 +80,7 @@ filtered_1 <- occfilt_env(
   cores = 1
 )
 
-# 8 bins
+# split into 8 bins
 filtered_2 <- occfilt_env(
   data = spp1,
   x = "x",
@@ -91,7 +91,7 @@ filtered_2 <- occfilt_env(
   cores = 1
 )
 
-# 12 bins
+# split into 12 bins
 filtered_3 <- occfilt_env(
   data = spp1,
   x = "x",
@@ -102,9 +102,9 @@ filtered_3 <- occfilt_env(
   cores = 1
 )
 # note that the higher the nbins parameter the more
-# classes must be to be processed (4 variables, 30 bins = 923521 classes)
+# classes must be processed (4 variables, 30 bins = 923521 classes)
 
-# While greater the number of bins the fewer records retained
+# While the greater the number of bins the fewer records retained
 }
 
 }

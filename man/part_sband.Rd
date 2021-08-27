@@ -46,7 +46,7 @@ or -pseudo-absence. Presences must be represented by 1 and absences by 0}
 \item{max_bands}{integer. Maximum number of spatial bands to be tested, default 20.}
 
 \item{min_occ}{numeric. Minimum number of presences or absences in a partition fold.
-The min_occ value should be base on the amount of predictors in order to avoid over-fitting
+The min_occ value should be base on the number of predictors in order to avoid over-fitting
 or error when fitting models for a given fold. Default 10.}
 
 \item{prop}{numeric. Proportion of points used for testing autocorrelation between
@@ -72,29 +72,29 @@ number of bands is performed automatically considering spatial autocorrelation, 
 similarity, and the number of presence and absence records in each partition.
 }
 \details{
-The part_sbands allows test with different numbers of partitions using a range of
-latitudinal or longitudinal bands. This function explores a range of number of band for agiven
-number of partition and automatically selects
+The part_sbands function allows testing different numbers of partitions using a range of
+latitudinal or longitudinal bands. This function explores a range of numbers of bands for a given
+number of partitions and automatically selects
 the best number of bands for a given presence, presence-absences, or presence-pseudo-absences
-dataset. Such number of bands
-selection is based on an optimization procedure that explores partition in three dimensions
+dataset. Selection of number of bands
+is based on an optimization procedure that explores partitions in three dimensions
 determined by spatial autocorrelation (measured by Moran's I), environmental similarity
 (Euclidean distance), and difference in the amount of data among partition groups
-(Standard Deviation - SD; Velazco et al., 2019). This procedure will cyclically select
+(Standard Deviation - SD; Velazco et al., 2019). This procedure is iterative; it will first select
 those partitions with autocorrelation values less than the lowest quartile of Morans I, then
 those with environmental similarity values greater than the third quartile of the Euclidean
-distances than those with a difference in the amount of data less than the lowest quartile of SD.
+distances, then those with a difference in the amount of data less than the lowest quartile of SD.
 This selection is repeated until only one partition is retained (Velazco et al., 2019). The
-main benefit of this partition selection are i) this is not subjective, ii) balances the
+main benefits of this partition selection are that it i) is not subjective, ii) balances the
 environmental similarity and special autocorrelation between partitions groups, and iii) controls
-the partition selection with few data that may be problematic for model fitting ("min_occ" argument).
+the selection of partitions with very little data that may be problematic for model fitting ("min_occ" argument).
 
-Partitions geographically structured tend to evaluate model transferability more directly than
+Partitions that are geographically structured tend to evaluate model transferability more directly than
 conventional ones (e.g., those performed by \code{\link{part_random}}) (Roberts et al., 2017;
-Santini et al., 2021), being relevant for models that want to be used for projections in other
-regions outside the calibration area or for other periods. Bands partition can be an option
-for those species that no best partition is found with part_sblock or for species with
-that distribute linearly (e.g., species that inhabit coastal areas).
+Santini et al., 2021), being relevant for models that are to be used for projections in other
+regions outside the calibration area or for other time periods. Band partitions can be an option
+for those species where no best partition is found with part_sblock or for species
+that are distributed linearly (e.g., species that inhabit coastlines).
 
 This function can interact with \code{\link{get_block}}, \code{\link{sample_background}},
 and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-absences within
