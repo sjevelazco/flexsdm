@@ -31,19 +31,12 @@ library(knitr)
 
 ## Study species & overview of methods
 
-<<<<<<< HEAD
-Here, we used the *flexsdm* package to model the current distribution and project the future distribution of California red fir (*Abies magnifica*) under two climate change scenarios. Red fir is a high-elevation conifer species that's geographic range extends through the Sierra Nevada in California, USA, into the southern portion of the Cascade Range of Oregon. For this species, we used presence data compiled from several public datasets curated by natural resources agencies. We built the distribution models using four hydro-climatic variables: actual evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month.  All variables were resampled (aggregated) to a 1890 m spatial resolution to improve processing time. 
+Here, we used the *flexsdm* package to model the current distribution of California red fir (*Abies magnifica*). Red fir is a high-elevation conifer species that's geographic range extends through the Sierra Nevada in California, USA, into the southern portion of the Cascade Range of Oregon. For this species, we used presence data compiled from several public datasets curated by natural resources agencies. We built the distribution models using four hydro-climatic variables: actual evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month.  All variables were resampled (aggregated) to a 1890 m spatial resolution to improve processing time. 
 
 ## Occurrence filtering
 
 Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing redundancy in environmental (e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to *flexsdm*, and in contrast with other packages is able to use any number of environmental dimensions and does not perform a PCA before filtering.
-=======
-Here, we used the *flexsdm* package to model the current and future distribution of California red fir (*Abies magnifica*) under two climate change scenarios. Red fir is a high-elevation conifer species that's geographic range extends through the Sierra Nevada in California into the southern portion of the Cascade Range of Oregon. For this species, we used presence data compiled by James Thorne, California Department of Fish and Wildlife, and Calflora. We built the distribution models using four climatic variables: actual evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month.  All variables were resampled to a 1890m spatial resolution to improve processing time. 
 
-## Occurrence filtering
-
-Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing climatic redundancy (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to *flexsdm*, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering.
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
 
 ```{r raw data}
 #devtools::install_github('sjevelazco/flexsdm')
@@ -65,12 +58,10 @@ somevar[[1]] %>% plot()
 points(abies_df %>% select(x, y))
 ```
 
-<<<<<<< HEAD
 This figure shows the species occurrences, using the map of one of the encironmental variables (actual evapotranspiration) as background.
 
 Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data
-=======
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
+
 ```{r occurrence filtering}
 abies_df$id <- 1:nrow(abies_df) # adding unique id to each row
 
@@ -93,11 +84,8 @@ points(abies_df2 %>% select("x", "y"))
 
 ## Block partition with 4 folds
 
-<<<<<<< HEAD
 Data partitioning, or splitting data into testing and training groups, is a key step in building SDMs. *flexsdm* offers multiple options for data partitioning and here we use a spatial block method. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The part_sblock() function  explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input datset based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each block partition. The function's output provides users with 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. Here we want to divide the data into 4 different partitions using the spatial block method. 
-=======
-Data partitioning, or splitting data into testing and training groups, is a key step in building SDMs. *flexsdm* offers multiple options for data partitioning but here we use a spatial block method. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The part_sblock() function  explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input datset based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each block partition. The function's output is also very useful, as it provides users with 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. Here we want to divide the data into 4 different partitions using the spatial block method. 
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
+
 
 ```{r block partition}
 set.seed(10)
@@ -125,7 +113,6 @@ plot(block_layer)
 points(abies_df2 %>% select("x", "y"))
 ```
 
-<<<<<<< HEAD
 ## Pseudo-absence/background points (using partition previously created as a mask)
 
 In this example, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we will use the spatial block partition we just created to generate pseudo-absence and background points. 
@@ -133,15 +120,7 @@ In this example, we only have species presence data. However, most SDM methods r
 ```{r pseudo/absence and background data}
 # Spatial blocks where species occurs
 # Sample background points throughout study area with random method, allocating 10X the number of presences a background
-=======
-## Pseduo-absence/background points (using partition previously created as a mask)
 
-In this example, we only have presence data. However, most SDM methods require either pseudo-absence or background data. Here, we will use the spatial block partition we just created to generate pseudo-absence and background points. 
-
-```{r pseudo/absence and background data}
-# Spatial blocks where species occurs
-# Sample background points throughout study area with random method
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
 set.seed(10)
 bg <- lapply(1:4, function(x) sample_background(
     data = abies_df2,
@@ -159,11 +138,7 @@ points(bg)
 
 bg <- sdm_extract(data = bg, x="x", y="y", env_layer = block_layer)
 
-<<<<<<< HEAD
 # Sampling a number of pseudo-absences equal to the presences in each partition
-=======
-# Sampling a number of pseudo-absences equal to the presence in each partition
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
 set.seed(10)
 psa <- lapply(1:4, function(x) sample_pseudoabs(
     data = abies_df2,
@@ -191,11 +166,8 @@ bg # Background points
 
 ```
 
-<<<<<<< HEAD
 Extract environmental data for the datasets. View the distributions of present points, pseudo-absence points, and background points using the blocks as a reference map.
 
-=======
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
 ```{r extract environmental data for two datasets}
 
 abies_df2 <- abies_df2 %>%
@@ -242,11 +214,7 @@ points(bg[c("x", "y")] ,
 
 ## Fit models with tune_max, fit_gau, and third one
 
-<<<<<<< HEAD
 Now, fit our models. The *flexsdm* package offers a wide range of modeling options, from traditional statistical methods like GLMs and GAMs, to machine learning methods like random forests and support vector machines. For each modeling method, *flexsdm* provides both fit_ and tune_ functions, which allow users to use default settings or adjust hyperparameters depending on their research goals. Here, we will test out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian Process model), and fit_glm (fit Generalized Linear Model). For each model, we selected three threshold values to generate binary suitability predictions: the threshold that maximizes TSS (max_sens_spec), the threshold at which sensitivity and specificity are equal (equal_sens_spec), and the threshold at which the Sorenson index is highest (max_sorenson). In this example, we selected TSS as the performance metric used for selecting the best combination of hyper-parameter values in the tuned Maximum Entropy model. 
-=======
-Now it's time to fit our models. The *flexsdm* package offers a wide range of modeling options, from traditional statistical methods like GLMs and GAMs, to machine learning methods like random forest and support vector machines. For each modeling method, *flexsdm* provides both fit_ and tune_ functions, which allow users to use default settings or adjust hyperparameters depending on their research goals. Here, we will test out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian Process model), and fit_glm (fit Generalized Linear Model). For each model, we selected three threshold values to generate binary suitability predictions: the threshold that maximizes TSS (max_sens_spec), the threshold at which sensitivity and specificity are equal (equal_sens_spec), and the threshold at which Sorenson is highest (max_sorenson). In this example, we selected TSS as the performance metric used for selecting the best combination of hyper-parameter values in the tuned Maximum Entropy model. 
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
 
 *The AUC values are VERY low in this example and I am concerned we may want to do something different (i.e. add more predictors) in the manuscript example*
 
@@ -311,11 +279,7 @@ ens_m$performance
 
 ## Project the ensemble model
 
-<<<<<<< HEAD
 Next we project the ensemble model in space across the entire extent of our environmental layer, the California Floristic Province, using the sdm_predict() function. This function can be use to predict species suitability across any area for species' current or future suitability. In this example, we only project the ensemble model with one threshold, though users have the option to project multiple models with multiple threshold values. Here, we also specify that we want the function to return a SpatRast with continuous suitability values above the threshold (con_thr = TRUE).  
-=======
-Next we project the ensemble model in space across the entire extent of our environmental layer, the California Floristic Province, using the sdm_predict() function. This function can be use to predict species suitability across any area for species' current or future suitability. In this example, we only project the ensemble model with one threshold, though users have the option to project multiple models with multiple threshold values. Here, we also specify that we want the function to also return a SpatRast with continuous suitability values above the threshold (con_thr = TRUE).  
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
 
 ```{r project models}
 pr_1 <- sdm_predict(
@@ -331,11 +295,7 @@ plot(pr_1$meanw)
 
 ## Constrain it with msdm_posterior 
 
-<<<<<<< HEAD
 Finally, *flexsdm* offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method "occurrence based restriction", which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).  
-=======
-Finally, *flexsdm* offers users function that help correct overprediction of SDM based on occurrences records and suitability patterns. In this example we constrained the ensemble model using the method "occurrence based restriction", which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. All of the methods available in the msdm_posteriori() function are based on Mendes et al. 2020.  
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
 
 ```{r constrain with msdm}
 
@@ -352,12 +312,6 @@ m_obr <- msdm_posteriori(
 
 plot(m_obr)
 ```
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> d32fb89facdc36cbeaf17cdae0f0c93d066ee413
 #=========#=========#=========#=========#=========#=========#=========#
 
 **Vignette still under construction and changes**
