@@ -146,9 +146,9 @@ pseudo-absence. Presences must be represented by 1 and absences by 0</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>character. Vector with data partitioning method to be used:</p><ul>
-<li><p>kfold: Random partitioning into k-folds for cross-validation. Usage
-  part=c(method= 'kfold', folds='5'). 'folds' refers to the number of folds for data
+      <td><p>character. Vector with data partitioning method to be used. Usage
+  part=c(method= 'kfold', folds='5'). Methods include:</p><ul>
+<li><p>kfold: Random partitioning into k-folds for cross-validation. 'folds' refers to the number of folds for data
   partitioning, it assumes value &gt;=1. Usage method = c(method = "kfold", folds = 10).</p></li>
 <li><p>rep_kfold: Random partitioning into repeated k-folds for  cross-validation.
   Usage method = c(method = "rep_kfold", folds = 10, replicates=10). 'folds' refers to the
@@ -161,7 +161,7 @@ pseudo-absence. Presences must be represented by 1 and absences by 0</p></td>
   proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value &gt;=1.
   'proportion' refers to the proportion of occurrences used for model fitting, it assumes a
   value &gt;0 and &lt;=1. In this example proportion='0.7' mean that 70% of data will be used for
-  model training, while 30% for model testing.</p></li>
+  model training, while 30% will be used for model testing.</p></li>
 </ul></td>
     </tr>
     </table>
@@ -171,8 +171,8 @@ pseudo-absence. Presences must be represented by 1 and absences by 0</p></td>
     <p>A tibble object with information used in the 'data' argument and additional columns named .part
 containing the partition groups. The rep_kfold and boot method will return as many ".part"
 columns as replicated defined. For the rest of the methods, a single .part column is returned.
-For kfold, rep_kfold, and loocv methods partition, groups are defined by integers.
-On the contrary, for boot method, the partition groups are defined by the characters
+For kfold, rep_kfold, and loocv partition methods, groups are defined by integers.
+In contrast, for boot method, the partition groups are defined by the characters
 'train' and 'test'.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -181,7 +181,8 @@ On the contrary, for boot method, the partition groups are defined by the charac
 <li><p>Fielding, A. H., &amp; Bell, J. F. (1997). A review of methods for the assessment of
 prediction errors in conservation presence/absence models. Environmental Conservation,
 24(1), 38-49. https://doi.org/10.1017/S0376892997000088</p></li>
-</ul><p>#' @export</p>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='part_sblock.html'>part_sblock</a></code>, <code><a href='part_senv.html'>part_senv</a></code>, <code><a href='sample_pseudoabs.html'>sample_pseudoabs</a></code>, <code><a href='sample_background.html'>sample_background</a></code></p></div>

@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Perform geographical filtering on species occurrences — occfilt_geo" />
 <meta property="og:description" content="This function perform geographical filtering of species occurrences based on
-different approach to define the minimum nearest-neighbour distance bteween points." />
+different approach to define the minimum nearest-neighbor distance between points." />
 
 
 
@@ -126,7 +126,7 @@ different approach to define the minimum nearest-neighbour distance bteween poin
 
     <div class="ref-description">
     <p>This function perform geographical filtering of species occurrences based on
-different approach to define the minimum nearest-neighbour distance bteween points.</p>
+different approach to define the minimum nearest-neighbor distance between points.</p>
     </div>
 
     <pre class="usage"><span class='fu'>occfilt_geo</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>env_layer</span>, <span class='va'>method</span>, prj <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -153,22 +153,22 @@ different approach to define the minimum nearest-neighbour distance bteween poin
     </tr>
     <tr>
       <th>method</th>
-      <td><p>character. Method to perform geographical thinning. Pair of points are filtered
+      <td><p>character. Method to perform geographical thinning. Pairs of points are filtered
 based on a geographical distance criteria.The following methods are available:</p><ul>
 <li><p>moran: records are filtered based on the smallest distance that reduces Moran's I to
   values lower than 0.1. Latlong = TRUE if occurrences are in a geographical projection.
   Usage method: method = c('moran').</p></li>
-<li><p>cellsize: records are filtered based on the environmental variables resolution which
+<li><p>cellsize: records are filtered based on the resolution of the environmental variables which
   can be aggregated to coarser resolution defined by the factor.
   Usage method: method = c('cellsize', factor = '2').</p></li>
-<li><p>defined: records are filtered based on a provided distance value in km.
+<li><p>defined: records are filtered based on a  distance value (d) provided in km.
   Usage method: method = c('defined', d = 300).</p></li>
 </ul></td>
     </tr>
     <tr>
       <th>prj</th>
       <td><p>character. Projection string (PROJ4) for occurrences. Not necessary if
-the projection use WGS84 ("+proj=longlat +datum=WGS84").</p></td>
+the projection used is WGS84 ("+proj=longlat +datum=WGS84").</p></td>
     </tr>
     </table>
 
@@ -177,22 +177,22 @@ the projection use WGS84 ("+proj=longlat +datum=WGS84").</p></td>
     <p>A tibble object with data filtered geographically</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>In this function are implemented three alternatives to determine the
+    <p>In this function three alternatives are implemented to determine the
 distance threshold between pair of points:
-1-"moran" determines the minimum nearest-neighbour distance, which minimizes the spatial
+1-"moran" determines the minimum nearest-neighbor distance that minimizes the spatial
 autocorrelation in occurrence data, following a Moran's semivariogram. A Principal Component
-Analysis with the environmental variables is performed and then is used first Principal Component
-to calculate the semivariograms. Sometimes, this method can greatly reduce the number
+Analysis with the environmental variables is performed and then the first Principal Component is used
+to calculate the semivariograms. Sometimes, this method can (too) greatly reduce the number
 of presences.
 2-"cellsize" filters occurrences based on the predictors' resolution. This method will calculate
 the distance between the first two cells of the environmental variable and use this distance
 as minimum nearest-neighbor distance to filter occurrences.
-The resolution of a rater is aggregated based on the values used in "factor". Thus, the distance
+The resolution of the raster is aggregated based on the values used in "factor". Thus, the distance
 used for filtering can be adjusted to represent a larger grid size.
-3-"determined" this method uses any minimum nearest-neighbour distance in km specified.</p>
+3-"determined" this method uses any minimum nearest-neighbor distance specified in km.</p>
 
-<p>For the three method is used the "thin" function from spThin package
-(Aiello-Lammens et al., 2015) with the next argument settings reps = 20, write.files = FALSE,
+<p>For the third method the "thin" function from spThin package is used
+(Aiello-Lammens et al., 2015) with the following argument settings reps = 20, write.files = FALSE,
 locs.thinned.list.return = TRUE, and write.log.file = FALSE.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -226,7 +226,7 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class='va'>somevar</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># Moran</span>
+<span class='co'># Using Moran method</span>
 <span class='va'>filtered_1</span> <span class='op'>&lt;-</span> <span class='fu'>occfilt_geo</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp1</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
@@ -240,7 +240,7 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>spp1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># raw data</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>filtered_1</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, pch <span class='op'>=</span> <span class='fl'>19</span>, col <span class='op'>=</span> <span class='st'>"yellow"</span><span class='op'>)</span> <span class='co'># filtered data</span>
 
-<span class='co'># Cellsize</span>
+<span class='co'># Using cellsize method</span>
 <span class='va'>filtered_2</span> <span class='op'>&lt;-</span> <span class='fu'>occfilt_geo</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp1</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
@@ -255,7 +255,7 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/lines.html'>points</a></span><span class='op'>(</span><span class='va'>filtered_2</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span><span class='op'>)</span>, pch <span class='op'>=</span> <span class='fl'>19</span>, col <span class='op'>=</span> <span class='st'>"yellow"</span><span class='op'>)</span> <span class='co'># filtered data</span>
 
 
-<span class='co'># Defined</span>
+<span class='co'># Using defined method</span>
 <span class='va'>filtered_3</span> <span class='op'>&lt;-</span> <span class='fu'>occfilt_geo</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp1</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,

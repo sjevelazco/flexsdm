@@ -168,20 +168,20 @@
     <p>A tibble object with data environmentally filtered</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function uses an approach adapted to the proposed by Varela et al. (2014) approach.
- It consists of filtering occurrences in the environmental space. First, a regular
- multidimensional grid is created in the environmental space. This multidimensional
+    <p>This function uses an approach adapted from the approach proposed by Varela et al. (2014).
+ It consists of filtering occurrences in  environmental space. First, a regular
+ multidimensional grid is created in  environmental space. This multidimensional
  grid is determined by the environmental variables (always use continuous variables) the
  grid cell size is defined by the number of bins, used for dividing variable range into
  interval classes (Varela et al. 2014; Castellanos et al., 2019). The number of bins is set in
- the "nbins" argument. Then a single occurrence is randomly selected within each cell of the
+ the "nbins" argument. Then, a single occurrence is randomly selected within each cell of the
  multivariate grid. Consider that there is a trade-off between the number of bins and the number
  of filtered records because as the number of bins decreases, the cell size of the grids
  increases, and the number of filtered records decreases (Castellanos et al., 2019).
- occfilt_env works for any dimensions number and with the original variables without performing
+ occfilt_env works for any number of dimensions (variables) and with the original variables without performing
  a PCA beforehand.</p>
 <p>The greater the number of predictor variables (i.e., the number of dimensions of the
- multidimensional grid) and the greater the number of bins, the greater the time processing
+ multidimensional environmental grid) and the greater the number of bins, the greater the time processing
  and the computer memory used. Therefore, it is recommended to use a small number of bins
  between 2-5 if more than ten variables are used.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -223,7 +223,7 @@ https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
 <span class='va'>spp1</span><span class='op'>$</span><span class='va'>idd</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/dimensions.html'>nrow</a></span><span class='op'>(</span><span class='va'>spp1</span><span class='op'>)</span>
 
 
-<span class='co'># 5 bins</span>
+<span class='co'># split environmental variables into 5 bins</span>
 <span class='va'>filtered_1</span> <span class='op'>&lt;-</span> <span class='fu'>occfilt_env</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp1</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
@@ -234,7 +234,7 @@ https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
   cores <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
 
-<span class='co'># 8 bins</span>
+<span class='co'># split into 8 bins</span>
 <span class='va'>filtered_2</span> <span class='op'>&lt;-</span> <span class='fu'>occfilt_env</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp1</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
@@ -245,7 +245,7 @@ https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
   cores <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
 
-<span class='co'># 12 bins</span>
+<span class='co'># split into 12 bins</span>
 <span class='va'>filtered_3</span> <span class='op'>&lt;-</span> <span class='fu'>occfilt_env</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>spp1</span>,
   x <span class='op'>=</span> <span class='st'>"x"</span>,
@@ -256,9 +256,9 @@ https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
   cores <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span>
 <span class='co'># note that the higher the nbins parameter the more</span>
-<span class='co'># classes must be to be processed (4 variables, 30 bins = 923521 classes)</span>
+<span class='co'># classes must be processed (4 variables, 30 bins = 923521 classes)</span>
 
-<span class='co'># While greater the number of bins the fewer records retained</span>
+<span class='co'># While the greater the number of bins the fewer records retained</span>
 <span class='op'>}</span>
 
 </div></pre>
