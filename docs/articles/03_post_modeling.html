@@ -96,7 +96,7 @@
 <ul>
 <li><p>sdm_predict() Spatial predictions from individual and ensemble models</p></li>
 <li><p>sdm_summarize() Merge model performance tables</p></li>
-<li><p>inter() Raster interpolation between SDM predictions to two time periods</p></li>
+<li><p>interp() Raster interpolation between SDM predictions to two time periods</p></li>
 <li><p>extra_eval() Measure model extrapolation</p></li>
 <li><p>extra_correct() Constraint suitability values under a given extrapolation value</p></li>
 <li><p>msdm_priori() Create spatial predictor variables to reduce overprediction from species distribution models</p></li>
@@ -146,7 +146,7 @@
               threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
               return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpuY6tbC/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp0iecvp/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="species-occurrence-presenceabsense-and-environmental-data" class="section level2">
 <h2 class="hasAnchor">
@@ -452,8 +452,8 @@
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
 <span class="co">#&gt; names       :      esm_gam,      max_fpb </span>
-<span class="co">#&gt; min values  : 2.010831e-16, 0.000000e+00 </span>
-<span class="co">#&gt; max values  :    0.9055976,    1.0000000</span>
+<span class="co">#&gt; min values  : 2.041016e-16, 0.000000e+00 </span>
+<span class="co">#&gt; max values  :    0.9191919,    1.0000000</span>
 
 <span class="co"># Plot to see this layers</span>
 <span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span>
@@ -597,7 +597,7 @@
 <p><img src="03_post_modeling_files/figure-html/interp_data-1.png" width="576"></p>
 <p>This function will create an object of interpolated values with n annual layers ranging from the initial to final year. The resolution and dimensions of the result object will remain the same as the initial and final maps. In this example, there are nine annual (2011-2019) interpolated maps generated from the initial (2010) and final (2020) prediction maps. A cell with a starting value of 1 and and ending value of 0 would be changed in increments of (1-0)/((2020-2010)-1), and given interpolated values of 0.9, 0.8, 0.7…0.1</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">int</span> <span class="op">&lt;-</span> <span class="fu">inter</span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">int</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/interp.html">interp</a></span><span class="op">(</span>
   r1 <span class="op">=</span> <span class="va">abma</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="co"># set the raster of initial year</span>
   r2 <span class="op">=</span> <span class="va">abma</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="co"># set the raster of final year</span>
   y1 <span class="op">=</span> <span class="fl">2010</span>, <span class="co"># set the numeric initial year</span>

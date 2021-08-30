@@ -311,11 +311,11 @@
 <span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
 <span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
 <span class="co">#&gt; source      : somevar.tif </span>
-<span class="co">#&gt; names       :       tmx,       cwd </span>
-<span class="co">#&gt; min values  :  22.44685,  -9.39489 </span>
-<span class="co">#&gt; max values  : 614.69125,  14.20047</span>
+<span class="co">#&gt; names       :        tmn,        cwd </span>
+<span class="co">#&gt; min values  :  0.2591429, -9.3948898 </span>
+<span class="co">#&gt; max values  :   64.37476,   14.20047</span>
 <span class="va">pearson_var</span><span class="op">$</span><span class="va">removed_variables</span>
-<span class="co">#&gt; [1] "aet" "tmn"</span>
+<span class="co">#&gt; [1] "aet" "tmx"</span>
 <span class="va">pearson_var</span><span class="op">$</span><span class="va">correlation_table</span>
 <span class="co">#&gt; # A tibble: 4 x 5</span>
 <span class="co">#&gt;   variable   aet   cwd   tmx   tmn</span>
@@ -476,7 +476,7 @@
 <div id="conventional-data-partitioning-methods-part_random" class="section level3">
 <h3 class="hasAnchor">
 <a href="#conventional-data-partitioning-methods-part_random" class="anchor"></a>1. Conventional data partitioning methods (part_random)</h3>
-<p>The part_random() function provides users the ability to divide species occurence data based on conventional partition methods including k-folds, repeated k-folds, leave-one-out cross-validation, and bootstrap partitioning.</p>
+<p>The part_random() function provides users the ability to divide species occurrence data based on conventional partition methods including k-folds, repeated k-folds, leave-one-out cross-validation, and bootstrap partitioning.</p>
 <p>Here, we use the “kfold” method with 10 folds to divide our data. This results in 10 folds of occurrence data with 25 observations in each fold.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R">

@@ -91,12 +91,12 @@
 <div id="study-species-overview-of-methods" class="section level2">
 <h2 class="hasAnchor">
 <a href="#study-species-overview-of-methods" class="anchor"></a>Study species &amp; overview of methods</h2>
-<p>Here, we used the <em>flexsdm</em> package to model the current and future distribution of California red fir (<em>Abies magnifica</em>) under two climate change scenarios. Red fir is a high-elevation conifer species that’s geographic range extends through the Sierra Nevada in California into the southern portion of the Cascade Range of Oregon. For this species, we used presence data compiled by James Thorne, California Department of Fish and Wildlife, and Calflora. We built the distribution models using four climatic variables: actual evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month. All variables were resampled to a 1890m spatial resolution to improve processing time.</p>
+<p>Here, we used the <em>flexsdm</em> package to model the current distribution of California red fir (<em>Abies magnifica</em>). Red fir is a high-elevation conifer species that’s geographic range extends through the Sierra Nevada in California, USA, into the southern portion of the Cascade Range of Oregon. For this species, we used presence data compiled from several public datasets curated by natural resources agencies. We built the distribution models using four hydro-climatic variables: actual evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month. All variables were resampled (aggregated) to a 1890 m spatial resolution to improve processing time.</p>
 </div>
 <div id="occurrence-filtering" class="section level2">
 <h2 class="hasAnchor">
 <a href="#occurrence-filtering" class="anchor"></a>Occurrence filtering</h2>
-<p>Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing climatic redundancy (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to <em>flexsdm</em>, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering.</p>
+<p>Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing redundancy in environmental (e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to <em>flexsdm</em>, and in contrast with other packages is able to use any number of environmental dimensions and does not perform a PCA before filtering.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
@@ -133,6 +133,8 @@
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/raw%20data-1.png" width="576"></p>
+<p>This figure shows the species occurrences, using the map of one of the encironmental variables (actual evapotranspiration) as background.</p>
+<p>Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">abies_df</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">nrow</a></span><span class="op">(</span><span class="va">abies_df</span><span class="op">)</span> <span class="co"># adding unique id to each row</span>
 
@@ -161,7 +163,7 @@
 <div id="block-partition-with-4-folds" class="section level2">
 <h2 class="hasAnchor">
 <a href="#block-partition-with-4-folds" class="anchor"></a>Block partition with 4 folds</h2>
-<p>Data partitioning, or splitting data into testing and training groups, is a key step in building SDMs. <em>flexsdm</em> offers multiple options for data partitioning but here we use a spatial block method. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The part_sblock() function explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input datset based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each block partition. The function’s output is also very useful, as it provides users with 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. Here we want to divide the data into 4 different partitions using the spatial block method.</p>
+<p>Data partitioning, or splitting data into testing and training groups, is a key step in building SDMs. <em>flexsdm</em> offers multiple options for data partitioning and here we use a spatial block method. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The part_sblock() function explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input datset based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each block partition. The function’s output provides users with 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. Here we want to divide the data into 4 different partitions using the spatial block method.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">occ_part</span> <span class="op">&lt;-</span> <span class="va">abies_df2</span> <span class="op">%&gt;%</span>
@@ -192,13 +194,14 @@
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_df2</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/block%20partition-1.png" width="576"></p>
 </div>
-<div id="pseduo-absencebackground-points-using-partition-previously-created-as-a-mask" class="section level2">
+<div id="pseudo-absencebackground-points-using-partition-previously-created-as-a-mask" class="section level2">
 <h2 class="hasAnchor">
-<a href="#pseduo-absencebackground-points-using-partition-previously-created-as-a-mask" class="anchor"></a>Pseduo-absence/background points (using partition previously created as a mask)</h2>
-<p>In this example, we only have presence data. However, most SDM methods require either pseudo-absence or background data. Here, we will use the spatial block partition we just created to generate pseudo-absence and background points.</p>
+<a href="#pseudo-absencebackground-points-using-partition-previously-created-as-a-mask" class="anchor"></a>Pseudo-absence/background points (using partition previously created as a mask)</h2>
+<p>In this example, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we will use the spatial block partition we just created to generate pseudo-absence and background points.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Spatial blocks where species occurs</span>
-<span class="co"># Sample background points throughout study area with random method</span>
+<span class="co"># Sample background points throughout study area with random method, allocating 10X the number of presences a background</span>
+
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/sample_background.html">sample_background</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="va">abies_df2</span>,
@@ -218,7 +221,7 @@
 <code class="sourceCode R">
 <span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bg</span>, x<span class="op">=</span><span class="st">"x"</span>, y<span class="op">=</span><span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
 
-<span class="co"># Sampling a number of pseudo-absences equal to the presence in each partition</span>
+<span class="co"># Sampling a number of pseudo-absences equal to the presences in each partition</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="va">abies_df2</span>,
@@ -230,9 +233,8 @@
     maskval <span class="op">=</span> <span class="va">x</span>
   <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> 
-
 <span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">psa</span>, x<span class="op">=</span><span class="st">"x"</span>, y<span class="op">=</span><span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
-  
+
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/pseudo/absence%20and%20background%20data-2.png" width="576"></p>
@@ -273,6 +275,7 @@
 <span class="co">#&gt;  9  -34431.  -59548.     0     1</span>
 <span class="co">#&gt; 10 -113811. -133258.     0     1</span>
 <span class="co">#&gt; # ... with 2,130 more rows</span></code></pre></div>
+<p>Extract environmental data for the datasets. View the distributions of present points, pseudo-absence points, and background points using the blocks as a reference map.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">abies_df2</span> <span class="op">&lt;-</span> <span class="va">abies_df2</span> <span class="op">%&gt;%</span>
@@ -317,8 +320,7 @@
 <div id="fit-models-with-tune_max-fit_gau-and-third-one" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fit-models-with-tune_max-fit_gau-and-third-one" class="anchor"></a>Fit models with tune_max, fit_gau, and third one</h2>
-<p>Now it’s time to fit our models. The <em>flexsdm</em> package offers a wide range of modeling options, from traditional statistical methods like GLMs and GAMs, to machine learning methods like random forest and support vector machines. For each modeling method, <em>flexsdm</em> provides both fit_ and tune_ functions, which allow users to use default settings or adjust hyperparameters depending on their research goals. Here, we will test out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian Process model), and fit_glm (fit Generalized Linear Model). For each model, we selected three threshold values to generate binary suitability predictions: the threshold that maximizes TSS (max_sens_spec), the threshold at which sensitivity and specificity are equal (equal_sens_spec), and the threshold at which Sorenson is highest (max_sorenson). In this example, we selected TSS as the performance metric used for selecting the best combination of hyper-parameter values in the tuned Maximum Entropy model.</p>
-<p><em>The AUC values are VERY low in this example and I am concerned we may want to do something different (i.e. add more predictors) in the manuscript example</em></p>
+<p>Now, fit our models. The <em>flexsdm</em> package offers a wide range of modeling options, from traditional statistical methods like GLMs and GAMs, to machine learning methods like random forests and support vector machines. For each modeling method, <em>flexsdm</em> provides both fit_ and tune_ functions, which allow users to use default settings or adjust hyperparameters depending on their research goals. Here, we will test out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian Process model), and fit_glm (fit Generalized Linear Model). For each model, we selected three threshold values to generate binary suitability predictions: the threshold that maximizes TSS (max_sens_spec), the threshold at which sensitivity and specificity are equal (equal_sens_spec), and the threshold at which the Sorenson index is highest (max_sorenson). In this example, we selected TSS as the performance metric used for selecting the best combination of hyper-parameter values in the tuned Maximum Entropy model.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tune_max.html">tune_max</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">abies_df2</span>,
@@ -381,20 +383,21 @@
 
 <span class="va">merge_df</span>
 <span class="co">#&gt; # A tibble: 7 x 28</span>
-<span class="co">#&gt;   regmult classes model_ID model threshold       thr_value n_presences n_absences</span>
-<span class="co">#&gt;     &lt;dbl&gt; &lt;fct&gt;      &lt;int&gt; &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;</span>
-<span class="co">#&gt; 1     1.6 lq             1 max   max_sens_spec       0.380         214        214</span>
-<span class="co">#&gt; 2    NA   &lt;NA&gt;           2 gau   equal_sens_spec     0.661         214        214</span>
-<span class="co">#&gt; 3    NA   &lt;NA&gt;           2 gau   max_sens_spec       0.544         214        214</span>
-<span class="co">#&gt; 4    NA   &lt;NA&gt;           2 gau   max_sorensen        0.379         214        214</span>
-<span class="co">#&gt; 5    NA   &lt;NA&gt;           3 glm   equal_sens_spec     0.595         214        214</span>
-<span class="co">#&gt; 6    NA   &lt;NA&gt;           3 glm   max_sens_spec       0.350         214        214</span>
-<span class="co">#&gt; 7    NA   &lt;NA&gt;           3 glm   max_sorensen        0.350         214        214</span>
-<span class="co">#&gt; # ... with 20 more variables: TPR_mean &lt;dbl&gt;, TPR_sd &lt;dbl&gt;, TNR_mean &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
+<span class="co">#&gt;   model_ID model threshold      thr_value n_presences n_absences TPR_mean TPR_sd</span>
+<span class="co">#&gt;      &lt;int&gt; &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt; 1        1 max   max_sens_spec      0.380         214        214    0.952 0.0957</span>
+<span class="co">#&gt; 2        2 gau   equal_sens_sp~     0.661         214        214    0.848 0.0338</span>
+<span class="co">#&gt; 3        2 gau   max_sens_spec      0.544         214        214    0.947 0.0468</span>
+<span class="co">#&gt; 4        2 gau   max_sorensen       0.379         214        214    0.978 0.0352</span>
+<span class="co">#&gt; 5        3 glm   equal_sens_sp~     0.595         214        214    0.830 0.0548</span>
+<span class="co">#&gt; 6        3 glm   max_sens_spec      0.350         214        214    0.954 0.0410</span>
+<span class="co">#&gt; 7        3 glm   max_sorensen       0.350         214        214    0.969 0.0511</span>
+<span class="co">#&gt; # ... with 20 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></code></pre></div>
+<span class="co">#&gt; #   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   regmult &lt;dbl&gt;, classes &lt;fct&gt;</span></code></pre></div>
 </div>
 <div id="fit-an-ensemble-model" class="section level2">
 <h2 class="hasAnchor">
@@ -429,7 +432,7 @@
 <div id="project-the-ensemble-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#project-the-ensemble-model" class="anchor"></a>Project the ensemble model</h2>
-<p>Next we project the ensemble model in space across the entire extent of our environmental layer, the California Floristic Province, using the sdm_predict() function. This function can be use to predict species suitability across any area for species’ current or future suitability. In this example, we only project the ensemble model with one threshold, though users have the option to project multiple models with multiple threshold values. Here, we also specify that we want the function to also return a SpatRast with continuous suitability values above the threshold (con_thr = TRUE).</p>
+<p>Next we project the ensemble model in space across the entire extent of our environmental layer, the California Floristic Province, using the sdm_predict() function. This function can be use to predict species suitability across any area for species’ current or future suitability. In this example, we only project the ensemble model with one threshold, though users have the option to project multiple models with multiple threshold values. Here, we also specify that we want the function to return a SpatRast with continuous suitability values above the threshold (con_thr = TRUE).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pr_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span>
   models <span class="op">=</span> <span class="va">ens_m</span>,
@@ -446,7 +449,7 @@
 <div id="constrain-it-with-msdm_posterior" class="section level2">
 <h2 class="hasAnchor">
 <a href="#constrain-it-with-msdm_posterior" class="anchor"></a>Constrain it with msdm_posterior</h2>
-<p>Finally, <em>flexsdm</em> offers users function that help correct overprediction of SDM based on occurrences records and suitability patterns. In this example we constrained the ensemble model using the method “occurrence based restriction”, which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. All of the methods available in the msdm_posteriori() function are based on Mendes et al. 2020.</p>
+<p>Finally, <em>flexsdm</em> offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method “occurrence based restriction”, which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">m_obr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msdm_posteriori.html">msdm_posteriori</a></span><span class="op">(</span>
