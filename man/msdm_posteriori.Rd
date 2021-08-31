@@ -29,7 +29,7 @@ msdm_posteriori(
 
 \item{method}{character. A character string indicating which constraint method will be used.}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:
+\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. Only one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{
   \item lpt: The highest threshold at which there is no omission.
   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
@@ -40,7 +40,6 @@ msdm_posteriori(
   \item sensitivity: Threshold based on a specified sensitivity value.
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
   }
-If more than one threshold type is used they are cancatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
 Default "equal_sens_spec".}
 
 \item{buffer}{numeric. Buffer width use in 'bmcp' approach. The buffer width will be interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other cases. Usage buffer=50000. Default NULL}

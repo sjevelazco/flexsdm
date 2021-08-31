@@ -250,14 +250,6 @@ f_glm <- fit_glm(
 
 ```
 
-The output of *flexsdm* model objects allows you to easily compare metrics across models, such as AUC or TSS. For example, we can use the sdm_summarize() function to merge model performance tables.
-
-```{r}
-merge_df <- sdm_summarize(list(t_max, f_gau, f_glm))
-
-merge_df
-```
-
 ## Fit an ensemble model
 
 Spatial predictions from different SDM algorithms can vary substantially, and ensemble modeling has become increasingly popular. With the fit_ensemble() function, users can easily produce an ensemble SDM based on any of the individual fit_ and tune_ models included the package. In this example, we fit an ensemble model for red fir based on the weighted average of the three individual models. We used the same threshold values and performance metric that were implemented in the individual models. 
@@ -274,11 +266,21 @@ ens_m <- fit_ensemble(
 ens_m$performance
 ```
 
+
+The output of *flexsdm* model objects allows you to easily compare metrics across models, such as AUC or TSS. For example, we can use the sdm_summarize() function to merge model performance tables.
+
+```{r}
+model_perf <- sdm_summarize(list(t_max, f_gau, f_glm, ens_m))
+
+model_perf
+```
+
+
 ## Project the ensemble model
 
 Next we project the ensemble model in space across the entire extent of our environmental layer, the California Floristic Province, using the sdm_predict() function. This function can be use to predict species suitability across any area for species' current or future suitability. In this example, we only project the ensemble model with one threshold, though users have the option to project multiple models with multiple threshold values. Here, we also specify that we want the function to return a SpatRast with continuous suitability values above the threshold (con_thr = TRUE).  
 
-```{r project models}
+```{r predict models}
 pr_1 <- sdm_predict(
   models = ens_m,
   pred = somevar,
@@ -295,19 +297,20 @@ plot(pr_1$meanw)
 Finally, *flexsdm* offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method "occurrence based restriction", which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).  
 
 ```{r constrain with msdm}
+thr_val <- ens_m$performance %>% dplyr::filter(threshold=='max_sens_spec') %>% pull(thr_value)
 
-m_obr <- msdm_posteriori(
+m_pres <- msdm_posteriori(
   records = abies_df2,
   x = "x",
   y = "y",
   pr_ab = "pr_ab",
   cont_suit = pr_1$meanw[[1]],
   method = c("obr"),
-  thr = "max_sens_spec",
+  thr = c('sensitivity', sens=thr_val),
   buffer = NULL
 )
 
-plot(m_obr)
+plot(m_pres)
 ```
 #=========#=========#=========#=========#=========#=========#=========#
 

@@ -7,7 +7,7 @@
 #' @param y character. Column name with spatial y coordinates.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
 #' @param method character. A character string indicating which constraint method will be used.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. Only one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
@@ -18,7 +18,6 @@
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
-#' If more than one threshold type is used they are cancatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
 #' Default "equal_sens_spec".
 #' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other cases. Usage buffer=50000. Default NULL
 #' @param cont_suit SpatRaster. Raster with continuous suitability predictions
@@ -223,7 +222,7 @@ msdm_posteriori <- function(records,
     stop("If 'bmcp' method is used, it is necessary to fill the 'buffer' argument, see the help of this function")
   }
   if (any(
-    thr == c(
+    thr[1] == c(
       "lpt",
       "equal_sens_spec",
       "max_sens_spec",
@@ -246,7 +245,6 @@ msdm_posteriori <- function(records,
     cont_suit <- terra::rast(cont_suit)
   }
   if (!any("tbl_df" %in% class(records))) {
-    records <- dplyr::tibble(records)
   }
 
   # creation of a data.frame with presences and absences
@@ -262,13 +260,21 @@ msdm_posteriori <- function(records,
     records %>%
     dplyr::mutate(suit_point)
 
-  eval <-
-    sdm_eval(
-      p = suit_point[suit_point$pr_ab == 1, ] %>% dplyr::pull(suit_point),
-      a = suit_point[suit_point$pr_ab == 0, ] %>% dplyr::pull(suit_point),
-      thr = thr
-    )
-  thr_2 <- eval %>% dplyr::pull(thr_value)
+  if (thr[1] == "sensitivity") {
+    thr_2 <- as.numeric(thr[2])
+  } else {
+    eval <-
+      sdm_eval(
+        p = suit_point[suit_point$pr_ab == 1, ] %>% dplyr::pull(suit_point),
+        a = suit_point[suit_point$pr_ab == 0, ] %>% dplyr::pull(suit_point),
+        thr = thr
+      )
+    thr_2 <- eval %>% dplyr::pull(thr_value)
+  }
+
+
+  records <- records %>%
+    dplyr::filter(dplyr::all_of(pr_ab) == 1)
 
   # 'mcp' method----
   if (method == "mcp") {
@@ -284,8 +290,6 @@ msdm_posteriori <- function(records,
     rm(hull)
     result_2 <- result >= thr_2
     result <- terra::rast(list(result, result_2))
-    names(result)[2] <- thr
-    return(result)
   }
 
   # 'bmcp' method-----
@@ -304,8 +308,6 @@ msdm_posteriori <- function(records,
     rm(hull)
     result_2 <- result >= thr_2
     result <- terra::rast(list(result, result_2))
-    names(result)[2] <- thr
-    return(result)
   }
 
   if (method %in% c("obr", "lq", "pres")) {
@@ -338,8 +340,6 @@ msdm_posteriori <- function(records,
       result_2 <- result >= thr_2
       result <- terra::rast(list(result, result_2))
       rm(result_2)
-      names(result)[2] <- thr
-      return(result)
     } else {
       # Create a vector which contain the number (e.i. ID) of the patches
       # with presences
@@ -355,18 +355,20 @@ msdm_posteriori <- function(records,
       poly_presence <- terra::as.polygons(adeq_w_pres)
       poly_absence <- terra::as.polygons(adeq_wout_np)
 
-      pr_ab_poly_dist <-
-        terra::distance(poly_absence, poly_presence) %>%
-        data.frame() %>%
-        dplyr::tibble()
+      pr_ab_poly_dist <- data.frame(matrix(nrow = nrow(poly_absence), ncol = nrow(poly_presence)))
+      rownames(pr_ab_poly_dist) <- names(poly_absence$patch)
       colnames(pr_ab_poly_dist) <- as.character(poly_presence$patch)
+      for (i in 1:ncol(pr_ab_poly_dist)) {
+        pr_ab_poly_dist[, i] <- terra::distance(poly_absence, poly_presence[i])
+      }
+
       pr_ab_poly_dist <- pr_ab_poly_dist %>%
         dplyr::mutate(patch = poly_absence$patch)
       pr_ab_poly_dist <-
         pr_ab_poly_dist %>%
         dplyr::mutate(mindis = pr_ab_poly_dist %>%
           dplyr::select(-"patch") %>% apply(., 1, min)) %>%
-        dplyr::select(patch, mindis) # check if for 'lq' is used all distance or only the nearest distnace
+        dplyr::select(patch, mindis) # check if for 'lq' is used all distance or only the nearest distance
 
       rm(poly_presence, poly_absence)
 
@@ -403,8 +405,8 @@ msdm_posteriori <- function(records,
       result_2 <- result >= thr_2
       result <- terra::rast(list(result, result_2))
       rm(result_2, filt)
-      names(result)[2] <- thr
-      return(result)
     }
   }
+  names(result)[2] <- thr[1]
+  return(result)
 }
