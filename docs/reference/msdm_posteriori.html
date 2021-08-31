@@ -168,7 +168,7 @@
     </tr>
     <tr>
       <th>thr</th>
-      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:</p><ul>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. Only one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission.</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).</p></li>
@@ -177,8 +177,7 @@
 <li><p>max_fpb: The threshold at which FPB is highest.</p></li>
 <li><p>sensitivity: Threshold based on a specified sensitivity value.
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9</p></li>
-</ul><p>If more than one threshold type is used they are cancatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
-Default "equal_sens_spec".</p></td>
+</ul><p>Default "equal_sens_spec".</p></td>
     </tr>
     <tr>
       <th>buffer</th>

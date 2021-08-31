@@ -133,7 +133,7 @@
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/raw%20data-1.png" width="576"></p>
-<p>This figure shows the species occurrences, using the map of one of the encironmental variables (actual evapotranspiration) as background.</p>
+<p>This figure shows the species occurrences, using the map of one of the environmental variables (actual evapotranspiration) as background.</p>
 <p>Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">abies_df</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">nrow</a></span><span class="op">(</span><span class="va">abies_df</span><span class="op">)</span> <span class="co"># adding unique id to each row</span>
@@ -377,57 +377,60 @@
 <span class="co">#&gt; Partition number: 2/4</span>
 <span class="co">#&gt; Partition number: 3/4</span>
 <span class="co">#&gt; Partition number: 4/4</span></code></pre></div>
+</div>
+<div id="fit-an-ensemble-model" class="section level2">
+<h2 class="hasAnchor">
+<a href="#fit-an-ensemble-model" class="anchor"></a>Fit an ensemble model</h2>
+<p>Spatial predictions from different SDM algorithms can vary substantially, and ensemble modeling has become increasingly popular. With the fit_ensemble() function, users can easily produce an ensemble SDM based on any of the individual fit_ and tune_ models included the package. In this example, we fit an ensemble model for red fir based on the weighted average of the three individual models. We used the same threshold values and performance metric that were implemented in the individual models.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ens_m <span class="ot">&lt;-</span> <span class="fu">fit_ensemble</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(t_max, f_gau, f_glm),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ens_method =</span> <span class="st">"meanw"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="fu">c</span>(<span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr_model =</span> <span class="st">"max_sens_spec"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"TSS"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ens_m<span class="sc">$</span>performance</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 x 25</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_s~     0.525         214        214    0.844 0.0328     0.854</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec     0.313         214        214    0.943 0.104      0.846</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen      0.270         214        214    0.996 0.00781    0.787</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span></code></pre></div>
 <p>The output of <em>flexsdm</em> model objects allows you to easily compare metrics across models, such as AUC or TSS. For example, we can use the sdm_summarize() function to merge model performance tables.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">t_max</span>, <span class="va">f_gau</span>, <span class="va">f_glm</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">t_max</span>, <span class="va">f_gau</span>, <span class="va">f_glm</span>, <span class="va">ens_m</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">merge_df</span>
-<span class="co">#&gt; # A tibble: 7 x 28</span>
-<span class="co">#&gt;   model_ID model threshold      thr_value n_presences n_absences TPR_mean TPR_sd</span>
-<span class="co">#&gt;      &lt;int&gt; &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1        1 max   max_sens_spec      0.380         214        214    0.952 0.0957</span>
-<span class="co">#&gt; 2        2 gau   equal_sens_sp~     0.661         214        214    0.848 0.0338</span>
-<span class="co">#&gt; 3        2 gau   max_sens_spec      0.544         214        214    0.947 0.0468</span>
-<span class="co">#&gt; 4        2 gau   max_sorensen       0.379         214        214    0.978 0.0352</span>
-<span class="co">#&gt; 5        3 glm   equal_sens_sp~     0.595         214        214    0.830 0.0548</span>
-<span class="co">#&gt; 6        3 glm   max_sens_spec      0.350         214        214    0.954 0.0410</span>
-<span class="co">#&gt; 7        3 glm   max_sorensen       0.350         214        214    0.969 0.0511</span>
+<span class="va">model_perf</span>
+<span class="co">#&gt; # A tibble: 10 x 28</span>
+<span class="co">#&gt;    model_ID model threshold    thr_value n_presences n_absences TPR_mean  TPR_sd</span>
+<span class="co">#&gt;       &lt;int&gt; &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1        1 max   max_sens_sp~     0.380         214        214    0.952 0.0957 </span>
+<span class="co">#&gt;  2        2 gau   equal_sens_~     0.661         214        214    0.848 0.0338 </span>
+<span class="co">#&gt;  3        2 gau   max_sens_sp~     0.544         214        214    0.947 0.0468 </span>
+<span class="co">#&gt;  4        2 gau   max_sorensen     0.379         214        214    0.978 0.0352 </span>
+<span class="co">#&gt;  5        3 glm   equal_sens_~     0.595         214        214    0.830 0.0548 </span>
+<span class="co">#&gt;  6        3 glm   max_sens_sp~     0.350         214        214    0.954 0.0410 </span>
+<span class="co">#&gt;  7        3 glm   max_sorensen     0.350         214        214    0.969 0.0511 </span>
+<span class="co">#&gt;  8        4 meanw equal_sens_~     0.525         214        214    0.844 0.0328 </span>
+<span class="co">#&gt;  9        4 meanw max_sens_sp~     0.313         214        214    0.943 0.104  </span>
+<span class="co">#&gt; 10        4 meanw max_sorensen     0.270         214        214    0.996 0.00781</span>
 <span class="co">#&gt; # ... with 20 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   regmult &lt;dbl&gt;, classes &lt;fct&gt;</span></code></pre></div>
-</div>
-<div id="fit-an-ensemble-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#fit-an-ensemble-model" class="anchor"></a>Fit an ensemble model</h2>
-<p>Spatial predictions from different SDM algorithms can vary substantially, and ensemble modeling has become increasingly popular. With the fit_ensemble() function, users can easily produce an ensemble SDM based on any of the individual fit_ and tune_ models included the package. In this example, we fit an ensemble model for red fir based on the weighted average of the three individual models. We used the same threshold values and performance metric that were implemented in the individual models.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ens_m <span class="ot">&lt;-</span> <span class="fu">fit_ensemble</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(t_max, f_gau, f_glm),</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ens_method =</span> <span class="st">"meanw"</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="fu">c</span>(<span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span>),</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr_model =</span> <span class="st">"max_sens_spec"</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"TSS"</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>ens_m<span class="sc">$</span>performance</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 x 25</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_s~     0.525         214        214    0.844 0.0328     0.854</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec     0.313         214        214    0.943 0.104      0.846</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen      0.270         214        214    0.996 0.00781    0.787</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 <div id="project-the-ensemble-model" class="section level2">
 <h2 class="hasAnchor">
@@ -444,26 +447,27 @@
 <span class="co">#&gt; Predicting ensembles</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">pr_1</span><span class="op">$</span><span class="va">meanw</span><span class="op">)</span></code></pre></div>
-<p><img src="04_Red_fir_example_files/figure-html/project%20models-1.png" width="576"></p>
+<p><img src="04_Red_fir_example_files/figure-html/predict%20models-1.png" width="576"></p>
 </div>
 <div id="constrain-it-with-msdm_posterior" class="section level2">
 <h2 class="hasAnchor">
 <a href="#constrain-it-with-msdm_posterior" class="anchor"></a>Constrain it with msdm_posterior</h2>
-<p>Finally, <em>flexsdm</em> offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method “occurrence based restriction”, which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).</p>
+<p>Finally, <em>flexsdm</em> offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method “occurrence based restriction”, which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. Because all methods of the msdm_posteriori() function work with presences it is important to always use the original database (i.e., presences that have not been spatially or environmentally filtered). All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">m_obr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msdm_posteriori.html">msdm_posteriori</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">thr_val</span> <span class="op">&lt;-</span> <span class="va">ens_m</span><span class="op">$</span><span class="va">performance</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">threshold</span><span class="op">==</span><span class="st">'max_sens_spec'</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">thr_value</span><span class="op">)</span>
+
+<span class="va">m_pres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msdm_posteriori.html">msdm_posteriori</a></span><span class="op">(</span>
   records <span class="op">=</span> <span class="va">abies_df2</span>,
   x <span class="op">=</span> <span class="st">"x"</span>,
   y <span class="op">=</span> <span class="st">"y"</span>,
   pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
   cont_suit <span class="op">=</span> <span class="va">pr_1</span><span class="op">$</span><span class="va">meanw</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"obr"</span><span class="op">)</span>,
-  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span>,
+  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'sensitivity'</span>, sens<span class="op">=</span><span class="va">thr_val</span><span class="op">)</span>,
   buffer <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">m_obr</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">m_pres</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/constrain%20with%20msdm-1.png" width="576"> #=========#=========#=========#=========#=========#=========#=========#</p>
 <p><strong>Vignette still under construction and changes</strong></p>
 <p>#=========#=========#=========#=========#=========#=========#=========#</p>

@@ -58,7 +58,7 @@ somevar[[1]] %>% plot()
 points(abies_df %>% select(x, y))
 ```
 
-This figure shows the species occurrences, using the map of one of the encironmental variables (actual evapotranspiration) as background.
+This figure shows the species occurrences, using the map of one of the environmental variables (actual evapotranspiration) as background.
 
 Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data
 
@@ -294,7 +294,9 @@ plot(pr_1$meanw)
 
 ## Constrain it with msdm_posterior 
 
-Finally, *flexsdm* offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method "occurrence based restriction", which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).  
+Finally, *flexsdm* offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method "occurrence based restriction", which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. Because all methods of the msdm_posteriori() function work with presences it is 
+important to always use the original database (i.e., presences that have not been spatially or environmentally filtered).
+All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).  
 
 ```{r constrain with msdm}
 thr_val <- ens_m$performance %>% dplyr::filter(threshold=='max_sens_spec') %>% pull(thr_value)
