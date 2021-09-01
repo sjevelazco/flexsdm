@@ -93,52 +93,44 @@
 <a href="#study-species-overview-of-methods" class="anchor"></a>Study species &amp; overview of methods</h2>
 <p>Here, we used the <em>flexsdm</em> package to model the current distribution of California red fir (<em>Abies magnifica</em>). Red fir is a high-elevation conifer species that’s geographic range extends through the Sierra Nevada in California, USA, into the southern portion of the Cascade Range of Oregon. For this species, we used presence data compiled from several public datasets curated by natural resources agencies. We built the distribution models using four hydro-climatic variables: actual evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month. All variables were resampled (aggregated) to a 1890 m spatial resolution to improve processing time.</p>
 </div>
-<div id="occurrence-filtering" class="section level2">
+<div id="delimit-of-a-calibration-area" class="section level2">
 <h2 class="hasAnchor">
-<a href="#occurrence-filtering" class="anchor"></a>Occurrence filtering</h2>
-<p>Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing redundancy in environmental (e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to <em>flexsdm</em>, and in contrast with other packages is able to use any number of environmental dimensions and does not perform a PCA before filtering.</p>
+<a href="#delimit-of-a-calibration-area" class="anchor"></a>Delimit of a calibration area</h2>
+<p>Delimiting the calibration area (aka accessible area) is an essential step in SDMs both in methodological and theoretical terms. The calibration area will affect several characteristics of a SDM like the range of environmental variables, the number of absences, the distribution of background points and pseudo-absences, and unfortunately, some performance metrics like AUC and TSS. Exist several ways to delimit a calibration area. In <a href="https://sjevelazco.github.io/flexsdm/reference/calib_area.html">calib_area()</a>. We used a method that the calibration area is delimited by a buffer around presences.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
-<span class="co">#&gt; terra version 1.3.4</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'terra'</span>
-<span class="co">#&gt; The following object is masked from 'package:knitr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     spin</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:terra':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, src, union</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="co"># environmental data</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>
 
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span>
-<span class="va">abies_df</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">pr_ab</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
+<span class="va">abies_p</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">pr_ab</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
 
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_df</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_p</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/raw%20data-1.png" width="576"></p>
 <p>This figure shows the species occurrences, using the map of one of the environmental variables (actual evapotranspiration) as background.</p>
-<p>Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">abies_df</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">nrow</a></span><span class="op">(</span><span class="va">abies_df</span><span class="op">)</span> <span class="co"># adding unique id to each row</span>
+<code class="sourceCode R"><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abies_p</span>, x <span class="op">=</span> <span class="st">'x'</span>, y <span class="op">=</span> <span class="st">'y'</span>, method <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'buffer'</span>, width<span class="op">=</span><span class="fl">80000</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Loading required namespace: rgeos</span>
+<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_p</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="04_Red_fir_example_files/figure-html/calibration%20area-1.png" width="576"></p>
+</div>
+<div id="occurrence-filtering" class="section level2">
+<h2 class="hasAnchor">
+<a href="#occurrence-filtering" class="anchor"></a>Occurrence filtering</h2>
+<p>Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing redundancy in environmental (e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to <em>flexsdm</em>, and in contrast with other packages is able to use any number of environmental dimensions and does not perform a PCA before filtering.</p>
+<p>Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">abies_p</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">nrow</a></span><span class="op">(</span><span class="va">abies_p</span><span class="op">)</span> <span class="co"># adding unique id to each row</span>
 
-<span class="va">abies_df2</span> <span class="op">&lt;-</span> <span class="va">abies_df</span> <span class="op">%&gt;%</span>
+<span class="va">abies_pf</span> <span class="op">&lt;-</span> <span class="va">abies_p</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="va">.</span>,
     x <span class="op">=</span> <span class="st">"x"</span>,
@@ -148,7 +140,7 @@
     env_layer <span class="op">=</span> <span class="va">somevar</span>,
     cores <span class="op">=</span> <span class="fl">2</span>
   <span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">abies_df</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">abies_p</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Extracting values from raster ...</span>
 <span class="co">#&gt; 27 records were removed because they have NAs for some variables</span>
 <span class="co">#&gt; Number of classes in the environmental space: 6561</span>
@@ -157,23 +149,23 @@
 
 
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_df2</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_pf</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/occurrence%20filtering-1.png" width="576"></p>
 </div>
 <div id="block-partition-with-4-folds" class="section level2">
 <h2 class="hasAnchor">
 <a href="#block-partition-with-4-folds" class="anchor"></a>Block partition with 4 folds</h2>
 <p>Data partitioning, or splitting data into testing and training groups, is a key step in building SDMs. <em>flexsdm</em> offers multiple options for data partitioning and here we use a spatial block method. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The part_sblock() function explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input datset based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each block partition. The function’s output provides users with 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. Here we want to divide the data into 4 different partitions using the spatial block method.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">occ_part</span> <span class="op">&lt;-</span> <span class="va">abies_df2</span> <span class="op">%&gt;%</span>
+<span class="va">occ_part</span> <span class="op">&lt;-</span> <span class="va">abies_pf</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/part_sblock.html">part_sblock</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="va">.</span>,
     env_layer <span class="op">=</span> <span class="va">somevar</span>,
     pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
     x <span class="op">=</span> <span class="st">"x"</span>,
     y <span class="op">=</span> <span class="st">"y"</span>,
-    n_part <span class="op">=</span> <span class="fl">4</span>,
+    n_part <span class="op">=</span> <span class="fl">2</span>,
     min_res_mult <span class="op">=</span> <span class="fl">3</span>,
     max_res_mult <span class="op">=</span> <span class="fl">200</span>,
     num_grids <span class="op">=</span> <span class="fl">30</span>,
@@ -184,53 +176,72 @@
 <span class="co">#&gt; Creating basic raster mask...</span>
 <span class="co">#&gt; Searching for the optimal grid size...</span>
 
-<span class="va">abies_df2</span> <span class="op">&lt;-</span> <span class="va">occ_part</span><span class="op">$</span><span class="va">part</span>
+<span class="va">abies_pf</span> <span class="op">&lt;-</span> <span class="va">occ_part</span><span class="op">$</span><span class="va">part</span>
 
 
 <span class="co"># Transform best block partition to a raster layer with same resolution and extent than </span>
 <span class="co"># predictor variables </span>
 <span class="va">block_layer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_block.html">get_block</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, best_grid <span class="op">=</span> <span class="va">occ_part</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_df2</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_pf</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/block%20partition-1.png" width="576"></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="co">#Number of presences per block</span>
+<span class="va">abies_pf</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">.part</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 2 x 2</span>
+<span class="co">#&gt; # Groups:   .part [2]</span>
+<span class="co">#&gt;   .part     n</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt; 1     1   121</span>
+<span class="co">#&gt; 2     2    93</span>
+
+<span class="co"># Additional information of the best block </span>
+<span class="va">occ_part</span><span class="op">$</span><span class="va">best_part_info</span>
+<span class="co">#&gt; # A tibble: 1 x 5</span>
+<span class="co">#&gt;   n_grid cell_size spa_auto env_sim  sd_p</span>
+<span class="co">#&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1     23   288127.    0.099    181.  19.8</span></code></pre></div>
 </div>
 <div id="pseudo-absencebackground-points-using-partition-previously-created-as-a-mask" class="section level2">
 <h2 class="hasAnchor">
 <a href="#pseudo-absencebackground-points-using-partition-previously-created-as-a-mask" class="anchor"></a>Pseudo-absence/background points (using partition previously created as a mask)</h2>
 <p>In this example, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we will use the spatial block partition we just created to generate pseudo-absence and background points.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Spatial blocks where species occurs</span>
 <span class="co"># Sample background points throughout study area with random method, allocating 10X the number of presences a background</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/sample_background.html">sample_background</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="va">abies_df2</span>,
+    data <span class="op">=</span> <span class="va">abies_pf</span>,
     x <span class="op">=</span> <span class="st">"x"</span>,
     y <span class="op">=</span> <span class="st">"y"</span>,
-    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">abies_df2</span><span class="op">$</span><span class="va">.part</span><span class="op">==</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,
+    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">abies_pf</span><span class="op">$</span><span class="va">.part</span><span class="op">==</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,
     method <span class="op">=</span> <span class="st">"random"</span>,
     rlayer <span class="op">=</span> <span class="va">block_layer</span>, 
-    maskval <span class="op">=</span> <span class="va">x</span>
+    maskval <span class="op">=</span> <span class="va">x</span>, <span class="co"># this argument will constraint sampling process to a given block</span>
+    calibarea <span class="op">=</span> <span class="va">ca</span> <span class="co"># this argument will constraint sampling process to the calibration area</span>
   <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> 
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">bg</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/pseudo/absence%20and%20background%20data-1.png" width="576"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bg</span>, x<span class="op">=</span><span class="st">"x"</span>, y<span class="op">=</span><span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
 
 <span class="co"># Sampling a number of pseudo-absences equal to the presences in each partition</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="va">abies_df2</span>,
+    data <span class="op">=</span> <span class="va">abies_pf</span>,
     x <span class="op">=</span> <span class="st">"x"</span>,
     y <span class="op">=</span> <span class="st">"y"</span>,
-    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">abies_df2</span><span class="op">$</span><span class="va">.part</span><span class="op">==</span><span class="va">x</span><span class="op">)</span>,
+    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">abies_pf</span><span class="op">$</span><span class="va">.part</span><span class="op">==</span><span class="va">x</span><span class="op">)</span>,
     method <span class="op">=</span> <span class="st">"random"</span>,
     rlayer <span class="op">=</span> <span class="va">block_layer</span>, 
-    maskval <span class="op">=</span> <span class="va">x</span>
+    maskval <span class="op">=</span> <span class="va">x</span>, <span class="co"># this argument will constraint sampling process to a given block</span>
+    calibarea <span class="op">=</span> <span class="va">ca</span>  <span class="co"># this argument will constraint sampling process to the calibration area </span>
   <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> 
 <span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">psa</span>, x<span class="op">=</span><span class="st">"x"</span>, y<span class="op">=</span><span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
@@ -238,47 +249,47 @@
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/pseudo/absence%20and%20background%20data-2.png" width="576"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 
 <span class="co"># Bind a presences and pseudo-absences</span>
-<span class="va">abies_df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">abies_df2</span>, <span class="va">psa</span><span class="op">)</span>
+<span class="va">abies_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">abies_pf</span>, <span class="va">psa</span><span class="op">)</span>
 
 
-<span class="va">abies_df2</span> <span class="co"># Presence-Pseudo-absence database</span>
+<span class="va">abies_pa</span> <span class="co"># Presence-Pseudo-absence database</span>
 <span class="co">#&gt; # A tibble: 428 x 4</span>
 <span class="co">#&gt;          x        y pr_ab .part</span>
 <span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 -12558.   68530.     1     3</span>
+<span class="co">#&gt;  1 -12558.   68530.     1     1</span>
 <span class="co">#&gt;  2 115217. -145937.     1     2</span>
 <span class="co">#&gt;  3   3634.   22501.     1     1</span>
-<span class="co">#&gt;  4  44972.  -60781.     1     1</span>
-<span class="co">#&gt;  5 -34463.  160313.     1     3</span>
-<span class="co">#&gt;  6  83108.  -27300.     1     2</span>
+<span class="co">#&gt;  4  44972.  -60781.     1     2</span>
+<span class="co">#&gt;  5 -34463.  160313.     1     1</span>
+<span class="co">#&gt;  6  83108.  -27300.     1     1</span>
 <span class="co">#&gt;  7 124877. -176319.     1     2</span>
 <span class="co">#&gt;  8 118707. -179991.     1     2</span>
 <span class="co">#&gt;  9 126141. -176302.     1     2</span>
-<span class="co">#&gt; 10 -49722.  141124.     1     3</span>
+<span class="co">#&gt; 10 -49722.  141124.     1     1</span>
 <span class="co">#&gt; # ... with 418 more rows</span>
 <span class="va">bg</span> <span class="co"># Background points</span>
 <span class="co">#&gt; # A tibble: 2,140 x 4</span>
-<span class="co">#&gt;           x        y pr_ab .part</span>
-<span class="co">#&gt;       &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 -153501.  343022.     0     1</span>
-<span class="co">#&gt;  2   16599.   10382.     0     1</span>
-<span class="co">#&gt;  3  -47661. -129478.     0     1</span>
-<span class="co">#&gt;  4 -110031. -148378.     0     1</span>
-<span class="co">#&gt;  5    -411.  -23638.     0     1</span>
-<span class="co">#&gt;  6   22269. -395968.     0     1</span>
-<span class="co">#&gt;  7 -161061.  276872.     0     1</span>
-<span class="co">#&gt;  8 -149721.  282542.     0     1</span>
-<span class="co">#&gt;  9  -34431.  -59548.     0     1</span>
-<span class="co">#&gt; 10 -113811. -133258.     0     1</span>
+<span class="co">#&gt;           x       y pr_ab .part</span>
+<span class="co">#&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 -263121. 435632.     0     1</span>
+<span class="co">#&gt;  2  -19311. 176702.     0     1</span>
+<span class="co">#&gt;  3 -312261. 341132.     0     1</span>
+<span class="co">#&gt;  4  -49551.  80312.     0     1</span>
+<span class="co">#&gt;  5    7149.  -8518.     0     1</span>
+<span class="co">#&gt;  6   35499.  -4738.     0     1</span>
+<span class="co">#&gt;  7 -251781. 307112.     0     1</span>
+<span class="co">#&gt;  8 -368961. 274982.     0     1</span>
+<span class="co">#&gt;  9 -208311. 361922.     0     1</span>
+<span class="co">#&gt; 10 -304701. 309002.     0     1</span>
 <span class="co">#&gt; # ... with 2,130 more rows</span></code></pre></div>
 <p>Extract environmental data for the datasets. View the distributions of present points, pseudo-absence points, and background points using the blocks as a reference map.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">abies_df2</span> <span class="op">&lt;-</span> <span class="va">abies_df2</span> <span class="op">%&gt;%</span>
+<span class="va">abies_pa</span> <span class="op">&lt;-</span> <span class="va">abies_pa</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="va">.</span>,
     x <span class="op">=</span> <span class="st">"x"</span>,
@@ -321,9 +332,9 @@
 <h2 class="hasAnchor">
 <a href="#fit-models-with-tune_max-fit_gau-and-third-one" class="anchor"></a>Fit models with tune_max, fit_gau, and third one</h2>
 <p>Now, fit our models. The <em>flexsdm</em> package offers a wide range of modeling options, from traditional statistical methods like GLMs and GAMs, to machine learning methods like random forests and support vector machines. For each modeling method, <em>flexsdm</em> provides both fit_ and tune_ functions, which allow users to use default settings or adjust hyperparameters depending on their research goals. Here, we will test out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian Process model), and fit_glm (fit Generalized Linear Model). For each model, we selected three threshold values to generate binary suitability predictions: the threshold that maximizes TSS (max_sens_spec), the threshold at which sensitivity and specificity are equal (equal_sens_spec), and the threshold at which the Sorenson index is highest (max_sorenson). In this example, we selected TSS as the performance metric used for selecting the best combination of hyper-parameter values in the tuned Maximum Entropy model.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tune_max.html">tune_max</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">abies_df2</span>,
+  data <span class="op">=</span> <span class="va">abies_pa</span>,
   response <span class="op">=</span> <span class="st">"pr_ab"</span>,
   predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>,
   background <span class="op">=</span> <span class="va">bg</span>,
@@ -338,33 +349,27 @@
   pred_type <span class="op">=</span> <span class="st">"cloglog"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Replica number: 1/1</span>
-<span class="co">#&gt; Partition number: 1/4</span>
-<span class="co">#&gt; Partition number: 2/4</span>
-<span class="co">#&gt; Partition number: 3/4</span>
-<span class="co">#&gt; Partition number: 4/4</span>
+<span class="co">#&gt; Partition number: 1/2</span>
+<span class="co">#&gt; Partition number: 2/2</span>
 <span class="co">#&gt; Formula used for model fitting:</span>
 <span class="co">#&gt; ~aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2) - 1</span>
 <span class="co">#&gt; Replica number: 1/1</span>
-<span class="co">#&gt; Partition number: 1/4</span>
-<span class="co">#&gt; Partition number: 2/4</span>
-<span class="co">#&gt; Partition number: 3/4</span>
-<span class="co">#&gt; Partition number: 4/4</span>
+<span class="co">#&gt; Partition number: 1/2</span>
+<span class="co">#&gt; Partition number: 2/2</span>
 
 <span class="va">f_gau</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_gau.html">fit_gau</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">abies_df2</span>,
+  data <span class="op">=</span> <span class="va">abies_pa</span>,
   response <span class="op">=</span> <span class="st">"pr_ab"</span>,
   predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>,
   partition <span class="op">=</span> <span class="st">".part"</span>,
   thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt; Replica number: 1/1</span>
-<span class="co">#&gt; Partition number: 1/4</span>
-<span class="co">#&gt; Partition number: 2/4</span>
-<span class="co">#&gt; Partition number: 3/4</span>
-<span class="co">#&gt; Partition number: 4/4</span>
+<span class="co">#&gt; Partition number: 1/2</span>
+<span class="co">#&gt; Partition number: 2/2</span>
 
 <span class="va">f_glm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_glm.html">fit_glm</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">abies_df2</span>,
+  data <span class="op">=</span> <span class="va">abies_pa</span>,
   response <span class="op">=</span> <span class="st">"pr_ab"</span>,
   predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>,
   partition <span class="op">=</span> <span class="st">".part"</span>,
@@ -373,58 +378,56 @@
 <span class="co">#&gt; Formula used for model fitting:</span>
 <span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span>
 <span class="co">#&gt; Replica number: 1/1</span>
-<span class="co">#&gt; Partition number: 1/4</span>
-<span class="co">#&gt; Partition number: 2/4</span>
-<span class="co">#&gt; Partition number: 3/4</span>
-<span class="co">#&gt; Partition number: 4/4</span></code></pre></div>
+<span class="co">#&gt; Partition number: 1/2</span>
+<span class="co">#&gt; Partition number: 2/2</span></code></pre></div>
 </div>
 <div id="fit-an-ensemble-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#fit-an-ensemble-model" class="anchor"></a>Fit an ensemble model</h2>
 <p>Spatial predictions from different SDM algorithms can vary substantially, and ensemble modeling has become increasingly popular. With the fit_ensemble() function, users can easily produce an ensemble SDM based on any of the individual fit_ and tune_ models included the package. In this example, we fit an ensemble model for red fir based on the weighted average of the three individual models. We used the same threshold values and performance metric that were implemented in the individual models.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ens_m <span class="ot">&lt;-</span> <span class="fu">fit_ensemble</span>(</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(t_max, f_gau, f_glm),</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ens_method =</span> <span class="st">"meanw"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="fu">c</span>(<span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span>),</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr_model =</span> <span class="st">"max_sens_spec"</span>,</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"TSS"</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>ens_m<span class="sc">$</span>performance</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 x 25</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_s~     0.525         214        214    0.844 0.0328     0.854</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec     0.313         214        214    0.943 0.104      0.846</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen      0.270         214        214    0.996 0.00781    0.787</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ens_m <span class="ot">&lt;-</span> <span class="fu">fit_ensemble</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(t_max, f_gau, f_glm),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ens_method =</span> <span class="st">"meanw"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="fu">c</span>(<span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr_model =</span> <span class="st">"max_sens_spec"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"TSS"</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>ens_m<span class="sc">$</span>performance</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 x 25</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold       thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_spec     0.471         214        214    0.781 0.0519    0.786</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec       0.405         214        214    0.857 0.126     0.749</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen        0.316         214        214    0.934 0.0473    0.664</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span></code></pre></div>
 <p>The output of <em>flexsdm</em> model objects allows you to easily compare metrics across models, such as AUC or TSS. For example, we can use the sdm_summarize() function to merge model performance tables.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">t_max</span>, <span class="va">f_gau</span>, <span class="va">f_glm</span>, <span class="va">ens_m</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">model_perf</span>
 <span class="co">#&gt; # A tibble: 10 x 28</span>
-<span class="co">#&gt;    model_ID model threshold    thr_value n_presences n_absences TPR_mean  TPR_sd</span>
-<span class="co">#&gt;       &lt;int&gt; &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1        1 max   max_sens_sp~     0.380         214        214    0.952 0.0957 </span>
-<span class="co">#&gt;  2        2 gau   equal_sens_~     0.661         214        214    0.848 0.0338 </span>
-<span class="co">#&gt;  3        2 gau   max_sens_sp~     0.544         214        214    0.947 0.0468 </span>
-<span class="co">#&gt;  4        2 gau   max_sorensen     0.379         214        214    0.978 0.0352 </span>
-<span class="co">#&gt;  5        3 glm   equal_sens_~     0.595         214        214    0.830 0.0548 </span>
-<span class="co">#&gt;  6        3 glm   max_sens_sp~     0.350         214        214    0.954 0.0410 </span>
-<span class="co">#&gt;  7        3 glm   max_sorensen     0.350         214        214    0.969 0.0511 </span>
-<span class="co">#&gt;  8        4 meanw equal_sens_~     0.525         214        214    0.844 0.0328 </span>
-<span class="co">#&gt;  9        4 meanw max_sens_sp~     0.313         214        214    0.943 0.104  </span>
-<span class="co">#&gt; 10        4 meanw max_sorensen     0.270         214        214    0.996 0.00781</span>
+<span class="co">#&gt;    model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
+<span class="co">#&gt;       &lt;int&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt;  1        1 max   max_sens_spec     0.526         214        214    0.861 0.166 </span>
+<span class="co">#&gt;  2        2 gau   equal_sens_s~     0.604         214        214    0.779 0.0385</span>
+<span class="co">#&gt;  3        2 gau   max_sens_spec     0.406         214        214    0.847 0.110 </span>
+<span class="co">#&gt;  4        2 gau   max_sorensen      0.387         214        214    0.960 0.0257</span>
+<span class="co">#&gt;  5        3 glm   equal_sens_s~     0.548         214        214    0.765 0.0887</span>
+<span class="co">#&gt;  6        3 glm   max_sens_spec     0.414         214        214    0.881 0.0771</span>
+<span class="co">#&gt;  7        3 glm   max_sorensen      0.414         214        214    0.881 0.0771</span>
+<span class="co">#&gt;  8        4 meanw equal_sens_s~     0.471         214        214    0.781 0.0519</span>
+<span class="co">#&gt;  9        4 meanw max_sens_spec     0.405         214        214    0.857 0.126 </span>
+<span class="co">#&gt; 10        4 meanw max_sorensen      0.316         214        214    0.934 0.0473</span>
 <span class="co">#&gt; # ... with 20 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
@@ -436,7 +439,7 @@
 <h2 class="hasAnchor">
 <a href="#project-the-ensemble-model" class="anchor"></a>Project the ensemble model</h2>
 <p>Next we project the ensemble model in space across the entire extent of our environmental layer, the California Floristic Province, using the sdm_predict() function. This function can be use to predict species suitability across any area for species’ current or future suitability. In this example, we only project the ensemble model with one threshold, though users have the option to project multiple models with multiple threshold values. Here, we also specify that we want the function to return a SpatRast with continuous suitability values above the threshold (con_thr = TRUE).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pr_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span>
   models <span class="op">=</span> <span class="va">ens_m</span>,
   pred <span class="op">=</span> <span class="va">somevar</span>,
@@ -453,11 +456,11 @@
 <h2 class="hasAnchor">
 <a href="#constrain-it-with-msdm_posterior" class="anchor"></a>Constrain it with msdm_posterior</h2>
 <p>Finally, <em>flexsdm</em> offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method “occurrence based restriction”, which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. Because all methods of the msdm_posteriori() function work with presences it is important to always use the original database (i.e., presences that have not been spatially or environmentally filtered). All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">thr_val</span> <span class="op">&lt;-</span> <span class="va">ens_m</span><span class="op">$</span><span class="va">performance</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">threshold</span><span class="op">==</span><span class="st">'max_sens_spec'</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">thr_value</span><span class="op">)</span>
 
 <span class="va">m_pres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msdm_posteriori.html">msdm_posteriori</a></span><span class="op">(</span>
-  records <span class="op">=</span> <span class="va">abies_df2</span>,
+  records <span class="op">=</span> <span class="va">abies_p</span>,
   x <span class="op">=</span> <span class="st">"x"</span>,
   y <span class="op">=</span> <span class="st">"y"</span>,
   pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,

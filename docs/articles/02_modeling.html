@@ -173,7 +173,7 @@
               threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
               return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmpy2nD2q/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpKsKfqr/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="data-species-occurrence-and-background-data" class="section level2">
 <h2 class="hasAnchor">
@@ -240,7 +240,7 @@
 <span class="co">#&gt; $ awc      &lt;dbl&gt; 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0~</span>
 <span class="co">#&gt; $ depth    &lt;dbl&gt; 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99~</span>
 <span class="co">#&gt; $ landform &lt;fct&gt; 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1~</span>
-<span class="co">#&gt; $ .part    &lt;int&gt; 5, 5, 5, 2, 2, 5, 1, 4, 2, 4, 1, 5, 4, 1, 2, 1, 2, 2, 4, 2, 2~</span></code></pre></div>
+<span class="co">#&gt; $ .part    &lt;int&gt; 4, 2, 3, 3, 3, 5, 4, 3, 3, 4, 5, 1, 1, 1, 5, 2, 4, 1, 2, 2, 2~</span></code></pre></div>
 <p>Now, in the abies2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record (row) is a member of. Next, we have to apply the same partition method and number of folds to the environmental conditions of the background points.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">backg2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
@@ -265,7 +265,7 @@
 <span class="co">#&gt; $ depth        &lt;dbl&gt; 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17~</span>
 <span class="co">#&gt; $ percent_clay &lt;dbl&gt; 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,~</span>
 <span class="co">#&gt; $ landform     &lt;fct&gt; 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, ~</span>
-<span class="co">#&gt; $ .part        &lt;int&gt; 3, 3, 3, 3, 3, 1, 4, 2, 5, 3, 2, 5, 1, 1, 2, 3, 1, 1, 1, ~</span></code></pre></div>
+<span class="co">#&gt; $ .part        &lt;int&gt; 4, 4, 2, 5, 3, 3, 5, 5, 1, 4, 4, 1, 2, 1, 4, 5, 1, 4, 3, ~</span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5).</p>
 <div id="fit-and-validate-models" class="section level3">
 <h3 class="hasAnchor">
@@ -323,9 +323,9 @@
 <span class="co">#&gt; # A tibble: 3 x 25</span>
 <span class="co">#&gt;   model threshold       thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 max   equal_sens_spec     0.591         700        700    0.656 0.0244    0.66 </span>
-<span class="co">#&gt; 2 max   max_sens_spec       0.573         700        700    0.871 0.0734    0.549</span>
-<span class="co">#&gt; 3 max   max_sorensen        0.415         700        700    0.957 0.0208    0.434</span>
+<span class="co">#&gt; 1 max   equal_sens_spec     0.591         700        700    0.664 0.0474    0.667</span>
+<span class="co">#&gt; 2 max   max_sens_spec       0.573         700        700    0.879 0.0299    0.544</span>
+<span class="co">#&gt; 3 max   max_sorensen        0.415         700        700    0.939 0.0186    0.467</span>
 <span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
@@ -337,16 +337,16 @@
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
 <span class="co">#&gt;    rnames replicates part  pr_ab    pred</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 7      .part      1         0 0.172  </span>
-<span class="co">#&gt;  2 11     .part      1         0 0.175  </span>
-<span class="co">#&gt;  3 14     .part      1         0 0.441  </span>
-<span class="co">#&gt;  4 16     .part      1         0 0.314  </span>
-<span class="co">#&gt;  5 22     .part      1         0 0.245  </span>
-<span class="co">#&gt;  6 24     .part      1         0 0.893  </span>
-<span class="co">#&gt;  7 44     .part      1         0 0.594  </span>
-<span class="co">#&gt;  8 48     .part      1         0 0.168  </span>
-<span class="co">#&gt;  9 51     .part      1         0 0.00869</span>
-<span class="co">#&gt; 10 53     .part      1         0 0.599  </span>
+<span class="co">#&gt;  1 12     .part      1         0 0.322  </span>
+<span class="co">#&gt;  2 13     .part      1         0 0.0475 </span>
+<span class="co">#&gt;  3 14     .part      1         0 0.447  </span>
+<span class="co">#&gt;  4 18     .part      1         0 0.0168 </span>
+<span class="co">#&gt;  5 23     .part      1         0 0.638  </span>
+<span class="co">#&gt;  6 29     .part      1         0 0.00118</span>
+<span class="co">#&gt;  7 31     .part      1         0 0.422  </span>
+<span class="co">#&gt;  8 35     .part      1         0 0.498  </span>
+<span class="co">#&gt;  9 38     .part      1         0 0.181  </span>
+<span class="co">#&gt; 10 47     .part      1         0 0.301  </span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability and test partition for each observation (row).</p>
 <p>II- Random forest models with exploration of hyper-parameters.</p>
@@ -415,7 +415,7 @@
 <span class="co">#&gt; # A tibble: 1 x 26</span>
 <span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     1 raf   max_sens_spec     0.636         700        700     0.92 0.0340</span>
+<span class="co">#&gt; 1     1 raf   max_sens_spec     0.636         700        700    0.911 0.0310</span>
 <span class="co">#&gt; # ... with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
@@ -427,16 +427,16 @@
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
 <span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 7      .part      1     0     0.046</span>
-<span class="co">#&gt;  2 11     .part      1     0     0.13 </span>
-<span class="co">#&gt;  3 14     .part      1     0     0.086</span>
-<span class="co">#&gt;  4 16     .part      1     0     0.048</span>
-<span class="co">#&gt;  5 22     .part      1     0     0.016</span>
-<span class="co">#&gt;  6 24     .part      1     0     0.832</span>
-<span class="co">#&gt;  7 44     .part      1     0     0.944</span>
-<span class="co">#&gt;  8 48     .part      1     0     0.032</span>
-<span class="co">#&gt;  9 51     .part      1     0     0.202</span>
-<span class="co">#&gt; 10 53     .part      1     0     0.534</span>
+<span class="co">#&gt;  1 12     .part      1     0     0.376</span>
+<span class="co">#&gt;  2 13     .part      1     0     0.018</span>
+<span class="co">#&gt;  3 14     .part      1     0     0.102</span>
+<span class="co">#&gt;  4 18     .part      1     0     0.012</span>
+<span class="co">#&gt;  5 23     .part      1     0     0.144</span>
+<span class="co">#&gt;  6 29     .part      1     0     0.018</span>
+<span class="co">#&gt;  7 31     .part      1     0     0.292</span>
+<span class="co">#&gt;  8 35     .part      1     0     0.166</span>
+<span class="co">#&gt;  9 38     .part      1     0     0.124</span>
+<span class="co">#&gt; 10 47     .part      1     0     0.062</span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability and test partition for each observation (row).</p>
 <p>These model objects can be used in flexsdm::fit_ensemble().</p>
