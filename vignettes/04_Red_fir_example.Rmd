@@ -33,12 +33,17 @@ library(knitr)
 
 Here, we used the *flexsdm* package to model the current distribution of California red fir (*Abies magnifica*). Red fir is a high-elevation conifer species that's geographic range extends through the Sierra Nevada in California, USA, into the southern portion of the Cascade Range of Oregon. For this species, we used presence data compiled from several public datasets curated by natural resources agencies. We built the distribution models using four hydro-climatic variables: actual evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month.  All variables were resampled (aggregated) to a 1890 m spatial resolution to improve processing time. 
 
-## Occurrence filtering
 
-Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing redundancy in environmental (e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to *flexsdm*, and in contrast with other packages is able to use any number of environmental dimensions and does not perform a PCA before filtering.
+## Delimit of a calibration area
 
+Delimiting the calibration area (aka accessible area) is an essential step in SDMs both in 
+methodological and theoretical terms. The calibration area will affect several characteristics of a 
+SDM like the range of environmental variables, the number of absences, the distribution of 
+background points and pseudo-absences, and unfortunately, some performance metrics like AUC and TSS. 
+Exist several ways to delimit a calibration area. In [calib_area()](https://sjevelazco.github.io/flexsdm/reference/calib_area.html). We used a
+method that the calibration area is delimited by a buffer around presences.
 
-```{r raw data}
+```{r raw data, message=FALSE}
 #devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(terra)
@@ -48,24 +53,35 @@ somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
 names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 
-regions <- system.file("external/regions.tif", package = "flexsdm")
-regions <- terra::rast(regions)
-
 data(abies)
-abies_df <- abies %>% select(x, y, pr_ab) %>% filter(pr_ab == 1)
+abies_p <- abies %>% select(x, y, pr_ab) %>% filter(pr_ab == 1)
 
 somevar[[1]] %>% plot()
-points(abies_df %>% select(x, y))
+points(abies_p %>% select(x, y))
 ```
 
 This figure shows the species occurrences, using the map of one of the environmental variables (actual evapotranspiration) as background.
 
+
+```{r calibration area}
+ca <- calib_area(data = abies_p, x = 'x', y = 'y', method =  c('buffer', width=80000))
+somevar[[1]] %>% plot()
+plot(ca, add=TRUE)
+points(abies_p %>% select(x, y))
+```
+
+
+
+## Occurrence filtering
+
+Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing redundancy in environmental (e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to *flexsdm*, and in contrast with other packages is able to use any number of environmental dimensions and does not perform a PCA before filtering.
+
 Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data
 
 ```{r occurrence filtering}
-abies_df$id <- 1:nrow(abies_df) # adding unique id to each row
+abies_p$id <- 1:nrow(abies_p) # adding unique id to each row
 
-abies_df2 <- abies_df %>%
+abies_pf <- abies_p %>%
   occfilt_env(
     data = .,
     x = "x",
@@ -75,11 +91,11 @@ abies_df2 <- abies_df %>%
     env_layer = somevar,
     cores = 2
   ) %>%
-  left_join(abies_df, by = c("id", "x", "y"))
+  left_join(abies_p, by = c("id", "x", "y"))
 
 
 somevar[[1]] %>% plot()
-points(abies_df2 %>% select("x", "y"))
+points(abies_pf %>% select("x", "y"))
 ```
 
 ## Block partition with 4 folds
@@ -89,28 +105,34 @@ Data partitioning, or splitting data into testing and training groups, is a key 
 
 ```{r block partition}
 set.seed(10)
-occ_part <- abies_df2 %>%
+occ_part <- abies_pf %>%
   part_sblock(
     data = .,
     env_layer = somevar,
     pr_ab = "pr_ab",
     x = "x",
     y = "y",
-    n_part = 4,
+    n_part = 2,
     min_res_mult = 3,
     max_res_mult = 200,
     num_grids = 30,
     prop = 1
   ) 
 
-abies_df2 <- occ_part$part
+abies_pf <- occ_part$part
 
 
 # Transform best block partition to a raster layer with same resolution and extent than 
 # predictor variables 
 block_layer <- get_block(env_layer = somevar, best_grid = occ_part$grid)
 plot(block_layer)
-points(abies_df2 %>% select("x", "y"))
+points(abies_pf %>% select("x", "y"))
+
+#Number of presences per block
+abies_pf %>% dplyr::group_by(.part) %>% dplyr::count()
+
+# Additional information of the best block 
+occ_part$best_part_info
 ```
 
 ## Pseudo-absence/background points (using partition previously created as a mask)
@@ -123,13 +145,14 @@ In this example, we only have species presence data. However, most SDM methods r
 
 set.seed(10)
 bg <- lapply(1:4, function(x) sample_background(
-    data = abies_df2,
+    data = abies_pf,
     x = "x",
     y = "y",
-    n = sum(abies_df2$.part==x) * 10,
+    n = sum(abies_pf$.part==x) * 10,
     method = "random",
     rlayer = block_layer, 
-    maskval = x
+    maskval = x, # this argument will constraint sampling process to a given block
+    calibarea = ca # this argument will constraint sampling process to the calibration area
   )) %>% 
   bind_rows() 
 
@@ -141,13 +164,14 @@ bg <- sdm_extract(data = bg, x="x", y="y", env_layer = block_layer)
 # Sampling a number of pseudo-absences equal to the presences in each partition
 set.seed(10)
 psa <- lapply(1:4, function(x) sample_pseudoabs(
-    data = abies_df2,
+    data = abies_pf,
     x = "x",
     y = "y",
-    n = sum(abies_df2$.part==x),
+    n = sum(abies_pf$.part==x),
     method = "random",
     rlayer = block_layer, 
-    maskval = x
+    maskval = x, # this argument will constraint sampling process to a given block
+    calibarea = ca  # this argument will constraint sampling process to the calibration area 
   )) %>% 
   bind_rows() 
 psa <- sdm_extract(data = psa, x="x", y="y", env_layer = block_layer)
@@ -157,10 +181,10 @@ points(psa)
 
 
 # Bind a presences and pseudo-absences
-abies_df2 <- bind_rows(abies_df2, psa)
+abies_pa <- bind_rows(abies_pf, psa)
 
 
-abies_df2 # Presence-Pseudo-absence database
+abies_pa # Presence-Pseudo-absence database
 bg # Background points
 
 ```
@@ -169,7 +193,7 @@ Extract environmental data for the datasets. View the distributions of present p
 
 ```{r extract environmental data for two datasets}
 
-abies_df2 <- abies_df2 %>%
+abies_pa <- abies_pa %>%
   sdm_extract(
     data = .,
     x = "x",
@@ -217,7 +241,7 @@ Now, fit our models. The *flexsdm* package offers a wide range of modeling optio
 
 ```{r fitting models}
 t_max <- tune_max(
-  data = abies_df2,
+  data = abies_pa,
   response = "pr_ab",
   predictors = names(somevar),
   background = bg,
@@ -233,7 +257,7 @@ t_max <- tune_max(
 )
 
 f_gau <- fit_gau(
-  data = abies_df2,
+  data = abies_pa,
   response = "pr_ab",
   predictors = names(somevar),
   partition = ".part",
@@ -241,7 +265,7 @@ f_gau <- fit_gau(
 )
 
 f_glm <- fit_glm(
-  data = abies_df2,
+  data = abies_pa,
   response = "pr_ab",
   predictors = names(somevar),
   partition = ".part",
@@ -302,7 +326,7 @@ All of the methods available in the msdm_posteriori() function are based on Mend
 thr_val <- ens_m$performance %>% dplyr::filter(threshold=='max_sens_spec') %>% pull(thr_value)
 
 m_pres <- msdm_posteriori(
-  records = abies_df2,
+  records = abies_p,
   x = "x",
   y = "y",
   pr_ab = "pr_ab",
