@@ -110,10 +110,10 @@ inv_bio <- function(e, p) {
 #'
 inv_geo <- function(e, p, d) {
   colnames(p) <- c("x", "y")
-  p <- terra::vect(p, geom = c("x", "y"))
-  r <- terra::rasterize(p, e)
-  b <- terra::buffer(r, width = d)
-  e <- mask(e, b, maskvalues = 1)
+  p <- terra::vect(p, geom = c("x", "y"), crs = terra::crs(e))
+  b <- terra::buffer(p, width = d)
+  b <- terra::rasterize(b, e, background = 0)
+  e <- terra::mask(e, b, maskvalues = 1)
   return(e)
 }
 
