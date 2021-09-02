@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">flexsdm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
       </span>
     </div>
 
@@ -62,7 +62,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/sjevelazco/flexsdm/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -78,7 +85,7 @@
       <h1 data-toc-skip>flexsdm: Red Fir example</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/sjevelazco/flexsdm/blob/master/vignettes/04_Red_fir_example.Rmd"><code>vignettes/04_Red_fir_example.Rmd</code></a></small>
       <div class="hidden name"><code>04_Red_fir_example.Rmd</code></div>
 
     </div>
@@ -373,10 +380,11 @@
   response <span class="op">=</span> <span class="st">"pr_ab"</span>,
   predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>,
   partition <span class="op">=</span> <span class="st">".part"</span>,
-  thr <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>
+  thr <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,
+  poly <span class="op">=</span> <span class="fl">2</span>
 <span class="op">)</span>
 <span class="co">#&gt; Formula used for model fitting:</span>
-<span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span>
+<span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2)</span>
 <span class="co">#&gt; Replica number: 1/1</span>
 <span class="co">#&gt; Partition number: 1/2</span>
 <span class="co">#&gt; Partition number: 2/2</span></code></pre></div>
@@ -402,9 +410,9 @@
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 x 25</span></span>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold       thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_spec     0.471         214        214    0.781 0.0519    0.786</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec       0.405         214        214    0.857 0.126     0.749</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen        0.316         214        214    0.934 0.0473    0.664</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_spec     0.425         214        214    0.785 0.0461    0.785</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec       0.302         214        214    0.937 0.0280    0.692</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen        0.270         214        214    0.979 0.0292    0.641</span></span>
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
@@ -422,12 +430,12 @@
 <span class="co">#&gt;  2        2 gau   equal_sens_s~     0.604         214        214    0.779 0.0385</span>
 <span class="co">#&gt;  3        2 gau   max_sens_spec     0.406         214        214    0.847 0.110 </span>
 <span class="co">#&gt;  4        2 gau   max_sorensen      0.387         214        214    0.960 0.0257</span>
-<span class="co">#&gt;  5        3 glm   equal_sens_s~     0.548         214        214    0.765 0.0887</span>
-<span class="co">#&gt;  6        3 glm   max_sens_spec     0.414         214        214    0.881 0.0771</span>
-<span class="co">#&gt;  7        3 glm   max_sorensen      0.414         214        214    0.881 0.0771</span>
-<span class="co">#&gt;  8        4 meanw equal_sens_s~     0.471         214        214    0.781 0.0519</span>
-<span class="co">#&gt;  9        4 meanw max_sens_spec     0.405         214        214    0.857 0.126 </span>
-<span class="co">#&gt; 10        4 meanw max_sorensen      0.316         214        214    0.934 0.0473</span>
+<span class="co">#&gt;  5        3 glm   equal_sens_s~     0.598         214        214    0.782 0.0654</span>
+<span class="co">#&gt;  6        3 glm   max_sens_spec     0.622         214        214    0.870 0.108 </span>
+<span class="co">#&gt;  7        3 glm   max_sorensen      0.393         214        214    0.960 0.0257</span>
+<span class="co">#&gt;  8        4 meanw equal_sens_s~     0.425         214        214    0.785 0.0461</span>
+<span class="co">#&gt;  9        4 meanw max_sens_spec     0.302         214        214    0.937 0.0280</span>
+<span class="co">#&gt; 10        4 meanw max_sorensen      0.270         214        214    0.979 0.0292</span>
 <span class="co">#&gt; # ... with 20 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
