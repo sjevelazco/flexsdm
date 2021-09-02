@@ -216,7 +216,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
   data <- data[, c(x, y)]
 
   if (!is.null(calibarea)) {
-    rlayer <- terra::mask(rlayer, calibarea)
+    rlayer <- rlayer %>% terra::crop(., calibarea) %>% terra::mask(., calibarea)
   }
 
   # Random method

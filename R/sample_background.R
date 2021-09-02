@@ -319,7 +319,7 @@ sample_background <-
 
     # Mask to calibration area
     if (!is.null(calibarea)) {
-      rlayer <- terra::mask(rlayer, calibarea)
+      rlayer <- rlayer %>% terra::crop(., calibarea) %>% terra::mask(., calibarea)
     }
 
     # Mask to maksvalue
