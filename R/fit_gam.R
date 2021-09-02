@@ -173,7 +173,7 @@ fit_gam <- function(data,
     })
 
   for (h in 1:np) {
-    # message("Replica number: ", h, "/", np)
+    message("Replica number: ", h, "/", np)
 
     out <- pre_tr_te(data, p_names, h)
     train <- out$train
@@ -186,7 +186,7 @@ fit_gam <- function(data,
     mod <- list()
 
     for (i in 1:np2) {
-      # message("Partition number: ", i, "/", np2)
+      message("Partition number: ", i, "/", np2)
       tryCatch(
         {
           suppressWarnings(mod[[i]] <-

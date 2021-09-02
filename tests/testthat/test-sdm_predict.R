@@ -8,6 +8,8 @@ test_that("test for fit_ function family", {
   levels(regions) <- c(unique(regions))
   somevar <- terra::rast(x = list(regions, somevar))
   rm(regions)
+  somevar2 <- rast(list(somevar, category2 = somevar$category))
+  names(somevar2)[6] <- "category2"
 
   # Species occurrences
   data("spp")
@@ -18,8 +20,8 @@ test_that("test for fit_ function family", {
       data = .,
       x = "x",
       y = "y",
-      env_layer = somevar,
-      variables = names(somevar),
+      env_layer = somevar2,
+      variables = names(somevar2),
       filter_na = TRUE
     ) %>%
     part_random(
@@ -158,8 +160,6 @@ test_that("test for fit_ function family", {
     size = 1
   )
 
-  somevar2 <- rast(list(somevar, category2 = somevar$category))
-  names(somevar2)[6] <- "category2"
   p <- sdm_predict(
     models = net2,
     pred = somevar2,

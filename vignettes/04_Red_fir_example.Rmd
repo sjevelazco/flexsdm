@@ -269,7 +269,8 @@ f_glm <- fit_glm(
   response = "pr_ab",
   predictors = names(somevar),
   partition = ".part",
-  thr =  c("max_sens_spec", "equal_sens_spec", "max_sorensen")
+  thr =  c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+  poly = 2
 )
 
 ```

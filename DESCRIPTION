@@ -1,7 +1,7 @@
 Package: flexsdm
 Type: Package
 Title: Tools for Data Preparation, Fitting, Prediction, Evaluation, and Post-Processing of Species Distribution Models
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
            email = "sjevelazco@gmail.com",
            comment = c(ORCID = "0000-0002-7527-0967")),
@@ -18,6 +18,7 @@ Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut",
            email = "jfrankl@ucr.edu",
            comment = c(ORCID = "0000-0003-0314-4598")))
 Maintainer: Santiago J.E. Velazco <sjevelazco@gmail.com>
+BugReports: https://github.com/sjevelazco/flexsdm/issues
 Depends: R (>= 3.5.0)
 Imports: 
     ape,
@@ -39,7 +40,7 @@ Imports:
     raster,
     methods,
     utils
-Description: flexsdm assists in the construction of flexible species distribution workflow 
+Description: A package for assisting in the construction of flexible species distribution workflow 
     by incorporating comprehensive tools for data preparation, model fitting, 
     prediction, evaluation, and model post-processing.
 License: GPL (>= 3)
