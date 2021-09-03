@@ -34,6 +34,7 @@
 #' @param metric character. Performance metric used for selecting the best combination of
 #' hyper-parameter values. One of the following metrics can be used: SORENSEN, JACCARD, FPB, TSS,
 #' KAPPA, AUC, and BOYCE. TSS is used as default.
+#' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #'
 #' @importFrom dplyr %>% select starts_with bind_rows tibble group_by_at summarise across everything pull
 #' @importFrom nnet nnet
@@ -93,6 +94,7 @@
 #'     grid = tune_grid,
 #'     thr = "max_sens_spec",
 #'     metric = "TSS",
+#'     n_cores = 1
 #'   )
 #'
 #' # Outputs
@@ -112,7 +114,8 @@ tune_net <-
            partition,
            grid = NULL,
            thr = NULL,
-           metric = "TSS") {
+           metric = "TSS",
+           n_cores = 1) {
     . <- model <- TPR <- IMAE <- thr_value <- n_presences <- n_absences <- NULL
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
@@ -199,8 +202,11 @@ tune_net <-
 
       eval_partial <- as.list(rep(NA, np2))
 
-      for (i in 1:np2) {
-        message("Partition number: ", i, "/", np2)
+      cl <- parallel::makeCluster(n_cores)
+      doParallel::registerDoParallel(cl)
+
+      eval_partial <- foreach::foreach(i = 1:np2, .export='sdm_eval', .packages = c("dplyr")) %dopar%{
+        # message("Partition number: ", i, "/", np2)
         mod <- as.list(rep(NA, nrow(grid)))
         names(mod) <- 1:nrow(grid)
         for (ii in 1:nrow(grid)) {
@@ -258,8 +264,9 @@ tune_net <-
             by = "tnames"
           )) %>%
           dplyr::select(-tnames)
-        eval_partial[[i]] <- eval
+        eval
       }
+      parallel::stopCluster(cl)
 
       # Create final database with parameter performance 1
       names(eval_partial) <- 1:np2

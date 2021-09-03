@@ -14,7 +14,8 @@ tune_gbm(
   partition,
   grid = NULL,
   thr = NULL,
-  metric = "TSS"
+  metric = "TSS",
+  n_cores = 1
 )
 }
 \arguments{
@@ -62,6 +63,8 @@ types if no threshold is specified.}
 \item{metric}{character. Performance metric used for selecting the best combination of
 hyper-parameter values. The following metrics can be used: SORENSEN, JACCARD, FPB, TSS,
 KAPPA, AUC, and BOYCE. TSS is used as the default.}
+
+\item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 }
 \value{
 A list object with:
@@ -117,7 +120,8 @@ gbm_t <-
     partition = ".part",
     grid = tune_grid,
     thr = "max_sens_spec",
-    metric = "TSS"
+    metric = "TSS",
+   n_cores = 1
   )
 
 # Outputs
