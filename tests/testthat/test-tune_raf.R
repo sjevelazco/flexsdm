@@ -219,7 +219,7 @@ test_that("missuse of grid ", {
 
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1))
+    expand.grid(mtryyy = seq(1, 4, 1))
 
   expect_error(
     raf_t <-
@@ -229,7 +229,7 @@ test_that("missuse of grid ", {
         predictors = c("aet", "awc", "depth"),
         predictors_f = c("landform"),
         partition = ".part",
-        grid = grid,
+        grid = tune_grid,
         thr = "max_sens_spec",
         metric = "TSS"
       )

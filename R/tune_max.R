@@ -100,7 +100,7 @@
 #' gridtest <-
 #'   expand.grid(
 #'     regmult = seq(0.1, 3, 0.5),
-#'     classes = c("l", "lq", "lqhpt")
+#'     classes = c("l", "lq", "lqh")
 #'   )
 #'
 #' max_t1 <- tune_max(
@@ -274,13 +274,13 @@ tune_max <-
         rm(background2)
       }
 
-      eval_partial <- as.list(rep(NA, np2))
-
-      for (i in 1:np2) {
-        message("Partition number: ", i, "/", np2)
-        mod <- foreach::foreach(ii =  1:nrow(grid)) %dopar% {
+      eval_partial <- foreach::foreach(i = 1:np2, .export='sdm_eval', .packages = c("dplyr")) %dopar%{
+        # message("Partition number: ", i, "/", np2)
+        mod <- as.list(rep(NA, nrow(grid)))
+        names(mod) <- 1:nrow(grid)
+        for (ii in 1:nrow(grid)) {
           set.seed(1)
-          try(
+          try(mod[[ii]] <-
             maxnet::maxnet(
               p = train[[i]][, response],
               data = train[[i]][predictors],
@@ -291,7 +291,6 @@ tune_max <-
               regmult = grid$regmult[ii]
             ))
         }
-        names(mod) <- 1:nrow(grid)
 
         filt <- sapply(mod, function(x) length(class(x)) == 3)
         mod <- mod[filt]
@@ -357,15 +356,16 @@ tune_max <-
                                          by = "tnames"
           )) %>%
           dplyr::select(-tnames)
-        eval_partial[[i]] <- eval
+        eval
       }
+      parallel::stopCluster(cl)
+
       # Create final database with parameter performance 1
       names(eval_partial) <- 1:np2
       eval_partial <- eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
         dplyr::bind_rows(., .id = "partition")
       eval_partial_list[[h]] <- eval_partial
     }
-    parallel::stopCluster(cl)
 
     # Create final database with parameter performance 2
     eval_partial <- eval_partial_list %>%

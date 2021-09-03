@@ -35,10 +35,10 @@
 #' thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity',
 #' sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold
 #' types if no threshold is specified.
-#'
 #' @param metric character. Performance metric used for selecting the best combination of
 #' hyper-parameter values. The following metrics can be used: SORENSEN, JACCARD, FPB, TSS,
 #' KAPPA, AUC, and BOYCE. TSS is used as the default.
+#' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #'
 #' @return
 #'
@@ -100,7 +100,8 @@
 #'     partition = ".part",
 #'     grid = tune_grid,
 #'     thr = "max_sens_spec",
-#'     metric = "TSS"
+#'     metric = "TSS",
+#'    n_cores = 1
 #'   )
 #'
 #' # Outputs
@@ -141,7 +142,8 @@ tune_gbm <-
            partition,
            grid = NULL,
            thr = NULL,
-           metric = "TSS") {
+           metric = "TSS",
+           n_cores = 1) {
     . <- model <- TPR <- IMAE <- thr_value <- n_presences <- n_absences <- NULL
     variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
@@ -215,6 +217,10 @@ tune_gbm <-
     np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
     p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
     eval_partial_list <- list()
+
+    cl <- parallel::makeCluster(n_cores)
+    doParallel::registerDoParallel(cl)
+
     for (h in 1:np) {
       message("Replica number: ", h, "/", np)
 
@@ -224,10 +230,10 @@ tune_gbm <-
       np2 <- out$np2
       rm(out)
 
-      eval_partial <- as.list(rep(NA, np2))
+      # eval_partial <- as.list(rep(NA, np2))
 
-      for (i in 1:np2) {
-        message("Partition number: ", i, "/", np2)
+      eval_partial <- foreach::foreach(i = 1:np2, .export='sdm_eval', .packages = c("dplyr")) %dopar%{
+        # message("Partition number: ", i, "/", np2)
         mod <- as.list(rep(NA, nrow(grid)))
         names(mod) <- 1:nrow(grid)
         for (ii in 1:nrow(grid)) {
@@ -287,8 +293,9 @@ tune_gbm <-
             by = "tnames"
           )) %>%
           dplyr::select(-tnames)
-        eval_partial[[i]] <- eval
+        eval
       }
+      parallel::stopCluster(cl)
 
       # Create final database with parameter performance
       names(eval_partial) <- 1:np2

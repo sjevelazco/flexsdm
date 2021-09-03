@@ -119,7 +119,7 @@ backg
 gridtest <-
   expand.grid(
     regmult = seq(0.1, 3, 0.5),
-    classes = c("l", "lq", "lqhpt")
+    classes = c("l", "lq", "lqh")
   )
 
 max_t1 <- tune_max(

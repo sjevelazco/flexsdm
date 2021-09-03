@@ -13,7 +13,8 @@ tune_raf(
   partition,
   grid = NULL,
   thr = NULL,
-  metric = "TSS"
+  metric = "TSS",
+  n_cores = 1
 )
 }
 \arguments{
@@ -62,6 +63,8 @@ If using more than one threshold type concatenate them, e.g., thr=c('lpt', 'max_
 \item{metric}{character. Performance metric used for selecting the best combination of hyper
 -parameter values. One of the following metrics can be used: SORENSEN, JACCARD, FPB, TSS, KAPPA,
 AUC, and BOYCE. TSS is used as default.}
+
+\item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 }
 \value{
 A list object with:
@@ -109,6 +112,7 @@ rf_t <-
     grid = tune_grid,
     thr = "max_sens_spec",
     metric = "TSS",
+    n_cores = 1
   )
 
 # Outputs
