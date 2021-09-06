@@ -12,9 +12,11 @@
 #' response, predictors, and predictors_f arguments. Defaul NULL.
 #' @param partition character. Column name with training and validation partition groups.
 #' @param grid data.frame.  A data frame object with algorithm hyper-parameters values to be
-#' tested. It is recommended to generate this data.frame with the grid() function. More than one
-#' threshold type can be used. It is necessary to provide a vector for this argument. The following
-#' threshold types are available:
+#' tested. It is recommended to generate this data.frame with the grid() function.
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for
+#' threshold-dependent performance metrics. It is possible to use more than one threshold type.
+#' It is necessary to provide a vector for this argument. The following threshold types are
+#' available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.

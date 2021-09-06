@@ -298,6 +298,7 @@ sample_background <-
            maskval = NULL,
            calibarea = NULL,
            rbias = NULL) {
+    . <- NULL
     if (!method[1] %in% c("random", "thickening", "biased")) {
       stop("argument 'method' was misused, available methods 'random', 'thickening'")
     }

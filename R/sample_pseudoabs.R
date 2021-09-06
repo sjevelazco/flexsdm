@@ -198,7 +198,7 @@
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' }
 sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, calibarea = NULL) {
-  ID <- NULL
+  . <- ID <- NULL
 
   if (!any(c(
     "random",
