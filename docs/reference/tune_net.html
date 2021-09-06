@@ -141,7 +141,8 @@
   <span class='va'>partition</span>,
   grid <span class='op'>=</span> <span class='cn'>NULL</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>,
-  metric <span class='op'>=</span> <span class='st'>"TSS"</span>
+  metric <span class='op'>=</span> <span class='st'>"TSS"</span>,
+  n_cores <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -179,9 +180,14 @@ response, predictors, and predictors_f arguments. Defaul NULL.</p></td>
     <tr>
       <th>grid</th>
       <td><p>data.frame.  A data frame object with algorithm hyper-parameters values to be
-tested. It is recommended to generate this data.frame with the grid() function. More than one
-threshold type can be used. It is necessary to provide a vector for this argument. The following
-threshold types are available:</p><ul>
+tested. It is recommended to generate this data.frame with the grid() function.</p></td>
+    </tr>
+    <tr>
+      <th>thr</th>
+      <td><p>character. Threshold used to get binary suitability values (i.e. 0,1), needed for
+threshold-dependent performance metrics. It is possible to use more than one threshold type.
+It is necessary to provide a vector for this argument. The following threshold types are
+available:</p><ul>
 <li><p>lpt: The highest threshold at which there is no omission.</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
 <li><p>max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the
@@ -202,6 +208,10 @@ threshold types are available:</p><ul>
       <td><p>character. Performance metric used for selecting the best combination of
 hyper-parameter values. One of the following metrics can be used: SORENSEN, JACCARD, FPB, TSS,
 KAPPA, AUC, and BOYCE. TSS is used as default.</p></td>
+    </tr>
+    <tr>
+      <th>n_cores</th>
+      <td><p>numeric. Number of cores use for parallelization. Default 1</p></td>
     </tr>
     </table>
 
@@ -258,6 +268,7 @@ the hyper-parameters.</p></li>
     grid <span class='op'>=</span> <span class='va'>tune_grid</span>,
     thr <span class='op'>=</span> <span class='st'>"max_sens_spec"</span>,
     metric <span class='op'>=</span> <span class='st'>"TSS"</span>,
+    n_cores <span class='op'>=</span> <span class='fl'>1</span>
   <span class='op'>)</span>
 
 <span class='co'># Outputs</span>
@@ -280,7 +291,7 @@ the hyper-parameters.</p></li>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Ignacio Minoli, Janet Franklin.</p>
+  <p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
