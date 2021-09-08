@@ -8,7 +8,7 @@ test_that("test for fit_ function family", {
   levels(regions) <- c(unique(regions))
   somevar <- terra::rast(x = list(regions, somevar))
   rm(regions)
-  somevar2 <- rast(list(somevar, category2 = somevar$category))
+  somevar2 <- rast(list(somevar, somevar$category))
   names(somevar2)[6] <- "category2"
 
   # Species occurrences
