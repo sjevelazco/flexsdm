@@ -64,7 +64,7 @@ somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
 # Perform pearson collinearity control
-var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.8"))
+var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"))
 var$env_layer
 var$removed_variables
 var$correlation_table
