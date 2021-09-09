@@ -34,22 +34,25 @@ If 'pearson' or 'vif' method, returns a list with the following elements:
 \itemize{
 \item env_layer: a SpatRaster object with selected environmental variables
 \item removed_variables: a character vector with removed environmental variables
-\item performance: a matrix with Pearson pairwise correlation between variables
+\item correlation_table: a tibble with Pearson pairwise correlation between variables
 }
 
 If 'pca' method, returns a list with the following elements:
 \itemize{
-\item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95\% of the
+\item env_layer: a SpatRaster with scores of selected principal component (PC) that sum up 95\% of the
 whole variation or original environmental variables
-\item coefficient: a matrix with the coefficient of principal component (PC) for predictors
+\item coefficient: a tibble with the coefficient of principal component (PC) for predictors
 \item cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)
 }
 
 If 'fa' method, returns a list with the following elements:
 \itemize{
-\item env_layer: #TODO
-\item coefficient:: #TODO
-\item cumulative_variance:: #TODO
+\item env_layer: a SpatRaster object with selected environmental variables
+\item removed_variables: a character vector with removed environmental variables
+\item correlation_table: a tibble with Pearson pairwise correlation between variables
+\item variable_loading: a tibble of loadings, one raw for each variable.
+The variable are ordered in decreasing order of sums of squares of loadings,
+and given the sign that will make the sum of the loadings positive
 }
 }
 \description{
@@ -82,11 +85,12 @@ var$env_layer
 var$coefficient
 var$cumulative_variance
 
-# Perform fa colinearity control
+# Perform fa collinearity control
 var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 var$env_layer
-var$coefficient
-var$cumulative_variance
+var$removed_variables
+var$correlation_table
+var$variable_loading
 }
 
 }
