@@ -328,7 +328,7 @@ sdm_predict <-
         if (sum(vfilter) > 0) {
           v <- rep(0, nrow(pred_df))
           v[!vfilter] <-
-            mgcv::predict.gam(m[[i]], pred_df[!vfilter, ], type = "response")
+            c(mgcv::predict.gam(m[[i]], pred_df[!vfilter, ], type = "response"))
           r[as.numeric(rownames(pred_df))] <- v
           rm(v)
         } else {
