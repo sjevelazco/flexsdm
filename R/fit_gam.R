@@ -43,7 +43,7 @@
 #' @export
 #'
 #' @importFrom dplyr %>% select all_of starts_with bind_rows summarise across everything
-#' @importFrom gam gam predict.Gam s
+#' @importFrom mgcv gam predict.gam s
 #' @importFrom stats formula sd
 #'
 #' @examples
@@ -71,7 +71,7 @@
 #' gam_t1$performance
 #'
 #' # Specifying the formula explicitly
-#' require(gam)
+#' require(mgcv)
 #' gam_t2 <- fit_gam(
 #'   data = abies2,
 #'   response = "pr_ab",
@@ -79,9 +79,9 @@
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
 #'   thr = "max_sens_spec",
-#'   fit_formula = stats::formula(pr_ab ~ s(aet, df = 4) +
-#'     s(ppt_jja, df = 3) +
-#'     s(pH, df = 3) + landform)
+#'   fit_formula = stats::formula(pr_ab ~ s(aet) +
+#'     s(ppt_jja) +
+#'     s(pH) + landform)
 #' )
 #'
 #' gam_t2$model
@@ -190,7 +190,7 @@ fit_gam <- function(data,
       tryCatch(
         {
           suppressWarnings(mod[[i]] <-
-            gam::gam(formula1,
+              mgcv::gam(formula1,
               data = train[[i]],
               family = "binomial"
             ))
@@ -198,7 +198,7 @@ fit_gam <- function(data,
           # Predict for presences absences data
           if (!is.null(predictors_f)) {
             for (fi in 1:length(predictors_f)) {
-              lev <- as.character(unique(mod[[i]]$data[, predictors_f[fi]]))
+              lev <- as.character(unique(mod[[i]]$xlevels[[predictors_f[fi]]]))
               lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
               test[[i]] <- test[[i]][lev_filt, ]
             }
@@ -207,7 +207,7 @@ fit_gam <- function(data,
           pred_test <- data.frame(
             pr_ab = test[[i]][, response],
             pred = suppressWarnings(
-              gam::predict.Gam(
+              mgcv::predict.gam(
                 mod[[i]],
                 newdata = test[[i]],
                 type = "response",
@@ -272,14 +272,14 @@ fit_gam <- function(data,
 
   # Fit final models with best settings
   suppressWarnings(mod <-
-    gam::gam(formula1,
+    mgcv::gam(formula1,
       data = data,
       family = "binomial"
     ))
 
   pred_test <- data.frame(
     pr_ab = data[, response],
-    pred = suppressMessages(gam::predict.Gam(
+    pred = suppressMessages(mgcv::predict.gam(
       mod,
       newdata = data,
       type = "response"

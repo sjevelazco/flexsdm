@@ -4,7 +4,7 @@
 \alias{esm_gam}
 \title{Fit and validate Generalized Additive Models based on Ensembles of Small Models approach}
 \usage{
-esm_gam(data, response, predictors, partition, thr = NULL)
+esm_gam(data, response, predictors, partition, thr = NULL, k = 3)
 }
 \arguments{
 \item{data}{data.frame. Database with the response (0,1) and predictors values.}
@@ -28,11 +28,14 @@ Usage predictors = c("aet", "cwd", "tmin").}
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default value is 0.9.
   }
 If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
+
+\item{k}{integer. The dimension of the basis used to represent the smooth term. Default 3. Because ESM
+was proposed to fit models with little data, we recommend using small values of this parameter.}
 }
 \value{
 A list object with:
 \itemize{
-\item esm_model: A list with "Gam" class object for each bivariate model. This object can be used
+\item esm_model: A list with "gam" class object for each bivariate model. This object can be used
 for predicting an ensemble of small models with the \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metrics (see \code{\link{sdm_eval}}).

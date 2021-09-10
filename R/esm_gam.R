@@ -20,6 +20,8 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default value is 0.9.
 #'   }
 #' If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
+#' @param k integer. The dimension of the basis used to represent the smooth term. Default 3. Because ESM
+#'  was proposed to fit models with little data, we recommend using small values of this parameter.
 #'
 #' @details This method consists of creating bivariate models with all pair-wise combinations
 #' of predictors and perform an ensemble based on the average of suitability weighted by
@@ -32,7 +34,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item esm_model: A list with "Gam" class object for each bivariate model. This object can be used
+#' \item esm_model: A list with "gam" class object for each bivariate model. This object can be used
 #' for predicting an ensemble of small models with the \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metrics (see \code{\link{sdm_eval}}).
@@ -134,7 +136,8 @@ esm_gam <- function(data,
                     response,
                     predictors,
                     partition,
-                    thr = NULL) {
+                    thr = NULL,
+                    k = 3) {
   . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
@@ -148,6 +151,40 @@ esm_gam <- function(data,
   list_esm <- list()
   pb <- utils::txtProgressBar(min = 0, max = ncol(formula1), style = 3)
   for (f in 1:ncol(formula1)) {
+    formula_esm <-
+      paste(c(
+        paste("s(", unlist(formula1[, f]), paste(", k = ", k, ")"), collapse = " + ", sep = "")
+      ), collapse = " + ")
+    formula_esm <- stats::formula(paste(
+      response, "~", formula_esm
+    ))
+
+
+    if (any(c("train", "train-test", "test")
+            %in%
+            (data %>%
+             dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
+             pull() %>%
+             unique()))){
+      nn_part <- data %>%
+        dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
+        apply(., 2, table) %>% data.frame()
+      nn_part <- nn_part %>% dplyr::mutate(partt = rownames(nn_part))
+      nn_part$partt[grepl("train", nn_part$partt)] <- "train"
+      nn_part <- nn_part %>% dplyr::filter(partt=="train") %>% dplyr::select(-partt)
+      nn_part <- colSums(nn_part)
+    } else {
+      nn_part <- data %>%
+        dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
+        apply(., 2, table) %>% c()
+
+    }
+
+    if (any(nn_part < ((k - 1) * 2 + 1))) {
+      message("\nModel has more coefficients than data used for training the model. Try to reduce k")
+      return(NULL)
+    }
+
     suppressMessages(
       list_esm[[f]] <- fit_gam(
         data = data,
@@ -155,9 +192,11 @@ esm_gam <- function(data,
         predictors = unlist(formula1[, f]),
         predictors_f = NULL,
         partition = partition,
+        fit_formula = formula_esm,
         thr = thr
       )
     )
+
     utils::setTxtProgressBar(pb, which(1:ncol(formula1) == f))
   }
   close(pb)

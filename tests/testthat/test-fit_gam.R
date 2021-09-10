@@ -22,7 +22,7 @@ test_that("multiplication works", {
 
 
   # Using our own formula
-  require(gam)
+  require(mgcv)
   gam_t2 <- fit_gam(
     data = abies2,
     response = "pr_ab",
@@ -30,9 +30,9 @@ test_that("multiplication works", {
     predictors_f = c("landform"),
     partition = ".part",
     thr = "max_sens_spec",
-    fit_formula = stats::formula(pr_ab ~ s(aet, df = 4) +
-      s(ppt_jja, df = 3) +
-      s(pH, df = 3) + landform)
+    fit_formula = stats::formula(pr_ab ~ s(aet, k = 4) +
+      s(ppt_jja, k = 3) +
+      s(pH, k = 3) + landform)
   )
 
   expect_equal(class(gam_t2), "list")
