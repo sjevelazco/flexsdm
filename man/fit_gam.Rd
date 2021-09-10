@@ -84,7 +84,7 @@ gam_t1$predictors
 gam_t1$performance
 
 # Specifying the formula explicitly
-require(gam)
+require(mgcv)
 gam_t2 <- fit_gam(
   data = abies2,
   response = "pr_ab",
@@ -92,9 +92,9 @@ gam_t2 <- fit_gam(
   predictors_f = c("landform"),
   partition = ".part",
   thr = "max_sens_spec",
-  fit_formula = stats::formula(pr_ab ~ s(aet, df = 4) +
-    s(ppt_jja, df = 3) +
-    s(pH, df = 3) + landform)
+  fit_formula = stats::formula(pr_ab ~ s(aet) +
+    s(ppt_jja) +
+    s(pH) + landform)
 )
 
 gam_t2$model

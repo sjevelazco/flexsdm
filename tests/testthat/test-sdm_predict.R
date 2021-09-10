@@ -5,7 +5,7 @@ test_that("test for fit_ function family", {
   # Environmental variables
   somevar <- system.file("external/somevar.tif", package = "flexsdm") %>% terra::rast()
   regions <- system.file("external/regions.tif", package = "flexsdm") %>% terra::rast()
-  levels(regions) <- c(unique(regions))
+  levels(regions) <- unique(regions)
   somevar <- terra::rast(x = list(regions, somevar))
   rm(regions)
   somevar2 <- rast(list(somevar, somevar$category))

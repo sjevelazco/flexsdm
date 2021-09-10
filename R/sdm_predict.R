@@ -44,7 +44,7 @@
 #' @seealso \code{\link{fit_ensemble}}
 #'
 #' @importFrom dplyr %>% mutate across left_join pull bind_rows filter all_of select
-#' @importFrom gam predict.Gam
+#' @importFrom mgcv predict.gam
 #' @importFrom kernlab predict
 #' @importFrom stats median
 #' @importFrom terra vect crop mask as.data.frame values rast app lapp
@@ -302,14 +302,14 @@ sdm_predict <-
         r[] <- NA
 
         # Test factor levels
-        f <- which(sapply(m[[i]]$data, class) == "factor")
+        f <- names(m[[i]]$xlevels)
         if (length(f) > 0) {
           for (ii in 1:length(f)) {
-            vf <- m[[i]]$data[, f[ii]] %>% unique()
-            vf2 <- pred_df[, names(f[ii])] %>% unique()
+            vf <- m[[i]]$xlevels[[f[ii]]] %>% unique()
+            vf2 <- pred_df[, (f[ii])] %>% unique()
             vfilter <- list()
             if (sum(!vf2 %in% vf) > 0) {
-              vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
+              vfilter[[ii]] <- !pred_df[, (f[ii])] %in% vf
             }
           }
           if (length(vfilter) > 0) {
@@ -328,12 +328,12 @@ sdm_predict <-
         if (sum(vfilter) > 0) {
           v <- rep(0, nrow(pred_df))
           v[!vfilter] <-
-            gam::predict.Gam(m[[i]], pred_df[!vfilter, ], type = "response")
+            mgcv::predict.gam(m[[i]], pred_df[!vfilter, ], type = "response")
           r[as.numeric(rownames(pred_df))] <- v
           rm(v)
         } else {
           r[as.numeric(rownames(pred_df))] <-
-            gam::predict.Gam(m[[i]], pred_df, type = "response")
+            c(mgcv::predict.gam(m[[i]], pred_df[-1], type = "response"))
         }
 
         model_c[[i]] <- r

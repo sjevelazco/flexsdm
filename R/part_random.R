@@ -19,7 +19,7 @@
 #'   \item loocv: Leave-one-out cross-validation (a.k.a. Jackknife). It is a special case of k-fold
 #'   cross validation where the number of partitions is equal to the number of records.
 #'   Usage method = c(method = "loocv").
-#'   \item boot: Random bootstrap partitioning. Usage part=c(method='boot', replicates='2',
+#'   \item boot: Random bootstrap partitioning. Usage method=c(method='boot', replicates='2',
 #'   proportion='0.7'). 'replicate' refers to the number of replicates, it assumes a value >=1.
 #'   'proportion' refers to the proportion of occurrences used for model fitting, it assumes a
 #'   value >0 and <=1. In this example proportion='0.7' mean that 70\% of data will be used for
