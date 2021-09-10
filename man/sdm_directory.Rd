@@ -47,6 +47,21 @@ A character vector with the paths to created folders
 This function assists in creating a directory system with different sub-folders to
 assist in the organisation of the modelling process outputs.
 }
+\details{
+The sdm_directory function assists in saving workflow outputs by
+creating folders (directories) based on user specifications, such as choice
+of algorithms, ensemble methods, and model projections to new geographic
+regions or periods. The function first creates two folders within the
+user-specified project folder, one for model inputs (1_Inputs) and one for
+model outputs (2_Outputs). Within 1_Inputs, there are three sub-folders for
+users to store model inputs: 1_Occurrences, 2_Predictors, and 3_Calibration_area.
+If a user chooses to include projections in their modeling framework, the
+2_Projections subfolder is created within the 2_Predictors folder to store
+the environmental data for the projection scenarios provided to the
+"projections" argument. Additionally, sdm_directory offers users enhanced
+flexibility in saving their modeling outputs, giving them offers users the
+option to save results from any modeling and ensemble technique presented in flexsdm
+}
 \examples{
 \dontrun{
 require(dplyr)
