@@ -300,6 +300,7 @@ rev_jack <- function(v) {
 #' @noRd
 #'
 n_training <- function(data, partition){
+  . <- partt <- NULL
   if (any(c("train", "train-test", "test")
           %in%
           (data %>%
