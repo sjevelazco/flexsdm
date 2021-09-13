@@ -50,7 +50,7 @@ test_that("multiplication works", {
       partition = ".part",
       grid = tune_grid,
       thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
-      metric = "TSS",
+      metric = "TSS"
     )
 
 

@@ -93,7 +93,7 @@ esm_net <- function(data,
                     predictors,
                     partition,
                     thr = NULL,
-                    size = 2, # TODO find a formual to calculate default value for this argument
+                    size = 2, # TODO find a formula to calculate default value for this argument
                     decay = 0) {
   . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
@@ -109,7 +109,7 @@ esm_net <- function(data,
   pb <- utils::txtProgressBar(min = 0, max = ncol(formula1), style = 3)
   for (f in 1:ncol(formula1)) {
     suppressMessages(
-      list_esm[[f]] <- fit_gam(
+      list_esm[[f]] <- fit_net(
         data = data,
         response = response,
         predictors = unlist(formula1[, f]),
