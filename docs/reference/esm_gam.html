@@ -134,7 +134,7 @@ Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018)." />
 Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>esm_gam</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>predictors</span>, <span class='va'>partition</span>, thr <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>esm_gam</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>response</span>, <span class='va'>predictors</span>, <span class='va'>partition</span>, thr <span class='op'>=</span> <span class='cn'>NULL</span>, k <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,12 +169,17 @@ Usage predictors = c("aet", "cwd", "tmin").</p></td>
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default value is 0.9.</p></li>
 </ul><p>If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified</p></td>
     </tr>
+    <tr>
+      <th>k</th>
+      <td><p>integer. The dimension of the basis used to represent the smooth term. Default 3. Because ESM
+was proposed to fit models with little data, we recommend using small values of this parameter.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list object with:</p><ul>
-<li><p>esm_model: A list with "Gam" class object for each bivariate model. This object can be used
+<li><p>esm_model: A list with "gam" class object for each bivariate model. This object can be used
 for predicting an ensemble of small models with the <code><a href='sdm_predict.html'>sdm_predict</a></code> function.</p></li>
 <li><p>predictors: A tibble with variables use for modeling.</p></li>
 <li><p>performance: Performance metrics (see <code><a href='sdm_eval.html'>sdm_eval</a></code>).

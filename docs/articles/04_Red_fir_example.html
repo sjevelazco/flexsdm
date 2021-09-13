@@ -79,7 +79,7 @@
 
       
 
-      </header><script src="04_Red_fir_example_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="04_Red_fir_example_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>flexsdm: Red Fir example</h1>
@@ -107,7 +107,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
@@ -356,8 +356,6 @@
   pred_type <span class="op">=</span> <span class="st">"cloglog"</span>
 <span class="op">)</span>
 <span class="co">#&gt; Replica number: 1/1</span>
-<span class="co">#&gt; Partition number: 1/2</span>
-<span class="co">#&gt; Partition number: 2/2</span>
 <span class="co">#&gt; Formula used for model fitting:</span>
 <span class="co">#&gt; ~aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2) - 1</span>
 <span class="co">#&gt; Replica number: 1/1</span>
@@ -497,7 +495,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Ignacio Minoli, Janet Franklin.</p>
+  <p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
