@@ -79,7 +79,7 @@
 
       
 
-      </header><script src="02_modeling_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="02_modeling_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>flexsdm: Overview of Modeling functions</h1>
@@ -142,9 +142,9 @@
 <code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: flexsdm</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: terra</span>
-<span class="co">#&gt; terra version 1.3.4</span>
+<span class="co">#&gt; terra version 1.3.22</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'terra'</span>
 <span class="co">#&gt; The following object is masked from 'package:knitr':</span>
@@ -180,7 +180,7 @@
               threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
               return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp6NLi7u/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp88m7Ij/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="data-species-occurrence-and-background-data" class="section level2">
 <h2 class="hasAnchor">
@@ -247,7 +247,7 @@
 <span class="co">#&gt; $ awc      &lt;dbl&gt; 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0~</span>
 <span class="co">#&gt; $ depth    &lt;dbl&gt; 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99~</span>
 <span class="co">#&gt; $ landform &lt;fct&gt; 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1~</span>
-<span class="co">#&gt; $ .part    &lt;int&gt; 4, 2, 4, 5, 1, 4, 4, 2, 1, 4, 3, 5, 2, 1, 1, 4, 4, 3, 2, 4, 3~</span></code></pre></div>
+<span class="co">#&gt; $ .part    &lt;int&gt; 1, 5, 1, 3, 2, 2, 2, 2, 4, 3, 1, 2, 3, 4, 4, 4, 4, 1, 4, 3, 4~</span></code></pre></div>
 <p>Now, in the abies2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record (row) is a member of. Next, we have to apply the same partition method and number of folds to the environmental conditions of the background points.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">backg2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
@@ -272,7 +272,7 @@
 <span class="co">#&gt; $ depth        &lt;dbl&gt; 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17~</span>
 <span class="co">#&gt; $ percent_clay &lt;dbl&gt; 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,~</span>
 <span class="co">#&gt; $ landform     &lt;fct&gt; 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, ~</span>
-<span class="co">#&gt; $ .part        &lt;int&gt; 3, 4, 3, 2, 3, 2, 3, 2, 2, 5, 1, 1, 5, 5, 2, 2, 4, 3, 1, ~</span></code></pre></div>
+<span class="co">#&gt; $ .part        &lt;int&gt; 4, 1, 5, 1, 5, 1, 4, 2, 5, 3, 1, 3, 1, 1, 1, 5, 4, 3, 2, ~</span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5).</p>
 <div id="fit-and-validate-models" class="section level3">
 <h3 class="hasAnchor">
@@ -328,11 +328,11 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">performance</span>
 <span class="co">#&gt; # A tibble: 3 x 25</span>
-<span class="co">#&gt;   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 max   equal_sens_s~     0.591         700        700    0.663 0.0362     0.664</span>
-<span class="co">#&gt; 2 max   max_sens_spec     0.573         700        700    0.88  0.00782    0.537</span>
-<span class="co">#&gt; 3 max   max_sorensen      0.415         700        700    0.904 0.0284     0.51 </span>
+<span class="co">#&gt;   model threshold       thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 max   equal_sens_spec     0.591         700        700    0.664 0.0113    0.666</span>
+<span class="co">#&gt; 2 max   max_sens_spec       0.573         700        700    0.88  0.0373    0.539</span>
+<span class="co">#&gt; 3 max   max_sorensen        0.415         700        700    0.911 0.0483    0.5  </span>
 <span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
@@ -342,18 +342,18 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">data_ens</span>
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
-<span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 5      .part      1         0 0.813</span>
-<span class="co">#&gt;  2 9      .part      1         0 0.600</span>
-<span class="co">#&gt;  3 14     .part      1         0 0.436</span>
-<span class="co">#&gt;  4 15     .part      1         0 0.806</span>
-<span class="co">#&gt;  5 26     .part      1         0 0.279</span>
-<span class="co">#&gt;  6 28     .part      1         0 0.459</span>
-<span class="co">#&gt;  7 32     .part      1         0 0.796</span>
-<span class="co">#&gt;  8 39     .part      1         0 0.934</span>
-<span class="co">#&gt;  9 44     .part      1         0 0.575</span>
-<span class="co">#&gt; 10 45     .part      1         0 0.277</span>
+<span class="co">#&gt;    rnames replicates part  pr_ab   pred</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 1      .part      1         0 0.711 </span>
+<span class="co">#&gt;  2 3      .part      1         0 0.800 </span>
+<span class="co">#&gt;  3 11     .part      1         0 0.204 </span>
+<span class="co">#&gt;  4 18     .part      1         0 0.0128</span>
+<span class="co">#&gt;  5 24     .part      1         0 0.889 </span>
+<span class="co">#&gt;  6 30     .part      1         0 0.0151</span>
+<span class="co">#&gt;  7 39     .part      1         0 0.940 </span>
+<span class="co">#&gt;  8 45     .part      1         0 0.342 </span>
+<span class="co">#&gt;  9 48     .part      1         0 0.123 </span>
+<span class="co">#&gt; 10 65     .part      1         0 0.785 </span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability and test partition for each observation (row).</p>
 <p>II- Random forest models with exploration of hyper-parameters.</p>
@@ -380,11 +380,6 @@
 <span class="co">#&gt; Formula used for model fitting:</span>
 <span class="co">#&gt; pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform</span>
 <span class="co">#&gt; Replica number: 1/1</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
 <span class="co">#&gt; Formula used for model fitting:</span>
 <span class="co">#&gt; pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform</span>
 <span class="co">#&gt; Replica number: 1/1</span>
@@ -422,7 +417,7 @@
 <span class="co">#&gt; # A tibble: 1 x 26</span>
 <span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     2 raf   max_sens_spec      0.53         700        700    0.916 0.0283</span>
+<span class="co">#&gt; 1     2 raf   max_sens_spec      0.53         700        700    0.914 0.0307</span>
 <span class="co">#&gt; # ... with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
@@ -434,16 +429,16 @@
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
 <span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 5      .part      1     0     0.448</span>
-<span class="co">#&gt;  2 9      .part      1     0     0.316</span>
-<span class="co">#&gt;  3 14     .part      1     0     0.042</span>
-<span class="co">#&gt;  4 15     .part      1     0     0.04 </span>
-<span class="co">#&gt;  5 26     .part      1     0     0.41 </span>
-<span class="co">#&gt;  6 28     .part      1     0     0.012</span>
-<span class="co">#&gt;  7 32     .part      1     0     0.176</span>
-<span class="co">#&gt;  8 39     .part      1     0     0.568</span>
-<span class="co">#&gt;  9 44     .part      1     0     0.948</span>
-<span class="co">#&gt; 10 45     .part      1     0     0.014</span>
+<span class="co">#&gt;  1 1      .part      1     0     0.272</span>
+<span class="co">#&gt;  2 3      .part      1     0     0.016</span>
+<span class="co">#&gt;  3 11     .part      1     0     0.17 </span>
+<span class="co">#&gt;  4 18     .part      1     0     0.004</span>
+<span class="co">#&gt;  5 24     .part      1     0     0.882</span>
+<span class="co">#&gt;  6 30     .part      1     0     0.022</span>
+<span class="co">#&gt;  7 39     .part      1     0     0.492</span>
+<span class="co">#&gt;  8 45     .part      1     0     0.02 </span>
+<span class="co">#&gt;  9 48     .part      1     0     0.014</span>
+<span class="co">#&gt; 10 65     .part      1     0     0.536</span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability and test partition for each observation (row).</p>
 <p>These model objects can be used in flexsdm::fit_ensemble().</p>
@@ -456,7 +451,7 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># First we need this libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
 
 <span class="co"># Environmental variables</span>
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
@@ -619,75 +614,135 @@
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>max.print<span class="op">=</span><span class="fl">10</span><span class="op">)</span> <span class="co"># If you don't want to see printed all the output</span>
 <span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">esm_model</span>
-<span class="co">#&gt; $`0.259259259259259`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
+<span class="co">#&gt; $`0.398148148148148`</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 10.99998 Residual</span>
-<span class="co">#&gt; Residual Deviance: 9.86509 </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(cwd, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1.81 1.73  total = 4.54 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: 0.2827405     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`1`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(tmin, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1 1  total = 3 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: -0.7     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`-0.263888888888889`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(ppt_djf, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1 1  total = 3 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: 0.4954043     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`-0.199074074074074`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(ppt_jja, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1 1  total = 3 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: 0.4765413     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`0.0925925925925926`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(pH, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1 1  total = 3 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: 0.4818906     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`-0.555555555555556`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(awc, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1 1  total = 3 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: 0.4948666     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`0.564814814814815`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(depth, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1.00 1.12  total = 3.12 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: 0.08148345     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`1`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(cwd, k = 3) + s(tmin, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1 1  total = 3 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: -0.7     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`0.314814814814815`</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(cwd, k = 3) + s(ppt_djf, k = 3)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1 1  total = 3 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; UBRE score: 0.4360771     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $`0.875`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 11 Residual</span>
-<span class="co">#&gt; Residual Deviance: 0 </span>
+<span class="co">#&gt; Family: binomial </span>
+<span class="co">#&gt; Link function: logit </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $`-0.398148148148148`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
+<span class="co">#&gt; Formula:</span>
+<span class="co">#&gt; pr_ab ~ s(cwd, k = 3) + s(ppt_jja, k = 3)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 11.00021 Residual</span>
-<span class="co">#&gt; Residual Deviance: 14.29457 </span>
+<span class="co">#&gt; Estimated degrees of freedom:</span>
+<span class="co">#&gt; 1 1  total = 3 </span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $`-0.1875`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 10.99981 Residual</span>
-<span class="co">#&gt; Residual Deviance: 19.34354 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`-0.814814814814815`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 11.00026 Residual</span>
-<span class="co">#&gt; Residual Deviance: 18.79893 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`-0.402777777777778`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 11.00046 Residual</span>
-<span class="co">#&gt; Residual Deviance: 18.90059 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`0.377314814814815`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 11.0002 Residual</span>
-<span class="co">#&gt; Residual Deviance: 0.79746 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`0.888888888888889`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 11.00012 Residual</span>
-<span class="co">#&gt; Residual Deviance: 0 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`0.497685185185185`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 10.99978 Residual</span>
-<span class="co">#&gt; Residual Deviance: 6.63526 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`0.231481481481481`</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; gam::gam(formula = formula1, family = "binomial", data = data)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Degrees of Freedom: 19 total; 11.00017 Residual</span>
-<span class="co">#&gt; Residual Deviance: 9.81768 </span>
+<span class="co">#&gt; UBRE score: 0.107549     </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;  [ reached getOption("max.print") -- omitted 18 entries ]</span></code></pre></div>
 <p>predictors: A tibble with variables use for modeling.</p>
@@ -703,13 +758,13 @@
 <span class="co">#&gt; # A tibble: 7 x 25</span>
 <span class="co">#&gt;   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 esm_gam equal_sens_~     0.767          10         10        1      0        1</span>
-<span class="co">#&gt; 2 esm_gam lpt              0.767          10         10        1      0        1</span>
-<span class="co">#&gt; 3 esm_gam max_fpb          0.767          10         10        1      0        1</span>
-<span class="co">#&gt; 4 esm_gam max_jaccard      0.767          10         10        1      0        1</span>
-<span class="co">#&gt; 5 esm_gam max_sens_sp~     0.767          10         10        1      0        1</span>
-<span class="co">#&gt; 6 esm_gam max_sorensen     0.767          10         10        1      0        1</span>
-<span class="co">#&gt; 7 esm_gam sensitivity      0.991          10         10        1      0        1</span>
+<span class="co">#&gt; 1 esm_gam equal_sens_~     0.725          10         10    0.917  0.144    1    </span>
+<span class="co">#&gt; 2 esm_gam lpt              0.288          10         10    1      0        0.917</span>
+<span class="co">#&gt; 3 esm_gam max_fpb          0.288          10         10    1      0        0.917</span>
+<span class="co">#&gt; 4 esm_gam max_jaccard      0.288          10         10    1      0        0.917</span>
+<span class="co">#&gt; 5 esm_gam max_sens_sp~     0.725          10         10    0.917  0.144    1    </span>
+<span class="co">#&gt; 6 esm_gam max_sorensen     0.288          10         10    1      0        0.917</span>
+<span class="co">#&gt; 7 esm_gam sensitivity      0.725          10         10    1      0        0.917</span>
 <span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
@@ -944,7 +999,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, André F.A. Andrade, Brooke Rose, Ignacio Minoli, Janet Franklin.</p>
+  <p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">

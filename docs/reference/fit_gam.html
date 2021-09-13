@@ -139,7 +139,8 @@
   predictors_f <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>partition</span>,
   thr <span class='op'>=</span> <span class='cn'>NULL</span>,
-  fit_formula <span class='op'>=</span> <span class='cn'>NULL</span>
+  fit_formula <span class='op'>=</span> <span class='cn'>NULL</span>,
+  k <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -188,6 +189,11 @@ variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments</p></td>
     </tr>
+    <tr>
+      <th>k</th>
+      <td><p>integer. The dimension of the basis used to represent the smooth term. Default -1. See
+the help in ?mgcv::s.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -230,7 +236,7 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class='va'>gam_t1</span><span class='op'>$</span><span class='va'>performance</span>
 
 <span class='co'># Specifying the formula explicitly</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>gam</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>mgcv</span><span class='op'>)</span>
 <span class='va'>gam_t2</span> <span class='op'>&lt;-</span> <span class='fu'>fit_gam</span><span class='op'>(</span>
   data <span class='op'>=</span> <span class='va'>abies2</span>,
   response <span class='op'>=</span> <span class='st'>"pr_ab"</span>,
@@ -238,9 +244,9 @@ Threshold dependent metrics are calculated based on the threshold specified in t
   predictors_f <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"landform"</span><span class='op'>)</span>,
   partition <span class='op'>=</span> <span class='st'>".part"</span>,
   thr <span class='op'>=</span> <span class='st'>"max_sens_spec"</span>,
-  fit_formula <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/formula.html'>formula</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/pkg/gam/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>aet</span>, df <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span> <span class='op'>+</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/gam/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>ppt_jja</span>, df <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>+</span>
-    <span class='fu'><a href='https://rdrr.io/pkg/gam/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>pH</span>, df <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>landform</span><span class='op'>)</span>
+  fit_formula <span class='op'>=</span> <span class='fu'>stats</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/stats/formula.html'>formula</a></span><span class='op'>(</span><span class='va'>pr_ab</span> <span class='op'>~</span> <span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>aet</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>ppt_jja</span><span class='op'>)</span> <span class='op'>+</span>
+    <span class='fu'><a href='https://rdrr.io/pkg/mgcv/man/s.html'>s</a></span><span class='op'>(</span><span class='va'>pH</span><span class='op'>)</span> <span class='op'>+</span> <span class='va'>landform</span><span class='op'>)</span>
 <span class='op'>)</span>
 
 <span class='va'>gam_t2</span><span class='op'>$</span><span class='va'>model</span>
