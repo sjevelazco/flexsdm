@@ -20,6 +20,8 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default used is 0.9.
 #'   }
 #' If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold types if none is specified.
+#' @param k integer. The dimension of the basis used to represent the smooth term. Default -1. See
+#' the help in ?mgcv::s.
 #'
 #' @param fit_formula formula. A formula object with response and predictor
 #' variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
@@ -112,7 +114,8 @@ fit_gam <- function(data,
                     predictors_f = NULL,
                     partition,
                     thr = NULL,
-                    fit_formula = NULL) {
+                    fit_formula = NULL,
+                    k = -1) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
@@ -138,11 +141,12 @@ fit_gam <- function(data,
   }
   rm(complete_vec)
 
+
   # Formula
   if (is.null(fit_formula)) {
     formula1 <-
       paste(c(
-        paste("s(", predictors, ")", collapse = " + ", sep = ""),
+        paste("s(", predictors,  paste0(", k = ", k, ")"), collapse = " + ", sep = ""),
         predictors_f
       ), collapse = " + ")
     formula1 <- stats::formula(paste(
@@ -157,6 +161,11 @@ fit_gam <- function(data,
     "\n"
   )
 
+  # Check amount of data and number of coefficients
+  if (any(n_training(data = data, partition = partition) < ((k - 1) * 2 + 1))) {
+    message("\nModel has more coefficients than data used for training it. Try to reduce k")
+    return(NULL)
+  }
 
   # Fit models
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))

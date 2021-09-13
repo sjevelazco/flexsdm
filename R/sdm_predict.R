@@ -333,7 +333,7 @@ sdm_predict <-
           rm(v)
         } else {
           r[as.numeric(rownames(pred_df))] <-
-            c(mgcv::predict.gam(m[[i]], pred_df[-1], type = "response"))
+            c(mgcv::predict.gam(m[[i]], pred_df, type = "response"))
         }
 
         model_c[[i]] <- r

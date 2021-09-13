@@ -232,7 +232,7 @@ tune_gbm <-
 
       # eval_partial <- as.list(rep(NA, np2))
 
-      eval_partial <- foreach::foreach(i = 1:np2, .export='sdm_eval', .packages = c("dplyr")) %dopar%{
+      eval_partial <- foreach::foreach(i = 1:np2, .export=c('sdm_eval', 'boyce'), .packages = c("dplyr")) %dopar%{
         # message("Partition number: ", i, "/", np2)
         mod <- as.list(rep(NA, nrow(grid)))
         names(mod) <- 1:nrow(grid)
