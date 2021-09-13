@@ -11,7 +11,8 @@ fit_gam(
   predictors_f = NULL,
   partition,
   thr = NULL,
-  fit_formula = NULL
+  fit_formula = NULL,
+  k = -1
 )
 }
 \arguments{
@@ -45,6 +46,9 @@ If more than one threshold type is used they must be concatenated, e.g., thr=c('
 variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments}
+
+\item{k}{integer. The dimension of the basis used to represent the smooth term. Default -1. See
+the help in ?mgcv::s.}
 }
 \value{
 A list object with:

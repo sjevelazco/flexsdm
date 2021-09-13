@@ -146,6 +146,12 @@ esm_gam <- function(data,
   nms <- apply(utils::combn(variables, 2), 2, function(x) paste(x, collapse = "_")) %>%
     paste0(".", .)
 
+  # Check amount of data and number of coefficients
+  if (any(n_training(data = data, partition = partition) < ((k - 1) * 2 + 1))) {
+    message("\nModel has more coefficients than data used for training it. Try to reduce k")
+    return(NULL)
+  }
+
   # Fit models
   eval_esm <- list()
   list_esm <- list()
@@ -153,37 +159,11 @@ esm_gam <- function(data,
   for (f in 1:ncol(formula1)) {
     formula_esm <-
       paste(c(
-        paste("s(", unlist(formula1[, f]), paste(", k = ", k, ")"), collapse = " + ", sep = "")
+        paste("s(", unlist(formula1[, f]), paste0(", k = ", k, ")"), collapse = " + ", sep = "")
       ), collapse = " + ")
     formula_esm <- stats::formula(paste(
       response, "~", formula_esm
     ))
-
-
-    if (any(c("train", "train-test", "test")
-            %in%
-            (data %>%
-             dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
-             pull() %>%
-             unique()))){
-      nn_part <- data %>%
-        dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
-        apply(., 2, table) %>% data.frame()
-      nn_part <- nn_part %>% dplyr::mutate(partt = rownames(nn_part))
-      nn_part$partt[grepl("train", nn_part$partt)] <- "train"
-      nn_part <- nn_part %>% dplyr::filter(partt=="train") %>% dplyr::select(-partt)
-      nn_part <- colSums(nn_part)
-    } else {
-      nn_part <- data %>%
-        dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
-        apply(., 2, table) %>% c()
-
-    }
-
-    if (any(nn_part < ((k - 1) * 2 + 1))) {
-      message("\nModel has more coefficients than data used for training the model. Try to reduce k")
-      return(NULL)
-    }
 
     suppressMessages(
       list_esm[[f]] <- fit_gam(
