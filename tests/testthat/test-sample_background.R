@@ -174,7 +174,7 @@ test_that("sample_background Thickening method", {
 })
 
 
-test_that("sample_background Thickening method", {
+test_that("sample_background biased method", {
   require(dplyr)
   require(terra)
   data(spp)
@@ -202,7 +202,7 @@ test_that("sample_background Thickening method", {
     rlayer = regions,
     rbias = occ_density
   )
-  bg <- expect_equal(class(bg)[1], "tbl_df")
+  expect_equal(class(bg)[1], "tbl_df")
   rm(bg)
 
   # Biased background points constrained in a region
@@ -216,6 +216,58 @@ test_that("sample_background Thickening method", {
     rbias = occ_density,
     maskval = c(1, 2)
   )
-  bg <- expect_equal(class(bg)[1], "tbl_df")
+  expect_equal(class(bg)[1], "tbl_df")
   rm(bg)
+
+  # Exeed number of points
+  expect_message(sample_background(
+    data = spp_p,
+    x = "x",
+    y = "y",
+    n = 500000,
+    method = "biased",
+    rlayer = raster::raster(regions),
+    rbias = raster::raster(occ_density),
+    maskval = c(1, 2)
+  ))
+})
+
+test_that("sample_background misuse of argument", {
+  require(dplyr)
+  require(terra)
+  data(spp)
+
+  # Lets select the presences of a species
+  spp_p <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
+
+  # Raster layer with density of poinst to obtain a biased sampling background
+  occ_density <- system.file("external/occ_density.tif", package = "flexsdm")
+  occ_density <- terra::rast(occ_density)
+
+  # A layer with region used to contraint background
+  regions <- system.file("external/regions.tif", package = "flexsdm")
+  regions <- terra::rast(regions)
+
+
+  # Biased background points
+  expect_error(sample_background(
+    data = spp_p,
+    x = "x",
+    y = "y",
+    n = 3000,
+    method = "biasdfsed",
+    rlayer = regions,
+    rbias = occ_density
+  ))
+
+  expect_error(
+    sample_background(
+      data = spp_p,
+      x = "x",
+      y = "y",
+      n = 3000,
+      method = "biased",
+      rlayer = regions
+      # rbias = occ_density
+    ))
 })
