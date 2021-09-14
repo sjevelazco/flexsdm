@@ -24,6 +24,17 @@ test_that("buffer method", {
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
+
+  # # buffer method with crs
+  # ca_1 <- calib_area(
+  #   data = single_spp,
+  #   x = "x",
+  #   y = "y",
+  #   method = c("buffer", width = 40000),
+  #   crs = crs(clusters)
+  # )
+  #
+  # expect_equal(class(ca_1)[1], "SpatVector")
 })
 
 test_that("mcp method", {
@@ -123,7 +134,7 @@ test_that("bmcp method with groups", {
   single_spp <- single_spp %>% mutate(groups = ifelse(x > 150000, "a", "b"))
 
 
-  # buffer method
+  # bmcp method
   ca_1 <- calib_area(
     data = single_spp,
     x = "x",
@@ -189,10 +200,24 @@ test_that("missuse method argument", {
 
 
   # buffer method
-  expect_error(ca_1 <- calib_area(
+  expect_error(calib_area(
     data = single_spp,
     x = "x",
     y = "y",
     method = c("maskclustersbu1")
+  ))
+
+  expect_error(calib_area(
+    data = single_spp,
+    x = "x",
+    y = "y",
+    method = c("bmcp")
+  ))
+
+  expect_error(calib_area(
+    data = single_spp,
+    x = "x",
+    y = "y",
+    method = c("mask")
   ))
 })
