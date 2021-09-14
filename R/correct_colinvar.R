@@ -102,7 +102,7 @@ correct_colinvar <- function(env_layer,
   }
 
   if (any(method %in% "pearson")) {
-    if (is.null(method["th"])) {
+    if (is.na(method["th"])) {
       th <- 0.7
     } else {
       th <- as.numeric(method["th"])
