@@ -47,7 +47,7 @@
 #' @importFrom mgcv predict.gam
 #' @importFrom kernlab predict
 #' @importFrom stats median
-#' @importFrom terra vect crop mask as.data.frame values rast app lapp
+#' @importFrom terra vect crop mask as.data.frame values rast app lapp weighted.mean
 #'
 #' @examples
 #' \dontrun{
@@ -650,7 +650,7 @@ sdm_predict <-
       }
 
       if (any("meanw" == ens_method)) {
-        ensemble_c[["meanw"]] <- terra::app(model_c * weight_data[[3]], fun = mean, cores = 1)
+        ensemble_c[["meanw"]] <- terra::weighted.mean(model_c, weight_data[[3]])
       }
 
       if (any("meansup" == ens_method)) {
