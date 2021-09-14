@@ -226,8 +226,8 @@ test_that("sample_background biased method", {
     y = "y",
     n = 500000,
     method = "biased",
-    rlayer = raster::raster(regions),
-    rbias = raster::raster(occ_density),
+    rlayer = (regions),
+    rbias = (occ_density),
     maskval = c(1, 2)
   ))
 })
