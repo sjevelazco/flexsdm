@@ -414,7 +414,7 @@ test_that("test for prdicting ensemble of small models", {
 
   ca <- calib_area(data = spp_, "x", "y", method = "mcp")
 
-  gam <- fit_gam(
+  gam <- esm_gam(
     data = spp_,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
