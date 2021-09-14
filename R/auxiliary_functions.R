@@ -299,26 +299,29 @@ rev_jack <- function(v) {
 #'
 #' @noRd
 #'
-n_training <- function(data, partition){
+n_training <- function(data, partition) {
   . <- partt <- NULL
   if (any(c("train", "train-test", "test")
-          %in%
-          (data %>%
-           dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
-           dplyr::pull() %>%
-           unique()))){
+  %in%
+    (data %>%
+      dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
+      dplyr::pull() %>%
+      unique()))) {
     nn_part <- data %>%
       dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
-      apply(., 2, table) %>% data.frame()
+      apply(., 2, table) %>%
+      data.frame()
     nn_part <- nn_part %>% dplyr::mutate(partt = rownames(nn_part))
     nn_part$partt[grepl("train", nn_part$partt)] <- "train"
-    nn_part <- nn_part %>% dplyr::filter(partt=="train") %>% dplyr::select(-partt)
+    nn_part <- nn_part %>%
+      dplyr::filter(partt == "train") %>%
+      dplyr::select(-partt)
     nn_part <- colSums(nn_part)
   } else {
     nn_part <- data %>%
       dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
-      apply(., 2, table) %>% c()
-
+      apply(., 2, table) %>%
+      c()
   }
   return(nn_part)
 }

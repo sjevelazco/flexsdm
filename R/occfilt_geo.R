@@ -259,7 +259,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     factor <- as.numeric(method["factor"])
     distance <-
       terra::xyFromCell(env_layer[[1]], 1:2)
-    distance <- as.numeric(abs(terra::distance(distance, lonlat = TRUE) / 1000 * factor))
+    distance <- as.numeric(abs(terra::distance(distance,distance, lonlat = TRUE)[2] / 1000 * factor))
 
     # Thinning
     da$.spp <- "sp"

@@ -311,6 +311,10 @@ sample_background <-
     if (class(rlayer)[1] != "SpatRaster") {
       rlayer <- terra::rast(rlayer)
     }
+    if (!is.null(rbias)) {
+      if(class(rbias)[1] != "SpatRaster")
+        rbias <- terra::rast(rbias)
+    }
 
     rlayer <- rlayer[[1]]
     data <- data[, c(x, y)]
@@ -385,23 +389,23 @@ sample_background <-
       if (any(method == "random")) {
         cell_samp <-
           sample(cell_samp,
-            size = n,
-            replace = FALSE,
-            prob = NULL
+                 size = n,
+                 replace = FALSE,
+                 prob = NULL
           )
       } else if (any(method == "thickening")) {
         cell_samp <-
           sample(cell_samp,
-            size = n,
-            replace = FALSE,
-            prob = buf_r[cell_samp][, 1]
+                 size = n,
+                 replace = FALSE,
+                 prob = buf_r[cell_samp][, 1]
           )
       } else if (any(method == "biased")) {
         cell_samp <-
           sample(cell_samp,
-            size = n,
-            replace = FALSE,
-            prob = rbias[cell_samp][, 1]
+                 size = n,
+                 replace = FALSE,
+                 prob = rbias[cell_samp][, 1]
           )
       }
 

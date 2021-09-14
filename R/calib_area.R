@@ -123,6 +123,9 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   }
 
   if (method[1] %in% c("mask")) {
+    if(is.na(method[2])){
+      stop("provide a SpatVector or SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
+    }
     if (!class(method[[2]]) %in% c("SpatialPolygonsDataFrame", "SpatVector")) {
       stop("provide a SpatVector or SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
     }
