@@ -244,7 +244,7 @@ tune_gbm <-
                 formula1,
                 data = train[[i]],
                 distribution = "bernoulli",
-                bag.fraction = 1, # Explore more this parameter
+                bag.fraction = 0.9,
                 n.trees = grid$n.trees[ii],
                 interaction.depth = 1,
                 shrinkage = grid$shrinkage[ii],
