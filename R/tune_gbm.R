@@ -312,7 +312,8 @@ tune_gbm <-
       dplyr::summarise(dplyr::across(
         TPR:IMAE,
         list(mean = mean, sd = sd)
-      ), .groups = "drop")
+      ), .groups = "drop") %>%
+      na.omit()
 
     # Find the bets parameter setting
     filt <- eval_final %>% dplyr::pull(paste0(metric, "_mean"))
