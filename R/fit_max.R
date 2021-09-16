@@ -213,6 +213,11 @@ fit_max <- function(data,
   }
   rm(i)
 
+  # New predictor vectors
+  if (!is.null(predictors_f)) {
+    predictors <- c(predictors, predictors_f)
+  }
+
   # Fit models
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
   p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
