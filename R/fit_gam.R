@@ -20,7 +20,7 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default used is 0.9.
 #'   }
 #' If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold types if none is specified.
-#' @param k integer. The dimension of the basis used to represent the smooth term. Default -1. See
+#' @param k integer. The dimension of the basis used to represent the smooth term. Default -1 (i.e., k=10). See
 #' the help in ?mgcv::s.
 #'
 #' @param fit_formula formula. A formula object with response and predictor
@@ -162,7 +162,18 @@ fit_gam <- function(data,
   )
 
   # Check amount of data and number of coefficients
-  if (any(n_training(data = data, partition = partition) < ((k - 1) * 2 + 1))) {
+  if(k<0){
+    k=10
+  }
+
+  ncoef <- flexsdm:::n_coefficients(
+    data = data,
+    predictors = predictors,
+    predictors_f = predictors_f,
+    k = k
+  )
+
+  if (any(n_training(data = data, partition = partition) <  ncoef)) {
     message("\nModel has more coefficients than data used for training it. Try to reduce k")
     return(NULL)
   }

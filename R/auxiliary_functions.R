@@ -318,10 +318,38 @@ n_training <- function(data, partition) {
       dplyr::select(-partt)
     nn_part <- colSums(nn_part)
   } else {
-    nn_part <- data %>%
-      dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
-      apply(., 2, table) %>%
-      c()
+    data <- data %>%
+      dplyr::select(dplyr::starts_with(dplyr::all_of(partition)))
+
+    nn_part <- list()
+    for(ppp in 1:ncol(data)){
+      nn_part[[ppp]] <- data %>% dplyr::pull(ppp) %>% table() %>% c()
+      sm <- nn_part[[ppp]] %>% sum()
+      nn_part[[ppp]] <- sapply(nn_part[[ppp]], function(x) sum(sm-x))
+    }
+    nn_part <- unlist(nn_part)
   }
   return(nn_part)
 }
+
+#' Calculate number of coefficient for gam models
+#'
+#' @noRd
+#'
+n_coefficients <- function(data, predictors, predictors_f = NULL, k = 10){
+  if(k<0){
+    k=10
+  }
+  if(!is.null(predictors_f)){
+    n_levels <- rep(NA, length(predictors_f))
+    for(fff in 1:length(predictors_f)){
+      n_levels[fff] <- unique(data[, predictors_f]) %>% na.omit() %>% length()
+    }
+    n_levels <- sum(n_levels)
+  }else{
+    n_levels <- 0
+  }
+  n <- (k - 1) * length(predictors) + n_levels
+  return(n)
+}
+
