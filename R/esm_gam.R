@@ -150,7 +150,7 @@ esm_gam <- function(data,
   if(k<0){
     k=10
   }
-  ncoef <- flexsdm:::n_coefficients(
+  ncoef <- n_coefficients(
     data = data,
     predictors = predictors,
     predictors_f = NULL,

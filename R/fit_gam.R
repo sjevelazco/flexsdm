@@ -166,7 +166,7 @@ fit_gam <- function(data,
     k=10
   }
 
-  ncoef <- flexsdm:::n_coefficients(
+  ncoef <- n_coefficients(
     data = data,
     predictors = predictors,
     predictors_f = predictors_f,
