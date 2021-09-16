@@ -147,7 +147,17 @@ esm_gam <- function(data,
     paste0(".", .)
 
   # Check amount of data and number of coefficients
-  if (any(n_training(data = data, partition = partition) < ((k - 1) * 2 + 1))) {
+  if(k<0){
+    k=10
+  }
+  ncoef <- flexsdm:::n_coefficients(
+    data = data,
+    predictors = predictors,
+    predictors_f = NULL,
+    k = k
+  )
+
+  if (any(n_training(data = data, partition = partition) < ncoef )) {
     message("\nModel has more coefficients than data used for training it. Try to reduce k")
     return(NULL)
   }
@@ -173,7 +183,8 @@ esm_gam <- function(data,
         predictors_f = NULL,
         partition = partition,
         fit_formula = formula_esm,
-        thr = thr
+        thr = thr,
+        k=k
       )
     )
 
