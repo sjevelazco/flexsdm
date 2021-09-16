@@ -337,6 +337,7 @@ n_training <- function(data, partition) {
 #' @noRd
 #'
 n_coefficients <- function(data, predictors, predictors_f = NULL, k = 10){
+  data <- data.frame(data)
   if(k<0){
     k=10
   }
