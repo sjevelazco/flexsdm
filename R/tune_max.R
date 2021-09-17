@@ -293,6 +293,7 @@ tune_max <-
         }
 
         filt <- sapply(mod, function(x) length(class(x)) == 3)
+        filt <- filt&!is.na(sapply(mod, function(x) x$entropy))
         mod <- mod[filt]
         grid2 <- grid[filt, ]
         tnames <- apply(grid2, 1, function(x) paste(x, collapse = "_"))
