@@ -24,7 +24,7 @@
 #' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr summarise_all
 #' @importFrom flexclust dist2
-#' @importFrom foreach foreach
+#' @importFrom foreach foreach %dopar%
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom stats sd
 #' @importFrom terra mask aggregate as.data.frame resample

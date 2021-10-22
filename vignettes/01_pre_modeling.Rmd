@@ -295,8 +295,7 @@ filt_env5 <- occfilt_env(
   y = "y",
   id = "idd",
   env_layer = somevar,
-  nbins = 5,
-  cores = 1
+  nbins = 5
 )
 
 filt_env8 <- occfilt_env(
@@ -305,8 +304,7 @@ filt_env8 <- occfilt_env(
   y = "y",
   id = "idd",
   env_layer = somevar,
-  nbins = 8,
-  cores = 1
+  nbins = 8
 )
 
 filt_env12 <- occfilt_env(
@@ -315,8 +313,7 @@ filt_env12 <- occfilt_env(
   y = "y",
   id = "idd",
   env_layer = somevar,
-  nbins = 12,
-  cores = 1
+  nbins = 12
 )
 
 

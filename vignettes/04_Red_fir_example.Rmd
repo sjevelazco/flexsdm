@@ -88,8 +88,7 @@ abies_pf <- abies_p %>%
     y = "y",
     id = "id",
     nbins = 8,
-    env_layer = somevar,
-    cores = 2
+    env_layer = somevar
   ) %>%
   left_join(abies_p, by = c("id", "x", "y"))
 
