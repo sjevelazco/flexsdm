@@ -19,9 +19,7 @@ test_that("test occfilt_env", {
     y = "y",
     id = "idd",
     env_layer = somevar,
-    nbins = 5,
-    cores = 1
-  )
+    nbins = 5)
 
   expect_true(nrow(filtered_1) < nrow(spp1))
 
@@ -33,9 +31,8 @@ test_that("test occfilt_env", {
   #     y = "y",
   #     id = "idd",
   #     env_layer = somevar,
-  #     nbins = 5,
-  #     cores = 3
-  #   )
+  #     nbins = 5
+  #    )
   #
   #   expect_true(nrow(filtered_1)==nrow(filtered_2))
 })

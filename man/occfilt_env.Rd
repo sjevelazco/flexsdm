@@ -4,7 +4,7 @@
 \alias{occfilt_env}
 \title{Perform environmental filtering on species occurrences}
 \usage{
-occfilt_env(data, x, y, id, env_layer, nbins, cores = 1)
+occfilt_env(data, x, y, id, env_layer, nbins)
 }
 \arguments{
 \item{data}{data.frame. Data.frame or tibble object with presences
@@ -19,8 +19,6 @@ occfilt_env(data, x, y, id, env_layer, nbins, cores = 1)
 \item{env_layer}{SpatRaster. Rasters with environmental conditions}
 
 \item{nbins}{integer. A number of classes used to split each environmental condition}
-
-\item{cores}{integer. Number of machine cores used for processing in parallel}
 }
 \value{
 A tibble object with data environmentally filtered
@@ -76,8 +74,7 @@ filtered_1 <- occfilt_env(
   y = "y",
   id = "idd",
   env_layer = somevar,
-  nbins = 5,
-  cores = 1
+  nbins = 5
 )
 
 # split into 8 bins
@@ -87,8 +84,7 @@ filtered_2 <- occfilt_env(
   y = "y",
   id = "idd",
   env_layer = somevar,
-  nbins = 8,
-  cores = 1
+  nbins = 8
 )
 
 # split into 12 bins
@@ -98,8 +94,7 @@ filtered_3 <- occfilt_env(
   y = "y",
   id = "idd",
   env_layer = somevar,
-  nbins = 12,
-  cores = 1
+  nbins = 12
 )
 # note that the higher the nbins parameter the more
 # classes must be processed (4 variables, 30 bins = 923521 classes)

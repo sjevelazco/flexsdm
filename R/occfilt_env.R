@@ -9,7 +9,6 @@
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
 #' @param env_layer SpatRaster. Rasters with environmental conditions
 #' @param nbins integer. A number of classes used to split each environmental condition
-#' @param cores integer. Number of machine cores used for processing in parallel
 #'
 #' @return
 #' A tibble object with data environmentally filtered
@@ -46,12 +45,9 @@
 #'
 #' @export
 #'
-#' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr %>% mutate select starts_with pull tibble
-#' @importFrom foreach foreach %dopar%
-#' @importFrom parallel makeCluster stopCluster
 #' @importFrom stats complete.cases
-#' @importFrom terra extract
+#' @importFrom terra extract nlyr levels classify
 #'
 #' @examples
 #' \dontrun{
@@ -82,8 +78,7 @@
 #'   y = "y",
 #'   id = "idd",
 #'   env_layer = somevar,
-#'   nbins = 5,
-#'   cores = 1
+#'   nbins = 5
 #' )
 #'
 #' # split into 8 bins
@@ -93,8 +88,7 @@
 #'   y = "y",
 #'   id = "idd",
 #'   env_layer = somevar,
-#'   nbins = 8,
-#'   cores = 1
+#'   nbins = 8
 #' )
 #'
 #' # split into 12 bins
@@ -104,8 +98,7 @@
 #'   y = "y",
 #'   id = "idd",
 #'   env_layer = somevar,
-#'   nbins = 12,
-#'   cores = 1
+#'   nbins = 12
 #' )
 #' # note that the higher the nbins parameter the more
 #' # classes must be processed (4 variables, 30 bins = 923521 classes)
@@ -115,13 +108,14 @@
 #'
 #' @seealso \code{\link{occfilt_geo}}
 #'
-occfilt_env <- function(data, x, y, id, env_layer, nbins, cores = 1) {
+occfilt_env <- function(data, x, y, id, env_layer, nbins) {
   s <- . <- l <- NULL
 
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
 
   message("Extracting values from raster ...")
+  env <- env_layer
   env_layer <- terra::extract(env_layer, coord)
   env_layer$ID <- NULL
 
@@ -140,67 +134,20 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins, cores = 1) {
   classes <- list()
   for (i in 1:n) {
     ext1 <- range(env_layer[, i])
-    ext1[1] <- ext1[1] - 1
+    ext1[2] <- ext1[2] + 0.05
+    ext1 <- c(ext1[1] - 0.000001, ext1[2] + 0.000001)
     classes[[i]] <- seq(ext1[1], ext1[2], by = res[i])
+    classes[[i]][length(classes[[i]])] <- ext1[2]
   }
-  classes <- expand.grid(classes)
 
-  message("Number of classes in the environmental space: ", nrow(classes))
+  for (i in 1:(terra::nlyr(env))) {
+    env[[i]] <- terra::classify(env[[i]], classes[[i]], include.lowest = TRUE)
+    levels(env[[i]]) <- as.numeric(as.factor(terra::levels(env[[i]])[[1]]))
+  }
+  real_p <- terra::extract(env, coord)[-1]
+  real_p$groupID <- apply(real_p, 1, function(x) paste(x, collapse = "."))
+
   message("Number of unfiltered records: ", nrow(da))
-
-  ends <- NULL
-  for (i in 1:n) {
-    f <- classes[, i] + res[[i]]
-    ends <- cbind(ends, f)
-  }
-
-  classes <- data.frame(classes, ends) %>% dplyr::mutate(groupID = c(1:nrow(classes)))
-  real_p <- data.frame(coord, env_layer)
-
-  names_real <- c("lon", "lat")
-  names_pot_st <- NULL
-  names_pot_end <- NULL
-  sql1 <- NULL
-  for (i in 1:n) {
-    names_real <- c(names_real, paste("f", i, sep = ""))
-    names_pot_st <- c(names_pot_st, paste("start_f", i, sep = ""))
-    names_pot_end <- c(names_pot_end, paste("end_f", i, sep = ""))
-    sql1 <- paste(sql1, paste("real_p.filter", i, sep = ""), sep = ", ")
-  }
-
-  names(real_p) <- names_real
-  names(classes) <- c(names_pot_st, names_pot_end, "groupID")
-
-  real_p$groupID <- NA
-
-  cnames <- real_p %>%
-    dplyr::select(dplyr::starts_with("f")) %>%
-    names()
-
-  cl <- parallel::makeCluster(cores)
-  doParallel::registerDoParallel(cl)
-
-  groupID <- foreach::foreach(l = 1:nrow(real_p), .packages = c("dplyr"), .final = unlist) %dopar% {
-    real_p2 <- real_p[l, ] %>% dplyr::select(dplyr::starts_with("f"))
-    flt <- list()
-    for (ll in 1:length(cnames)) {
-      vf <- real_p2 %>% dplyr::pull(cnames[ll])
-      flt[[ll]] <-
-        vf <= (classes %>% dplyr::pull(paste0("end_", cnames[ll]))) &
-          vf > (classes %>% dplyr::pull(paste0("start_", cnames[ll])))
-    }
-    flt <- do.call("cbind", flt) %>%
-      apply(., 1, all) %>%
-      which()
-    if (length(flt) > 0) {
-      real_p$groupID[l] <- classes$groupID[flt]
-      real_p$groupID[l]
-    } else {
-      NA
-    }
-  }
-  real_p$groupID <- groupID
-  parallel::stopCluster(cl)
 
   if (any(is.na(real_p$groupID))) {
     nas <- da[is.na(real_p$groupID), c(id, x, y)]
