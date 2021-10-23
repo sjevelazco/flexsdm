@@ -132,7 +132,7 @@
     <p>This function perform filtering on species occurrences based on their environmental conditions.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>occfilt_env</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>id</span>, <span class='va'>env_layer</span>, <span class='va'>nbins</span>, cores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>occfilt_env</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>id</span>, <span class='va'>env_layer</span>, <span class='va'>nbins</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,10 +161,6 @@
     <tr>
       <th>nbins</th>
       <td><p>integer. A number of classes used to split each environmental condition</p></td>
-    </tr>
-    <tr>
-      <th>cores</th>
-      <td><p>integer. Number of machine cores used for processing in parallel</p></td>
     </tr>
     </table>
 
@@ -235,8 +231,7 @@ https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
   y <span class='op'>=</span> <span class='st'>"y"</span>,
   id <span class='op'>=</span> <span class='st'>"idd"</span>,
   env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
-  nbins <span class='op'>=</span> <span class='fl'>5</span>,
-  cores <span class='op'>=</span> <span class='fl'>1</span>
+  nbins <span class='op'>=</span> <span class='fl'>5</span>
 <span class='op'>)</span>
 
 <span class='co'># split into 8 bins</span>
@@ -246,8 +241,7 @@ https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
   y <span class='op'>=</span> <span class='st'>"y"</span>,
   id <span class='op'>=</span> <span class='st'>"idd"</span>,
   env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
-  nbins <span class='op'>=</span> <span class='fl'>8</span>,
-  cores <span class='op'>=</span> <span class='fl'>1</span>
+  nbins <span class='op'>=</span> <span class='fl'>8</span>
 <span class='op'>)</span>
 
 <span class='co'># split into 12 bins</span>
@@ -257,8 +251,7 @@ https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
   y <span class='op'>=</span> <span class='st'>"y"</span>,
   id <span class='op'>=</span> <span class='st'>"idd"</span>,
   env_layer <span class='op'>=</span> <span class='va'>somevar</span>,
-  nbins <span class='op'>=</span> <span class='fl'>12</span>,
-  cores <span class='op'>=</span> <span class='fl'>1</span>
+  nbins <span class='op'>=</span> <span class='fl'>12</span>
 <span class='op'>)</span>
 <span class='co'># note that the higher the nbins parameter the more</span>
 <span class='co'># classes must be processed (4 variables, 30 bins = 923521 classes)</span>

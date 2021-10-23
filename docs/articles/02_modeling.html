@@ -79,7 +79,7 @@
 
       
 
-      </header><script src="02_modeling_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><script src="02_modeling_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>flexsdm: Overview of Modeling functions</h1>
@@ -144,7 +144,7 @@
 <span class="co">#&gt; Loading required package: flexsdm</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: terra</span>
-<span class="co">#&gt; terra version 1.3.22</span>
+<span class="co">#&gt; terra version 1.4.11</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'terra'</span>
 <span class="co">#&gt; The following object is masked from 'package:knitr':</span>
@@ -180,7 +180,7 @@
               threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
               return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp88m7Ij/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpklOMla/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="data-species-occurrence-and-background-data" class="section level2">
 <h2 class="hasAnchor">
@@ -247,7 +247,7 @@
 <span class="co">#&gt; $ awc      &lt;dbl&gt; 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0~</span>
 <span class="co">#&gt; $ depth    &lt;dbl&gt; 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99~</span>
 <span class="co">#&gt; $ landform &lt;fct&gt; 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1~</span>
-<span class="co">#&gt; $ .part    &lt;int&gt; 1, 5, 1, 3, 2, 2, 2, 2, 4, 3, 1, 2, 3, 4, 4, 4, 4, 1, 4, 3, 4~</span></code></pre></div>
+<span class="co">#&gt; $ .part    &lt;int&gt; 2, 4, 2, 3, 1, 1, 5, 4, 1, 2, 4, 2, 5, 2, 5, 2, 1, 4, 4, 5, 4~</span></code></pre></div>
 <p>Now, in the abies2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record (row) is a member of. Next, we have to apply the same partition method and number of folds to the environmental conditions of the background points.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">backg2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
@@ -272,7 +272,7 @@
 <span class="co">#&gt; $ depth        &lt;dbl&gt; 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17~</span>
 <span class="co">#&gt; $ percent_clay &lt;dbl&gt; 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,~</span>
 <span class="co">#&gt; $ landform     &lt;fct&gt; 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, ~</span>
-<span class="co">#&gt; $ .part        &lt;int&gt; 4, 1, 5, 1, 5, 1, 4, 2, 5, 3, 1, 3, 1, 1, 1, 5, 4, 3, 2, ~</span></code></pre></div>
+<span class="co">#&gt; $ .part        &lt;int&gt; 3, 3, 1, 5, 3, 2, 5, 2, 1, 5, 4, 1, 5, 2, 1, 5, 5, 4, 5, ~</span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5).</p>
 <div id="fit-and-validate-models" class="section level3">
 <h3 class="hasAnchor">
@@ -310,12 +310,12 @@
 <span class="co">#&gt; Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     Df %Dev Lambda</span>
-<span class="co">#&gt; 1    0 0.00 80.300</span>
-<span class="co">#&gt; 2    0 0.00 76.670</span>
-<span class="co">#&gt; 3    0 0.00 73.200</span>
-<span class="co">#&gt; 4    0 0.00 69.890</span>
-<span class="co">#&gt; 5    0 0.00 66.730</span>
-<span class="co">#&gt; 6    0 0.00 63.710</span>
+<span class="co">#&gt; 1    0 0.00 80.020</span>
+<span class="co">#&gt; 2    0 0.00 76.400</span>
+<span class="co">#&gt; 3    0 0.00 72.940</span>
+<span class="co">#&gt; 4    0 0.00 69.640</span>
+<span class="co">#&gt; 5    0 0.00 66.490</span>
+<span class="co">#&gt; 6    0 0.00 63.490</span>
 <span class="co">#&gt;  [ reached getOption("max.print") -- omitted 194 rows ]</span></code></pre></div>
 <p>model: A “MaxEnt” class object. This object can be used for predicting. (I DO NOT THINK THE EXAMPLE SHOWN IS MAXENT. THIS IS A GLMNET) (ALSO YOU SHOULD PUT HTE DESCRIPTION OF EACH MODEL OBJECT ELEMENT BEFORE THE EXAMPLE NOT AFTER)</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -328,11 +328,11 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">performance</span>
 <span class="co">#&gt; # A tibble: 3 x 25</span>
-<span class="co">#&gt;   model threshold       thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 max   equal_sens_spec     0.591         700        700    0.664 0.0113    0.666</span>
-<span class="co">#&gt; 2 max   max_sens_spec       0.573         700        700    0.88  0.0373    0.539</span>
-<span class="co">#&gt; 3 max   max_sorensen        0.415         700        700    0.911 0.0483    0.5  </span>
+<span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
+<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 max   equal_sens_sp~     0.590         700        700    0.663 0.0283    0.661</span>
+<span class="co">#&gt; 2 max   max_sens_spec      0.564         700        700    0.901 0.0198    0.524</span>
+<span class="co">#&gt; 3 max   max_sorensen       0.529         700        700    0.927 0.0329    0.486</span>
 <span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
@@ -344,16 +344,16 @@
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
 <span class="co">#&gt;    rnames replicates part  pr_ab   pred</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1      .part      1         0 0.711 </span>
-<span class="co">#&gt;  2 3      .part      1         0 0.800 </span>
-<span class="co">#&gt;  3 11     .part      1         0 0.204 </span>
-<span class="co">#&gt;  4 18     .part      1         0 0.0128</span>
-<span class="co">#&gt;  5 24     .part      1         0 0.889 </span>
-<span class="co">#&gt;  6 30     .part      1         0 0.0151</span>
-<span class="co">#&gt;  7 39     .part      1         0 0.940 </span>
-<span class="co">#&gt;  8 45     .part      1         0 0.342 </span>
-<span class="co">#&gt;  9 48     .part      1         0 0.123 </span>
-<span class="co">#&gt; 10 65     .part      1         0 0.785 </span>
+<span class="co">#&gt;  1 5      .part      1         0 0.816 </span>
+<span class="co">#&gt;  2 6      .part      1         0 0.782 </span>
+<span class="co">#&gt;  3 9      .part      1         0 0.622 </span>
+<span class="co">#&gt;  4 17     .part      1         0 0.583 </span>
+<span class="co">#&gt;  5 23     .part      1         0 0.643 </span>
+<span class="co">#&gt;  6 26     .part      1         0 0.268 </span>
+<span class="co">#&gt;  7 31     .part      1         0 0.455 </span>
+<span class="co">#&gt;  8 33     .part      1         0 0.0450</span>
+<span class="co">#&gt;  9 43     .part      1         0 0.921 </span>
+<span class="co">#&gt; 10 44     .part      1         0 0.610 </span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability and test partition for each observation (row).</p>
 <p>II- Random forest models with exploration of hyper-parameters.</p>
@@ -417,7 +417,7 @@
 <span class="co">#&gt; # A tibble: 1 x 26</span>
 <span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     2 raf   max_sens_spec      0.53         700        700    0.914 0.0307</span>
+<span class="co">#&gt; 1     2 raf   max_sens_spec      0.53         700        700    0.929 0.0242</span>
 <span class="co">#&gt; # ... with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
@@ -429,16 +429,16 @@
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
 <span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 1      .part      1     0     0.272</span>
-<span class="co">#&gt;  2 3      .part      1     0     0.016</span>
-<span class="co">#&gt;  3 11     .part      1     0     0.17 </span>
-<span class="co">#&gt;  4 18     .part      1     0     0.004</span>
-<span class="co">#&gt;  5 24     .part      1     0     0.882</span>
-<span class="co">#&gt;  6 30     .part      1     0     0.022</span>
-<span class="co">#&gt;  7 39     .part      1     0     0.492</span>
-<span class="co">#&gt;  8 45     .part      1     0     0.02 </span>
-<span class="co">#&gt;  9 48     .part      1     0     0.014</span>
-<span class="co">#&gt; 10 65     .part      1     0     0.536</span>
+<span class="co">#&gt;  1 5      .part      1     0     0.442</span>
+<span class="co">#&gt;  2 6      .part      1     0     0.23 </span>
+<span class="co">#&gt;  3 9      .part      1     0     0.338</span>
+<span class="co">#&gt;  4 17     .part      1     0     0.086</span>
+<span class="co">#&gt;  5 23     .part      1     0     0.06 </span>
+<span class="co">#&gt;  6 26     .part      1     0     0.422</span>
+<span class="co">#&gt;  7 31     .part      1     0     0.18 </span>
+<span class="co">#&gt;  8 33     .part      1     0     0.074</span>
+<span class="co">#&gt;  9 43     .part      1     0     0.86 </span>
+<span class="co">#&gt; 10 44     .part      1     0     0.932</span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability and test partition for each observation (row).</p>
 <p>These model objects can be used in flexsdm::fit_ensemble().</p>
@@ -539,237 +539,34 @@
 <span class="co">#&gt; 20  3162     1   59905.  -53634.  319.  626.  1.99     212.    4.50  4.51 0.0396</span>
 <span class="co">#&gt; # ... with 3 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part &lt;int&gt;</span></code></pre></div>
 <p>This function constructs Generalized Additive Models using the Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018).</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We set the model without threshold specification and with the kfold created above</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>esm_gam_t1 <span class="ot">&lt;-</span> <span class="fu">esm_gam</span>(</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> abies2,</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span>),</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">".part"</span>,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="cn">NULL</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==</span>                                                                    <span class="er">|</span>   <span class="dv">4</span>%</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=====</span>                                                                 <span class="er">|</span>   <span class="dv">7</span>%</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========</span>                                                              <span class="er">|</span>  <span class="dv">11</span>%</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========</span>                                                            <span class="er">|</span>  <span class="dv">14</span>%</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">18</span>%</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============</span>                                                       <span class="er">|</span>  <span class="dv">21</span>%</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================</span>                                                    <span class="er">|</span>  <span class="dv">25</span>%</span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================</span>                                                  <span class="er">|</span>  <span class="dv">29</span>%</span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================</span>                                                <span class="er">|</span>  <span class="dv">32</span>%</span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=========================</span>                                             <span class="er">|</span>  <span class="dv">36</span>%</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================</span>                                          <span class="er">|</span>  <span class="dv">39</span>%</span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================</span>                                        <span class="er">|</span>  <span class="dv">43</span>%</span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================================</span>                                      <span class="er">|</span>  <span class="dv">46</span>%</span>
-<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
-<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================</span>                                <span class="er">|</span>  <span class="dv">54</span>%</span>
-<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================</span>                              <span class="er">|</span>  <span class="dv">57</span>%</span>
-<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================</span>                            <span class="er">|</span>  <span class="dv">61</span>%</span>
-<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=============================================</span>                         <span class="er">|</span>  <span class="dv">64</span>%</span>
-<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================================================</span>                      <span class="er">|</span>  <span class="dv">68</span>%</span>
-<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================================================</span>                    <span class="er">|</span>  <span class="dv">71</span>%</span>
-<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================</span>                  <span class="er">|</span>  <span class="dv">75</span>%</span>
-<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================================================</span>               <span class="er">|</span>  <span class="dv">79</span>%</span>
-<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">82</span>%</span>
-<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================================================</span>          <span class="er">|</span>  <span class="dv">86</span>%</span>
-<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================================================</span>        <span class="er">|</span>  <span class="dv">89</span>%</span>
-<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=================================================================</span>     <span class="er">|</span>  <span class="dv">93</span>%</span>
-<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================================</span>  <span class="er">|</span>  <span class="dv">96</span>%</span>
-<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># We set the model without threshold specification and with the kfold created above</span>
+<span class="va">esm_gam_t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gam.html">esm_gam</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">abies2</span>,
+  response <span class="op">=</span> <span class="st">"pr_ab"</span>,
+  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,
+  partition <span class="op">=</span> <span class="st">".part"</span>,
+  thr <span class="op">=</span> <span class="cn">NULL</span>
+<span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Model has more coefficients than data used for training it. Try to reduce k</span></code></pre></div>
 <p>This function returns a list object with the following elements:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">esm_gam_t1</span><span class="op">)</span>
-<span class="co">#&gt; [1] "esm_model"   "predictors"  "performance"</span></code></pre></div>
+<span class="co">#&gt; NULL</span></code></pre></div>
 <p>esm_model: A list with “GAM” class object for each bivariate model. This object can be used for predicting using the ESM approachwith sdm_predict function.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>max.print<span class="op">=</span><span class="fl">10</span><span class="op">)</span> <span class="co"># If you don't want to see printed all the output</span>
 <span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">esm_model</span>
-<span class="co">#&gt; $`0.398148148148148`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(cwd, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1.81 1.73  total = 4.54 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: 0.2827405     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`1`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(tmin, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1 1  total = 3 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: -0.7     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`-0.263888888888889`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(ppt_djf, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1 1  total = 3 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: 0.4954043     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`-0.199074074074074`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(ppt_jja, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1 1  total = 3 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: 0.4765413     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`0.0925925925925926`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(pH, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1 1  total = 3 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: 0.4818906     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`-0.555555555555556`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(awc, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1 1  total = 3 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: 0.4948666     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`0.564814814814815`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(aet, k = 3) + s(depth, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1.00 1.12  total = 3.12 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: 0.08148345     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`1`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(cwd, k = 3) + s(tmin, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1 1  total = 3 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: -0.7     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`0.314814814814815`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(cwd, k = 3) + s(ppt_djf, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1 1  total = 3 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: 0.4360771     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $`0.875`</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Family: binomial </span>
-<span class="co">#&gt; Link function: logit </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Formula:</span>
-<span class="co">#&gt; pr_ab ~ s(cwd, k = 3) + s(ppt_jja, k = 3)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimated degrees of freedom:</span>
-<span class="co">#&gt; 1 1  total = 3 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; UBRE score: 0.107549     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  [ reached getOption("max.print") -- omitted 18 entries ]</span></code></pre></div>
+<span class="co">#&gt; NULL</span></code></pre></div>
 <p>predictors: A tibble with variables use for modeling.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">predictors</span>
-<span class="co">#&gt; # A tibble: 1 x 8</span>
-<span class="co">#&gt;   c1    c2    c3    c4      c5      c6    c7    c8   </span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;</span>
-<span class="co">#&gt; 1 aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth</span></code></pre></div>
+<span class="co">#&gt; NULL</span></code></pre></div>
 <p>performance: Performance metric (see sdm_eval). Those threshold dependent metrics are calculated based on the threshold specified in the argument.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">performance</span>
-<span class="co">#&gt; # A tibble: 7 x 25</span>
-<span class="co">#&gt;   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
-<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;            &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 esm_gam equal_sens_~     0.725          10         10    0.917  0.144    1    </span>
-<span class="co">#&gt; 2 esm_gam lpt              0.288          10         10    1      0        0.917</span>
-<span class="co">#&gt; 3 esm_gam max_fpb          0.288          10         10    1      0        0.917</span>
-<span class="co">#&gt; 4 esm_gam max_jaccard      0.288          10         10    1      0        0.917</span>
-<span class="co">#&gt; 5 esm_gam max_sens_sp~     0.725          10         10    0.917  0.144    1    </span>
-<span class="co">#&gt; 6 esm_gam max_sorensen     0.288          10         10    1      0        0.917</span>
-<span class="co">#&gt; 7 esm_gam sensitivity      0.725          10         10    1      0        0.917</span>
-<span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></code></pre></div>
+<span class="co">#&gt; NULL</span></code></pre></div>
 <p>Now, we test the rep_kfold partition method. In this method ‘folds’ refers to the number of partitions for data partitioning and ‘replicate’ refers to the number of replicates. Both assume values &gt;=1.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Remove the previous k-fold partition</span>
@@ -809,72 +606,16 @@
 <span class="co">#&gt; # ... with 7 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part1 &lt;int&gt;,</span>
 <span class="co">#&gt; #   .part2 &lt;int&gt;, .part3 &lt;int&gt;, .part4 &lt;int&gt;, .part5 &lt;int&gt;</span></code></pre></div>
 <p>We use the new rep_kfold partition in the gam model</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>esm_gam_t2 <span class="ot">&lt;-</span> <span class="fu">esm_gam</span>(</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> abies2,</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span>),</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">".part"</span>,</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="cn">NULL</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==</span>                                                                    <span class="er">|</span>   <span class="dv">4</span>%</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=====</span>                                                                 <span class="er">|</span>   <span class="dv">7</span>%</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========</span>                                                              <span class="er">|</span>  <span class="dv">11</span>%</span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========</span>                                                            <span class="er">|</span>  <span class="dv">14</span>%</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">18</span>%</span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============</span>                                                       <span class="er">|</span>  <span class="dv">21</span>%</span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================</span>                                                    <span class="er">|</span>  <span class="dv">25</span>%</span>
-<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================</span>                                                  <span class="er">|</span>  <span class="dv">29</span>%</span>
-<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================</span>                                                <span class="er">|</span>  <span class="dv">32</span>%</span>
-<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=========================</span>                                             <span class="er">|</span>  <span class="dv">36</span>%</span>
-<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================</span>                                          <span class="er">|</span>  <span class="dv">39</span>%</span>
-<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================</span>                                        <span class="er">|</span>  <span class="dv">43</span>%</span>
-<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================================</span>                                      <span class="er">|</span>  <span class="dv">46</span>%</span>
-<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
-<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================</span>                                <span class="er">|</span>  <span class="dv">54</span>%</span>
-<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================</span>                              <span class="er">|</span>  <span class="dv">57</span>%</span>
-<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================</span>                            <span class="er">|</span>  <span class="dv">61</span>%</span>
-<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=============================================</span>                         <span class="er">|</span>  <span class="dv">64</span>%</span>
-<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================================================</span>                      <span class="er">|</span>  <span class="dv">68</span>%</span>
-<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================================================</span>                    <span class="er">|</span>  <span class="dv">71</span>%</span>
-<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================</span>                  <span class="er">|</span>  <span class="dv">75</span>%</span>
-<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-54"><a href="#cb27-54" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================================================</span>               <span class="er">|</span>  <span class="dv">79</span>%</span>
-<span id="cb27-55"><a href="#cb27-55" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">82</span>%</span>
-<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================================================</span>          <span class="er">|</span>  <span class="dv">86</span>%</span>
-<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================================================</span>        <span class="er">|</span>  <span class="dv">89</span>%</span>
-<span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=================================================================</span>     <span class="er">|</span>  <span class="dv">93</span>%</span>
-<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================================</span>  <span class="er">|</span>  <span class="dv">96</span>%</span>
-<span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb27-66"><a href="#cb27-66" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">esm_gam_t2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gam.html">esm_gam</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">abies2</span>,
+  response <span class="op">=</span> <span class="st">"pr_ab"</span>,
+  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,
+  partition <span class="op">=</span> <span class="st">".part"</span>,
+  thr <span class="op">=</span> <span class="cn">NULL</span>
+<span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Model has more coefficients than data used for training it. Try to reduce k</span></code></pre></div>
 <p>Test with random bootstrap partitioning. In method ‘replicate’ refers to the number of replicates (assumes a value &gt;=1), ‘proportion’ refers to the proportion of occurrences used for model fitting (assumes a value &gt;0 and &lt;=1). With this method we can configure the proportion of training and testing data according to the species occurrences. In this example, proportion=‘0.7’ indicates that 70% of data will be used for model training, while 30% will be used for model testing. For this method, the function will return .partX columns with “train” or “test” words as the entries.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Remove the previous k-fold partition</span>
@@ -915,72 +656,16 @@
 <span class="co">#&gt; #   .part2 &lt;chr&gt;, .part3 &lt;chr&gt;, .part4 &lt;chr&gt;, .part5 &lt;chr&gt;, .part6 &lt;chr&gt;,</span>
 <span class="co">#&gt; #   .part7 &lt;chr&gt;, .part8 &lt;chr&gt;, .part9 &lt;chr&gt;, .part10 &lt;chr&gt;</span></code></pre></div>
 <p>Use the new rep_kfold partition in the gam model</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>esm_gam_t3 <span class="ot">&lt;-</span> <span class="fu">esm_gam</span>(</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> abies2,</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span>),</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">".part"</span>,</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="cn">NULL</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==</span>                                                                    <span class="er">|</span>   <span class="dv">4</span>%</span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=====</span>                                                                 <span class="er">|</span>   <span class="dv">7</span>%</span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========</span>                                                              <span class="er">|</span>  <span class="dv">11</span>%</span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========</span>                                                            <span class="er">|</span>  <span class="dv">14</span>%</span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">18</span>%</span>
-<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============</span>                                                       <span class="er">|</span>  <span class="dv">21</span>%</span>
-<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================</span>                                                    <span class="er">|</span>  <span class="dv">25</span>%</span>
-<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================</span>                                                  <span class="er">|</span>  <span class="dv">29</span>%</span>
-<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================</span>                                                <span class="er">|</span>  <span class="dv">32</span>%</span>
-<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=========================</span>                                             <span class="er">|</span>  <span class="dv">36</span>%</span>
-<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================</span>                                          <span class="er">|</span>  <span class="dv">39</span>%</span>
-<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================</span>                                        <span class="er">|</span>  <span class="dv">43</span>%</span>
-<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================================</span>                                      <span class="er">|</span>  <span class="dv">46</span>%</span>
-<span id="cb29-37"><a href="#cb29-37" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-38"><a href="#cb29-38" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
-<span id="cb29-39"><a href="#cb29-39" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-40"><a href="#cb29-40" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================</span>                                <span class="er">|</span>  <span class="dv">54</span>%</span>
-<span id="cb29-41"><a href="#cb29-41" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-42"><a href="#cb29-42" aria-hidden="true" tabindex="-1"></a>  <span class="er">|========================================</span>                              <span class="er">|</span>  <span class="dv">57</span>%</span>
-<span id="cb29-43"><a href="#cb29-43" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-44"><a href="#cb29-44" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================</span>                            <span class="er">|</span>  <span class="dv">61</span>%</span>
-<span id="cb29-45"><a href="#cb29-45" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-46"><a href="#cb29-46" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=============================================</span>                         <span class="er">|</span>  <span class="dv">64</span>%</span>
-<span id="cb29-47"><a href="#cb29-47" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-48"><a href="#cb29-48" aria-hidden="true" tabindex="-1"></a>  <span class="er">|================================================</span>                      <span class="er">|</span>  <span class="dv">68</span>%</span>
-<span id="cb29-49"><a href="#cb29-49" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-50"><a href="#cb29-50" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==================================================</span>                    <span class="er">|</span>  <span class="dv">71</span>%</span>
-<span id="cb29-51"><a href="#cb29-51" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-52"><a href="#cb29-52" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================</span>                  <span class="er">|</span>  <span class="dv">75</span>%</span>
-<span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-54"><a href="#cb29-54" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================================================</span>               <span class="er">|</span>  <span class="dv">79</span>%</span>
-<span id="cb29-55"><a href="#cb29-55" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-56"><a href="#cb29-56" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">82</span>%</span>
-<span id="cb29-57"><a href="#cb29-57" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-58"><a href="#cb29-58" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============================================================</span>          <span class="er">|</span>  <span class="dv">86</span>%</span>
-<span id="cb29-59"><a href="#cb29-59" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-60"><a href="#cb29-60" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==============================================================</span>        <span class="er">|</span>  <span class="dv">89</span>%</span>
-<span id="cb29-61"><a href="#cb29-61" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-62"><a href="#cb29-62" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=================================================================</span>     <span class="er">|</span>  <span class="dv">93</span>%</span>
-<span id="cb29-63"><a href="#cb29-63" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-64"><a href="#cb29-64" aria-hidden="true" tabindex="-1"></a>  <span class="er">|====================================================================</span>  <span class="er">|</span>  <span class="dv">96</span>%</span>
-<span id="cb29-65"><a href="#cb29-65" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb29-66"><a href="#cb29-66" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">esm_gam_t3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gam.html">esm_gam</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">abies2</span>,
+  response <span class="op">=</span> <span class="st">"pr_ab"</span>,
+  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,
+  partition <span class="op">=</span> <span class="st">".part"</span>,
+  thr <span class="op">=</span> <span class="cn">NULL</span>
+<span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Model has more coefficients than data used for training it. Try to reduce k</span></code></pre></div>
 <p>#=========#=========#=========#=========#=========#=========#=========#</p>
 <p><strong>Vignette still under construction and changes</strong></p>
 <p>#=========#=========#=========#=========#=========#=========#=========#</p>
