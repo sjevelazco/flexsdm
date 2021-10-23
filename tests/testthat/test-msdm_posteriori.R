@@ -102,52 +102,52 @@ test_that("msdm_posteriori", {
   expect_s4_class(m_obr, "SpatRaster")
 })
 
-test_that("use of other object class", {
-  require(dplyr)
-  require(terra)
-
-  data("spp")
-  somevar <- system.file("external/somevar.tif", package = "flexsdm")
-  somevar <- terra::rast(somevar)
-
-
-  # It will prepared data for modeling a species
-  set.seed(10)
-  occ <- spp %>%
-    dplyr::filter(species == "sp2") %>% # filter a species
-    sdm_extract(
-      data = ., x = "x", y = "y",
-      env_layer = somevar, filter_na = TRUE
-    ) %>% # extrac variables values
-    part_random(.,
-      pr_ab = "pr_ab",
-      method = c(method = "kfold", folds = 10)
-    ) # add columns with partition
-
-  # Lets fit and predict a model
-  m_glm <- fit_glm(
-    data = occ,
-    response = "pr_ab",
-    predictors = names(somevar),
-    partition = ".part",
-    thr = "equal_sens_spec",
-  )
-
-  # Lets predict this model
-  m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
-
-  # No use of buffer with bmcp
-  expect_s4_class(msdm_posteriori(
-    records = data.frame(occ),
-    x = "x",
-    y = "y",
-    pr_ab = "pr_ab",
-    method = "bmcp",
-    cont_suit = raster::raster(m_pred[[1]]),
-    thr = "equal_sens_spec",
-    buffer = 30000
-  ), "SpatRaster")
-})
+# test_that("use of other object class", {
+#   require(dplyr)
+#   require(terra)
+#
+#   data("spp")
+#   somevar <- system.file("external/somevar.tif", package = "flexsdm")
+#   somevar <- terra::rast(somevar)
+#
+#
+#   # It will prepared data for modeling a species
+#   set.seed(10)
+#   occ <- spp %>%
+#     dplyr::filter(species == "sp2") %>% # filter a species
+#     sdm_extract(
+#       data = ., x = "x", y = "y",
+#       env_layer = somevar, filter_na = TRUE
+#     ) %>% # extrac variables values
+#     part_random(.,
+#       pr_ab = "pr_ab",
+#       method = c(method = "kfold", folds = 10)
+#     ) # add columns with partition
+#
+#   # Lets fit and predict a model
+#   m_glm <- fit_glm(
+#     data = occ,
+#     response = "pr_ab",
+#     predictors = names(somevar),
+#     partition = ".part",
+#     thr = "equal_sens_spec",
+#   )
+#
+#   # Lets predict this model
+#   m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
+#
+#   # No use of buffer with bmcp
+#   expect_s4_class(msdm_posteriori(
+#     records = data.frame(occ),
+#     x = "x",
+#     y = "y",
+#     pr_ab = "pr_ab",
+#     method = "bmcp",
+#     cont_suit = raster::raster(m_pred[[1]]),
+#     thr = "equal_sens_spec",
+#     buffer = 30000
+#   ), "SpatRaster")
+# })
 
 test_that("missuse of function", {
   require(dplyr)
