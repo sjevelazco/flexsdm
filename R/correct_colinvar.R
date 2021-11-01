@@ -239,9 +239,7 @@ correct_colinvar <- function(env_layer,
         )
       }
 
-      result <- list(result,
-        proj = dpca
-      )
+      result$proj <- dpca
     }
   }
 
