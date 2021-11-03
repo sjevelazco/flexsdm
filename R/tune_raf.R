@@ -287,8 +287,9 @@ tune_raf <-
     best_tune <- eval_final[filt, ]
     best_hyperp <- eval_final[filt, hyperp]
 
+    # Fit final models with best settings
     # Get data for ensemble
-    pred_test_ens <- fit_raf(
+    mod <- fit_raf(
       data = data,
       response = response,
       predictors = predictors,
@@ -297,23 +298,13 @@ tune_raf <-
       thr = thr,
       fit_formula = formula1,
       mtry = best_tune$mtry
-    )[["data_ens"]]
-
-    # Fit final models with best settings
-    set.seed(1)
-    mod <-
-      randomForest::randomForest(
-        formula1,
-        data = data,
-        mtry = best_hyperp$mtry,
-        ntree = 500,
-        importance = TRUE
-      )
+    )
+    pred_test_ens <- mod[["data_ens"]]
 
     pred_test <- data.frame(
       pr_ab = data[, response],
       pred = stats::predict(
-        mod,
+        mod$model,
         newdata = data,
         type = "prob"
       )[, 2]

@@ -294,8 +294,9 @@ tune_net <-
     best_tune <- eval_final[filt, ]
     best_hyperp <- eval_final[filt, hyperp]
 
+    # Fit final models with best settings
     # Get data for ensemble
-    pred_test_ens <- fit_net(
+    mod <- fit_net(
       data = data,
       response = response,
       predictors = predictors,
@@ -305,26 +306,14 @@ tune_net <-
       fit_formula = fit_formula,
       size = best_tune$size,
       decay = best_tune$decay
-    )[["data_ens"]]
+    )
+    pred_test_ens <- mod[["data_ens"]]
 
-
-    # Fit final models with best settings
-    set.seed(1)
-    mod <-
-      nnet::nnet(
-        formula1,
-        data = data,
-        size = best_hyperp$size,
-        rang = 0.1,
-        decay = best_hyperp$decay,
-        maxit = 200,
-        trace = FALSE
-      )
 
     pred_test <- data.frame(
       pr_ab = data[, response],
       pred = stats::predict(
-        mod,
+        mod$model,
         newdata = data,
       )
     )

@@ -385,8 +385,9 @@ tune_max <-
     best_hyperp <- eval_final[filt, hyperp]
 
 
+    # Fit final models with best settings
     # Get data for ensemble
-    pred_test_ens <- fit_max(
+    mod <- fit_max(
       data = data,
       response = response,
       predictors = predictors,
@@ -399,25 +400,13 @@ tune_max <-
       classes = best_tune$classes,
       pred_type = pred_type,
       regmult = best_tune$regmult
-    )[["data_ens"]]
-
-
-    # Fit final models with best settings
-    mod <-
-      maxnet::maxnet(
-        p = data[, response],
-        data = data[predictors],
-        f = maxnet::maxnet.formula(data[response],
-                                   data[predictors],
-                                   classes = best_hyperp$classes
-        ),
-        regmult = best_hyperp$regmult
-      )
+    )
+    pred_test_ens <- mod[["data_ens"]]
 
     pred_test <- data.frame(
       "pr_ab" = data[response],
       "pred" = predict_maxnet(
-        mod,
+        mod$model,
         newdata = data,
         clamp = TRUE,
         type = pred_type

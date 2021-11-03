@@ -301,7 +301,8 @@ tune_svm <-
 
 
     # Get data for ensemble
-    pred_test_ens <- fit_svm(
+    # Fit final models with best settings
+    mod <- fit_svm(
       data = data,
       response = response,
       predictors = predictors,
@@ -311,26 +312,14 @@ tune_svm <-
       thr = thr,
       sigma = best_tune$sigma,
       C = best_tune$C
-    )[["data_ens"]]
+    )
+    pred_test_ens <- mod[["data_ens"]]
 
-
-    # Fit final models with best settings
-    set.seed(1)
-    mod <-
-      kernlab::ksvm(
-        formula1,
-        data = data,
-        type = "C-svc",
-        kernel = "rbfdot",
-        kpar = list(sigma = best_hyperp$sigma),
-        C = best_hyperp$C,
-        prob.model = TRUE
-      )
 
     pred_test <- data.frame(
       pr_ab = data[, response],
       pred = kernlab::predict(
-        mod,
+        mod$model,
         newdata = data,
         type = "prob"
       )[, 2]

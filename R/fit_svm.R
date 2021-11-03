@@ -272,19 +272,26 @@ fit_svm <- function(data,
   } else {
     kpar_ <- list(sigma = sigma)
   }
-  set.seed(1)
-  suppressMessages(
-    mod <-
-      kernlab::ksvm(
-        formula1,
-        data = data,
-        type = "C-svc",
-        kernel = "rbfdot",
-        kpar = kpar_,
-        C = C,
-        prob.model = TRUE
-      )
-  )
+
+  pm <- 3
+  i <- 0
+  while(pm>2){
+    i <- i+1
+    set.seed(i)
+    suppressMessages(
+      mod <-
+        kernlab::ksvm(
+          formula1,
+          data = data,
+          type = "C-svc",
+          kernel = "rbfdot",
+          kpar = kpar_,
+          C = C,
+          prob.model = TRUE
+        )
+    )
+    pm <- length(mod@prob.model[[1]])
+  }
 
   pred_test <- data.frame(
     pr_ab = data[, response],

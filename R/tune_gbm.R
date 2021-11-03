@@ -323,6 +323,7 @@ tune_gbm <-
 
 
     # Get data for ensemble
+    # Fit final models with best settings
     pred_test_ens <- fit_gbm(
       data = data,
       response = response,
@@ -334,28 +335,14 @@ tune_gbm <-
       n_trees = best_tune$n.trees,
       n_minobsinnode = best_tune$n.minobsinnode,
       shrinkage = best_tune$shrinkage
-    )[["data_ens"]]
+    )
+    pred_test_ens <- mod[["data_ens"]]
 
-
-    # Fit final models with best settings
-    set.seed(1)
-    mod <-
-      suppressMessages(
-        gbm::gbm(
-          formula1,
-          data = data,
-          distribution = "bernoulli",
-          n.trees = best_hyperp$n.trees,
-          interaction.depth = 1,
-          shrinkage = best_hyperp$shrinkage,
-          n.minobsinnode = best_hyperp$n.minobsinnode
-        )
-      )
 
     pred_test <- data.frame(
       pr_ab = data[, response],
       pred = suppressMessages(gbm::predict.gbm(
-        mod,
+        mod$model,
         newdata = data,
         type = "response"
       ))
