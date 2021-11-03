@@ -324,7 +324,7 @@ tune_gbm <-
 
     # Get data for ensemble
     # Fit final models with best settings
-    pred_test_ens <- fit_gbm(
+    mod <- fit_gbm(
       data = data,
       response = response,
       predictors = predictors,
