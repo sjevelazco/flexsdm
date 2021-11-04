@@ -317,7 +317,7 @@ tune_raf <-
     )
 
     result <- list(
-      model = mod,
+      model = mod$model,
       predictors = variables,
       performance = dplyr::left_join(best_tune, threshold[1:4], by = "threshold") %>%
         dplyr::relocate(dplyr::all_of(hyperp), model, threshold, thr_value, n_presences, n_absences),
