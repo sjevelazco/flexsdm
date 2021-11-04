@@ -50,7 +50,7 @@
 #' @export
 #' @importFrom dplyr tibble
 #' @importFrom stats cor lm prcomp factanal
-#' @importFrom terra rast as.data.frame subset predict scale writeRaster
+#' @importFrom terra rast as.data.frame subset scale writeRaster
 #'
 #' @examples
 #' \dontrun{
@@ -232,7 +232,18 @@ correct_colinvar <- function(env_layer,
       for (i in 1:length(proj)) {
         scen <- terra::rast(list.files(proj[i], full.names = TRUE))
         scen <- terra::scale(scen, center = means, scale = stds)
-        scen <- terra::predict(scen, p, index = 1:naxis)
+        scen2 <- as.data.frame(scen, cells=TRUE)
+        n <- scen2$cell
+        scen2$cell <- NULL
+        scen <- scen[[1:naxis]]
+        scen2 <- as.matrix(scen2) %*% as.matrix(cof)
+        scen2 <- data.frame(scen2[,1:naxis])
+        names(scen) <- names(scen2)
+        values(scen[[1]])
+        for(ii in 1:naxis){
+          scen[[ii]][n] <- scen2[,ii]
+        }
+        rm(scen2)
         terra::writeRaster(
           scen,
           file.path(subfold[i], paste0(names(scen), ".tif"))
