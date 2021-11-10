@@ -554,7 +554,7 @@
 <p>However, we notice that the grid partition produced by part_sblock has a different resolution than the original environmental variables. If you want a map layer with the same properties (i.e. resolution, extent, NAs) as your original environmental variables, apply the get_block() function to the grid resulting from part_sblock(). This layer can be really useful for generating pseudo-absence or background sample points, which we will explore in the next section.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">res</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
-<span class="co">#&gt; [1] 913065.5 913065.5</span>
+<span class="co">#&gt; [1] 849196.6 849196.6</span>
 <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">res</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1890 1890</span>
 

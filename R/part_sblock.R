@@ -202,6 +202,7 @@
 #'     max_res_mult = 500,
 #'     num_grids = 30,
 #'     n_part = 2,
+#'     min_occ = 5,
 #'     prop = 0.5
 #'   )
 #'   result
@@ -250,7 +251,7 @@
 #'   min_res_mult = 10,
 #'   max_res_mult = 500,
 #'   num_grids = 30,
-#'   n_part = 2,
+#'   n_part = 4,
 #'   min_occ = 10,
 #'   prop = 0.5
 #' )
@@ -261,10 +262,10 @@
 #'
 #' plot(part$grid)
 #' points(
-#'   part$part[c("x", "y")],
-#'   col = c("blue", "red")[part$part$.part],
-#'   cex = 0.5,
-#'   pch = 19
+#' part$part[c("x", "y")],
+#' col = c("blue", "red", "green", "black")[part$part$.part],
+#' cex = 0.5,
+# 'pch = 19
 #' )
 #' }
 #'

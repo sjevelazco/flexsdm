@@ -251,6 +251,11 @@ tune_gbm <-
                 n.minobsinnode = grid$n.minobsinnode[ii]
               )
             ))
+          try(
+            if (all(is.na(mod[[ii]]$fit))) {
+              mod[[ii]] <- 0
+            }
+          )
         }
 
         filt <- sapply(mod, function(x) class(x) == "gbm")

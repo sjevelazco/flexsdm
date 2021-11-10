@@ -84,7 +84,8 @@ part <- part_sblock(
   pr_ab = "pr_ab",
   min_res_mult = 100,
   max_res_mult = 500,
-  num_grids = 10,
+  num_grids = 30,
+  min_occ = 5,
   n_part = 2
 )
 
