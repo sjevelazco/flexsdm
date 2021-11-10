@@ -89,6 +89,8 @@
 #' )
 #' abies2
 #'
+#' set.seed(1)
+#' backg <- dplyr::sample_n(backg, size = 2000, replace = FALSE)
 #' backg2 <- part_random(
 #'   data = backg,
 #'   pr_ab = "pr_ab",
@@ -106,7 +108,7 @@
 #' max_t1 <- tune_max(
 #'   data = abies2,
 #'   response = "pr_ab",
-#'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+#'   predictors = c("aet", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
 #'   background = backg2,
@@ -115,7 +117,7 @@
 #'   metric = "TSS",
 #'   clamp = TRUE,
 #'   pred_type = "cloglog",
-#'   n_cores = 1
+#'   n_cores = 2 # activate two cores for speed up this process
 #' )
 #'
 #' length(max_t1)
