@@ -129,7 +129,7 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
   rm(filt)
 
   n <- ncol(env_layer)
-  res <- (apply(env_layer, 2, max) - apply(env_layer, 2, min)) / nbins
+  res <- res <- apply(env_layer, 2, function(x) diff(range(x))) / nbins
 
   classes <- list()
   for (i in 1:n) {
