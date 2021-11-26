@@ -139,7 +139,7 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>First, install the flexsdm package. You can install the released version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm">github</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
+<code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: flexsdm</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
@@ -169,18 +169,20 @@
 <a href="#project-directory-setup" class="anchor"></a>Project directory setup</h2>
 <p>Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see <a href="https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html">Vignette 01_pre_modeling</a></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_project</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">'flex_sdm_project'</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">my_project</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"flex_sdm_project"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">my_project</span><span class="op">)</span>
 
-<span class="va">project_directory</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_directory.html">sdm_directory</a></span><span class="op">(</span>main_dir <span class="op">=</span> <span class="va">my_project</span>,
-              projections <span class="op">=</span> <span class="cn">NULL</span>,
-              calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,
-              algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"fit_max"</span>, <span class="st">"tune_raf"</span><span class="op">)</span>,
-              ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span>,
-              threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
-              return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">project_directory</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_directory.html">sdm_directory</a></span><span class="op">(</span>
+  main_dir <span class="op">=</span> <span class="va">my_project</span>,
+  projections <span class="op">=</span> <span class="cn">NULL</span>,
+  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,
+  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"fit_max"</span>, <span class="st">"tune_raf"</span><span class="op">)</span>,
+  ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span>,
+  threshold <span class="op">=</span> <span class="cn">TRUE</span>,
+  return_vector <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp6x7V2j/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmpy8LgV5/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="data-species-occurrence-and-background-data" class="section level2">
 <h2 class="hasAnchor">
@@ -247,7 +249,7 @@
 <span class="co">#&gt; $ awc      &lt;dbl&gt; 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0~</span>
 <span class="co">#&gt; $ depth    &lt;dbl&gt; 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99~</span>
 <span class="co">#&gt; $ landform &lt;fct&gt; 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1~</span>
-<span class="co">#&gt; $ .part    &lt;int&gt; 3, 5, 4, 2, 3, 3, 5, 1, 5, 5, 1, 4, 4, 1, 2, 5, 3, 1, 2, 2, 1~</span></code></pre></div>
+<span class="co">#&gt; $ .part    &lt;int&gt; 1, 4, 1, 1, 1, 1, 3, 3, 4, 3, 5, 5, 3, 1, 5, 5, 3, 5, 1, 3, 4~</span></code></pre></div>
 <p>Now, in the abies2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record (row) is a member of. Next, we have to apply the same partition method and number of folds to the environmental conditions of the background points.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">backg2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
@@ -272,7 +274,7 @@
 <span class="co">#&gt; $ depth        &lt;dbl&gt; 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17~</span>
 <span class="co">#&gt; $ percent_clay &lt;dbl&gt; 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,~</span>
 <span class="co">#&gt; $ landform     &lt;fct&gt; 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, ~</span>
-<span class="co">#&gt; $ .part        &lt;int&gt; 3, 3, 1, 3, 5, 3, 1, 4, 3, 3, 5, 3, 5, 5, 4, 5, 1, 1, 4, ~</span></code></pre></div>
+<span class="co">#&gt; $ .part        &lt;int&gt; 3, 5, 5, 4, 2, 4, 5, 3, 3, 1, 5, 5, 3, 4, 4, 3, 4, 1, 4, ~</span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5 k-folds (1, 2, 3, 4, 5).</p>
 <div id="fit-and-validate-models" class="section level3">
 <h3 class="hasAnchor">
@@ -304,7 +306,7 @@
 <p>This function returns a list object with the following elements:</p>
 <p>(I THINK YOU WANT TO RUN NAMES HERE) names(MAX_T1)</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>max.print<span class="op">=</span><span class="fl">20</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>max.print <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>
 <span class="va">max_t1</span><span class="op">$</span><span class="va">model</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
@@ -330,9 +332,9 @@
 <span class="co">#&gt; # A tibble: 3 x 25</span>
 <span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 max   equal_sens_sp~     0.590         700        700    0.659 0.0274    0.659</span>
-<span class="co">#&gt; 2 max   max_sens_spec      0.564         700        700    0.89  0.0496    0.53 </span>
-<span class="co">#&gt; 3 max   max_sorensen       0.529         700        700    0.923 0.0421    0.489</span>
+<span class="co">#&gt; 1 max   equal_sens_sp~     0.590         700        700    0.661 0.0284    0.661</span>
+<span class="co">#&gt; 2 max   max_sens_spec      0.564         700        700    0.879 0.0666    0.553</span>
+<span class="co">#&gt; 3 max   max_sorensen       0.529         700        700    0.91  0.0409    0.507</span>
 <span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span>
@@ -342,18 +344,18 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">data_ens</span>
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
-<span class="co">#&gt;    rnames replicates part  pr_ab   pred</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 8      .part      1         0 0.723 </span>
-<span class="co">#&gt;  2 11     .part      1         0 0.183 </span>
-<span class="co">#&gt;  3 14     .part      1         0 0.426 </span>
-<span class="co">#&gt;  4 18     .part      1         0 0.0139</span>
-<span class="co">#&gt;  5 21     .part      1         0 0.411 </span>
-<span class="co">#&gt;  6 28     .part      1         0 0.434 </span>
-<span class="co">#&gt;  7 30     .part      1         0 0.0172</span>
-<span class="co">#&gt;  8 37     .part      1         0 0.333 </span>
-<span class="co">#&gt;  9 40     .part      1         0 0.683 </span>
-<span class="co">#&gt; 10 43     .part      1         0 0.900 </span>
+<span class="co">#&gt;    rnames replicates part  pr_ab    pred</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 1      .part      1         0 0.652  </span>
+<span class="co">#&gt;  2 3      .part      1         0 0.788  </span>
+<span class="co">#&gt;  3 4      .part      1         0 0.00622</span>
+<span class="co">#&gt;  4 5      .part      1         0 0.793  </span>
+<span class="co">#&gt;  5 6      .part      1         0 0.769  </span>
+<span class="co">#&gt;  6 14     .part      1         0 0.407  </span>
+<span class="co">#&gt;  7 19     .part      1         0 0.675  </span>
+<span class="co">#&gt;  8 38     .part      1         0 0.178  </span>
+<span class="co">#&gt;  9 48     .part      1         0 0.108  </span>
+<span class="co">#&gt; 10 50     .part      1         0 0.00502</span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability and test partition for each observation (row).</p>
 <p>II- Random forest models with exploration of hyper-parameters.</p>
@@ -417,7 +419,7 @@
 <span class="co">#&gt; # A tibble: 1 x 26</span>
 <span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1     2 raf   max_sens_spec      0.51         700        700    0.909 0.0301</span>
+<span class="co">#&gt; 1     2 raf   max_sens_spec      0.51         700        700    0.919 0.0390</span>
 <span class="co">#&gt; # ... with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
@@ -429,16 +431,16 @@
 <span class="co">#&gt; # A tibble: 1,400 x 5</span>
 <span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
 <span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt; &lt;fct&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 8      .part      1     0     0.148</span>
-<span class="co">#&gt;  2 11     .part      1     0     0.112</span>
-<span class="co">#&gt;  3 14     .part      1     0     0.08 </span>
-<span class="co">#&gt;  4 18     .part      1     0     0.006</span>
-<span class="co">#&gt;  5 21     .part      1     0     0.128</span>
-<span class="co">#&gt;  6 28     .part      1     0     0.01 </span>
-<span class="co">#&gt;  7 30     .part      1     0     0.014</span>
-<span class="co">#&gt;  8 37     .part      1     0     0.064</span>
-<span class="co">#&gt;  9 40     .part      1     0     0.072</span>
-<span class="co">#&gt; 10 43     .part      1     0     0.908</span>
+<span class="co">#&gt;  1 1      .part      1     0     0.334</span>
+<span class="co">#&gt;  2 3      .part      1     0     0.014</span>
+<span class="co">#&gt;  3 4      .part      1     0     0.008</span>
+<span class="co">#&gt;  4 5      .part      1     0     0.472</span>
+<span class="co">#&gt;  5 6      .part      1     0     0.192</span>
+<span class="co">#&gt;  6 14     .part      1     0     0.054</span>
+<span class="co">#&gt;  7 19     .part      1     0     0.034</span>
+<span class="co">#&gt;  8 38     .part      1     0     0.15 </span>
+<span class="co">#&gt;  9 48     .part      1     0     0.014</span>
+<span class="co">#&gt; 10 50     .part      1     0     0.002</span>
 <span class="co">#&gt; # ... with 1,390 more rows</span></code></pre></div>
 <p>Predicted suitability and test partition for each observation (row).</p>
 <p>These model objects can be used in flexsdm::fit_ensemble().</p>
@@ -556,7 +558,7 @@
 <span class="co">#&gt; NULL</span></code></pre></div>
 <p>esm_model: A list with “GAM” class object for each bivariate model. This object can be used for predicting using the ESM approachwith sdm_predict function.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>max.print<span class="op">=</span><span class="fl">10</span><span class="op">)</span> <span class="co"># If you don't want to see printed all the output</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>max.print <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="co"># If you don't want to see printed all the output</span>
 <span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">esm_model</span>
 <span class="co">#&gt; NULL</span></code></pre></div>
 <p>predictors: A tibble with variables use for modeling.</p>

@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   # fig.path = "man/figures/README-",
-  #out.width = "100%",
+  # out.width = "100%",
   fig.width = 6,
   fig.height = 6,
   # dpi = 60,
@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 ```{r dependencies, include = FALSE}
 library(knitr)
-#devtools::install_github('sjevelazco/flexsdm')
+# devtools::install_github('sjevelazco/flexsdm')
 ```
 
 ## Introduction
@@ -98,7 +98,7 @@ These are the functions for model construction and validation:
 First, install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
 ```{r download package}
-#devtools::install_github('sjevelazco/flexsdm')
+# devtools::install_github('sjevelazco/flexsdm')
 require(flexsdm)
 require(terra)
 require(dplyr)
@@ -109,16 +109,18 @@ require(dplyr)
 Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html)
 
 ```{r sdm_directory}
-my_project <- file.path(file.path(tempdir(), 'flex_sdm_project'))
+my_project <- file.path(file.path(tempdir(), "flex_sdm_project"))
 dir.create(my_project)
 
-project_directory <- sdm_directory(main_dir = my_project,
-              projections = NULL,
-              calibration_area = TRUE,
-              algorithm = c("fit_max", "tune_raf"),
-              ensemble = c("mean"),
-              threshold = TRUE, 
-              return_vector = TRUE)
+project_directory <- sdm_directory(
+  main_dir = my_project,
+  projections = NULL,
+  calibration_area = TRUE,
+  algorithm = c("fit_max", "tune_raf"),
+  ensemble = c("mean"),
+  threshold = TRUE,
+  return_vector = TRUE
+)
 ```
 
 ## Data, species occurrence and background data
@@ -189,7 +191,7 @@ This function returns a list object with the following elements:
 names(MAX_T1)
 
 ```{r fit_max_model}
-options(max.print=20)
+options(max.print = 20)
 max_t1$model
 ```
 model: A "MaxEnt" class object. This object can be used for predicting.
@@ -362,7 +364,7 @@ names(esm_gam_t1)
 
 esm_model: A list with "GAM" class object for each bivariate model. This object can be used for predicting using the ESM approachwith sdm_predict function.
 ```{r esm_gam_t1_model}
-options(max.print=10) # If you don't want to see printed all the output
+options(max.print = 10) # If you don't want to see printed all the output
 esm_gam_t1$esm_model
 ```
 
@@ -438,4 +440,3 @@ esm_gam_t3 <- esm_gam(
 **Vignette still under construction and changes**
 
 #=========#=========#=========#=========#=========#=========#=========#
-

@@ -115,7 +115,7 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the flexsdm package. You can install the released version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm">github</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
+<code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
@@ -142,18 +142,20 @@
 <a href="#project-directory-setup" class="anchor"></a>Project directory setup</h2>
 <p>Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see <a href="https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html">Vignette 01_pre_modeling</a></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_project</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">'flex_sdm_project'</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">my_project</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"flex_sdm_project"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">my_project</span><span class="op">)</span>
 
-<span class="va">project_directory</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_directory.html">sdm_directory</a></span><span class="op">(</span>main_dir <span class="op">=</span> <span class="va">my_project</span>,
-              projections <span class="op">=</span> <span class="cn">NULL</span>,
-              calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,
-              algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"fit_glm"</span>, <span class="st">"fit_raf"</span>, <span class="st">"fit_gbm"</span><span class="op">)</span>,
-              ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span>,
-              threshold <span class="op">=</span> <span class="cn">TRUE</span>, 
-              return_vector <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">project_directory</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_directory.html">sdm_directory</a></span><span class="op">(</span>
+  main_dir <span class="op">=</span> <span class="va">my_project</span>,
+  projections <span class="op">=</span> <span class="cn">NULL</span>,
+  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,
+  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"fit_glm"</span>, <span class="st">"fit_raf"</span>, <span class="st">"fit_gbm"</span><span class="op">)</span>,
+  ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span>,
+  threshold <span class="op">=</span> <span class="cn">TRUE</span>,
+  return_vector <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpEVUryQ/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpOUBngD/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="species-occurrence-presenceabsense-and-environmental-data" class="section level2">
 <h2 class="hasAnchor">
@@ -320,7 +322,7 @@
 <p>Finally, we can predict different kinds of models from the same data (some_sp). <a href="https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html">sdm_predict</a> can be used for predicting one or more models fitted with fit_ or tune_ functions. The output will be a list of SpatRaster with continuous and/or binary predictions.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Predict using a single model, which is an mglm model in this example,</span>
-<span class="co">#and a threshold type for binary predictions</span>
+<span class="co"># and a threshold type for binary predictions</span>
 <span class="va">ind_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span>
   models <span class="op">=</span> <span class="va">mglm</span>,
   pred <span class="op">=</span> <span class="va">somevar</span>,
@@ -331,7 +333,7 @@
 <span class="co">#&gt; Predicting individual models</span>
 
 <span class="co"># Inspect the object. It's a SpatRaster with 2 layers: glm, max_fpb</span>
-<span class="co">#These are the continuous and binary prediction from the model </span>
+<span class="co"># These are the continuous and binary prediction from the model</span>
 <span class="va">ind_p</span>
 <span class="co">#&gt; $glm</span>
 <span class="co">#&gt; class       : SpatRaster </span>
@@ -362,7 +364,7 @@
 <span class="co">#&gt; Predicting list of individual models</span>
 
 <span class="co"># Inspect the object. It's a list with 3 SpatRaster, one for each model,</span>
-<span class="co">#each of which contains 2 layers, for the continuous and thresholded binary predictions.</span>
+<span class="co"># each of which contains 2 layers, for the continuous and thresholded binary predictions.</span>
 <span class="va">list_p</span>
 <span class="co">#&gt; $glm</span>
 <span class="co">#&gt; class       : SpatRaster </span>
@@ -417,7 +419,7 @@
 <span class="co">#&gt; Predicting ensembles</span>
 
 <span class="co"># Inspect the object. It's a SpatRaster with 2 layers, mensemble and max_fpb</span>
-<span class="co">#These are the continuous and binary prediction from the ensemble model </span>
+<span class="co"># These are the continuous and binary prediction from the ensemble model</span>
 <span class="va">ensemble_p</span>
 <span class="co">#&gt; $meansup</span>
 <span class="co">#&gt; class       : SpatRaster </span>
@@ -448,7 +450,7 @@
 <span class="co">#&gt; Predicting ensemble of small models</span>
 
 <span class="co"># Inspect the object It's a SpatRaster with 2 layers, msmall and max_fpb</span>
-<span class="co">#These are the continuous and binary prediction from the ESM model </span>
+<span class="co"># These are the continuous and binary prediction from the ESM model</span>
 <span class="va">small_p</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt; class       : SpatRaster </span>
@@ -459,8 +461,8 @@
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
 <span class="co">#&gt; names       :      esm_gam,      max_fpb </span>
-<span class="co">#&gt; min values  : 2.107821e-05, 0.000000e+00 </span>
-<span class="co">#&gt; max values  :    0.8755471,    1.0000000</span>
+<span class="co">#&gt; min values  : 2.133452e-05, 0.000000e+00 </span>
+<span class="co">#&gt; max values  :     0.863468,     1.000000</span>
 
 <span class="co"># Plot to see this layers</span>
 <span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span>
@@ -617,7 +619,7 @@
 <span class="co"># Layers in the abma SpatRaster</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">abma</span><span class="op">)</span>
 <span class="co">#&gt; [1] "current" "future"</span>
-<span class="co">#plot(abma)</span>
+<span class="co"># plot(abma)</span>
 
 <span class="co"># Layers in the int SpatRaster</span>
 <span class="va">int</span>
@@ -754,7 +756,7 @@
 <p><img src="03_post_modeling_files/figure-html/msdm_cml-1.png" width="576"></p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="co"># Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species. </span>
+<span class="co"># Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species.</span>
 <span class="va">m_cml</span>
 <span class="co">#&gt; class       : SpatRaster </span>
 <span class="co">#&gt; dimensions  : 558, 394, 1  (nrow, ncol, nlyr)</span>

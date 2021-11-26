@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   # fig.path = "man/figures/README-",
-  #out.width = "100%",
+  # out.width = "100%",
   fig.width = 6,
   fig.height = 6,
   # dpi = 60,
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r dependencies, include = FALSE}
-#devtools::install_github('sjevelazco/flexsdm')
+# devtools::install_github('sjevelazco/flexsdm')
 library(knitr)
 ```
 
@@ -73,7 +73,7 @@ In this vignette, users will learn about the first set of functions in the *flex
 First, install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
 ```{r download package}
-#devtools::install_github('sjevelazco/flexsdm')
+# devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(dplyr)
 library(terra)
@@ -84,16 +84,18 @@ library(terra)
 When building SDM's, organizing folders (directories) for a project will save time and confusion. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. The function sdm_directory() can do this for you, based on the types of model algorithms you want to use and/or the types of projections you would like to make. First decide where on your computer you would like to store the inputs and outputs of the project (this will be the main directory) and then use dir.create() to create that main directory. Next, specify whether or not you want to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. 
 
 ```{r sdm_directory, eval = FALSE}
-my_project <- file.path(file.path(tempdir(), 'flex_sdm_project'))
+my_project <- file.path(file.path(tempdir(), "flex_sdm_project"))
 dir.create(my_project)
 
-project_directory <- sdm_directory(main_dir = my_project,
-             projections = NULL,
-              calibration_area = TRUE,
-              algorithm = c("fit_max", "tune_raf"),
-              ensemble = c("mean"),
-              threshold = TRUE, 
-              return_vector = TRUE)
+project_directory <- sdm_directory(
+  main_dir = my_project,
+  projections = NULL,
+  calibration_area = TRUE,
+  algorithm = c("fit_max", "tune_raf"),
+  ensemble = c("mean"),
+  threshold = TRUE,
+  return_vector = TRUE
+)
 ```
 
 
@@ -205,7 +207,7 @@ ca_4 <- calib_area(
   method = c("mask", clusters, "clusters"),
 )
 
-par(mfrow=c(1,2))
+par(mfrow = c(1, 2))
 plot(clusters, main = "Original polygons")
 plot(ca_4, main = "Polygons with points (mask)")
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
@@ -224,7 +226,7 @@ somevar <- system.file("external/somevar.tif", package = "flexsdm")
 
 somevar <- terra::rast(somevar)
 
-names(somevar) <- c('aet', 'cwd', 'tmx', 'tmn')
+names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 
 plot(somevar)
 ```
@@ -241,7 +243,7 @@ So how can we correct for or reduce this collinearity? The function correct_coli
 This method eliminates predictors with a Pearson correlation index higher than a determined threshold. The default threshold is 0.7, but users can specify a given threshold (x) with method = c('pearson', th = 'x'). Here, we can see that the "pearson" method retains two predictors and removes two. The function also returns a list of removed variables and a correlation matrix of all input predictors. 
 
 ```{r pearson collinearity reduction}
-pearson_var <- correct_colinvar(somevar, method = c("pearson", th="0.7"))
+pearson_var <- correct_colinvar(somevar, method = c("pearson", th = "0.7"))
 pearson_var$env_layer
 pearson_var$removed_variables
 pearson_var$correlation_table
@@ -271,10 +273,10 @@ pca_var$cumulative_variance
 Selecting the "fa" method performs a factorial analysis to reduce dimensionality and selects the predictor(s) with the highest correlation to each axis. The outputs for this method are similar to those produced by the 'pca' method. NOT WORKING
 
 ```{r fa collinearity reduction, eval = FALSE}
-#fa_var <- correct_colinvar(somevar, method = c("fa"))
-#fa_var$env_layer
-#fa$coefficient
-#fa_var$cumulative_variance
+# fa_var <- correct_colinvar(somevar, method = c("fa"))
+# fa_var$env_layer
+# fa$coefficient
+# fa_var$cumulative_variance
 ```
 
 ## Data filtering
@@ -317,7 +319,7 @@ filt_env12 <- occfilt_env(
 )
 
 
-par(mfrow=c(2,2))
+par(mfrow = c(2, 2))
 somevar[[1]] %>% plot(main = "Original occurrence data")
 points(spp1 %>% select(x, y))
 somevar[[1]] %>% plot(main = "Filtering with 5 bins")
@@ -470,7 +472,7 @@ p_data <-
   sp_part3$part # presence data from spatial block partition example
 
 set.seed(10)
-bg <- lapply(1:2, function(x)
+bg <- lapply(1:2, function(x) {
   sample_background(
     data = p_data,
     x = "x",
@@ -481,20 +483,20 @@ bg <- lapply(1:2, function(x)
     rlayer = grid_env,
     maskval = x,
     calibarea = ca_1 # A SpatVector which delimit the calibration area used for a given species
-  )) %>%
+  )
+}) %>%
   bind_rows() %>%
   mutate(pr_ab = 0)
 
-par(mfrow=c(2,1))
+par(mfrow = c(2, 1))
 
 plot(grid_env, main = "Presence points")
-plot(ca_1, add= TRUE)
+plot(ca_1, add = TRUE)
 points(p_data, cex = .7, pch = 19)
 
 plot(grid_env, main = "Background points")
 plot(ca_1, add = TRUE)
 points(bg, cex = .1, pch = 19)
-
 ```
 
 ### 2. Sample pseudo-absences
@@ -504,31 +506,31 @@ Similarly, the function sample_pseudoabs allows random pseudo-absence sampling o
 ```{r sample pseudo-absences}
 
 set.seed(10)
-psa <- lapply(1:2, function(x)
+psa <- lapply(1:2, function(x) {
   sample_pseudoabs(
     data = p_data,
     x = "x",
     y = "y",
     n = sum(p_data == x),
     # number of pseudo-absence points to be sampled
-    method= c('env_const', env = somevar),
+    method = c("env_const", env = somevar),
     rlayer = grid_env,
     maskval = x,
     calibarea = ca_1
-  )) %>%
+  )
+}) %>%
   bind_rows() %>%
   mutate(pr_ab = 0)
 
-par(mfrow=c(2,1))
+par(mfrow = c(2, 1))
 
 plot(grid_env, main = "Presence points")
-plot(ca_1, add= TRUE)
+plot(ca_1, add = TRUE)
 points(p_data, cex = .7, pch = 19)
 
 plot(grid_env, main = "Pseudo-absence points")
-plot(ca_1, add= TRUE)
+plot(ca_1, add = TRUE)
 points(psa, cex = .7, pch = 19)
-
 ```
 
 ## Extracting environmental values 
@@ -537,7 +539,7 @@ Finally, before modeling species geographic distributions, we must extract envir
 
 ```{r sdm extract, eval = FALSE}
 
-all_points <- bind_rows(spp1 %>% dplyr::select(-idd), bg) 
+all_points <- bind_rows(spp1 %>% dplyr::select(-idd), bg)
 
 ex_spp <- sdm_extract(
   data = all_points,
@@ -545,10 +547,10 @@ ex_spp <- sdm_extract(
   y = "y",
   env_layer = somevar, # Raster with environmental variables
   variables = NULL, # Vector with the variable names of predictor variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.
-  filter_na = TRUE)
+  filter_na = TRUE
+)
 
 ex_spp
-
 ```
 
 #=========#=========#=========#=========#=========#=========#=========#
