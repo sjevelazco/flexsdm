@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   # fig.path = "man/figures/README-",
-  #out.width = "100%",
+  # out.width = "100%",
   fig.width = 6,
   fig.height = 6,
   # dpi = 60,
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r dependencies, include = FALSE}
-#devtools::install_github('sjevelazco/flexsdm')
+# devtools::install_github('sjevelazco/flexsdm')
 library(knitr)
 ```
 
@@ -44,7 +44,7 @@ Exist several ways to delimit a calibration area. In [calib_area()](https://sjev
 method that the calibration area is delimited by a buffer around presences.
 
 ```{r raw data, message=FALSE}
-#devtools::install_github('sjevelazco/flexsdm')
+# devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(terra)
 library(dplyr)
@@ -54,7 +54,9 @@ somevar <- terra::rast(somevar) # environmental data
 names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 
 data(abies)
-abies_p <- abies %>% select(x, y, pr_ab) %>% filter(pr_ab == 1)
+abies_p <- abies %>%
+  select(x, y, pr_ab) %>%
+  filter(pr_ab == 1)
 
 somevar[[1]] %>% plot()
 points(abies_p %>% select(x, y))
@@ -64,9 +66,9 @@ This figure shows the species occurrences, using the map of one of the environme
 
 
 ```{r calibration area}
-ca <- calib_area(data = abies_p, x = 'x', y = 'y', method =  c('buffer', width=80000))
+ca <- calib_area(data = abies_p, x = "x", y = "y", method = c("buffer", width = 80000))
 somevar[[1]] %>% plot()
-plot(ca, add=TRUE)
+plot(ca, add = TRUE)
 points(abies_p %>% select(x, y))
 ```
 
@@ -116,21 +118,23 @@ occ_part <- abies_pf %>%
     max_res_mult = 200,
     num_grids = 30,
     prop = 1
-  ) 
+  )
 
 abies_pf <- occ_part$part
 
 
-# Transform best block partition to a raster layer with same resolution and extent than 
-# predictor variables 
+# Transform best block partition to a raster layer with same resolution and extent than
+# predictor variables
 block_layer <- get_block(env_layer = somevar, best_grid = occ_part$grid)
 plot(block_layer)
 points(abies_pf %>% select("x", "y"))
 
-#Number of presences per block
-abies_pf %>% dplyr::group_by(.part) %>% dplyr::count()
+# Number of presences per block
+abies_pf %>%
+  dplyr::group_by(.part) %>%
+  dplyr::count()
 
-# Additional information of the best block 
+# Additional information of the best block
 occ_part$best_part_info
 ```
 
@@ -143,37 +147,41 @@ In this example, we only have species presence data. However, most SDM methods r
 # Sample background points throughout study area with random method, allocating 10X the number of presences a background
 
 set.seed(10)
-bg <- lapply(1:4, function(x) sample_background(
+bg <- lapply(1:4, function(x) {
+  sample_background(
     data = abies_pf,
     x = "x",
     y = "y",
-    n = sum(abies_pf$.part==x) * 10,
+    n = sum(abies_pf$.part == x) * 10,
     method = "random",
-    rlayer = block_layer, 
+    rlayer = block_layer,
     maskval = x, # this argument will constraint sampling process to a given block
     calibarea = ca # this argument will constraint sampling process to the calibration area
-  )) %>% 
-  bind_rows() 
+  )
+}) %>%
+  bind_rows()
 
 plot(block_layer)
 points(bg)
 
-bg <- sdm_extract(data = bg, x="x", y="y", env_layer = block_layer)
+bg <- sdm_extract(data = bg, x = "x", y = "y", env_layer = block_layer)
 
 # Sampling a number of pseudo-absences equal to the presences in each partition
 set.seed(10)
-psa <- lapply(1:4, function(x) sample_pseudoabs(
+psa <- lapply(1:4, function(x) {
+  sample_pseudoabs(
     data = abies_pf,
     x = "x",
     y = "y",
-    n = sum(abies_pf$.part==x),
+    n = sum(abies_pf$.part == x),
     method = "random",
-    rlayer = block_layer, 
+    rlayer = block_layer,
     maskval = x, # this argument will constraint sampling process to a given block
-    calibarea = ca  # this argument will constraint sampling process to the calibration area 
-  )) %>% 
-  bind_rows() 
-psa <- sdm_extract(data = psa, x="x", y="y", env_layer = block_layer)
+    calibarea = ca # this argument will constraint sampling process to the calibration area
+  )
+}) %>%
+  bind_rows()
+psa <- sdm_extract(data = psa, x = "x", y = "y", env_layer = block_layer)
 
 plot(block_layer)
 points(psa)
@@ -185,7 +193,6 @@ abies_pa <- bind_rows(abies_pf, psa)
 
 abies_pa # Presence-Pseudo-absence database
 bg # Background points
-
 ```
 
 Extract environmental data for the datasets. View the distributions of present points, pseudo-absence points, and background points using the blocks as a reference map.
@@ -199,7 +206,7 @@ abies_pa <- abies_pa %>%
     y = "y",
     env_layer = somevar,
     filter_na = TRUE
-  ) 
+  )
 
 bg <- bg %>%
   sdm_extract(
@@ -208,29 +215,30 @@ bg <- bg %>%
     y = "y",
     env_layer = somevar,
     filter_na = TRUE
-  ) 
+  )
 
-par(mfrow=c(3,1))
+par(mfrow = c(3, 1))
 
 plot(block_layer, main = "Presence points")
 points(occ_part$part[c("x", "y")],
-       col = "black",
-       cex = 1,
-       pch = 19)
+  col = "black",
+  cex = 1,
+  pch = 19
+)
 
 plot(block_layer, main = "Pseudo-absence points")
-points(psa[c("x", "y")] ,
-       col = "black",
-       cex = 1,
-       pch = 19)
+points(psa[c("x", "y")],
+  col = "black",
+  cex = 1,
+  pch = 19
+)
 
 plot(block_layer, main = "Background points")
-points(bg[c("x", "y")] ,
-       col = "black",
-       cex = 1,
-       pch = 19)
-
-
+points(bg[c("x", "y")],
+  col = "black",
+  cex = 1,
+  pch = 19
+)
 ```
 
 
@@ -268,10 +276,9 @@ f_glm <- fit_glm(
   response = "pr_ab",
   predictors = names(somevar),
   partition = ".part",
-  thr =  c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   poly = 2
 )
-
 ```
 
 ## Fit an ensemble model
@@ -309,7 +316,7 @@ pr_1 <- sdm_predict(
   models = ens_m,
   pred = somevar,
   thr = "max_sens_spec",
-  con_thr = TRUE, 
+  con_thr = TRUE,
   predict_area = NULL
 )
 
@@ -323,7 +330,9 @@ important to always use the original database (i.e., presences that have not bee
 All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).  
 
 ```{r constrain with msdm}
-thr_val <- ens_m$performance %>% dplyr::filter(threshold=='max_sens_spec') %>% pull(thr_value)
+thr_val <- ens_m$performance %>%
+  dplyr::filter(threshold == "max_sens_spec") %>%
+  pull(thr_value)
 
 m_pres <- msdm_posteriori(
   records = abies_p,
@@ -332,7 +341,7 @@ m_pres <- msdm_posteriori(
   pr_ab = "pr_ab",
   cont_suit = pr_1$meanw[[1]],
   method = c("obr"),
-  thr = c('sensitivity', sens=thr_val),
+  thr = c("sensitivity", sens = thr_val),
   buffer = NULL
 )
 

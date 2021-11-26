@@ -105,7 +105,7 @@
 <a href="#delimit-of-a-calibration-area" class="anchor"></a>Delimit of a calibration area</h2>
 <p>Delimiting the calibration area (aka accessible area) is an essential step in SDMs both in methodological and theoretical terms. The calibration area will affect several characteristics of a SDM like the range of environmental variables, the number of absences, the distribution of background points and pseudo-absences, and unfortunately, some performance metrics like AUC and TSS. Exist several ways to delimit a calibration area. In <a href="https://sjevelazco.github.io/flexsdm/reference/calib_area.html">calib_area()</a>. We used a method that the calibration area is delimited by a buffer around presences.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#devtools::install_github('sjevelazco/flexsdm')</span>
+<code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
@@ -115,17 +115,19 @@
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span>
-<span class="va">abies_p</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">pr_ab</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
+<span class="va">abies_p</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">pr_ab</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
 
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_p</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/raw%20data-1.png" width="576"></p>
 <p>This figure shows the species occurrences, using the map of one of the environmental variables (actual evapotranspiration) as background.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abies_p</span>, x <span class="op">=</span> <span class="st">'x'</span>, y <span class="op">=</span> <span class="st">'y'</span>, method <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'buffer'</span>, width<span class="op">=</span><span class="fl">80000</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abies_p</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">80000</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Loading required namespace: rgeos</span>
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_p</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/calibration%20area-1.png" width="576"></p>
 </div>
@@ -175,7 +177,7 @@
     max_res_mult <span class="op">=</span> <span class="fl">200</span>,
     num_grids <span class="op">=</span> <span class="fl">30</span>,
     prop <span class="op">=</span> <span class="fl">1</span>
-  <span class="op">)</span> 
+  <span class="op">)</span>
 <span class="co">#&gt; The following grid cell sizes will be tested:</span>
 <span class="co">#&gt; 5670 | 18508.97 | 31347.93 | 44186.9 | 57025.86 | 69864.83 | 82703.79 | 95542.76 | 108381.72 | 121220.69 | 134059.66 | 146898.62 | 159737.59 | 172576.55 | 185415.52 | 198254.48 | 211093.45 | 223932.41 | 236771.38 | 249610.34 | 262449.31 | 275288.28 | 288127.24 | 300966.21 | 313805.17 | 326644.14 | 339483.1 | 352322.07 | 365161.03 | 378000</span>
 <span class="co">#&gt; Creating basic raster mask...</span>
@@ -184,16 +186,18 @@
 <span class="va">abies_pf</span> <span class="op">&lt;-</span> <span class="va">occ_part</span><span class="op">$</span><span class="va">part</span>
 
 
-<span class="co"># Transform best block partition to a raster layer with same resolution and extent than </span>
-<span class="co"># predictor variables </span>
+<span class="co"># Transform best block partition to a raster layer with same resolution and extent than</span>
+<span class="co"># predictor variables</span>
 <span class="va">block_layer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_block.html">get_block</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, best_grid <span class="op">=</span> <span class="va">occ_part</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">abies_pf</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/block%20partition-1.png" width="576"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="co">#Number of presences per block</span>
-<span class="va">abies_pf</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">.part</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co"># Number of presences per block</span>
+<span class="va">abies_pf</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">.part</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 2</span>
 <span class="co">#&gt; # Groups:   .part [2]</span>
 <span class="co">#&gt;   .part     n</span>
@@ -201,7 +205,7 @@
 <span class="co">#&gt; 1     1   126</span>
 <span class="co">#&gt; 2     2    90</span>
 
-<span class="co"># Additional information of the best block </span>
+<span class="co"># Additional information of the best block</span>
 <span class="va">occ_part</span><span class="op">$</span><span class="va">best_part_info</span>
 <span class="co">#&gt; # A tibble: 1 x 5</span>
 <span class="co">#&gt;   n_grid cell_size spa_auto env_sim  sd_p</span>
@@ -217,39 +221,43 @@
 <span class="co"># Sample background points throughout study area with random method, allocating 10X the number of presences a background</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/sample_background.html">sample_background</a></span><span class="op">(</span>
+<span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/sample_background.html">sample_background</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="va">abies_pf</span>,
     x <span class="op">=</span> <span class="st">"x"</span>,
     y <span class="op">=</span> <span class="st">"y"</span>,
-    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">abies_pf</span><span class="op">$</span><span class="va">.part</span><span class="op">==</span><span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,
+    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">abies_pf</span><span class="op">$</span><span class="va">.part</span> <span class="op">==</span> <span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,
     method <span class="op">=</span> <span class="st">"random"</span>,
-    rlayer <span class="op">=</span> <span class="va">block_layer</span>, 
+    rlayer <span class="op">=</span> <span class="va">block_layer</span>,
     maskval <span class="op">=</span> <span class="va">x</span>, <span class="co"># this argument will constraint sampling process to a given block</span>
     calibarea <span class="op">=</span> <span class="va">ca</span> <span class="co"># this argument will constraint sampling process to the calibration area</span>
-  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> 
+  <span class="op">)</span>
+<span class="op">}</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">bg</span><span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/pseudo/absence%20and%20background%20data-1.png" width="576"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bg</span>, x<span class="op">=</span><span class="st">"x"</span>, y<span class="op">=</span><span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
+<span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bg</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
 
 <span class="co"># Sampling a number of pseudo-absences equal to the presences in each partition</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span>
+<span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="va">abies_pf</span>,
     x <span class="op">=</span> <span class="st">"x"</span>,
     y <span class="op">=</span> <span class="st">"y"</span>,
-    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">abies_pf</span><span class="op">$</span><span class="va">.part</span><span class="op">==</span><span class="va">x</span><span class="op">)</span>,
+    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">abies_pf</span><span class="op">$</span><span class="va">.part</span> <span class="op">==</span> <span class="va">x</span><span class="op">)</span>,
     method <span class="op">=</span> <span class="st">"random"</span>,
-    rlayer <span class="op">=</span> <span class="va">block_layer</span>, 
+    rlayer <span class="op">=</span> <span class="va">block_layer</span>,
     maskval <span class="op">=</span> <span class="va">x</span>, <span class="co"># this argument will constraint sampling process to a given block</span>
-    calibarea <span class="op">=</span> <span class="va">ca</span>  <span class="co"># this argument will constraint sampling process to the calibration area </span>
-  <span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span> 
-<span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">psa</span>, x<span class="op">=</span><span class="st">"x"</span>, y<span class="op">=</span><span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
+    calibarea <span class="op">=</span> <span class="va">ca</span> <span class="co"># this argument will constraint sampling process to the calibration area</span>
+  <span class="op">)</span>
+<span class="op">}</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">psa</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">)</span></code></pre></div>
@@ -301,7 +309,7 @@
     y <span class="op">=</span> <span class="st">"y"</span>,
     env_layer <span class="op">=</span> <span class="va">somevar</span>,
     filter_na <span class="op">=</span> <span class="cn">TRUE</span>
-  <span class="op">)</span> 
+  <span class="op">)</span>
 
 <span class="va">bg</span> <span class="op">&lt;-</span> <span class="va">bg</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>
@@ -310,27 +318,30 @@
     y <span class="op">=</span> <span class="st">"y"</span>,
     env_layer <span class="op">=</span> <span class="va">somevar</span>,
     filter_na <span class="op">=</span> <span class="cn">TRUE</span>
-  <span class="op">)</span> 
+  <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span>, main <span class="op">=</span> <span class="st">"Presence points"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">occ_part</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,
-       col <span class="op">=</span> <span class="st">"black"</span>,
-       cex <span class="op">=</span> <span class="fl">1</span>,
-       pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span>
+  col <span class="op">=</span> <span class="st">"black"</span>,
+  cex <span class="op">=</span> <span class="fl">1</span>,
+  pch <span class="op">=</span> <span class="fl">19</span>
+<span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span>, main <span class="op">=</span> <span class="st">"Pseudo-absence points"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span> ,
-       col <span class="op">=</span> <span class="st">"black"</span>,
-       cex <span class="op">=</span> <span class="fl">1</span>,
-       pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,
+  col <span class="op">=</span> <span class="st">"black"</span>,
+  cex <span class="op">=</span> <span class="fl">1</span>,
+  pch <span class="op">=</span> <span class="fl">19</span>
+<span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer</span>, main <span class="op">=</span> <span class="st">"Background points"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">bg</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span> ,
-       col <span class="op">=</span> <span class="st">"black"</span>,
-       cex <span class="op">=</span> <span class="fl">1</span>,
-       pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">bg</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,
+  col <span class="op">=</span> <span class="st">"black"</span>,
+  cex <span class="op">=</span> <span class="fl">1</span>,
+  pch <span class="op">=</span> <span class="fl">19</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="04_Red_fir_example_files/figure-html/extract%20environmental%20data%20for%20two%20datasets-1.png" width="576"></p>
 </div>
 <div id="fit-models-with-tune_max-fit_gau-and-third-one" class="section level2">
@@ -376,7 +387,7 @@
   response <span class="op">=</span> <span class="st">"pr_ab"</span>,
   predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>,
   partition <span class="op">=</span> <span class="st">".part"</span>,
-  thr <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,
+  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,
   poly <span class="op">=</span> <span class="fl">2</span>
 <span class="op">)</span>
 <span class="co">#&gt; Formula used for model fitting:</span>
@@ -448,7 +459,7 @@
   models <span class="op">=</span> <span class="va">ens_m</span>,
   pred <span class="op">=</span> <span class="va">somevar</span>,
   thr <span class="op">=</span> <span class="st">"max_sens_spec"</span>,
-  con_thr <span class="op">=</span> <span class="cn">TRUE</span>, 
+  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,
   predict_area <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span>
 <span class="co">#&gt; Predicting ensembles</span>
@@ -461,7 +472,9 @@
 <a href="#constrain-it-with-msdm_posterior" class="anchor"></a>Constrain it with msdm_posterior</h2>
 <p>Finally, <em>flexsdm</em> offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method “occurrence based restriction”, which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. Because all methods of the msdm_posteriori() function work with presences it is important to always use the original database (i.e., presences that have not been spatially or environmentally filtered). All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">thr_val</span> <span class="op">&lt;-</span> <span class="va">ens_m</span><span class="op">$</span><span class="va">performance</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">threshold</span><span class="op">==</span><span class="st">'max_sens_spec'</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">thr_value</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">thr_val</span> <span class="op">&lt;-</span> <span class="va">ens_m</span><span class="op">$</span><span class="va">performance</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">threshold</span> <span class="op">==</span> <span class="st">"max_sens_spec"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">thr_value</span><span class="op">)</span>
 
 <span class="va">m_pres</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msdm_posteriori.html">msdm_posteriori</a></span><span class="op">(</span>
   records <span class="op">=</span> <span class="va">abies_p</span>,
@@ -470,7 +483,7 @@
   pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
   cont_suit <span class="op">=</span> <span class="va">pr_1</span><span class="op">$</span><span class="va">meanw</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"obr"</span><span class="op">)</span>,
-  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'sensitivity'</span>, sens<span class="op">=</span><span class="va">thr_val</span><span class="op">)</span>,
+  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"sensitivity"</span>, sens <span class="op">=</span> <span class="va">thr_val</span><span class="op">)</span>,
   buffer <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span>
 

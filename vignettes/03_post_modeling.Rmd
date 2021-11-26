@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   # fig.path = "man/figures/README-",
-  #out.width = "100%",
+  # out.width = "100%",
   fig.width = 6,
   fig.height = 6,
   # dpi = 60,
@@ -57,7 +57,7 @@ These are the functions created for model prediction, evaluation and correction:
 Install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
 ```{r download package}
-#devtools::install_github('sjevelazco/flexsdm')
+# devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(dplyr)
 library(terra)
@@ -68,16 +68,18 @@ library(terra)
 Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html)
 
 ```{r sdm_directory}
-my_project <- file.path(file.path(tempdir(), 'flex_sdm_project'))
+my_project <- file.path(file.path(tempdir(), "flex_sdm_project"))
 dir.create(my_project)
 
-project_directory <- sdm_directory(main_dir = my_project,
-              projections = NULL,
-              calibration_area = TRUE,
-              algorithm = c("fit_glm", "fit_raf", "fit_gbm"),
-              ensemble = c("mean"),
-              threshold = TRUE, 
-              return_vector = TRUE)
+project_directory <- sdm_directory(
+  main_dir = my_project,
+  projections = NULL,
+  calibration_area = TRUE,
+  algorithm = c("fit_glm", "fit_raf", "fit_gbm"),
+  ensemble = c("mean"),
+  threshold = TRUE,
+  return_vector = TRUE
+)
 ```
 
 ## Species occurrence, presence/absense and environmental data
@@ -88,7 +90,6 @@ In this tutorial, we will be using the "spp" example dataset which includes pr_a
 data("spp")
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
-
 ```
 
 If you want to replace the spp dataset with your own data, make sure that contains coordinates, species presence = 1 / absence = 0 and a raster with environmental data. 
@@ -170,7 +171,7 @@ msmall <- esm_gam(
 Finally, we can predict different kinds of models from the same data (some_sp). [sdm_predict](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html) can be used for predicting one or more models fitted with fit_ or tune_ functions. The output will be a list of SpatRaster with continuous and/or binary predictions.
 ```{r sdm_predict}
 # Predict using a single model, which is an mglm model in this example,
-#and a threshold type for binary predictions
+# and a threshold type for binary predictions
 ind_p <- sdm_predict(
   models = mglm,
   pred = somevar,
@@ -180,7 +181,7 @@ ind_p <- sdm_predict(
 )
 
 # Inspect the object. It's a SpatRaster with 2 layers: glm, max_fpb
-#These are the continuous and binary prediction from the model 
+# These are the continuous and binary prediction from the model
 ind_p
 
 # Plot to see this layers
@@ -197,7 +198,7 @@ list_p <- sdm_predict(
 )
 
 # Inspect the object. It's a list with 3 SpatRaster, one for each model,
-#each of which contains 2 layers, for the continuous and thresholded binary predictions.
+# each of which contains 2 layers, for the continuous and thresholded binary predictions.
 list_p
 
 # Plot to see this layers
@@ -214,7 +215,7 @@ ensemble_p <- sdm_predict(
 )
 
 # Inspect the object. It's a SpatRaster with 2 layers, mensemble and max_fpb
-#These are the continuous and binary prediction from the ensemble model 
+# These are the continuous and binary prediction from the ensemble model
 ensemble_p
 
 # Plot to see this layers
@@ -231,7 +232,7 @@ small_p <- sdm_predict(
 )
 
 # Inspect the object It's a SpatRaster with 2 layers, msmall and max_fpb
-#These are the continuous and binary prediction from the ESM model 
+# These are the continuous and binary prediction from the ESM model
 small_p
 
 # Plot to see this layers
@@ -340,7 +341,7 @@ int <- interp(
 
 # Layers in the abma SpatRaster
 names(abma)
-#plot(abma)
+# plot(abma)
 
 # Layers in the int SpatRaster
 int
@@ -373,7 +374,6 @@ ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
 plot(somevar$CFP_1)
 points(sp)
 plot(ca, add = T)
-
 ```
 
 The accessible area defines calibration area used to extract the environmental conditions 
@@ -421,7 +421,6 @@ occ <- spp %>%
 a_variable <- somevar[[1]]
 plot(a_variable)
 points(occ %>% dplyr::select(x, y))
-
 ```
 
 Next, use different methods according to your data.
@@ -440,7 +439,6 @@ plot(m_xy)
 
 # Explore the object. This method assumes that spatial structure can partially explain species distribution (Bahn & Mcgill, 2007). Therefore, the result are two raster layers containing the latitude and longitude of pixels, respectively. This method could be used for all species set that share the same study area region.
 m_xy
-
 ```
 
 ```{r msdm_cml}
@@ -454,7 +452,7 @@ m_cml <- msdm_priori(
 
 plot(m_cml)
 
-# Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species. 
+# Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species.
 m_cml
 ```
 
@@ -503,7 +501,6 @@ m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALS
 
 # Predicting individual models
 plot(m_pred[[1]])
-
 ```
 
 Finally, perform correction to avoid models overpredictions.

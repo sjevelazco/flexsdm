@@ -40,8 +40,8 @@ Imports:
     raster,
     methods,
     utils
-Description: A package for assisting in the construction of flexible species distribution workflow 
-    by incorporating comprehensive tools for data preparation, model fitting, 
+Description: Assist in the construction of flexible species distribution workflow
+    by incorporating comprehensive tools for data preparation, model fitting,
     prediction, evaluation, and model post-processing.
 License: GPL (>= 3)
 Encoding: UTF-8
