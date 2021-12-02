@@ -40,39 +40,40 @@ Delimiting the calibration area (aka accessible area) is an essential step in SD
 methodological and theoretical terms. The calibration area will affect several characteristics of a 
 SDM like the range of environmental variables, the number of absences, the distribution of 
 background points and pseudo-absences, and unfortunately, some performance metrics like AUC and TSS. 
-Exist several ways to delimit a calibration area. In [calib_area()](https://sjevelazco.github.io/flexsdm/reference/calib_area.html). We used a
-method that the calibration area is delimited by a buffer around presences.
+Exist several ways to delimit a calibration area. In [calib_area()](https://sjevelazco.github.io/flexsdm/reference/calib_area.html). We used a method that the calibration area is delimited by a 100-km buffer around presences (shown in the figure below).
 
 ```{r raw data, message=FALSE}
 # devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(terra)
 library(dplyr)
+library(ggplot2)
+library(ggspatial)
 
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
 names(somevar) <- c("aet", "cwd", "tmx", "tmn")
-
 data(abies)
 abies_p <- abies %>%
   select(x, y, pr_ab) %>%
-  filter(pr_ab == 1)
+  filter(pr_ab == 1) # filter only for presence locations
 
-somevar[[1]] %>% plot()
-points(abies_p %>% select(x, y))
+ca <- calib_area(data = abies_p, x = 'x', y = 'y', method =  c('buffer', width=100000), crs = crs(somevar)) # create a calibration area with 100 km buffer around occurrence points
+
+# visualize the species occurrences
+layer1 <- (somevar[[1]])
+layer1[!is.na(layer1)] <- 1
+layer1 <- raster::raster(layer1)
+a <- ggplot() +
+  layer_spatial(layer1) +
+  scale_fill_gradientn(colours = "gray80", na.value = NA) +
+  layer_spatial(crop(as(ca, 'Spatial'), layer1), fill='transparent')+
+  geom_point(data = abies_p, aes(x, y), col = "#000004", alpha = 0.5, size = 1) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.title = element_blank())
+
+a
 ```
-
-This figure shows the species occurrences, using the map of one of the environmental variables (actual evapotranspiration) as background.
-
-
-```{r calibration area}
-ca <- calib_area(data = abies_p, x = "x", y = "y", method = c("buffer", width = 80000))
-somevar[[1]] %>% plot()
-plot(ca, add = TRUE)
-points(abies_p %>% select(x, y))
-```
-
-
 
 ## Occurrence filtering
 
@@ -82,7 +83,6 @@ Next we apply environmental occurrence filtering using 8 bins and display the re
 
 ```{r occurrence filtering}
 abies_p$id <- 1:nrow(abies_p) # adding unique id to each row
-
 abies_pf <- abies_p %>%
   occfilt_env(
     data = .,
@@ -94,9 +94,15 @@ abies_pf <- abies_p %>%
   ) %>%
   left_join(abies_p, by = c("id", "x", "y"))
 
-
-somevar[[1]] %>% plot()
-points(abies_pf %>% select("x", "y"))
+b <- ggplot() +
+  layer_spatial(layer1) +
+  scale_fill_gradientn(colours = "gray80", na.value = NA) +
+  layer_spatial(crop(as(ca, 'Spatial'), layer1), fill='transparent')+
+  geom_point(data = abies_p, aes(x, y), col = "#000004", alpha = 0.5, size = 1) +
+  geom_point(data = abies_pf, aes(x, y), col = pals::viridis(5)[4], alpha = 0.8, size = 1) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.title = element_blank())
+b
 ```
 
 ## Block partition with 4 folds
@@ -113,27 +119,33 @@ occ_part <- abies_pf %>%
     pr_ab = "pr_ab",
     x = "x",
     y = "y",
-    n_part = 2,
+    n_part = 4,
     min_res_mult = 3,
     max_res_mult = 200,
     num_grids = 30,
     prop = 1
   )
-
 abies_pf <- occ_part$part
-
 
 # Transform best block partition to a raster layer with same resolution and extent than
 # predictor variables
 block_layer <- get_block(env_layer = somevar, best_grid = occ_part$grid)
-plot(block_layer)
-points(abies_pf %>% select("x", "y"))
+
+block_layer2 <- raster::raster(block_layer)
+block_layer2 <- as.factor(block_layer2)
+b <- ggplot() +
+  layer_spatial(block_layer2) +
+  scale_fill_gradientn(colours = pals::inferno(8)[c(3, 4, 6, 8)], na.value = NA) +
+  geom_point(data = abies_pf, aes(x, y), col = "#000004", size = 2) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.title = element_blank(),
+        axis.text = element_blank())
+b
 
 # Number of presences per block
 abies_pf %>%
   dplyr::group_by(.part) %>%
   dplyr::count()
-
 # Additional information of the best block
 occ_part$best_part_info
 ```
@@ -145,7 +157,6 @@ In this example, we only have species presence data. However, most SDM methods r
 ```{r pseudo/absence and background data}
 # Spatial blocks where species occurs
 # Sample background points throughout study area with random method, allocating 10X the number of presences a background
-
 set.seed(10)
 bg <- lapply(1:4, function(x) {
   sample_background(
@@ -155,18 +166,14 @@ bg <- lapply(1:4, function(x) {
     n = sum(abies_pf$.part == x) * 10,
     method = "random",
     rlayer = block_layer,
-    maskval = x, # this argument will constraint sampling process to a given block
-    calibarea = ca # this argument will constraint sampling process to the calibration area
+    maskval = x,
+    calibarea = ca
   )
 }) %>%
   bind_rows()
-
-plot(block_layer)
-points(bg)
-
 bg <- sdm_extract(data = bg, x = "x", y = "y", env_layer = block_layer)
 
-# Sampling a number of pseudo-absences equal to the presences in each partition
+# Sample a number of pseudo-absences equal to the presence in each partition
 set.seed(10)
 psa <- lapply(1:4, function(x) {
   sample_pseudoabs(
@@ -176,29 +183,34 @@ psa <- lapply(1:4, function(x) {
     n = sum(abies_pf$.part == x),
     method = "random",
     rlayer = block_layer,
-    maskval = x, # this argument will constraint sampling process to a given block
-    calibarea = ca # this argument will constraint sampling process to the calibration area
+    maskval = x,
+    calibarea = ca
   )
 }) %>%
   bind_rows()
 psa <- sdm_extract(data = psa, x = "x", y = "y", env_layer = block_layer)
 
-plot(block_layer)
-points(psa)
-
+c <- ggplot() +
+  layer_spatial(layer1) +
+  scale_fill_gradientn(colours = "gray80", na.value = NA) +
+  geom_point(data = bg, aes(x, y, col = (.part)), size = 1, alpha = 0.6) +
+  geom_point(data = psa, aes(x, y, col = (.part), shape = "pr_ag"), size = 2) +
+  scale_color_gradientn(colours = pals::inferno(8)[c(2, 4, 6, 8)]) +
+  geom_point(data = psa, aes(x, y), shape = 1, size = 2) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.title = element_blank(),
+        axis.text = element_blank())
+c
 
 # Bind a presences and pseudo-absences
 abies_pa <- bind_rows(abies_pf, psa)
-
-
 abies_pa # Presence-Pseudo-absence database
 bg # Background points
 ```
 
-Extract environmental data for the datasets. View the distributions of present points, pseudo-absence points, and background points using the blocks as a reference map.
+Extract environmental data for the presence-absence and background data . View the distributions of present points, pseudo-absence points, and background points using the blocks as a reference map.
 
 ```{r extract environmental data for two datasets}
-
 abies_pa <- abies_pa %>%
   sdm_extract(
     data = .,
@@ -207,7 +219,6 @@ abies_pa <- abies_pa %>%
     env_layer = somevar,
     filter_na = TRUE
   )
-
 bg <- bg %>%
   sdm_extract(
     data = .,
@@ -217,28 +228,34 @@ bg <- bg %>%
     filter_na = TRUE
   )
 
-par(mfrow = c(3, 1))
-
-plot(block_layer, main = "Presence points")
-points(occ_part$part[c("x", "y")],
-  col = "black",
-  cex = 1,
-  pch = 19
-)
-
-plot(block_layer, main = "Pseudo-absence points")
-points(psa[c("x", "y")],
-  col = "black",
-  cex = 1,
-  pch = 19
-)
-
-plot(block_layer, main = "Background points")
-points(bg[c("x", "y")],
-  col = "black",
-  cex = 1,
-  pch = 19
-)
+d <- ggplot() +
+  layer_spatial(layer1) +
+  scale_fill_gradientn(colours = "gray80",
+                       na.value = NA,
+                       guide = "none") +
+  geom_point(
+    data = bg,
+    aes(x, y),
+    color = "black",
+    size = 1,
+    alpha = 0.5
+  ) +
+  geom_point(data = abies_pa,
+             aes(x, y, col = (as.factor(pr_ab))),
+             size = 2) +
+  scale_color_discrete(
+    type = pals::inferno(8)[c(4, 6)],
+    name = "Legend",
+    label = c("Absence", "Presence")
+  ) +
+  geom_point(data = psa,
+             aes(x, y),
+             shape = 1,
+             size = 2) +
+  theme_minimal() +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank())
+d
 ```
 
 
@@ -262,7 +279,6 @@ t_max <- tune_max(
   clamp = TRUE,
   pred_type = "cloglog"
 )
-
 f_gau <- fit_gau(
   data = abies_pa,
   response = "pr_ab",
@@ -270,7 +286,6 @@ f_gau <- fit_gau(
   partition = ".part",
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
 )
-
 f_glm <- fit_glm(
   data = abies_pa,
   response = "pr_ab",
@@ -293,7 +308,6 @@ ens_m <- fit_ensemble(
   thr_model = "max_sens_spec",
   metric = "TSS"
 )
-
 ens_m$performance
 ```
 
@@ -302,7 +316,6 @@ The output of *flexsdm* model objects allows you to easily compare metrics acros
 
 ```{r}
 model_perf <- sdm_summarize(list(t_max, f_gau, f_glm, ens_m))
-
 model_perf
 ```
 
@@ -320,10 +333,19 @@ pr_1 <- sdm_predict(
   predict_area = NULL
 )
 
-plot(pr_1$meanw)
+unconstrained <- raster::raster(pr_1$meanw[[1]])
+names(unconstrained) <- "unconstrained"
+
+c1 <- ggplot() +
+  layer_spatial(unconstrained) +
+  scale_fill_gradientn(colours = rev(pals::viridis(20)), na.value = NA) +
+  theme(legend.position = "none", axis.title = element_blank(),
+        axis.text = element_blank())
+
+c1
 ```
 
-## Constrain it with msdm_posterior 
+## Constrain the model with msdm_posterior 
 
 Finally, *flexsdm* offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method "occurrence based restriction", which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. Because all methods of the msdm_posteriori() function work with presences it is 
 important to always use the original database (i.e., presences that have not been spatially or environmentally filtered).
@@ -333,7 +355,6 @@ All of the methods available in the msdm_posteriori() function are based on Mend
 thr_val <- ens_m$performance %>%
   dplyr::filter(threshold == "max_sens_spec") %>%
   pull(thr_value)
-
 m_pres <- msdm_posteriori(
   records = abies_p,
   x = "x",
@@ -345,7 +366,17 @@ m_pres <- msdm_posteriori(
   buffer = NULL
 )
 
-plot(m_pres)
+constrained <- raster::raster(m_pres$meanw)
+names(constrained) <- "constrained"
+
+c2 <- ggplot() +
+  layer_spatial(constrained) +
+  scale_fill_gradientn(colours = rev(pals::viridis(20)), na.value = NA) +
+  theme_minimal() +
+  theme(legend.position = "none", axis.title = element_blank(),
+        axis.text = element_blank())
+
+c2
 ```
 #=========#=========#=========#=========#=========#=========#=========#
 
