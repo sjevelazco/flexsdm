@@ -49,6 +49,7 @@ library(terra)
 library(dplyr)
 library(ggplot2)
 library(ggspatial)
+library(pals)
 
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
@@ -99,7 +100,7 @@ b <- ggplot() +
   scale_fill_gradientn(colours = "gray80", na.value = NA) +
   layer_spatial(crop(as(ca, 'Spatial'), layer1), fill='transparent')+
   geom_point(data = abies_p, aes(x, y), col = "#000004", alpha = 0.5, size = 1) +
-  geom_point(data = abies_pf, aes(x, y), col = pals::viridis(5)[4], alpha = 0.8, size = 1) +
+  geom_point(data = abies_pf, aes(x, y), col = viridis(5)[4], alpha = 0.8, size = 1) +
   theme_minimal() +
   theme(legend.position = "none", axis.title = element_blank())
 b
@@ -135,7 +136,7 @@ block_layer2 <- raster::raster(block_layer)
 block_layer2 <- as.factor(block_layer2)
 b <- ggplot() +
   layer_spatial(block_layer2) +
-  scale_fill_gradientn(colours = pals::inferno(8)[c(3, 4, 6, 8)], na.value = NA) +
+  scale_fill_gradientn(colours = inferno(8)[c(3, 4, 6, 8)], na.value = NA) +
   geom_point(data = abies_pf, aes(x, y), col = "#000004", size = 2) +
   theme_minimal() +
   theme(legend.position = "none", axis.title = element_blank(),
@@ -195,7 +196,7 @@ c <- ggplot() +
   scale_fill_gradientn(colours = "gray80", na.value = NA) +
   geom_point(data = bg, aes(x, y, col = (.part)), size = 1, alpha = 0.6) +
   geom_point(data = psa, aes(x, y, col = (.part), shape = "pr_ag"), size = 2) +
-  scale_color_gradientn(colours = pals::inferno(8)[c(2, 4, 6, 8)]) +
+  scale_color_gradientn(colours = inferno(8)[c(2, 4, 6, 8)]) +
   geom_point(data = psa, aes(x, y), shape = 1, size = 2) +
   theme_minimal() +
   theme(legend.position = "none", axis.title = element_blank(),
@@ -244,7 +245,7 @@ d <- ggplot() +
              aes(x, y, col = (as.factor(pr_ab))),
              size = 2) +
   scale_color_discrete(
-    type = pals::inferno(8)[c(4, 6)],
+    type = inferno(8)[c(4, 6)],
     name = "Legend",
     label = c("Absence", "Presence")
   ) +
@@ -338,7 +339,7 @@ names(unconstrained) <- "unconstrained"
 
 c1 <- ggplot() +
   layer_spatial(unconstrained) +
-  scale_fill_gradientn(colours = rev(pals::viridis(20)), na.value = NA) +
+  scale_fill_gradientn(colours = rev(viridis(20)), na.value = NA) +
   theme(legend.position = "none", axis.title = element_blank(),
         axis.text = element_blank())
 
@@ -371,7 +372,7 @@ names(constrained) <- "constrained"
 
 c2 <- ggplot() +
   layer_spatial(constrained) +
-  scale_fill_gradientn(colours = rev(pals::viridis(20)), na.value = NA) +
+  scale_fill_gradientn(colours = rev(viridis(20)), na.value = NA) +
   theme_minimal() +
   theme(legend.position = "none", axis.title = element_blank(),
         axis.text = element_blank())
