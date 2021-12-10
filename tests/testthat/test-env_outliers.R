@@ -11,6 +11,7 @@ test_that("test with sp > and < 15 occurrences", {
   spp_ <- spp %>% dplyr::filter(species == "sp2")
   spp_ <- spp_ %>% mutate(idd = 1:nrow(spp_))
 
+  set.seed(1)
   outs_1 <- env_outliers(
     data = spp_,
     pr_ab = "pr_ab",
