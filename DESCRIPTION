@@ -52,9 +52,6 @@ Suggests:
     knitr,
     rmarkdown,
     rgeos,
-    ggplot2, 
-    ggspatial, 
-    pals,
     testthat (>= 3.0.0)
 VignetteBuilder:
     knitr
