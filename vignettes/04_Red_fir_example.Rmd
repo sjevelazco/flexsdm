@@ -47,9 +47,6 @@ Exist several ways to delimit a calibration area. In [calib_area()](https://sjev
 library(flexsdm)
 library(terra)
 library(dplyr)
-library(ggplot2)
-library(ggspatial)
-library(pals)
 
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
