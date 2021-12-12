@@ -65,7 +65,7 @@ layer1 <- raster::raster(layer1)
 
 plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
 plot(crop(as(ca, 'Spatial'), layer1), add=TRUE)
-points(abies_p[,c("x", "y")], col = alpha("#000004", 0.5))
+points(abies_p[,c("x", "y")], col = "#00000480")
 ```
 
 ## Occurrence filtering
@@ -89,8 +89,8 @@ abies_pf <- abies_p %>%
 
 plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
 plot(crop(as(ca, 'Spatial'), layer1), add=TRUE)
-points(abies_p[,c("x", "y")], col = alpha("#000004", 0.5))
-points(abies_pf[,c("x", "y")], col = alpha("#5DC861", 0.5))
+points(abies_p[,c("x", "y")], col = "#00000480")
+points(abies_pf[,c("x", "y")], col = "#5DC86180")
 ```
 
 ## Block partition with 4 folds
@@ -312,15 +312,6 @@ m_pres <- msdm_posteriori(
 
 constrained <- raster::raster(m_pres$meanw)
 names(constrained) <- "constrained"
-
-c2 <- ggplot() +
-  layer_spatial(constrained) +
-  scale_fill_gradientn(colours = rev(viridis(20)), na.value = NA) +
-  theme_minimal() +
-  theme(legend.position = "none", axis.title = element_blank(),
-        axis.text = element_blank())
-
-c2
 
 cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
 plot(constrained, col=cl, legend=FALSE, axes=FALSE)
