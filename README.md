@@ -80,7 +80,7 @@ Tools related to models’ geographical predictions, evaluation, and correction.
 * `sdm_summarize()` Merge model performance tables
 * `interp()` Raster interpolation between two time periods
 * `extra_eval()` Measure model extrapolation
-* `extra_correct()` Constraint suitability values under a given extrapolation value
+* `extra_exclude()` Constraint suitability values under a given extrapolation value
 * `msdm_priori()` Create spatial predictor variables to reduce overprediction of species distribution models
 * `msdm_posteriori()` Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.
 

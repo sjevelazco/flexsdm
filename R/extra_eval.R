@@ -2,6 +2,7 @@
 #'
 #' @description Measure extrapolation comparing environmental data used for modeling calibration and area for
 #' model projection. This function use the approach proposed by Velazco et al., in prep
+#' (EXPERIMENTAL)
 #'
 #' @param env_calib SpatRaster with environmental conditions of the calibration area or the
 #' presence and absence points localities used for constructing models

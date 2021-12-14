@@ -17,7 +17,7 @@ extra_exclude(suit, extra, threshold = 50)
 A SpatRaster object with corrected suitability values
 }
 \description{
-Exclusion of suitability values less than a given extrapolation value
+Exclusion of suitability values less than a given extrapolation value (EXPERIMENTAL)
 }
 \examples{
 \dontrun{
