@@ -13,20 +13,19 @@ test_that("correct_colinvar Pearson", {
     )
 
   expect_equal(class(var), "list")
-  expect_equal(class(var$env_layer)[1], "SpatRaster")
-  expect_equal(var$removed_variables, c("CFP_1", "CFP_4"))
-  expect_equal(nrow(var$correlation_table), 4)
-  expect_true(all(names(var) %in% c("env_layer", "removed_variables", "correlation_table")))
+  expect_equal(length(var$cor_variables), 4)
+  expect_equal(nrow(var$cor_table), 4)
+  expect_true(all(names(var) %in% c("cor_table", "cor_variables")))
 
-
+  # teste default correlation threshold
   var <- correct_colinvar(env_layer = somevar,
                    method = c("pearson"))
-  expect_equal(length(var$removed_variables), 2)
+  expect_equal(length(var$cor_variables), 4)
 
   # To high th, no variable is expected to be removed
   var <- correct_colinvar(env_layer = somevar,
                           method = c("pearson", th = "0.9"))
-  expect_equal(length(var$removed_variables), 0)
+  expect_equal(var$cor_variables, "No pair of variables reached the specified correlation threshold.")
 })
 
 
@@ -48,8 +47,7 @@ test_that("correct_colinvar VIF", {
   expect_equal(class(var), "list")
   expect_equal(class(var$env_layer)[1], "SpatRaster")
   expect_equal(var$removed_variables, "CFP_2")
-  expect_equal(nrow(var$correlation_table), 4)
-  expect_true(all(names(var) %in% c("env_layer", "removed_variables", "correlation_table")))
+  expect_true(all(names(var) %in% c("env_layer", "removed_variables", "vif_table")))
 })
 
 
@@ -83,8 +81,8 @@ test_that("correct_colinvar PCA with projections", {
     system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
 
-  terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"))
-  terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"))
+  terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"), overwrite=TRUE)
+  terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite=TRUE)
 
   # Perform pearson collinearity control
   var <-
@@ -92,6 +90,7 @@ test_that("correct_colinvar PCA with projections", {
 
   expect_true(is.character(var$proj))
   unlink(dirname(dir_sc[1]), recursive = TRUE)
+  unlink(gsub("projections", "Projection_PCA", dirname(dir_sc[1])), recursive = TRUE)
 })
 
 test_that("correct_colinvar FA", {
@@ -104,12 +103,11 @@ test_that("correct_colinvar FA", {
   # Perform pearson collinearity control
   var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 
-  expect_equal(length(var), 4)
+  expect_equal(length(var), 5)
   expect_equal(class(var$env_layer)[1], "SpatRaster")
   expect_equal(length(var$removed_variables), 3)
-  expect_equal(nrow(var$correlation_table), 4)
-  expect_equal(ncol(var$variable_loading), 2)
-  expect_true(all(names(var) %in% c("env_layer", "removed_variables", "correlation_table", "variable_loading")))
+  expect_equal(nrow(var$loadings), 4)
+  expect_true(all(names(var) %in% c("env_layer", "number_factors", "removed_variables", "uniqueness", "loadings")))
 })
 
 test_that("misuse of argument", {

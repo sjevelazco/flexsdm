@@ -244,9 +244,8 @@ This method eliminates predictors with a Pearson correlation index higher than a
 
 ```{r pearson collinearity reduction}
 pearson_var <- correct_colinvar(somevar, method = c("pearson", th = "0.7"))
-pearson_var$env_layer
-pearson_var$removed_variables
-pearson_var$correlation_table
+pearson_var$cor_table
+pearson_var$cor_variables
 ```
 
 ### 2. Variance inflation factor
@@ -256,7 +255,7 @@ This method removes the predictors with a variance inflation factor higher than 
 vif_var <- correct_colinvar(somevar, method = c("vif", th = "10"))
 vif_var$env_layer
 vif_var$removed_variables
-vif_var$correlation_table
+vif_var$vif_table
 ```
 
 ### 3. Principal component analysis 
