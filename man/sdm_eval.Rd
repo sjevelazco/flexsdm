@@ -25,8 +25,8 @@ A vector must be provided for this argument. The following threshold criteria ar
 \item max_sens_spec: Threshold at which the sum of the Sensitivity and Specificity
 is the highest (aka threshold that maximizes the TSS).
 \item max_jaccard: The threshold at which the Jaccard index is the highest.
-\item max_sorensen: The threshold at which the Sorensen index is highest.
-\item max_fpb: The threshold at which FPB (F-measure on presence-background data) is highest.
+\item max_sorensen: The threshold at which the Sorensen index is the highest.
+\item max_fpb: The threshold at which FPB (F-measure on presence-background data) is the highest.
 \item sensitivity: Threshold based on a specified Sensitivity value.
 Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers
 to Sensitivity value. If a sensitivity value is not specified, the
