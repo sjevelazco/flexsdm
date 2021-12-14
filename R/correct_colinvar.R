@@ -6,7 +6,7 @@
 #' @param method character. Collinearity reduction method. It is necessary to
 #' provide a vector for this argument. The next methods are implemented:
 #' \itemize{
-#'   \item pearson: Select variables by Pearson correlation, a threshold of maximum correlation
+#'   \item pearson: Highlights correlated variables according to Pearson correlation. A threshold of maximum correlation
 #'   must be specified. Otherwise, a threshold of 0.7 is defined as default.
 #'   Usage method = c('pearson', th='0.7').
 #'   \item vif: Select variables by Variance Inflation Factor, a threshold can be specified by
@@ -14,43 +14,46 @@
 #'   \item pca: Perform a Principal Component Analysis and use the principal components as the
 #'   new predictors. The selected components account for 95\% of the whole variation in the system.
 #'   Usage method = c('pca').
-#'   \item fa: Perform a Factorial Analysis and select, from the original predictors, the ones with
-#'    the highest correlation with the axis which accounts for 95\% of the whole variation in the
-#'    system. Usage method = c('fa').
+#'   \item fa: Perform a Factorial Analysis and select, from the original predictors, the number of factors is defined by Broken-Stick and variables with the highest correlation to the factors are selected.  Usage method = c('fa').
 #' }
 #' @param proj character. Path to a folder that contains sub-folders for the different projection
 #' scenarios. Only used for pca. Usage proj = "C:/User/Desktop/Projections"
 #'
 #' @return
-#' If 'pearson' or 'vif' method, returns a list with the following elements:
+#' #' If 'pearson', returns a list with the following elements:
+#' \itemize{
+#' \item cor_table: a matrix object with pairwise correlation values of the environmental variables
+#' \item cor_variables: a list object with the same length of the number of environmental values containing the pairwise relations that exceeded the correlation threshold for each one sof the environmental variables
+#' }
+#'
+#' If 'vif' method, returns a list with the following elements:
 #' \itemize{
 #' \item env_layer: a SpatRaster object with selected environmental variables
 #' \item removed_variables: a character vector with removed environmental variables
-#' \item correlation_table: a tibble with Pearson pairwise correlation between variables
+#' \item vif_table: a data frame with VIF values for all environmental variables
 #' }
 #'
 #' If 'pca' method, returns a list with the following elements:
 #' \itemize{
-#' \item env_layer: a SpatRaster with scores of selected principal component (PC) that sum up 95\% of the
+#' \item env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95\% of the
 #' whole variation or original environmental variables
-#' \item coefficient: a tibble with the coefficient of principal component (PC) for predictors
+#' \item coefficients: a matrix with the coefficient of principal component (PC) for predictors
 #' \item cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)
 #' }
 #'
 #' If 'fa' method, returns a list with the following elements:
 #' \itemize{
-#' \item env_layer: a SpatRaster object with selected environmental variables
-#' \item removed_variables: a character vector with removed environmental variables
-#' \item correlation_table: a tibble with Pearson pairwise correlation between variables
-#' \item variable_loading: a tibble of loadings, one raw for each variable.
-#' The variable are ordered in decreasing order of sums of squares of loadings,
-#' and given the sign that will make the sum of the loadings positive
+#' \item env_layer: SpatRaster with scores of selected variables due to correlation to factors.
+#' \item number_factors: number of factors selected according to the Broken-Stick criteria,
+#' \item removed_variables: removed variables,
+#' \item uniqueness: uniqueness of each environmental variable according to the factorial analysis,
+#' \item loadings: environmental variables loadings in each of the chosen factors
 #' }
 #'
 #' @export
 #' @importFrom dplyr tibble
 #' @importFrom stats cor lm prcomp factanal
-#' @importFrom terra rast as.data.frame subset scale writeRaster
+#' @importFrom terra rast as.data.frame subset predict scale writeRaster
 #'
 #' @examples
 #' \dontrun{
@@ -61,30 +64,30 @@
 #' somevar <- terra::rast(somevar)
 #'
 #' # Perform pearson collinearity control
-#' var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"))
-#' var$env_layer
-#' var$removed_variables
-#' var$correlation_table
+#' var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.8"))
+#' var$cor_table
+#' var$cor_variables
 #'
 #' # Perform vif collinearity control
 #' var <- correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))
 #' var$env_layer
 #' var$removed_variables
-#' var$correlation_table
+#' var$vif_table
 #'
 #' # Perform pca collinearity control
 #' var <- correct_colinvar(env_layer = somevar, method = c("pca"))
 #' plot(var$env_layer)
 #' var$env_layer
-#' var$coefficient
+#' var$coefficients
 #' var$cumulative_variance
 #'
-#' # Perform fa collinearity control
+#' # Perform fa colinearity control
 #' var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 #' var$env_layer
+#' var$number_factors
 #' var$removed_variables
-#' var$correlation_table
-#' var$variable_loading
+#' var$uniqueness
+#' var$loadings
 #' }
 #'
 correct_colinvar <- function(env_layer,
@@ -109,32 +112,18 @@ correct_colinvar <- function(env_layer,
     }
 
     h <- terra::as.data.frame(env_layer)
-    h0 <- stats::cor(h, method = "pearson")
-    h <- abs(h0)
+    h <- abs(stats::cor(h, method = "pearson"))
     diag(h) <- 0
 
-    res <- as.list(1:100000)
-    for (i in 1:100000) {
-      ord <- sample(1:ncol(h))
-      h2 <- h[ord, ord]
-      h2[upper.tri(h2)] <- 0
-      res[[i]] <-
-        colnames(h2)[!apply(h2, 2, function(x) {
-          any(x > th)
-        })]
+    cor_var <- h>th
+    cor_var <- apply(cor_var,2, function(x) colnames(h)[x])
+    if(length(cor_var)==0){
+      cor_var <- 'No pair of variables reached the specified correlation threshold.'
     }
 
-    len <- sapply(res, function(x) {
-      length(x)
-    })
-    sel <- res[[sample(which(len == max(len)), 1)]]
-    rem <- names(env_layer)[!names(env_layer) %in% sel]
-    env_layer <- terra::subset(env_layer, subset = sel)
-
     result <- list(
-      env_layer = env_layer,
-      removed_variables = rem,
-      correlation_table = dplyr::tibble(variable = rownames(h0), data.frame(h0))
+      cor_table = h,
+      cor_variables = cor_var
     )
   }
 
@@ -178,18 +167,17 @@ correct_colinvar <- function(env_layer,
       v[i] <- 1 / (1 - summary(stats::lm(x[, i] ~ ., data = x[-i]))$r.squared)
     }
 
-    n$corMatrix <- stats::cor(x, method = "pearson")
+    # n$corMatrix <- stats::cor(x, method = "pearson")
     n$results <- data.frame(Variables = names(v), VIF = as.vector(v))
 
-    diag(n$corMatrix) <- 0
+    # diag(n$corMatrix) <- 0
     env_layer <-
       terra::subset(env_layer, subset = n$results$Variables)
 
-    diag(n$corMatrix) <- 1
     result <- list(
       env_layer = env_layer,
       removed_variables = n$excluded,
-      correlation_table = dplyr::tibble(variable = rownames(n$corMatrix), data.frame(n$corMatrix))
+      vif_table = dplyr::tibble(n$results)
     )
   }
 
@@ -232,25 +220,17 @@ correct_colinvar <- function(env_layer,
       for (i in 1:length(proj)) {
         scen <- terra::rast(list.files(proj[i], full.names = TRUE))
         scen <- terra::scale(scen, center = means, scale = stds)
-        scen2 <- as.data.frame(scen, cells=TRUE)
-        n <- scen2$cell
-        scen2$cell <- NULL
-        scen <- scen[[1:naxis]]
-        scen2 <- as.matrix(scen2) %*% as.matrix(cof)
-        scen2 <- data.frame(scen2[,1:naxis])
-        names(scen) <- names(scen2)
-        values(scen[[1]])
-        for(ii in 1:naxis){
-          scen[[ii]][n] <- scen2[,ii]
-        }
-        rm(scen2)
+        scen <- terra::predict(scen, p, index = 1:naxis)
         terra::writeRaster(
           scen,
-          file.path(subfold[i], paste0(names(scen), ".tif"))
+          file.path(subfold[i], paste0(names(scen), ".tif")),
+          overwrite=TRUE
         )
       }
 
-      result$proj <- dpca
+      result <- list(result,
+        proj = dpca
+      )
     }
   }
 
@@ -303,11 +283,13 @@ correct_colinvar <- function(env_layer,
       matrix() %>%
       data.frame()
     colnames(h) <- paste("Factor", 1:ncol(h), sep = "_")
+
     result <- list(
       env_layer = env_layer,
+      number_factors = fit$factors,
       removed_variables = rem,
-      correlation_table = dplyr::tibble(variable = rownames(fit$correlation), data.frame(fit$correlation)),
-      variable_loading = dplyr::tibble(Variable = rownames(fit$loadings), h)
+      uniqueness = fit$uniquenesses,
+      loadings = dplyr::tibble(Variable = rownames(fit$loadings), h)
     )
   }
 
