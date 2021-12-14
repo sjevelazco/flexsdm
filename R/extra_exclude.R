@@ -1,6 +1,6 @@
 #' Constraint of suitability based on extrapolation
 #'
-#' @description Exclusion of suitability values less than a given extrapolation value
+#' @description Exclusion of suitability values less than a given extrapolation value (EXPERIMENTAL)
 #'
 #' @param suit SpatRaster with suitability values
 #' @param extra SpatRaster with extrapolation values measured in percentage (output from extra_eval function)

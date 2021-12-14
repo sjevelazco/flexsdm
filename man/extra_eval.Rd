@@ -26,6 +26,7 @@ A SpatRaster object with extrapolation values measured in percentage (PERCENTAGE
 \description{
 Measure extrapolation comparing environmental data used for modeling calibration and area for
 model projection. This function use the approach proposed by Velazco et al., in prep
+(EXPERIMENTAL)
 }
 \examples{
 \dontrun{
