@@ -38,6 +38,9 @@ Set tools that prepare modeling input data (e.g., species occurrences thinning, 
 ### 2. Modeling functions 
 It includes functions related to modeling construction and validation. Several of them can be grouped into `fit_*`, `tune_*`, and `esm_*` family functions. `fit_*` construct and validate models with default hyper-parameter values. `tune_*` construct and validate models searching for the best hyper-parameter values combination. `esm_` construct and validate Ensemble of Small Models.
 
+#### Model evaluation
+* `sdm_eval()` Calculate different model performance metrics
+
 #### `fit_*` functions family
 * `fit_gam()` Fit and validate Generalized Additive Models
 * `fit_gau()` Fit and validate Gaussian Process models
