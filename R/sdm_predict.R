@@ -436,8 +436,7 @@ sdm_predict <-
         if (length(f) > 0) {
           for (ii in 1:length(f)) {
             vf <- f[[ii]] %>%
-              unique() %>%
-              as.numeric()
+              unique()
             vf2 <- pred_df[, names(f[ii])] %>% unique()
             vfilter <- list()
             if (sum(!vf2 %in% vf) > 0) {
@@ -493,8 +492,7 @@ sdm_predict <-
         if (length(f) > 0) {
           for (ii in 1:length(f)) {
             vf <- f[[ii]] %>%
-              unique() %>%
-              as.numeric()
+              unique()
             vf2 <- pred_df[, names(f[ii])] %>% unique()
             vfilter <- list()
             if (sum(!vf2 %in% vf) > 0) {
@@ -555,8 +553,7 @@ sdm_predict <-
         if (length(f) > 0) {
           for (ii in 1:length(f)) {
             vf <- f[[ii]] %>%
-              unique() %>%
-              as.numeric()
+              unique()
             vf2 <- pred_df[, names(f[ii])] %>% unique()
             vfilter <- list()
             if (sum(!vf2 %in% vf) > 0) {
