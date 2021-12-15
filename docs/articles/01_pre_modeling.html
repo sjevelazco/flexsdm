@@ -134,7 +134,7 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
-<span class="co">#&gt; terra version 1.4.11</span>
+<span class="co">#&gt; terra version 1.5.2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'terra'</span>
 <span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
@@ -195,7 +195,7 @@
 <p>How are the points distributed across our study area?</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.3</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">spp</span><span class="op">$</span><span class="va">species</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.3</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html">as.factor</a></span><span class="op">(</span><span class="va">spp</span><span class="op">$</span><span class="va">species</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="01_pre_modeling_files/figure-html/map-1.png" width="576"></p>
 </div>
 <div id="calibration-area" class="section level2">
@@ -305,34 +305,43 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/pairs.html">pairs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></code></pre></div>
 <p><img src="01_pre_modeling_files/figure-html/pairs%20plot-1.png" width="576"></p>
-<p>So how can we correct for or reduce this collinearity? The function correct_colinvar() has four methods to deal with collinearity: pearson, vif, pca, and fa. Each method returns 1) a raster object (SpatRaster) with the selected predictors and 2) other useful outputs relevant to each method. Let’s look at each method:</p>
+<p>So how can we correct for or reduce this collinearity? The function correct_colinvar() has four methods to deal with collinearity: pearson, vif, pca, and fa. Each method returns 1) a raster object (SpatRaster) with the selected predictors and 2) other useful outputs relevant to each method. These functions should be used as supplementary tools, as predictor selection in SDMs is complicated and ultimately should be based on the relationship between the environment and species’ biology. With that being said, these functions offer options for exploring the relationships between predictor variables that can aid in the predictor selection process. Let’s look at each method:</p>
 </div>
 <div id="pearson-correlation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pearson-correlation" class="anchor"></a>1. Pearson correlation</h3>
-<p>This method eliminates predictors with a Pearson correlation index higher than a determined threshold. The default threshold is 0.7, but users can specify a given threshold (x) with method = c(‘pearson’, th = ‘x’). Here, we can see that the “pearson” method retains two predictors and removes two. The function also returns a list of removed variables and a correlation matrix of all input predictors.</p>
+<p>This method returns three objects 1) SpatRaster with environmental variables with a correlation below a given threshold (the default is 0.7), 2) the names of the variables that had a correlation above the given threshold and were “removed” from the environmental data, and 3) a correlation matrix of all of the environmental variables. However, we strongly urge users to use this information along with knowledge about specific species-environment relationships to select ecologically-relevant predictors for their SDMs. For example, here, we are modeling the distribution of a plant species in a water-limited Mediterranean-type ecosystem, so we may want to include BOTH climatic water deficit (cwd) and actual evapotranspiration (aet). Despite being highly correlated, these variables capture water availability and evaporative demand, respectively (Stephenson 1998). Additionally, minimum absolute temperature strongly controls vegetation distributions (Woodward, Lomas, and Kelly 2004), so we would select tmn (minimum temperature of the coldest month) in this example.</p>
+<p>For references, see:</p>
+<div id="stephenson-n--1998--actual-evapotranspiration-and-deficit-biologically-meaningful-correlates-of-vegetation-distribution-across-spatial-scales--journal-of-biogeography-25855870-" class="section level4">
+<h4 class="hasAnchor">
+<a href="#stephenson-n--1998--actual-evapotranspiration-and-deficit-biologically-meaningful-correlates-of-vegetation-distribution-across-spatial-scales--journal-of-biogeography-25855870-" class="anchor"></a>1. Stephenson, N. 1998. Actual evapotranspiration and deficit: biologically meaningful correlates of vegetation distribution across spatial scales. Journal of biogeography 25:855–870.</h4>
+</div>
+<div id="woodward-f--i--m--r--lomas-and-c--k--kelly--2004--global-climate-and-the-distribution-of-plant-biomes--philosophical-transactions-of-the-royal-society-of-london--series-b-biological-sciences-35914651476-" class="section level4">
+<h4 class="hasAnchor">
+<a href="#woodward-f--i--m--r--lomas-and-c--k--kelly--2004--global-climate-and-the-distribution-of-plant-biomes--philosophical-transactions-of-the-royal-society-of-london--series-b-biological-sciences-35914651476-" class="anchor"></a>2. Woodward, F. I., M. R. Lomas, and C. K. Kelly. 2004. Global climate and the distribution of plant biomes. Philosophical transactions of the Royal Society of London. Series B, Biological sciences 359:1465–1476.</h4>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pearson_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th <span class="op">=</span> <span class="st">"0.7"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pearson_var</span><span class="op">$</span><span class="va">env_layer</span>
-<span class="co">#&gt; class       : SpatRaster </span>
-<span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span>
-<span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span>
-<span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
-<span class="co">#&gt; source      : somevar.tif </span>
-<span class="co">#&gt; names       :       tmx,       cwd </span>
-<span class="co">#&gt; min values  :  22.44685,  -9.39489 </span>
-<span class="co">#&gt; max values  : 614.69125,  14.20047</span>
-<span class="va">pearson_var</span><span class="op">$</span><span class="va">removed_variables</span>
+<span class="va">pearson_var</span><span class="op">$</span><span class="va">cor_table</span>
+<span class="co">#&gt;           aet       cwd       tmx       tmn</span>
+<span class="co">#&gt; aet 0.0000000 0.7689893 0.7924813 0.7845401</span>
+<span class="co">#&gt; cwd 0.7689893 0.0000000 0.4168956 0.5881831</span>
+<span class="co">#&gt; tmx 0.7924813 0.4168956 0.0000000 0.7323259</span>
+<span class="co">#&gt; tmn 0.7845401 0.5881831 0.7323259 0.0000000</span>
+<span class="va">pearson_var</span><span class="op">$</span><span class="va">cor_variables</span>
+<span class="co">#&gt; $aet</span>
+<span class="co">#&gt; [1] "cwd" "tmx" "tmn"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $cwd</span>
+<span class="co">#&gt; [1] "aet"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $tmx</span>
 <span class="co">#&gt; [1] "aet" "tmn"</span>
-<span class="va">pearson_var</span><span class="op">$</span><span class="va">correlation_table</span>
-<span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;   variable    aet    cwd    tmx    tmn</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 aet       1      0.769 -0.792 -0.785</span>
-<span class="co">#&gt; 2 cwd       0.769  1     -0.417 -0.588</span>
-<span class="co">#&gt; 3 tmx      -0.792 -0.417  1      0.732</span>
-<span class="co">#&gt; 4 tmn      -0.785 -0.588  0.732  1</span></code></pre></div>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $tmn</span>
+<span class="co">#&gt; [1] "aet" "tmx"</span>
+
+<span class="va">chosen_variables</span> <span class="op">&lt;-</span> <span class="va">somevar</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'cwd'</span>,<span class="st">'aet'</span>,<span class="st">'tmn'</span><span class="op">)</span><span class="op">]</span><span class="op">]</span></code></pre></div>
+</div>
 </div>
 <div id="variance-inflation-factor" class="section level3">
 <h3 class="hasAnchor">
@@ -352,14 +361,14 @@
 <span class="co">#&gt; max values  : 1357.86469,   14.20047,  614.69125,   64.37476</span>
 <span class="va">vif_var</span><span class="op">$</span><span class="va">removed_variables</span>
 <span class="co">#&gt; NULL</span>
-<span class="va">vif_var</span><span class="op">$</span><span class="va">correlation_table</span>
-<span class="co">#&gt; # A tibble: 4 x 5</span>
-<span class="co">#&gt;   variable    aet    cwd    tmx    tmn</span>
-<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 aet       1      0.769 -0.792 -0.785</span>
-<span class="co">#&gt; 2 cwd       0.769  1     -0.417 -0.588</span>
-<span class="co">#&gt; 3 tmx      -0.792 -0.417  1      0.732</span>
-<span class="co">#&gt; 4 tmn      -0.785 -0.588  0.732  1</span></code></pre></div>
+<span class="va">vif_var</span><span class="op">$</span><span class="va">vif_table</span>
+<span class="co">#&gt; # A tibble: 4 x 2</span>
+<span class="co">#&gt;   Variables   VIF</span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 aet        7.62</span>
+<span class="co">#&gt; 2 cwd        3.29</span>
+<span class="co">#&gt; 3 tmx        3.95</span>
+<span class="co">#&gt; 4 tmn        2.89</span></code></pre></div>
 </div>
 <div id="principal-component-analysis" class="section level3">
 <h3 class="hasAnchor">
@@ -397,12 +406,14 @@
 <div id="factorial-analysis" class="section level3">
 <h3 class="hasAnchor">
 <a href="#factorial-analysis" class="anchor"></a>4. Factorial analysis</h3>
-<p>Selecting the “fa” method performs a factorial analysis to reduce dimensionality and selects the predictor(s) with the highest correlation to each axis. The outputs for this method are similar to those produced by the ‘pca’ method. NOT WORKING</p>
+<p>Selecting the “fa” method performs a factorial analysis to reduce dimensionality and selects the predictor(s) with the highest correlation to each axis. The outputs for this method are similar to those produced by the ‘pca’ method.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># fa_var &lt;- correct_colinvar(somevar, method = c("fa"))</span>
-<span class="co"># fa_var$env_layer</span>
-<span class="co"># fa$coefficient</span>
-<span class="co"># fa_var$cumulative_variance</span></code></pre></div>
+<code class="sourceCode R"><span class="va">fa_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"fa"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">fa_var</span><span class="op">$</span><span class="va">env_layer</span>
+<span class="va">fa_var</span><span class="op">$</span><span class="va">number_factors</span>
+<span class="va">fa_var</span><span class="op">$</span><span class="va">removed_variables</span>
+<span class="va">fa_var</span><span class="op">$</span><span class="va">uniqueness</span>
+<span class="va">fa_var</span><span class="op">$</span><span class="va">loadings</span></code></pre></div>
 </div>
 </div>
 <div id="data-filtering" class="section level2">
@@ -494,13 +505,12 @@
 <span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span>
 <span class="co">#&gt; 25 25 25 25 25 25 25 25 25 25</span></code></pre></div>
 </div>
-<div id="spatial-band-cross-validation-part_sband-error" class="section level3">
+<div id="spatial-band-cross-validation-part_sband" class="section level3">
 <h3 class="hasAnchor">
-<a href="#spatial-band-cross-validation-part_sband-error" class="anchor"></a>2. Spatial band cross-validation (part_sband) ERROR</h3>
+<a href="#spatial-band-cross-validation-part_sband" class="anchor"></a>2. Spatial band cross-validation (part_sband)</h3>
 <p>Both part_sband() and part_sblock() partition data based on their position in geographic space. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The function part_sband tests for different numbers of spatial partitions using latitudinal or longitudinal bands and selects the best number of bands for a given presence, presence-absence, or presence-background dataset. This procedure is based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each band partition. The function’s output includes 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid.</p>
-<p>*throwing an error: It was not possible to find a good partition. Try to change values in ‘n_part’, or in ‘min_band’, or ‘max_band’"</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="va">sp_part2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sband.html">part_sband</a></span><span class="op">(</span>
   env_layer <span class="op">=</span> <span class="va">somevar</span>,
   data <span class="op">=</span> <span class="va">spp1</span>,
@@ -513,20 +523,25 @@
   n_part <span class="op">=</span> <span class="fl">2</span>,
   prop <span class="op">=</span> <span class="fl">0.5</span>
 <span class="op">)</span>
-
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">grid</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html">gray.colors</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; 12 rows were excluded from database because NAs were found</span>
+<span class="co">#&gt; The following number of bands will be tested:</span>
+<span class="co">#&gt; 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20</span>
+<span class="co">#&gt; Creating basic raster mask...</span>
+<span class="co">#&gt; Searching for the optimal number of bands...</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">grid</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html">gray.colors</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,
   col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,
   cex <span class="op">=</span> <span class="fl">0.9</span>,
   pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">19</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span>
 <span class="op">)</span></code></pre></div>
+<p><img src="01_pre_modeling_files/figure-html/plot%20spatial%20band%20partition-1.png" width="576"></p>
 </div>
 <div id="spatial-block-cross-validation-part_sblock" class="section level3">
 <h3 class="hasAnchor">
 <a href="#spatial-block-cross-validation-part_sblock" class="anchor"></a>3. Spatial block cross-validation (part_sblock)</h3>
 <p>The part_sblock() function is very similar to part_sband() but instead of bands it explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input dataset. Here, we can see the data divided into different “blocks” for training and testing.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">sp_part3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sblock.html">part_sblock</a></span><span class="op">(</span>
   env_layer <span class="op">=</span> <span class="va">somevar</span>,
@@ -554,9 +569,9 @@
 <span class="op">)</span></code></pre></div>
 <p><img src="01_pre_modeling_files/figure-html/spatial%20block%20partition-1.png" width="576"></p>
 <p>However, we notice that the grid partition produced by part_sblock has a different resolution than the original environmental variables. If you want a map layer with the same properties (i.e. resolution, extent, NAs) as your original environmental variables, apply the get_block() function to the grid resulting from part_sblock(). This layer can be really useful for generating pseudo-absence or background sample points, which we will explore in the next section.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">res</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
-<span class="co">#&gt; [1] 849196.6 849196.6</span>
+<span class="co">#&gt; [1] 881131 881131</span>
 <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html">res</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1890 1890</span>
 
@@ -575,7 +590,7 @@
 <h3 class="hasAnchor">
 <a href="#environmental-and-spatial-cross-validation-part_senv" class="anchor"></a>4. Environmental and spatial cross-validation (part_senv)</h3>
 <p>The final partitioning function in <em>flexsdm</em> is part_senv(), which explores different numbers of environmental partitions based on the K-means clustering algorithm and returns the one best-suited for a particular dataset, considering spatial autocorrelation, environmental similarity, and the number of presence and/or absence records in each partition. The map below shows partitioning based on these environmental and spatial factors.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">sp_part4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_senv.html">part_senv</a></span><span class="op">(</span>
   env_layer <span class="op">=</span> <span class="va">somevar</span>,
@@ -609,7 +624,7 @@
 <h3 class="hasAnchor">
 <a href="#sample-background" class="anchor"></a>1. Sample background</h3>
 <p>The function sample_background() allows slection of background sample points based on different geographic restrictions and sampling methods. Here, we sample a set of background points based on our earlier spatial block partitioning using the “random” method. Using lapply() in this case ensures that we generate background points in each of our spatial blocks (n = 2). We are also specifying that we want ten times the amount of background points as our original occurrences and that our calibration area will be the buffer area around presence points (see section on “Calibration area”).</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">p_data</span> <span class="op">&lt;-</span>
   <span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span> <span class="co"># presence data from spatial block partition example</span>
@@ -646,7 +661,7 @@
 <h3 class="hasAnchor">
 <a href="#sample-pseudo-absences" class="anchor"></a>2. Sample pseudo-absences</h3>
 <p>Similarly, the function sample_pseudoabs allows random pseudo-absence sampling or based on environmental and/or geographical constraints. For example, specifying method = “env_const” selects pseudo-absences that are environmentally constrained to regions with lower suitability values as predicted by a Bioclim model. Additionally, this function allows users to specify a calibration area from which to generate pseudo-absence points. Here, we will use the buffer area around presence points (ca_1) to show what this might look like. As you can see, we have generated pseudo-absence points that are in the general vicinity of our presence points, but are concentrated in areas that have lower environmental suitability. The specific method chosen for sampling background and/or pseudo-absence points will vary depending on research goals.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
@@ -683,7 +698,7 @@
 <h2 class="hasAnchor">
 <a href="#extracting-environmental-values" class="anchor"></a>Extracting environmental values</h2>
 <p>Finally, before modeling species geographic distributions, we must extract environmental data at the presences + absences/pseudo-absences/background point locations. The function sdm_extract() extracts environmental data values based on x and y coordinates and returns a tibble with the original data + additional columns for the extracted environmental variables at those locations. Let’s do this for our original presence points (spp1) and our background locations (bg).</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">all_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">idd</span><span class="op">)</span>, <span class="va">bg</span><span class="op">)</span>
 

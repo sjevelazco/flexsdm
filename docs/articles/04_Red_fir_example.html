@@ -188,7 +188,7 @@
 <span class="va">block_layer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_block.html">get_block</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, best_grid <span class="op">=</span> <span class="va">occ_part</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
 
 <span class="va">block_layer2</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/raster.html">raster</a></span><span class="op">(</span><span class="va">block_layer</span><span class="op">)</span>
-<span class="va">block_layer2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">block_layer2</span><span class="op">)</span>
+<span class="va">block_layer2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html">as.factor</a></span><span class="op">(</span><span class="va">block_layer2</span><span class="op">)</span>
 
 <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"#64146D"</span>, <span class="st">"#9E2962"</span>, <span class="st">"#F47C15"</span>, <span class="st">"#FCFFA4"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">block_layer2</span>, col<span class="op">=</span><span class="va">cl</span>, legend<span class="op">=</span><span class="cn">FALSE</span>, axes<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
@@ -205,10 +205,10 @@
 <span class="co">#&gt; # Groups:   .part [4]</span>
 <span class="co">#&gt;   .part     n</span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1     1    33</span>
-<span class="co">#&gt; 2     2    86</span>
-<span class="co">#&gt; 3     3    38</span>
-<span class="co">#&gt; 4     4    59</span>
+<span class="co">#&gt; 1     1    38</span>
+<span class="co">#&gt; 2     2    59</span>
+<span class="co">#&gt; 3     3    33</span>
+<span class="co">#&gt; 4     4    86</span>
 <span class="co"># Additional information of the best block</span>
 <span class="va">occ_part</span><span class="op">$</span><span class="va">best_part_info</span>
 <span class="co">#&gt; # A tibble: 1 x 5</span>
@@ -269,31 +269,31 @@
 <span class="co">#&gt; # A tibble: 432 x 4</span>
 <span class="co">#&gt;          x        y pr_ab .part</span>
 <span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 -12558.   68530.     1     4</span>
-<span class="co">#&gt;  2 115217. -145937.     1     2</span>
-<span class="co">#&gt;  3   3634.   22501.     1     4</span>
-<span class="co">#&gt;  4  44972.  -60781.     1     4</span>
-<span class="co">#&gt;  5 -34463.  160313.     1     1</span>
-<span class="co">#&gt;  6  83108.  -27300.     1     4</span>
-<span class="co">#&gt;  7 124877. -176319.     1     2</span>
-<span class="co">#&gt;  8 118707. -179991.     1     2</span>
-<span class="co">#&gt;  9 126141. -176302.     1     2</span>
-<span class="co">#&gt; 10 -49722.  141124.     1     1</span>
+<span class="co">#&gt;  1 -12558.   68530.     1     2</span>
+<span class="co">#&gt;  2 115217. -145937.     1     4</span>
+<span class="co">#&gt;  3   3634.   22501.     1     2</span>
+<span class="co">#&gt;  4  44972.  -60781.     1     2</span>
+<span class="co">#&gt;  5 -34463.  160313.     1     3</span>
+<span class="co">#&gt;  6  83108.  -27300.     1     2</span>
+<span class="co">#&gt;  7 124877. -176319.     1     4</span>
+<span class="co">#&gt;  8 118707. -179991.     1     4</span>
+<span class="co">#&gt;  9 126141. -176302.     1     4</span>
+<span class="co">#&gt; 10 -49722.  141124.     1     3</span>
 <span class="co">#&gt; # ... with 422 more rows</span>
 <span class="va">bg</span> <span class="co"># Background points</span>
 <span class="co">#&gt; # A tibble: 2,160 x 4</span>
 <span class="co">#&gt;           x       y pr_ab .part</span>
 <span class="co">#&gt;       &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 -195081. 248522.     0     1</span>
-<span class="co">#&gt;  2 -181851. 178592.     0     1</span>
-<span class="co">#&gt;  3  -53331. 138902.     0     1</span>
-<span class="co">#&gt;  4  -47661. 225842.     0     1</span>
-<span class="co">#&gt;  5 -151611. 227732.     0     1</span>
-<span class="co">#&gt;  6  -76011.  87872.     0     1</span>
-<span class="co">#&gt;  7  -85461. 163472.     0     1</span>
-<span class="co">#&gt;  8  -28761.  93542.     0     1</span>
-<span class="co">#&gt;  9  -91131. 123782.     0     1</span>
-<span class="co">#&gt; 10 -125151. 102992.     0     1</span>
+<span class="co">#&gt;  1 -153501. 392162.     0     1</span>
+<span class="co">#&gt;  2  -89241. 263642.     0     1</span>
+<span class="co">#&gt;  3  -91131.  27392.     0     1</span>
+<span class="co">#&gt;  4 -130821. 331682.     0     1</span>
+<span class="co">#&gt;  5 -132711. 339242.     0     1</span>
+<span class="co">#&gt;  6  -60891. -63328.     0     1</span>
+<span class="co">#&gt;  7  -60891.  67082.     0     1</span>
+<span class="co">#&gt;  8  -41991. -51988.     0     1</span>
+<span class="co">#&gt;  9 -100581.    932.     0     1</span>
+<span class="co">#&gt; 10  -53331. -31198.     0     1</span>
 <span class="co">#&gt; # ... with 2,150 more rows</span></code></pre></div>
 <p>Extract environmental data for the presence-absence and background data . View the distributions of present points, pseudo-absence points, and background points using the blocks as a reference map.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -390,9 +390,9 @@
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 x 25</span></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_sp~     0.574         216        216    0.816 0.0184    0.823</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec      0.578         216        216    0.944 0.0669    0.765</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen       0.347         216        216    0.979 0.0146    0.721</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 meanw equal_sens_sp~     0.582         216        216    0.822 0.0697    0.825</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 meanw max_sens_spec      0.543         216        216    0.923 0.0535    0.790</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 meanw max_sorensen       0.462         216        216    0.960 0.0200    0.753</span></span>
 <span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
@@ -403,18 +403,18 @@
 <code class="sourceCode R"><span class="va">model_perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">t_max</span>, <span class="va">f_gau</span>, <span class="va">f_glm</span>, <span class="va">ens_m</span><span class="op">)</span><span class="op">)</span>
 <span class="va">model_perf</span>
 <span class="co">#&gt; # A tibble: 10 x 28</span>
-<span class="co">#&gt;    model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
-<span class="co">#&gt;       &lt;int&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1        1 max   max_sens_spec     0.509         216        216    0.950 0.0614</span>
-<span class="co">#&gt;  2        2 gau   equal_sens_s~     0.646         216        216    0.806 0.0173</span>
-<span class="co">#&gt;  3        2 gau   max_sens_spec     0.567         216        216    0.947 0.0232</span>
-<span class="co">#&gt;  4        2 gau   max_sorensen      0.425         216        216    0.962 0.0342</span>
-<span class="co">#&gt;  5        3 glm   equal_sens_s~     0.614         216        216    0.809 0.0130</span>
-<span class="co">#&gt;  6        3 glm   max_sens_spec     0.422         216        216    0.929 0.0378</span>
-<span class="co">#&gt;  7        3 glm   max_sorensen      0.422         216        216    0.958 0.0112</span>
-<span class="co">#&gt;  8        4 meanw equal_sens_s~     0.574         216        216    0.816 0.0184</span>
-<span class="co">#&gt;  9        4 meanw max_sens_spec     0.578         216        216    0.944 0.0669</span>
-<span class="co">#&gt; 10        4 meanw max_sorensen      0.347         216        216    0.979 0.0146</span>
+<span class="co">#&gt;    model_ID model threshold    thr_value n_presences n_absences TPR_mean  TPR_sd</span>
+<span class="co">#&gt;       &lt;int&gt; &lt;chr&gt; &lt;chr&gt;            &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1        1 max   max_sens_sp~     0.480         216        216    0.946 0.0520 </span>
+<span class="co">#&gt;  2        2 gau   equal_sens_~     0.632         216        216    0.809 0.0592 </span>
+<span class="co">#&gt;  3        2 gau   max_sens_sp~     0.531         216        216    0.941 0.0144 </span>
+<span class="co">#&gt;  4        2 gau   max_sorensen     0.451         216        216    0.975 0.0208 </span>
+<span class="co">#&gt;  5        3 glm   equal_sens_~     0.636         216        216    0.807 0.0610 </span>
+<span class="co">#&gt;  6        3 glm   max_sens_sp~     0.465         216        216    0.934 0.00933</span>
+<span class="co">#&gt;  7        3 glm   max_sorensen     0.465         216        216    0.960 0.0271 </span>
+<span class="co">#&gt;  8        4 meanw equal_sens_~     0.582         216        216    0.822 0.0697 </span>
+<span class="co">#&gt;  9        4 meanw max_sens_sp~     0.543         216        216    0.923 0.0535 </span>
+<span class="co">#&gt; 10        4 meanw max_sorensen     0.462         216        216    0.960 0.0200 </span>
 <span class="co">#&gt; # ... with 20 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span>
