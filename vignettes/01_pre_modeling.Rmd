@@ -369,8 +369,8 @@ sp_part1$.part %>% table()
 
 Both part_sband() and part_sblock() partition data based on their position in geographic space. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The function part_sband tests for different numbers of spatial partitions using latitudinal or longitudinal bands and selects the best number of bands for a given presence, presence-absence, or presence-background dataset. This procedure is based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each band partition. The function's output includes 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. 
 
-```{r spatial band partition, eval = FALSE}
-
+```{r spatial band partition}
+set.seed(1)
 sp_part2 <- part_sband(
   env_layer = somevar,
   data = spp1,
@@ -385,7 +385,7 @@ sp_part2 <- part_sband(
 )
 ```
 
-```{r plot spatial band partition, eval = FALSE}
+```{r plot spatial band partition}
 plot(sp_part2$grid, col = gray.colors(20))
 points(sp_part2$part[c("x", "y")],
   col = rainbow(8)[sp_part2$part$.part],
