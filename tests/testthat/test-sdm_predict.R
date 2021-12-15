@@ -5,7 +5,7 @@ test_that("test for fit_ function family", {
   # Environmental variables
   somevar <- system.file("external/somevar.tif", package = "flexsdm") %>% terra::rast()
   regions <- system.file("external/regions.tif", package = "flexsdm") %>% terra::rast()
-  levels(regions) <- unique(regions)
+  # levels(regions) <- unique(regions)
   somevar <- terra::rast(x = list(regions, somevar))
   rm(regions)
   somevar2 <- rast(list(somevar, somevar$category))
@@ -38,7 +38,8 @@ test_that("test for fit_ function family", {
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     predictors_f = "category",
     partition = ".part",
-    thr = c("max_sens_spec")
+    thr = c("max_sens_spec"),
+    k = 3
   )
 
   p <- sdm_predict(
@@ -133,7 +134,7 @@ test_that("test for fit_ function family", {
   net <- fit_net(
     data = spp_,
     response = "pr_ab",
-    predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+    predictors = c("CFP_1", "CFP_2"),
     predictors_f = "category",
     partition = ".part",
     thr = c("max_sens_spec"),
