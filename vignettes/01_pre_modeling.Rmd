@@ -277,13 +277,15 @@ pca_var$cumulative_variance
 ```
 
 ### 4. Factorial analysis 
-Selecting the "fa" method performs a factorial analysis to reduce dimensionality and selects the predictor(s) with the highest correlation to each axis. The outputs for this method are similar to those produced by the 'pca' method. NOT WORKING
+Selecting the "fa" method performs a factorial analysis to reduce dimensionality and selects the predictor(s) with the highest correlation to each axis. The outputs for this method are similar to those produced by the 'pca' method.
 
 ```{r fa collinearity reduction, eval = FALSE}
-# fa_var <- correct_colinvar(somevar, method = c("fa"))
-# fa_var$env_layer
-# fa$coefficient
-# fa_var$cumulative_variance
+fa_var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+fa_var$env_layer
+fa_var$number_factors
+fa_var$removed_variables
+fa_var$uniqueness
+fa_var$loadings
 ```
 
 ## Data filtering
@@ -363,11 +365,9 @@ sp_part1$.part %>% table()
 
 ```
 
-### 2. Spatial band cross-validation (part_sband) ERROR
+### 2. Spatial band cross-validation (part_sband)
 
 Both part_sband() and part_sblock() partition data based on their position in geographic space. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The function part_sband tests for different numbers of spatial partitions using latitudinal or longitudinal bands and selects the best number of bands for a given presence, presence-absence, or presence-background dataset. This procedure is based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each band partition. The function's output includes 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. 
-
-*throwing an error: It was not possible to find a good partition. Try to change values in 'n_part', or in 'min_band', or 'max_band'"
 
 ```{r spatial band partition, eval = FALSE}
 
@@ -383,15 +383,15 @@ sp_part2 <- part_sband(
   n_part = 2,
   prop = 0.5
 )
+```
 
-
+```{r plot spatial band partition, eval = FALSE}
 plot(sp_part2$grid, col = gray.colors(20))
 points(sp_part2$part[c("x", "y")],
   col = rainbow(8)[sp_part2$part$.part],
   cex = 0.9,
   pch = c(1, 19)[sp_part2$part$pr_ab + 1]
 )
-
 ```
 
 ### 3. Spatial block cross-validation (part_sblock)
