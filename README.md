@@ -89,6 +89,10 @@ Tools related to models’ geographical predictions, evaluation, and correction.
 You can install the development version of **flexsdm** from
 [github](https://github.com/sjevelazco/flexsdm)
 
+NOTE: The latest version of **terra** package is causing errors while installing **flexsdm**. 
+Please, first install the development version of [terra](https://github.com/rspatial/terra) and then **flexsdm**. 
+This problem will be resolved in January 2022.
+
 ``` r
 # install.packages("devtools")
 devtools::install_github("sjevelazco/flexsdm")

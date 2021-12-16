@@ -141,6 +141,14 @@
 <h3 class="hasAnchor">
 <a href="#2-modeling-functions" class="anchor"></a>2. Modeling functions</h3>
 <p>It includes functions related to modeling construction and validation. Several of them can be grouped into <code>fit_*</code>, <code>tune_*</code>, and <code>esm_*</code> family functions. <code>fit_*</code> construct and validate models with default hyper-parameter values. <code>tune_*</code> construct and validate models searching for the best hyper-parameter values combination. <code>esm_</code> construct and validate Ensemble of Small Models.</p>
+<div id="model-evaluation" class="section level4">
+<h4 class="hasAnchor">
+<a href="#model-evaluation" class="anchor"></a>Model evaluation</h4>
+<ul>
+<li>
+<code><a href="reference/sdm_eval.html">sdm_eval()</a></code> Calculate different model performance metrics</li>
+</ul>
+</div>
 <div id="fit_-functions-family" class="section level4">
 <h4 class="hasAnchor">
 <a href="#fit_-functions-family" class="anchor"></a><code>fit_*</code> functions family</h4>
@@ -222,7 +230,7 @@
 <li>
 <code><a href="reference/extra_eval.html">extra_eval()</a></code> Measure model extrapolation</li>
 <li>
-<code>extra_correct()</code> Constraint suitability values under a given extrapolation value</li>
+<code><a href="reference/extra_exclude.html">extra_exclude()</a></code> Constraint suitability values under a given extrapolation value</li>
 <li>
 <code><a href="reference/msdm_priori.html">msdm_priori()</a></code> Create spatial predictor variables to reduce overprediction of species distribution models</li>
 <li>
@@ -234,6 +242,7 @@
 <h3 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h3>
 <p>You can install the development version of <strong>flexsdm</strong> from <a href="https://github.com/sjevelazco/flexsdm">github</a></p>
+<p>NOTE: The latest version of <strong>terra</strong> package is causing errors while installing <strong>flexsdm</strong>. Please, first install the development version of <a href="https://github.com/rspatial/terra">terra</a> and then <strong>flexsdm</strong>. This problem will be resolved in January 2022.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"sjevelazco/flexsdm"</span><span class="op">)</span></code></pre></div>
