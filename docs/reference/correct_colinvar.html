@@ -146,7 +146,7 @@ This function does not allow categorical variables</p></td>
       <th>method</th>
       <td><p>character. Collinearity reduction method. It is necessary to
 provide a vector for this argument. The next methods are implemented:</p><ul>
-<li><p>pearson: Select variables by Pearson correlation, a threshold of maximum correlation
+<li><p>pearson: Highlights correlated variables according to Pearson correlation. A threshold of maximum correlation
   must be specified. Otherwise, a threshold of 0.7 is defined as default.
   Usage method = c('pearson', th='0.7').</p></li>
 <li><p>vif: Select variables by Variance Inflation Factor, a threshold can be specified by
@@ -154,9 +154,7 @@ provide a vector for this argument. The next methods are implemented:</p><ul>
 <li><p>pca: Perform a Principal Component Analysis and use the principal components as the
   new predictors. The selected components account for 95% of the whole variation in the system.
   Usage method = c('pca').</p></li>
-<li><p>fa: Perform a Factorial Analysis and select, from the original predictors, the ones with
-   the highest correlation with the axis which accounts for 95% of the whole variation in the
-   system. Usage method = c('fa').</p></li>
+<li><p>fa: Perform a Factorial Analysis and select, from the original predictors, the number of factors is defined by Broken-Stick and variables with the highest correlation to the factors are selected.  Usage method = c('fa').</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -168,26 +166,30 @@ scenarios. Only used for pca. Usage proj = "C:/User/Desktop/Projections"</p></td
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If 'pearson' or 'vif' method, returns a list with the following elements:</p><ul>
+    <p>#' If 'pearson', returns a list with the following elements:</p><ul>
+<li><p>cor_table: a matrix object with pairwise correlation values of the environmental variables</p></li>
+<li><p>cor_variables: a list object with the same length of the number of environmental values containing the pairwise relations that exceeded the correlation threshold for each one sof the environmental variables</p></li>
+</ul>
+
+<p>If 'vif' method, returns a list with the following elements:</p><ul>
 <li><p>env_layer: a SpatRaster object with selected environmental variables</p></li>
 <li><p>removed_variables: a character vector with removed environmental variables</p></li>
-<li><p>correlation_table: a tibble with Pearson pairwise correlation between variables</p></li>
+<li><p>vif_table: a data frame with VIF values for all environmental variables</p></li>
 </ul>
 
 <p>If 'pca' method, returns a list with the following elements:</p><ul>
-<li><p>env_layer: a SpatRaster with scores of selected principal component (PC) that sum up 95% of the
+<li><p>env_layer: SpatRaster with scores of selected principal component (PC) that sum up 95% of the
 whole variation or original environmental variables</p></li>
-<li><p>coefficient: a tibble with the coefficient of principal component (PC) for predictors</p></li>
+<li><p>coefficients: a matrix with the coefficient of principal component (PC) for predictors</p></li>
 <li><p>cumulative_variance: a tibble with the cumulative variance explained in selected principal component (PC)</p></li>
 </ul>
 
 <p>If 'fa' method, returns a list with the following elements:</p><ul>
-<li><p>env_layer: a SpatRaster object with selected environmental variables</p></li>
-<li><p>removed_variables: a character vector with removed environmental variables</p></li>
-<li><p>correlation_table: a tibble with Pearson pairwise correlation between variables</p></li>
-<li><p>variable_loading: a tibble of loadings, one raw for each variable.
-The variable are ordered in decreasing order of sums of squares of loadings,
-and given the sign that will make the sum of the loadings positive</p></li>
+<li><p>env_layer: SpatRaster with scores of selected variables due to correlation to factors.</p></li>
+<li><p>number_factors: number of factors selected according to the Broken-Stick criteria,</p></li>
+<li><p>removed_variables: removed variables,</p></li>
+<li><p>uniqueness: uniqueness of each environmental variable according to the factorial analysis,</p></li>
+<li><p>loadings: environmental variables loadings in each of the chosen factors</p></li>
 </ul>
 
 
@@ -200,30 +202,30 @@ and given the sign that will make the sum of the loadings positive</p></li>
 <span class='va'>somevar</span> <span class='op'>&lt;-</span> <span class='fu'>terra</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/terra/man/rast.html'>rast</a></span><span class='op'>(</span><span class='va'>somevar</span><span class='op'>)</span>
 
 <span class='co'># Perform pearson collinearity control</span>
-<span class='va'>var</span> <span class='op'>&lt;-</span> <span class='fu'>correct_colinvar</span><span class='op'>(</span>env_layer <span class='op'>=</span> <span class='va'>somevar</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pearson"</span>, th <span class='op'>=</span> <span class='st'>"0.7"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>var</span><span class='op'>$</span><span class='va'>env_layer</span>
-<span class='va'>var</span><span class='op'>$</span><span class='va'>removed_variables</span>
-<span class='va'>var</span><span class='op'>$</span><span class='va'>correlation_table</span>
+<span class='va'>var</span> <span class='op'>&lt;-</span> <span class='fu'>correct_colinvar</span><span class='op'>(</span>env_layer <span class='op'>=</span> <span class='va'>somevar</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pearson"</span>, th <span class='op'>=</span> <span class='st'>"0.8"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>var</span><span class='op'>$</span><span class='va'>cor_table</span>
+<span class='va'>var</span><span class='op'>$</span><span class='va'>cor_variables</span>
 
 <span class='co'># Perform vif collinearity control</span>
 <span class='va'>var</span> <span class='op'>&lt;-</span> <span class='fu'>correct_colinvar</span><span class='op'>(</span>env_layer <span class='op'>=</span> <span class='va'>somevar</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"vif"</span>, th <span class='op'>=</span> <span class='st'>"8"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>var</span><span class='op'>$</span><span class='va'>env_layer</span>
 <span class='va'>var</span><span class='op'>$</span><span class='va'>removed_variables</span>
-<span class='va'>var</span><span class='op'>$</span><span class='va'>correlation_table</span>
+<span class='va'>var</span><span class='op'>$</span><span class='va'>vif_table</span>
 
 <span class='co'># Perform pca collinearity control</span>
 <span class='va'>var</span> <span class='op'>&lt;-</span> <span class='fu'>correct_colinvar</span><span class='op'>(</span>env_layer <span class='op'>=</span> <span class='va'>somevar</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pca"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/pkg/terra/man/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>var</span><span class='op'>$</span><span class='va'>env_layer</span><span class='op'>)</span>
 <span class='va'>var</span><span class='op'>$</span><span class='va'>env_layer</span>
-<span class='va'>var</span><span class='op'>$</span><span class='va'>coefficient</span>
+<span class='va'>var</span><span class='op'>$</span><span class='va'>coefficients</span>
 <span class='va'>var</span><span class='op'>$</span><span class='va'>cumulative_variance</span>
 
-<span class='co'># Perform fa collinearity control</span>
+<span class='co'># Perform fa colinearity control</span>
 <span class='va'>var</span> <span class='op'>&lt;-</span> <span class='fu'>correct_colinvar</span><span class='op'>(</span>env_layer <span class='op'>=</span> <span class='va'>somevar</span>, method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"fa"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>var</span><span class='op'>$</span><span class='va'>env_layer</span>
+<span class='va'>var</span><span class='op'>$</span><span class='va'>number_factors</span>
 <span class='va'>var</span><span class='op'>$</span><span class='va'>removed_variables</span>
-<span class='va'>var</span><span class='op'>$</span><span class='va'>correlation_table</span>
-<span class='va'>var</span><span class='op'>$</span><span class='va'>variable_loading</span>
+<span class='va'>var</span><span class='op'>$</span><span class='va'>uniqueness</span>
+<span class='va'>var</span><span class='op'>$</span><span class='va'>loadings</span>
 <span class='op'>}</span>
 
 </div></pre>
