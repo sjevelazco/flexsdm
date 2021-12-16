@@ -99,7 +99,7 @@ filtered_3 <- occfilt_env(
 # note that the higher the nbins parameter the more
 # classes must be processed (4 variables, 30 bins = 923521 classes)
 
-# While the greater the number of bins the fewer records retained
+# While the greater the number of bins the grater records retained
 }
 
 }
