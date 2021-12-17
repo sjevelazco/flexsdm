@@ -52,3 +52,20 @@
 #' abies
 #' }
 "abies"
+
+#' A data set containing localities of Hesperocyparis stephensonii species in California, USA
+#'
+#' @format A tibble object with 14 rows and 4 variables:
+#' \describe{
+#'   \item{ID}{presences records ID}
+#'   \item{x y}{columns with coordinates in Albers Equal Area Conic coordinate system}
+#'   \item{pr_ab}{presence denoted by 1}
+#'   ...
+#' }
+#' @examples
+#' \dontrun{
+#' require(dplyr)
+#' data("hespero")
+#' hespero
+#' }
+"hespero"
