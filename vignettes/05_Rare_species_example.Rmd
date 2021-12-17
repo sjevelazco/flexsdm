@@ -1,0 +1,86 @@
+---
+title: 'flexsdm: Modeling a rare species'
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{flexsdm: Modeling a rare species}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  # fig.path = "man/figures/README-",
+  # out.width = "100%",
+  fig.width = 6,
+  fig.height = 6,
+  # dpi = 60,
+  echo = TRUE,
+  warning = FALSE,
+  eval = TRUE
+)
+```
+
+```{r dependencies, include = FALSE}
+# devtools::install_github('sjevelazco/flexsdm')
+library(knitr)
+```
+
+# Intro
+
+Creating SDMs for rare or poorly known species can be a difficult task. Occurrence data are often limited to only a few observation, which can lead to model overfitting, especially when using many predictor variables to build models. 
+
+To address this issue, Breiner et al., (2015) proposed Ensembles of small models (ESM) is an approach for modeling rare species or those with few occurrences that was proposed by (Breiner et at., 2015)
+# Dubos et al 2021 combine interesting approaches for modeling rare species.
+
+
+In this example, we will walk through the process of modeling *Hesperocyparis stephensonii* (Cuyamaca cypress), a conifer tree species that is endemic to southern California. This species is listed as Critically Endangered by the IUCN and is only found in the headwaters of King Creek in San Diego County. The Cedar Fire of 2003 left only 30-40 surviving trees.  
+
+
+## Data
+
+In this example, we use four environmental variables that influence plant distributions in California: available evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month. Our occurrence data include 13 geo-referenced observations downloaded from the online database CalFlora 
+
+```{r raw data, message=FALSE}
+# devtools::install_github('sjevelazco/flexsdm')
+library(flexsdm)
+library(terra)
+library(dplyr)
+
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar) # environmental data
+names(somevar) <- c("aet", "cwd", "tmx", "tmn")
+
+data(hepsero)
+
+head(hespero)
+
+ca <- calib_area(data = hespero, x = 'x', y = 'y', method =  c('buffer', width=100000), crs = crs(somevar)) # create a calibration area with 100 km buffer around occurrence points
+
+# visualize the species occurrences
+layer1 <- (somevar[[1]])
+layer1[!is.na(layer1)] <- 1
+layer1 <- raster::raster(layer1)
+
+plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
+plot(crop(as(ca, 'Spatial'), layer1), add=TRUE)
+points(hespero[,c("x", "y")], col = "#00000480")
+```
+
+
+
+# Procedure
+
+# Delimit a calibration area
+# Create pseudo-absences
+# Use repeated K-fold
+
+
+# References
+1. Breiner, F. T., Guisan, A., Bergamini, A., & Nobis, M. P. (2015). Overcoming limitations of modelling rare species by using ensembles of small models. Methods in Ecology and Evolution, 6(10), 1210–1218. https://doi.org/10.1111/2041-210X.12403
+2. Breiner, F. T., Nobis, M. P., Bergamini, A., & Guisan, A. (2018). Optimizing ensembles of small models for predicting the distribution of species with few occurrences. Methods in Ecology and Evolution, 9(4), 802–808. https://doi.org/10.1111/2041-210X.12957
+3. Dubos, N., Montfort, F., Grinand, C., Nourtier, M., Deso, G., Probst, J.-M., Razafimanahaka, J. H., Andriantsimanarilafy, R. R., Rakotondrasoa, E. F., Razafindraibe, P., Jenkins, R., & Crottini, A. (2021). Are narrow-ranging species doomed to extinction? Projected dramatic decline in future climate suitability of two highly threatened species. Perspectives in Ecology and Conservation, S2530064421000894. https://doi.org/10.1016/j.pecon.2021.10.002
+
+
+
