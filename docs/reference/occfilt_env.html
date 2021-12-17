@@ -179,12 +179,19 @@
  multivariate grid. Consider that there is a trade-off between the number of bins and the number
  of filtered records because as the number of bins decreases, the cell size of the grids
  increases, and the number of filtered records decreases (Castellanos et al., 2019).
- occfilt_env works for any number of dimensions (variables) and with the original variables without performing
+ occfilt_env works for any number of dimensions (variables) and with the original variables
+ without performing
  a PCA beforehand.</p>
 <p>The greater the number of predictor variables (i.e., the number of dimensions of the
  multidimensional environmental grid) and the greater the number of bins, the greater the time processing
  and the computer memory used. Therefore, it is recommended to use a small number of bins
  between 2-5 if more than ten variables are used.</p>
+<p>Environmental filters are sensitive to the number of bins. A procedure for selecting the number
+ of bins was used by Velazco et al. (2020). This selection consists of testing different numbers
+ of bins, calculating the average spatial autocorrelation among variables (based on the
+ Moran’s I index), and then selecting the lowest average spatial autocorrelation with the
+ highest number occurrences. Note that while the greater the number of bins, the greater
+ records retained</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
@@ -196,6 +203,9 @@ Evolution, 10(4), 481-492. https://doi.org/10.1111/2041-210X.13142</p></li>
 Environmental filters reduce the effects of sampling bias and improve predictions of
 ecological niche models. Ecography, 37, 1084-1091.
 https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
+<li><p>Velazco, S. J. E., Svenning, J-C., Ribeiro, B. R., &amp; Laureto, L. M. O. (2020). On
+opportunities and threats to conserve the phylogenetic diversity of Neotropical palms.
+Diversity and Distributions, 27, 512–523. https://doi.org/10.1111/ddi.13215</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -256,7 +266,7 @@ https://doi.org/10.1111/j.1600-0587.2013.00441.x</p></li>
 <span class='co'># note that the higher the nbins parameter the more</span>
 <span class='co'># classes must be processed (4 variables, 30 bins = 923521 classes)</span>
 
-<span class='co'># While the greater the number of bins the grater records retained</span>
+<span class='co'># While the greater the greater the number of bins, the greater records retained</span>
 <span class='op'>}</span>
 
 </div></pre>

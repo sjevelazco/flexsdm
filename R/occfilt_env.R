@@ -23,13 +23,21 @@
 #'  multivariate grid. Consider that there is a trade-off between the number of bins and the number
 #'  of filtered records because as the number of bins decreases, the cell size of the grids
 #'  increases, and the number of filtered records decreases (Castellanos et al., 2019).
-#'  occfilt_env works for any number of dimensions (variables) and with the original variables without performing
+#'  occfilt_env works for any number of dimensions (variables) and with the original variables
+#'  without performing
 #'  a PCA beforehand.
 #'
 #'  The greater the number of predictor variables (i.e., the number of dimensions of the
 #'  multidimensional environmental grid) and the greater the number of bins, the greater the time processing
 #'  and the computer memory used. Therefore, it is recommended to use a small number of bins
 #'  between 2-5 if more than ten variables are used.
+#'
+#'  Environmental filters are sensitive to the number of bins. A procedure for selecting the number
+#'  of bins was used by Velazco et al. (2020). This selection consists of testing different numbers
+#'  of bins, calculating the average spatial autocorrelation among variables (based on the
+#'  Moran’s I index), and then selecting the lowest average spatial autocorrelation with the
+#'  highest number occurrences. Note that while the greater the number of bins, the greater
+#'  records retained
 #'
 #' @references
 #' \itemize{
@@ -41,6 +49,10 @@
 #' Environmental filters reduce the effects of sampling bias and improve predictions of
 #' ecological niche models. Ecography, 37, 1084-1091.
 #' https://doi.org/10.1111/j.1600-0587.2013.00441.x
+#'
+#' \item Velazco, S. J. E., Svenning, J-C., Ribeiro, B. R., & Laureto, L. M. O. (2020). On
+#' opportunities and threats to conserve the phylogenetic diversity of Neotropical palms.
+#' Diversity and Distributions, 27, 512–523. https://doi.org/10.1111/ddi.13215
 #' }
 #'
 #' @export
@@ -103,7 +115,7 @@
 #' # note that the higher the nbins parameter the more
 #' # classes must be processed (4 variables, 30 bins = 923521 classes)
 #'
-#' # While the greater the number of bins the grater records retained
+#' # While the greater the greater the number of bins, the greater records retained
 #' }
 #'
 #' @seealso \code{\link{occfilt_geo}}
