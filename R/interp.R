@@ -17,6 +17,29 @@
 #' If dir_save is used, function outputs are saved in the directory
 #' specified in dir_save.
 #'
+#' @details This function interpolates suitability values assuming that annual changes in
+#' suitability are linear. This function could be useful for linking SDM output based on averaged
+#' climate data and climate change scenarios to other models that require suitability values
+#' disaggregated in time periods, such as population dynamics
+#' (Keith et al., 2008; Conlisk et al., 2013; Syphard et al., 2013).
+#'
+#' @references
+#' \itemize{
+#' \item Keith, D.A., Akçakaya, H.R., Thuiller, W., Midgley, G.F., Pearson, R.G., Phillips, S.J.,
+#'  Regan, H.M., Araujo, M.B. & Rebelo, T.G. (2008) Predicting extinction risks under climate
+#'  change: coupling stochastic population models with dynamic bioclimatic habitat models.
+#'  Biology Letters, 4, 560-563.
+#'
+#' \item Conlisk, E., Syphard, A.D., Franklin, J., Flint, L., Flint, A. & Regan, H.M. (2013)
+#'  Management implications of uncertainty in assessing impacts of multiple landscape-scale
+#'  threats to species persistence using a linked modeling approach. Global Change Biology
+#'   3, 858-869.
+#'
+#' \item Syphard, A.D., Regan, H.M., Franklin, J. & Swab, R. (2013) Does functional type
+#' vulnerability to multiple threats depend on spatial context in Mediterranean-climate regions?
+#' Diversity and Distributions, 19, 1263-1274.
+#'
+#' }
 #' @export
 #'
 #' @examples
