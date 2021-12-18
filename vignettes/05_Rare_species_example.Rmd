@@ -29,18 +29,19 @@ library(knitr)
 
 # Intro
 
-Creating SDMs for rare or poorly known species can be a difficult task. Occurrence data are often limited to only a few observation, which can lead to model overfitting, especially when using many predictor variables to build models. 
+Creating SDMs for rare or poorly known species can be a difficult task. Occurrence data are often limited to only a few observation, which can lead to model overfitting, especially when using many predictor variables to build models. However, researchers are often most interested in building SDMs for rare species, with the intent of identifying potential sampling locations or prioritizing conservation areas.  
 
-To address this issue, Breiner et al., (2015) proposed Ensembles of small models (ESM) is an approach for modeling rare species or those with few occurrences that was proposed by (Breiner et at., 2015)
+To address the issues associated with modeling the spatial distributions of rare species, Lomba et al. (2010) and Breiner et al. (2015) proposed the method "ensemble of small models" or ESM. In ESM, many bivariate models with pairwise combinations of each predictor variable, then an ensemble is performed. In *flexsdm*, the ensemble is created using the average of suitability across all of the "small models", weighted by Somers' D (D = 2 * (AUC-.5)). It is important to note that this method does not allow the use of categorical variables (such as soil type). 
+
 # Dubos et al 2021 combine interesting approaches for modeling rare species.
 
 
-In this example, we will walk through the process of modeling *Hesperocyparis stephensonii* (Cuyamaca cypress), a conifer tree species that is endemic to southern California. This species is listed as Critically Endangered by the IUCN and is only found in the headwaters of King Creek in San Diego County. The Cedar Fire of 2003 left only 30-40 surviving trees.  
+In this example, we will walk through the process of comparing ESM to traditional modeling approaches for *Hesperocyparis stephensonii* (Cuyamaca cypress), a conifer tree species that is endemic to southern California. This species is listed as Critically Endangered by the IUCN and is only found in the headwaters of King Creek in San Diego County. The Cedar Fire of 2003 left only 30-40 surviving trees. 
 
 
 ## Data
 
-In this example, we use four environmental variables that influence plant distributions in California: available evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month. Our occurrence data include 13 geo-referenced observations downloaded from the online database CalFlora 
+For our models, we will use four environmental variables that influence plant distributions in California: available evapotranspiration (aet), climatic water deficit (cwd), maximum temperature of the warmest month (tmx), and minimum temperature of the coldest month (tmn). Our occurrence data include 13 geo-referenced observations downloaded from the online database CalFlora.
 
 ```{r raw data, message=FALSE}
 # devtools::install_github('sjevelazco/flexsdm')
@@ -52,11 +53,9 @@ somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
 names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 
-data(hepsero)
+data(hespero)
 
-head(hespero)
-
-ca <- calib_area(data = hespero, x = 'x', y = 'y', method =  c('buffer', width=100000), crs = crs(somevar)) # create a calibration area with 100 km buffer around occurrence points
+hespero <- hespero %>% dplyr::select(-id)
 
 # visualize the species occurrences
 layer1 <- (somevar[[1]])
@@ -68,19 +67,243 @@ plot(crop(as(ca, 'Spatial'), layer1), add=TRUE)
 points(hespero[,c("x", "y")], col = "#00000480")
 ```
 
+## Delimit calibration area
+
+First, we must define our model's calibration area. Because we do not have true absences for this species, the calibration area will be used to generate our pseudo-absence points. The *flexsdm* package offers several methods for defining the model calibration area. Here, we will use ecoregion data for the California Floristic Province to define our model calibration and prediction area.  
+
+```{r calibration area}
+
+regions <- system.file("external/regions.tif", package = "flexsdm")
+regions <- terra::rast(regions)
+regions <- as.polygons(regions)
+
+ca <- calib_area(
+  data = hespero,
+  x = "x",
+  y = "y",
+  method = c("mask", regions, "category"),
+  crs = crs(somevar)
+)
+
+# visualize the species occurrences
+layer1 <- (somevar[[1]])
+layer1[!is.na(layer1)] <- 1
+layer1 <- raster::raster(layer1)
+
+plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
+plot(ca, add=TRUE)
+points(hespero[,c("x", "y")], col = "black")
+```
 
 
-# Procedure
+## Create pseudo-absence data
 
-# Delimit a calibration area
-# Create pseudo-absences
-# Use repeated K-fold
+As is often the case with rare species, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we use our calibration area to produce pseudo-absence data that can be used in our SDMs. 
 
+```{r pseudo-absence data}
+
+# Sample 20 times the number of species presences
+set.seed(10)
+psa <- sample_pseudoabs(
+  data = hespero,
+  x = "x",
+  y = "y",
+  n = sum(hespero$pr_ab) * 20,
+  method = "random",
+  rlayer = somevar,
+  calibarea = ca
+)
+
+
+cl <- c("#280B50", "#9E2962", "#F47C15", "#FCFFA4")
+plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
+points(psa[,c("x", "y")], cex=0.8, pch=21) # Pseudo-absences
+
+# Bind a presences and pseudo-absences
+hespero_pa <- bind_rows(hespero, psa)
+hespero_pa # Presence-Pseudo-absence database
+```
+
+
+## Partition data for evaluating models
+
+To evaluate model performance, we need to specify data for testing and training. *flexsdm* offers a range of random and spatial and random data partition methods for evaluating SDMs. Here we will use repeated K-fold cross-validation. 
+
+```{r rep kfolds partion}
+
+set.seed(10)
+
+# Repeated K-fold method
+hespero_pa2 <- part_random(
+  data = hespero_pa,
+  pr_ab = "pr_ab",
+  method = c(method = "rep_kfold", folds = 5, replicates = 10)
+)
+```
+
+## Extracting environmental values
+
+Next, we extract the values of our environmental predictors at the presence and pseudo-absence locations. 
+
+```{r sdm extract}
+
+hespero_pa3 <-
+  sdm_extract(
+    data = hespero_pa2,
+    x = 'x',
+    y = 'y',
+    env_layer = somevar,
+    variables = c('aet', 'cwd', 'tmx', 'tmn')
+  )
+
+```
+
+## Modeling
+
+
+### Standard models
+
+First, let's use three standard algorithms to model the distribution of *Hesperocyparis stephensonii*: GLM, GBM, and SVM. In this case, we use our calibration area for making our predictions.
+
+```{r}
+mglm <-
+  fit_glm(
+    data = hespero_pa3,
+    response = 'pr_ab',
+    predictors = c('aet', 'cwd', 'tmx', 'tmn'),
+    partition = '.part',
+    thr = 'max_sens_spec'
+  )
+
+mgbm <- fit_gbm(
+  data = hespero_pa3,
+  response = 'pr_ab',
+  predictors = c('aet', 'cwd', 'tmx', 'tmn'),
+  partition = '.part',
+  thr = 'max_sens_spec'
+)
+
+msvm <-  fit_svm(
+  data = hespero_pa3,
+  response = 'pr_ab',
+  predictors = c('aet', 'cwd', 'tmx', 'tmn'),
+  partition = '.part',
+  thr = 'max_sens_spec'
+)
+
+
+mpred <- sdm_predict(
+  models = list(mglm, mgbm, msvm),
+  pred = somevar,
+  con_thr = TRUE,
+  predict_area = ca
+)
+
+
+```
+
+
+### Ensemble of small models
+
+Now let's try each of these algorithms with the ESM approach. Note that when predicting an ESM, it is possible to only process one at a time.
+
+```{r}
+
+eglm  <-
+  esm_glm(
+    data = hespero_pa3,
+    response = 'pr_ab',
+    predictors = c('aet', 'cwd', 'tmx', 'tmn'),
+    partition = '.part',
+    thr = 'max_sens_spec'
+  )
+
+egbm <- esm_gbm(
+  data = hespero_pa3,
+  response = 'pr_ab',
+  predictors = c('aet', 'cwd', 'tmx', 'tmn'),
+  partition = '.part',
+  thr = 'max_sens_spec'
+)
+
+esvm <-  esm_svm(
+  data = hespero_pa3,
+  response = 'pr_ab',
+  predictors = c('aet', 'cwd', 'tmx', 'tmn'),
+  partition = '.part',
+  thr = 'max_sens_spec'
+)
+
+
+eglm_pred <- sdm_predict(
+  models = eglm ,
+  pred = somevar,
+  con_thr = TRUE,
+  predict_area = ca
+)
+
+egbm_pred <- sdm_predict(
+  models = egbm ,
+  pred = somevar,
+  con_thr = TRUE,
+  predict_area = ca
+)
+
+esvm_pred <- sdm_predict(
+  models = esvm,
+  pred = somevar,
+  con_thr = TRUE,
+  predict_area = ca
+)
+
+
+```
+
+## Comparing the models?
+
+I am not sure if we want to/how we want to compare these models...with maps? with performance metrics?
+
+
+```{r comparison maps}
+
+par(mfrow = c(3, 2))
+plot(mpred$glm, main = 'Standard GLM')
+#points(hespero$x, hespero$y, pch = 19)
+plot(eglm_pred[[1]], main = 'ESM GLM')
+#points(hespero$x, hespero$y, pch = 19)
+plot(mpred$gbm, main = 'Standard GBM')
+#points(hespero$x, hespero$y, pch = 19)
+plot(egbm_pred[[1]], main = 'ESM GBM')
+#points(hespero$x, hespero$y, pch = 19)
+plot(mpred$svm, main = 'Standard SVM')
+#points(hespero$x, hespero$y, pch = 19)
+plot(esvm_pred[[1]], main = 'ESM SVM')
+#points(hespero$x, hespero$y, pch = 19)
+```
+
+```{r comparing performance metrics}
+
+merge_df <- sdm_summarize(models = list(mglm, mgbm, msvm, eglm, egbm, esvm))
+
+
+knitr::kable(
+  merge_df %>% dplyr::select(
+    model,
+    AUC_mean,
+    FPB_mean,
+    BOYCE_mean,
+    TSS_mean,
+    JACCARD_mean,
+    IMAE_mean
+  )
+)
+```
 
 # References
-1. Breiner, F. T., Guisan, A., Bergamini, A., & Nobis, M. P. (2015). Overcoming limitations of modelling rare species by using ensembles of small models. Methods in Ecology and Evolution, 6(10), 1210–1218. https://doi.org/10.1111/2041-210X.12403
-2. Breiner, F. T., Nobis, M. P., Bergamini, A., & Guisan, A. (2018). Optimizing ensembles of small models for predicting the distribution of species with few occurrences. Methods in Ecology and Evolution, 9(4), 802–808. https://doi.org/10.1111/2041-210X.12957
-3. Dubos, N., Montfort, F., Grinand, C., Nourtier, M., Deso, G., Probst, J.-M., Razafimanahaka, J. H., Andriantsimanarilafy, R. R., Rakotondrasoa, E. F., Razafindraibe, P., Jenkins, R., & Crottini, A. (2021). Are narrow-ranging species doomed to extinction? Projected dramatic decline in future climate suitability of two highly threatened species. Perspectives in Ecology and Conservation, S2530064421000894. https://doi.org/10.1016/j.pecon.2021.10.002
+1. Lomba, A., L. Pellissier, C. Randin, J. Vicente, F. Moreira, J. Honrado, and A. Guisan. 2010. Overcoming the rare species modelling paradox: A novel hierarchical framework applied to an Iberian endemic plant. Biological conservation 143:2647–2657.
+2. Breiner, F. T., Guisan, A., Bergamini, A., & Nobis, M. P. (2015). Overcoming limitations of modelling rare species by using ensembles of small models. Methods in Ecology and Evolution, 6(10), 1210–1218. https://doi.org/10.1111/2041-210X.12403
+3. Breiner, F. T., Nobis, M. P., Bergamini, A., & Guisan, A. (2018). Optimizing ensembles of small models for predicting the distribution of species with few occurrences. Methods in Ecology and Evolution, 9(4), 802–808. https://doi.org/10.1111/2041-210X.12957
+4. Dubos, N., Montfort, F., Grinand, C., Nourtier, M., Deso, G., Probst, J.-M., Razafimanahaka, J. H., Andriantsimanarilafy, R. R., Rakotondrasoa, E. F., Razafindraibe, P., Jenkins, R., & Crottini, A. (2021). Are narrow-ranging species doomed to extinction? Projected dramatic decline in future climate suitability of two highly threatened species. Perspectives in Ecology and Conservation, S2530064421000894. https://doi.org/10.1016/j.pecon.2021.10.002
 
 
 
