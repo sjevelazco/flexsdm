@@ -63,7 +63,7 @@ layer1[!is.na(layer1)] <- 1
 layer1 <- raster::raster(layer1)
 
 plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
-plot(crop(as(ca, 'Spatial'), layer1), add=TRUE)
+plot(terra::crop(as(ca, 'Spatial'), layer1), add=TRUE) #ERROR ca object doesn't exist
 points(hespero[,c("x", "y")], col = "#00000480")
 ```
 
