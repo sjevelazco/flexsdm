@@ -40,7 +40,7 @@ Delimiting the calibration area (aka accessible area) is an essential step in SD
 methodological and theoretical terms. The calibration area will affect several characteristics of a 
 SDM like the range of environmental variables, the number of absences, the distribution of 
 background points and pseudo-absences, and unfortunately, some performance metrics like AUC and TSS. 
-Exist several ways to delimit a calibration area. In [calib_area()](https://sjevelazco.github.io/flexsdm/reference/calib_area.html). We used a method that the calibration area is delimited by a 100-km buffer around presences (shown in the figure below).
+There are several ways to delimit a calibration area. In [calib_area()](https://sjevelazco.github.io/flexsdm/reference/calib_area.html). We used a method that the calibration area is delimited by a 100-km buffer around presences (shown in the figure below).
 
 ```{r raw data, message=FALSE}
 # devtools::install_github('sjevelazco/flexsdm')
