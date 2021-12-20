@@ -53,7 +53,7 @@ somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar) # environmental data
 names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 
-data(hespero)
+data("hespero")
 
 hespero <- hespero %>% dplyr::select(-id)
 
@@ -63,7 +63,6 @@ layer1[!is.na(layer1)] <- 1
 layer1 <- raster::raster(layer1)
 
 plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
-plot(terra::crop(as(ca, 'Spatial'), layer1), add=TRUE) #ERROR ca object doesn't exist
 points(hespero[,c("x", "y")], col = "#00000480")
 ```
 
@@ -90,9 +89,12 @@ layer1 <- (somevar[[1]])
 layer1[!is.na(layer1)] <- 1
 layer1 <- raster::raster(layer1)
 
+par(mfrow = c(1, 2))
 plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
 plot(ca, add=TRUE)
-points(hespero[,c("x", "y")], col = "black")
+points(hespero[,c("x", "y")], col = "black", pch = 16)
+plot(ca, col = "gray80", legend = FALSE, axes = FALSE, main = "Calibration area and occurrences")
+points(hespero[,c("x", "y")], col = "black", pch = 16)
 ```
 
 
@@ -114,10 +116,9 @@ psa <- sample_pseudoabs(
   calibarea = ca
 )
 
-
-cl <- c("#280B50", "#9E2962", "#F47C15", "#FCFFA4")
-plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
-points(psa[,c("x", "y")], cex=0.8, pch=21) # Pseudo-absences
+plot(ca, col="gray80", legend=FALSE, axes=FALSE, main = "Presence = yellow, Pseudo-absence = black")
+points(psa[,c("x", "y")], cex=0.8, pch=16, col = "black") # Pseudo-absences
+points(hespero[,c("x", "y")], col = "yellow", pch = 16, cex = 1.5) # Presences
 
 # Bind a presences and pseudo-absences
 hespero_pa <- bind_rows(hespero, psa)
