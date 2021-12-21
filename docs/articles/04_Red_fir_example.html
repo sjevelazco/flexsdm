@@ -59,6 +59,9 @@
     <li>
       <a href="../articles/04_Red_fir_example.html">4. An example with Red Fir</a>
     </li>
+    <li>
+      <a href="../articles/05_Rare_species_example.html">5. Modeling a rare species</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -103,7 +106,7 @@
 <div id="delimit-of-a-calibration-area" class="section level2">
 <h2 class="hasAnchor">
 <a href="#delimit-of-a-calibration-area" class="anchor"></a>Delimit of a calibration area</h2>
-<p>Delimiting the calibration area (aka accessible area) is an essential step in SDMs both in methodological and theoretical terms. The calibration area will affect several characteristics of a SDM like the range of environmental variables, the number of absences, the distribution of background points and pseudo-absences, and unfortunately, some performance metrics like AUC and TSS. Exist several ways to delimit a calibration area. In <a href="https://sjevelazco.github.io/flexsdm/reference/calib_area.html">calib_area()</a>. We used a method that the calibration area is delimited by a 100-km buffer around presences (shown in the figure below).</p>
+<p>Delimiting the calibration area (aka accessible area) is an essential step in SDMs both in methodological and theoretical terms. The calibration area will affect several characteristics of a SDM like the range of environmental variables, the number of absences, the distribution of background points and pseudo-absences, and unfortunately, some performance metrics like AUC and TSS. There are several ways to delimit a calibration area. In <a href="https://sjevelazco.github.io/flexsdm/reference/calib_area.html">calib_area()</a>. We used a method that the calibration area is delimited by a 100-km buffer around presences (shown in the figure below).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>

@@ -20,5 +20,7 @@ navbar:
          href: articles/03_post_modeling.html
       -  text: "4. An example with Red Fir"
          href: articles/04_Red_fir_example.html
+      -  text: "5. Modeling a rare species"
+         href: articles/05_Rare_species_example.html
 components:
     home: ~

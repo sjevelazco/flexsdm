@@ -76,6 +76,9 @@
     <loc>https://sjevelazco.github.io/flexsdm/reference/get_block.html</loc>
   </url>
   <url>
+    <loc>https://sjevelazco.github.io/flexsdm/reference/hespero.html</loc>
+  </url>
+  <url>
     <loc>https://sjevelazco.github.io/flexsdm/reference/homogenize_na.html</loc>
   </url>
   <url>
@@ -158,5 +161,8 @@
   </url>
   <url>
     <loc>https://sjevelazco.github.io/flexsdm/articles/04_Red_fir_example.html</loc>
+  </url>
+  <url>
+    <loc>https://sjevelazco.github.io/flexsdm/articles/05_Rare_species_example.html</loc>
   </url>
 </urlset>
