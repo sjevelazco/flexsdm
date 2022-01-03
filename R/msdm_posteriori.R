@@ -22,8 +22,13 @@
 #' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other cases. Usage buffer=50000. Default NULL
 #' @param cont_suit SpatRaster. Raster with continuous suitability predictions
 #' "species_specific" type calculates the minimum pairwise-distances between all occurrences and then selects the maximum distance, i.e., the value of the buffer will be the maximum distance from the minimum distance. This procedure depends on the spatial pattern of each species' occurrences; thus, for each species, a value of buffer width will be calculated (usage buffer="species_specific").
-#' @return # This function return a SpatRaster with continuous and binary prediction.
+#' @return This function return a SpatRaster with continuous and binary prediction.
+#'
 #' @details
+#' These function help reduce overprediction of species distribution models based on the combination of the patterns of species occurrences and predicted suitability.
+#' It is recommended not to use these approaches for models projected onto different time periods (past or future).
+#'
+#' Five methods are implemented:
 #'
 #' Abbreviation list
 #'
@@ -33,7 +38,6 @@
 #' \item k: suitability patches that do not intercept species occurrences
 #' \item T: threshold distances used to select suitability patches
 #' }
-#'
 #'
 #' These methods reduce overprediction of species distribution models already fitted
 #' based on the occurrences and suitability patterns of species

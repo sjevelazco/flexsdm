@@ -141,7 +141,7 @@
   <span class='va'>y</span>,
   <span class='va'>pr_ab</span>,
   <span class='va'>cont_suit</span>,
-  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/terra/man/c.html'>c</a></span><span class='op'>(</span><span class='st'>"obr"</span>, <span class='st'>"pres"</span>, <span class='st'>"lq"</span>, <span class='st'>"mcp"</span>, <span class='st'>"bmcp"</span><span class='op'>)</span>,
+  method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"obr"</span>, <span class='st'>"pres"</span>, <span class='st'>"lq"</span>, <span class='st'>"mcp"</span>, <span class='st'>"bmcp"</span><span class='op'>)</span>,
   thr <span class='op'>=</span> <span class='st'>"equal_sens_spec"</span>,
   buffer <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
@@ -195,17 +195,19 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p># This function return a SpatRaster with continuous and binary prediction.</p>
+    <p>This function return a SpatRaster with continuous and binary prediction.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Abbreviation list</p>
+    <p>These function help reduce overprediction of species distribution models based on the combination of the patterns of species occurrences and predicted suitability.
+It is recommended not to use these approaches for models projected onto different time periods (past or future).</p>
+<p>Five methods are implemented:</p>
+<p>Abbreviation list</p>
 <ul>
 <li><p>SDM: species distribution model</p></li>
 <li><p>l: suitability patches that intercept species occurrences</p></li>
 <li><p>k: suitability patches that do not intercept species occurrences</p></li>
 <li><p>T: threshold distances used to select suitability patches</p></li>
 </ul>
-
 
 <p>These methods reduce overprediction of species distribution models already fitted
 based on the occurrences and suitability patterns of species

@@ -24,9 +24,14 @@ This function returns a SpatRaster object. Such raster/s have to be used togethe
 This function creates geographical predictor variables that, together with environmental variables, can be used to construct constrained species distribution models.
 }
 \details{
+This function creates geographical predictor variables that, together with environmental variables, can be used to construct constrained species distribution models.
+It is recommended not to use these approaches for creating models that will be projected onto different time periods (past or future).
+
+Four methods are implemented:
+
 xy (Latlong method). This method assumes that spatial structure can partially explain species distribution (Bahn & McGill, 2007). Therefore, two raster layers will be created, containing the latitude and longitude of pixels, respectively. These raster layers should be included as covariates with the environmental layers to construct species distribution models. This method does not interact with species occurrence and is generic for a given study region; for this reason, it is possible to use this method for all species set that share the same study region.
 
-min (Nearest neighbor distance method). Compiled and adapted from Allouche et al. (2008), this method calculates for each cell the Euclidian geographic distance to the nearest presence point.
+min (Nearest neighbor distance method). Compiled and adapted from Allouche et al. (2008), this method calculates for each cell the Euclidean geographic distance to the nearest presence point.
 
 cml (Cumulative distance method). Compiled and adapted from Allouche et al. (2008), this method assumes that pixels closer to presences are likely included in species distributions. Therefore, a raster layer will be created containing the sum of Euclidean geographic distances from each pixel to all occurrences of a species. Obtained values are normalized to vary from zero to one. This raster layer should be included with the environmental layers to construct species distribution models.
 
