@@ -45,12 +45,17 @@ Default "equal_sens_spec".}
 \item{buffer}{numeric. Buffer width use in 'bmcp' approach. The buffer width will be interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other cases. Usage buffer=50000. Default NULL}
 }
 \value{
-# This function return a SpatRaster with continuous and binary prediction.
+This function return a SpatRaster with continuous and binary prediction.
 }
 \description{
 These methods reduce overprediction of species distribution models based on a posteriori methods (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability
 }
 \details{
+These function help reduce overprediction of species distribution models based on the combination of the patterns of species occurrences and predicted suitability.
+It is recommended not to use these approaches for models projected onto different time periods (past or future).
+
+Five methods are implemented:
+
 Abbreviation list
 
 \itemize{
@@ -59,7 +64,6 @@ Abbreviation list
 \item k: suitability patches that do not intercept species occurrences
 \item T: threshold distances used to select suitability patches
 }
-
 
 These methods reduce overprediction of species distribution models already fitted
 based on the occurrences and suitability patterns of species
