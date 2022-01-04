@@ -52,7 +52,7 @@ These methods reduce overprediction of species distribution models based on a po
 }
 \details{
 These function help reduce overprediction of species distribution models based on the combination of the patterns of species occurrences and predicted suitability.
-It is recommended not to use these approaches for models projected onto different time periods (past or future).
+It is recommended to use these approaches only for current distribution not for models projected for different time periods (past or future).
 
 Five methods are implemented:
 

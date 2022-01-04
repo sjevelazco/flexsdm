@@ -8,11 +8,13 @@
 #' @param method character. A character string indicating which MSDM method will be used. The following methods are available: 'xy', 'min', 'cml', and 'ker'. Usage method = 'cml'
 #' @param env_layer A raster layer used to construct species distribution models. This object will be used to create constraining variables with the same resolution, extent, and pattern of empty cells as the environmental variables. It is advisable to use a raster of an environmental layer that will be used to create the species distribution models to avoid mismatch (e.g. resolution, extent, cells with NA) between environmental and constraining variables.
 #'
-#' @return This function returns a SpatRaster object. Such raster/s have to be used together with environmental variables to construct species distribution models. The 'xy' approach creates a single pair of raster layers that can be used for all species that share the same study region. Otherwise, 'cml', 'min', and 'ker' create a species-specific raster layer.
+#' @return This function returns a SpatRaster object. Such raster/s have to be used together with environmental variables to construct species distribution models.
+#' The 'xy' approach creates a single pair of raster layers that can be used for all species that share the same study region. Otherwise,
+#' 'cml', 'min', and 'ker' create a species-specific raster layer.
 #'
 #' @details
 #' This function creates geographical predictor variables that, together with environmental variables, can be used to construct constrained species distribution models.
-#' It is recommended not to use these approaches for creating models that will be projected onto different time periods (past or future).
+#' It is recommended to use these approaches to create models that will only be projected for current conditions and not for different time periods (past or future).
 #'
 #' Four methods are implemented:
 #'
