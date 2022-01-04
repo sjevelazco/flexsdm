@@ -1,32 +1,47 @@
 #' Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.
 #'
-#' @description These methods reduce overprediction of species distribution models based on a posteriori methods (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability
+#' @description These methods reduce overprediction of species distribution models based on a posteriori
+#' methods (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences
+#' and predicted suitability
 #'
-#' @param records tibble or data.frame. A database with spatial coordinates of species presences and absences (or pseudo-absence) used to create species distribution models.
+#' @param records tibble or data.frame. A database with spatial coordinates of species presences and
+#' absences (or pseudo-absence) used to create species distribution models.
 #' @param x character. Column name with spatial x coordinates.
 #' @param y character. Column name with spatial y coordinates.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
 #' @param method character. A character string indicating which constraint method will be used.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. Only one threshold type can be specified. It is necessary to provide a vector for this argument. The following threshold criteria are available:
+#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for
+#' threshold-dependent performance metrics. Only one threshold type can be specified. It is
+#' necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
 #'   \item equal_sens_spec: Threshold at which the sensitivity and specificity are equal.
-#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the highest (aka threshold that maximizes the TSS).
+#'   \item max_sens_spec: Threshold at which the sum of the sensitivity and specificity is the
+#'   highest (aka threshold that maximizes the TSS).
 #'   \item max_jaccard: The threshold at which the Jaccard index is the highest.
 #'   \item max_sorensen: The threshold at which the Sorensen index is highest.
 #'   \item max_fpb: The threshold at which FPB is highest.
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
-#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
+#'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to
+#'   sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
 #' Default "equal_sens_spec".
-#' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other cases. Usage buffer=50000. Default NULL
+#' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be
+#' interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other
+#' cases. Usage buffer=50000. Default NULL
 #' @param cont_suit SpatRaster. Raster with continuous suitability predictions
-#' "species_specific" type calculates the minimum pairwise-distances between all occurrences and then selects the maximum distance, i.e., the value of the buffer will be the maximum distance from the minimum distance. This procedure depends on the spatial pattern of each species' occurrences; thus, for each species, a value of buffer width will be calculated (usage buffer="species_specific").
+#' "species_specific" type calculates the minimum pairwise-distances between all occurrences and
+#' then selects the maximum distance, i.e., the value of the buffer will be the maximum distance
+#' from the minimum distance. This procedure depends on the spatial pattern of each species'
+#' occurrences; thus, for each species, a value of buffer width will be calculated
+#' (usage buffer="species_specific").
 #' @return This function return a SpatRaster with continuous and binary prediction.
 #'
 #' @details
-#' These function help reduce overprediction of species distribution models based on the combination of the patterns of species occurrences and predicted suitability.
-#' It is recommended to use these approaches only for current distribution not for models projected for different time periods (past or future).
+#' These function help reduce overprediction of species distribution models based on the combination
+#' of the patterns of species occurrences and predicted suitability.
+#' It is recommended to use these approaches only for current distribution not for models projected
+#' for different time periods (past or future).
 #'
 #' Five methods are implemented:
 #'

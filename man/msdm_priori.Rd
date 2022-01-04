@@ -13,31 +13,58 @@ msdm_priori(data, x, y, method = c("xy", "min", "cml", "ker"), env_layer)
 
 \item{y}{character. Column name with spatial y coordinates.}
 
-\item{method}{character. A character string indicating which MSDM method will be used. The following methods are available: 'xy', 'min', 'cml', and 'ker'. Usage method = 'cml'}
+\item{method}{character. A character string indicating which MSDM method will be used. The
+following methods are available: 'xy', 'min', 'cml', and 'ker'. Usage method = 'cml'}
 
-\item{env_layer}{A raster layer used to construct species distribution models. This object will be used to create constraining variables with the same resolution, extent, and pattern of empty cells as the environmental variables. It is advisable to use a raster of an environmental layer that will be used to create the species distribution models to avoid mismatch (e.g. resolution, extent, cells with NA) between environmental and constraining variables.}
+\item{env_layer}{A raster layer used to construct species distribution models. This object will
+be used to create constraining variables with the same resolution, extent, and pattern of empty
+cells as the environmental variables. It is advisable to use a raster of an environmental layer
+that will be used to create the species distribution models to avoid mismatch (e.g. resolution,
+extent, cells with NA) between environmental and constraining variables.}
 }
 \value{
-This function returns a SpatRaster object. Such raster/s have to be used together with environmental variables to construct species distribution models.
-The 'xy' approach creates a single pair of raster layers that can be used for all species that share the same study region. Otherwise,
+This function returns a SpatRaster object. Such raster/s have to be used together with
+environmental variables to construct species distribution models.
+The 'xy' approach creates a single pair of raster layers that can be used for all species that
+share the same study region. Otherwise,
 'cml', 'min', and 'ker' create a species-specific raster layer.
 }
 \description{
-This function creates geographical predictor variables that, together with environmental variables, can be used to construct constrained species distribution models.
+This function creates geographical predictor variables that, together with
+environmental variables, can be used to construct constrained species distribution models.
 }
 \details{
-This function creates geographical predictor variables that, together with environmental variables, can be used to construct constrained species distribution models.
-It is recommended to use these approaches to create models that will only be projected for current conditions and not for different time periods (past or future).
+This function creates geographical predictor variables that, together with environmental
+variables, can be used to construct constrained species distribution models.
+It is recommended to use these approaches to create models that will only be projected for current
+conditions and not for different time periods (past or future).
 
 Four methods are implemented:
 
-xy (Latlong method). This method assumes that spatial structure can partially explain species distribution (Bahn & McGill, 2007). Therefore, two raster layers will be created, containing the latitude and longitude of pixels, respectively. These raster layers should be included as covariates with the environmental layers to construct species distribution models. This method does not interact with species occurrence and is generic for a given study region; for this reason, it is possible to use this method for all species set that share the same study region.
+xy (Latlong method). This method assumes that spatial structure can partially explain species
+distribution (Bahn & McGill, 2007). Therefore, two raster layers will be created, containing the
+latitude and longitude of pixels, respectively. These raster layers should be included as
+covariates with the environmental layers to construct species distribution models. This method
+does not interact with species occurrence and is generic for a given study region; for this
+reason, it is possible to use this method for all species set that share the same study region.
 
-min (Nearest neighbor distance method). Compiled and adapted from Allouche et al. (2008), this method calculates for each cell the Euclidean geographic distance to the nearest presence point.
+min (Nearest neighbor distance method). Compiled and adapted from Allouche et al. (2008), this
+method calculates for each cell the Euclidean geographic distance to the nearest presence point.
 
-cml (Cumulative distance method). Compiled and adapted from Allouche et al. (2008), this method assumes that pixels closer to presences are likely included in species distributions. Therefore, a raster layer will be created containing the sum of Euclidean geographic distances from each pixel to all occurrences of a species. Obtained values are normalized to vary from zero to one. This raster layer should be included with the environmental layers to construct species distribution models.
+cml (Cumulative distance method). Compiled and adapted from Allouche et al. (2008), this method
+assumes that pixels closer to presences are likely included in species distributions. Therefore,
+a raster layer will be created containing the sum of Euclidean geographic distances from each
+pixel to all occurrences of a species. Obtained values are normalized to vary from zero to one.
+This raster layer should be included with the environmental layers to construct species
+distribution models.
 
-ker (Kernel method). Compiled and adapted from Allouche et al. (2008), this method, like cml, assumes that pixels located in areas with a higher density of occurrences are likely included in the actual species distribution. Thus, a raster layer will be created containing the Gaussian values based on the density of occurrences of a species. The standard deviation of the Gaussian distribution was the maximum value in a vector of minimum distances between pairs of occurrences of a species. Gaussian values are normalized to vary from zero to one. This raster layer should be included  with the environmental layers to construct species distribution models.
+ker (Kernel method). Compiled and adapted from Allouche et al. (2008), this method, like cml,
+assumes that pixels located in areas with a higher density of occurrences are likely included in
+the actual species distribution. Thus, a raster layer will be created containing the Gaussian
+values based on the density of occurrences of a species. The standard deviation of the Gaussian
+distribution was the maximum value in a vector of minimum distances between pairs of occurrences
+of a species. Gaussian values are normalized to vary from zero to one. This raster layer should
+be included  with the environmental layers to construct species distribution models.
 
 
 See Mendes et al. (2020) for further methodological and performance details.
@@ -110,9 +137,15 @@ plot(m_ker)
 }
 \references{
 \itemize{
-\item Mendes, P.; Velazco S.J.E.; Andrade, A.F.A.; De Marco, P. (2020) Dealing with overprediction in species distribution models: how adding distance constraints can improve model accuracy, Ecological Modelling, in press. https://doi.org/10.1016/j.ecolmodel.2020.109180
-\item Allouche, O.; Steinitz, O.; Rotem, D.; Rosenfeld, A.; Kadmon, R. (2008). Incorporating distance constraints into species distribution models. Journal of Applied Ecology, 45(2), 599-609. doi:10.1111/j.1365-2664.2007.01445.x
-\item Bahn, V.; McGill, B. J. (2007). Can niche-based distribution models outperform spatial interpolation? Global Ecology and Biogeography, 16(6), 733-742. doi:10.1111/j.1466-8238.2007.00331.x
+\item Mendes, P.; Velazco S.J.E.; Andrade, A.F.A.; De Marco, P. (2020) Dealing with
+overprediction in species distribution models: how adding distance constraints can improve model
+accuracy, Ecological Modelling, in press. https://doi.org/10.1016/j.ecolmodel.2020.109180
+\item Allouche, O.; Steinitz, O.; Rotem, D.; Rosenfeld, A.; Kadmon, R. (2008). Incorporating
+distance constraints into species distribution models. Journal of Applied Ecology, 45(2),
+599-609. doi:10.1111/j.1365-2664.2007.01445.x
+\item Bahn, V.; McGill, B. J. (2007). Can niche-based distribution models outperform spatial
+interpolation? Global Ecology and Biogeography, 16(6), 733-742.
+doi:10.1111/j.1466-8238.2007.00331.x
 }
 }
 \seealso{
