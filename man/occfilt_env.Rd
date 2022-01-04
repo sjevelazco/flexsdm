@@ -34,7 +34,7 @@ This function uses an approach adapted from the approach proposed by Varela et a
  grid cell size is defined by the number of bins, used for dividing variable range into
  interval classes (Varela et al. 2014; Castellanos et al., 2019). The number of bins is set in
  the "nbins" argument. Then, a single occurrence is randomly selected within each cell of the
- multivariate grid. Consider that there is a trade-off between the number of bins and the number
+ multidimensional grid. Consider that there is a trade-off between the number of bins and the number
  of filtered records because as the number of bins decreases, the cell size of the grids
  increases, and the number of filtered records decreases (Castellanos et al., 2019).
  occfilt_env works for any number of dimensions (variables) and with the original variables
