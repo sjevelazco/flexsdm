@@ -10,7 +10,7 @@ test_that("msdm_posteriori", {
   # It will prepared data for modeling a species
   set.seed(10)
   occ <- spp %>%
-    dplyr::filter(species == "sp2") %>% # filter a species
+    dplyr::filter(species == "sp1") %>% # filter a species
     sdm_extract(
       data = ., x = "x", y = "y",
       env_layer = somevar, filter_na = TRUE
@@ -31,7 +31,6 @@ test_that("msdm_posteriori", {
 
   # Lets predict this model
   m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
-
   ### bmcp method
   m_bmcp <- msdm_posteriori(
     records = occ,

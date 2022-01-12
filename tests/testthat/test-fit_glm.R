@@ -25,7 +25,7 @@ test_that("multiplication works", {
   glm_t2 <- fit_glm(
     data = abies2,
     response = "pr_ab",
-    predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+    predictors = c("aet", "ppt_jja", "depth"),
     predictors_f = c("landform"),
     partition = ".part",
     thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
@@ -45,7 +45,7 @@ test_that("multiplication works", {
   glm_t3 <- fit_glm(
     data = abies2,
     response = "pr_ab",
-    predictors = c("ppt_jja", "pH", "awc"),
+    predictors = c("ppt_jja", "pH"),
     predictors_f = c("landform"),
     partition = ".part",
     thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),

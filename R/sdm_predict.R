@@ -280,12 +280,15 @@ sdm_predict <-
       na_mask <- (sum(is.na(pred)) > 1)
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[1]]
-        r[] <- NA
+        r <- pred[[!is.factor(pred)]][[1]]
+        r[!is.na(r)] <- NA
         suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-          predict.graf(m[[i]], pred_df[, names(m[[i]]$obsx)],
-            type = "response", CI = NULL
-          ))
+                           predict.graf(
+                             object = m[[i]],
+                             newdata = pred_df[, names(m[[i]]$obsx)],
+                             type = "response",
+                             CI = NULL
+                           ))
         if (length(m[[i]]$facs)) {
           r[(na_mask + is.na(r)) == 1] <- 0
         }
@@ -298,8 +301,8 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[1]]
-        r[] <- NA
+        r <- pred[[!is.factor(pred)]][[1]]
+        r[!is.na(r)] <- NA
 
         # Test factor levels
         f <- names(m[[i]]$xlevels)
@@ -345,8 +348,8 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[1]]
-        r[] <- NA
+        r <- pred[[!is.factor(pred)]][[1]]
+        r[!is.na(r)] <- NA
 
         # Test factor levels
         f <- which(sapply(m[[i]]$data, class) == "factor")
@@ -392,8 +395,8 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[1]]
-        r[] <- NA
+        r <- pred[[!is.factor(pred)]][[1]]
+        r[!is.na(r)] <- NA
         r[as.numeric(rownames(pred_df))] <-
           suppressMessages(stats::predict(m[[i]], pred_df, type = "response"))
 
@@ -408,8 +411,8 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[1]]
-        r[] <- NA
+        r <- pred[[!is.factor(pred)]][[1]]
+        r[!is.na(r)] <- NA
         r[as.numeric(rownames(pred_df))] <-
           predict_maxnet(
             object = m[[i]],
@@ -427,8 +430,8 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[1]]
-        r[] <- NA
+        r <- pred[[!is.factor(pred)]][[1]]
+        r[!is.na(r)] <- NA
 
         # Test factor levels
         f <- (m[[i]]$xlevels)
@@ -481,8 +484,8 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[1]]
-        r[] <- NA
+        r <- pred[[!is.factor(pred)]][[1]]
+        r[!is.na(r)] <- NA
 
         # Test factor levels
         f <-
@@ -539,8 +542,8 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[1]]
-        r[] <- NA
+        r <- pred[[!is.factor(pred)]][[1]]
+        r[!is.na(r)] <- NA
 
         # Test factor levels
         f_n <- which(sapply(pred_df, class) == "factor") %>% names()

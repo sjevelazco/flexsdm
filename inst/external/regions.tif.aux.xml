@@ -1,15 +1,15 @@
 <PAMDataset>
   <PAMRasterBand band="1">
-    <Description>category</Description>
     <CategoryNames>
+      <Category></Category>
       <Category>CRR</Category>
       <Category>CWCR</Category>
       <Category>GVR</Category>
       <Category>NCID</Category>
       <Category>NCR</Category>
+      <Category>SNR</Category>
       <Category>SCID</Category>
       <Category>SCR</Category>
-      <Category>SNR</Category>
     </CategoryNames>
   </PAMRasterBand>
 </PAMDataset>
