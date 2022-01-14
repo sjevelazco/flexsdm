@@ -130,7 +130,7 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     intersect, setdiff, setequal, union</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
-<span class="co">#&gt; terra version 1.5.2</span>
+<span class="co">#&gt; terra 1.5.12</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'terra'</span>
 <span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
@@ -158,7 +158,7 @@
   return_vector <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span>
 <span class="co">#&gt; Directories were be created in:</span>
-<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\Rtmp0cJnWn/flex_sdm_project</span></code></pre></div>
+<span class="co">#&gt; C:\Users\santi\AppData\Local\Temp\RtmpAzZSMz/flex_sdm_project</span></code></pre></div>
 </div>
 <div id="species-occurrence-presenceabsense-and-environmental-data" class="section level2">
 <h2 class="hasAnchor">
@@ -464,8 +464,8 @@
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
 <span class="co">#&gt; names       :      esm_gam, max_fpb </span>
-<span class="co">#&gt; min values  : 2.198926e-05,    TRUE </span>
-<span class="co">#&gt; max values  :    0.8794402,    TRUE</span>
+<span class="co">#&gt; min values  : 2.031069e-05,    TRUE </span>
+<span class="co">#&gt; max values  :    0.8704335,    TRUE</span>
 
 <span class="co"># Plot to see this layers</span>
 <span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span>
@@ -743,9 +743,11 @@
 <span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
+<span class="co">#&gt; varnames    : somevar </span>
+<span class="co">#&gt;               somevar </span>
 <span class="co">#&gt; names       :  msdm_lon,  msdm_lat </span>
-<span class="co">#&gt; min values  : -370850.8, -601978.3 </span>
-<span class="co">#&gt; max values  :  368139.2,  448861.7</span></code></pre></div>
+<span class="co">#&gt; min values  : -601978.3, -601978.3 </span>
+<span class="co">#&gt; max values  :  448861.7,  448861.7</span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m_cml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msdm_priori.html">msdm_priori</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">occ</span>,
@@ -767,9 +769,10 @@
 <span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
 <span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
 <span class="co">#&gt; source      : memory </span>
+<span class="co">#&gt; varname     : somevar </span>
 <span class="co">#&gt; name        : msdm_cml </span>
 <span class="co">#&gt; min value   :        0 </span>
-<span class="co">#&gt; max value   :        1</span></code></pre></div>
+<span class="co">#&gt; max value   : 1357.865</span></code></pre></div>
 </div>
 <div id="methods-to-correct-overprediction-of-species-distribution-models-based-on-occurrences-and-suitability-patterns" class="section level3">
 <h3 class="hasAnchor">
