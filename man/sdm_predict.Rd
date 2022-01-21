@@ -15,9 +15,7 @@ sdm_predict(
 )
 }
 \arguments{
-\item{models}{list of one or more models fitted with fit_ or tune_ functions, or a fit_ensemble
-output, or a esm_ family function output. A list a single or several models fitted with some of
-fit_ or tune_ functions or object returned by the \code{\link{fit_ensemble}} function. Usage models = mglm or models = list(mglm, mraf, mgbm)}
+\item{models}{list of one or more models fitted with fit_ or tune_ functions. In case use models fitted with fit_ensemble or esm_ family function only one model could be used. Usage models = mglm or models = list(mglm, mraf, mgbm)}
 
 \item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly
 match those used in model fitting. Usage pred =}
