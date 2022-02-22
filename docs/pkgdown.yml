@@ -2,12 +2,12 @@ pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
-  01_pre_modeling: 01_pre_modeling.html
-  02_modeling: 02_modeling.html
-  03_post_modeling: 03_post_modeling.html
-  04_Red_fir_example: 04_Red_fir_example.html
-  05_Rare_species_example: 05_Rare_species_example.html
-last_built: 2022-01-14T20:07Z
+  v01_pre_modeling: v01_pre_modeling.html
+  v02_modeling: v02_modeling.html
+  v03_post_modeling: v03_post_modeling.html
+  v04_Red_fir_example: v04_Red_fir_example.html
+  v05_Rare_species_example: v05_Rare_species_example.html
+last_built: 2022-02-22T21:16Z
 urls:
   reference: https://sjevelazco.github.io/flexsdm/reference
   article: https://sjevelazco.github.io/flexsdm/articles
