@@ -7,6 +7,7 @@
 #' Usage predictors = c("aet", "cwd", "tmin")
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables; factors). Usage predictors_f = c("landform")
+#' @param select_pred logical. Perform predictor selection. Default FALSE.
 #' @param partition character. Column name with training and validation partition groups.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). This is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
@@ -40,13 +41,13 @@
 #' }
 #'
 #' @seealso \code{\link{fit_gau}}, \code{\link{fit_gbm}}, \code{\link{fit_glm}},
-#' \code{\link{fit_max}}, \code{\link{fit_net}}, and \code{\link{fit_svm}}.
+#' \code{\link{fit_max}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
 #'
 #' @export
 #'
-#' @importFrom dplyr %>% select all_of starts_with bind_rows summarise across everything
+#' @importFrom dplyr bind_rows select all_of starts_with filter mutate tibble group_by summarise across relocate left_join
 #' @importFrom mgcv gam predict.gam s
-#' @importFrom stats formula sd
+#' @importFrom stats complete.cases formula na.exclude sd
 #'
 #' @examples
 #' \dontrun{
@@ -65,6 +66,7 @@
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
+#'   select_pred = FALSE,
 #'   partition = ".part",
 #'   thr = "max_sens_spec"
 #' )
@@ -79,6 +81,7 @@
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
+#'   select_pred = FALSE,
 #'   partition = ".part",
 #'   thr = "max_sens_spec",
 #'   fit_formula = stats::formula(pr_ab ~ s(aet) +
@@ -103,6 +106,7 @@
 #'   response = "pr_ab",
 #'   predictors = c("ppt_jja", "pH", "awc"),
 #'   predictors_f = c("landform"),
+#'   select_pred = FALSE,
 #'   partition = ".part",
 #'   thr = "max_sens_spec"
 #' )
@@ -112,6 +116,7 @@ fit_gam <- function(data,
                     response,
                     predictors,
                     predictors_f = NULL,
+                    select_pred = FALSE,
                     partition,
                     thr = NULL,
                     fit_formula = NULL,
@@ -146,7 +151,7 @@ fit_gam <- function(data,
   if (is.null(fit_formula)) {
     formula1 <-
       paste(c(
-        paste("s(", predictors,  paste0(", k = ", k, ")"), collapse = " + ", sep = ""),
+        paste("s(", predictors, paste0(", k = ", k, ")"), collapse = " + ", sep = ""),
         predictors_f
       ), collapse = " + ")
     formula1 <- stats::formula(paste(
@@ -162,9 +167,9 @@ fit_gam <- function(data,
   )
 
   # Check amount of data and number of coefficients
-  if(k<0){
-    k=10
-  }
+  # if (k < 0) {
+  #   k <- 10
+  # }
 
   ncoef <- n_coefficients(
     data = data,
@@ -173,10 +178,43 @@ fit_gam <- function(data,
     k = k
   )
 
-  if (any(n_training(data = data, partition = partition) <  ncoef)) {
+  if (any(n_training(data = data, partition = partition) < ncoef)) {
     message("\nModel has more coefficients than data used for training it. Try to reduce k")
     return(NULL)
   }
+
+  # Selection predictor
+  if (select_pred) {
+    message("Selecting predictors")
+
+    var_selected <- mgcv::gam(formula1, data = data, family = "binomial", select = TRUE, method = "REML")
+    var_selected <- summary(var_selected)$s.table %>% as.data.frame()
+    names(var_selected) <- c("est", "df", "z_val", "p_val")
+    var_selected <- rownames(var_selected)[var_selected$p_val <= 0.05]
+    var_selected <- gsub("[)]", "", gsub("[s(]", "", var_selected))
+    variables <- variables[variables %in% var_selected]
+    predictors <- predictors[predictors %in% var_selected]
+    predictors_f <- predictors_f[predictors_f %in% var_selected]
+    if(length(predictors_f)==0) {
+      predictors_f = NULL
+    }
+
+    formula1 <-
+      paste(c(
+        paste("s(", predictors, paste0(", k = ", k, ")"), collapse = " + ", sep = ""),
+        predictors_f
+      ), collapse = " + ")
+    formula1 <- stats::formula(paste(
+      response, "~", formula1
+    ))
+
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
+    )
+  }
+
 
   # Fit models
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
@@ -210,7 +248,7 @@ fit_gam <- function(data,
       tryCatch(
         {
           suppressWarnings(mod[[i]] <-
-              mgcv::gam(formula1,
+            mgcv::gam(formula1,
               data = train[[i]],
               family = "binomial"
             ))

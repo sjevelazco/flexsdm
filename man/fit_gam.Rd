@@ -9,6 +9,7 @@ fit_gam(
   response,
   predictors,
   predictors_f = NULL,
+  select_pred = FALSE,
   partition,
   thr = NULL,
   fit_formula = NULL,
@@ -26,6 +27,8 @@ Usage predictors = c("aet", "cwd", "tmin")}
 
 \item{predictors_f}{character. Vector with the column names of qualitative
 predictor variables (i.e. ordinal or nominal variables; factors). Usage predictors_f = c("landform")}
+
+\item{select_pred}{logical. Perform predictor selection. Default FALSE.}
 
 \item{partition}{character. Column name with training and validation partition groups.}
 
@@ -80,6 +83,7 @@ gam_t1 <- fit_gam(
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
+  select_pred = FALSE,
   partition = ".part",
   thr = "max_sens_spec"
 )
@@ -94,6 +98,7 @@ gam_t2 <- fit_gam(
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
+  select_pred = FALSE,
   partition = ".part",
   thr = "max_sens_spec",
   fit_formula = stats::formula(pr_ab ~ s(aet) +
@@ -118,6 +123,7 @@ gam_t3 <- fit_gam(
   response = "pr_ab",
   predictors = c("ppt_jja", "pH", "awc"),
   predictors_f = c("landform"),
+  select_pred = FALSE,
   partition = ".part",
   thr = "max_sens_spec"
 )
@@ -126,5 +132,5 @@ gam_t3
 }
 \seealso{
 \code{\link{fit_gau}}, \code{\link{fit_gbm}}, \code{\link{fit_glm}},
-\code{\link{fit_max}}, \code{\link{fit_net}}, and \code{\link{fit_svm}}.
+\code{\link{fit_max}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
 }

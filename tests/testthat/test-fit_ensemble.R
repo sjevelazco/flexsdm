@@ -27,20 +27,23 @@ test_that("multiplication works", {
     )
 
 
-  # gam
+  # glm
   mglm <- fit_glm(
     data = some_sp,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+    select_pred = TRUE,
     partition = ".part",
     poly = 2
   )
+  # raf
   mraf <- fit_raf(
     data = some_sp,
     response = "pr_ab",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
   )
+  # gbm
   mgbm <- fit_gbm(
     data = some_sp,
     response = "pr_ab",

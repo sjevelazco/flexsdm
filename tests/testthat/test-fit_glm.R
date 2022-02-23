@@ -100,3 +100,28 @@ test_that("test glm with NA, no factor variable and using formula", {
 
   expect_equal(class(glm_t1), "list")
 })
+
+
+test_that("test select_var argument", {
+  data("abies")
+
+  # Using k-fold partition method
+  abies2 <- part_random(
+    data = abies,
+    pr_ab = "pr_ab",
+    method = c(method = "kfold", folds = 3)
+  )
+  glm_t1 <- fit_glm(
+    data = abies2,
+    response = "pr_ab",
+    predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+    predictors_f = c("landform"),
+    select_pred = TRUE,
+    partition = ".part",
+    thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+    poly = 2,
+    inter_order = 1
+  )
+
+  expect_equal(class(glm_t1), "list")
+})

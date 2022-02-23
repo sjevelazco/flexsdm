@@ -43,6 +43,7 @@
 #'
 #' @seealso \code{\link{esm_gam}}, \code{\link{esm_gau}}, \code{\link{esm_gbm}},
 #' \code{\link{esm_glm}}, \code{\link{esm_max}}, and \code{\link{esm_svm}}.
+#'
 #' @export
 #'
 #' @references

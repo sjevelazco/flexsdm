@@ -9,10 +9,11 @@ fit_glm(
   response,
   predictors,
   predictors_f = NULL,
+  select_pred = FALSE,
   partition,
   thr = NULL,
   fit_formula = NULL,
-  poly = 0,
+  poly = 2,
   inter_order = 0
 )
 }
@@ -27,6 +28,9 @@ Usage predictors = c("aet", "cwd", "tmin")}
 
 \item{predictors_f}{character. Vector with the column names of qualitative
 predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")}
+
+\item{select_pred}{logical. Perform predictor selection.
+If TRUE predictor will be selected based on backward step wise approach. Default FALSE.}
 
 \item{partition}{character. Column name with training and validation partition groups.}
 
@@ -84,6 +88,7 @@ glm_t1 <- fit_glm(
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
+  select_pred = FALSE,
   partition = ".part",
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   poly = 0,
@@ -100,6 +105,7 @@ glm_t2 <- fit_glm(
   response = "pr_ab",
   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
   predictors_f = c("landform"),
+  select_pred = FALSE,
   partition = ".part",
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   poly = 2,
@@ -120,10 +126,15 @@ glm_t3 <- fit_glm(
   response = "pr_ab",
   predictors = c("ppt_jja", "pH", "awc"),
   predictors_f = c("landform"),
+  select_pred = FALSE,
   partition = ".part",
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   poly = 3,
   inter_order = 2
 )
 }
+}
+\seealso{
+\code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},
+\code{\link{fit_max}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
 }

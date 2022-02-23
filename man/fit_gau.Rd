@@ -107,3 +107,7 @@ gaup_t2 <- fit_gau(
 gaup_t2
 }
 }
+\seealso{
+\code{\link{fit_gam}}, \code{\link{fit_glm}}, \code{\link{fit_gbm}},
+\code{\link{fit_max}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
+}
