@@ -231,13 +231,16 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>EXPLAIN HERE DEFAUL SELECTION OF FEATURES BASED ON number of occurrences
-if (np &lt; 10) 
-  classes &lt;- "l"
- else if (np &lt; 15)
-  classes &lt;- "lq"
- else if (np &lt; 80) 
-  classes &lt;- "lqh"</p>
+    <p>When the argument “classes” is set as default MaxEnt will use different features combination
+depending of the number of presences (np) with the follow rule:
+ if np &lt; 10 classes = "l",
+ if np between 10  and 15 classes = "lq",
+ if np between 15 and 80 classes = "lqh",
+ and if np &gt;= 80 classes = "lqph"</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='fit_gam.html'>fit_gam</a></code>, <code><a href='fit_gau.html'>fit_gau</a></code>, <code><a href='fit_gbm.html'>fit_gbm</a></code>,
+<code><a href='fit_glm.html'>fit_glm</a></code>, <code><a href='fit_net.html'>fit_net</a></code>, <code><a href='fit_raf.html'>fit_raf</a></code>, and <code><a href='fit_svm.html'>fit_svm</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
