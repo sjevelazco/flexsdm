@@ -7,6 +7,8 @@
 #' Usage predictors = c("aet", "cwd", "tmin")
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
+#' @param select_pred logical. Perform predictor selection.
+#' If TRUE predictor will be selected based on backward step wise approach. Default FALSE.
 #' @param partition character. Column name with training and validation partition groups.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be used. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
@@ -40,10 +42,13 @@
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 #' }
 #'
+#' @seealso \code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},
+#' \code{\link{fit_max}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
+#'
 #' @export
 #'
-#' @importFrom dplyr %>% select all_of starts_with mutate tibble bind_rows group_by summarise across relocate left_join
-#' @importFrom stats formula glm predict.glm sd
+#' @importFrom dplyr bind_rows select all_of starts_with filter mutate tibble group_by summarise across relocate left_join
+#' @importFrom stats complete.cases formula glm step na.exclude predict.glm sd
 #'
 #' @examples
 #' \dontrun{
@@ -63,6 +68,7 @@
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
+#'   select_pred = FALSE,
 #'   partition = ".part",
 #'   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
 #'   poly = 0,
@@ -79,6 +85,7 @@
 #'   response = "pr_ab",
 #'   predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
 #'   predictors_f = c("landform"),
+#'   select_pred = FALSE,
 #'   partition = ".part",
 #'   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
 #'   poly = 2,
@@ -99,6 +106,7 @@
 #'   response = "pr_ab",
 #'   predictors = c("ppt_jja", "pH", "awc"),
 #'   predictors_f = c("landform"),
+#'   select_pred = FALSE,
 #'   partition = ".part",
 #'   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
 #'   poly = 3,
@@ -109,10 +117,11 @@ fit_glm <- function(data,
                     response,
                     predictors,
                     predictors_f = NULL,
+                    select_pred = FALSE,
                     partition,
                     thr = NULL,
                     fit_formula = NULL,
-                    poly = 0,
+                    poly = 2,
                     inter_order = 0) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
@@ -200,6 +209,41 @@ fit_glm <- function(data,
     Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
     "\n"
   )
+
+  # Selection predictor
+  if (select_pred) {
+    message("Selecting predictors")
+
+    var_selected <- suppressWarnings(stats::glm(formula1, data = data, family = "binomial"))
+    suppressWarnings(var_selected <- stats::step(var_selected, direction = "backward", trace = 0))
+    formula1 <- formula(var_selected)
+
+    var_selected <- as.character(formula1)[3] %>%
+      strsplit(., "[ + ]")
+    var_selected <- var_selected[[1]]
+    var_selected <- var_selected[var_selected != ""]
+    if (poly < 2) {
+      poly <- NULL
+    }
+
+    var_selected <- var_selected %>%
+      gsub(paste0("[", poly, ")]"), "", .) %>%
+      gsub("[/^]", "", .) %>%
+      gsub("[I(]", "", .)
+    variables <- variables[variables %in% var_selected]
+    predictors <- predictors[predictors %in% var_selected]
+    predictors_f <- predictors_f[predictors_f %in% var_selected]
+    if (length(predictors_f) == 0) {
+      predictors_f <- NULL
+    }
+
+
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
+    )
+  }
 
   # Fit models
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))

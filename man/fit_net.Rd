@@ -113,3 +113,7 @@ nnet_t2 <- fit_net(
 nnet_t2
 }
 }
+\seealso{
+\code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},
+\code{\link{fit_glm}}, \code{\link{fit_max}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
+}

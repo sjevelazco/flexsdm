@@ -111,3 +111,29 @@ test_that("fit_gam with error: number of data minor than parameters ", {
   ))
   expect_equal(class(esm_gam_t1), "NULL")
 })
+
+
+
+test_that("test select_var argument", {
+  abies2 <- part_random(
+    data = abies,
+    pr_ab = "pr_ab",
+    method = c(method = "kfold", folds = 3)
+  )
+  abies2
+
+  gam_t3 <- fit_gam(
+    data = abies2,
+    response = "pr_ab",
+    predictors = c("ppt_jja", "pH", "awc"),
+    predictors_f = c("landform"),
+    select_pred = TRUE,
+    partition = ".part",
+    thr = "max_sens_spec"
+  )
+  gam_t3
+
+  expect_equal(class(gam_t3), "list")
+})
+
+

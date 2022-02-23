@@ -34,6 +34,9 @@
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 #' }
 #'
+#' @seealso \code{\link{fit_gam}}, \code{\link{fit_glm}}, \code{\link{fit_gbm}},
+#' \code{\link{fit_max}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
+#'
 #' @export
 #'
 #' @importFrom dplyr %>% select all_of starts_with filter pull bind_rows mutate tibble group_by summarise across relocate left_join

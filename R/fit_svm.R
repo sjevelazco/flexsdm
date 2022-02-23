@@ -43,6 +43,10 @@
 #'
 #' @details This function constructs 'C-svc' classification type and uses
 #' Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[kernlab]{ksvm}.
+#'
+#' @seealso \code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},
+#' \code{\link{fit_glm}}, \code{\link{fit_max}}, \code{\link{fit_net}}, and \code{\link{fit_raf}}.
+#'
 #' @export
 #'
 #' @importFrom dplyr %>% select all_of starts_with bind_rows group_by summarise across everything

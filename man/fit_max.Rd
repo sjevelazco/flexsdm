@@ -76,14 +76,12 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 Fit and validate Maximum Entropy models
 }
 \details{
-EXPLAIN HERE DEFAUL SELECTION OF FEATURES BASED ON number of occurrences
-if (np < 10) {
-  classes <- "l"
-} else if (np < 15){
-  classes <- "lq"
-} else if (np < 80) {
-  classes <- "lqh"
-}
+When the argument “classes” is set as default MaxEnt will use different features combination
+depending of the number of presences (np) with the follow rule:
+ if np < 10 classes = "l",
+ if np between 10  and 15 classes = "lq",
+ if np between 15 and 80 classes = "lqh",
+ and if np >= 80 classes = "lqph"
 }
 \examples{
 \dontrun{
@@ -128,4 +126,8 @@ max_t1$predictors
 max_t1$performance
 max_t1$data_ens
 }
+}
+\seealso{
+\code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},
+\code{\link{fit_glm}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
 }
