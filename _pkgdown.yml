@@ -13,14 +13,14 @@ navbar:
     - text: "Articles"
       menu:
       -  text: "1. Overview of Pre-modeling functions"
-         href: articles/01_pre_modeling.html
+         href: articles/v01_pre_modeling.html
       -  text: "2. Overview of Modeling functions"
-         href: articles/02_modeling.html
+         href: articles/v02_modeling.html
       -  text: "3. Overview of Post-modeling functions"
-         href: articles/03_post_modeling.html
+         href: articles/v03_post_modeling.html
       -  text: "4. An example with Red Fir"
-         href: articles/04_Red_fir_example.html
+         href: articles/v04_Red_fir_example.html
       -  text: "5. Modeling a rare species"
-         href: articles/05_Rare_species_example.html
+         href: articles/v05_Rare_species_example.html
 components:
     home: ~

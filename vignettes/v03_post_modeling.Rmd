@@ -67,20 +67,6 @@ library(terra)
 
 Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html)
 
-```{r sdm_directory}
-my_project <- file.path(file.path(tempdir(), "flex_sdm_project"))
-dir.create(my_project)
-
-project_directory <- sdm_directory(
-  main_dir = my_project,
-  projections = NULL,
-  calibration_area = TRUE,
-  algorithm = c("fit_glm", "fit_raf", "fit_gbm"),
-  ensemble = c("mean"),
-  threshold = TRUE,
-  return_vector = TRUE
-)
-```
 
 ## Species occurrence, presence/absense and environmental data
 

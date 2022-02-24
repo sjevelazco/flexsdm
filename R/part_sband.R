@@ -448,10 +448,8 @@ unique list values in pr_ab column are: ",
   # I moran-----
   spa_auto <- rep(NA, length(grid))
 
-  dist <- flexclust::dist2(
-    presences2[, c("x", "y")] %>% as.data.frame(),
-    presences2[, c("x", "y")] %>% as.data.frame()
-  )
+  presences2 <- terra::geom(presences2)[, c("x", "y")] %>% as.data.frame()
+  dist <- flexclust::dist2(presences2, presences2)
   dist <- 1 / dist
   diag(dist) <- 0
   dist[which(dist == Inf)] <- 0

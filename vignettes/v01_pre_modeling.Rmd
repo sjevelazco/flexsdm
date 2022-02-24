@@ -83,7 +83,7 @@ library(terra)
 
 When building SDM's, organizing folders (directories) for a project will save time and confusion. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. The function sdm_directory() can do this for you, based on the types of model algorithms you want to use and/or the types of projections you would like to make. First decide where on your computer you would like to store the inputs and outputs of the project (this will be the main directory) and then use dir.create() to create that main directory. Next, specify whether or not you want to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. 
 
-```{r sdm_directory, eval = FALSE}
+```{r sdm_directory, eval = FALSE, warning=FALSE}
 my_project <- file.path(file.path(tempdir(), "flex_sdm_project"))
 dir.create(my_project)
 
@@ -120,7 +120,7 @@ regions <- terra::rast(regions)
 
 How are the points distributed across our study area?
 ```{r map}
-plot(regions)
+try(plot(regions), silent=TRUE)
 points(spp[, 2:3], pch = 19, cex = 0.3, col = as.factor(spp$species))
 ```
 
