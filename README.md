@@ -7,7 +7,7 @@
 ### Overview 
 Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. One of the most exciting features of **flexsdm** is its high manipulation and parametrization capacity based on different functions and arguments. These attributes enable users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).
 
---- ---
+
 ### Structure of flexsdm
 The function of **flexsdm** package are organized into three major modeling steps
 
@@ -84,7 +84,7 @@ Tools related to models’ geographical predictions, evaluation, and correction.
 * `msdm_priori()` Create spatial predictor variables to reduce overprediction of species distribution models
 * `msdm_posteriori()` Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.
 
--- ---
+
 ### Installation
 You can install the development version of **flexsdm** from
 [github](https://github.com/sjevelazco/flexsdm)
@@ -98,11 +98,11 @@ Please, first install a version ≥ 1.5-12 of **terra** package available on CRA
 devtools::install_github("sjevelazco/flexsdm")
 ```
 
---- ---
+
 ### Package website
 
 See the package website (<https://sjevelazco.github.io/flexsdm/>) for functions explanation and vignettes.
 
---- ---
+
 > Test the package and give us your feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
 
