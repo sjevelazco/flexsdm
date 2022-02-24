@@ -21,6 +21,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">flexsdm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
       </span>
     </div>
 
@@ -50,26 +52,26 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
+      <a href="articles/v01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
     </li>
     <li>
-      <a href="articles/02_modeling.html">2. Overview of Modeling functions</a>
+      <a href="articles/v02_modeling.html">2. Overview of Modeling functions</a>
     </li>
     <li>
-      <a href="articles/03_post_modeling.html">3. Overview of Post-modeling functions</a>
+      <a href="articles/v03_post_modeling.html">3. Overview of Post-modeling functions</a>
     </li>
     <li>
-      <a href="articles/04_Red_fir_example.html">4. An example with Red Fir</a>
+      <a href="articles/v04_Red_fir_example.html">4. An example with Red Fir</a>
     </li>
     <li>
-      <a href="articles/05_Rare_species_example.html">5. Modeling a rare species</a>
+      <a href="articles/v05_Rare_species_example.html">5. Modeling a rare species</a>
     </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/sjevelazco/flexsdm/">
+  <a href="https://github.com/sjevelazco/flexsdm/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -88,24 +90,23 @@
   <div class="contents col-md-9">
 
 
-<div id="flexsdm" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#flexsdm" class="anchor"></a>flexsdm</h1></div>
-<div id="overview" class="section level3">
-<h3 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h3>
+<div class="section level1">
+<div class="page-header"><h1 id="flexsdm">flexsdm<a class="anchor" aria-label="anchor" href="#flexsdm"></a>
+</h1></div>
+<div class="section level3">
+<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h3>
 <p>Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. One of the most exciting features of <strong>flexsdm</strong> is its high manipulation and parametrization capacity based on different functions and arguments. These attributes enable users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).</p>
-<hr>
 </div>
-<div id="structure-of-flexsdm" class="section level3">
-<h3 class="hasAnchor">
-<a href="#structure-of-flexsdm" class="anchor"></a>Structure of flexsdm</h3>
+<div class="section level3">
+<h3 id="structure-of-flexsdm">Structure of flexsdm<a class="anchor" aria-label="anchor" href="#structure-of-flexsdm"></a>
+</h3>
 <p>The function of <strong>flexsdm</strong> package are organized into three major modeling steps</p>
 <p><a href="https://sjevelazco.github.io/flexsdm"><img src="https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.svg" align="centre" height="550"></a></p>
 </div>
-<div id="1-pre-modeling-functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#1-pre-modeling-functions" class="anchor"></a>1. Pre-modeling functions</h3>
+<div class="section level3">
+<h3 id="1-pre-modeling-functions">1. Pre-modeling functions<a class="anchor" aria-label="anchor" href="#1-pre-modeling-functions"></a>
+</h3>
 <p>Set tools that prepare modeling input data (e.g., species occurrences thinning, sample pseudo-absences or background points, delimitation of calibration area).</p>
 <ul>
 <li>
@@ -140,21 +141,22 @@
 <code><a href="reference/occfilt_geo.html">occfilt_geo()</a></code> Perform geographical filtering on species occurrences</li>
 </ul>
 </div>
-<div id="2-modeling-functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#2-modeling-functions" class="anchor"></a>2. Modeling functions</h3>
+<div class="section level3">
+<h3 id="2-modeling-functions">2. Modeling functions<a class="anchor" aria-label="anchor" href="#2-modeling-functions"></a>
+</h3>
 <p>It includes functions related to modeling construction and validation. Several of them can be grouped into <code>fit_*</code>, <code>tune_*</code>, and <code>esm_*</code> family functions. <code>fit_*</code> construct and validate models with default hyper-parameter values. <code>tune_*</code> construct and validate models searching for the best hyper-parameter values combination. <code>esm_</code> construct and validate Ensemble of Small Models.</p>
-<div id="model-evaluation" class="section level4">
-<h4 class="hasAnchor">
-<a href="#model-evaluation" class="anchor"></a>Model evaluation</h4>
+<div class="section level4">
+<h4 id="model-evaluation">Model evaluation<a class="anchor" aria-label="anchor" href="#model-evaluation"></a>
+</h4>
 <ul>
 <li>
 <code><a href="reference/sdm_eval.html">sdm_eval()</a></code> Calculate different model performance metrics</li>
 </ul>
 </div>
-<div id="fit_-functions-family" class="section level4">
-<h4 class="hasAnchor">
-<a href="#fit_-functions-family" class="anchor"></a><code>fit_*</code> functions family</h4>
+<div class="section level4">
+<h4 id="fit_-functions-family">
+<code>fit_*</code> functions family<a class="anchor" aria-label="anchor" href="#fit_-functions-family"></a>
+</h4>
 <ul>
 <li>
 <code><a href="reference/fit_gam.html">fit_gam()</a></code> Fit and validate Generalized Additive Models</li>
@@ -174,9 +176,10 @@
 <code><a href="reference/fit_svm.html">fit_svm()</a></code> Fit and validate Support Vector Machine models</li>
 </ul>
 </div>
-<div id="tune_-functions-family" class="section level4">
-<h4 class="hasAnchor">
-<a href="#tune_-functions-family" class="anchor"></a><code>tune_*</code> functions family</h4>
+<div class="section level4">
+<h4 id="tune_-functions-family">
+<code>tune_*</code> functions family<a class="anchor" aria-label="anchor" href="#tune_-functions-family"></a>
+</h4>
 <ul>
 <li>
 <code><a href="reference/tune_gbm.html">tune_gbm()</a></code> Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters</li>
@@ -190,17 +193,18 @@
 <code><a href="reference/tune_svm.html">tune_svm()</a></code> Fit and validate Support Vector Machine models with exploration of hyper-parameters</li>
 </ul>
 </div>
-<div id="model-ensemble" class="section level4">
-<h4 class="hasAnchor">
-<a href="#model-ensemble" class="anchor"></a>Model ensemble</h4>
+<div class="section level4">
+<h4 id="model-ensemble">Model ensemble<a class="anchor" aria-label="anchor" href="#model-ensemble"></a>
+</h4>
 <ul>
 <li>
 <code><a href="reference/fit_ensemble.html">fit_ensemble()</a></code> Fit and validate ensemble models with different ensemble methods</li>
 </ul>
 </div>
-<div id="esm_-functions-family" class="section level4">
-<h4 class="hasAnchor">
-<a href="#esm_-functions-family" class="anchor"></a><code>esm_*</code> functions family</h4>
+<div class="section level4">
+<h4 id="esm_-functions-family">
+<code>esm_*</code> functions family<a class="anchor" aria-label="anchor" href="#esm_-functions-family"></a>
+</h4>
 <ul>
 <li>
 <code><a href="reference/esm_gam.html">esm_gam()</a></code> Fit and validate Generalized Additive Models with Ensemble of Small Model approach</li>
@@ -219,9 +223,9 @@
 </ul>
 </div>
 </div>
-<div id="3-post-modeling-functions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#3-post-modeling-functions" class="anchor"></a>3. Post-modeling functions</h3>
+<div class="section level3">
+<h3 id="3-post-modeling-functions">3. Post-modeling functions<a class="anchor" aria-label="anchor" href="#3-post-modeling-functions"></a>
+</h3>
 <p>Tools related to models’ geographical predictions, evaluation, and correction.</p>
 <ul>
 <li>
@@ -239,25 +243,22 @@
 <li>
 <code><a href="reference/msdm_posteriori.html">msdm_posteriori()</a></code> Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.</li>
 </ul>
-<hr>
 </div>
-<div id="installation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h3>
-<p>You can install the development version of <strong>flexsdm</strong> from <a href="https://github.com/sjevelazco/flexsdm">github</a></p>
-<p><span class="emoji" data-emoji="warning">⚠️</span> NOTE: The version 1.4-22 of <strong>terra</strong> package is causing errors when trying to instal <strong>flexsdm</strong>. Please, first install a version ≥ 1.5-12 of <strong>terra</strong> package available on CRAN or development version of <a href="https://github.com/rspatial/terra">terra</a> and then <strong>flexsdm</strong>.</p>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
+<p>You can install the development version of <strong>flexsdm</strong> from <a href="https://github.com/sjevelazco/flexsdm" class="external-link">github</a></p>
+<p><span class="emoji" data-emoji="warning">⚠️</span> NOTE: The version 1.4-22 of <strong>terra</strong> package is causing errors when trying to instal <strong>flexsdm</strong>. Please, first install a version ≥ 1.5-12 of <strong>terra</strong> package available on CRAN or development version of <a href="https://github.com/rspatial/terra" class="external-link">terra</a> and then <strong>flexsdm</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"sjevelazco/flexsdm"</span><span class="op">)</span></code></pre></div>
-<hr>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sjevelazco/flexsdm"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="package-website" class="section level3">
-<h3 class="hasAnchor">
-<a href="#package-website" class="anchor"></a>Package website</h3>
+<div class="section level3">
+<h3 id="package-website">Package website<a class="anchor" aria-label="anchor" href="#package-website"></a>
+</h3>
 <p>See the package website (<a href="https://sjevelazco.github.io/flexsdm/" class="uri">https://sjevelazco.github.io/flexsdm/</a>) for functions explanation and vignettes.</p>
-<hr>
 <blockquote>
-<p>Test the package and give us your feedback <a href="https://github.com/sjevelazco/flexsdm/issues">here</a> or send an e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
+<p>Test the package and give us your feedback <a href="https://github.com/sjevelazco/flexsdm/issues" class="external-link">here</a> or send an e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
 </blockquote>
 </div>
 </div>
@@ -266,49 +267,60 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/sjevelazco/flexsdm/">https://​github.com/​sjevelazco/​flexsdm/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/sjevelazco/flexsdm/issues">https://​github.com/​sjevelazco/​flexsdm/​issues</a>
-</li>
+<li><a href="https://github.com/sjevelazco/flexsdm/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/sjevelazco/flexsdm/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;= 3)</li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>Santiago J.E. Velazco <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7527-0967" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Brooke Rose <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5269-3759" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>André F.A. Andrade <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6134-3176" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Ignacio Minoli <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6039-6962" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Janet Franklin <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0314-4598" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html#citation">Citing flexsdm</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="http://www.gnu.org/licenses/gpl-3.0.html"><img src="https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat" alt="License"></a></li>
-<li><a href="https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/sjevelazco/flexsdm"><img src="https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV" alt="Codecov test coverage"></a></li>
+<li>Santiago J.E. Velazco <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7527-0967" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Brooke Rose <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5269-3759" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>André F.A. Andrade <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6134-3176" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ignacio Minoli <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6039-6962" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Janet Franklin <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-0314-4598" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="http://www.gnu.org/licenses/gpl-3.0.html" class="external-link"><img src="https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat" alt="License"></a></li>
+<li><a href="https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/sjevelazco/flexsdm" class="external-link"><img src="https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV" alt="Codecov test coverage"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
+  <p></p>
+<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -316,6 +328,8 @@
 
   
 
+
+  
 
   </body>
 </html>

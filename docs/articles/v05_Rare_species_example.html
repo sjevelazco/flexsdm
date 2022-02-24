@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">flexsdm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
       </span>
     </div>
 
@@ -48,26 +50,26 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
+      <a href="../articles/v01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
     </li>
     <li>
-      <a href="../articles/02_modeling.html">2. Overview of Modeling functions</a>
+      <a href="../articles/v02_modeling.html">2. Overview of Modeling functions</a>
     </li>
     <li>
-      <a href="../articles/03_post_modeling.html">3. Overview of Post-modeling functions</a>
+      <a href="../articles/v03_post_modeling.html">3. Overview of Post-modeling functions</a>
     </li>
     <li>
-      <a href="../articles/04_Red_fir_example.html">4. An example with Red Fir</a>
+      <a href="../articles/v04_Red_fir_example.html">4. An example with Red Fir</a>
     </li>
     <li>
-      <a href="../articles/05_Rare_species_example.html">5. Modeling a rare species</a>
+      <a href="../articles/v05_Rare_species_example.html">5. Modeling a rare species</a>
     </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/sjevelazco/flexsdm/">
+  <a href="https://github.com/sjevelazco/flexsdm/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -82,63 +84,63 @@
 
       
 
-      </header><script src="v05_Rare_species_example_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>flexsdm: Modeling a rare species</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/sjevelazco/flexsdm/blob/master/vignettes/v05_Rare_species_example.Rmd"><code>vignettes/v05_Rare_species_example.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/sjevelazco/flexsdm/blob/HEAD/vignettes/v05_Rare_species_example.Rmd" class="external-link"><code>vignettes/v05_Rare_species_example.Rmd</code></a></small>
       <div class="hidden name"><code>v05_Rare_species_example.Rmd</code></div>
 
     </div>
 
     
     
-<div id="intro" class="section level1">
-<h1 class="hasAnchor">
-<a href="#intro" class="anchor"></a>Intro</h1>
+<div class="section level2">
+<h2 id="intro">Intro<a class="anchor" aria-label="anchor" href="#intro"></a>
+</h2>
 <p>Creating SDMs for rare or poorly known species can be a difficult task. Occurrence data are often limited to only a few observation, which can lead to model overfitting, especially when using many predictor variables to build models. However, researchers are often most interested in building SDMs for rare species, as they are often the most threatened and in need of conservation action.</p>
 <p>To address the issues associated with modeling the spatial distributions of rare species, Lomba et al. (2010) and Breiner et al. (2015) proposed the method “ensemble of small models” or ESM. In ESM, many bivariate models with pairwise combinations of each predictor variable, then an ensemble is performed. In <em>flexsdm</em>, the ensemble is created using the average of suitability across all of the “small models”, weighted by Somers’ D (D = 2 * (AUC-.5)). It is important to note that this method does not allow the use of categorical variables (such as soil type).</p>
 <p>The practical applications of ESMs could include identifying areas for reintroduction of rare species or areas for establishing new populations, especially in the face of climate change. For example, Dubos et al. (2021) used a variation of ESM to identify areas that may remain suitable under climate change for two rare species from Madagascar: the golden mantella frog (<em>Mantella aurantiaca</em>) and the Manapany day gecko (<em>Phelsuma inexpectata</em>).</p>
 <p>In this example, we will walk through the process of comparing ESM to traditional modeling approaches for <em>Hesperocyparis stephensonii</em> (Cuyamaca cypress), a conifer tree species that is endemic to southern California. This species is listed as Critically Endangered by the IUCN and is only found in the headwaters of King Creek in San Diego County. The Cedar Fire of 2003 left only 30-40 surviving trees. In this hypothetical example, we are searching for suitable areas where it might be possible to establish new populations of this species, with the hopes of decreasing the species’ future extinction risk.</p>
-<div id="data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data" class="anchor"></a>Data</h2>
+<div class="section level3">
+<h3 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h3>
 <p>For our models, we will use four environmental variables that influence plant distributions in California: available evapotranspiration (aet), climatic water deficit (cwd), maximum temperature of the warmest month (tmx), and minimum temperature of the coldest month (tmn). Our occurrence data include 21 geo-referenced observations downloaded from the online database Calflora.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/">terra</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 
 <span class="co"># environmental data</span>
-<span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
-<span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> 
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>
+<span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
+<span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> 
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>
 
 <span class="co"># species occurence data (presence-only)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">)</span>
-<span class="va">hespero</span> <span class="op">&lt;-</span> <span class="va">hespero</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">)</span>
+<span class="va">hespero</span> <span class="op">&lt;-</span> <span class="va">hespero</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
 
 <span class="co"># California ecoregions</span>
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html">as.polygons</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="va">sp_region</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/subset.html">subset</a></span><span class="op">(</span><span class="va">regions</span>, <span class="va">regions</span><span class="op">$</span><span class="va">category</span> <span class="op">==</span> <span class="st">"SCR"</span><span class="op">)</span> <span class="co"># ecoregion where *Hesperocyparis stephensonii* is found</span>
+<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
+<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
+<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
+<span class="va">sp_region</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">regions</span>, <span class="va">regions</span><span class="op">$</span><span class="va">category</span> <span class="op">==</span> <span class="st">"SCR"</span><span class="op">)</span> <span class="co"># ecoregion where *Hesperocyparis stephensonii* is found</span>
 
 <span class="co"># visualize the species occurrences</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>
   <span class="va">sp_region</span>,
   col <span class="op">=</span> <span class="st">"gray80"</span>,
   legend <span class="op">=</span> <span class="cn">FALSE</span>,
   axes <span class="op">=</span> <span class="cn">FALSE</span>,
   main <span class="op">=</span> <span class="st">"Hesperocyparis stephensonii occurrences"</span>
 <span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>
-<span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html">rep</a></span><span class="op">(</span><span class="st">"gray80"</span>, <span class="fl">8</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>
+<span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"gray80"</span>, <span class="fl">8</span><span class="op">)</span>
 <span class="va">cols</span><span class="op">[</span><span class="va">regions</span><span class="op">$</span><span class="va">category</span> <span class="op">==</span> <span class="st">"SCR"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"yellow"</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/inset.html">inset</a></span><span class="op">(</span>
+<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/inset.html" class="external-link">inset</a></span><span class="op">(</span>
   <span class="va">regions</span>,
   loc <span class="op">=</span> <span class="st">"bottomleft"</span>,
   scale <span class="op">=</span> <span class="fl">.3</span>,
@@ -146,9 +148,9 @@
 <span class="op">)</span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/raw%20data-1.png" width="576"></p>
 </div>
-<div id="delimit-calibration-area" class="section level2">
-<h2 class="hasAnchor">
-<a href="#delimit-calibration-area" class="anchor"></a>Delimit calibration area</h2>
+<div class="section level3">
+<h3 id="delimit-calibration-area">Delimit calibration area<a class="anchor" aria-label="anchor" href="#delimit-calibration-area"></a>
+</h3>
 <p>First, we must define our model’s calibration area. The <em>flexsdm</em> package offers several methods for defining the model calibration area. Here, we will use 25-km buffer areas around the presence points to select our pseudo-absence locations.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -156,92 +158,92 @@
   data <span class="op">=</span> <span class="va">hespero</span>,
   x <span class="op">=</span> <span class="st">"x"</span>,
   y <span class="op">=</span> <span class="st">"y"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'buffer'</span>, width<span class="op">=</span><span class="fl">25000</span><span class="op">)</span>,
-  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'buffer'</span>, width<span class="op">=</span><span class="fl">25000</span><span class="op">)</span>,
+  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="co">#&gt; Loading required namespace: rgeos</span>
 
 <span class="co"># visualize the species occurrences &amp; calibration area</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>
   <span class="va">sp_region</span>,
   col <span class="op">=</span> <span class="st">"gray80"</span>,
   legend <span class="op">=</span> <span class="cn">FALSE</span>,
   axes <span class="op">=</span> <span class="cn">FALSE</span>,
   main <span class="op">=</span> <span class="st">"Calibration area and occurrences"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/calibration%20area-1.png" width="576"></p>
 </div>
-<div id="create-pseudo-absence-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-pseudo-absence-data" class="anchor"></a>Create pseudo-absence data</h2>
+<div class="section level3">
+<h3 id="create-pseudo-absence-data">Create pseudo-absence data<a class="anchor" aria-label="anchor" href="#create-pseudo-absence-data"></a>
+</h3>
 <p>As is often the case with rare species, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we use our calibration area to produce pseudo-absence data that can be used in our SDMs.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># Sample the same number of species presences</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">hespero</span>,
   x <span class="op">=</span> <span class="st">"x"</span>,
   y <span class="op">=</span> <span class="st">"y"</span>,
-  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">$</span><span class="va">pr_ab</span><span class="op">)</span>, <span class="co"># selecting number of pseudo-absence points that is equal to number of presences</span>
+  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">$</span><span class="va">pr_ab</span><span class="op">)</span>, <span class="co"># selecting number of pseudo-absence points that is equal to number of presences</span>
   method <span class="op">=</span> <span class="st">"random"</span>,
   rlayer <span class="op">=</span> <span class="va">somevar</span>,
   calibarea <span class="op">=</span> <span class="va">ca</span>
 <span class="op">)</span>
 
 <span class="co"># Visualize species presences and pseudo-absences</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>
   <span class="va">sp_region</span>,
   col <span class="op">=</span> <span class="st">"gray80"</span>,
   legend <span class="op">=</span> <span class="cn">FALSE</span>,
   axes <span class="op">=</span> <span class="cn">FALSE</span>,
-  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">289347</span>, <span class="fl">353284</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">598052</span>,  <span class="op">-</span><span class="fl">520709</span><span class="op">)</span>,
+  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">289347</span>, <span class="fl">353284</span><span class="op">)</span>,
+  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">598052</span>,  <span class="op">-</span><span class="fl">520709</span><span class="op">)</span>,
   main <span class="op">=</span> <span class="st">"Presence = yellow, Pseudo-absence = black"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">0.8</span>, pch<span class="op">=</span><span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="co"># Pseudo-absences</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="co"># Presences</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">0.8</span>, pch<span class="op">=</span><span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="co"># Pseudo-absences</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="co"># Presences</span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/pseudo-absence%20data-1.png" width="576"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 
 <span class="co"># Bind a presences and pseudo-absences</span>
-<span class="va">hespero_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">hespero</span>, <span class="va">psa</span><span class="op">)</span>
+<span class="va">hespero_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">hespero</span>, <span class="va">psa</span><span class="op">)</span>
 <span class="va">hespero_pa</span> <span class="co"># Presence-Pseudo-absence database</span>
-<span class="co">#&gt; # A tibble: 42 x 3</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 42 x 3</span></span>
 <span class="co">#&gt;          x        y pr_ab</span>
-<span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 316923. -557843.     1</span>
-<span class="co">#&gt;  2 317155. -559234.     1</span>
-<span class="co">#&gt;  3 316960. -558186.     1</span>
-<span class="co">#&gt;  4 314347. -559648.     1</span>
-<span class="co">#&gt;  5 317348. -557349.     1</span>
-<span class="co">#&gt;  6 316753. -559679.     1</span>
-<span class="co">#&gt;  7 316777. -558644.     1</span>
-<span class="co">#&gt;  8 317050. -559043.     1</span>
-<span class="co">#&gt;  9 316655. -559928.     1</span>
-<span class="co">#&gt; 10 316418. -567439.     1</span>
-<span class="co">#&gt; # ... with 32 more rows</span></code></pre></div>
+<span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> <span style="text-decoration: underline;">316</span>923. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">843.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">317</span>155. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">234.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">316</span>960. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">186.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">314</span>347. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">648.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">317</span>348. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">349.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">316</span>753. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">679.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">316</span>777. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">644.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">317</span>050. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">043.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">316</span>655. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">928.</span>     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">316</span>418. -<span style="color: #BB0000; text-decoration: underline;">567</span><span style="color: #BB0000;">439.</span>     1</span>
+<span class="co">#&gt; <span style="color: #949494;"># ... with 32 more rows</span></span></code></pre></div>
 </div>
-<div id="partition-data-for-evaluating-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#partition-data-for-evaluating-models" class="anchor"></a>Partition data for evaluating models</h2>
+<div class="section level3">
+<h3 id="partition-data-for-evaluating-models">Partition data for evaluating models<a class="anchor" aria-label="anchor" href="#partition-data-for-evaluating-models"></a>
+</h3>
 <p>To evaluate model performance, we need to specify data for testing and training. <em>flexsdm</em> offers a range of random and spatial and random data partition methods for evaluating SDMs. Here we will use repeated K-fold cross-validation, which is a suitable partition approach for performing ESM.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 
 <span class="co"># Repeated K-fold method</span>
 <span class="va">hespero_pa2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">hespero_pa</span>,
   pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span>, replicates <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span>, replicates <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 </div>
-<div id="extracting-environmental-values" class="section level2">
-<h2 class="hasAnchor">
-<a href="#extracting-environmental-values" class="anchor"></a>Extracting environmental values</h2>
+<div class="section level3">
+<h3 id="extracting-environmental-values">Extracting environmental values<a class="anchor" aria-label="anchor" href="#extracting-environmental-values"></a>
+</h3>
 <p>Next, we extract the values of our four environmental predictors at the presence and pseudo-absence locations.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
@@ -251,27 +253,27 @@
     x <span class="op">=</span> <span class="st">'x'</span>,
     y <span class="op">=</span> <span class="st">'y'</span>,
     env_layer <span class="op">=</span> <span class="va">somevar</span>,
-    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>
+    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>
   <span class="op">)</span></code></pre></div>
 </div>
-<div id="modeling" class="section level2">
-<h2 class="hasAnchor">
-<a href="#modeling" class="anchor"></a>Modeling</h2>
-<div id="standard-models" class="section level3">
-<h3 class="hasAnchor">
-<a href="#standard-models" class="anchor"></a>Standard models</h3>
+<div class="section level3">
+<h3 id="modeling">Modeling<a class="anchor" aria-label="anchor" href="#modeling"></a>
+</h3>
+<div class="section level4">
+<h4 id="standard-models">Standard models<a class="anchor" aria-label="anchor" href="#standard-models"></a>
+</h4>
 <p>First, let’s use three standard algorithms to model the distribution of <em>Hesperocyparis stephensonii</em>: GLM, GBM, and SVM. In this case, we use our calibration area for making our predictions.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mglm</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/fit_glm.html">fit_glm</a></span><span class="op">(</span>
     data <span class="op">=</span> <span class="va">hespero_pa3</span>,
     response <span class="op">=</span> <span class="st">'pr_ab'</span>,
-    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
+    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
     partition <span class="op">=</span> <span class="st">'.part'</span>,
     thr <span class="op">=</span> <span class="st">'max_sens_spec'</span>
   <span class="op">)</span>
 <span class="co">#&gt; Formula used for model fitting:</span>
-<span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span>
+<span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2)</span>
 <span class="co">#&gt; Replica number: 1/10</span>
 <span class="co">#&gt; Partition number: 1/5</span>
 <span class="co">#&gt; Partition number: 2/5</span>
@@ -336,7 +338,7 @@
 <span class="va">mgbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_gbm.html">fit_gbm</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">hespero_pa3</span>,
   response <span class="op">=</span> <span class="st">'pr_ab'</span>,
-  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
+  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
   partition <span class="op">=</span> <span class="st">'.part'</span>,
   thr <span class="op">=</span> <span class="st">'max_sens_spec'</span>
 <span class="op">)</span>
@@ -406,7 +408,7 @@
 <span class="va">msvm</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/fit_svm.html">fit_svm</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">hespero_pa3</span>,
   response <span class="op">=</span> <span class="st">'pr_ab'</span>,
-  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
+  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
   partition <span class="op">=</span> <span class="st">'.part'</span>,
   thr <span class="op">=</span> <span class="st">'max_sens_spec'</span>
 <span class="op">)</span>
@@ -475,16 +477,16 @@
 
 
 <span class="va">mpred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span>
-  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span><span class="op">)</span>,
+  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span><span class="op">)</span>,
   pred <span class="op">=</span> <span class="va">somevar</span>,
   con_thr <span class="op">=</span> <span class="cn">TRUE</span>,
   predict_area <span class="op">=</span> <span class="va">ca</span>
 <span class="op">)</span>
 <span class="co">#&gt; Predicting list of individual models</span></code></pre></div>
 </div>
-<div id="ensemble-of-small-models" class="section level3">
-<h3 class="hasAnchor">
-<a href="#ensemble-of-small-models" class="anchor"></a>Ensemble of small models</h3>
+<div class="section level4">
+<h4 id="ensemble-of-small-models">Ensemble of small models<a class="anchor" aria-label="anchor" href="#ensemble-of-small-models"></a>
+</h4>
 <p>Now let’s try each of these algorithms with the ESM approach. Note that when predicting an ESM, it is possible to only process one at a time.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>eglm  <span class="ot">&lt;-</span></span>
@@ -583,33 +585,33 @@
 <span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span></code></pre></div>
 </div>
 </div>
-<div id="comparing-our-models" class="section level2">
-<h2 class="hasAnchor">
-<a href="#comparing-our-models" class="anchor"></a>Comparing our models</h2>
+<div class="section level3">
+<h3 id="comparing-our-models">Comparing our models<a class="anchor" aria-label="anchor" href="#comparing-our-models"></a>
+</h3>
 <p>First, let’s take a look at the spatial predictions for our models. The spatial outputs suggest that the standard models tend to predict broader areas with high suitability values that the ESMs.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">glm</span>, main <span class="op">=</span> <span class="st">'Standard GLM'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">glm</span>, main <span class="op">=</span> <span class="st">'Standard GLM'</span><span class="op">)</span>
 <span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">eglm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GLM'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eglm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GLM'</span><span class="op">)</span>
 <span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">gbm</span>, main <span class="op">=</span> <span class="st">'Standard GBM'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">gbm</span>, main <span class="op">=</span> <span class="st">'Standard GBM'</span><span class="op">)</span>
 <span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">egbm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GBM'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">egbm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GBM'</span><span class="op">)</span>
 <span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">svm</span>, main <span class="op">=</span> <span class="st">'Standard SVM'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">svm</span>, main <span class="op">=</span> <span class="st">'Standard SVM'</span><span class="op">)</span>
 <span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html">plot</a></span><span class="op">(</span><span class="va">esvm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM SVM'</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">esvm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM SVM'</span><span class="op">)</span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/comparison%20maps-1.png" width="576"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></code></pre></div>
 <p>Next, we look at some performance metrics for our models, which are based on our repeated k-folds cross-validation partition method. This can be easily done using the “sdm_summarize()” function in <em>flexsdm</em>. Here, we can see that AUC, TSS, and Jaccard index are higher for the ESMs than their corresponding standard model. However, the Boyce index and the Inverse Mean Absolute Error are slightly higher for the standard models.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span>, <span class="va">eglm</span>, <span class="va">egbm</span>, <span class="va">esvm</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span>, <span class="va">eglm</span>, <span class="va">egbm</span>, <span class="va">esvm</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span>
-  <span class="va">merge_df</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>
+  <span class="va">merge_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>
     <span class="va">model</span>,
     AUC <span class="op">=</span> <span class="va">AUC_mean</span>,
     TSS <span class="op">=</span> <span class="va">TSS_mean</span>,
@@ -630,11 +632,11 @@
 <tbody>
 <tr class="odd">
 <td align="left">glm</td>
-<td align="right">0.847900</td>
-<td align="right">0.653</td>
-<td align="right">0.6976190</td>
-<td align="right">0.9931393</td>
-<td align="right">0.7575102</td>
+<td align="right">0.826575</td>
+<td align="right">0.570</td>
+<td align="right">0.6088810</td>
+<td align="right">0.9953050</td>
+<td align="right">0.7484773</td>
 </tr>
 <tr class="even">
 <td align="left">gbm</td>
@@ -679,22 +681,22 @@
 </tbody>
 </table>
 </div>
-<div id="conclusions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#conclusions" class="anchor"></a>Conclusions</h2>
+<div class="section level3">
+<h3 id="conclusions">Conclusions<a class="anchor" aria-label="anchor" href="#conclusions"></a>
+</h3>
 <p>Modeling decisions are context-dependent and must be made on a case-by-case basis. However, ESM is a useful approach for practitioners who are interested in modeling very rare species and want to avoid common model overfitting issues. As always when producing SDMs for “real-world” applications, it is important to consider spatial prediction patterns along with multiple model performance metrics.</p>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
 <ol style="list-style-type: decimal">
-<li>Lomba, A., L. Pellissier, C. Randin, J. Vicente, F. Moreira, J. Honrado, and A. Guisan. 2010. Overcoming the rare species modelling paradox: A novel hierarchical framework applied to an Iberian endemic plant. Biological conservation 143:2647–2657. <a href="https://doi.org/10.1016/j.biocon.2010.07.007" class="uri">https://doi.org/10.1016/j.biocon.2010.07.007</a>
+<li>Lomba, A., L. Pellissier, C. Randin, J. Vicente, F. Moreira, J. Honrado, and A. Guisan. 2010. Overcoming the rare species modelling paradox: A novel hierarchical framework applied to an Iberian endemic plant. Biological conservation 143:2647–2657. <a href="https://doi.org/10.1016/j.biocon.2010.07.007" class="external-link uri">https://doi.org/10.1016/j.biocon.2010.07.007</a>
 </li>
-<li>Breiner, F. T., Guisan, A., Bergamini, A., &amp; Nobis, M. P. (2015). Overcoming limitations of modelling rare species by using ensembles of small models. Methods in Ecology and Evolution, 6(10), 1210–1218. <a href="https://doi.org/10.1111/2041-210X.12403" class="uri">https://doi.org/10.1111/2041-210X.12403</a>
+<li>Breiner, F. T., Guisan, A., Bergamini, A., &amp; Nobis, M. P. (2015). Overcoming limitations of modelling rare species by using ensembles of small models. Methods in Ecology and Evolution, 6(10), 1210–1218. <a href="https://doi.org/10.1111/2041-210X.12403" class="external-link uri">https://doi.org/10.1111/2041-210X.12403</a>
 </li>
-<li>Breiner, F. T., Nobis, M. P., Bergamini, A., &amp; Guisan, A. (2018). Optimizing ensembles of small models for predicting the distribution of species with few occurrences. Methods in Ecology and Evolution, 9(4), 802–808. <a href="https://doi.org/10.1111/2041-210X.12957" class="uri">https://doi.org/10.1111/2041-210X.12957</a>
+<li>Breiner, F. T., Nobis, M. P., Bergamini, A., &amp; Guisan, A. (2018). Optimizing ensembles of small models for predicting the distribution of species with few occurrences. Methods in Ecology and Evolution, 9(4), 802–808. <a href="https://doi.org/10.1111/2041-210X.12957" class="external-link uri">https://doi.org/10.1111/2041-210X.12957</a>
 </li>
-<li>Dubos, N., Montfort, F., Grinand, C., Nourtier, M., Deso, G., Probst, J.-M., Razafimanahaka, J. H., Andriantsimanarilafy, R. R., Rakotondrasoa, E. F., Razafindraibe, P., Jenkins, R., &amp; Crottini, A. (2021). Are narrow-ranging species doomed to extinction? Projected dramatic decline in future climate suitability of two highly threatened species. Perspectives in Ecology and Conservation, S2530064421000894. <a href="https://doi.org/10.1016/j.pecon.2021.10.002" class="uri">https://doi.org/10.1016/j.pecon.2021.10.002</a>
+<li>Dubos, N., Montfort, F., Grinand, C., Nourtier, M., Deso, G., Probst, J.-M., Razafimanahaka, J. H., Andriantsimanarilafy, R. R., Rakotondrasoa, E. F., Razafindraibe, P., Jenkins, R., &amp; Crottini, A. (2021). Are narrow-ranging species doomed to extinction? Projected dramatic decline in future climate suitability of two highly threatened species. Perspectives in Ecology and Conservation, S2530064421000894. <a href="https://doi.org/10.1016/j.pecon.2021.10.002" class="external-link uri">https://doi.org/10.1016/j.pecon.2021.10.002</a>
 </li>
 </ol>
 </div>
@@ -712,11 +714,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
+  <p></p>
+<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -724,6 +728,8 @@
 
   
 
+
+  
 
   </body>
 </html>
