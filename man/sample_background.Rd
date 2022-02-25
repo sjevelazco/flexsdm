@@ -194,7 +194,7 @@ bg \%>\%
   points(col = "red")
 
 
-# Thickening background without using a given buffer width (IS THIS RIGHT? A WIDTH IS SPECIFIED)
+# Thickening background
 spp_p # presences database of a species
 grid_env # The raster layer used for sampling background
 bg <- sample_background(

@@ -187,7 +187,7 @@
 #'   points(col = "red")
 #'
 #'
-#' # Thickening background without using a given buffer width (IS THIS RIGHT? A WIDTH IS SPECIFIED)
+#' # Thickening background
 #' spp_p # presences database of a species
 #' grid_env # The raster layer used for sampling background
 #' bg <- sample_background(
@@ -342,13 +342,19 @@ sample_background <-
     # Correct rbias data in case it don't match resolution or extent of rlayer
     if (method[1] %in% c("biased")) {
       if (any(!(ext(rlayer)[1:4] %in% ext(rbias)[1:4])) | all(!res(rlayer) %in% res(rbias))) {
-        rbias2 <- rlayer
-        terra::values(rbias2) <- NA
-        df <- terra::as.data.frame(rlayer, xy = TRUE)
-        rbias2[as.numeric(rownames(df))] <-
-          terra::extract(rbias, df[c("x", "y")])[, 2]
+        if(!all(res(rlayer)%in%res(rbias))){
+          rbias <- terra::resample(rbias, rlayer, method="bilinear")
+        }
+        rbias2 <- rbias %>%
+          terra::crop(., rlayer) %>%
+          terra::mask(., rlayer)
+        # df <- terra::as.data.frame(rlayer, xy = TRUE)
+        # rbias2[] <- NA
+        # rbias2[as.numeric(rownames(df))] <-
+        #   terra::extract(rbias, df[c("x", "y")])[, 2]
+        # rn(df)
         rbias <- rbias2
-        rm(rbias2, df)
+        rm(rbias2)
       }
     }
 
