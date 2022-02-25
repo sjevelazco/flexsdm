@@ -426,7 +426,7 @@
 </h2>
 <p>Sample bias in species occurrence data is a common issue in ecological studies and filtering the occurrence data can reduce some of this bias. <em>flexsdm</em> provides two functions for different types of filtering, based on geographical or environmental “thinning”, randomly removing points where they are dense (oversampling) in geographical or environmental space. This can improve model performance and reduce redundancy in your data.</p>
 <div class="section level3">
-<h3 id="environmental-filtering-with-5-bins">Environmental filtering with 5 bins<a class="anchor" aria-label="anchor" href="#environmental-filtering-with-5-bins"></a>
+<h3 id="environmental-filtering">Environmental filtering<a class="anchor" aria-label="anchor" href="#environmental-filtering"></a>
 </h3>
 <p>The function occfilt_env(), which performs environmental filtering on species occurrence data. This method basically reduces environmental redundancy in your data and is based on methods outlined in Valera et al. (2014). However, this function is unique to <em>flexsdm</em>, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering. In this example, we will use our original environmental data (somevar) and occurrence data for a single species (spp1). For filtering occurrences, it is important that each row in the species data has its own unique code (example: idd). This function also gives the user the option of specifying the number classes used to split each environmental condition. Here we will explore the results using 5, 8, and 12 bins. Increasing the number of bins increases the number of occurrence points retained.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
