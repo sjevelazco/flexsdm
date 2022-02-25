@@ -32,8 +32,8 @@
 #' 1-"moran" determines the minimum nearest-neighbor distance that minimizes the spatial
 #' autocorrelation in occurrence data, following a Moran's semivariogram. A Principal Component
 #' Analysis with the environmental variables is performed and then the first Principal Component is used
-#' to calculate the semivariograms. Sometimes, this method can (too) greatly reduce the number
-#' of presences.
+#' to calculate the semivariograms. Because of this, this method only allow the use of continuous variables.
+#' Sometimes, this method can (too) greatly reduce the number of presences.
 #' 2-"cellsize" filters occurrences based on the predictors' resolution. This method will calculate
 #' the distance between the first two cells of the environmental variable and use this distance
 #' as minimum nearest-neighbor distance to filter occurrences.
@@ -56,11 +56,12 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr tibble
-#' @importFrom stats complete.cases prcomp
-#' @importFrom terra extract vect project as.data.frame predict distance
 #' @importFrom ape Moran.I
+#' @importFrom dplyr tibble
 #' @importFrom spThin thin
+#' @importFrom stats complete.cases prcomp
+#' @importFrom terra vect project geom extract as.data.frame predict distance xyFromCell
+#' @importFrom utils capture.output
 #'
 #' @examples
 #' \dontrun{
@@ -132,9 +133,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
   data <- data[c(x, y)]
 
 
-  if (is.null(prj)) {
-    da <- data
-  } else if (!is.null(prj) || prj != "+proj=longlat +datum=WGS84") {
+  if (prj != "+proj=longlat +datum=WGS84") {
     da <- terra::vect(data, geom = c(x, y), prj)
     da <- terra::project(da, "+proj=longlat +datum=WGS84")
     da <- data.frame(terra::geom(da))
@@ -142,7 +141,8 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     if (!("moran" %in% method)) {
       env_layer <- env_layer[[1]]
     }
-    env_layer <- terra::project(env_layer, "+proj=longlat +datum=WGS84")
+    env_layer <-
+      terra::project(env_layer, "+proj=longlat +datum=WGS84")
   }
 
   # Remove NAs
@@ -166,37 +166,26 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
 
 
   if ("moran" %in% method) {
-    if (!all(grepl("PC", names(env_layer)))) {
-      p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
+    # Perform PCA
+    p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
 
-      p <- stats::prcomp(p,
-        retx = TRUE,
-        scale. = TRUE,
-        center = TRUE
-      )
+    p <- stats::prcomp(p,
+      retx = TRUE,
+      scale. = TRUE,
+      center = TRUE
+    )
 
-      env_layer <- terra::predict(env_layer, p, index = 1)
-    } else {
-      env_layer <- env_layer[[1]]
-    }
+    env_layer <- terra::predict(env_layer, p, index = 1)
+    names(env_layer) <- "PC1"
+
     # Extract occurrence PC1 values
     vals <- terra::extract(env_layer, coord)$PC1
-
-    # Convert from decimals to km
-    lat2grd <- function(input) {
-      toradians <- atan(1) / 45
-      radiusearth <- 0.5 * (6378.2 + 6356.7)
-      sine51 <- sin(51.5 * toradians)
-      output <- data.frame(cbind(
-        x = (input[, 1] * toradians) * radiusearth * sine51,
-        y = (input[, 2] * toradians) * radiusearth
-      ))
-    }
-    coord <- lat2grd(coord)
+    # Trasform coord to vect
+    coord <- vect(coord, geom=c("x", "y"), crs = "+proj=longlat +datum=WGS84")
 
     # Calculate distances & Define breaks
-    dists <- stats::dist(coord)
-    br <- max(dists) / 20
+    dists <- terra::distance(coord, coord)/1000 # dist. in km
+    br <- max(dists) / 30
     br <- seq(from = br, to = max(dists), by = br)
 
     # Calculate Moran for breaks

@@ -101,7 +101,7 @@ Usage predictors = c("aet", "cwd", "tmin")</p></dd>
 predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")</p></dd>
 <dt>select_pred</dt>
 <dd><p>logical. Perform predictor selection.
-If TRUE predictor will be selected based on backward step wise approach. Default FALSE.</p></dd>
+If TRUE predictors will be selected based on backward step wise approach. Default FALSE.</p></dd>
 <dt>partition</dt>
 <dd><p>character. Column name with training and validation partition groups.</p></dd>
 <dt>thr</dt>
@@ -149,18 +149,18 @@ Threshold dependent metric are calculated based on the threshold specified in th
 <span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
 <span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">abies2</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">glm_t1</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
-<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
 <span class="r-in">  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
+<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
 <span class="r-in">  poly <span class="op">=</span> <span class="fl">0</span>,</span>
 <span class="r-in">  inter_order <span class="op">=</span> <span class="fl">0</span></span>
 <span class="r-in"><span class="op">)</span></span>
@@ -173,11 +173,11 @@ Threshold dependent metric are calculated based on the threshold specified in th
 <span class="r-in"><span class="va">glm_t2</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
-<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
 <span class="r-in">  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
+<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
 <span class="r-in">  poly <span class="op">=</span> <span class="fl">2</span>,</span>
 <span class="r-in">  inter_order <span class="op">=</span> <span class="fl">1</span></span>
 <span class="r-in"><span class="op">)</span></span>
@@ -186,7 +186,7 @@ Threshold dependent metric are calculated based on the threshold specified in th
 <span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
 <span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">abies2</span></span>
 <span class="r-in"></span>
@@ -194,11 +194,11 @@ Threshold dependent metric are calculated based on the threshold specified in th
 <span class="r-in"><span class="va">glm_t3</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span><span class="op">)</span>,</span>
-<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
 <span class="r-in">  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
+<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
 <span class="r-in">  poly <span class="op">=</span> <span class="fl">3</span>,</span>
 <span class="r-in">  inter_order <span class="op">=</span> <span class="fl">2</span></span>
 <span class="r-in"><span class="op">)</span></span>

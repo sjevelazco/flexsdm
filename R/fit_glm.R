@@ -8,7 +8,7 @@
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")
 #' @param select_pred logical. Perform predictor selection.
-#' If TRUE predictor will be selected based on backward step wise approach. Default FALSE.
+#' If TRUE predictors will be selected based on backward step wise approach. Default FALSE.
 #' @param partition character. Column name with training and validation partition groups.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be used. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
