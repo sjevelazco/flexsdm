@@ -114,8 +114,8 @@ distance threshold between pair of points:
 1-"moran" determines the minimum nearest-neighbor distance that minimizes the spatial
 autocorrelation in occurrence data, following a Moran's semivariogram. A Principal Component
 Analysis with the environmental variables is performed and then the first Principal Component is used
-to calculate the semivariograms. Sometimes, this method can (too) greatly reduce the number
-of presences.
+to calculate the semivariograms. Because of this, this method only allow the use of continuous variables.
+Sometimes, this method can (too) greatly reduce the number of presences.
 2-"cellsize" filters occurrences based on the predictors' resolution. This method will calculate
 the distance between the first two cells of the environmental variable and use this distance
 as minimum nearest-neighbor distance to filter occurrences.

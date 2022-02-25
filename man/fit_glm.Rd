@@ -30,7 +30,7 @@ Usage predictors = c("aet", "cwd", "tmin")}
 predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")}
 
 \item{select_pred}{logical. Perform predictor selection.
-If TRUE predictor will be selected based on backward step wise approach. Default FALSE.}
+If TRUE predictors will be selected based on backward step wise approach. Default FALSE.}
 
 \item{partition}{character. Column name with training and validation partition groups.}
 
