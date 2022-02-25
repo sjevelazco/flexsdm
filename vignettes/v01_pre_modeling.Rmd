@@ -339,6 +339,8 @@ somevar[[1]] %>% plot(main = "Filtering with 12 bins")
 points(filt_env12 %>% select(x, y))
 ```
 
+### Geographical filtering
+
 Next, we will look at occfilt_geo(), which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of the predictors (or a specified coarser resolution); finally, “determined” allows users to manually determine the distance threshold. 
 
 ```{r geo occurrence filtering}
@@ -391,7 +393,7 @@ The part_random() function provides users the ability to divide species occurren
 Here, we use the "kfold" method with 10 folds to divide our data. This results in 10 folds of occurrence data with 25 observations in each fold. 
 
 ```{r random partitioning kfolds}
-
+spp1$pr_ab <- 1 # Add a column with 1 to denote that this is presences only data
 sp_part1 <- part_random(
   data = spp1,
   pr_ab = "pr_ab",

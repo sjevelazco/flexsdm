@@ -210,7 +210,7 @@
 <p>Let’s use presence locations for one species in this exercise.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">single_spp</span> <span class="op">&lt;-</span>
+<span class="va">spp1</span> <span class="op">&lt;-</span>
   <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp1"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -222,7 +222,7 @@
 <p>Here the calibration area is defined using buffers around presence points. User’s can specify the distance around points using the “width” argument.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ca_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">single_spp</span>,
+  data <span class="op">=</span> <span class="va">spp1</span>,
   x <span class="op">=</span> <span class="st">"x"</span>,
   y <span class="op">=</span> <span class="st">"y"</span>,
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">40000</span><span class="op">)</span>,
@@ -230,7 +230,7 @@
 <span class="co">#&gt; Loading required namespace: rgeos</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Buffer method"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/buffer%20method-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -239,7 +239,7 @@
 <p>The minimum convex polygon (mcp) method produces a much simpler shape.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ca_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">single_spp</span>,
+  data <span class="op">=</span> <span class="va">spp1</span>,
   x <span class="op">=</span> <span class="st">"x"</span>,
   y <span class="op">=</span> <span class="st">"y"</span>,
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mcp"</span><span class="op">)</span>,
@@ -247,7 +247,7 @@
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Minimum convex polygon method"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/mcp%20method-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -256,7 +256,7 @@
 <p>You can also create a buffer around the minimum convex polygon.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ca_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">single_spp</span>,
+  data <span class="op">=</span> <span class="va">spp1</span>,
   x <span class="op">=</span> <span class="st">"x"</span>,
   y <span class="op">=</span> <span class="st">"y"</span>,
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bmcp"</span>, width <span class="op">=</span> <span class="fl">40000</span><span class="op">)</span>,
@@ -264,7 +264,7 @@
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Buffered minimum convex polygon"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_3</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/bmcp%20method-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -276,7 +276,7 @@
 <span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">clusters</span><span class="op">)</span>
 
 <span class="va">ca_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">single_spp</span>,
+  data <span class="op">=</span> <span class="va">spp1</span>,
   x <span class="op">=</span> <span class="st">"x"</span>,
   y <span class="op">=</span> <span class="st">"y"</span>,
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mask"</span>, <span class="va">clusters</span>, <span class="st">"clusters"</span><span class="op">)</span>,
@@ -285,7 +285,7 @@
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">clusters</span>, main <span class="op">=</span> <span class="st">"Original polygons"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_4</span>, main <span class="op">=</span> <span class="st">"Polygons with points (mask)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/mask%20method-1.png" width="576"></p>
 </div>
 </div>
@@ -430,7 +430,7 @@
 </h3>
 <p>The function occfilt_env(), which performs environmental filtering on species occurrence data. This method basically reduces environmental redundancy in your data and is based on methods outlined in Valera et al. (2014). However, this function is unique to <em>flexsdm</em>, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering. In this example, we will use our original environmental data (somevar) and occurrence data for a single species (spp1). For filtering occurrences, it is important that each row in the species data has its own unique code (example: idd). This function also gives the user the option of specifying the number classes used to split each environmental condition. Here we will explore the results using 5, 8, and 12 bins. Increasing the number of bins increases the number of occurrence points retained.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">spp1</span> <span class="op">&lt;-</span> <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp1"</span>, <span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>
+<code class="sourceCode R">
 <span class="va">spp1</span><span class="op">$</span><span class="va">idd</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">)</span>
 
 <span class="va">filt_env5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span>
@@ -483,9 +483,66 @@
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 12 bins"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env12</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/env%20occurrence%20filtering-1.png" width="576"></p>
-<p>Next, we will look at occfilt_geo(), which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of the predictors; finally, “determined” allows users to manually determine the distance threshold. ### METHOD NOT AVAILABLE YET</p>
+</div>
+<div class="section level3">
+<h3 id="geographical-filtering">Geographical filtering<a class="anchor" aria-label="anchor" href="#geographical-filtering"></a>
+</h3>
+<p>Next, we will look at occfilt_geo(), which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of the predictors (or a specified coarser resolution); finally, “determined” allows users to manually determine the distance threshold.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># UPDATE</span></code></pre></div>
+<code class="sourceCode R">
+<span class="va">filt_geo1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">spp1</span>,
+  x <span class="op">=</span> <span class="st">"x"</span>,
+  y <span class="op">=</span> <span class="st">"y"</span>,
+  env_layer <span class="op">=</span> <span class="va">somevar</span>,
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"moran"</span><span class="op">)</span>,
+  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="co">#&gt; Extracting values from raster ...</span>
+<span class="co">#&gt; 10 records were removed because they have NAs for some variables</span>
+<span class="co">#&gt; Number of unfiltered records: 240</span>
+<span class="co">#&gt; Threshold for Moran: 0.1</span>
+<span class="co">#&gt; Distance threshold(km): 345.859</span>
+<span class="co">#&gt; Number of filtered records: 4</span>
+
+<span class="va">filt_geo2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">spp1</span>,
+  x <span class="op">=</span> <span class="st">"x"</span>,
+  y <span class="op">=</span> <span class="st">"y"</span>,
+  env_layer <span class="op">=</span> <span class="va">somevar</span>,
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cellsize"</span>, factor <span class="op">=</span> <span class="st">"3"</span><span class="op">)</span>, <span class="co"># coarser resolution than the provided raster</span>
+  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="co">#&gt; Extracting values from raster ...</span>
+<span class="co">#&gt; 16 records were removed because they have NAs for some variables</span>
+<span class="co">#&gt; Number of unfiltered records: 234</span>
+<span class="co">#&gt; Distance threshold(km): 4.617</span>
+<span class="co">#&gt; Number of filtered records: 212</span>
+
+<span class="va">filt_geo3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">spp1</span>,
+  x <span class="op">=</span> <span class="st">"x"</span>,
+  y <span class="op">=</span> <span class="st">"y"</span>,
+  env_layer <span class="op">=</span> <span class="va">somevar</span>,
+  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"defined"</span>, d <span class="op">=</span> <span class="st">"30"</span><span class="op">)</span>,
+  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="co">#&gt; Extracting values from raster ...</span>
+<span class="co">#&gt; 16 records were removed because they have NAs for some variables</span>
+<span class="co">#&gt; Number of unfiltered records: 234</span>
+<span class="co">#&gt; Distance threshold(km): 30</span>
+<span class="co">#&gt; Number of filtered records: 78</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Original occurrence data"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
+<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with Moran's I"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
+<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with cell size"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
+<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with defined distance (30km)"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo3</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering-1.png" width="576"></p>
 </div>
 </div>
 <div class="section level2">
@@ -498,7 +555,7 @@
 <p>The part_random() function provides users the ability to divide species occurrence data based on conventional partition methods including k-folds, repeated k-folds, leave-one-out cross-validation, and bootstrap partitioning.</p>
 <p>Here, we use the “kfold” method with 10 folds to divide our data. This results in 10 folds of occurrence data with 25 observations in each fold.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
+<code class="sourceCode R"><span class="va">spp1</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># Add a column with 1 to denote that this is presences only data</span>
 <span class="va">sp_part1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">spp1</span>,
   pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
