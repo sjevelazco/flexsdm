@@ -147,7 +147,7 @@ esm_max <- function(data,
         partition = partition,
         background = background,
         thr = thr,
-        clamp = TRUE,
+        clamp = clamp,
         classes = classes,
         pred_type = pred_type,
         regmult = regmult

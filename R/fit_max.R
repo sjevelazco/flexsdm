@@ -388,7 +388,7 @@ fit_max <- function(data,
     "pred" = predict_maxnet(
       mod,
       newdata = data,
-      clamp = TRUE,
+      clamp = clamp,
       type = pred_type
     )
   )

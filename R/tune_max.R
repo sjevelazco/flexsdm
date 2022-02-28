@@ -410,7 +410,7 @@ tune_max <-
       "pred" = predict_maxnet(
         mod$model,
         newdata = data,
-        clamp = TRUE,
+        clamp = clamp,
         type = pred_type
       )
     )
