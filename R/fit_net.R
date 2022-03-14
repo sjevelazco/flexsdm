@@ -250,9 +250,9 @@ fit_net <- function(data,
     nnet::nnet(
       formula1,
       data = data,
-      size = 3, # revise and implement a formula to calculate it
+      size = size, # revise and implement a formula to calculate it
       rang = 0.1,
-      # decay = grid$decay[ii],
+      decay = decay,
       maxit = 200,
       trace = FALSE
     ))
