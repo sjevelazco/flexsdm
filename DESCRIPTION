@@ -1,7 +1,7 @@
 Package: flexsdm
 Type: Package
 Title: Tools for Data Preparation, Fitting, Prediction, Evaluation, and Post-Processing of Species Distribution Models
-Version: 0.0.2
+Version: 0.5.0
 Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
            email = "sjevelazco@gmail.com",
            comment = c(ORCID = "0000-0002-7527-0967")),
@@ -33,11 +33,9 @@ Imports:
     mgcv,
     nnet,
     randomForest,
-    sp,
     spThin,
     Rlof,
     terra (>= 1.5-21),
-    raster,
     methods,
     utils
 Description: Assist in the construction of flexible species distribution workflow

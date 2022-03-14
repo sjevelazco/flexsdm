@@ -27,7 +27,7 @@
 #'   }
 #' Default "equal_sens_spec".
 #' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be
-#' interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other
+#' interpreted in m if Coordinate reference system used in "crs" argument has a longitude/latitude, or map units in other
 #' cases. Usage buffer=50000. Default NULL
 #' @param cont_suit SpatRaster. Raster with continuous suitability predictions
 #' "species_specific" type calculates the minimum pairwise-distances between all occurrences and
@@ -35,6 +35,8 @@
 #' from the minimum distance. This procedure depends on the spatial pattern of each species'
 #' occurrences; thus, for each species, a value of buffer width will be calculated
 #' (usage buffer="species_specific").
+#' @param crs character. Coordinate reference system used for calculating buffer in "bmcp" method.
+#'
 #' @return This function return a SpatRaster with continuous and binary prediction.
 #'
 #' @details
@@ -87,9 +89,8 @@
 #'
 #' Method 'bmcp' (Buffered Minimum Convex Polygon). Compiled and adapted
 #' from Kremen et al. (2008), it is similar to the 'mcp' method except for the inclusion of a
-#' buffer zone surrounding minimum convex polygons. When used with the "single" option for the buffer argument
-#' function will ask for a value in km to be used as the buffer with. When "species_specific" is used, a buffer will be calculated for each species based on the pattern of presences, using as the buffer width
-#' the maximum distance in a vector of minimal pairwise distances between occurrences.
+#' buffer zone surrounding minimum convex polygons. For this method a buffer width value must be provided in
+#' "buffer" argument and CRS in "crs" argument.
 #'
 #' For further methodological and performance information of these methods see Mendes et al. (2020).
 #'
@@ -108,9 +109,8 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr tibble select all_of arrange desc mutate pull filter
+#' @importFrom dplyr select all_of arrange desc mutate pull filter
 #' @importFrom grDevices chull
-#' @importFrom sp Polygon Polygons SpatialPolygons
 #' @importFrom stats na.exclude
 #' @importFrom terra rast extract vect rasterize crs buffer patches match mask unique as.polygons distance
 #'
@@ -161,7 +161,8 @@
 #'   method = "bmcp",
 #'   cont_suit = m_pred[[1]],
 #'   thr = "equal_sens_spec",
-#'   buffer = 30000
+#'   buffer = 30000,
+#'   crs=crs(m_pred)
 #' )
 #'
 #' plot(m_bmcp)
@@ -235,10 +236,14 @@ msdm_posteriori <- function(records,
                             cont_suit,
                             method = c("obr", "pres", "lq", "mcp", "bmcp"),
                             thr = "equal_sens_spec",
-                            buffer = NULL) {
+                            buffer = NULL,
+                            crs = NULL) {
   . <- thr_value <- patch <- mindis <- NULL
   if (method == "bmcp" & is.null(buffer)) {
     stop("If 'bmcp' method is used, it is necessary to fill the 'buffer' argument, see the help of this function")
+  }
+  if (method == "bmcp" & is.null(crs)) {
+    stop("If 'bmcp' method is used, a coordinate reference system is needed in 'crs' agument")
   }
   if (any(
     thr[1] == c(
@@ -258,6 +263,7 @@ msdm_posteriori <- function(records,
       'sensitivity'"
     )
   }
+
 
   #### prepare data sets
   if (class(cont_suit) != "SpatRaster") {
@@ -299,10 +305,8 @@ msdm_posteriori <- function(records,
   if (method == "mcp") {
     data_pl <- data.frame(records[, c("x", "y")])
     data_pl <- data_pl[grDevices::chull(data_pl), ]
-    data_pl <- sp::Polygon(data_pl)
-    data_pl <- sp::Polygons(list(data_pl), ID = 1)
-    data_pl <- sp::SpatialPolygons(list(data_pl))
-    data_pl <- terra::vect(data_pl)
+    data_pl <- data.frame(object = 1, part = 1, data_pl, hole = 0)
+    data_pl <- terra::vect(as.matrix(data_pl), type = "polygons")
     hull <- terra::rasterize(data_pl, cont_suit)
     hull[is.na(hull)] <- 0
     result <- cont_suit * hull
@@ -315,10 +319,8 @@ msdm_posteriori <- function(records,
   if (method == "bmcp") {
     data_pl <- data.frame(records[, c("x", "y")])
     data_pl <- data_pl[grDevices::chull(data_pl), ]
-    data_pl <- sp::Polygon(data_pl)
-    data_pl <- sp::Polygons(list(data_pl), ID = 1)
-    data_pl <- sp::SpatialPolygons(list(data_pl))
-    data_pl <- terra::vect(data_pl)
+    data_pl <- data.frame(object = 1, part = 1, data_pl, hole = 0)
+    data_pl <- terra::vect(as.matrix(data_pl), type = "polygons")
     terra::crs(data_pl) <- terra::crs(cont_suit)
     data_pl <- terra::buffer(data_pl, width = buffer)
     hull <- terra::rasterize(data_pl, cont_suit)

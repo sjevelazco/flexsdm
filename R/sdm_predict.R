@@ -760,6 +760,10 @@ sdm_predict <-
       if(grepl("esm_", names(model_c[[1]]))) {
         names(result) <- names(model_c[[1]])
       }
+      for(f in 1:length(result)){
+        terra::crs(result[[f]]) <- terra::crs(pred)
+      }
+
       return(result)
     }
   }

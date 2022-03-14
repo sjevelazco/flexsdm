@@ -121,7 +121,7 @@ regions <- terra::rast(regions)
 How are the points distributed across our study area?
 ```{r map}
 try(plot(regions), silent=TRUE)
-points(spp[, 2:3], pch = 19, cex = 0.3, col = as.factor(spp$species))
+points(spp[, 2:3], pch = 19, cex = 0.5, col = as.factor(spp$species))
 ```
 
 ## Calibration area
@@ -145,14 +145,17 @@ The calib_area() function offers three methods for defining a calibration area: 
 
 ### 1. Buffer
 
-Here the calibration area is defined using buffers around presence points. User's can specify the distance around points using the "width" argument. 
+Here the calibration area is defined using buffers around presence points. User's can specify the distance around points using the "width" argument. The buffer width value is interpreted in m if the CRS has a longitude/latitude, or in map units in other cases. 
 
 ```{r buffer method}
+crs(regions, proj=TRUE)
+
 ca_1 <- calib_area(
   data = spp1,
   x = "x",
   y = "y",
-  method = c("buffer", width = 40000),
+  method = c("buffer", width = 40000), 
+  crs = crs(regions)
 )
 plot(regions, main = "Buffer method")
 plot(ca_1, add = TRUE)
@@ -168,7 +171,8 @@ ca_2 <- calib_area(
   data = spp1,
   x = "x",
   y = "y",
-  method = c("mcp"),
+  method = c("mcp"), 
+  crs = crs(regions)
 )
 
 plot(regions, main = "Minimum convex polygon method")
@@ -184,7 +188,8 @@ ca_3 <- calib_area(
   data = spp1,
   x = "x",
   y = "y",
-  method = c("bmcp", width = 40000),
+  method = c("bmcp", width = 40000), 
+  crs = crs(regions)
 )
 
 plot(regions, main = "Buffered minimum convex polygon")
@@ -204,7 +209,8 @@ ca_4 <- calib_area(
   data = spp1,
   x = "x",
   y = "y",
-  method = c("mask", clusters, "clusters"),
+  method = c("mask", clusters, "clusters"), 
+  crs = crs(regions)
 )
 
 par(mfrow = c(1, 2))

@@ -16,7 +16,7 @@
 #'
 #'
 #' @return
-#' A SpatRaster object with extrapolation values measured in percentage (PERCENTAGE OF WHAT?)
+#' A SpatRaster object with extrapolation values measured in percentage of extrapolation (relative Euclidean distance)
 #'
 #' @seealso \code{\link{extra_exclude}}
 #'
@@ -45,7 +45,7 @@
 #'   dplyr::select(x, y)
 #'
 #' # Accessible area based on some criterion such as dispersal ability
-#' ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
+#' ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000), crs = crs(somevar))
 #'
 #' plot(somevar$CFP_1)
 #' points(sp)

@@ -146,6 +146,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   method = c("buffer", width = 50000),
+#'   crs = crs(somevar)
 #' )
 #' plot(grid_env)
 #' plot(ca_ps1, add = T)

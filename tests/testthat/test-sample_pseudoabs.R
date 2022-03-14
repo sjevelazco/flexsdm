@@ -109,6 +109,7 @@ test_that("sample_pseudoabs", {
     x = "x",
     y = "y",
     method = c("buffer", width = 50000),
+    crs=crs(somevar)
   )
 
   ps1 <-

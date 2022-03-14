@@ -30,7 +30,7 @@ provide a vector for this argument. The methods implemented are:
 \itemize{
 \item random: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='random'.
 \item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster stack or brick object with environmental variables Usage method=c(method='env_const', env = somevar).
-\item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. Usage method=c('geo_const', width='50000').
+\item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. A value of the buffer width in m must be provided if raster (used in rlayer) has a longitude/latitude CRS, or in map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar). Usage method=c('geo_const', width='50000').
 \item geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, a raster with environmental variables stored as SpatRaster object should be provided. A value of the buffer width in m must be provided if raster (used in rlayer) has a longitude/latitude CRS, or in map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar)
 \item geo_env_km_const: Pseudo-absences are constrained using a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar)
 }}
@@ -175,6 +175,7 @@ ca_ps1 <- calib_area(
   x = "x",
   y = "y",
   method = c("buffer", width = 50000),
+  crs=crs(somevar)
 )
 plot(regions, col = gray.colors(9))
 plot(ca_ps1, add = T)

@@ -21,7 +21,7 @@ the same as raster object used in 'env_proj' argument. Default 1, i.e., by defau
 will be made to the resolution of the environmental variables.}
 }
 \value{
-A SpatRaster object with extrapolation values measured in percentage (PERCENTAGE OF WHAT?)
+A SpatRaster object with extrapolation values measured in percentage of extrapolation (relative Euclidean distance)
 }
 \description{
 Measure extrapolation comparing environmental data used for modeling calibration and area for
@@ -43,7 +43,7 @@ sp <- spp \%>\%
   dplyr::select(x, y)
 
 # Accessible area based on some criterion such as dispersal ability
-ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
+ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000), crs = crs(somevar))
 
 plot(somevar$CFP_1)
 points(sp)

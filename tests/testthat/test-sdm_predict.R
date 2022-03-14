@@ -271,7 +271,7 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
       method = c(method = "kfold", folds = 3)
     )
 
-  ca <- calib_area(data = spp_, "x", "y", method = "mcp")
+  ca <- calib_area(data = spp_, "x", "y", method = "mcp", crs=crs(somevar))
 
   # gau
   gau <- fit_gau(
@@ -364,7 +364,7 @@ test_that("test for all threshold", {
       method = c(method = "kfold", folds = 3)
     )
 
-  ca <- calib_area(data = spp_, "x", "y", method = "mcp")
+  ca <- calib_area(data = spp_, "x", "y", method = "mcp", crs=crs(somevar))
 
   gam <- fit_gam(
     data = spp_,
@@ -415,7 +415,7 @@ test_that("test for prdicting ensemble of small models", {
       method = c(method = "kfold", folds = 3)
     )
 
-  ca <- calib_area(data = spp_, "x", "y", method = "mcp")
+  ca <- calib_area(data = spp_, "x", "y", method = "mcp", crs=crs(somevar))
 
   gam <- esm_gam(
     data = spp_,
