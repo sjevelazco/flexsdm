@@ -41,11 +41,11 @@
 #'
 #' @seealso \code{\link{fit_ensemble}}
 #'
-#' @importFrom dplyr %>% mutate across left_join pull bind_rows filter all_of select
-#' @importFrom mgcv predict.gam
+#' @importFrom dplyr mutate across left_join pull bind_rows filter all_of select
 #' @importFrom kernlab predict
+#' @importFrom mgcv predict.gam
 #' @importFrom stats median
-#' @importFrom terra vect crop mask as.data.frame values rast app lapp weighted.mean
+#' @importFrom terra vect crop mask as.data.frame is.factor rast app weighted.mean lapp crs
 #'
 #' @examples
 #' \dontrun{
@@ -278,7 +278,7 @@ sdm_predict <-
       na_mask <- (sum(is.na(pred)) > 1)
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[!is.factor(pred)]][[1]]
+        r <- pred[[!terra::is.factor(pred)]][[1]]
         r[!is.na(r)] <- NA
         suppressWarnings(r[as.numeric(rownames(pred_df))] <-
                            predict.graf(
@@ -299,7 +299,7 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[!is.factor(pred)]][[1]]
+        r <- pred[[!terra::is.factor(pred)]][[1]]
         r[!is.na(r)] <- NA
 
         # Test factor levels
@@ -346,7 +346,7 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[!is.factor(pred)]][[1]]
+        r <- pred[[!terra::is.factor(pred)]][[1]]
         r[!is.na(r)] <- NA
 
         # Test factor levels
@@ -393,7 +393,7 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[!is.factor(pred)]][[1]]
+        r <- pred[[!terra::is.factor(pred)]][[1]]
         r[!is.na(r)] <- NA
         r[as.numeric(rownames(pred_df))] <-
           suppressMessages(stats::predict(m[[i]], pred_df, type = "response"))
@@ -409,7 +409,7 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[!is.factor(pred)]][[1]]
+        r <- pred[[!terra::is.factor(pred)]][[1]]
         r[!is.na(r)] <- NA
         r[as.numeric(rownames(pred_df))] <-
           predict_maxnet(
@@ -428,7 +428,7 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[!is.factor(pred)]][[1]]
+        r <- pred[[!terra::is.factor(pred)]][[1]]
         r[!is.na(r)] <- NA
 
         # Test factor levels
@@ -482,7 +482,7 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[!is.factor(pred)]][[1]]
+        r <- pred[[!terra::is.factor(pred)]][[1]]
         r[!is.na(r)] <- NA
 
         # Test factor levels
@@ -540,7 +540,7 @@ sdm_predict <-
     if (length(wm) > 0) {
       wm <- names(wm)
       for (i in wm) {
-        r <- pred[[!is.factor(pred)]][[1]]
+        r <- pred[[!terra::is.factor(pred)]][[1]]
         r[!is.na(r)] <- NA
 
         # Test factor levels

@@ -94,7 +94,7 @@ abies_pf <- abies_p %>%
   left_join(abies_p, by = c("id", "x", "y"))
 
 plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
-plot(crop(as(ca, 'Spatial'), layer1), add=TRUE)
+plot(crop(ca, layer1), add=TRUE)
 points(abies_p[,c("x", "y")], col = "#00000480")
 points(abies_pf[,c("x", "y")], col = "#5DC86180")
 ```
@@ -124,12 +124,10 @@ abies_pf <- occ_part$part
 # Transform best block partition to a raster layer with same resolution and extent than
 # predictor variables
 block_layer <- get_block(env_layer = somevar, best_grid = occ_part$grid)
-
-block_layer2 <- raster::raster(block_layer)
-block_layer2 <- as.factor(block_layer2)
+block_layer2 <- terra::as.factor(block_layer)
 
 cl <- c("#64146D", "#9E2962", "#F47C15", "#FCFFA4")
-plot(block_layer2, col=cl, legend=FALSE, axes=FALSE)
+plot(block_layer, col=cl, legend=FALSE, axes=FALSE)
 points(abies_pf[,c("x", "y")])
 
 
@@ -288,7 +286,7 @@ pr_1 <- sdm_predict(
   predict_area = NULL
 )
 
-unconstrained <- raster::raster(pr_1$meanw[[1]])
+unconstrained <- pr_1$meanw[[1]]
 names(unconstrained) <- "unconstrained"
 
 cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
@@ -316,7 +314,7 @@ m_pres <- msdm_posteriori(
   buffer = NULL
 )
 
-constrained <- raster::raster(m_pres$meanw)
+constrained <- m_pres$meanw[[1]]
 names(constrained) <- "constrained"
 
 cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")

@@ -27,12 +27,12 @@ test_that("part_sband lon", {
   part_1$grid
 
   # Lets explore Grid object and presences and absences points
-  plot(part_1$grid, col = gray.colors(20))
-  points(part_1$part[c("x", "y")],
-    col = rainbow(8)[part_1$part$.part],
-    cex = 0.9,
-    pch = c(1, 19)[part_1$part$pr_ab + 1]
-  )
+  # plot(part_1$grid, col = gray.colors(20))
+  # points(part_1$part[c("x", "y")],
+  #   col = rainbow(8)[part_1$part$.part],
+  #   cex = 0.9,
+  #   pch = c(1, 19)[part_1$part$pr_ab + 1]
+  # )
   expect_equal(class(part_1), "list")
   expect_equal(length(part_1), 3)
 })

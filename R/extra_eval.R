@@ -24,7 +24,6 @@
 #'
 #' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr summarise_all
-#' @importFrom flexclust dist2
 #' @importFrom foreach foreach %dopar%
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom stats sd
@@ -142,7 +141,7 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
     extra <- lapply(seq_len((length(set) - 1)), function(x) {
       rowset <- set[x]:(set[x + 1] - 1)
       auclidean <-
-        flexclust::dist2(
+        euc_dist(
           env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
           env_calib2[v0]
         ) # env_calib environmental conditions used as references
@@ -155,10 +154,10 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
 
     extra <- foreach::foreach(x = seq_len((length(
       set
-    ) - 1)), .combine = "c") %dopar% {
+    ) - 1)), .export = "euc_dist", .combine = "c") %dopar% {
       rowset <- set[x]:(set[x + 1] - 1)
       auclidean <-
-        flexclust::dist2(
+        euc_dist(
           env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
           env_calib2[v0]
         ) # env_calib environmental conditions used as references
@@ -179,7 +178,7 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
   # Euclidean distance between points used for calibration and its centroid
   base_stand_distance <- env_calib2 %>%
     dplyr::summarise_all(., mean) %>%
-    flexclust::dist2(env_calib2, .) %>%
+    euc_dist(env_calib2, .) %>%
     mean()
 
   # Standardization of projection points

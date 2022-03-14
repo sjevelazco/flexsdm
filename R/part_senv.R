@@ -81,7 +81,6 @@
 #' @export
 #' @importFrom ape Moran.I
 #' @importFrom dplyr tibble pull bind_cols group_by count mutate filter select slice_sample
-#' @importFrom flexclust dist2
 #' @importFrom stats complete.cases kmeans sd
 #' @importFrom terra extract
 #' @importFrom utils combn
@@ -230,7 +229,7 @@ unique list values in pr_ab column are: ",
     Env.P1 <- stats::complete.cases(Env.P1[, -1], Env.P1[, 1])
     euq_c <- list()
     for (r in 1:ncol(cmb)) {
-      euq_c[[r]] <- flexclust::dist2(Env.P1[[cmb[1, r]]], Env.P1[[cmb[2, r]]]) %>% mean()
+      euq_c[[r]] <- euc_dist(Env.P1[[cmb[1, r]]], Env.P1[[cmb[2, r]]]) %>% mean()
     }
 
     env_sim[i] <- euq_c %>%
@@ -242,7 +241,7 @@ unique list values in pr_ab column are: ",
   # # I moran-----
   spa_auto <- rep(NA, ncol(part))
 
-  dist <- flexclust::dist2(
+  dist <- euc_dist(
     data[, c("x", "y")] %>% as.data.frame(),
     data[, c("x", "y")] %>% as.data.frame()
   )

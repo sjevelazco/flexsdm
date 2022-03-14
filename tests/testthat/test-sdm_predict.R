@@ -247,7 +247,7 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
   # Environmental variables
   somevar <- system.file("external/somevar.tif", package = "flexsdm") %>% terra::rast()
   regions <- system.file("external/regions.tif", package = "flexsdm") %>% terra::rast()
-  levels(regions) <- c(unique(regions))
+  # levels(regions) <- c(unique(regions))
   somevar <- terra::rast(x = list(regions, somevar))
   rm(regions)
 
@@ -314,7 +314,7 @@ test_that("test for ensemble, mask, and suit. values above threshold", {
     pred = somevar,
     thr = NULL,
     con_thr = FALSE,
-    predict_area = as(ca, "Spatial")
+    predict_area = ca
   )
 
   expect_true(class(p[[1]]) == "SpatRaster")

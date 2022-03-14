@@ -354,3 +354,22 @@ n_coefficients <- function(data, predictors, predictors_f = NULL, k = 10){
   return(n)
 }
 
+#' Euclidean distance for extrapolation
+#'
+#' @noRd
+#'
+euc_dist <- function(x, y) {
+  if (class(x) != "matrix") {
+    x <- as.matrix(x)
+  }
+  if (class(y) != "matrix") {
+    y <- as.matrix(y)
+  }
+  result <- matrix(0, nrow = nrow(x), ncol = nrow(y))
+  for (ii in 1:nrow(y)) {
+    result[, ii] <- sqrt(colSums((t(x) - y[ii, ]) ^ 2))
+  }
+  rownames(result) <- rownames(x)
+  colnames(result) <- rownames(y)
+  return(result)
+}
