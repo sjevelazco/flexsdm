@@ -137,7 +137,6 @@
 #' @seealso \code{\link{msdm_posteriori}}
 #'
 #' @importFrom dplyr tibble select all_of
-#' @importFrom flexclust dist2
 #' @importFrom stats na.omit
 #' @importFrom terra rast as.data.frame cellFromXY xyFromCell
 #'
@@ -204,7 +203,7 @@ msdm_priori <- function(data,
 
   # Method 2- Minimum distance ----
   if (method == "min") {
-    distr <- flexclust::dist2(spi, r, method = "euclidean", p = 2)
+    distr <- euc_dist(x = spi, y = r)
     distr <- apply(distr, 1, min)
     distr <- (distr - min(distr)) / (max(distr) - min(distr))
     result <- env_layer
@@ -216,8 +215,7 @@ msdm_priori <- function(data,
 
   # Method 3: Cummulative distance----
   if (method == "cml") {
-    distr <-
-      flexclust::dist2(spi, r, method = "euclidean", p = 2)
+    distr <- euc_dist(spi, r)
     distr <- distr + 1
     distr <- 1 / (1 / distr^2)
     distr <- apply(distr, 1, sum)
@@ -232,9 +230,8 @@ msdm_priori <- function(data,
 
   # Method 4: Gaussian Kernel----
   if (method == "ker") {
-    distp <- flexclust::dist2(r, r, method = "euclidean", p = 2)
-    distp1 <-
-      matrix(0, nrow(flexclust::dist2(r, r, method = "euclidean", p = 2)), 1)
+    distp <- euc_dist(r, r)
+    distp1 <- matrix(0, nrow(euc_dist(r, r)), 1)
 
     for (c in 1:nrow(distp)) {
       vec <- distp[c, ]
@@ -242,8 +239,7 @@ msdm_priori <- function(data,
     }
     rm(vec)
     sd_graus <- max(distp1)
-    distr <-
-      flexclust::dist2(spi, r, method = "euclidean", p = 2)
+    distr <- euc_dist(spi, r)
     # distr2 <- distr
     distr <-
       (1 / sqrt(2 * pi * sd_graus) * exp(-1 * (distr / (2 * sd_graus^

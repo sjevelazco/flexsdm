@@ -143,7 +143,7 @@ test_that("msdm_posteriori", {
 #     y = "y",
 #     pr_ab = "pr_ab",
 #     method = "bmcp",
-#     cont_suit = raster::raster(m_pred[[1]]),
+#     cont_suit = m_pred[[1]],
 #     thr = "equal_sens_spec",
 #     buffer = 30000
 #   ), "SpatRaster")

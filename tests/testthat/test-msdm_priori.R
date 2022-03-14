@@ -61,7 +61,7 @@ test_that("msdm_priori", {
   #   x = "x",
   #   y = "y",
   #   method = "ker",
-  #   env_layer = raster::raster(a_variable)
+  #   env_layer = a_variable
   # )
   # expect_s4_class(m_ker, "SpatRaster")
 })

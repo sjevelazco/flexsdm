@@ -24,7 +24,6 @@ Imports:
     ape,
     doParallel,
     dplyr,
-    flexclust,
     foreach,
     gbm,
     grDevices,

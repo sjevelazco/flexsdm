@@ -89,9 +89,8 @@
 #'
 #' @importFrom ape Moran.I
 #' @importFrom dplyr tibble pull group_by slice_sample select
-#' @importFrom flexclust dist2
 #' @importFrom stats complete.cases sd
-#' @importFrom terra extract res ext vect crs extend values ncell cellFromXY geom
+#' @importFrom terra extract ext vect crs ncol nrow values ncell cellFromXY geom
 #' @importFrom utils combn
 #'
 #' @seealso \code{\link{part_random}}, \code{\link{part_sblock}}, \code{\link{part_senv}},
@@ -435,7 +434,7 @@ unique list values in pr_ab column are: ",
     Env.P1 <- split(Env.P1[, -1], Env.P1[, 1])
     euq_c <- list()
     for (r in 1:ncol(cmb)) {
-      euq_c[[r]] <- flexclust::dist2(Env.P1[[cmb[1, r]]], Env.P1[[cmb[2, r]]]) %>% mean()
+      euq_c[[r]] <- euc_dist(Env.P1[[cmb[1, r]]], Env.P1[[cmb[2, r]]]) %>% mean()
     }
 
     env_sim[i] <- euq_c %>%
@@ -449,7 +448,7 @@ unique list values in pr_ab column are: ",
   spa_auto <- rep(NA, length(grid))
 
   presences2 <- terra::geom(presences2)[, c("x", "y")] %>% as.data.frame()
-  dist <- flexclust::dist2(presences2, presences2)
+  dist <- euc_dist(presences2, presences2)
   dist <- 1 / dist
   diag(dist) <- 0
   dist[which(dist == Inf)] <- 0
