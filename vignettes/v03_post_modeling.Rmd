@@ -255,6 +255,7 @@ gam_t1 <- fit_gam(
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen")
 )
 
+
 glm_t1 <- fit_glm(
   data = abies2,
   response = "pr_ab",
@@ -287,8 +288,12 @@ rf_t1 <-
     thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
     metric = "TSS",
   )
+
+rf_t1$performance
+# Note in rf_t1$performance the best model was the one with mtry = 3 and threshold = 'max_sens_spec'
+
 ```
-(CAN YOU REMIND US WHY ARE THERE THREE THRESHOLD TYPES SPECIES FOR RAF MODEL BUILDING, BUT ONLY ONE IN THE MERGED TABLE? I THINK IT HAS TO DO WITH mwetric = "TSS" in tune_raf BUT IF I HAVE ALREADY FORGOTTEN, SO WILL OTHER USERS)
+
 
 Finally, merge the three sdm performance tables. 
 
@@ -354,7 +359,14 @@ sp <- spp %>%
   dplyr::select(x, y)
 
 # Define accessible area for sp3 based on a buffer with around each point that is related to dispersal ability or some other ecological criterion
-ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
+ca <-
+  calib_area(
+    sp,
+    x = "x",
+    y = "y",
+    method = c("buffer", width = 30000),
+    crs = crs(somevar)
+  )
 
 # Plot the SpatRaster, occurrences and accessible area
 plot(somevar$CFP_1)
@@ -515,7 +527,8 @@ m_bmcp <- msdm_posteriori(
   method = "bmcp",
   cont_suit = m_pred[[1]],
   thr = "equal_sens_spec",
-  buffer = 30000
+  buffer = 30000,
+  crs = crs(m_pred[[1]])
 )
 
 plot(m_bmcp)

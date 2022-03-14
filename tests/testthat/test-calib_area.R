@@ -20,21 +20,11 @@ test_that("buffer method", {
     x = "x",
     y = "y",
     method = c("buffer", width = 40000),
-    crs = NULL
+    crs = crs(clusters)
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
 
-  # # buffer method with crs
-  # ca_1 <- calib_area(
-  #   data = single_spp,
-  #   x = "x",
-  #   y = "y",
-  #   method = c("buffer", width = 40000),
-  #   crs = crs(clusters)
-  # )
-  #
-  # expect_equal(class(ca_1)[1], "SpatVector")
 })
 
 test_that("mcp method", {
@@ -58,7 +48,7 @@ test_that("mcp method", {
     x = "x",
     y = "y",
     method = "mcp",
-    crs = NULL
+    crs = crs(clusters)
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
@@ -70,6 +60,8 @@ test_that("mcp method with group", {
   require(dplyr)
   require(rgeos)
   data("spp")
+  clusters <- system.file("external/clusters.shp", package = "flexsdm")
+  clusters <- terra::vect(clusters)
 
   single_spp <-
     spp %>%
@@ -84,7 +76,7 @@ test_that("mcp method with group", {
     x = "x",
     y = "y",
     method = "mcp",
-    crs = NULL,
+    crs = crs(clusters),
     groups = "groups"
   )
 
@@ -112,7 +104,7 @@ test_that("bmcp method", {
     data = single_spp,
     x = "x",
     y = "y",
-    method = c("bmcp", width = 40000), groups = NULL
+    method = c("bmcp", width = 40000), groups = NULL, crs = crs(clusters)
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
@@ -141,7 +133,7 @@ test_that("bmcp method with groups", {
     y = "y",
     method = c("bmcp", width = 40000),
     groups = "groups",
-    crs = NULL
+    crs = crs(clusters)
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
@@ -219,5 +211,13 @@ test_that("missuse method argument", {
     x = "x",
     y = "y",
     method = c("mask")
+  ))
+
+  expect_error(calib_area(
+    data = single_spp,
+    x = "x",
+    y = "y",
+    method = c("bmcp", width = 40000),
+    crs = NULL
   ))
 })

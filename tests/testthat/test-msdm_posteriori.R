@@ -40,7 +40,8 @@ test_that("msdm_posteriori", {
     method = "bmcp",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec",
-    buffer = 30000
+    buffer = 30000,
+    crs = crs(m_pred[[1]])
   )
   expect_s4_class(m_bmcp, "SpatRaster")
 

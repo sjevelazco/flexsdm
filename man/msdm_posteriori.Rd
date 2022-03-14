@@ -12,7 +12,8 @@ msdm_posteriori(
   cont_suit,
   method = c("obr", "pres", "lq", "mcp", "bmcp"),
   thr = "equal_sens_spec",
-  buffer = NULL
+  buffer = NULL,
+  crs = NULL
 )
 }
 \arguments{
@@ -52,8 +53,10 @@ necessary to provide a vector for this argument. The following threshold criteri
 Default "equal_sens_spec".}
 
 \item{buffer}{numeric. Buffer width use in 'bmcp' approach. The buffer width will be
-interpreted in m if raster used in cont_suit has a longitude/latitude CRS, or map units in other
+interpreted in m if Coordinate reference system used in "crs" argument has a longitude/latitude, or map units in other
 cases. Usage buffer=50000. Default NULL}
+
+\item{crs}{character. Coordinate reference system used for calculating buffer in "bmcp" method.}
 }
 \value{
 This function return a SpatRaster with continuous and binary prediction.
@@ -113,9 +116,8 @@ with interior angles smaller than 180, enclosing all occurrences of a species.
 
 Method 'bmcp' (Buffered Minimum Convex Polygon). Compiled and adapted
 from Kremen et al. (2008), it is similar to the 'mcp' method except for the inclusion of a
-buffer zone surrounding minimum convex polygons. When used with the "single" option for the buffer argument
-function will ask for a value in km to be used as the buffer with. When "species_specific" is used, a buffer will be calculated for each species based on the pattern of presences, using as the buffer width
-the maximum distance in a vector of minimal pairwise distances between occurrences.
+buffer zone surrounding minimum convex polygons. For this method a buffer width value must be provided in
+"buffer" argument and CRS in "crs" argument.
 
 For further methodological and performance information of these methods see Mendes et al. (2020).
 
@@ -168,7 +170,8 @@ m_bmcp <- msdm_posteriori(
   method = "bmcp",
   cont_suit = m_pred[[1]],
   thr = "equal_sens_spec",
-  buffer = 30000
+  buffer = 30000,
+  crs=crs(m_pred)
 )
 
 plot(m_bmcp)

@@ -56,15 +56,21 @@ abies_p <- abies %>%
   select(x, y, pr_ab) %>%
   filter(pr_ab == 1) # filter only for presence locations
 
-ca <- calib_area(data = abies_p, x = 'x', y = 'y', method =  c('buffer', width=100000), crs = crs(somevar)) # create a calibration area with 100 km buffer around occurrence points
+ca <-
+  calib_area(
+    data = abies_p,
+    x = 'x',
+    y = 'y',
+    method =  c('buffer', width = 100000),
+    crs = crs(somevar)
+  ) # create a calibration area with 100 km buffer around occurrence points
 
 # visualize the species occurrences
-layer1 <- (somevar[[1]])
+layer1 <- somevar[[1]]
 layer1[!is.na(layer1)] <- 1
-layer1 <- raster::raster(layer1)
 
 plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
-plot(crop(as(ca, 'Spatial'), layer1), add=TRUE)
+plot(crop(ca, layer1), add=TRUE)
 points(abies_p[,c("x", "y")], col = "#00000480")
 ```
 

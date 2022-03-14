@@ -12,7 +12,7 @@ test_that("extra_exclude", {
     dplyr::select(x, y)
 
   # Accessible area
-  ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
+  ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000), crs=crs(somevar))
 
   # Get environmental condition of calibration area
   somevar_ca <- somevar %>%

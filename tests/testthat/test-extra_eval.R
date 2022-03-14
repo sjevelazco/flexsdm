@@ -12,7 +12,7 @@ test_that("extra_eval one and two cores", {
     dplyr::select(x, y)
 
   # Accessible area
-  ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
+  ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000), crs=crs(somevar))
 
   # Get environmental condition of calibration area
   somevar_ca <- somevar %>%
@@ -57,7 +57,7 @@ test_that("extra_eval wrong use", {
     dplyr::select(x, y)
 
   # Accessible area
-  ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000))
+  ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000), crs=crs(somevar))
 
   # Get environmental condition of calibration area
   somevar_ca <- somevar %>%
