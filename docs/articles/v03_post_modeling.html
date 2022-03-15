@@ -33,17 +33,23 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">flexsdm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="../index.html">
+    <span class="fa fa-home"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Functions</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -65,6 +71,13 @@
       <a href="../articles/v05_Rare_species_example.html">5. Modeling a rare species</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    News
+  </a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -451,8 +464,8 @@
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
 <span class="co">#&gt; names       :      esm_gam, max_fpb </span>
-<span class="co">#&gt; min values  : 2.196539e-05,    TRUE </span>
-<span class="co">#&gt; max values  :    0.8811237,    TRUE</span>
+<span class="co">#&gt; min values  : 2.209585e-05,    TRUE </span>
+<span class="co">#&gt; max values  :    0.8732744,    TRUE</span>
 
 <span class="co"># Plot to see this layers</span>
 <span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span>
@@ -508,6 +521,7 @@
 <span class="co">#&gt; Partition number: 4/5</span>
 <span class="co">#&gt; Partition number: 5/5</span>
 
+
 <span class="va">glm_t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_glm.html">fit_glm</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">abies2</span>,
   response <span class="op">=</span> <span class="st">"pr_ab"</span>,
@@ -558,8 +572,19 @@
 <span class="co">#&gt; Partition number: 2/5</span>
 <span class="co">#&gt; Partition number: 3/5</span>
 <span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span></code></pre></div>
-<p>(CAN YOU REMIND US WHY ARE THERE THREE THRESHOLD TYPES SPECIES FOR RAF MODEL BUILDING, BUT ONLY ONE IN THE MERGED TABLE? I THINK IT HAS TO DO WITH mwetric = “TSS” in tune_raf BUT IF I HAVE ALREADY FORGOTTEN, SO WILL OTHER USERS)</p>
+<span class="co">#&gt; Partition number: 5/5</span>
+
+<span class="va">rf_t1</span><span class="op">$</span><span class="va">performance</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 x 26</span></span>
+<span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3 raf   max_sens_spec     0.638         700        700    0.916 0.043<span style="text-decoration: underline;">0</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># ... with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
+<span class="co"># Note in rf_t1$performance the best model was the one with mtry = 3 and threshold = 'max_sens_spec'</span></code></pre></div>
 <p>Finally, merge the three sdm performance tables.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">gam_t1</span>, <span class="va">glm_t1</span>, <span class="va">rf_t1</span><span class="op">)</span><span class="op">)</span>
@@ -650,8 +675,14 @@
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>
 
 <span class="co"># Define accessible area for sp3 based on a buffer with around each point that is related to dispersal ability or some other ecological criterion</span>
-<span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span><span class="va">sp</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">30000</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Loading required namespace: rgeos</span>
+<span class="va">ca</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
+    <span class="va">sp</span>,
+    x <span class="op">=</span> <span class="st">"x"</span>,
+    y <span class="op">=</span> <span class="st">"y"</span>,
+    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">30000</span><span class="op">)</span>,
+    crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
+  <span class="op">)</span>
 
 <span class="co"># Plot the SpatRaster, occurrences and accessible area</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">$</span><span class="va">CFP_1</span><span class="op">)</span>
@@ -845,7 +876,8 @@
   method <span class="op">=</span> <span class="st">"bmcp"</span>,
   cont_suit <span class="op">=</span> <span class="va">m_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,
   thr <span class="op">=</span> <span class="st">"equal_sens_spec"</span>,
-  buffer <span class="op">=</span> <span class="fl">30000</span>
+  buffer <span class="op">=</span> <span class="fl">30000</span>,
+  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">m_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 <span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_bmcp</span><span class="op">)</span></code></pre></div>

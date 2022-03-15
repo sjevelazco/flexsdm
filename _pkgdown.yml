@@ -8,6 +8,8 @@ template:
 # navbar setting
 navbar:
   left:
+    - icon: fa-home
+      href: index.html
     - text: "Functions"
       href: reference/index.html
     - text: "Articles"
@@ -22,5 +24,8 @@ navbar:
          href: articles/v04_Red_fir_example.html
       -  text: "5. Modeling a rare species"
          href: articles/v05_Rare_species_example.html
+    - text: "News"
+      icon: fa-newspaper-o
+      href: news/index.html
 components:
     home: ~
