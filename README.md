@@ -96,7 +96,7 @@ Please, first install a version ≥ 1.5-12 of **terra** package available on CRA
 ``` r
 # install.packages("devtools")
 
-# For Windos and Mac OS operating systems
+# For Windows and Mac OS operating systems
 devtools::install_github("sjevelazco/flexsdm")
 
 # For Linux operating system
