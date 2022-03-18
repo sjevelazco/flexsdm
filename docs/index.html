@@ -264,7 +264,12 @@
 <p><span class="emoji" data-emoji="warning">⚠️</span> NOTE: The version 1.4-22 of <strong>terra</strong> package is causing errors when trying to instal <strong>flexsdm</strong>. Please, first install a version ≥ 1.5-12 of <strong>terra</strong> package available on CRAN or development version of <a href="https://github.com/rspatial/terra" class="external-link">terra</a> and then <strong>flexsdm</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sjevelazco/flexsdm"</span><span class="op">)</span></code></pre></div>
+
+<span class="co"># For Windos and Mac OS operating systems</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sjevelazco/flexsdm"</span><span class="op">)</span>
+
+<span class="co"># For Linux operating system</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sjevelazco/flexsdm@HEAD"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="package-website">Package website<a class="anchor" aria-label="anchor" href="#package-website"></a>
