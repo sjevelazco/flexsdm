@@ -105,8 +105,16 @@ In this tutorial, we will be using species occurrences that are available throug
 
 ```{r occ data}
 data("spp")
+DT::datatable(
+  spp[1:10, ], class = 'stripe', extensions = 'FixedColumns',
+  options = list(
+    # pageLength = 5,
+    dom = 'Bfrtip',
+    scrollX = TRUE,
+    fixedColumns = list(leftColumns = 2)
+  )
+)
 
-spp
 ```
 
 ## Geographic region
