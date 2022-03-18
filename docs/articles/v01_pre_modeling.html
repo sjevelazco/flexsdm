@@ -97,12 +97,7 @@
 
       
 
-      </header><script src="v01_pre_modeling_files/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="v01_pre_modeling_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="v01_pre_modeling_files/datatables-binding-0.21/datatables.js"></script><link href="v01_pre_modeling_files/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="v01_pre_modeling_files/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="v01_pre_modeling_files/dt-core-1.11.3/js/jquery.dataTables.min.js"></script><link href="v01_pre_modeling_files/dt-ext-fixedcolumns-1.11.3/css/fixedColumns.dataTables.min.css" rel="stylesheet">
-<script src="v01_pre_modeling_files/dt-ext-fixedcolumns-1.11.3/js/dataTables.fixedColumns.min.js"></script><link href="v01_pre_modeling_files/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
-<script src="v01_pre_modeling_files/crosstalk-1.2.0/js/crosstalk.min.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>flexsdm: Overview of Pre-modeling functions</h1>
@@ -191,17 +186,22 @@
 <p>In this tutorial, we will be using species occurrences that are available through the <em>flexsdm</em> package. The “spp” example dataset includes pr_ab column (presence = 1, and absence = 0), and location columns (x, y). You can load the “spp” data into your local R environment by using the code below:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span>
-<span class="fu">DT</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/DT/man/datatable.html" class="external-link">datatable</a></span><span class="op">(</span>
-  <span class="va">spp</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>, class <span class="op">=</span> <span class="st">'stripe'</span>, extensions <span class="op">=</span> <span class="st">'FixedColumns'</span>,
-  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    <span class="co"># pageLength = 5,</span>
-    dom <span class="op">=</span> <span class="st">'Bfrtip'</span>,
-    scrollX <span class="op">=</span> <span class="cn">TRUE</span>,
-    fixedColumns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>leftColumns <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">)</span></code></pre></div>
-<div id="htmlwidget-81aac0b0d6ab1a77cdac" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-81aac0b0d6ab1a77cdac">{"x":{"filter":"none","vertical":false,"extensions":["FixedColumns"],"data":[["1","2","3","4","5","6","7","8","9","10"],["sp1","sp1","sp1","sp1","sp1","sp1","sp1","sp1","sp1","sp1"],[-5540.83635400003,-51980.836354,-269870.836354,-96260.836354,269589.163646,29829.163646,-152690.836354,-195080.836354,-950.836354000028,145929.163646],[-145138.334189,16321.665811,69511.665811,-32008.334189,-566338.334189,-328468.334189,393781.665811,253651.665811,-277978.334189,-271498.334189],[0,0,1,0,0,0,0,0,0,0]],"container":"<table class=\"stripe\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>species<\/th>\n      <th>x<\/th>\n      <th>y<\/th>\n      <th>pr_ab<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Bfrtip","scrollX":true,"fixedColumns":{"leftColumns":2},"columnDefs":[{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+<span class="va">spp</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,150 x 4</span></span>
+<span class="co">#&gt;    species        x        y pr_ab</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> sp1       -<span style="color: #BB0000; text-decoration: underline;">5</span><span style="color: #BB0000;">541.</span> -<span style="color: #BB0000; text-decoration: underline;">145</span><span style="color: #BB0000;">138.</span>     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> sp1      -<span style="color: #BB0000; text-decoration: underline;">51</span><span style="color: #BB0000;">981.</span>   <span style="text-decoration: underline;">16</span>322.     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">269</span><span style="color: #BB0000;">871.</span>   <span style="text-decoration: underline;">69</span>512.     1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> sp1      -<span style="color: #BB0000; text-decoration: underline;">96</span><span style="color: #BB0000;">261.</span>  -<span style="color: #BB0000; text-decoration: underline;">32</span><span style="color: #BB0000;">008.</span>     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> sp1      <span style="text-decoration: underline;">269</span>589. -<span style="color: #BB0000; text-decoration: underline;">566</span><span style="color: #BB0000;">338.</span>     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> sp1       <span style="text-decoration: underline;">29</span>829. -<span style="color: #BB0000; text-decoration: underline;">328</span><span style="color: #BB0000;">468.</span>     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">152</span><span style="color: #BB0000;">691.</span>  <span style="text-decoration: underline;">393</span>782.     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">195</span><span style="color: #BB0000;">081.</span>  <span style="text-decoration: underline;">253</span>652.     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> sp1        -<span style="color: #BB0000;">951.</span> -<span style="color: #BB0000; text-decoration: underline;">277</span><span style="color: #BB0000;">978.</span>     0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> sp1      <span style="text-decoration: underline;">145</span>929. -<span style="color: #BB0000; text-decoration: underline;">271</span><span style="color: #BB0000;">498.</span>     0</span>
+<span class="co">#&gt; <span style="color: #949494;"># ... with 1,140 more rows</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="geographic-region">Geographic region<a class="anchor" aria-label="anchor" href="#geographic-region"></a>
@@ -550,7 +550,7 @@
 <span class="co">#&gt; 16 records were removed because they have NAs for some variables</span>
 <span class="co">#&gt; Number of unfiltered records: 234</span>
 <span class="co">#&gt; Distance threshold(km): 30</span>
-<span class="co">#&gt; Number of filtered records: 79</span>
+<span class="co">#&gt; Number of filtered records: 78</span>
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Original occurrence data"</span><span class="op">)</span>
