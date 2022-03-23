@@ -116,12 +116,30 @@
 <div class="section level3">
 <h3 id="study-species-overview-of-methods">Study species &amp; overview of methods<a class="anchor" aria-label="anchor" href="#study-species-overview-of-methods"></a>
 </h3>
-<p>Here, we used the <em>flexsdm</em> package to model the current distribution of California red fir (<em>Abies magnifica</em>). Red fir is a high-elevation conifer species that’s geographic range extends through the Sierra Nevada in California, USA, into the southern portion of the Cascade Range of Oregon. For this species, we used presence data compiled from several public datasets curated by natural resources agencies. We built the distribution models using four hydro-climatic variables: actual evapotranspiration, climatic water deficit, maximum temperature of the warmest month, and minimum temperature of the coldest month. All variables were resampled (aggregated) to a 1890 m spatial resolution to improve processing time.</p>
+<p>Here, we used the <em>flexsdm</em> package to model the current
+distribution of California red fir (<em>Abies magnifica</em>). Red fir
+is a high-elevation conifer species that’s geographic range extends
+through the Sierra Nevada in California, USA, into the southern portion
+of the Cascade Range of Oregon. For this species, we used presence data
+compiled from several public datasets curated by natural resources
+agencies. We built the distribution models using four hydro-climatic
+variables: actual evapotranspiration, climatic water deficit, maximum
+temperature of the warmest month, and minimum temperature of the coldest
+month. All variables were resampled (aggregated) to a 1890 m spatial
+resolution to improve processing time.</p>
 </div>
 <div class="section level3">
 <h3 id="delimit-of-a-calibration-area">Delimit of a calibration area<a class="anchor" aria-label="anchor" href="#delimit-of-a-calibration-area"></a>
 </h3>
-<p>Delimiting the calibration area (aka accessible area) is an essential step in SDMs both in methodological and theoretical terms. The calibration area will affect several characteristics of a SDM like the range of environmental variables, the number of absences, the distribution of background points and pseudo-absences, and unfortunately, some performance metrics like AUC and TSS. There are several ways to delimit a calibration area. In <a href="https://sjevelazco.github.io/flexsdm/reference/calib_area.html">calib_area()</a>. We used a method that the calibration area is delimited by a 100-km buffer around presences (shown in the figure below).</p>
+<p>Delimiting the calibration area (aka accessible area) is an essential
+step in SDMs both in methodological and theoretical terms. The
+calibration area will affect several characteristics of a SDM like the
+range of environmental variables, the number of absences, the
+distribution of background points and pseudo-absences, and
+unfortunately, some performance metrics like AUC and TSS. There are
+several ways to delimit a calibration area. In <a href="https://sjevelazco.github.io/flexsdm/reference/calib_area.html">calib_area()</a>.
+We used a method that the calibration area is delimited by a 100-km
+buffer around presences (shown in the figure below).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
@@ -157,8 +175,16 @@
 <div class="section level3">
 <h3 id="occurrence-filtering">Occurrence filtering<a class="anchor" aria-label="anchor" href="#occurrence-filtering"></a>
 </h3>
-<p>Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing redundancy in environmental (e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to <em>flexsdm</em>, and in contrast with other packages is able to use any number of environmental dimensions and does not perform a PCA before filtering.</p>
-<p>Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data</p>
+<p>Sample bias in species occurrence data has long been a recognized
+issue in SDM. However, environmental filtering of observation data can
+improve model predictions by reducing redundancy in environmental
+(e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the
+function occfilt_env() to thin the red fir occurrences based on
+environmental space. This function is unique to <em>flexsdm</em>, and in
+contrast with other packages is able to use any number of environmental
+dimensions and does not perform a PCA before filtering.</p>
+<p>Next we apply environmental occurrence filtering using 8 bins and
+display the resulting filtered occurrence data</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">abies_p</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">abies_p</span><span class="op">)</span> <span class="co"># adding unique id to each row</span>
 <span class="va">abies_pf</span> <span class="op">&lt;-</span> <span class="va">abies_p</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -185,7 +211,20 @@
 <div class="section level3">
 <h3 id="block-partition-with-4-folds">Block partition with 4 folds<a class="anchor" aria-label="anchor" href="#block-partition-with-4-folds"></a>
 </h3>
-<p>Data partitioning, or splitting data into testing and training groups, is a key step in building SDMs. <em>flexsdm</em> offers multiple options for data partitioning and here we use a spatial block method. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The part_sblock() function explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input datset based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each block partition. The function’s output provides users with 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid. Here we want to divide the data into 4 different partitions using the spatial block method.</p>
+<p>Data partitioning, or splitting data into testing and training
+groups, is a key step in building SDMs. <em>flexsdm</em> offers multiple
+options for data partitioning and here we use a spatial block method.
+Geographically structured data partitioning methods are especially
+useful if users want to evaluate model transferability to different
+regions or time periods. The part_sblock() function explores spatial
+blocks with different raster cells sizes and returns the one that is
+best suited for the input datset based on spatial autocorrelation,
+environmental similarity, and the number of presence/absence records in
+each block partition. The function’s output provides users with 1) a
+tibble with presence/absence locations and the assigned partition
+number, 2) a tibble with information about the best partition, and 3) a
+SpatRaster showing the selected grid. Here we want to divide the data
+into 4 different partitions using the spatial block method.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">occ_part</span> <span class="op">&lt;-</span> <span class="va">abies_pf</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -239,9 +278,13 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     14   <span style="text-decoration: underline;">172</span>577.      0.5    173.  24.1</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="pseudo-absencebackground-points-using-partition-previously-created-as-a-mask">Pseudo-absence/background points (using partition previously created as a mask)<a class="anchor" aria-label="anchor" href="#pseudo-absencebackground-points-using-partition-previously-created-as-a-mask"></a>
+<h3 id="pseudo-absencebackground-points-using-partition-previously-created-as-a-mask">Pseudo-absence/background points (using partition previously created
+as a mask)<a class="anchor" aria-label="anchor" href="#pseudo-absencebackground-points-using-partition-previously-created-as-a-mask"></a>
 </h3>
-<p>In this example, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we will use the spatial block partition we just created to generate pseudo-absence and background points.</p>
+<p>In this example, we only have species presence data. However, most
+SDM methods require either pseudo-absence or background data. Here, we
+will use the spatial block partition we just created to generate
+pseudo-absence and background points.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Spatial blocks where species occurs</span>
 <span class="co"># Sample background points throughout study area with random method, allocating 10X the number of presences a background</span>
@@ -317,7 +360,9 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  -<span style="color: #BB0000; text-decoration: underline;">96</span><span style="color: #BB0000;">801.</span>    932.     0     1</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  -<span style="color: #BB0000; text-decoration: underline;">47</span><span style="color: #BB0000;">661.</span> -<span style="color: #BB0000; text-decoration: underline;">31</span><span style="color: #BB0000;">198.</span>     0     1</span>
 <span class="co">#&gt; <span style="color: #949494;"># ... with 2,150 more rows</span></span></code></pre></div>
-<p>Extract environmental data for the presence-absence and background data . View the distributions of present points, pseudo-absence points, and background points using the blocks as a reference map.</p>
+<p>Extract environmental data for the presence-absence and background
+data . View the distributions of present points, pseudo-absence points,
+and background points using the blocks as a reference map.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">abies_pa</span> <span class="op">&lt;-</span> <span class="va">abies_pa</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>
@@ -339,7 +384,21 @@
 <div class="section level3">
 <h3 id="fit-models-with-tune_max-fit_gau-and-third-one">Fit models with tune_max, fit_gau, and third one<a class="anchor" aria-label="anchor" href="#fit-models-with-tune_max-fit_gau-and-third-one"></a>
 </h3>
-<p>Now, fit our models. The <em>flexsdm</em> package offers a wide range of modeling options, from traditional statistical methods like GLMs and GAMs, to machine learning methods like random forests and support vector machines. For each modeling method, <em>flexsdm</em> provides both fit_ and tune_ functions, which allow users to use default settings or adjust hyperparameters depending on their research goals. Here, we will test out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian Process model), and fit_glm (fit Generalized Linear Model). For each model, we selected three threshold values to generate binary suitability predictions: the threshold that maximizes TSS (max_sens_spec), the threshold at which sensitivity and specificity are equal (equal_sens_spec), and the threshold at which the Sorenson index is highest (max_sorenson). In this example, we selected TSS as the performance metric used for selecting the best combination of hyper-parameter values in the tuned Maximum Entropy model.</p>
+<p>Now, fit our models. The <em>flexsdm</em> package offers a wide range
+of modeling options, from traditional statistical methods like GLMs and
+GAMs, to machine learning methods like random forests and support vector
+machines. For each modeling method, <em>flexsdm</em> provides both fit_
+and tune_ functions, which allow users to use default settings or adjust
+hyperparameters depending on their research goals. Here, we will test
+out tune_max() (tuned Maximum Entropy model), fit_gau() (fit Guassian
+Process model), and fit_glm (fit Generalized Linear Model). For each
+model, we selected three threshold values to generate binary suitability
+predictions: the threshold that maximizes TSS (max_sens_spec), the
+threshold at which sensitivity and specificity are equal
+(equal_sens_spec), and the threshold at which the Sorenson index is
+highest (max_sorenson). In this example, we selected TSS as the
+performance metric used for selecting the best combination of
+hyper-parameter values in the tuned Maximum Entropy model.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">t_max</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tune_max.html">tune_max</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">abies_pa</span>,
@@ -395,7 +454,14 @@
 <div class="section level3">
 <h3 id="fit-an-ensemble-model">Fit an ensemble model<a class="anchor" aria-label="anchor" href="#fit-an-ensemble-model"></a>
 </h3>
-<p>Spatial predictions from different SDM algorithms can vary substantially, and ensemble modeling has become increasingly popular. With the fit_ensemble() function, users can easily produce an ensemble SDM based on any of the individual fit_ and tune_ models included the package. In this example, we fit an ensemble model for red fir based on the weighted average of the three individual models. We used the same threshold values and performance metric that were implemented in the individual models.</p>
+<p>Spatial predictions from different SDM algorithms can vary
+substantially, and ensemble modeling has become increasingly popular.
+With the fit_ensemble() function, users can easily produce an ensemble
+SDM based on any of the individual fit_ and tune_ models included the
+package. In this example, we fit an ensemble model for red fir based on
+the weighted average of the three individual models. We used the same
+threshold values and performance metric that were implemented in the
+individual models.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ens_m <span class="ot">&lt;-</span> <span class="fu">fit_ensemble</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(t_max, f_gau, f_glm),</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ens_method =</span> <span class="st">"meanw"</span>,</span>
@@ -420,7 +486,9 @@
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, [39m</span></span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, [39m</span></span>
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt; [39m</span></span></code></pre></div>
-<p>The output of <em>flexsdm</em> model objects allows you to easily compare metrics across models, such as AUC or TSS. For example, we can use the sdm_summarize() function to merge model performance tables.</p>
+<p>The output of <em>flexsdm</em> model objects allows you to easily
+compare metrics across models, such as AUC or TSS. For example, we can
+use the sdm_summarize() function to merge model performance tables.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">t_max</span>, <span class="va">f_gau</span>, <span class="va">f_glm</span>, <span class="va">ens_m</span><span class="op">)</span><span class="op">)</span>
 <span class="va">model_perf</span>
@@ -447,7 +515,15 @@
 <div class="section level3">
 <h3 id="project-the-ensemble-model">Project the ensemble model<a class="anchor" aria-label="anchor" href="#project-the-ensemble-model"></a>
 </h3>
-<p>Next we project the ensemble model in space across the entire extent of our environmental layer, the California Floristic Province, using the sdm_predict() function. This function can be use to predict species suitability across any area for species’ current or future suitability. In this example, we only project the ensemble model with one threshold, though users have the option to project multiple models with multiple threshold values. Here, we also specify that we want the function to return a SpatRast with continuous suitability values above the threshold (con_thr = TRUE).</p>
+<p>Next we project the ensemble model in space across the entire extent
+of our environmental layer, the California Floristic Province, using the
+sdm_predict() function. This function can be use to predict species
+suitability across any area for species’ current or future suitability.
+In this example, we only project the ensemble model with one threshold,
+though users have the option to project multiple models with multiple
+threshold values. Here, we also specify that we want the function to
+return a SpatRast with continuous suitability values above the threshold
+(con_thr = TRUE).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pr_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span>
   models <span class="op">=</span> <span class="va">ens_m</span>,
@@ -468,7 +544,17 @@
 <div class="section level3">
 <h3 id="constrain-the-model-with-msdm_posterior">Constrain the model with msdm_posterior<a class="anchor" aria-label="anchor" href="#constrain-the-model-with-msdm_posterior"></a>
 </h3>
-<p>Finally, <em>flexsdm</em> offers users function that help correct overprediction of SDM based on occurrence records and suitability patterns. In this example we constrained the ensemble model using the method “occurrence based restriction”, which assumes that suitable patches that intercept species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrences. Because all methods of the msdm_posteriori() function work with presences it is important to always use the original database (i.e., presences that have not been spatially or environmentally filtered). All of the methods available in the msdm_posteriori() function are based on Mendes et al. (2020).</p>
+<p>Finally, <em>flexsdm</em> offers users function that help correct
+overprediction of SDM based on occurrence records and suitability
+patterns. In this example we constrained the ensemble model using the
+method “occurrence based restriction”, which assumes that suitable
+patches that intercept species occurrences are more likely a part of
+species distributions than suitable patches that do not intercept any
+occurrences. Because all methods of the msdm_posteriori() function work
+with presences it is important to always use the original database
+(i.e., presences that have not been spatially or environmentally
+filtered). All of the methods available in the msdm_posteriori()
+function are based on Mendes et al. (2020).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">thr_val</span> <span class="op">&lt;-</span> <span class="va">ens_m</span><span class="op">$</span><span class="va">performance</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">threshold</span> <span class="op">==</span> <span class="st">"max_sens_spec"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -489,7 +575,8 @@
 
 <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#FDE725"</span>, <span class="st">"#B3DC2B"</span>, <span class="st">"#6DCC57"</span>, <span class="st">"#36B677"</span>, <span class="st">"#1F9D87"</span>, <span class="st">"#25818E"</span>, <span class="st">"#30678D"</span>, <span class="st">"#3D4988"</span>, <span class="st">"#462777"</span>, <span class="st">"#440154"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">constrained</span>, col<span class="op">=</span><span class="va">cl</span>, legend<span class="op">=</span><span class="cn">FALSE</span>, axes<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p><img src="v04_Red_fir_example_files/figure-html/constrain%20with%20msdm-1.png" width="576"> #=========#=========#=========#=========#=========#=========#=========#</p>
+<p><img src="v04_Red_fir_example_files/figure-html/constrain%20with%20msdm-1.png" width="576">
+#=========#=========#=========#=========#=========#=========#=========#</p>
 <p><strong>Vignette still under construction and changes</strong></p>
 <p>#=========#=========#=========#=========#=========#=========#=========#</p>
 </div>
@@ -508,12 +595,14 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
+<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade,
+Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>

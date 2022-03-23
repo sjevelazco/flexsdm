@@ -101,9 +101,9 @@ Outlier detection can be a useful procedure in occurrence data cleaning (Chapman
     <dl><dt>data</dt>
 <dd><p>data.frame or tibble with presence (or presence-absence) records, and coordinates</p></dd>
 <dt>x</dt>
-<dd><p>character. Column name with longitude data (DOES IT REALLY HAVE TO BE LON / LAT GEOGR COORDINATES OR JUST SAY 'WITH X-CCORDINATE DATA'?)</p></dd>
+<dd><p>character. Column name with longitude data.</p></dd>
 <dt>y</dt>
-<dd><p>character. Column name with latitude data (DITTO -- PROBABLY RHE X,Y HAS TO HAVE THE SAME CRS AS THE SPATRASTER ENV_LAYER...?)</p></dd>
+<dd><p>character. Column name with latitude data.</p></dd>
 <dt>pr_ab</dt>
 <dd><p>character. Column name with presence and absence data (i.e. 1 and 0)</p></dd>
 <dt>id</dt>
@@ -133,7 +133,7 @@ performed. Support Vector Machine and Random Forest are performed with default
 hyper-parameter values. In the case of a species with &lt; 7 occurrences, the function
 will not perform any methods (i.e. the additional columns will have 0 values); nonetheless, it will return a tibble with the additional columns with 0 and 1.
 For further information about these methods, see Chapman (2005), Liu et al. (2018), and Velazco
-et al. (in prep).</p>
+et al. (2022).</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -143,9 +143,9 @@ et al. (in prep).</p>
   Facility, Copenhagen. p72.  http://www.gbif.org/document/80528</p></li>
 <li><p>Liu, C., White, M., &amp; Newell, G. (2018). Detecting outliers in species distribution
   data. Journal of Biogeography, 45(1), 164 - 176. https://doi.org/10.1111/jbi.13122</p></li>
-<li><p>Velazco, S.J.E., Bedrij, N.A., Rojas, J.L., Keller, H.A., &amp; De Marco P. Quantifying
-   the role of protected areas for saveguarding the economic and cultural value of
-    biodiversity (in prep)</p></li>
+<li><p>Velazco, S.J.E.; Bedrij, N.A.; Keller, H.A.; Rojas, J.L.; Ribeiro, B.R.; De Marco, P. (2022)
+  Quantifying the role of protected areas for safeguarding the uses of biodiversity.
+  Biological Conservation, xx(xx) xx-xx. https://doi.org/10.1016/j.biocon.2022.109525</p></li>
 </ul></div>
 
     <div id="ref-examples">
@@ -244,11 +244,13 @@ et al. (in prep).</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
+  <p></p><p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade,
+Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

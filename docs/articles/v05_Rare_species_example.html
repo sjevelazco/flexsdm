@@ -113,14 +113,46 @@
 <div class="section level2">
 <h2 id="intro">Intro<a class="anchor" aria-label="anchor" href="#intro"></a>
 </h2>
-<p>Creating SDMs for rare or poorly known species can be a difficult task. Occurrence data are often limited to only a few observation, which can lead to model overfitting, especially when using many predictor variables to build models. However, researchers are often most interested in building SDMs for rare species, as they are often the most threatened and in need of conservation action.</p>
-<p>To address the issues associated with modeling the spatial distributions of rare species, Lomba et al. (2010) and Breiner et al. (2015) proposed the method “ensemble of small models” or ESM. In ESM, many bivariate models with pairwise combinations of each predictor variable, then an ensemble is performed. In <em>flexsdm</em>, the ensemble is created using the average of suitability across all of the “small models”, weighted by Somers’ D (D = 2 * (AUC-.5)). It is important to note that this method does not allow the use of categorical variables (such as soil type).</p>
-<p>The practical applications of ESMs could include identifying areas for reintroduction of rare species or areas for establishing new populations, especially in the face of climate change. For example, Dubos et al. (2021) used a variation of ESM to identify areas that may remain suitable under climate change for two rare species from Madagascar: the golden mantella frog (<em>Mantella aurantiaca</em>) and the Manapany day gecko (<em>Phelsuma inexpectata</em>).</p>
-<p>In this example, we will walk through the process of comparing ESM to traditional modeling approaches for <em>Hesperocyparis stephensonii</em> (Cuyamaca cypress), a conifer tree species that is endemic to southern California. This species is listed as Critically Endangered by the IUCN and is only found in the headwaters of King Creek in San Diego County. The Cedar Fire of 2003 left only 30-40 surviving trees. In this hypothetical example, we are searching for suitable areas where it might be possible to establish new populations of this species, with the hopes of decreasing the species’ future extinction risk.</p>
+<p>Creating SDMs for rare or poorly known species can be a difficult
+task. Occurrence data are often limited to only a few observation, which
+can lead to model overfitting, especially when using many predictor
+variables to build models. However, researchers are often most
+interested in building SDMs for rare species, as they are often the most
+threatened and in need of conservation action.</p>
+<p>To address the issues associated with modeling the spatial
+distributions of rare species, Lomba et al. (2010) and Breiner et
+al. (2015) proposed the method “ensemble of small models” or ESM. In
+ESM, many bivariate models with pairwise combinations of each predictor
+variable, then an ensemble is performed. In <em>flexsdm</em>, the
+ensemble is created using the average of suitability across all of the
+“small models”, weighted by Somers’ D (D = 2 * (AUC-.5)). It is
+important to note that this method does not allow the use of categorical
+variables (such as soil type).</p>
+<p>The practical applications of ESMs could include identifying areas
+for reintroduction of rare species or areas for establishing new
+populations, especially in the face of climate change. For example,
+Dubos et al. (2021) used a variation of ESM to identify areas that may
+remain suitable under climate change for two rare species from
+Madagascar: the golden mantella frog (<em>Mantella aurantiaca</em>) and
+the Manapany day gecko (<em>Phelsuma inexpectata</em>).</p>
+<p>In this example, we will walk through the process of comparing ESM to
+traditional modeling approaches for <em>Hesperocyparis stephensonii</em>
+(Cuyamaca cypress), a conifer tree species that is endemic to southern
+California. This species is listed as Critically Endangered by the IUCN
+and is only found in the headwaters of King Creek in San Diego County.
+The Cedar Fire of 2003 left only 30-40 surviving trees. In this
+hypothetical example, we are searching for suitable areas where it might
+be possible to establish new populations of this species, with the hopes
+of decreasing the species’ future extinction risk.</p>
 <div class="section level3">
 <h3 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h3>
-<p>For our models, we will use four environmental variables that influence plant distributions in California: available evapotranspiration (aet), climatic water deficit (cwd), maximum temperature of the warmest month (tmx), and minimum temperature of the coldest month (tmn). Our occurrence data include 21 geo-referenced observations downloaded from the online database Calflora.</p>
+<p>For our models, we will use four environmental variables that
+influence plant distributions in California: available
+evapotranspiration (aet), climatic water deficit (cwd), maximum
+temperature of the warmest month (tmx), and minimum temperature of the
+coldest month (tmn). Our occurrence data include 21 geo-referenced
+observations downloaded from the online database Calflora.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
@@ -164,7 +196,10 @@
 <div class="section level3">
 <h3 id="delimit-calibration-area">Delimit calibration area<a class="anchor" aria-label="anchor" href="#delimit-calibration-area"></a>
 </h3>
-<p>First, we must define our model’s calibration area. The <em>flexsdm</em> package offers several methods for defining the model calibration area. Here, we will use 25-km buffer areas around the presence points to select our pseudo-absence locations.</p>
+<p>First, we must define our model’s calibration area. The
+<em>flexsdm</em> package offers several methods for defining the model
+calibration area. Here, we will use 25-km buffer areas around the
+presence points to select our pseudo-absence locations.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
@@ -189,7 +224,10 @@
 <div class="section level3">
 <h3 id="create-pseudo-absence-data">Create pseudo-absence data<a class="anchor" aria-label="anchor" href="#create-pseudo-absence-data"></a>
 </h3>
-<p>As is often the case with rare species, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we use our calibration area to produce pseudo-absence data that can be used in our SDMs.</p>
+<p>As is often the case with rare species, we only have species presence
+data. However, most SDM methods require either pseudo-absence or
+background data. Here, we use our calibration area to produce
+pseudo-absence data that can be used in our SDMs.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># Sample the same number of species presences</span>
@@ -241,7 +279,11 @@
 <div class="section level3">
 <h3 id="partition-data-for-evaluating-models">Partition data for evaluating models<a class="anchor" aria-label="anchor" href="#partition-data-for-evaluating-models"></a>
 </h3>
-<p>To evaluate model performance, we need to specify data for testing and training. <em>flexsdm</em> offers a range of random and spatial and random data partition methods for evaluating SDMs. Here we will use repeated K-fold cross-validation, which is a suitable partition approach for performing ESM.</p>
+<p>To evaluate model performance, we need to specify data for testing
+and training. <em>flexsdm</em> offers a range of random and spatial and
+random data partition methods for evaluating SDMs. Here we will use
+repeated K-fold cross-validation, which is a suitable partition approach
+for performing ESM.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
@@ -256,7 +298,8 @@
 <div class="section level3">
 <h3 id="extracting-environmental-values">Extracting environmental values<a class="anchor" aria-label="anchor" href="#extracting-environmental-values"></a>
 </h3>
-<p>Next, we extract the values of our four environmental predictors at the presence and pseudo-absence locations.</p>
+<p>Next, we extract the values of our four environmental predictors at
+the presence and pseudo-absence locations.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">hespero_pa3</span> <span class="op">&lt;-</span>
@@ -274,7 +317,9 @@
 <div class="section level4">
 <h4 id="standard-models">Standard models<a class="anchor" aria-label="anchor" href="#standard-models"></a>
 </h4>
-<p>First, let’s use three standard algorithms to model the distribution of <em>Hesperocyparis stephensonii</em>: GLM, GBM, and SVM. In this case, we use our calibration area for making our predictions.</p>
+<p>First, let’s use three standard algorithms to model the distribution
+of <em>Hesperocyparis stephensonii</em>: GLM, GBM, and SVM. In this
+case, we use our calibration area for making our predictions.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mglm</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="../reference/fit_glm.html">fit_glm</a></span><span class="op">(</span>
@@ -499,7 +544,9 @@
 <div class="section level4">
 <h4 id="ensemble-of-small-models">Ensemble of small models<a class="anchor" aria-label="anchor" href="#ensemble-of-small-models"></a>
 </h4>
-<p>Now let’s try each of these algorithms with the ESM approach. Note that when predicting an ESM, it is possible to only process one at a time.</p>
+<p>Now let’s try each of these algorithms with the ESM approach. Note
+that when predicting an ESM, it is possible to only process one at a
+time.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>eglm  <span class="ot">&lt;-</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">esm_glm</span>(</span>
@@ -600,7 +647,9 @@
 <div class="section level3">
 <h3 id="comparing-our-models">Comparing our models<a class="anchor" aria-label="anchor" href="#comparing-our-models"></a>
 </h3>
-<p>First, let’s take a look at the spatial predictions for our models. The spatial outputs suggest that the standard models tend to predict broader areas with high suitability values that the ESMs.</p>
+<p>First, let’s take a look at the spatial predictions for our models.
+The spatial outputs suggest that the standard models tend to predict
+broader areas with high suitability values that the ESMs.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
@@ -618,7 +667,13 @@
 <p><img src="v05_Rare_species_example_files/figure-html/comparison%20maps-1.png" width="576"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></code></pre></div>
-<p>Next, we look at some performance metrics for our models, which are based on our repeated k-folds cross-validation partition method. This can be easily done using the “sdm_summarize()” function in <em>flexsdm</em>. Here, we can see that AUC, TSS, and Jaccard index are higher for the ESMs than their corresponding standard model. However, the Boyce index and the Inverse Mean Absolute Error are slightly higher for the standard models.</p>
+<p>Next, we look at some performance metrics for our models, which are
+based on our repeated k-folds cross-validation partition method. This
+can be easily done using the “sdm_summarize()” function in
+<em>flexsdm</em>. Here, we can see that AUC, TSS, and Jaccard index are
+higher for the ESMs than their corresponding standard model. However,
+the Boyce index and the Inverse Mean Absolute Error are slightly higher
+for the standard models.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span>, <span class="va">eglm</span>, <span class="va">egbm</span>, <span class="va">esvm</span><span class="op">)</span><span class="op">)</span>
 
@@ -696,19 +751,38 @@
 <div class="section level3">
 <h3 id="conclusions">Conclusions<a class="anchor" aria-label="anchor" href="#conclusions"></a>
 </h3>
-<p>Modeling decisions are context-dependent and must be made on a case-by-case basis. However, ESM is a useful approach for practitioners who are interested in modeling very rare species and want to avoid common model overfitting issues. As always when producing SDMs for “real-world” applications, it is important to consider spatial prediction patterns along with multiple model performance metrics.</p>
+<p>Modeling decisions are context-dependent and must be made on a
+case-by-case basis. However, ESM is a useful approach for practitioners
+who are interested in modeling very rare species and want to avoid
+common model overfitting issues. As always when producing SDMs for
+“real-world” applications, it is important to consider spatial
+prediction patterns along with multiple model performance metrics.</p>
 </div>
 <div class="section level3">
 <h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li>Lomba, A., L. Pellissier, C. Randin, J. Vicente, F. Moreira, J. Honrado, and A. Guisan. 2010. Overcoming the rare species modelling paradox: A novel hierarchical framework applied to an Iberian endemic plant. Biological conservation 143:2647–2657. <a href="https://doi.org/10.1016/j.biocon.2010.07.007" class="external-link uri">https://doi.org/10.1016/j.biocon.2010.07.007</a>
+<li>Lomba, A., L. Pellissier, C. Randin, J. Vicente, F. Moreira, J.
+Honrado, and A. Guisan. 2010. Overcoming the rare species modelling
+paradox: A novel hierarchical framework applied to an Iberian endemic
+plant. Biological conservation 143:2647–2657. <a href="https://doi.org/10.1016/j.biocon.2010.07.007" class="external-link uri">https://doi.org/10.1016/j.biocon.2010.07.007</a>
 </li>
-<li>Breiner, F. T., Guisan, A., Bergamini, A., &amp; Nobis, M. P. (2015). Overcoming limitations of modelling rare species by using ensembles of small models. Methods in Ecology and Evolution, 6(10), 1210–1218. <a href="https://doi.org/10.1111/2041-210X.12403" class="external-link uri">https://doi.org/10.1111/2041-210X.12403</a>
+<li>Breiner, F. T., Guisan, A., Bergamini, A., &amp; Nobis, M. P.
+(2015). Overcoming limitations of modelling rare species by using
+ensembles of small models. Methods in Ecology and Evolution, 6(10),
+1210–1218. <a href="https://doi.org/10.1111/2041-210X.12403" class="external-link uri">https://doi.org/10.1111/2041-210X.12403</a>
 </li>
-<li>Breiner, F. T., Nobis, M. P., Bergamini, A., &amp; Guisan, A. (2018). Optimizing ensembles of small models for predicting the distribution of species with few occurrences. Methods in Ecology and Evolution, 9(4), 802–808. <a href="https://doi.org/10.1111/2041-210X.12957" class="external-link uri">https://doi.org/10.1111/2041-210X.12957</a>
+<li>Breiner, F. T., Nobis, M. P., Bergamini, A., &amp; Guisan, A.
+(2018). Optimizing ensembles of small models for predicting the
+distribution of species with few occurrences. Methods in Ecology and
+Evolution, 9(4), 802–808. <a href="https://doi.org/10.1111/2041-210X.12957" class="external-link uri">https://doi.org/10.1111/2041-210X.12957</a>
 </li>
-<li>Dubos, N., Montfort, F., Grinand, C., Nourtier, M., Deso, G., Probst, J.-M., Razafimanahaka, J. H., Andriantsimanarilafy, R. R., Rakotondrasoa, E. F., Razafindraibe, P., Jenkins, R., &amp; Crottini, A. (2021). Are narrow-ranging species doomed to extinction? Projected dramatic decline in future climate suitability of two highly threatened species. Perspectives in Ecology and Conservation, S2530064421000894. <a href="https://doi.org/10.1016/j.pecon.2021.10.002" class="external-link uri">https://doi.org/10.1016/j.pecon.2021.10.002</a>
+<li>Dubos, N., Montfort, F., Grinand, C., Nourtier, M., Deso, G.,
+Probst, J.-M., Razafimanahaka, J. H., Andriantsimanarilafy, R. R.,
+Rakotondrasoa, E. F., Razafindraibe, P., Jenkins, R., &amp; Crottini, A.
+(2021). Are narrow-ranging species doomed to extinction? Projected
+dramatic decline in future climate suitability of two highly threatened
+species. Perspectives in Ecology and Conservation, S2530064421000894. <a href="https://doi.org/10.1016/j.pecon.2021.10.002" class="external-link uri">https://doi.org/10.1016/j.pecon.2021.10.002</a>
 </li>
 </ol>
 </div>
@@ -727,12 +801,14 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
+<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade,
+Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>

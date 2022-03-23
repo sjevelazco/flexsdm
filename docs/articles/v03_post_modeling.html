@@ -100,7 +100,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>flexsdm: Overview of Post-modeling functions</h1>
+      <h1 data-toc-skip>flexsdm: Overview of Post-modeling
+functions</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/sjevelazco/flexsdm/blob/HEAD/vignettes/v03_post_modeling.Rmd" class="external-link"><code>vignettes/v03_post_modeling.Rmd</code></a></small>
@@ -113,25 +114,44 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Species distribution modeling (SDM) has become a standard tool in multiple research areas, including ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. SDM is an area of active theoretical and methodological research The <em>flexsdm</em> package provides users the ability to manipulate and parameterize models in a variety of ways that meet their unique research needs.</p>
-<p>This flexibility enables users to define their own complete or partial modeling procedure specific for their modeling situations (e.g., number of variables, number of records, different algorithms and ensemble methods, algorithms tuning, etc.).</p>
-<p>In this vignette, users will learn about the post-modeling set of functions in the <em>flexsdm</em> package. These functions were designed with the aim of assisting the flexsdm user in predicting, evaluating, and correcting SDMs.</p>
-<p>These are the functions created for model prediction, evaluation and correction:</p>
+<p>Species distribution modeling (SDM) has become a standard tool in
+multiple research areas, including ecology, conservation biology,
+biogeography, paleobiogeography, and epidemiology. SDM is an area of
+active theoretical and methodological research The <em>flexsdm</em>
+package provides users the ability to manipulate and parameterize models
+in a variety of ways that meet their unique research needs.</p>
+<p>This flexibility enables users to define their own complete or
+partial modeling procedure specific for their modeling situations (e.g.,
+number of variables, number of records, different algorithms and
+ensemble methods, algorithms tuning, etc.).</p>
+<p>In this vignette, users will learn about the post-modeling set of
+functions in the <em>flexsdm</em> package. These functions were designed
+with the aim of assisting the flexsdm user in predicting, evaluating,
+and correcting SDMs.</p>
+<p>These are the functions created for model prediction, evaluation and
+correction:</p>
 <p><strong>Post-modeling functions</strong></p>
 <ul>
-<li><p>sdm_predict() Spatial predictions from individual and ensemble models</p></li>
+<li><p>sdm_predict() Spatial predictions from individual and ensemble
+models</p></li>
 <li><p>sdm_summarize() Merge model performance tables</p></li>
-<li><p>interp() Raster interpolation between SDM predictions to two time periods</p></li>
+<li><p>interp() Raster interpolation between SDM predictions to two time
+periods</p></li>
 <li><p>extra_eval() Measure model extrapolation</p></li>
-<li><p>extra_correct() Constraint suitability values under a given extrapolation value</p></li>
-<li><p>msdm_priori() Create spatial predictor variables to reduce overprediction from species distribution models</p></li>
-<li><p>msdm_posteriori() Methods to correct overprediction of species distribution models based on occurrences and suitability patterns</p></li>
+<li><p>extra_correct() Constraint suitability values under a given
+extrapolation value</p></li>
+<li><p>msdm_priori() Create spatial predictor variables to reduce
+overprediction from species distribution models</p></li>
+<li><p>msdm_posteriori() Methods to correct overprediction of species
+distribution models based on occurrences and suitability
+patterns</p></li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>Install the flexsdm package. You can install the released version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm" class="external-link">github</a> with:</p>
+<p>Install the flexsdm package. You can install the released version of
+<em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm" class="external-link">github</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
@@ -158,18 +178,30 @@
 <div class="section level2">
 <h2 id="project-directory-setup">Project directory setup<a class="anchor" aria-label="anchor" href="#project-directory-setup"></a>
 </h2>
-<p>Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see <a href="https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html">Vignette 01_pre_modeling</a></p>
+<p>Decide where on your computer you would like to store the inputs and
+outputs of your project (this will be your main directory). Use an
+existing one or use dir.create() to create your main directory. Then
+specify whether or not to include folders for projections, calibration
+areas, algorithms, ensembles, and thresholds. For more details see <a href="https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html">Vignette
+01_pre_modeling</a></p>
 </div>
 <div class="section level2">
 <h2 id="species-occurrence-presenceabsense-and-environmental-data">Species occurrence, presence/absense and environmental data<a class="anchor" aria-label="anchor" href="#species-occurrence-presenceabsense-and-environmental-data"></a>
 </h2>
-<p>In this tutorial, we will be using the “spp” example dataset which includes pr_ab (presence = 1, and absence = 0), location (x, y) data for 3 plant species found in California and a raster with environmental data. You can load these data into your local R environment by using the code below:</p>
+<p>In this tutorial, we will be using the “spp” example dataset which
+includes pr_ab (presence = 1, and absence = 0), location (x, y) data for
+3 plant species found in California and a raster with environmental
+data. You can load these data into your local R environment by using the
+code below:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span>
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
 <span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></code></pre></div>
-<p>If you want to replace the spp dataset with your own data, make sure that contains coordinates, species presence = 1 / absence = 0 and a raster with environmental data.</p>
-<p>First, prepare the occurrences, environmental conditions and partitions</p>
+<p>If you want to replace the spp dataset with your own data, make sure
+that contains coordinates, species presence = 1 / absence = 0 and a
+raster with environmental data.</p>
+<p>First, prepare the occurrences, environmental conditions and
+partitions</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Select only one species</span>
 <span class="va">some_sp</span> <span class="op">&lt;-</span> <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -299,7 +331,9 @@
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
-<p>You can also fit a model using an Ensembles of Small Models approach. In this example, we fit without threshold specification and with k-fold cross-validation.</p>
+<p>You can also fit a model using an Ensembles of Small Models approach.
+In this example, we fit without threshold specification and with k-fold
+cross-validation.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>msmall <span class="ot">&lt;-</span> <span class="fu">esm_gam</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> some_sp,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
@@ -322,7 +356,11 @@
 <span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
 <span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
-<p>Finally, we can predict different kinds of models from the same data (some_sp). <a href="https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html">sdm_predict</a> can be used for predicting one or more models fitted with fit_ or tune_ functions. The output will be a list of SpatRaster with continuous and/or binary predictions.</p>
+<p>Finally, we can predict different kinds of models from the same data
+(some_sp). <a href="https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html">sdm_predict</a>
+can be used for predicting one or more models fitted with fit_ or tune_
+functions. The output will be a list of SpatRaster with continuous
+and/or binary predictions.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Predict using a single model, which is an mglm model in this example,</span>
 <span class="co"># and a threshold type for binary predictions</span>
@@ -464,8 +502,8 @@
 <span class="co">#&gt; sources     : memory  </span>
 <span class="co">#&gt;               memory  </span>
 <span class="co">#&gt; names       :     esm_gam, max_fpb </span>
-<span class="co">#&gt; min values  : 2.05354e-05,    TRUE </span>
-<span class="co">#&gt; max values  :   0.8549874,    TRUE</span>
+<span class="co">#&gt; min values  : 2.22318e-05,    TRUE </span>
+<span class="co">#&gt; max values  :   0.8738847,    TRUE</span>
 
 <span class="co"># Plot to see this layers</span>
 <span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span>
@@ -475,7 +513,10 @@
 <div class="section level3">
 <h3 id="merge-model-performance-tables">2. Merge model performance tables<a class="anchor" aria-label="anchor" href="#merge-model-performance-tables"></a>
 </h3>
-<p>This function combines model performance tables for all input models. This function requires a list of one or more models fitted with fit_ or tune_ functions, a fit_ensemble output, or a esm_ family function output.</p>
+<p>This function combines model performance tables for all input models.
+This function requires a list of one or more models fitted with fit_ or
+tune_ functions, a fit_ensemble output, or a esm_ family function
+output.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Load abies data</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span>
@@ -610,8 +651,17 @@
 <div class="section level3">
 <h3 id="raster-interpolation-between-two-time-periods">3. Raster interpolation between two time periods<a class="anchor" aria-label="anchor" href="#raster-interpolation-between-two-time-periods"></a>
 </h3>
-<p>This function is useful for calculating projected suitability values between two time periods with simple interpolation using two raster objects with suitability values. This is useful if, for example, a SDM has been projected to a future or past time period (using maps of predictor variables, such as climate variables, for different time periods), and the user requires an estimate of suitability for intermediate time periods. For example this may be needed for input into other types of models for risk analysis.</p>
-<p>This function returns a SpatRaster if dir_save is used as NULL. However, if the user specifies dir_save, the function will save the interpolated raster files in a given directory.</p>
+<p>This function is useful for calculating projected suitability values
+between two time periods with simple interpolation using two raster
+objects with suitability values. This is useful if, for example, a SDM
+has been projected to a future or past time period (using maps of
+predictor variables, such as climate variables, for different time
+periods), and the user requires an estimate of suitability for
+intermediate time periods. For example this may be needed for input into
+other types of models for risk analysis.</p>
+<p>This function returns a SpatRaster if dir_save is used as NULL.
+However, if the user specifies dir_save, the function will save the
+interpolated raster files in a given directory.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
@@ -620,7 +670,14 @@
 <span class="va">abma</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">abma</span><span class="op">)</span></code></pre></div>
 <p><img src="v03_post_modeling_files/figure-html/interp_data-1.png" width="576"></p>
-<p>This function will create an object of interpolated values with n annual layers ranging from the initial to final year. The resolution and dimensions of the result object will remain the same as the initial and final maps. In this example, there are nine annual (2011-2019) interpolated maps generated from the initial (2010) and final (2020) prediction maps. A cell with a starting value of 1 and and ending value of 0 would be changed in increments of (1-0)/((2020-2010)-1), and given interpolated values of 0.9, 0.8, 0.7…0.1</p>
+<p>This function will create an object of interpolated values with n
+annual layers ranging from the initial to final year. The resolution and
+dimensions of the result object will remain the same as the initial and
+final maps. In this example, there are nine annual (2011-2019)
+interpolated maps generated from the initial (2010) and final (2020)
+prediction maps. A cell with a starting value of 1 and and ending value
+of 0 would be changed in increments of (1-0)/((2020-2010)-1), and given
+interpolated values of 0.9, 0.8, 0.7…0.1</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">int</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/interp.html">interp</a></span><span class="op">(</span>
   r1 <span class="op">=</span> <span class="va">abma</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="co"># set the raster of initial year</span>
@@ -656,7 +713,9 @@
 <div class="section level3">
 <h3 id="measure-model-extrapolation">4. Measure model extrapolation<a class="anchor" aria-label="anchor" href="#measure-model-extrapolation"></a>
 </h3>
-<p>This function measures the extent of model extrapolation by comparing data used for modeling calibration and the area for model projection using the approach proposed by Velazco et al., in prep.</p>
+<p>This function measures the extent of model extrapolation by comparing
+data used for modeling calibration and the area for model projection
+using the approach proposed by Velazco et al., in prep.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span>
@@ -689,7 +748,8 @@
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 <p><img src="v03_post_modeling_files/figure-html/measure_extrap-1.png" width="576"></p>
-<p>The accessible area defines calibration area used to extract the environmental conditions</p>
+<p>The accessible area defines calibration area used to extract the
+environmental conditions</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">somevar_ca</span> <span class="op">&lt;-</span> <span class="va">somevar</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">ca</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -717,9 +777,17 @@
 </h3>
 </div>
 <div class="section level3">
-<h3 id="create-spatial-predictor-variables-to-reduce-overprediction-of-species-distribution-models">6. Create spatial predictor variables to reduce overprediction of species distribution models<a class="anchor" aria-label="anchor" href="#create-spatial-predictor-variables-to-reduce-overprediction-of-species-distribution-models"></a>
+<h3 id="create-spatial-predictor-variables-to-reduce-overprediction-of-species-distribution-models">6. Create spatial predictor variables to reduce overprediction of
+species distribution models<a class="anchor" aria-label="anchor" href="#create-spatial-predictor-variables-to-reduce-overprediction-of-species-distribution-models"></a>
 </h3>
-<p>This function creates geographical predictor variables that, together with environmental variables, can be used to construct constrained species distribution models. This function returns a SpatRaster object, which have to be used together with environmental variables to construct species distribution models. The ‘xy’ approach creates a single pair of raster layers that can be used for all species that share the same study region. Otherwise, ‘cml’, ‘min’, and ‘ker’ create a species-specific raster layer.</p>
+<p>This function creates geographical predictor variables that, together
+with environmental variables, can be used to construct constrained
+species distribution models. This function returns a SpatRaster object,
+which have to be used together with environmental variables to construct
+species distribution models. The ‘xy’ approach creates a single pair of
+raster layers that can be used for all species that share the same study
+region. Otherwise, ‘cml’, ‘min’, and ‘ker’ create a species-specific
+raster layer.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span>
@@ -793,9 +861,13 @@
 <span class="co">#&gt; max value   :        1</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="methods-to-correct-overprediction-of-species-distribution-models-based-on-occurrences-and-suitability-patterns">7. Methods to correct overprediction of species distribution models based on occurrences and suitability patterns<a class="anchor" aria-label="anchor" href="#methods-to-correct-overprediction-of-species-distribution-models-based-on-occurrences-and-suitability-patterns"></a>
+<h3 id="methods-to-correct-overprediction-of-species-distribution-models-based-on-occurrences-and-suitability-patterns">7. Methods to correct overprediction of species distribution models
+based on occurrences and suitability patterns<a class="anchor" aria-label="anchor" href="#methods-to-correct-overprediction-of-species-distribution-models-based-on-occurrences-and-suitability-patterns"></a>
 </h3>
-<p>These methods are designed to reduce overprediction of species distribution models based on an a posteriori method (see Mendes et al 2020), i.e., the combination of the patterns of species occurrences and predicted suitability.</p>
+<p>These methods are designed to reduce overprediction of species
+distribution models based on an a posteriori method (see Mendes et al
+2020), i.e., the combination of the patterns of species occurrences and
+predicted suitability.</p>
 <p>First, prepare the data</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
@@ -949,12 +1021,14 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
+<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade,
+Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>

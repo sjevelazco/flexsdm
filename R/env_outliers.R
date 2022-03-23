@@ -7,8 +7,8 @@
 #' Outlier detection can be a useful procedure in occurrence data cleaning (Chapman 2005, Liu et al., 2018).
 #'
 #' @param data data.frame or tibble with presence (or presence-absence) records, and coordinates
-#' @param x character. Column name with longitude data (DOES IT REALLY HAVE TO BE LON / LAT GEOGR COORDINATES OR JUST SAY 'WITH X-CCORDINATE DATA'?)
-#' @param y character. Column name with latitude data (DITTO -- PROBABLY RHE X,Y HAS TO HAVE THE SAME CRS AS THE SPATRASTER ENV_LAYER...?)
+#' @param x character. Column name with longitude data.
+#' @param y character. Column name with latitude data.
 #' @param id character. Column name with row id. Each row (record) must have its
 #' own unique code.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
@@ -23,7 +23,7 @@
 #' hyper-parameter values. In the case of a species with < 7 occurrences, the function
 #' will not perform any methods (i.e. the additional columns will have 0 values); nonetheless, it will return a tibble with the additional columns with 0 and 1.
 #' For further information about these methods, see Chapman (2005), Liu et al. (2018), and Velazco
-#' et al. (in prep).
+#' et al. (2022).
 #'
 #' @return A tibble object with the same database used in 'data' argument and with seven additional columns, where 1 and 0 denote that a presence was detected or not as outliers
 #' \itemize{
@@ -44,9 +44,9 @@
 #'   Facility, Copenhagen. p72.  http://www.gbif.org/document/80528
 #'   \item Liu, C., White, M., & Newell, G. (2018). Detecting outliers in species distribution
 #'   data. Journal of Biogeography, 45(1), 164 - 176. https://doi.org/10.1111/jbi.13122
-#'   \item Velazco, S.J.E., Bedrij, N.A., Rojas, J.L., Keller, H.A., & De Marco P. Quantifying
-#'    the role of protected areas for saveguarding the economic and cultural value of
-#'     biodiversity (in prep)
+#'   \item Velazco, S.J.E.; Bedrij, N.A.; Keller, H.A.; Rojas, J.L.; Ribeiro, B.R.; De Marco, P. (2022)
+#'   Quantifying the role of protected areas for safeguarding the uses of biodiversity.
+#'   Biological Conservation, xx(xx) xx-xx. https://doi.org/10.1016/j.biocon.2022.109525
 #'   }
 #'
 #' @export
