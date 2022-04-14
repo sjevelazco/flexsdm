@@ -373,3 +373,45 @@ euc_dist <- function(x, y) {
   colnames(result) <- rownames(y)
   return(result)
 }
+
+#' Moran I, based on ape package
+#'
+#' @noRd
+#'
+morani <- function(x, weight, na.rm = FALSE, scaled = TRUE) {
+  if (dim(weight)[1] != dim(weight)[2]) {
+    stop("'weight' must be a square matrix")
+  }
+  n <- length(x)
+  if (dim(weight)[1] != n) {
+    stop("'weight' must have as many rows as observations in 'x'")
+  }
+  ei <- -1 / (n - 1)
+  nas <- is.na(x)
+  if (any(nas)) {
+    if (na.rm) {
+      x <- x[!nas]
+      n <- length(x)
+      weight <- weight[!nas, !nas]
+    } else {
+      warning("'x' has missing values: maybe you wanted to set na.rm = TRUE?")
+      return(NA)
+    }
+  }
+  rs <- rowSums(weight)
+  rs[rs == 0] <- 1
+  weight <- weight / rs
+  s <- sum(weight)
+  m <- mean(x)
+  y <- x - m
+  cv <- sum(weight * y %o% y)
+  v <- sum(y^2)
+  res <- (n / s) * (cv / v)
+  if (scaled) {
+    imax <- (n / s) * (sd(rowSums(weight) * y) / sqrt(v / (n - 1)))
+    res <- res / imax
+  }
+
+  return(res)
+}
+

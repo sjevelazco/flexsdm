@@ -85,7 +85,6 @@
 #'
 #' @export
 #'
-#' @importFrom ape Moran.I
 #' @importFrom dplyr tibble pull group_by slice_sample select
 #' @importFrom stats complete.cases sd
 #' @importFrom terra extract res ext vect crs extend values ncell cellFromXY geom
@@ -531,11 +530,11 @@ unique list values in pr_ab column are: ",
           data[filt, names(env_layer)],
           function(x) {
             suppressMessages(
-              ape::Moran.I(x,
+              morani(x,
                 dist2,
                 na.rm = TRUE,
                 scaled = TRUE
-              )$observed
+              )
             )
           }
         )

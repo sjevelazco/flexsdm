@@ -56,7 +56,6 @@
 #'
 #' @export
 #'
-#' @importFrom ape Moran.I
 #' @importFrom dplyr tibble
 #' @importFrom spThin thin
 #' @importFrom stats complete.cases prcomp
@@ -195,7 +194,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
       dists2[dists2 > br[i]] <- 0
       dists2 <- as.matrix(dists2)
       diag(dists2) <- 0
-      mor[i] <- abs(ape::Moran.I(x = vals, weight = dists2)$observed)
+      mor[i] <- abs(morani(x = vals, weight = dists2, scaled = TRUE))
     }
 
     if (any(mor <= 0.1)) {
