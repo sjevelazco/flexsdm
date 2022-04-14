@@ -21,7 +21,6 @@ Maintainer: Santiago J.E. Velazco <sjevelazco@gmail.com>
 BugReports: https://github.com/sjevelazco/flexsdm/issues
 Depends: R (>= 3.5.0)
 Imports: 
-    ape,
     doParallel,
     dplyr,
     foreach,

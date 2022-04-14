@@ -79,7 +79,6 @@
 #' }
 #'
 #' @export
-#' @importFrom ape Moran.I
 #' @importFrom dplyr tibble pull bind_cols group_by count mutate filter select slice_sample
 #' @importFrom stats complete.cases kmeans sd
 #' @importFrom terra extract
@@ -281,11 +280,11 @@ unique list values in pr_ab column are: ",
         im <- sapply(
           data[filt, names(env_layer)],
           function(x) {
-            ape::Moran.I(x,
+            morani(x,
               dist2,
               na.rm = TRUE,
               scaled = TRUE
-            )$observed
+            )
           }
         )
         imoran_grid_c[c] <- mean(abs(im))
