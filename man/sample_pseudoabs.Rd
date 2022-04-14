@@ -12,7 +12,8 @@ sample_pseudoabs(
   method,
   rlayer,
   maskval = NULL,
-  calibarea = NULL
+  calibarea = NULL,
+  sp_name = NULL
 )
 }
 \arguments{
@@ -38,9 +39,12 @@ provide a vector for this argument. The methods implemented are:
 \item{rlayer}{SpatRaster. A raster layer used for sampling pseudo-absence
 A layer with the same resolution and extent that environmental variables that will be used for modeling is recommended. In the case use maskval argument, this raster layer must contain the values used to constrain sampling}
 
-\item{maskval}{integer or numeric. Values of the raster layer used for constraining the pseudo-absence sampling}
+\item{maskval}{integer, character, or factor. Values of the raster layer used for constraining the pseudo-absence sampling}
 
 \item{calibarea}{SpatVector A SpatVector which delimit the calibration area used for a given species (see \code{\link{calib_area}} function).}
+
+\item{sp_name}{character. Species name for which the output will be used.
+If this argument is used, the first output column will have the species name. Default NULL.}
 }
 \value{
 A tibble object with x y coordinates of sampled pseudo-absence points
@@ -80,11 +84,12 @@ ps1 <-
     n = nrow(single_spp) * 10,
     method = "random",
     rlayer = regions,
-    maskval = NULL
+    maskval = NULL,
+    sp_name = "sp3"
   )
 plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19) # presences
-points(ps1, col = "red", cex = 0.7, pch = 19) # absences
+points(ps1[-1], col = "red", cex = 0.7, pch = 19) # absences
 
 
 # Pseudo-absences randomly sampled within a regions where a species occurs
