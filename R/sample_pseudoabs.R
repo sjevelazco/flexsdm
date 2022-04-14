@@ -20,8 +20,10 @@
 #'
 #' @param rlayer SpatRaster. A raster layer used for sampling pseudo-absence
 #' A layer with the same resolution and extent that environmental variables that will be used for modeling is recommended. In the case use maskval argument, this raster layer must contain the values used to constrain sampling
-#' @param maskval integer or numeric. Values of the raster layer used for constraining the pseudo-absence sampling
+#' @param maskval integer, character, or factor. Values of the raster layer used for constraining the pseudo-absence sampling
 #' @param calibarea SpatVector A SpatVector which delimit the calibration area used for a given species (see \code{\link{calib_area}} function).
+#' @param sp_name character. Species name for which the output will be used.
+#' If this argument is used, the first output column will have the species name. Default NULL.
 #'
 #' @importFrom dplyr %>% select mutate
 #' @importFrom stats na.exclude kmeans
@@ -64,11 +66,12 @@
 #'     n = nrow(single_spp) * 10,
 #'     method = "random",
 #'     rlayer = regions,
-#'     maskval = NULL
+#'     maskval = NULL,
+#'     sp_name = "sp3"
 #'   )
 #' plot(regions, col = gray.colors(9))
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19) # presences
-#' points(ps1, col = "red", cex = 0.7, pch = 19) # absences
+#' points(ps1[-1], col = "red", cex = 0.7, pch = 19) # absences
 #'
 #'
 #' # Pseudo-absences randomly sampled within a regions where a species occurs
@@ -198,7 +201,7 @@
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' }
-sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, calibarea = NULL) {
+sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, calibarea = NULL, sp_name = NULL) {
   . <- ID <- NULL
 
   if (!any(c(
@@ -316,7 +319,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     if (!is.null(maskval)) {
       if (is.factor(maskval)) {
         maskval <-
-          which(levels(maskval)[-1] %in% as.character(maskval))
+          which(levels(maskval) %in% as.character(maskval))
         rlayer <- rlayer * 1
       }
       filt <- terra::match(rlayer, maskval)
@@ -342,5 +345,8 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     cell_samp$pr_ab <- 0
   }
   colnames(cell_samp) <- c(x, y, "pr_ab")
+  if(!is.null(sp_name)){
+    cell_samp <- tibble(sp=sp_name, cell_samp)
+  }
   return(cell_samp)
 }

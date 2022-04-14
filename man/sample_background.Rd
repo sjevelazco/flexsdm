@@ -13,7 +13,8 @@ sample_background(
   rlayer,
   maskval = NULL,
   calibarea = NULL,
-  rbias = NULL
+  rbias = NULL,
+  sp_name = NULL
 )
 }
 \arguments{
@@ -48,7 +49,7 @@ It is best to use a layer with the same resolution and extent that environmental
 will be used for modeling. If using maskval argument, this raster layer must contain the values
  to constrain sampling}
 
-\item{maskval}{integer or numeric. Values of the raster layer used for constraining sampling of
+\item{maskval}{integer, character, or factor. Values of the raster layer used for constraining sampling of
 background points}
 
 \item{calibarea}{SpatVect that delimits the calibration area used for a given species
@@ -57,6 +58,9 @@ background points}
 \item{rbias}{SpatRaster used for choosing background points using the bias method. A raster
 with bias data must be provided. It is recommended that rbias match resolution and extent
 of rlayer.}
+
+\item{sp_name}{character. Species name for which the output will be used.
+If this argument is used, the first output column will have the species name. Default NULL.}
 }
 \value{
 A tibble object with x y coordinates of sampled background points
@@ -72,10 +76,10 @@ data(spp)
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
-# Exampe for a single species
+# Example for a single species
 spp_pa <- spp \%>\% dplyr::filter(species == "sp3")
 
-#
+# Spatially structured partition
 part <- part_sblock(
   env_layer = somevar,
   data = spp_pa,
@@ -108,10 +112,13 @@ bg <-
     y = "y",
     n = 1000,
     method = "random",
-    rlayer = grid_env
+    rlayer = grid_env,
+    sp_name = "sp3"
   )
+
+bg
 plot(grid_env)
-points(bg)
+points(bg[-1])
 
 # Sample random background points constrained to a region with a give set of values
 plot(grid_env)
