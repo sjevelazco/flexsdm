@@ -2,6 +2,7 @@
 [![R-CMD-check](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://codecov.io/gh/sjevelazco/flexsdm)
 [![DOI](https://zenodo.org/badge/354032642.svg)](https://zenodo.org/badge/latestdoi/354032642)
+[![DOI](https://img.shields.io/badge/DOI-10.1111%2F2041--210X.13874-orange)](https://doi.org/10.1111/2041-210X.13874)
 
 
 # flexsdm
