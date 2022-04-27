@@ -35,7 +35,7 @@ occurrences; thus, for each species, a value of buffer width will be calculated
 
 \item{method}{character. A character string indicating which constraint method will be used.}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1), needed for
+\item{thr}{character or numeric. Threshold used to get binary suitability values (i.e. 0,1), needed for
 threshold-dependent performance metrics. Only one threshold type can be specified. It is
 necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{
@@ -50,7 +50,8 @@ necessary to provide a vector for this argument. The following threshold criteri
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to
   sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
   }
-Default "equal_sens_spec".}
+  Also, it is possible specifying the threshold value using a numeric values (thr = 0.623).
+  Default "equal_sens_spec".}
 
 \item{buffer}{numeric. Buffer width use in 'bmcp' approach. The buffer width will be
 interpreted in m if Coordinate reference system used in "crs" argument has a longitude/latitude, or map units in other
@@ -155,11 +156,14 @@ m_glm <- fit_glm(
   thr = "equal_sens_spec",
 )
 
+
 # Lets predict this model
 m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
 plot(m_pred[[1]])
 m_pred[[1]] \%>\% plot()
 
+# Lets extract the raster from this list
+m_pred <- m_pred[[1]]
 
 ### bmcp method
 m_bmcp <- msdm_posteriori(
@@ -168,7 +172,7 @@ m_bmcp <- msdm_posteriori(
   y = "y",
   pr_ab = "pr_ab",
   method = "bmcp",
-  cont_suit = m_pred[[1]],
+  cont_suit = m_pred,
   thr = "equal_sens_spec",
   buffer = 30000,
   crs=crs(m_pred)
@@ -184,7 +188,7 @@ m_mcp <- msdm_posteriori(
   y = "y",
   pr_ab = "pr_ab",
   method = "mcp",
-  cont_suit = m_pred[[1]],
+  cont_suit = m_pred,
   thr = "equal_sens_spec",
   buffer = NULL
 )
@@ -199,7 +203,7 @@ m_pres <- msdm_posteriori(
   y = "y",
   pr_ab = "pr_ab",
   method = "pres",
-  cont_suit = m_pred[[1]],
+  cont_suit = m_pred,
   thr = "equal_sens_spec",
   buffer = NULL
 )
@@ -214,7 +218,7 @@ m_lq <- msdm_posteriori(
   y = "y",
   pr_ab = "pr_ab",
   method = "lq",
-  cont_suit = m_pred[[1]],
+  cont_suit = m_pred,
   thr = "equal_sens_spec",
   buffer = NULL
 )
@@ -229,7 +233,7 @@ m_obr <- msdm_posteriori(
   y = "y",
   pr_ab = "pr_ab",
   method = "obr",
-  cont_suit = m_pred[[1]],
+  cont_suit = m_pred,
   thr = "equal_sens_spec",
   buffer = NULL
 )

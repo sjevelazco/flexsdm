@@ -10,7 +10,7 @@
 #' @param y character. Column name with spatial y coordinates.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
 #' @param method character. A character string indicating which constraint method will be used.
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for
+#' @param thr character or numeric. Threshold used to get binary suitability values (i.e. 0,1), needed for
 #' threshold-dependent performance metrics. Only one threshold type can be specified. It is
 #' necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
@@ -25,7 +25,9 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to
 #'   sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   }
-#' Default "equal_sens_spec".
+#'   Also, it is possible specifying the threshold value using a numeric values (thr = 0.623).
+#'   Default "equal_sens_spec".
+#'
 #' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be
 #' interpreted in m if Coordinate reference system used in "crs" argument has a longitude/latitude, or map units in other
 #' cases. Usage buffer=50000. Default NULL
@@ -146,11 +148,14 @@
 #'   thr = "equal_sens_spec",
 #' )
 #'
+#'
 #' # Lets predict this model
 #' m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
 #' plot(m_pred[[1]])
 #' m_pred[[1]] %>% plot()
 #'
+#' # Lets extract the raster from this list
+#' m_pred <- m_pred[[1]]
 #'
 #' ### bmcp method
 #' m_bmcp <- msdm_posteriori(
@@ -159,7 +164,7 @@
 #'   y = "y",
 #'   pr_ab = "pr_ab",
 #'   method = "bmcp",
-#'   cont_suit = m_pred[[1]],
+#'   cont_suit = m_pred,
 #'   thr = "equal_sens_spec",
 #'   buffer = 30000,
 #'   crs=crs(m_pred)
@@ -175,7 +180,7 @@
 #'   y = "y",
 #'   pr_ab = "pr_ab",
 #'   method = "mcp",
-#'   cont_suit = m_pred[[1]],
+#'   cont_suit = m_pred,
 #'   thr = "equal_sens_spec",
 #'   buffer = NULL
 #' )
@@ -190,7 +195,7 @@
 #'   y = "y",
 #'   pr_ab = "pr_ab",
 #'   method = "pres",
-#'   cont_suit = m_pred[[1]],
+#'   cont_suit = m_pred,
 #'   thr = "equal_sens_spec",
 #'   buffer = NULL
 #' )
@@ -205,7 +210,7 @@
 #'   y = "y",
 #'   pr_ab = "pr_ab",
 #'   method = "lq",
-#'   cont_suit = m_pred[[1]],
+#'   cont_suit = m_pred,
 #'   thr = "equal_sens_spec",
 #'   buffer = NULL
 #' )
@@ -220,7 +225,7 @@
 #'   y = "y",
 #'   pr_ab = "pr_ab",
 #'   method = "obr",
-#'   cont_suit = m_pred[[1]],
+#'   cont_suit = m_pred,
 #'   thr = "equal_sens_spec",
 #'   buffer = NULL
 #' )
@@ -245,24 +250,27 @@ msdm_posteriori <- function(records,
   if (method == "bmcp" & is.null(crs)) {
     stop("If 'bmcp' method is used, a coordinate reference system is needed in 'crs' agument")
   }
-  if (any(
-    thr[1] == c(
-      "lpt",
-      "equal_sens_spec",
-      "max_sens_spec",
-      "max_jaccard",
-      "max_sorensen",
-      "max_fpb",
-      "sensitivity"
-    )
-  ) == FALSE) {
-    stop(
-      "'thr' argument have to be supplied with one of the next values:
+  if(is.character(thr)){
+    if (any(
+      thr[1] == c(
+        "lpt",
+        "equal_sens_spec",
+        "max_sens_spec",
+        "max_jaccard",
+        "max_sorensen",
+        "max_fpb",
+        "sensitivity"
+      )
+    ) == FALSE) {
+      stop(
+        "'thr' argument have to be supplied with one of the next values:
       'lpt', 'equal_sens_spec', 'max_sens_spec',
       'max_jaccard', 'max_sorensen', 'max_fpb',
       'sensitivity'"
-    )
+      )
+    }
   }
+
 
 
   #### prepare data sets
@@ -280,22 +288,27 @@ msdm_posteriori <- function(records,
   colnames(records) <- c("pr_ab", "x", "y")
 
   # Extract values for one species and calculate the threshold
-  suit_point <- terra::extract(cont_suit, records[, c("x", "y")])[, 2]
-  suit_point <-
-    records %>%
-    dplyr::mutate(suit_point)
-
-  if (thr[1] == "sensitivity") {
-    thr_2 <- as.numeric(thr[2])
+  if(!is.character(thr)){
+    thr_2 <- thr
   } else {
-    eval <-
-      sdm_eval(
-        p = suit_point[suit_point$pr_ab == 1, ] %>% dplyr::pull(suit_point),
-        a = suit_point[suit_point$pr_ab == 0, ] %>% dplyr::pull(suit_point),
-        thr = thr
-      )
-    thr_2 <- eval %>% dplyr::pull(thr_value)
+    suit_point <- terra::extract(cont_suit, records[, c("x", "y")])[, 2]
+    suit_point <-
+      records %>%
+      dplyr::mutate(suit_point)
+
+    if (thr[1] == "sensitivity") {
+      thr_2 <- as.numeric(thr[2])
+    } else {
+      eval <-
+        sdm_eval(
+          p = suit_point[suit_point$pr_ab == 1, ] %>% dplyr::pull(suit_point),
+          a = suit_point[suit_point$pr_ab == 0, ] %>% dplyr::pull(suit_point),
+          thr = thr
+        )
+      thr_2 <- eval %>% dplyr::pull(thr_value)
+    }
   }
+
 
 
   records <- records %>%
