@@ -3,4 +3,5 @@
 - New argument "crs" added to function `msdm_posteriori`
 - New argument "sp_name" in `sample_background` and `sample_pseudoabs`
 - raster, flexclust, ape, and sp were removed from dependencies  
-- Functions using CRS data have improved codes 
+- Functions using CRS data have improved codes
+- It is possible use a numeric value to specify threshold in msdm_posteriori 
