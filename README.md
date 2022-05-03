@@ -111,6 +111,9 @@ devtools::install_github("sjevelazco/flexsdm@HEAD")
 
 See the package website (<https://sjevelazco.github.io/flexsdm/>) for functions explanation and vignettes.
 
+### Package citation
 
+Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). flexsdm: An R package for supporting a comprehensive and flexible species distribution modelling workflow. Methods in Ecology and Evolution, 13() 2041-210X.13874. https://doi.org/10.1111/2041-210X.13874
+  
 > Test the package and give us your feedback [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail to sjevelazco@gmail.com.
 

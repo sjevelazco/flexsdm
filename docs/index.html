@@ -109,43 +109,27 @@
 <div class="section level3">
 <h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h3>
-<p>Species distribution modeling has become a standard tool in several
-research areas such as ecology, conservation biology, biogeography,
-paleobiogeography, and epidemiology. Species distribution modeling is an
-area of active research in both theoretical and methodological aspects.
-One of the most exciting features of <strong>flexsdm</strong> is its
-high manipulation and parametrization capacity based on different
-functions and arguments. These attributes enable users to define a
-complete or partial modeling workflow specific for a modeling situation
-(e.g., number of variables, number of records, different algorithms,
-algorithms tuning, ensemble methods).</p>
+<p>Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. One of the most exciting features of <strong>flexsdm</strong> is its high manipulation and parametrization capacity based on different functions and arguments. These attributes enable users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).</p>
 </div>
 <div class="section level3">
 <h3 id="structure-of-flexsdm">Structure of flexsdm<a class="anchor" aria-label="anchor" href="#structure-of-flexsdm"></a>
 </h3>
-<p>The function of <strong>flexsdm</strong> package are organized into
-three major modeling steps</p>
+<p>The function of <strong>flexsdm</strong> package are organized into three major modeling steps</p>
 <p><a href="https://sjevelazco.github.io/flexsdm"><img src="https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.svg" align="centre" height="550"></a></p>
 </div>
 <div class="section level3">
 <h3 id="1-pre-modeling-functions">1. Pre-modeling functions<a class="anchor" aria-label="anchor" href="#1-pre-modeling-functions"></a>
 </h3>
-<p>Set tools that prepare modeling input data (e.g., species occurrences
-thinning, sample pseudo-absences or background points, delimitation of
-calibration area).</p>
+<p>Set tools that prepare modeling input data (e.g., species occurrences thinning, sample pseudo-absences or background points, delimitation of calibration area).</p>
 <ul>
 <li>
-<code><a href="reference/calib_area.html">calib_area()</a></code> Delimit calibration area for constructing
-species distribution models</li>
+<code><a href="reference/calib_area.html">calib_area()</a></code> Delimit calibration area for constructing species distribution models</li>
 <li>
-<code><a href="reference/correct_colinvar.html">correct_colinvar()</a></code> Collinearity reduction on
-predictors</li>
+<code><a href="reference/correct_colinvar.html">correct_colinvar()</a></code> Collinearity reduction on predictors</li>
 <li>
-<code><a href="reference/env_outliers.html">env_outliers()</a></code> Integration of outliers detection
-methods in the environmental space</li>
+<code><a href="reference/env_outliers.html">env_outliers()</a></code> Integration of outliers detection methods in the environmental space</li>
 <li>
-<code><a href="reference/part_random.html">part_random()</a></code> Data partitioning for training and
-testing models</li>
+<code><a href="reference/part_random.html">part_random()</a></code> Data partitioning for training and testing models</li>
 <li>
 <code><a href="reference/part_sblock.html">part_sblock()</a></code> Spatial block cross validation</li>
 <li>
@@ -153,46 +137,33 @@ testing models</li>
 <li>
 <code><a href="reference/part_senv.html">part_senv()</a></code> Environmental cross-validation</li>
 <li>
-<code><a href="reference/plot_res.html">plot_res()</a></code> Plot different resolutions to be used in
-part_sblock</li>
+<code><a href="reference/plot_res.html">plot_res()</a></code> Plot different resolutions to be used in part_sblock</li>
 <li>
-<code><a href="reference/get_block.html">get_block()</a></code> Transform a spatial partition layer to the
-same spatial properties of environmental variables</li>
+<code><a href="reference/get_block.html">get_block()</a></code> Transform a spatial partition layer to the same spatial properties of environmental variables</li>
 <li>
 <code><a href="reference/sample_background.html">sample_background()</a></code> Sample background points</li>
 <li>
 <code><a href="reference/sample_pseudoabs.html">sample_pseudoabs()</a></code> Sampel pseudo-absence</li>
 <li>
-<code><a href="reference/sdm_directory.html">sdm_directory()</a></code> Create directories for saving the
-outputs of the flexsdm</li>
+<code><a href="reference/sdm_directory.html">sdm_directory()</a></code> Create directories for saving the outputs of the flexsdm</li>
 <li>
-<code><a href="reference/sdm_extract.html">sdm_extract()</a></code> Extract environmental data based on x and
-y coordinates</li>
+<code><a href="reference/sdm_extract.html">sdm_extract()</a></code> Extract environmental data based on x and y coordinates</li>
 <li>
-<code><a href="reference/occfilt_env.html">occfilt_env()</a></code> Perform environmental filtering on
-species occurrences</li>
+<code><a href="reference/occfilt_env.html">occfilt_env()</a></code> Perform environmental filtering on species occurrences</li>
 <li>
-<code><a href="reference/occfilt_geo.html">occfilt_geo()</a></code> Perform geographical filtering on species
-occurrences</li>
+<code><a href="reference/occfilt_geo.html">occfilt_geo()</a></code> Perform geographical filtering on species occurrences</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="2-modeling-functions">2. Modeling functions<a class="anchor" aria-label="anchor" href="#2-modeling-functions"></a>
 </h3>
-<p>It includes functions related to modeling construction and
-validation. Several of them can be grouped into <code>fit_*</code>,
-<code>tune_*</code>, and <code>esm_*</code> family functions.
-<code>fit_*</code> construct and validate models with default
-hyper-parameter values. <code>tune_*</code> construct and validate
-models searching for the best hyper-parameter values combination.
-<code>esm_</code> construct and validate Ensemble of Small Models.</p>
+<p>It includes functions related to modeling construction and validation. Several of them can be grouped into <code>fit_*</code>, <code>tune_*</code>, and <code>esm_*</code> family functions. <code>fit_*</code> construct and validate models with default hyper-parameter values. <code>tune_*</code> construct and validate models searching for the best hyper-parameter values combination. <code>esm_</code> construct and validate Ensemble of Small Models.</p>
 <div class="section level4">
 <h4 id="model-evaluation">Model evaluation<a class="anchor" aria-label="anchor" href="#model-evaluation"></a>
 </h4>
 <ul>
 <li>
-<code><a href="reference/sdm_eval.html">sdm_eval()</a></code> Calculate different model performance
-metrics</li>
+<code><a href="reference/sdm_eval.html">sdm_eval()</a></code> Calculate different model performance metrics</li>
 </ul>
 </div>
 <div class="section level4">
@@ -201,16 +172,13 @@ metrics</li>
 </h4>
 <ul>
 <li>
-<code><a href="reference/fit_gam.html">fit_gam()</a></code> Fit and validate Generalized Additive
-Models</li>
+<code><a href="reference/fit_gam.html">fit_gam()</a></code> Fit and validate Generalized Additive Models</li>
 <li>
 <code><a href="reference/fit_gau.html">fit_gau()</a></code> Fit and validate Gaussian Process models</li>
 <li>
-<code><a href="reference/fit_gbm.html">fit_gbm()</a></code> Fit and validate Generalized Boosted
-Regression models</li>
+<code><a href="reference/fit_gbm.html">fit_gbm()</a></code> Fit and validate Generalized Boosted Regression models</li>
 <li>
-<code><a href="reference/fit_glm.html">fit_glm()</a></code> Fit and validate Generalized Linear
-Models</li>
+<code><a href="reference/fit_glm.html">fit_glm()</a></code> Fit and validate Generalized Linear Models</li>
 <li>
 <code><a href="reference/fit_max.html">fit_max()</a></code> Fit and validate Maximum Entropy models</li>
 <li>
@@ -218,8 +186,7 @@ Models</li>
 <li>
 <code><a href="reference/fit_raf.html">fit_raf()</a></code> Fit and validate Random Forest models</li>
 <li>
-<code><a href="reference/fit_svm.html">fit_svm()</a></code> Fit and validate Support Vector Machine
-models</li>
+<code><a href="reference/fit_svm.html">fit_svm()</a></code> Fit and validate Support Vector Machine models</li>
 </ul>
 </div>
 <div class="section level4">
@@ -228,20 +195,15 @@ models</li>
 </h4>
 <ul>
 <li>
-<code><a href="reference/tune_gbm.html">tune_gbm()</a></code> Fit and validate Generalized Boosted
-Regression models with exploration of hyper-parameters</li>
+<code><a href="reference/tune_gbm.html">tune_gbm()</a></code> Fit and validate Generalized Boosted Regression models with exploration of hyper-parameters</li>
 <li>
-<code><a href="reference/tune_max.html">tune_max()</a></code> Fit and validate Maximum Entropy models with
-exploration of hyper-parameters</li>
+<code><a href="reference/tune_max.html">tune_max()</a></code> Fit and validate Maximum Entropy models with exploration of hyper-parameters</li>
 <li>
-<code><a href="reference/tune_net.html">tune_net()</a></code> Fit and validate Neural Networks models with
-exploration of hyper-parameters</li>
+<code><a href="reference/tune_net.html">tune_net()</a></code> Fit and validate Neural Networks models with exploration of hyper-parameters</li>
 <li>
-<code><a href="reference/tune_raf.html">tune_raf()</a></code> Fit and validate Random Forest models with
-exploration of hyper-parameters</li>
+<code><a href="reference/tune_raf.html">tune_raf()</a></code> Fit and validate Random Forest models with exploration of hyper-parameters</li>
 <li>
-<code><a href="reference/tune_svm.html">tune_svm()</a></code> Fit and validate Support Vector Machine
-models with exploration of hyper-parameters</li>
+<code><a href="reference/tune_svm.html">tune_svm()</a></code> Fit and validate Support Vector Machine models with exploration of hyper-parameters</li>
 </ul>
 </div>
 <div class="section level4">
@@ -249,8 +211,7 @@ models with exploration of hyper-parameters</li>
 </h4>
 <ul>
 <li>
-<code><a href="reference/fit_ensemble.html">fit_ensemble()</a></code> Fit and validate ensemble models with
-different ensemble methods</li>
+<code><a href="reference/fit_ensemble.html">fit_ensemble()</a></code> Fit and validate ensemble models with different ensemble methods</li>
 </ul>
 </div>
 <div class="section level4">
@@ -259,68 +220,48 @@ different ensemble methods</li>
 </h4>
 <ul>
 <li>
-<code><a href="reference/esm_gam.html">esm_gam()</a></code> Fit and validate Generalized Additive Models
-with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_gam.html">esm_gam()</a></code> Fit and validate Generalized Additive Models with Ensemble of Small Model approach</li>
 <li>
-<code><a href="reference/esm_gau.html">esm_gau()</a></code> Fit and validate Gaussian Process models
-Models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_gau.html">esm_gau()</a></code> Fit and validate Gaussian Process models Models with Ensemble of Small Model approach</li>
 <li>
-<code><a href="reference/esm_gbm.html">esm_gbm()</a></code> Fit and validate Generalized Boosted
-Regression models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_gbm.html">esm_gbm()</a></code> Fit and validate Generalized Boosted Regression models with Ensemble of Small Model approach</li>
 <li>
-<code><a href="reference/esm_glm.html">esm_glm()</a></code> Fit and validate Generalized Linear Models
-with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_glm.html">esm_glm()</a></code> Fit and validate Generalized Linear Models with Ensemble of Small Model approach</li>
 <li>
-<code><a href="reference/esm_max.html">esm_max()</a></code> Fit and validate Maximum Entropy models with
-Ensemble of Small Model approach</li>
+<code><a href="reference/esm_max.html">esm_max()</a></code> Fit and validate Maximum Entropy models with Ensemble of Small Model approach</li>
 <li>
-<code><a href="reference/esm_net.html">esm_net()</a></code> Fit and validate Neural Networks models with
-Ensemble of Small Model approach</li>
+<code><a href="reference/esm_net.html">esm_net()</a></code> Fit and validate Neural Networks models with Ensemble of Small Model approach</li>
 <li>
-<code><a href="reference/esm_svm.html">esm_svm()</a></code> Fit and validate Support Vector Machine
-models with Ensemble of Small Model approach</li>
+<code><a href="reference/esm_svm.html">esm_svm()</a></code> Fit and validate Support Vector Machine models with Ensemble of Small Model approach</li>
 </ul>
 </div>
 </div>
 <div class="section level3">
 <h3 id="3-post-modeling-functions">3. Post-modeling functions<a class="anchor" aria-label="anchor" href="#3-post-modeling-functions"></a>
 </h3>
-<p>Tools related to models’ geographical predictions, evaluation, and
-correction.</p>
+<p>Tools related to models’ geographical predictions, evaluation, and correction.</p>
 <ul>
 <li>
-<code><a href="reference/sdm_predict.html">sdm_predict()</a></code> Spatial predictions of individual and
-ensemble model</li>
+<code><a href="reference/sdm_predict.html">sdm_predict()</a></code> Spatial predictions of individual and ensemble model</li>
 <li>
 <code><a href="reference/sdm_summarize.html">sdm_summarize()</a></code> Merge model performance tables</li>
 <li>
-<code><a href="reference/interp.html">interp()</a></code> Raster interpolation between two time
-periods</li>
+<code><a href="reference/interp.html">interp()</a></code> Raster interpolation between two time periods</li>
 <li>
 <code><a href="reference/extra_eval.html">extra_eval()</a></code> Measure model extrapolation</li>
 <li>
-<code><a href="reference/extra_exclude.html">extra_exclude()</a></code> Constraint suitability values under a
-given extrapolation value</li>
+<code><a href="reference/extra_exclude.html">extra_exclude()</a></code> Constraint suitability values under a given extrapolation value</li>
 <li>
-<code><a href="reference/msdm_priori.html">msdm_priori()</a></code> Create spatial predictor variables to
-reduce overprediction of species distribution models</li>
+<code><a href="reference/msdm_priori.html">msdm_priori()</a></code> Create spatial predictor variables to reduce overprediction of species distribution models</li>
 <li>
-<code><a href="reference/msdm_posteriori.html">msdm_posteriori()</a></code> Methods to correct overprediction of
-species distribution models based on occurrences and suitability
-patterns.</li>
+<code><a href="reference/msdm_posteriori.html">msdm_posteriori()</a></code> Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<p>You can install the development version of <strong>flexsdm</strong>
-from <a href="https://github.com/sjevelazco/flexsdm" class="external-link">github</a></p>
-<p><span class="emoji" data-emoji="warning">⚠️</span> NOTE: The version
-1.4-22 of <strong>terra</strong> package is causing errors when trying
-to instal <strong>flexsdm</strong>. Please, first install a version ≥
-1.5-12 of <strong>terra</strong> package available on CRAN or
-development version of <a href="https://github.com/rspatial/terra" class="external-link">terra</a> and then
-<strong>flexsdm</strong>.</p>
+<p>You can install the development version of <strong>flexsdm</strong> from <a href="https://github.com/sjevelazco/flexsdm" class="external-link">github</a></p>
+<p><span class="emoji" data-emoji="warning">⚠️</span> NOTE: The version 1.4-22 of <strong>terra</strong> package is causing errors when trying to instal <strong>flexsdm</strong>. Please, first install a version ≥ 1.5-12 of <strong>terra</strong> package available on CRAN or development version of <a href="https://github.com/rspatial/terra" class="external-link">terra</a> and then <strong>flexsdm</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 
@@ -333,11 +274,14 @@ development version of <a href="https://github.com/rspatial/terra" class="extern
 <div class="section level3">
 <h3 id="package-website">Package website<a class="anchor" aria-label="anchor" href="#package-website"></a>
 </h3>
-<p>See the package website (<a href="https://sjevelazco.github.io/flexsdm/" class="uri">https://sjevelazco.github.io/flexsdm/</a>) for functions
-explanation and vignettes.</p>
+<p>See the package website (<a href="https://sjevelazco.github.io/flexsdm/" class="uri">https://sjevelazco.github.io/flexsdm/</a>) for functions explanation and vignettes.</p>
+</div>
+<div class="section level3">
+<h3 id="package-citation">Package citation<a class="anchor" aria-label="anchor" href="#package-citation"></a>
+</h3>
+<p>Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). flexsdm: An R package for supporting a comprehensive and flexible species distribution modelling workflow. Methods in Ecology and Evolution, 13() 2041-210X.13874. <a href="https://doi.org/10.1111/2041-210X.13874" class="external-link uri">https://doi.org/10.1111/2041-210X.13874</a></p>
 <blockquote>
-<p>Test the package and give us your feedback <a href="https://github.com/sjevelazco/flexsdm/issues" class="external-link">here</a> or send an
-e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
+<p>Test the package and give us your feedback <a href="https://github.com/sjevelazco/flexsdm/issues" class="external-link">here</a> or send an e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.com</a>.</p>
 </blockquote>
 </div>
 </div>
@@ -396,14 +340,12 @@ e-mail to <a href="mailto:sjevelazco@gmail.com" class="email">sjevelazco@gmail.c
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade,
-Ignacio Minoli, Janet Franklin.</p>
+<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
