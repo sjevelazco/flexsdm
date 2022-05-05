@@ -126,6 +126,15 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
 
+  # Remove factor variables
+  filt <- terra::is.factor(env_layer)
+  names(filt) <- names(env_layer)
+  if(sum(filt)>0){
+    env_layer <- env_layer[[!filt]]
+    message("Next categorical variables were removed: ", names(filt)[filt])
+  }
+  rm(filt)
+
   message("Extracting values from raster ...")
   env <- env_layer
   env_layer <- terra::extract(env_layer, coord)
