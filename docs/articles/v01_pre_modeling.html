@@ -224,7 +224,7 @@ environment by using the code below:</p>
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span>
 
 <span class="va">spp</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,150 x 4</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,150 × 4</span></span>
 <span class="co">#&gt;    species        x        y pr_ab</span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> sp1       -<span style="color: #BB0000; text-decoration: underline;">5</span><span style="color: #BB0000;">541.</span> -<span style="color: #BB0000; text-decoration: underline;">145</span><span style="color: #BB0000;">138.</span>     0</span>
@@ -237,7 +237,7 @@ environment by using the code below:</p>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">195</span><span style="color: #BB0000;">081.</span>  <span style="text-decoration: underline;">253</span>652.     0</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> sp1        -<span style="color: #BB0000;">951.</span> -<span style="color: #BB0000; text-decoration: underline;">277</span><span style="color: #BB0000;">978.</span>     0</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span> sp1      <span style="text-decoration: underline;">145</span>929. -<span style="color: #BB0000; text-decoration: underline;">271</span><span style="color: #BB0000;">498.</span>     0</span>
-<span class="co">#&gt; <span style="color: #949494;"># ... with 1,140 more rows</span></span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># … with 1,140 more rows</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="geographic-region">Geographic region<a class="anchor" aria-label="anchor" href="#geographic-region"></a>
@@ -488,7 +488,7 @@ variables.</p>
 <span class="va">vif_var</span><span class="op">$</span><span class="va">removed_variables</span>
 <span class="co">#&gt; NULL</span>
 <span class="va">vif_var</span><span class="op">$</span><span class="va">vif_table</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 x 2</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span>
 <span class="co">#&gt;   Variables   VIF</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">1</span> aet        7.62</span>
@@ -518,7 +518,7 @@ variance explained in selected principal components.</p>
 <span class="co">#&gt; min values  : -8.453273, -4.260147, -1.525085 </span>
 <span class="co">#&gt; max values  :  2.827164,  3.337545,  4.342864</span>
 <span class="va">pca_var</span><span class="op">$</span><span class="va">coefficients</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 x 5</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 5</span></span>
 <span class="co">#&gt;   variable    PC1     PC2    PC3     PC4</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">1</span> aet       0.550 -<span style="color: #BB0000;">0.072</span><span style="color: #BB0000; text-decoration: underline;">2</span>  0.296 -<span style="color: #BB0000;">0.778</span> </span>
@@ -526,7 +526,7 @@ variance explained in selected principal components.</p>
 <span class="co">#&gt; <span style="color: #BCBCBC;">3</span> tmx      -<span style="color: #BB0000;">0.485</span> -<span style="color: #BB0000;">0.594</span>  -<span style="color: #BB0000;">0.450</span> -<span style="color: #BB0000;">0.459</span> </span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">4</span> tmn      -<span style="color: #BB0000;">0.511</span> -<span style="color: #BB0000;">0.198</span>   0.836 -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">1</span></span>
 <span class="va">pca_var</span><span class="op">$</span><span class="va">cumulative_variance</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 x 2</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span>
 <span class="co">#&gt;      PC  cvar</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 0.764</span>
@@ -1013,14 +1013,12 @@ locations (bg).</p>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade,
-Ignacio Minoli, Janet Franklin.</p>
+<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>

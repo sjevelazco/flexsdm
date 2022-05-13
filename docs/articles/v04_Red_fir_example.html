@@ -262,7 +262,7 @@ into 4 different partitions using the spatial block method.</p>
 <span class="va">abies_pf</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">.part</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 x 2</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span>
 <span class="co">#&gt; <span style="color: #949494;"># Groups:   .part [4]</span></span>
 <span class="co">#&gt;   .part     n</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
@@ -272,7 +272,7 @@ into 4 different partitions using the spatial block method.</p>
 <span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4    86</span>
 <span class="co"># Additional information of the best block</span>
 <span class="va">occ_part</span><span class="op">$</span><span class="va">best_part_info</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 x 5</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span>
 <span class="co">#&gt;   n_grid cell_size spa_auto env_sim  sd_p</span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     14   <span style="text-decoration: underline;">172</span>577.      0.5    173.  24.1</span></code></pre></div>
@@ -331,7 +331,7 @@ pseudo-absence and background points.</p>
 <span class="co"># Bind a presences and pseudo-absences</span>
 <span class="va">abies_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">abies_pf</span>, <span class="va">psa</span><span class="op">)</span>
 <span class="va">abies_pa</span> <span class="co"># Presence-Pseudo-absence database</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 432 x 4</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 432 × 4</span></span>
 <span class="co">#&gt;          x        y pr_ab .part</span>
 <span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> -<span style="color: #BB0000; text-decoration: underline;">12</span><span style="color: #BB0000;">558.</span>   <span style="text-decoration: underline;">68</span>530.     1     2</span>
@@ -344,9 +344,9 @@ pseudo-absence and background points.</p>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">118</span>707. -<span style="color: #BB0000; text-decoration: underline;">179</span><span style="color: #BB0000;">991.</span>     1     4</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">126</span>141. -<span style="color: #BB0000; text-decoration: underline;">176</span><span style="color: #BB0000;">302.</span>     1     4</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span> -<span style="color: #BB0000; text-decoration: underline;">49</span><span style="color: #BB0000;">722.</span>  <span style="text-decoration: underline;">141</span>124.     1     3</span>
-<span class="co">#&gt; <span style="color: #949494;"># ... with 422 more rows</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 422 more rows</span></span>
 <span class="va">bg</span> <span class="co"># Background points</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,160 x 4</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,160 × 4</span></span>
 <span class="co">#&gt;           x       y pr_ab .part</span>
 <span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> -<span style="color: #BB0000; text-decoration: underline;">153</span><span style="color: #BB0000;">501.</span> <span style="text-decoration: underline;">392</span>162.     0     1</span>
@@ -359,7 +359,7 @@ pseudo-absence and background points.</p>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  -<span style="color: #BB0000; text-decoration: underline;">32</span><span style="color: #BB0000;">541.</span> -<span style="color: #BB0000; text-decoration: underline;">51</span><span style="color: #BB0000;">988.</span>     0     1</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  -<span style="color: #BB0000; text-decoration: underline;">96</span><span style="color: #BB0000;">801.</span>    932.     0     1</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  -<span style="color: #BB0000; text-decoration: underline;">47</span><span style="color: #BB0000;">661.</span> -<span style="color: #BB0000; text-decoration: underline;">31</span><span style="color: #BB0000;">198.</span>     0     1</span>
-<span class="co">#&gt; <span style="color: #949494;"># ... with 2,150 more rows</span></span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># … with 2,150 more rows</span></span></code></pre></div>
 <p>Extract environmental data for the presence-absence and background
 data . View the distributions of present points, pseudo-absence points,
 and background points using the blocks as a reference map.</p>
@@ -475,13 +475,13 @@ individual models.</p>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ens_m<span class="sc">$</span>performance</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m# A tibble: 3 x 25 [39m</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m# A tibble: 3 × 25 [39m</span></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m               [3m [38;5;246m&lt;dbl&gt; [39m [23m        [3m [38;5;246m&lt;int&gt; [39m [23m       [3m [38;5;246m&lt;int&gt; [39m [23m     [3m [38;5;246m&lt;dbl&gt; [39m [23m   [3m [38;5;246m&lt;dbl&gt; [39m [23m     [3m [38;5;246m&lt;dbl&gt; [39m [23m</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m1 [39m meanw equal_sens_sp~     0.582         216        216    0.787 0.079 [4m5 [24m    0.808</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m1 [39m meanw equal_sens_sp…     0.582         216        216    0.787 0.079 [4m5 [24m    0.808</span></span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m2 [39m meanw max_sens_spec      0.470         216        216    0.949 0.016 [4m2 [24m    0.752</span></span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m3 [39m meanw max_sorensen       0.449         216        216    0.963 0.014 [4m3 [24m    0.738</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m# ... with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, [39m</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m# … with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, [39m</span></span>
 <span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, [39m</span></span>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, [39m</span></span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, [39m</span></span>
@@ -492,25 +492,24 @@ use the sdm_summarize() function to merge model performance tables.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">t_max</span>, <span class="va">f_gau</span>, <span class="va">f_glm</span>, <span class="va">ens_m</span><span class="op">)</span><span class="op">)</span>
 <span class="va">model_perf</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 x 28</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 28</span></span>
 <span class="co">#&gt;    model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        1 max   max_sens_spec     0.536         216        216    0.954 0.031<span style="text-decoration: underline;">6</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        2 gau   equal_sens_s~     0.643         216        216    0.784 0.089<span style="text-decoration: underline;">0</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        2 gau   equal_sens_s…     0.643         216        216    0.784 0.089<span style="text-decoration: underline;">0</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        2 gau   max_sens_spec     0.471         216        216    0.952 0.012<span style="text-decoration: underline;">2</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>        2 gau   max_sorensen      0.471         216        216    0.964 0.010<span style="text-decoration: underline;">8</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        3 glm   equal_sens_s~     0.649         216        216    0.800 0.085<span style="text-decoration: underline;">1</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        3 glm   equal_sens_s…     0.649         216        216    0.800 0.085<span style="text-decoration: underline;">1</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        3 glm   max_sens_spec     0.554         216        216    0.954 0.049<span style="text-decoration: underline;">3</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        3 glm   max_sorensen      0.423         216        216    0.977 0.037<span style="text-decoration: underline;">9</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        4 meanw equal_sens_s~     0.582         216        216    0.787 0.079<span style="text-decoration: underline;">5</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        4 meanw equal_sens_s…     0.582         216        216    0.787 0.079<span style="text-decoration: underline;">5</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>        4 meanw max_sens_spec     0.470         216        216    0.949 0.016<span style="text-decoration: underline;">2</span></span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">10</span>        4 meanw max_sorensen      0.449         216        216    0.963 0.014<span style="text-decoration: underline;">3</span></span>
-<span class="co">#&gt; <span style="color: #949494;"># ... with 20 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;,</span></span>
-<span class="co">#&gt; <span style="color: #949494;">#   regmult &lt;dbl&gt;, classes &lt;fct&gt;</span></span></code></pre></div>
+<span class="co">#&gt; <span style="color: #949494;"># … with 20 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;, regmult &lt;dbl&gt;, classes &lt;fct&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="project-the-ensemble-model">Project the ensemble model<a class="anchor" aria-label="anchor" href="#project-the-ensemble-model"></a>
@@ -595,14 +594,12 @@ function are based on Mendes et al. (2020).</p>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade,
-Ignacio Minoli, Janet Franklin.</p>
+<p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>

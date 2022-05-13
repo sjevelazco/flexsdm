@@ -95,8 +95,8 @@ model projection. This function use the approach proposed by Velazco et al., in 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>env_calib</dt>
-<dd><p>SpatRaster with environmental conditions of the calibration area or the
-presence and absence points localities used for constructing models</p></dd>
+<dd><p>SpatRaster or tibble with environmental conditions of the calibration area or the
+presence and absence (or background points or pseudo-absences) used for constructing models</p></dd>
 <dt>env_proj</dt>
 <dd><p>SpatRaster with environmental condition used for projecting a model (e.g., a larger, encompassing region, a spatially separate region, or a different time period)</p></dd>
 <dt>n_cores</dt>
@@ -130,30 +130,46 @@ will be made to the resolution of the environmental variables.</p></dd>
 <span class="r-in"><span class="va">spp</span><span class="op">$</span><span class="va">species</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">sp</span> <span class="op">&lt;-</span> <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp3"</span>, <span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">pr_ab</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># Accessible area based on some criterion such as dispersal ability</span></span>
-<span class="r-in"><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span><span class="va">sp</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">30000</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># Calibration area based on some criterion such as dispersal ability</span></span>
+<span class="r-in"><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span><span class="va">sp</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bmcp"</span>, width <span class="op">=</span> <span class="fl">50000</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">$</span><span class="va">CFP_1</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># Get environmental condition of calibration area</span></span>
-<span class="r-in"><span class="va">somevar_ca</span> <span class="op">&lt;-</span> <span class="va">somevar</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">ca</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask</a></span><span class="op">(</span><span class="va">.</span>, <span class="va">ca</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar_ca</span><span class="op">)</span></span>
 <span class="r-in"></span>
+<span class="r-in"><span class="co"># Sampling pseudo-absences</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span></span>
+<span class="r-in">data <span class="op">=</span> <span class="va">sp</span>,</span>
+<span class="r-in">x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span class="r-in">y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span class="r-in">n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span> , <span class="co"># selecting number of pseudo-absence points twice number of presences</span></span>
+<span class="r-in">method <span class="op">=</span> <span class="st">"random"</span>,</span>
+<span class="r-in">rlayer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span class="r-in">calibarea <span class="op">=</span> <span class="va">ca</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Merge presences and abasences databases to get a complete calibration data</span></span>
+<span class="r-in"><span class="va">sp_pa</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">sp</span>, <span class="va">psa</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">sp_pa</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Get environmental condition of calibration area</span></span>
+<span class="r-in"><span class="va">sp_pa_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sp_pa</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">sp_pa_2</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Measure extrapolation based on calibration data (presence and pseudo-absences)</span></span>
 <span class="r-in"><span class="va">xp</span> <span class="op">&lt;-</span></span>
 <span class="r-in">  <span class="fu">extra_eval</span><span class="op">(</span></span>
-<span class="r-in">    env_calib <span class="op">=</span> <span class="va">somevar_ca</span>,</span>
+<span class="r-in">    env_calib <span class="op">=</span> <span class="va">sp_pa_2</span>,</span>
 <span class="r-in">    env_proj <span class="op">=</span> <span class="va">somevar</span>,</span>
 <span class="r-in">    n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">    aggreg_factor <span class="op">=</span> <span class="fl">3</span></span>
+<span class="r-in">    aggreg_factor <span class="op">=</span> <span class="fl">1</span></span>
 <span class="r-in">  <span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xp</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+<span class="r-in"> <span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -164,13 +180,11 @@ will be made to the resolution of the environmental variables.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade,
-Ignacio Minoli, Janet Franklin.</p>
+  <p></p><p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

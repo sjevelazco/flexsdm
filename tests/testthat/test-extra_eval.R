@@ -43,6 +43,50 @@ test_that("extra_eval one and two cores", {
 })
 
 
+
+
+test_that("extra_eval based on tibble object", {
+  require(dplyr)
+  require(terra)
+
+  data(spp)
+  f <- system.file("external/somevar.tif", package = "flexsdm")
+  somevar <- terra::rast(f)
+
+  spp$species %>% unique()
+  sp <- spp %>%
+    dplyr::filter(species == "sp3", pr_ab == 1) %>%
+    dplyr::select(x, y, pr_ab)
+
+  ca <- calib_area(sp, x = "x", y = "y", method = c("bmcp", width = 50000), crs = crs(somevar))
+
+  set.seed(10)
+  psa <- sample_pseudoabs(
+    data = sp,
+    x = "x",
+    y = "y",
+    n = nrow(sp) * 2 ,
+    method = "random",
+    rlayer = somevar,
+    calibarea = ca
+  )
+
+  sp_pa <- dplyr::bind_rows(sp, psa)
+  sp_pa_2 <- sdm_extract(data = sp_pa, x = "x", y = "y", env_layer = somevar)
+
+  # Measure extrapolation based on calibratin data (presence and pseudo-absences)
+  xp <-
+    extra_eval(
+      env_calib = sp_pa_2,
+      env_proj = somevar,
+      n_cores = 1,
+      aggreg_factor = 1
+    )
+  expect_equal(class(xp)[1], "SpatRaster")
+})
+
+
+
 test_that("extra_eval wrong use", {
   require(dplyr)
   require(terra)
