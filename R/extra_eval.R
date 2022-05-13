@@ -4,8 +4,8 @@
 #' model projection. This function use the approach proposed by Velazco et al., in prep
 #' (EXPERIMENTAL)
 #'
-#' @param env_calib SpatRaster with environmental conditions of the calibration area or the
-#' presence and absence points localities used for constructing models
+#' @param env_calib SpatRaster or tibble with environmental conditions of the calibration area or the
+#' presence and absence (or background points or pseudo-absences) used for constructing models
 #' @param env_proj SpatRaster with environmental condition used for projecting a model (e.g., a larger, encompassing region, a spatially separate region, or a different time period)
 #' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #' @param aggreg_factor positive integer. Aggregation factor expressed as number of cells in each
@@ -41,32 +41,53 @@
 #' spp$species %>% unique()
 #' sp <- spp %>%
 #'   dplyr::filter(species == "sp3", pr_ab == 1) %>%
-#'   dplyr::select(x, y)
+#'   dplyr::select(x, y, pr_ab)
 #'
-#' # Accessible area based on some criterion such as dispersal ability
-#' ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000), crs = crs(somevar))
+#' # Calibration area based on some criterion such as dispersal ability
+#' ca <- calib_area(sp, x = "x", y = "y", method = c("bmcp", width = 50000), crs = crs(somevar))
 #'
 #' plot(somevar$CFP_1)
 #' points(sp)
 #' plot(ca, add = T)
 #'
-#' # Get environmental condition of calibration area
-#' somevar_ca <- somevar %>%
-#'   crop(., ca) %>%
-#'   mask(., ca)
-#' plot(somevar_ca)
 #'
+#' # Sampling pseudo-absences
+#' set.seed(10)
+#' psa <- sample_pseudoabs(
+#' data = sp,
+#' x = "x",
+#' y = "y",
+#' n = nrow(sp) * 2 , # selecting number of pseudo-absence points twice number of presences
+#' method = "random",
+#' rlayer = somevar,
+#' calibarea = ca
+#' )
+#'
+#' # Merge presences and abasences databases to get a complete calibration data
+#' sp_pa <- dplyr::bind_rows(sp, psa)
+#' sp_pa
+#'
+#' # Get environmental condition of calibration area
+#' sp_pa_2 <- sdm_extract(data = sp_pa, x = "x", y = "y", env_layer = somevar)
+#' sp_pa_2
+#'
+#' # Measure extrapolation based on calibration data (presence and pseudo-absences)
 #' xp <-
 #'   extra_eval(
-#'     env_calib = somevar_ca,
+#'     env_calib = sp_pa_2,
 #'     env_proj = somevar,
 #'     n_cores = 1,
-#'     aggreg_factor = 3
+#'     aggreg_factor = 1
 #'   )
 #' plot(xp)
-#' }
+#'  }
 extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
   . <- x <- NULL
+
+  if(any("data.frame"==class(env_calib))){
+    env_calib <- env_calib[names(env_proj)]
+  }
+
   # Get variable names
   v0 <- unique(c(names(env_calib), names(env_proj)))
   v0 <- sort(v0)
@@ -89,7 +110,11 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
 
 
   # Sort in the same way layer in both raster
-  env_calib <- env_calib[[v0]]
+  if(any("data.frame"%in%class(env_calib))){
+    env_calib <- env_calib[v0]
+  }else{
+    env_calib <- env_calib[[v0]]
+  }
   env_proj <- env_proj[[v0]]
 
   # Layer base
@@ -100,7 +125,9 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
   }
   if (!is.null(aggreg_factor)) {
     disag <- extraraster
-    env_calib <- terra::aggregate(env_calib, fact = aggreg_factor, na.rm = TRUE)
+    if(any("SpatRaster"==class(env_calib))){
+      env_calib <- terra::aggregate(env_calib, fact = aggreg_factor, na.rm = TRUE)
+    }
     env_proj <- terra::aggregate(env_proj, fact = aggreg_factor, na.rm = TRUE)
     extraraster <- terra::aggregate(extraraster, fact = aggreg_factor, na.rm = TRUE)
   }

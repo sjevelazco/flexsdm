@@ -7,8 +7,8 @@
 extra_eval(env_calib, env_proj, n_cores = 1, aggreg_factor = 1)
 }
 \arguments{
-\item{env_calib}{SpatRaster with environmental conditions of the calibration area or the
-presence and absence points localities used for constructing models}
+\item{env_calib}{SpatRaster or tibble with environmental conditions of the calibration area or the
+presence and absence (or background points or pseudo-absences) used for constructing models}
 
 \item{env_proj}{SpatRaster with environmental condition used for projecting a model (e.g., a larger, encompassing region, a spatially separate region, or a different time period)}
 
@@ -40,30 +40,46 @@ somevar <- terra::rast(f)
 spp$species \%>\% unique()
 sp <- spp \%>\%
   dplyr::filter(species == "sp3", pr_ab == 1) \%>\%
-  dplyr::select(x, y)
+  dplyr::select(x, y, pr_ab)
 
-# Accessible area based on some criterion such as dispersal ability
-ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000), crs = crs(somevar))
+# Calibration area based on some criterion such as dispersal ability
+ca <- calib_area(sp, x = "x", y = "y", method = c("bmcp", width = 50000), crs = crs(somevar))
 
 plot(somevar$CFP_1)
 points(sp)
 plot(ca, add = T)
 
-# Get environmental condition of calibration area
-somevar_ca <- somevar \%>\%
-  crop(., ca) \%>\%
-  mask(., ca)
-plot(somevar_ca)
 
+# Sampling pseudo-absences
+set.seed(10)
+psa <- sample_pseudoabs(
+data = sp,
+x = "x",
+y = "y",
+n = nrow(sp) * 2 , # selecting number of pseudo-absence points twice number of presences
+method = "random",
+rlayer = somevar,
+calibarea = ca
+)
+
+# Merge presences and abasences databases to get a complete calibration data
+sp_pa <- dplyr::bind_rows(sp, psa)
+sp_pa
+
+# Get environmental condition of calibration area
+sp_pa_2 <- sdm_extract(data = sp_pa, x = "x", y = "y", env_layer = somevar)
+sp_pa_2
+
+# Measure extrapolation based on calibration data (presence and pseudo-absences)
 xp <-
   extra_eval(
-    env_calib = somevar_ca,
+    env_calib = sp_pa_2,
     env_proj = somevar,
     n_cores = 1,
-    aggreg_factor = 3
+    aggreg_factor = 1
   )
 plot(xp)
-}
+ }
 }
 \seealso{
 \code{\link{extra_exclude}}
