@@ -262,7 +262,7 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
       )
     ot <- randomForest::outlier(rf)
     occ_sp_01[occ_sp_01$id %in% sp_env_1$id, ".out_rfout"] <-
-      as.integer(ot > stats::quantile(ot, probs = seq(0, 1, 0.05))[20], na.rm = TRUE)
+      as.integer(ot > stats::quantile(ot, probs = seq(0, 1, 0.05))[20])
     rm(rf)
 
     #### Local outliers factor ####
@@ -270,14 +270,14 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
       ot <- Rlof::lof(sp_env_1[-1], k = 5, cores = 1)
     } else {
       ot <- rep(NA, nrow(sp_env_1))
-      wii=14
+      wii=15
       while(any(is.na(ot))){
-        wii <- wii + 5
         ot <- Rlof::lof(sp_env_1[-1], k = wii, cores = 1)
+        wii <- wii + 5
       }
     }
     occ_sp_01[occ_sp_01$id %in% sp_env_1$id, ".out_lof"] <-
-      as.integer(ot > stats::quantile(ot, probs = seq(0, 1, 0.05))[20], na.rm = TRUE)
+      as.integer(ot > stats::quantile(ot, probs = seq(0, 1, 0.05))[20])
     rm(ot)
 
     # Summary outliers
