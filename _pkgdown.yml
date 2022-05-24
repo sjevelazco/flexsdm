@@ -4,6 +4,8 @@ url: https://sjevelazco.github.io/flexsdm
 template:
   params:
     bootswatch: united
+    google_site_verification: gcou8tqRTwNjZ_Mf1kbFgAzzUcY3OF-JB2sPRPTA56I
+
 
 # navbar setting
 navbar:
