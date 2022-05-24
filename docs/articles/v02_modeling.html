@@ -13,6 +13,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="flexsdm: Overview of Modeling functions">
 <meta property="og:description" content="flexsdm">
+<meta name="google-site-verification" content="gcou8tqRTwNjZ_Mf1kbFgAzzUcY3OF-JB2sPRPTA56I">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -301,7 +302,7 @@ for presence-absence and for background points datasets.</p>
 <span class="co">#&gt; $ awc      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0…</span>
 <span class="co">#&gt; $ depth    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99…</span>
 <span class="co">#&gt; $ landform <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1…</span>
-<span class="co">#&gt; $ .part    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2, 4, 4, 5, 3, 3, 4, 5, 4, 2, 1, 1, 4, 5, 2, 1, 2, 4, 1, 4, 2…</span></code></pre></div>
+<span class="co">#&gt; $ .part    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 3, 5, 3, 1, 1, 2, 3, 4, 3, 5, 5, 1, 1, 3, 4, 5, 5, 5, 2, 5, 3…</span></code></pre></div>
 <p>Now, in the abies2 object we have a new column called “.part” with
 the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record
 (row) is a member of. Next, we have to apply the same partition method
@@ -330,7 +331,7 @@ points.</p>
 <span class="co">#&gt; $ depth        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17…</span>
 <span class="co">#&gt; $ percent_clay <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,…</span>
 <span class="co">#&gt; $ landform     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, …</span>
-<span class="co">#&gt; $ .part        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2, 4, 2, 5, 2, 2, 1, 1, 4, 1, 1, 4, 5, 3, 5, 3, 5, 3, 1, …</span></code></pre></div>
+<span class="co">#&gt; $ .part        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 3, 3, 5, 1, 5, 1, 2, 3, 3, 1, 4, 1, 3, 5, 2, 1, 3, 4, …</span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5
 k-folds (1, 2, 3, 4, 5).</p>
 <div class="section level3">
@@ -395,9 +396,9 @@ qualitative (f column names) variables use for modeling.</p>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 25</span></span>
 <span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> max   equal_sens_sp…     0.590         700        700    0.664 0.017<span style="text-decoration: underline;">5</span>    0.664</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> max   max_sens_spec      0.564         700        700    0.874 0.041<span style="text-decoration: underline;">2</span>    0.553</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> max   max_sorensen       0.529         700        700    0.926 0.033<span style="text-decoration: underline;">7</span>    0.493</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> max   equal_sens_sp…     0.590         700        700    0.669 0.010<span style="text-decoration: underline;">8</span>    0.67 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> max   max_sens_spec      0.564         700        700    0.856 0.087<span style="text-decoration: underline;">4</span>    0.566</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> max   max_sorensen       0.529         700        700    0.917 0.031<span style="text-decoration: underline;">4</span>    0.499</span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
 <span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
 <span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
@@ -410,18 +411,18 @@ values.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">data_ens</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,400 × 5</span></span>
-<span class="co">#&gt;    rnames replicates part  pr_ab    pred</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 11     .part      1         0 0.186  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 12     .part      1         0 0.330  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 16     .part      1         0 0.319  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 19     .part      1         0 0.674  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 35     .part      1         0 0.471  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 36     .part      1         0 0.099<span style="text-decoration: underline;">6</span> </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 40     .part      1         0 0.719  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 43     .part      1         0 0.908  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 46     .part      1         0 0.809  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 50     .part      1         0 0.005<span style="text-decoration: underline;">39</span></span>
+<span class="co">#&gt;    rnames replicates part  pr_ab     pred</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 4      .part      1         0 0.005<span style="text-decoration: underline;">46</span> </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 5      .part      1         0 0.822   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 12     .part      1         0 0.338   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 13     .part      1         0 0.039<span style="text-decoration: underline;">6</span>  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 29     .part      1         0 0.000<span style="text-decoration: underline;">437</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 34     .part      1         0 0.332   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 35     .part      1         0 0.480   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 36     .part      1         0 0.104   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 49     .part      1         0 0.128   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 60     .part      1         0 0.810   </span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 1,390 more rows</span></span></code></pre></div>
 <p>Predicted suitability and test partition for each observation
 (row).</p>
@@ -471,13 +472,13 @@ list object with the following elements:</p>
 <span class="co">#&gt;  randomForest(formula = formula1, data = data, mtry = mtry, ntree = 500,      importance = FALSE, ) </span>
 <span class="co">#&gt;                Type of random forest: classification</span>
 <span class="co">#&gt;                      Number of trees: 500</span>
-<span class="co">#&gt; No. of variables tried at each split: 3</span>
+<span class="co">#&gt; No. of variables tried at each split: 1</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;         OOB estimate of  error rate: 11.64%</span>
 <span class="co">#&gt; Confusion matrix:</span>
 <span class="co">#&gt;     0   1 class.error</span>
-<span class="co">#&gt; 0 605  95  0.13571429</span>
-<span class="co">#&gt; 1  68 632  0.09714286</span></code></pre></div>
+<span class="co">#&gt; 0 588 112  0.16000000</span>
+<span class="co">#&gt; 1  51 649  0.07285714</span></code></pre></div>
 <p>model: A “randomForest” class object. This object can be used to see
 the formula details, a basic summary o fthe model, and for
 predicting.</p>
@@ -494,7 +495,7 @@ qualitative (f column names) variables use for modeling.</p>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 26</span></span>
 <span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3 raf   max_sens_spec     0.638         700        700    0.903 0.034<span style="text-decoration: underline;">1</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 raf   max_sens_spec     0.606         700        700    0.909 0.011<span style="text-decoration: underline;">7</span></span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
 <span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
 <span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
@@ -509,16 +510,16 @@ values.</p>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,400 × 5</span></span>
 <span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 11     .part      1     0     0.112</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 12     .part      1     0     0.512</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 16     .part      1     0     0.016</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 19     .part      1     0     0.024</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 35     .part      1     0     0.054</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 36     .part      1     0     0.016</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 40     .part      1     0     0.052</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 43     .part      1     0     0.912</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 46     .part      1     0     0.064</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 50     .part      1     0     0.004</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 4      .part      1     0     0.002</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 5      .part      1     0     0.436</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 12     .part      1     0     0.366</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 13     .part      1     0     0.052</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 29     .part      1     0     0.008</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 34     .part      1     0     0.064</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 35     .part      1     0     0.12 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 36     .part      1     0     0.022</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 49     .part      1     0     0.042</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 60     .part      1     0     0.226</span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 1,390 more rows</span></span></code></pre></div>
 <p>Predicted suitability and test partition for each observation
 (row).</p>
