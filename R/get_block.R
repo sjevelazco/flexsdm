@@ -43,7 +43,7 @@
 #' plot(grid_env)
 #' }
 get_block <- function(env_layer, best_grid) {
-  maskr <- env_layer[[1]]
+  maskr <- env_layer[[!is.factor(env_layer)]][[1]]
   rdf <- terra::as.data.frame(maskr, xy = TRUE)
   val <- terra::extract(best_grid, rdf[1:2])[, 2]
   maskr[as.numeric(rownames(rdf))] <- val
