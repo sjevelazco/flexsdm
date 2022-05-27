@@ -267,7 +267,12 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
 
     #### Local outliers factor ####
     if (nrow(sp_env_1) < 15) {
-      ot <- Rlof::lof(sp_env_1[-1], k = 5, cores = 1)
+      ot <- rep(NA, nrow(sp_env_1))
+      wii = 2
+      while (any(is.na(ot))) {
+        ot <- Rlof::lof(sp_env_1[-1], k = wii, cores = 1)
+        wii <- wii + 1
+      }
     } else {
       ot <- rep(NA, nrow(sp_env_1))
       wii=15
