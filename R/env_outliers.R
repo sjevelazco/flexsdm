@@ -272,7 +272,7 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
       ot <- rep(NA, nrow(sp_env_1))
       wii=15
       while(any(is.na(ot))){
-        ot <- Rlof::lof(sp_env_1[-1], k = wii, cores = 1)
+        ot <- Rlof::lof(sp_env_1[-1], k = ifelse(wii>= nrow(sp_env_1),  nrow(sp_env_1)-1, wii), cores = 1)
         wii <- wii + 5
       }
     }
