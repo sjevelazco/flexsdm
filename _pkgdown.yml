@@ -5,7 +5,7 @@ template:
   params:
     bootswatch: united
     google_site_verification: gcou8tqRTwNjZ_Mf1kbFgAzzUcY3OF-JB2sPRPTA56I
-
+  bootstrap: 5
 
 # navbar setting
 navbar:
@@ -29,5 +29,6 @@ navbar:
     - text: "News"
       icon: fa-newspaper-o
       href: news/index.html
+
 components:
     home: ~

@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="flexsdm">
 <title>flexsdm: Overview of Modeling functions • flexsdm</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="flexsdm: Overview of Modeling functions">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="flexsdm: Overview of Modeling functions">
 <meta property="og:description" content="flexsdm">
 <meta name="google-site-verification" content="gcou8tqRTwNjZ_Mf1kbFgAzzUcY3OF-JB2sPRPTA56I">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -19,94 +19,78 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">flexsdm</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../index.html">
     <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Functions</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Functions</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/v01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
-    </li>
-    <li>
-      <a href="../articles/v02_modeling.html">2. Overview of Modeling functions</a>
-    </li>
-    <li>
-      <a href="../articles/v03_post_modeling.html">3. Overview of Post-modeling functions</a>
-    </li>
-    <li>
-      <a href="../articles/v04_Red_fir_example.html">4. An example with Red Fir</a>
-    </li>
-    <li>
-      <a href="../articles/v05_Rare_species_example.html">5. Modeling a rare species</a>
-    </li>
-  </ul>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/v01_pre_modeling.html">1. Overview of Pre-modeling functions</a>
+    <a class="dropdown-item" href="../articles/v02_modeling.html">2. Overview of Modeling functions</a>
+    <a class="dropdown-item" href="../articles/v03_post_modeling.html">3. Overview of Post-modeling functions</a>
+    <a class="dropdown-item" href="../articles/v04_Red_fir_example.html">4. An example with Red Fir</a>
+    <a class="dropdown-item" href="../articles/v05_Rare_species_example.html">5. Modeling a rare species</a>
+  </div>
 </li>
-<li>
-  <a href="../news/index.html">
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">
     <span class="fa fa-newspaper-o"></span>
      
     News
   </a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/sjevelazco/flexsdm/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/sjevelazco/flexsdm/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>flexsdm: Overview of Modeling functions</h1>
+
+
+<div class="row">
+  <main id="main"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>flexsdm: Overview of Modeling functions</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/sjevelazco/flexsdm/blob/HEAD/vignettes/v02_modeling.Rmd" class="external-link"><code>vignettes/v02_modeling.Rmd</code></a></small>
-      <div class="hidden name"><code>v02_modeling.Rmd</code></div>
-
+      <div class="d-none name"><code>v02_modeling.Rmd</code></div>
     </div>
 
     
@@ -302,7 +286,7 @@ for presence-absence and for background points datasets.</p>
 <span class="co">#&gt; $ awc      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0…</span>
 <span class="co">#&gt; $ depth    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99…</span>
 <span class="co">#&gt; $ landform <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1…</span>
-<span class="co">#&gt; $ .part    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 5, 3, 2, 5, 5, 5, 3, 1, 4, 5, 5, 4, 4, 3, 3, 4, 2, 3, 5, 3, 4…</span></code></pre></div>
+<span class="co">#&gt; $ .part    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 4, 5, 5, 1, 1, 3, 1, 4, 5, 4, 2, 2, 4, 5, 1, 4, 4, 1, 3, 1, 1…</span></code></pre></div>
 <p>Now, in the abies2 object we have a new column called “.part” with
 the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record
 (row) is a member of. Next, we have to apply the same partition method
@@ -331,7 +315,7 @@ points.</p>
 <span class="co">#&gt; $ depth        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17…</span>
 <span class="co">#&gt; $ percent_clay <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,…</span>
 <span class="co">#&gt; $ landform     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, …</span>
-<span class="co">#&gt; $ .part        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 4, 2, 1, 2, 1, 2, 3, 3, 4, 4, 1, 4, 5, 4, 3, 2, 5, 4, 5, …</span></code></pre></div>
+<span class="co">#&gt; $ .part        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 3, 5, 5, 1, 1, 5, 1, 5, 3, 5, 4, 3, 3, 2, 4, 4, 2, 2, 2, …</span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5
 k-folds (1, 2, 3, 4, 5).</p>
 <div class="section level3">
@@ -396,9 +380,9 @@ qualitative (f column names) variables use for modeling.</p>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 25</span></span>
 <span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> max   equal_sens_sp…     0.590         700        700    0.671 0.018<span style="text-decoration: underline;">9</span>    0.676</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> max   max_sens_spec      0.564         700        700    0.877 0.026<span style="text-decoration: underline;">9</span>    0.549</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> max   max_sorensen       0.529         700        700    0.92  0.018<span style="text-decoration: underline;">5</span>    0.497</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> max   equal_sens_sp…     0.590         700        700    0.667 0.026<span style="text-decoration: underline;">0</span>    0.67 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> max   max_sens_spec      0.564         700        700    0.826 0.090<span style="text-decoration: underline;">3</span>    0.593</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> max   max_sorensen       0.529         700        700    0.933 0.016<span style="text-decoration: underline;">4</span>    0.47 </span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
 <span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
 <span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
@@ -411,18 +395,18 @@ values.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">max_t1</span><span class="op">$</span><span class="va">data_ens</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,400 × 5</span></span>
-<span class="co">#&gt;    rnames replicates part  pr_ab     pred</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 8      .part      1         0 0.684   </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 22     .part      1         0 0.228   </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 28     .part      1         0 0.471   </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 29     .part      1         0 0.000<span style="text-decoration: underline;">571</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 33     .part      1         0 0.037<span style="text-decoration: underline;">1</span>  </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 34     .part      1         0 0.307   </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 44     .part      1         0 0.573   </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 53     .part      1         0 0.583   </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 62     .part      1         0 0.147   </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 98     .part      1         0 0.250   </span>
+<span class="co">#&gt;    rnames replicates part  pr_ab    pred</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 4      .part      1         0 0.007<span style="text-decoration: underline;">63</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 5      .part      1         0 0.816  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 7      .part      1         0 0.153  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 15     .part      1         0 0.814  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 18     .part      1         0 0.014<span style="text-decoration: underline;">1</span> </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 20     .part      1         0 0.270  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 21     .part      1         0 0.422  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 28     .part      1         0 0.475  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 34     .part      1         0 0.332  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 49     .part      1         0 0.146  </span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 1,390 more rows</span></span></code></pre></div>
 <p>Predicted suitability and test partition for each observation
 (row).</p>
@@ -472,13 +456,13 @@ list object with the following elements:</p>
 <span class="co">#&gt;  randomForest(formula = formula1, data = data, mtry = mtry, ntree = 500,      importance = FALSE, ) </span>
 <span class="co">#&gt;                Type of random forest: classification</span>
 <span class="co">#&gt;                      Number of trees: 500</span>
-<span class="co">#&gt; No. of variables tried at each split: 3</span>
+<span class="co">#&gt; No. of variables tried at each split: 2</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;         OOB estimate of  error rate: 11.64%</span>
+<span class="co">#&gt;         OOB estimate of  error rate: 11.07%</span>
 <span class="co">#&gt; Confusion matrix:</span>
 <span class="co">#&gt;     0   1 class.error</span>
-<span class="co">#&gt; 0 605  95  0.13571429</span>
-<span class="co">#&gt; 1  68 632  0.09714286</span></code></pre></div>
+<span class="co">#&gt; 0 603  97  0.13857143</span>
+<span class="co">#&gt; 1  58 642  0.08285714</span></code></pre></div>
 <p>model: A “randomForest” class object. This object can be used to see
 the formula details, a basic summary o fthe model, and for
 predicting.</p>
@@ -495,7 +479,7 @@ qualitative (f column names) variables use for modeling.</p>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 26</span></span>
 <span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span>
 <span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3 raf   max_sens_spec     0.638         700        700    0.897 0.016<span style="text-decoration: underline;">4</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     2 raf   max_sens_spec      0.51         700        700    0.916 0.030<span style="text-decoration: underline;">1</span></span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
 <span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
 <span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
@@ -510,16 +494,16 @@ values.</p>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,400 × 5</span></span>
 <span class="co">#&gt;    rnames replicates part  pr_ab  pred</span>
 <span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 8      .part      1     0     0.086</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 22     .part      1     0     0.01 </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 28     .part      1     0     0.006</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 29     .part      1     0     0.002</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 33     .part      1     0     0.036</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 34     .part      1     0     0.024</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 44     .part      1     0     0.914</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 53     .part      1     0     0.502</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 62     .part      1     0     0.164</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 98     .part      1     0     0.06 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 4      .part      1     0     0.004</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 5      .part      1     0     0.182</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 7      .part      1     0     0.04 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 15     .part      1     0     0.068</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 18     .part      1     0     0    </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 20     .part      1     0     0.432</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 21     .part      1     0     0.1  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 28     .part      1     0     0.01 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 34     .part      1     0     0.052</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 49     .part      1     0     0.008</span>
 <span class="co">#&gt; <span style="color: #949494;"># … with 1,390 more rows</span></span></code></pre></div>
 <p>Predicted suitability and test partition for each observation
 (row).</p>
@@ -780,33 +764,26 @@ testing. For this method, the function will return .partX columns with
 <p>#=========#=========#=========#=========#=========#=========#=========#</p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by Santiago J.E. Velazco, Brooke Rose, André F.A. Andrade, Ignacio Minoli, Janet Franklin.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 
