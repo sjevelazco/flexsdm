@@ -79,7 +79,7 @@
   fit_formula <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">partition</span>,
   thr <span class="op">=</span> <span class="cn">NULL</span>,
-  mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/math-generics.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">predictors</span>, <span class="va">predictors_f</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">predictors</span>, <span class="va">predictors_f</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -118,7 +118,7 @@ response, predictors, and predictors_f arguments. Default NULL</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list object with:</p><ul><li><p>model: A "randomForest" class object. This object can be used for predicting.</p></li>
+    <p>A list object with:</p><ul><li><p>model: A "randomForest" class object from randomForest package. This object can be used for predicting.</p></li>
 <li><p>predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.</p></li>
 <li><p>performance: Performance metrics (see <code><a href="sdm_eval.html">sdm_eval</a></code>).
 Threshold dependent metrics are calculated based on the threshold specified in the argument.</p></li>
@@ -139,17 +139,17 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
 <span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">abies2</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">rf_t1</span> <span class="op">&lt;-</span> <span class="fu">fit_raf</span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
-<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
 <span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
+<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
 <span class="r-in">  fit_formula <span class="op">=</span> <span class="cn">NULL</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"></span>
@@ -163,17 +163,17 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
 <span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"boot"</span>, replicates <span class="op">=</span> <span class="fl">10</span>, proportion <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span>
+<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"boot"</span>, replicates <span class="op">=</span> <span class="fl">10</span>, proportion <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">abies2</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">rf_t2</span> <span class="op">&lt;-</span> <span class="fu">fit_raf</span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
-<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
 <span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
+<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
 <span class="r-in">  fit_formula <span class="op">=</span> <span class="cn">NULL</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">rf_t2</span></span>

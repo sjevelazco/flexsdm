@@ -44,7 +44,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A "gbm" class object. This object can be used for predicting.
+#' \item model: A "gbm" class object from gbm package. This object can be used for predicting.
 #' \item predictors: A tibble with quantitative (c column names) and qualitative (f column names)
 #' variables use for modeling.
 #' \item performance: Hyper-parameter values and performance metric (see \code{\link{sdm_eval}})

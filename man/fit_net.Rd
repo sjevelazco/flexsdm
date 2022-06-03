@@ -55,7 +55,7 @@ If more than one threshold type is used they must be concatenated, e.g., thr=c('
 \value{
 A list object with:
 \itemize{
-\item model: A "nnet.formula" "nnet" class object. This object can be used for predicting.
+\item model: A "nnet.formula" "nnet" class object from nnet package. This object can be used for predicting.
 \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 \item performance: Performance metrics (see \code{\link{sdm_eval}}).
 Threshold dependent metric are calculated based on the threshold specified in the argument.

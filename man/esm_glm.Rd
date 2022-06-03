@@ -47,7 +47,7 @@ Default is 0. Because ESM are constructed with few occurrences it is recommended
 \value{
 A list object with:
 \itemize{
-\item esm_model: A list with "glm" class object for each bivariate model. This object can be used
+\item esm_model: A list with "glm" class object from stats package for each bivariate model. This object can be used
 for predicting ensembles of small models with \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).

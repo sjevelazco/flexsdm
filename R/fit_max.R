@@ -36,7 +36,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item model: A "MaxEnt" class object. This object can be used for predicting.
+#' \item model: A "maxnet" class object from maxnet package. This object can be used for predicting.
 #' \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 #' \item performance: Performance metrics (see \code{\link{sdm_eval}}).
 #' Threshold dependent metrics are calculated based on the threshold specified in thr argument.

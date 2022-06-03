@@ -35,7 +35,7 @@ was proposed to fit models with little data, we recommend using small values of 
 \value{
 A list object with:
 \itemize{
-\item esm_model: A list with "gam" class object for each bivariate model. This object can be used
+\item esm_model: A list with "gam" class object from mgcv package for each bivariate model. This object can be used
 for predicting an ensemble of small models with the \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metrics (see \code{\link{sdm_eval}}).

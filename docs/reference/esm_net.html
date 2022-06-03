@@ -105,7 +105,7 @@ Usage predictors = c("aet", "cwd", "tmin").</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list object with:</p><ul><li><p>esm_model: A list with "nnet" class object for each bivariate model. This object can be used
+    <p>A list object with:</p><ul><li><p>esm_model: A list with "nnet" class object from nnet package for each bivariate model. This object can be used
 for predicting ensemble of small model with <code><a href="sdm_predict.html">sdm_predict</a></code> function.</p></li>
 <li><p>predictors: A tibble with variables use for modeling.</p></li>
 <li><p>performance: Performance metric (see <code><a href="sdm_eval.html">sdm_eval</a></code>).
@@ -141,7 +141,7 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-in"><span class="co"># Using k-fold partition method</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/na.omit.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">pr_ab</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -149,7 +149,7 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="va">abies2</span></span>
 <span class="r-in"></span>
@@ -157,7 +157,7 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-in"><span class="va">esm_net_t1</span> <span class="op">&lt;-</span> <span class="fu">esm_net</span><span class="op">(</span></span>
 <span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
+<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
 <span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
 <span class="r-in">  thr <span class="op">=</span> <span class="cn">NULL</span></span>
 <span class="r-in"><span class="op">)</span></span>
