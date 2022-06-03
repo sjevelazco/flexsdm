@@ -44,7 +44,7 @@
 #'
 #' A list object with:
 #' \itemize{
-#' \item esm_model: A list with "gbm" class object for each bivariate model. This object can be used
+#' \item esm_model: A list with "gbm" class object from gbm package for each bivariate model. This object can be used
 #' for predicting ensembles of small models with \code{\link{sdm_predict}} function.
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metrics (see \code{\link{sdm_eval}}).
