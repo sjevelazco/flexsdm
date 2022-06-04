@@ -30,6 +30,7 @@
 #' could be problematic when using with few occurrences. For further detail see
 #' Breiner et al. (2015, 2018).
 #'
+#' This function fits GAM using mgvc package, with Binomial distribution family and thin plate regression spline as a smoothing basis (see ?mgvc::s).
 #' @return
 #'
 #' A list object with:
@@ -40,6 +41,7 @@
 #' \item performance: Performance metrics (see \code{\link{sdm_eval}}).
 #' Threshold dependent metrics are calculated based on the threshold specified in the argument.
 #' }
+#'
 #'
 #' @seealso \code{\link{esm_gau}}, \code{\link{esm_gbm}}, \code{\link{esm_glm}},
 #' \code{\link{esm_max}}, \code{\link{esm_net}}, and \code{\link{esm_svm}}.

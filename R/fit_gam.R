@@ -40,6 +40,9 @@
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 #' }
 #'
+#' @details
+#' This function fits GAM using mgvc package, with Binomial distribution family and thin plate regression spline as a smoothing basis (see ?mgvc::s).
+#'
 #' @seealso \code{\link{fit_gau}}, \code{\link{fit_gbm}}, \code{\link{fit_glm}},
 #' \code{\link{fit_max}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
 #'
