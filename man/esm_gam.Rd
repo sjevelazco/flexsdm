@@ -53,6 +53,8 @@ Somers' D metric (D = 2 x (AUC -0.5)). ESM is recommended for modeling species w
 This function does not allow categorical variables because the use of these types of variables
 could be problematic when using with few occurrences. For further detail see
 Breiner et al. (2015, 2018).
+
+This function fits GAM using mgvc package, with Binomial distribution family and thin plate regression spline as a smoothing basis (see ?mgvc::s).
 }
 \examples{
 \dontrun{

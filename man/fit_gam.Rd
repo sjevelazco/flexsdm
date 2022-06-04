@@ -66,6 +66,9 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 \description{
 Fit and validate Generalized Additive Models
 }
+\details{
+This function fits GAM using mgvc package, with Binomial distribution family and thin plate regression spline as a smoothing basis (see ?mgvc::s).
+}
 \examples{
 \dontrun{
 data("abies")
