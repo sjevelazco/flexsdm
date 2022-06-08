@@ -1,4 +1,4 @@
-test_that("extra_exclude", {
+test_that("extra_truncate", {
   require(dplyr)
   require(terra)
 
@@ -27,7 +27,7 @@ test_that("extra_exclude", {
       n_cores = 2,
       aggreg_factor = 5
     )
-  xp2 <- extra_exclude(
+  xp2 <- extra_truncate(
     suit = somevar$CFP_1,
     extra = xp,
     threshold = 50

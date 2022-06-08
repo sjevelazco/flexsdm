@@ -17,7 +17,7 @@ test_that("correct_colinvar Pearson", {
   expect_equal(nrow(var$cor_table), 4)
   expect_true(all(names(var) %in% c("cor_table", "cor_variables")))
 
-  # teste default correlation threshold
+  # test default correlation threshold
   var <- correct_colinvar(env_layer = somevar,
                    method = c("pearson"))
   expect_equal(length(var$cor_variables), 4)
