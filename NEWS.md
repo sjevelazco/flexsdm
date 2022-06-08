@@ -6,3 +6,4 @@
 - Functions using CRS data have improved codes
 - It is possible use a numeric value to specify threshold in `msdm_posteriori` 
 - `extra_eval` can use tibble or SpatRaster object in env_calib argument 
+- `extra_truncate` has a new argument to define values used for model truncation and documentation was improved. 

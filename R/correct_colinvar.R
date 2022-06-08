@@ -16,14 +16,14 @@
 #'   Usage method = c('pca').
 #'   \item fa: Perform a Factorial Analysis and select, from the original predictors, the number of factors is defined by Broken-Stick and variables with the highest correlation to the factors are selected.  Usage method = c('fa').
 #' }
-#' @param proj character. Path to a folder that contains sub-folders for the different projection
-#' scenarios. Only used for pca. Usage proj = "C:/User/Desktop/Projections"
+#' @param proj character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
+#' scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)
 #'
 #' @return
 #' #' If 'pearson', returns a list with the following elements:
 #' \itemize{
 #' \item cor_table: a matrix object with pairwise correlation values of the environmental variables
-#' \item cor_variables: a list object with the same length of the number of environmental values containing the pairwise relations that exceeded the correlation threshold for each one sof the environmental variables
+#' \item cor_variables: a list object with the same length of the number of environmental values containing the pairwise relations that exceeded the correlation threshold for each one of the environmental variables
 #' }
 #'
 #' If 'vif' method, returns a list with the following elements:
@@ -49,6 +49,41 @@
 #' \item uniqueness: uniqueness of each environmental variable according to the factorial analysis,
 #' \item loadings: environmental variables loadings in each of the chosen factors
 #' }
+#'
+#' @details In the case of having environmental variables for the current conditions and other time
+#' periods (future or present), it is recommended to perform the PCA analysis with the current
+#' environmental condition and project the PCA for the other time periods. To do so, it is necessary
+#' to use “proj” argument. Path to a folder (e.g., projections) that contains sub-folders for the
+#' different projection scenarios (e.g., years and emissions). Within each sub-folder must be stored
+#' single or multiband rasters with the environmental variables.
+#'
+#' For example:
+#'
+#' C:/Users/my_pc/projections/ \cr
+#'     ├── MRIESM_2050_ssp126 \cr
+#'     │   └── var1.tif\cr
+#'     │   └── var2.tif\cr
+#'     │   └── var3.tif\cr
+#'     ├── MRIESM_2080_ssp585\cr
+#'     │   └── var1.tif\cr
+#'     │   └── var2.tif\cr
+#'     │   └── var3.tif\cr
+#'     ├── UKESM_2050_ssp370\cr
+#'     │   └── var1.tif\cr
+#'     │   └── var2.tif\cr
+#'     │   └── var3.tif
+#'
+#' If pca method is run with time projections, correct_colinvar function will create the
+#' Projection_PCA (the exact path is in the path object returned by the function) with the same
+#' system of sub-folders and multiband raster with the principal components (pcs.tif)
+#'
+#' C:/Users/my_pc/Projection_PCA/\cr
+#'       ├── MRIESM_2050_ssp126\cr
+#'       │   └── pcs.tif           # a multiband tif with principal components\cr
+#'       ├── MRIESM_2080_ssp585\cr
+#'       │   └── pcs.tif\cr
+#'       ├── UKESM_2050_ssp370\cr
+#'       │   └── pcs.tif
 #'
 #' @export
 #' @importFrom dplyr tibble
@@ -80,6 +115,32 @@
 #' var$env_layer
 #' var$coefficients
 #' var$cumulative_variance
+#'
+#'
+#' # Perform pca collinearity control with different projections
+#' ## Below will be created a set of folders to simulate the structure of the directory where
+#' ## environmental variables are stored for different scenarios
+#' dir_sc <- file.path(tempdir(), "projections")
+#' dir.create(dir_sc)
+#' dir_sc <- file.path(dir_sc, c('scenario_1', 'scenario_2'))
+#' sapply(dir_sc, dir.create)
+#'
+#' somevar <-
+#'   system.file("external/somevar.tif", package = "flexsdm")
+#' somevar <- terra::rast(somevar)
+#'
+#' terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"), overwrite=TRUE)
+#' terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite=TRUE)
+#'
+#' ## Perform pca with projections
+#' dir_w_proj <- dirname(dir_sc[1])
+#' dir_w_proj
+#' var <- correct_colinvar(env_layer = somevar, method = "pca", proj = dir_w_proj)
+#' var$env_layer
+#' var$coefficients
+#' var$cumulative_variance
+#' var$proj
+#'
 #'
 #' # Perform fa colinearity control
 #' var <- correct_colinvar(env_layer = somevar, method = c("fa"))
@@ -223,14 +284,12 @@ correct_colinvar <- function(env_layer,
         scen <- terra::predict(scen, p, index = 1:naxis)
         terra::writeRaster(
           scen,
-          file.path(subfold[i], paste0(names(scen), ".tif")),
+          file.path(subfold[[i]], "pcs.tif"),
           overwrite=TRUE
         )
       }
 
-      result <- list(result,
-        proj = dpca
-      )
+      result$proj <- dpca
     }
   }
 

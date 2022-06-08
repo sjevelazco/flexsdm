@@ -82,5 +82,5 @@ plot(xp)
  }
 }
 \seealso{
-\code{\link{extra_exclude}}
+\code{\link{extra_truncate}}
 }

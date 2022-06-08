@@ -173,31 +173,30 @@ max_t1 <- fit_max(
 
 This function returns a list object with the following elements:
 
-(I THINK YOU WANT TO RUN NAMES HERE)
-names(MAX_T1)
+```{r fit_max_names}
+names(max_t1)
+```
 
+model: A "MaxEnt" class object. This object can be used for predicting.
 ```{r fit_max_model}
 options(max.print = 20)
 max_t1$model
 ```
-model: A "MaxEnt" class object. This object can be used for predicting.
-(I DO NOT THINK THE EXAMPLE SHOWN IS MAXENT. THIS IS A GLMNET)
-(ALSO YOU SHOULD PUT HTE DESCRIPTION OF EACH MODEL OBJECT ELEMENT BEFORE THE EXAMPLE NOT AFTER)
 
+predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 ```{r fit_max_predictors}
 max_t1$predictors
 ```
-predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 
+performance: The performance metric (see sdm_eval). Those metrics that are threshold dependent are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
 ```{r fit_max_performance}
 max_t1$performance
 ```
-performance: The performance metric (see sdm_eval). Those metrics that are threshold dependent are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
 
+Predicted suitability for each test partition (row) based on the best model. This database is used in fit_ensemble. 
 ```{r fit_max_data_ens}
 max_t1$data_ens
 ```
-Predicted suitability and test partition for each observation (row). 
 
 
 II- Random forest models with exploration of hyper-parameters.
@@ -229,29 +228,29 @@ rf_t <-
 ```
 
 Let's see what the output object contains. This function returns a list object with the following elements:
+```{r tune_raf_names}
+names(rf_t)
+```
 
-(I THINK YOU WANT TO RUN NAMES HERE)
-names(RF_T1)
-
+model: A "randomForest" class object. This object can be used to see the formula details, a basic summary o fthe model, and for predicting.
 ```{r tune_raf_model}
 rf_t$model
 ```
-model: A "randomForest" class object. This object can be used to see the formula details, a basic summary o fthe model, and for predicting.
 
+predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 ```{r tune_raf_predictors}
 rf_t$predictors
 ```
-predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 
+performance: The performance metric (see sdm_eval). Those metrics that are threshold dependent are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
 ```{r tune_raf_performance}
 rf_t$performance
 ```
-performance: The performance metric (see sdm_eval). Those metrics that are threshold dependent are calculated based on the threshold specified in the argument. We can see all the selected threshold values.
 
+Predicted suitability for each test partition (row) based on the best model. This database is used in fit_ensemble. 
 ```{r tune_raf_data_ens}
 rf_t$data_ens
 ```
-Predicted suitability and test partition for each observation (row). 
 
 These model objects can be used in flexsdm::fit_ensemble().
 
@@ -259,40 +258,9 @@ These model objects can be used in flexsdm::fit_ensemble().
 
 In this example we fit and validate and ensemble model using the two model objects that were just created.
 
-(DO WE NEED TO SAY SOMETHING ABOUT THE NUMBER OF PARTITIONS CAN BE DIFFERENT THAN WHAT WAS USED FOR MODEL TUNING ABOVE?)
-
-```{r fit_ensemble}
-# First we need this libraries
-require(dplyr)
-require(terra)
-
-# Environmental variables
-somevar <- system.file("external/somevar.tif", package = "flexsdm")
-somevar <- terra::rast(somevar)
-
-# Species occurrences
-data("spp")
-set.seed(1)
-some_sp <- spp %>%
-  dplyr::filter(species == "sp2") %>%
-  sdm_extract(
-    data = .,
-    x = "x",
-    y = "y",
-    env_layer = somevar,
-    variables = names(somevar),
-    filter_na = TRUE
-  ) %>%
-  part_random(
-    data = .,
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 3)
-  )
-```
-
 ```{r fit_ensemble_example}
 # Fit and validate ensemble model
-mensemble <- fit_ensemble(
+an_ensemble <- fit_ensemble(
   models = list(max_t1, rf_t),
   ens_method = "meansup",
   thr = NULL,
@@ -300,6 +268,16 @@ mensemble <- fit_ensemble(
   metric = "TSS"
 )
 ```
+
+```{r fit_ensemble_names}
+# Outputs
+names(an_ensemble)
+
+an_ensemble$thr_metric
+an_ensemble$predictors
+an_ensemble$performance
+```
+
 
 ### 3. Fit and validate models with Ensemble of Small Model approach
 

@@ -18,7 +18,7 @@
 #' @return
 #' A SpatRaster object with extrapolation values measured in percentage of extrapolation (relative Euclidean distance)
 #'
-#' @seealso \code{\link{extra_exclude}}
+#' @seealso \code{\link{extra_truncate}}
 #'
 #' @export
 #'

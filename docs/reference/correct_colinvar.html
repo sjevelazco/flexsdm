@@ -92,13 +92,13 @@ provide a vector for this argument. The next methods are implemented:</p><ul><li
 <li><p>fa: Perform a Factorial Analysis and select, from the original predictors, the number of factors is defined by Broken-Stick and variables with the highest correlation to the factors are selected.  Usage method = c('fa').</p></li>
 </ul></dd>
 <dt>proj</dt>
-<dd><p>character. Path to a folder that contains sub-folders for the different projection
-scenarios. Only used for pca. Usage proj = "C:/User/Desktop/Projections"</p></dd>
+<dd><p>character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
+scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>#' If 'pearson', returns a list with the following elements:</p><ul><li><p>cor_table: a matrix object with pairwise correlation values of the environmental variables</p></li>
-<li><p>cor_variables: a list object with the same length of the number of environmental values containing the pairwise relations that exceeded the correlation threshold for each one sof the environmental variables</p></li>
+<li><p>cor_variables: a list object with the same length of the number of environmental values containing the pairwise relations that exceeded the correlation threshold for each one of the environmental variables</p></li>
 </ul><p>If 'vif' method, returns a list with the following elements:</p><ul><li><p>env_layer: a SpatRaster object with selected environmental variables</p></li>
 <li><p>removed_variables: a character vector with removed environmental variables</p></li>
 <li><p>vif_table: a data frame with VIF values for all environmental variables</p></li>
@@ -112,6 +112,39 @@ whole variation or original environmental variables</p></li>
 <li><p>uniqueness: uniqueness of each environmental variable according to the factorial analysis,</p></li>
 <li><p>loadings: environmental variables loadings in each of the chosen factors</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>In the case of having environmental variables for the current conditions and other time
+periods (future or present), it is recommended to perform the PCA analysis with the current
+environmental condition and project the PCA for the other time periods. To do so, it is necessary
+to use “proj” argument. Path to a folder (e.g., projections) that contains sub-folders for the
+different projection scenarios (e.g., years and emissions). Within each sub-folder must be stored
+single or multiband rasters with the environmental variables.</p>
+<p>For example:</p>
+<p>C:/Users/my_pc/projections/ <br>
+    ├── MRIESM_2050_ssp126 <br>
+    │   └── var1.tif<br>
+    │   └── var2.tif<br>
+    │   └── var3.tif<br>
+    ├── MRIESM_2080_ssp585<br>
+    │   └── var1.tif<br>
+    │   └── var2.tif<br>
+    │   └── var3.tif<br>
+    ├── UKESM_2050_ssp370<br>
+    │   └── var1.tif<br>
+    │   └── var2.tif<br>
+    │   └── var3.tif</p>
+<p>If pca method is run with time projections, correct_colinvar function will create the
+Projection_PCA (the exact path is in the path object returned by the function) with the same
+system of sub-folders and multiband raster with the principal components (pcs.tif)</p>
+<p>C:/Users/my_pc/Projection_PCA/<br>
+      ├── MRIESM_2050_ssp126<br>
+      │   └── pcs.tif           # a multiband tif with principal components<br>
+      ├── MRIESM_2080_ssp585<br>
+      │   └── pcs.tif<br>
+      ├── UKESM_2050_ssp370<br>
+      │   └── pcs.tif</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -139,6 +172,32 @@ whole variation or original environmental variables</p></li>
 <span class="r-in"><span class="va">var</span><span class="op">$</span><span class="va">env_layer</span></span>
 <span class="r-in"><span class="va">var</span><span class="op">$</span><span class="va">coefficients</span></span>
 <span class="r-in"><span class="va">var</span><span class="op">$</span><span class="va">cumulative_variance</span></span>
+<span class="r-in"></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Perform pca collinearity control with different projections</span></span>
+<span class="r-in"><span class="co">## Below will be created a set of folders to simulate the structure of the directory where</span></span>
+<span class="r-in"><span class="co">## environmental variables are stored for different scenarios</span></span>
+<span class="r-in"><span class="va">dir_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"projections"</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">dir_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_sc</span>, <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'scenario_1'</span>, <span class="st">'scenario_2'</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">dir_sc</span>, <span class="va">dir.create</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span></span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">somevar</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"somevar.tif"</span><span class="op">)</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">somevar</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"somevar.tif"</span><span class="op">)</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## Perform pca with projections</span></span>
+<span class="r-in"><span class="va">dir_w_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">dir_w_proj</span></span>
+<span class="r-in"><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="st">"pca"</span>, proj <span class="op">=</span> <span class="va">dir_w_proj</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">var</span><span class="op">$</span><span class="va">env_layer</span></span>
+<span class="r-in"><span class="va">var</span><span class="op">$</span><span class="va">coefficients</span></span>
+<span class="r-in"><span class="va">var</span><span class="op">$</span><span class="va">cumulative_variance</span></span>
+<span class="r-in"><span class="va">var</span><span class="op">$</span><span class="va">proj</span></span>
+<span class="r-in"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Perform fa colinearity control</span></span>
 <span class="r-in"><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fa"</span><span class="op">)</span><span class="op">)</span></span>
