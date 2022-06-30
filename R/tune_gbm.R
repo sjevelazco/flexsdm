@@ -218,9 +218,7 @@ tune_gbm <-
     p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
     eval_partial_list <- list()
 
-    cl <- parallel::makeCluster(n_cores)
-    doParallel::registerDoParallel(cl)
-
+    message("Tuning model...")
     for (h in 1:np) {
       message("Replica number: ", h, "/", np)
 
@@ -230,7 +228,11 @@ tune_gbm <-
       np2 <- out$np2
       rm(out)
 
-      # eval_partial <- as.list(rep(NA, np2))
+      if(n_cores>np2){
+        n_cores <- np2
+      }
+      cl <- parallel::makeCluster(n_cores)
+      doParallel::registerDoParallel(cl)
 
       eval_partial <- foreach::foreach(i = 1:np2, .export=c('sdm_eval', 'boyce'), .packages = c("dplyr")) %dopar%{
         # message("Partition number: ", i, "/", np2)
