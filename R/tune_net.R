@@ -193,6 +193,7 @@ tune_net <-
     p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
     eval_partial_list <- list()
 
+    message("Tuning model...")
     for (h in 1:np) {
       message("Replica number: ", h, "/", np)
 
@@ -204,6 +205,9 @@ tune_net <-
 
       eval_partial <- as.list(rep(NA, np2))
 
+      if(n_cores>np2){
+        n_cores <- np2
+      }
       cl <- parallel::makeCluster(n_cores)
       doParallel::registerDoParallel(cl)
 

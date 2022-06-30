@@ -256,6 +256,7 @@ tune_max <-
     cl <- parallel::makeCluster(n_cores)
     doParallel::registerDoParallel(cl)
 
+    message("Tuning model...")
     for (h in 1:np) {
       message("Replica number: ", h, "/", np)
 
@@ -276,23 +277,25 @@ tune_max <-
         rm(background2)
       }
 
-      eval_partial <- foreach::foreach(i = 1:np2, .export=c('sdm_eval', 'boyce'), .packages = c("dplyr")) %dopar%{
-        # message("Partition number: ", i, "/", np2)
-        mod <- as.list(rep(NA, nrow(grid)))
-        names(mod) <- 1:nrow(grid)
-        for (ii in 1:nrow(grid)) {
+      eval_partial <- list()
+      for(i in 1:np2){
+        message("Partition number: ", i, "/", np2)
+        mod <- foreach::foreach(ii = 1:nrow(grid), .packages = c("dplyr")) %dopar% {
           set.seed(1)
-          try(mod[[ii]] <-
+          tryCatch({
             maxnet::maxnet(
               p = train[[i]][, response],
               data = train[[i]][predictors],
               f = maxnet::maxnet.formula(train[[i]][response],
                                          train[[i]][predictors],
-                                         classes = grid$classes[ii]
-              ),
+                                         classes = grid$classes[ii]),
               regmult = grid$regmult[ii]
-            ))
+            )
+          }, error = function(e) {
+            NULL
+          })
         }
+        names(mod) <- 1:nrow(grid)
 
         filt <- sapply(mod, function(x) length(class(x)) == 3)
         filt <- filt&!is.na(sapply(mod, function(x) x$entropy))
@@ -359,9 +362,8 @@ tune_max <-
                                          by = "tnames"
           )) %>%
           dplyr::select(-tnames)
-        eval
+        eval_partial[[i]] <- eval
       }
-      parallel::stopCluster(cl)
 
       # Create final database with parameter performance 1
       names(eval_partial) <- 1:np2
@@ -369,6 +371,7 @@ tune_max <-
         dplyr::bind_rows(., .id = "partition")
       eval_partial_list[[h]] <- eval_partial
     }
+    parallel::stopCluster(cl)
 
     # Create final database with parameter performance 2
     eval_partial <- eval_partial_list %>%
@@ -389,6 +392,7 @@ tune_max <-
 
     # Fit final models with best settings
     # Get data for ensemble
+    message("Fitting best model")
     mod <- fit_max(
       data = data,
       response = response,
@@ -431,3 +435,4 @@ tune_max <-
     )
     return(result)
   }
+
