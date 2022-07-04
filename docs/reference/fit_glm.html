@@ -71,38 +71,50 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fit_glm</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">response</span>,
-  <span class="va">predictors</span>,
-  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,
-  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">partition</span>,
-  thr <span class="op">=</span> <span class="cn">NULL</span>,
-  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,
-  poly <span class="op">=</span> <span class="fl">2</span>,
-  inter_order <span class="op">=</span> <span class="fl">0</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fit_glm</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">response</span>,</span>
+<span>  <span class="va">predictors</span>,</span>
+<span>  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">partition</span>,</span>
+<span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  poly <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  inter_order <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>data.frame. Database with response (0,1) and predictors values.</p></dd>
+
+
 <dt>response</dt>
 <dd><p>character. Column name with species absence-presence data (0,1).</p></dd>
+
+
 <dt>predictors</dt>
 <dd><p>character. Vector with the column names of quantitative
 predictor variables (i.e. continuous variables).
 Usage predictors = c("aet", "cwd", "tmin")</p></dd>
+
+
 <dt>predictors_f</dt>
 <dd><p>character. Vector with the column names of qualitative
 predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")</p></dd>
+
+
 <dt>select_pred</dt>
 <dd><p>logical. Perform predictor selection.
 If TRUE predictors will be selected based on backward step wise approach. Default FALSE.</p></dd>
+
+
 <dt>partition</dt>
 <dd><p>character. Column name with training and validation partition groups.</p></dd>
+
+
 <dt>thr</dt>
 <dd><p>character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be used. It is necessary to provide a vector for this argument. The following threshold criteria are available:</p><ul><li><p>lpt: The highest threshold at which there is no omission.</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
@@ -113,20 +125,29 @@ If TRUE predictors will be selected based on backward step wise approach. Defaul
 <li><p>sensitivity: Threshold based on a specified sensitivity value.
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9</p></li>
 </ul><p>If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.</p></dd>
+
+
 <dt>fit_formula</dt>
 <dd><p>formula. A formula object with response and predictor
 variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments</p></dd>
+
+
 <dt>poly</dt>
 <dd><p>interger &gt;= 2. If used with values &gt;= 2 model will use polynomials
 for those continuous variables (i.e. used in predictors argument). Default is 0.</p></dd>
+
+
 <dt>inter_order</dt>
 <dd><p>interger &gt;= 0. The interaction order between explanatory variables. Default is 0.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list object with:</p><ul><li><p>model: A "glm" class object from stats package. This object can be used for predicting.</p></li>
+    
+
+<p>A list object with:</p><ul><li><p>model: A "glm" class object from stats package. This object can be used for predicting.</p></li>
 <li><p>predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.</p></li>
 <li><p>performance: Performance metrics (see <code><a href="sdm_eval.html">sdm_eval</a></code>).
 Threshold dependent metric are calculated based on the threshold specified in thr argument .</p></li>
@@ -140,68 +161,68 @@ Threshold dependent metric are calculated based on the threshold specified in th
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Using k-fold partition method</span></span>
-<span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
-<span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies2</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">glm_t1</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
-<span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
-<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
-<span class="r-in">  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
-<span class="r-in">  poly <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  inter_order <span class="op">=</span> <span class="fl">0</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">glm_t1</span><span class="op">$</span><span class="va">model</span></span>
-<span class="r-in"><span class="va">glm_t1</span><span class="op">$</span><span class="va">predictors</span></span>
-<span class="r-in"><span class="va">glm_t1</span><span class="op">$</span><span class="va">performance</span></span>
-<span class="r-in"><span class="va">glm_t1</span><span class="op">$</span><span class="va">data_ens</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Using second order polynomial terms and first-order interaction terms</span></span>
-<span class="r-in"><span class="va">glm_t2</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
-<span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
-<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
-<span class="r-in">  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
-<span class="r-in">  poly <span class="op">=</span> <span class="fl">2</span>,</span>
-<span class="r-in">  inter_order <span class="op">=</span> <span class="fl">1</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Using repeated k-fold partition method</span></span>
-<span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
-<span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies2</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Using third order polynomial terms and second-order interaction terms</span></span>
-<span class="r-in"><span class="va">glm_t3</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies2</span>,</span>
-<span class="r-in">  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span><span class="op">)</span>,</span>
-<span class="r-in">  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
-<span class="r-in">  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
-<span class="r-in">  poly <span class="op">=</span> <span class="fl">3</span>,</span>
-<span class="r-in">  inter_order <span class="op">=</span> <span class="fl">2</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Using k-fold partition method</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">glm_t1</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  poly <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  inter_order <span class="op">=</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">model</span></span></span>
+<span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">predictors</span></span></span>
+<span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">data_ens</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Using second order polynomial terms and first-order interaction terms</span></span></span>
+<span class="r-in"><span><span class="va">glm_t2</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  poly <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  inter_order <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Using repeated k-fold partition method</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Using third order polynomial terms and second-order interaction terms</span></span></span>
+<span class="r-in"><span><span class="va">glm_t3</span> <span class="op">&lt;-</span> <span class="fu">fit_glm</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  poly <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>  inter_order <span class="op">=</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -213,7 +234,7 @@ Threshold dependent metric are calculated based on the threshold specified in th
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

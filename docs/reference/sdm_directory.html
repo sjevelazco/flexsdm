@@ -74,15 +74,15 @@ assist in the organisation of the modelling process outputs.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sdm_directory</span><span class="op">(</span>
-  main_dir <span class="op">=</span> <span class="cn">NULL</span>,
-  projections <span class="op">=</span> <span class="cn">NULL</span>,
-  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,
-  algorithm <span class="op">=</span> <span class="cn">NULL</span>,
-  ensemble <span class="op">=</span> <span class="cn">NULL</span>,
-  threshold <span class="op">=</span> <span class="cn">FALSE</span>,
-  return_vector <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sdm_directory</span><span class="op">(</span></span>
+<span>  main_dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  projections <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  algorithm <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ensemble <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  return_vector <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -91,31 +91,46 @@ assist in the organisation of the modelling process outputs.</p>
 <dd><p>character. Directory path containing main folder for saving model inputs and
 outputs. If NULL function assumes as directory path the current working R session and creates
 a sub-folder with the name of 'flexsdm_results'. Default NULL</p></dd>
+
+
 <dt>projections</dt>
 <dd><p>vector. Vector of folder names for future scenarios/different regions/time
 periods to save model projections output.</p></dd>
+
+
 <dt>calibration_area</dt>
 <dd><p>logical. If TRUE, function creates a folder in 1_Inputs for storing
 calibration area. Default TRUE</p></dd>
+
+
 <dt>algorithm</dt>
 <dd><p>vector. Vector of model names that will be used. Usage algorithm =
 c(gam, tune_max, tune_net, esm_glm). If  "all" is used the function creates folders with all
 algorithms available in flexsdm . i.e. 'gam', 'gau', 'gbm', 'glm', 'max', 'net', 'raf', and
 'svm'. Default NULL</p></dd>
+
+
 <dt>ensemble</dt>
 <dd><p>vector. Vector of methods used to ensemble different models.
 Usage ensemble = c("mean", "meanthr"). Default NULL</p></dd>
+
+
 <dt>threshold</dt>
 <dd><p>logical. If TRUE sub-folders "/1_con", "/2_bin" will be created within each
 algorithm and/or ensemble folder. Used for storing continuous and binarized models separately.
 Default FALSE</p></dd>
+
+
 <dt>return_vector</dt>
 <dd><p>logical. If TRUE function returns a vector with the path to all folders.
 Default TRUE</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A character vector with the paths to created folders</p>
+    
+
+<p>A character vector with the paths to created folders</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -136,41 +151,41 @@ option to save results from any modeling and ensemble technique presented in fle
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># require(sf)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Implement sdm_directory without specific path and project name</span></span>
-<span class="r-in"><span class="va">dirs_1</span> <span class="op">&lt;-</span> <span class="fu">sdm_directory</span><span class="op">(</span></span>
-<span class="r-in">  main_dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">  projections <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gam"</span>, <span class="st">"tune_max"</span><span class="op">)</span>,</span>
-<span class="r-in">  ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"meanthr"</span><span class="op">)</span>,</span>
-<span class="r-in">  threshold <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  return_vector <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">dirs_1</span></span>
-<span class="r-in"><span class="va">dirs_1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/dir_tree.html" class="external-link">dir_tree</a></span><span class="op">(</span><span class="va">.</span>, recurse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">dirs_1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># this directory and sub-folder will be removed</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Implement sdm_directory with specific path and project name</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dirs_2</span> <span class="op">&lt;-</span> <span class="fu">sdm_directory</span><span class="op">(</span></span>
-<span class="r-in">  main_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">.</span>, <span class="st">"my_project_name"</span><span class="op">)</span>,</span>
-<span class="r-in">  projections <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="st">"cnrm_rpc8.5_2050"</span>,</span>
-<span class="r-in">    <span class="st">"cnrm_rpc4.5_2050"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  algorithm <span class="op">=</span> <span class="st">"all"</span>,</span>
-<span class="r-in">  ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"meanthr"</span><span class="op">)</span>,</span>
-<span class="r-in">  threshold <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">dirs_2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/dir_tree.html" class="external-link">dir_tree</a></span><span class="op">(</span><span class="va">.</span>, recurse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># require(sf)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Implement sdm_directory without specific path and project name</span></span></span>
+<span class="r-in"><span><span class="va">dirs_1</span> <span class="op">&lt;-</span> <span class="fu">sdm_directory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  main_dir <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  projections <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gam"</span>, <span class="st">"tune_max"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"meanthr"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  threshold <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  return_vector <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dirs_1</span></span></span>
+<span class="r-in"><span><span class="va">dirs_1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/dir_tree.html" class="external-link">dir_tree</a></span><span class="op">(</span><span class="va">.</span>, recurse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">dirs_1</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># this directory and sub-folder will be removed</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Implement sdm_directory with specific path and project name</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dirs_2</span> <span class="op">&lt;-</span> <span class="fu">sdm_directory</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  main_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">.</span>, <span class="st">"my_project_name"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  projections <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"cnrm_rpc8.5_2050"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"cnrm_rpc4.5_2050"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  algorithm <span class="op">=</span> <span class="st">"all"</span>,</span></span>
+<span class="r-in"><span>  ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"meanthr"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  threshold <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dirs_2</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/dir_tree.html" class="external-link">dir_tree</a></span><span class="op">(</span><span class="va">.</span>, recurse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -182,7 +197,7 @@ option to save results from any modeling and ensemble technique presented in fle
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

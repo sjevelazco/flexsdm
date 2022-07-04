@@ -85,7 +85,7 @@
 
 
 <div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>flexsdm: Modeling a rare species</h1>
             
       
@@ -139,43 +139,43 @@ temperature of the warmest month (tmx), and minimum temperature of the
 coldest month (tmn). Our occurrence data include 21 geo-referenced
 observations downloaded from the online database Calflora.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-
-<span class="co"># environmental data</span>
-<span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
-<span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> 
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>
-
-<span class="co"># species occurence data (presence-only)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">)</span>
-<span class="va">hespero</span> <span class="op">&lt;-</span> <span class="va">hespero</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span>
-
-<span class="co"># California ecoregions</span>
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="va">sp_region</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">regions</span>, <span class="va">regions</span><span class="op">$</span><span class="va">category</span> <span class="op">==</span> <span class="st">"SCR"</span><span class="op">)</span> <span class="co"># ecoregion where *Hesperocyparis stephensonii* is found</span>
-
-<span class="co"># visualize the species occurrences</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>
-  <span class="va">sp_region</span>,
-  col <span class="op">=</span> <span class="st">"gray80"</span>,
-  legend <span class="op">=</span> <span class="cn">FALSE</span>,
-  axes <span class="op">=</span> <span class="cn">FALSE</span>,
-  main <span class="op">=</span> <span class="st">"Hesperocyparis stephensonii occurrences"</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>
-<span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"gray80"</span>, <span class="fl">8</span><span class="op">)</span>
-<span class="va">cols</span><span class="op">[</span><span class="va">regions</span><span class="op">$</span><span class="va">category</span> <span class="op">==</span> <span class="st">"SCR"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"yellow"</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/inset.html" class="external-link">inset</a></span><span class="op">(</span>
-  <span class="va">regions</span>,
-  loc <span class="op">=</span> <span class="st">"bottomleft"</span>,
-  scale <span class="op">=</span> <span class="fl">.3</span>,
-  col <span class="op">=</span> <span class="va">cols</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># environmental data</span></span>
+<span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
+<span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># species occurence data (presence-only)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">)</span></span>
+<span><span class="va">hespero</span> <span class="op">&lt;-</span> <span class="va">hespero</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">id</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># California ecoregions</span></span>
+<span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
+<span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
+<span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/as.spatvector.html" class="external-link">as.polygons</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
+<span><span class="va">sp_region</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">regions</span>, <span class="va">regions</span><span class="op">$</span><span class="va">category</span> <span class="op">==</span> <span class="st">"SCR"</span><span class="op">)</span> <span class="co"># ecoregion where *Hesperocyparis stephensonii* is found</span></span>
+<span></span>
+<span><span class="co"># visualize the species occurrences</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">sp_region</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"gray80"</span>,</span>
+<span>  legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  axes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Hesperocyparis stephensonii occurrences"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"gray80"</span>, <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="va">cols</span><span class="op">[</span><span class="va">regions</span><span class="op">$</span><span class="va">category</span> <span class="op">==</span> <span class="st">"SCR"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"yellow"</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/inset.html" class="external-link">inset</a></span><span class="op">(</span></span>
+<span>  <span class="va">regions</span>,</span>
+<span>  loc <span class="op">=</span> <span class="st">"bottomleft"</span>,</span>
+<span>  scale <span class="op">=</span> <span class="fl">.3</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">cols</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/raw%20data-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -186,24 +186,24 @@ observations downloaded from the online database Calflora.</p>
 calibration area. Here, we will use 25-km buffer areas around the
 presence points to select our pseudo-absence locations.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">hespero</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'buffer'</span>, width<span class="op">=</span><span class="fl">25000</span><span class="op">)</span>,
-  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># visualize the species occurrences &amp; calibration area</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>
-  <span class="va">sp_region</span>,
-  col <span class="op">=</span> <span class="st">"gray80"</span>,
-  legend <span class="op">=</span> <span class="cn">FALSE</span>,
-  axes <span class="op">=</span> <span class="cn">FALSE</span>,
-  main <span class="op">=</span> <span class="st">"Calibration area and occurrences"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">hespero</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'buffer'</span>, width<span class="op">=</span><span class="fl">25000</span><span class="op">)</span>,</span>
+<span>  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># visualize the species occurrences &amp; calibration area</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">sp_region</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"gray80"</span>,</span>
+<span>  legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  axes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Calibration area and occurrences"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/calibration%20area-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -214,52 +214,52 @@ data. However, most SDM methods require either pseudo-absence or
 background data. Here, we use our calibration area to produce
 pseudo-absence data that can be used in our SDMs.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># Sample the same number of species presences</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">hespero</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">$</span><span class="va">pr_ab</span><span class="op">)</span>, <span class="co"># selecting number of pseudo-absence points that is equal to number of presences</span>
-  method <span class="op">=</span> <span class="st">"random"</span>,
-  rlayer <span class="op">=</span> <span class="va">somevar</span>,
-  calibarea <span class="op">=</span> <span class="va">ca</span>
-<span class="op">)</span>
-
-<span class="co"># Visualize species presences and pseudo-absences</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>
-  <span class="va">sp_region</span>,
-  col <span class="op">=</span> <span class="st">"gray80"</span>,
-  legend <span class="op">=</span> <span class="cn">FALSE</span>,
-  axes <span class="op">=</span> <span class="cn">FALSE</span>,
-  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">289347</span>, <span class="fl">353284</span><span class="op">)</span>,
-  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">598052</span>,  <span class="op">-</span><span class="fl">520709</span><span class="op">)</span>,
-  main <span class="op">=</span> <span class="st">"Presence = yellow, Pseudo-absence = black"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">0.8</span>, pch<span class="op">=</span><span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="co"># Pseudo-absences</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="co"># Presences</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Sample the same number of species presences</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">hespero</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">$</span><span class="va">pr_ab</span><span class="op">)</span>, <span class="co"># selecting number of pseudo-absence points that is equal to number of presences</span></span>
+<span>  method <span class="op">=</span> <span class="st">"random"</span>,</span>
+<span>  rlayer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  calibarea <span class="op">=</span> <span class="va">ca</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Visualize species presences and pseudo-absences</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">sp_region</span>,</span>
+<span>  col <span class="op">=</span> <span class="st">"gray80"</span>,</span>
+<span>  legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  axes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">289347</span>, <span class="fl">353284</span><span class="op">)</span>,</span>
+<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">598052</span>,  <span class="op">-</span><span class="fl">520709</span><span class="op">)</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Presence = yellow, Pseudo-absence = black"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">0.8</span>, pch<span class="op">=</span><span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="co"># Pseudo-absences</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="co"># Presences</span></span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/pseudo-absence%20data-1.png" width="576"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-
-<span class="co"># Bind a presences and pseudo-absences</span>
-<span class="va">hespero_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">hespero</span>, <span class="va">psa</span><span class="op">)</span>
-<span class="va">hespero_pa</span> <span class="co"># Presence-Pseudo-absence database</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 42 × 3</span></span>
-<span class="co">#&gt;          x        y pr_ab</span>
-<span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> <span style="text-decoration: underline;">316</span>923. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">843.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">317</span>155. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">234.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">316</span>960. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">186.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">314</span>347. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">648.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">317</span>348. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">349.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">316</span>753. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">679.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">316</span>777. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">644.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">317</span>050. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">043.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">316</span>655. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">928.</span>     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">316</span>418. -<span style="color: #BB0000; text-decoration: underline;">567</span><span style="color: #BB0000;">439.</span>     1</span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 32 more rows</span></span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span></span>
+<span><span class="co"># Bind a presences and pseudo-absences</span></span>
+<span><span class="va">hespero_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">hespero</span>, <span class="va">psa</span><span class="op">)</span></span>
+<span><span class="va">hespero_pa</span> <span class="co"># Presence-Pseudo-absence database</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 42 × 3</span></span></span>
+<span><span class="co">#&gt;          x        y pr_ab</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> <span style="text-decoration: underline;">316</span>923. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">843.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">317</span>155. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">234.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">316</span>960. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">186.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">314</span>347. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">648.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">317</span>348. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">349.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">316</span>753. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">679.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">316</span>777. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">644.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">317</span>050. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">043.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">316</span>655. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">928.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">316</span>418. -<span style="color: #BB0000; text-decoration: underline;">567</span><span style="color: #BB0000;">439.</span>     1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 32 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="partition-data-for-evaluating-models">Partition data for evaluating models<a class="anchor" aria-label="anchor" href="#partition-data-for-evaluating-models"></a>
@@ -270,15 +270,15 @@ random data partition methods for evaluating SDMs. Here we will use
 repeated K-fold cross-validation, which is a suitable partition approach
 for performing ESM.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-
-<span class="co"># Repeated K-fold method</span>
-<span class="va">hespero_pa2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">hespero_pa</span>,
-  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span>, replicates <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Repeated K-fold method</span></span>
+<span><span class="va">hespero_pa2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">hespero_pa</span>,</span>
+<span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span>, replicates <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="extracting-environmental-values">Extracting environmental values<a class="anchor" aria-label="anchor" href="#extracting-environmental-values"></a>
@@ -286,15 +286,15 @@ for performing ESM.</p>
 <p>Next, we extract the values of our four environmental predictors at
 the presence and pseudo-absence locations.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">hespero_pa3</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="va">hespero_pa2</span>,
-    x <span class="op">=</span> <span class="st">'x'</span>,
-    y <span class="op">=</span> <span class="st">'y'</span>,
-    env_layer <span class="op">=</span> <span class="va">somevar</span>,
-    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">hespero_pa3</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">hespero_pa2</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">'x'</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">'y'</span>,</span>
+<span>    env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="modeling">Modeling<a class="anchor" aria-label="anchor" href="#modeling"></a>
@@ -306,225 +306,225 @@ the presence and pseudo-absence locations.</p>
 of <em>Hesperocyparis stephensonii</em>: GLM, GBM, and SVM. In this
 case, we use our calibration area for making our predictions.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mglm</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="../reference/fit_glm.html">fit_glm</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="va">hespero_pa3</span>,
-    response <span class="op">=</span> <span class="st">'pr_ab'</span>,
-    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
-    partition <span class="op">=</span> <span class="st">'.part'</span>,
-    thr <span class="op">=</span> <span class="st">'max_sens_spec'</span>
-  <span class="op">)</span>
-<span class="co">#&gt; Formula used for model fitting:</span>
-<span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2)</span>
-<span class="co">#&gt; Replica number: 1/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 2/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 3/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 4/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 5/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 6/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 7/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 8/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 9/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 10/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-
-<span class="va">mgbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_gbm.html">fit_gbm</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">hespero_pa3</span>,
-  response <span class="op">=</span> <span class="st">'pr_ab'</span>,
-  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
-  partition <span class="op">=</span> <span class="st">'.part'</span>,
-  thr <span class="op">=</span> <span class="st">'max_sens_spec'</span>
-<span class="op">)</span>
-<span class="co">#&gt; Formula used for model fitting:</span>
-<span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span>
-<span class="co">#&gt; Replica number: 1/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 2/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 3/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 4/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 5/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 6/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 7/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 8/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 9/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 10/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-
-<span class="va">msvm</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/fit_svm.html">fit_svm</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">hespero_pa3</span>,
-  response <span class="op">=</span> <span class="st">'pr_ab'</span>,
-  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,
-  partition <span class="op">=</span> <span class="st">'.part'</span>,
-  thr <span class="op">=</span> <span class="st">'max_sens_spec'</span>
-<span class="op">)</span>
-<span class="co">#&gt; Formula used for model fitting:</span>
-<span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span>
-<span class="co">#&gt; Replica number: 1/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 2/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 3/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 4/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 5/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 6/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 7/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 8/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 9/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-<span class="co">#&gt; Replica number: 10/10</span>
-<span class="co">#&gt; Partition number: 1/5</span>
-<span class="co">#&gt; Partition number: 2/5</span>
-<span class="co">#&gt; Partition number: 3/5</span>
-<span class="co">#&gt; Partition number: 4/5</span>
-<span class="co">#&gt; Partition number: 5/5</span>
-
-
-<span class="va">mpred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span>
-  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span><span class="op">)</span>,
-  pred <span class="op">=</span> <span class="va">somevar</span>,
-  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,
-  predict_area <span class="op">=</span> <span class="va">ca</span>
-<span class="op">)</span>
-<span class="co">#&gt; Predicting list of individual models</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mglm</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/fit_glm.html">fit_glm</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>    response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
+<span>    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
+<span>    partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
+<span>    thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Formula used for model fitting:</span></span>
+<span><span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2)</span></span>
+<span><span class="co">#&gt; Replica number: 1/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 2/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 3/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 4/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 5/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 6/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 7/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 8/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 9/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 10/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span></span>
+<span><span class="va">mgbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_gbm.html">fit_gbm</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>  response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
+<span>  thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Formula used for model fitting:</span></span>
+<span><span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span></span>
+<span><span class="co">#&gt; Replica number: 1/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 2/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 3/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 4/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 5/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 6/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 7/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 8/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 9/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 10/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span></span>
+<span><span class="va">msvm</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/fit_svm.html">fit_svm</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>  response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
+<span>  thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Formula used for model fitting:</span></span>
+<span><span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span></span>
+<span><span class="co">#&gt; Replica number: 1/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 2/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 3/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 4/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 5/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 6/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 7/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 8/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 9/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Replica number: 10/10</span></span>
+<span><span class="co">#&gt; Partition number: 1/5</span></span>
+<span><span class="co">#&gt; Partition number: 2/5</span></span>
+<span><span class="co">#&gt; Partition number: 3/5</span></span>
+<span><span class="co">#&gt; Partition number: 4/5</span></span>
+<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span></span>
+<span></span>
+<span><span class="va">mpred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span></span>
+<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span><span class="op">)</span>,</span>
+<span>  pred <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  predict_area <span class="op">=</span> <span class="va">ca</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Predicting list of individual models</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="ensemble-of-small-models">Ensemble of small models<a class="anchor" aria-label="anchor" href="#ensemble-of-small-models"></a>
@@ -636,22 +636,22 @@ time.</p>
 The spatial outputs suggest that the standard models tend to predict
 broader areas with high suitability values that the ESMs.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">glm</span>, main <span class="op">=</span> <span class="st">'Standard GLM'</span><span class="op">)</span>
-<span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eglm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GLM'</span><span class="op">)</span>
-<span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">gbm</span>, main <span class="op">=</span> <span class="st">'Standard GBM'</span><span class="op">)</span>
-<span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">egbm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GBM'</span><span class="op">)</span>
-<span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">svm</span>, main <span class="op">=</span> <span class="st">'Standard SVM'</span><span class="op">)</span>
-<span class="co">#points(hespero$x, hespero$y, pch = 19)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">esvm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM SVM'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">glm</span>, main <span class="op">=</span> <span class="st">'Standard GLM'</span><span class="op">)</span></span>
+<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eglm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GLM'</span><span class="op">)</span></span>
+<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">gbm</span>, main <span class="op">=</span> <span class="st">'Standard GBM'</span><span class="op">)</span></span>
+<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">egbm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GBM'</span><span class="op">)</span></span>
+<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">svm</span>, main <span class="op">=</span> <span class="st">'Standard SVM'</span><span class="op">)</span></span>
+<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">esvm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM SVM'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/comparison%20maps-1.png" width="576"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span></code></pre></div>
 <p>Next, we look at some performance metrics for our models, which are
 based on our repeated k-folds cross-validation partition method. This
 can be easily done using the “sdm_summarize()” function in
@@ -660,18 +660,18 @@ higher for the ESMs than their corresponding standard model. However,
 the Boyce index and the Inverse Mean Absolute Error are slightly higher
 for the standard models.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span>, <span class="va">eglm</span>, <span class="va">egbm</span>, <span class="va">esvm</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span>
-  <span class="va">merge_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>
-    <span class="va">model</span>,
-    AUC <span class="op">=</span> <span class="va">AUC_mean</span>,
-    TSS <span class="op">=</span> <span class="va">TSS_mean</span>,
-    JACCARD <span class="op">=</span> <span class="va">JACCARD_mean</span>,
-    BOYCE <span class="op">=</span> <span class="va">BOYCE_mean</span>,
-    IMAE <span class="op">=</span> <span class="va">IMAE_mean</span>
-  <span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span>, <span class="va">eglm</span>, <span class="va">egbm</span>, <span class="va">esvm</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
+<span>  <span class="va">merge_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">model</span>,</span>
+<span>    AUC <span class="op">=</span> <span class="va">AUC_mean</span>,</span>
+<span>    TSS <span class="op">=</span> <span class="va">TSS_mean</span>,</span>
+<span>    JACCARD <span class="op">=</span> <span class="va">JACCARD_mean</span>,</span>
+<span>    BOYCE <span class="op">=</span> <span class="va">BOYCE_mean</span>,</span>
+<span>    IMAE <span class="op">=</span> <span class="va">IMAE_mean</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">model</th>
@@ -785,7 +785,7 @@ species. Perspectives in Ecology and Conservation, S2530064421000894. <a href="h
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>

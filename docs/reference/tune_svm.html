@@ -71,43 +71,57 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">tune_svm</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">response</span>,
-  <span class="va">predictors</span>,
-  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,
-  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">partition</span>,
-  grid <span class="op">=</span> <span class="cn">NULL</span>,
-  thr <span class="op">=</span> <span class="cn">NULL</span>,
-  metric <span class="op">=</span> <span class="st">"TSS"</span>,
-  n_cores <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tune_svm</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">response</span>,</span>
+<span>  <span class="va">predictors</span>,</span>
+<span>  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">partition</span>,</span>
+<span>  grid <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"TSS"</span>,</span>
+<span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>data.frame. Database with response (0,1) and predictors values.</p></dd>
+
+
 <dt>response</dt>
 <dd><p>character. Column name with species absence-presence data (0,1).</p></dd>
+
+
 <dt>predictors</dt>
 <dd><p>character. Vector with the column names of quantitative predictor variables
 (i.e. continuous variables). Usage predictors = c("aet", "cwd", "tmin")</p></dd>
+
+
 <dt>predictors_f</dt>
 <dd><p>character. Vector with the column names of qualitative predictor variables
 (i.e. ordinal or nominal variables type). Usage predictors_f = c("landform")</p></dd>
+
+
 <dt>fit_formula</dt>
 <dd><p>formula. A formula object with response and predictor
 variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variable names used here must be consistent with those used in
 response, predictors, and predictors_f arguments. Default NULL</p></dd>
+
+
 <dt>partition</dt>
 <dd><p>character. Column name with training and validation partition groups.</p></dd>
+
+
 <dt>grid</dt>
 <dd><p>data.frame. Provide a data frame object with algorithm hyper-parameters values to be
 tested. It Is recommended to generate this data.frame with grid() function. Hyper-parameters
  needed for tuning are 'size' and 'decay'.</p></dd>
+
+
 <dt>thr</dt>
 <dd><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is useful
 for threshold-dependent performance metrics. It is possible to use more than one threshold type.
@@ -125,16 +139,23 @@ It is necessary to provide a vector for this argument. The next threshold area a
 e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec',
 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will
 use all thresholds if no threshold is specified</p></dd>
+
+
 <dt>metric</dt>
 <dd><p>character. Performance metric used for selecting the best combination of
 hyper-parameter values. One of the following metrics can be used: SORENSEN, JACCARD, FPB,
 TSS, KAPPA, AUC, and BOYCE. TSS is used as default.</p></dd>
+
+
 <dt>n_cores</dt>
 <dd><p>numeric. Number of cores use for parallelization. Default 1</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list object with:</p><ul><li><p>model: A "ksvm" class object from ksvm package. This object can be used for predicting.</p></li>
+    
+
+<p>A list object with:</p><ul><li><p>model: A "ksvm" class object from ksvm package. This object can be used for predicting.</p></li>
 <li><p>predictors: A tibble with quantitative (c column names) and qualitative (f column names)
  variables use for modeling.</p></li>
 <li><p>performance: Hyper-parameters values and performance metric (see <code><a href="sdm_eval.html">sdm_eval</a></code>)
@@ -151,52 +172,52 @@ and <code><a href="tune_raf.html">tune_raf</a></code>.</p></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Partition the data with the k-fold method</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
-<span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># pr_ab column is species presence and absences (i.e. the response variable)</span></span>
-<span class="r-in"><span class="co"># from aet to landform are the predictors variables (landform is a qualitative variable)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Hyper-parameter values for tuning</span></span>
-<span class="r-in"><span class="va">tune_grid</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
-<span class="r-in">    C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">8</span>, <span class="fl">16</span>, <span class="fl">20</span><span class="op">)</span>,</span>
-<span class="r-in">    sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">svm_t</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">tune_svm</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">abies2</span>,</span>
-<span class="r-in">    response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span class="r-in">      <span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>,</span>
-<span class="r-in">      <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span></span>
-<span class="r-in">    <span class="op">)</span>,</span>
-<span class="r-in">    predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
-<span class="r-in">    partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span class="r-in">    grid <span class="op">=</span> <span class="va">tune_grid</span>,</span>
-<span class="r-in">    thr <span class="op">=</span> <span class="st">"max_sens_spec"</span>,</span>
-<span class="r-in">    metric <span class="op">=</span> <span class="st">"TSS"</span>,</span>
-<span class="r-in">    n_cores <span class="op">=</span> <span class="fl">1</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Outputs</span></span>
-<span class="r-in"><span class="va">svm_t</span><span class="op">$</span><span class="va">model</span></span>
-<span class="r-in"><span class="va">svm_t</span><span class="op">$</span><span class="va">predictors</span></span>
-<span class="r-in"><span class="va">svm_t</span><span class="op">$</span><span class="va">performance</span></span>
-<span class="r-in"><span class="va">svm_t</span><span class="op">$</span><span class="va">hyper_performance</span></span>
-<span class="r-in"><span class="va">svm_t</span><span class="op">$</span><span class="va">data_ens</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Partition the data with the k-fold method</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># pr_ab column is species presence and absences (i.e. the response variable)</span></span></span>
+<span class="r-in"><span><span class="co"># from aet to landform are the predictors variables (landform is a qualitative variable)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Hyper-parameter values for tuning</span></span></span>
+<span class="r-in"><span><span class="va">tune_grid</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">8</span>, <span class="fl">16</span>, <span class="fl">20</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">svm_t</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">tune_svm</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>    response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>      <span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>,</span></span>
+<span class="r-in"><span>      <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span>,</span></span>
+<span class="r-in"><span>    predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
+<span class="r-in"><span>    grid <span class="op">=</span> <span class="va">tune_grid</span>,</span></span>
+<span class="r-in"><span>    thr <span class="op">=</span> <span class="st">"max_sens_spec"</span>,</span></span>
+<span class="r-in"><span>    metric <span class="op">=</span> <span class="st">"TSS"</span>,</span></span>
+<span class="r-in"><span>    n_cores <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Outputs</span></span></span>
+<span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">model</span></span></span>
+<span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">predictors</span></span></span>
+<span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">hyper_performance</span></span></span>
+<span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">data_ens</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -208,7 +229,7 @@ and <code><a href="tune_raf.html">tune_raf</a></code>.</p></div>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

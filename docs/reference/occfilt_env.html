@@ -71,7 +71,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">occfilt_env</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">id</span>, <span class="va">env_layer</span>, <span class="va">nbins</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">occfilt_env</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">id</span>, <span class="va">env_layer</span>, <span class="va">nbins</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,20 +79,33 @@
     <dl><dt>data</dt>
 <dd><p>data.frame. Data.frame or tibble object with presences
 (or presence-absence) records, and coordinates</p></dd>
+
+
 <dt>x</dt>
 <dd><p>character. Column name with spatial x coordinates</p></dd>
+
+
 <dt>y</dt>
 <dd><p>character. Column name with spatial y coordinates</p></dd>
+
+
 <dt>id</dt>
 <dd><p>character. Column names with rows id. It is important that each row has its own unique code.</p></dd>
+
+
 <dt>env_layer</dt>
 <dd><p>SpatRaster. Rasters with environmental conditions</p></dd>
+
+
 <dt>nbins</dt>
 <dd><p>integer. A number of classes used to split each environmental condition</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble object with data environmentally filtered</p>
+    
+
+<p>A tibble object with data environmentally filtered</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -141,62 +154,62 @@ Diversity and Distributions, 27, 512–523. https://doi.org/10.1111/ddi.13215</p
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Environmental variables</span></span>
-<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Species occurrences</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">spp</span></span>
-<span class="r-in"><span class="va">spp1</span> <span class="op">&lt;-</span> <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp1"</span>, <span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">spp1</span><span class="op">$</span><span class="va">idd</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># split environmental variables into 5 bins</span></span>
-<span class="r-in"><span class="va">filtered_1</span> <span class="op">&lt;-</span> <span class="fu">occfilt_env</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">spp1</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="st">"idd"</span>,</span>
-<span class="r-in">  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span class="r-in">  nbins <span class="op">=</span> <span class="fl">5</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># split into 8 bins</span></span>
-<span class="r-in"><span class="va">filtered_2</span> <span class="op">&lt;-</span> <span class="fu">occfilt_env</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">spp1</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="st">"idd"</span>,</span>
-<span class="r-in">  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span class="r-in">  nbins <span class="op">=</span> <span class="fl">8</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># split into 12 bins</span></span>
-<span class="r-in"><span class="va">filtered_3</span> <span class="op">&lt;-</span> <span class="fu">occfilt_env</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">spp1</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="st">"idd"</span>,</span>
-<span class="r-in">  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span class="r-in">  nbins <span class="op">=</span> <span class="fl">12</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># note that the higher the nbins parameter the more</span></span>
-<span class="r-in"><span class="co"># classes must be processed (4 variables, 30 bins = 923521 classes)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># While the greater the greater the number of bins, the greater records retained</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Environmental variables</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Species occurrences</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">spp</span></span></span>
+<span class="r-in"><span><span class="va">spp1</span> <span class="op">&lt;-</span> <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp1"</span>, <span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">spp1</span><span class="op">$</span><span class="va">idd</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># split environmental variables into 5 bins</span></span></span>
+<span class="r-in"><span><span class="va">filtered_1</span> <span class="op">&lt;-</span> <span class="fu">occfilt_env</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp1</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"idd"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  nbins <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># split into 8 bins</span></span></span>
+<span class="r-in"><span><span class="va">filtered_2</span> <span class="op">&lt;-</span> <span class="fu">occfilt_env</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp1</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"idd"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  nbins <span class="op">=</span> <span class="fl">8</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># split into 12 bins</span></span></span>
+<span class="r-in"><span><span class="va">filtered_3</span> <span class="op">&lt;-</span> <span class="fu">occfilt_env</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp1</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"idd"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  nbins <span class="op">=</span> <span class="fl">12</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># note that the higher the nbins parameter the more</span></span></span>
+<span class="r-in"><span><span class="co"># classes must be processed (4 variables, 30 bins = 923521 classes)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># While the greater the greater the number of bins, the greater records retained</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -208,7 +221,7 @@ Diversity and Distributions, 27, 512–523. https://doi.org/10.1111/ddi.13215</p
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

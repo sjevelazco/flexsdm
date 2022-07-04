@@ -74,7 +74,7 @@ methods based on cross validation folds (kfold, rep_kfold, and loocv), as well a
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">part_random</span><span class="op">(</span><span class="va">data</span>, <span class="va">pr_ab</span>, method <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">part_random</span><span class="op">(</span><span class="va">data</span>, <span class="va">pr_ab</span>, method <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -82,9 +82,13 @@ methods based on cross validation folds (kfold, rep_kfold, and loocv), as well a
     <dl><dt>data</dt>
 <dd><p>data.frame. Database with presences, presence-absence, or pseudo-absence, records
 for a given species</p></dd>
+
+
 <dt>pr_ab</dt>
 <dd><p>character. Column name of "data" with presences, presence-absence, or
 pseudo-absence. Presences must be represented by 1 and absences by 0</p></dd>
+
+
 <dt>method</dt>
 <dd><p>character. Vector with data partitioning method to be used. Usage
   part=c(method= 'kfold', folds='5'). Methods include:</p><ul><li><p>kfold: Random partitioning into k-folds for cross-validation. 'folds' refers to the number of folds for data
@@ -102,10 +106,13 @@ pseudo-absence. Presences must be represented by 1 and absences by 0</p></dd>
   value &gt;0 and &lt;=1. In this example proportion='0.7' mean that 70% of data will be used for
   model training, while 30% will be used for model testing.</p></li>
 </ul></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble object with information used in the 'data' argument and additional columns named .part
+    
+
+<p>A tibble object with information used in the 'data' argument and additional columns named .part
 containing the partition groups. The rep_kfold and boot method will return as many ".part"
 columns as replicated defined. For the rest of the methods, a single .part column is returned.
 For kfold, rep_kfold, and loocv partition methods, groups are defined by integers.
@@ -126,45 +133,45 @@ prediction errors in conservation presence/absence models. Environmental Conserv
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies</span><span class="op">$</span><span class="va">partition</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span class="r-in"><span class="va">abies</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># K-fold method</span></span>
-<span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu">part_random</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
-<span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies2</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Repeated K-fold method</span></span>
-<span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu">part_random</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
-<span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span>, replicates <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies2</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Leave-one-out cross-validation (loocv) method</span></span>
-<span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu">part_random</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
-<span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"loocv"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies2</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Bootstrap method</span></span>
-<span class="r-in"><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu">part_random</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">abies</span>,</span>
-<span class="r-in">  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"boot"</span>, replicates <span class="op">=</span> <span class="fl">50</span>, proportion <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">abies2</span></span>
-<span class="r-in"><span class="va">abies2</span><span class="op">$</span><span class="va">.part1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Note that for this method .partX columns have train and test words.</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies</span><span class="op">$</span><span class="va">partition</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="va">abies</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># K-fold method</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu">part_random</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Repeated K-fold method</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu">part_random</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span>, replicates <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Leave-one-out cross-validation (loocv) method</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu">part_random</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"loocv"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Bootstrap method</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu">part_random</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"boot"</span>, replicates <span class="op">=</span> <span class="fl">50</span>, proportion <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span><span class="op">$</span><span class="va">.part1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Note that for this method .partX columns have train and test words.</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -176,7 +183,7 @@ prediction errors in conservation presence/absence models. Environmental Conserv
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

@@ -71,7 +71,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sdm_extract</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">env_layer</span>, variables <span class="op">=</span> <span class="cn">NULL</span>, filter_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sdm_extract</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, <span class="va">y</span>, <span class="va">env_layer</span>, variables <span class="op">=</span> <span class="cn">NULL</span>, filter_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,62 +79,75 @@
     <dl><dt>data</dt>
 <dd><p>data.frame. Database with species presence, presence-absence, or pseudo-absence
 records with x and y coordinates</p></dd>
+
+
 <dt>x</dt>
 <dd><p>character. Column name with spatial x coordinates</p></dd>
+
+
 <dt>y</dt>
 <dd><p>character. Column name with spatial y coordinates</p></dd>
+
+
 <dt>env_layer</dt>
 <dd><p>SpatRaster. Raster or raster stack with environmental variables.</p></dd>
+
+
 <dt>variables</dt>
 <dd><p>character. Vector with the variable names of predictor (environmental) variables
 Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will
 return data for all layers. Default NULL</p></dd>
+
+
 <dt>filter_na</dt>
 <dd><p>logical. If filter_na = TRUE (default), the rows with NA values for any of the
 environmental variables are removed from the returned tibble.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble that returns the original data base with additional columns
+    
+
+<p>A tibble that returns the original data base with additional columns
 for the extracted environmental variables at each xy location from the SpatRaster object used
 in 'env_layer'</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Load datasets</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spp</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Extract environmental data from somevar for all locations in spp</span></span>
-<span class="r-in"><span class="va">ex_spp</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sdm_extract</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span class="r-in">    variables <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">    filter_na <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Extract environmental for two variables and remove rows with NAs</span></span>
-<span class="r-in"><span class="va">ex_spp2</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sdm_extract</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span class="r-in">    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>,</span>
-<span class="r-in">    filter_na <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ex_spp</span></span>
-<span class="r-in"><span class="va">ex_spp2</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load datasets</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract environmental data from somevar for all locations in spp</span></span></span>
+<span class="r-in"><span><span class="va">ex_spp</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sdm_extract</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>    variables <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>    filter_na <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extract environmental for two variables and remove rows with NAs</span></span></span>
+<span class="r-in"><span><span class="va">ex_spp2</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sdm_extract</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    filter_na <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ex_spp</span></span></span>
+<span class="r-in"><span><span class="va">ex_spp2</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -146,7 +159,7 @@ in 'env_layer'</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

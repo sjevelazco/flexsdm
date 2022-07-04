@@ -75,9 +75,9 @@ could be problematic when using with few occurrences. For further detail see
 Breiner et al. (2015, 2018). This function use a default regularization multiplier
 equal to 2.5 (see  Breiner et al., 2018)
 
-When presence-absence (or presence-pseudo-absence) is used in data argument and background
-points, function will fit models with presences and background points and validate with
-presences and absences. This procedure makes maxent comparable to other presences-absences
+When presence-absence (or presence-pseudo-absence) and background points are used
+, function will fit models with presences and background points and validate with
+presences and absences (or pseudo-absence). This procedure makes maxent comparable to other presences-absences
 models (.e.g., random forest, support vector machine). If only presences and background
 points data are used, function will fit and validate model with presences and background
 data. If only presence-absences are used in data argument and without background, function

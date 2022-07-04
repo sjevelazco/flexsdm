@@ -85,7 +85,7 @@
 
 
 <div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>flexsdm: Overview of Pre-modeling functions</h1>
             
       
@@ -145,27 +145,24 @@ occurrences</p></li>
 <p>First, install the flexsdm package. You can install the released
 version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm" class="external-link">github</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'dplyr'</span>
-<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     filter, lag</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     intersect, setdiff, setequal, union</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span>
-<span class="co">#&gt; terra 1.5.21</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'terra'</span>
-<span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     src</span>
-<span class="co">#&gt; The following object is masked from 'package:knitr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     spin</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; terra 1.5.34</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     spin</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="project-directory-setup">Project Directory Setup<a class="anchor" aria-label="anchor" href="#project-directory-setup"></a>
@@ -184,18 +181,18 @@ Next, specify whether or not you want to include folders for
 projections, calibration areas, algorithms, ensembles, and
 thresholds.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_project</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"flex_sdm_project"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">my_project</span><span class="op">)</span>
-
-<span class="va">project_directory</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_directory.html">sdm_directory</a></span><span class="op">(</span>
-  main_dir <span class="op">=</span> <span class="va">my_project</span>,
-  projections <span class="op">=</span> <span class="cn">NULL</span>,
-  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,
-  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit_max"</span>, <span class="st">"tune_raf"</span><span class="op">)</span>,
-  ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span>,
-  threshold <span class="op">=</span> <span class="cn">TRUE</span>,
-  return_vector <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_project</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"flex_sdm_project"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">my_project</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">project_directory</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_directory.html">sdm_directory</a></span><span class="op">(</span></span>
+<span>  main_dir <span class="op">=</span> <span class="va">my_project</span>,</span>
+<span>  projections <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  calibration_area <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit_max"</span>, <span class="st">"tune_raf"</span><span class="op">)</span>,</span>
+<span>  ensemble <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span><span class="op">)</span>,</span>
+<span>  threshold <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  return_vector <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="data-species-occurrence-and-background-data">Data, species occurrence and background data<a class="anchor" aria-label="anchor" href="#data-species-occurrence-and-background-data"></a>
@@ -206,23 +203,23 @@ dataset includes pr_ab column (presence = 1, and absence = 0), and
 location columns (x, y). You can load the “spp” data into your local R
 environment by using the code below:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span>
-
-<span class="va">spp</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,150 × 4</span></span>
-<span class="co">#&gt;    species        x        y pr_ab</span>
-<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> sp1       -<span style="color: #BB0000; text-decoration: underline;">5</span><span style="color: #BB0000;">541.</span> -<span style="color: #BB0000; text-decoration: underline;">145</span><span style="color: #BB0000;">138.</span>     0</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> sp1      -<span style="color: #BB0000; text-decoration: underline;">51</span><span style="color: #BB0000;">981.</span>   <span style="text-decoration: underline;">16</span>322.     0</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">269</span><span style="color: #BB0000;">871.</span>   <span style="text-decoration: underline;">69</span>512.     1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> sp1      -<span style="color: #BB0000; text-decoration: underline;">96</span><span style="color: #BB0000;">261.</span>  -<span style="color: #BB0000; text-decoration: underline;">32</span><span style="color: #BB0000;">008.</span>     0</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> sp1      <span style="text-decoration: underline;">269</span>589. -<span style="color: #BB0000; text-decoration: underline;">566</span><span style="color: #BB0000;">338.</span>     0</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> sp1       <span style="text-decoration: underline;">29</span>829. -<span style="color: #BB0000; text-decoration: underline;">328</span><span style="color: #BB0000;">468.</span>     0</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">152</span><span style="color: #BB0000;">691.</span>  <span style="text-decoration: underline;">393</span>782.     0</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">195</span><span style="color: #BB0000;">081.</span>  <span style="text-decoration: underline;">253</span>652.     0</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> sp1        -<span style="color: #BB0000;">951.</span> -<span style="color: #BB0000; text-decoration: underline;">277</span><span style="color: #BB0000;">978.</span>     0</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> sp1      <span style="text-decoration: underline;">145</span>929. -<span style="color: #BB0000; text-decoration: underline;">271</span><span style="color: #BB0000;">498.</span>     0</span>
-<span class="co">#&gt; <span style="color: #949494;"># … with 1,140 more rows</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">spp</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,150 × 4</span></span></span>
+<span><span class="co">#&gt;    species        x        y pr_ab</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> sp1       -<span style="color: #BB0000; text-decoration: underline;">5</span><span style="color: #BB0000;">541.</span> -<span style="color: #BB0000; text-decoration: underline;">145</span><span style="color: #BB0000;">138.</span>     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> sp1      -<span style="color: #BB0000; text-decoration: underline;">51</span><span style="color: #BB0000;">981.</span>   <span style="text-decoration: underline;">16</span>322.     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">269</span><span style="color: #BB0000;">871.</span>   <span style="text-decoration: underline;">69</span>512.     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> sp1      -<span style="color: #BB0000; text-decoration: underline;">96</span><span style="color: #BB0000;">261.</span>  -<span style="color: #BB0000; text-decoration: underline;">32</span><span style="color: #BB0000;">008.</span>     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> sp1      <span style="text-decoration: underline;">269</span>589. -<span style="color: #BB0000; text-decoration: underline;">566</span><span style="color: #BB0000;">338.</span>     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> sp1       <span style="text-decoration: underline;">29</span>829. -<span style="color: #BB0000; text-decoration: underline;">328</span><span style="color: #BB0000;">468.</span>     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">152</span><span style="color: #BB0000;">691.</span>  <span style="text-decoration: underline;">393</span>782.     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">195</span><span style="color: #BB0000;">081.</span>  <span style="text-decoration: underline;">253</span>652.     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> sp1        -<span style="color: #BB0000;">951.</span> -<span style="color: #BB0000; text-decoration: underline;">277</span><span style="color: #BB0000;">978.</span>     0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> sp1      <span style="text-decoration: underline;">145</span>929. -<span style="color: #BB0000; text-decoration: underline;">271</span><span style="color: #BB0000;">498.</span>     0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 1,140 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="geographic-region">Geographic region<a class="anchor" aria-label="anchor" href="#geographic-region"></a>
@@ -231,12 +228,12 @@ environment by using the code below:</p>
 Province (far western USA). The “regions” dataset can be used to
 visualize the study area in geographic space.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
-<span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
+<span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span></code></pre></div>
 <p>How are the points distributed across our study area?</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>, silent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">spp</span><span class="op">$</span><span class="va">species</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>, silent<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/factors.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">spp</span><span class="op">$</span><span class="va">species</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/map-1.png" width="576"></p>
 </div>
 <div class="section level2">
@@ -253,12 +250,12 @@ controls of a rare plant species that is only found on mountaintops in
 the Sierra Nevada, California!</p>
 <p>Let’s use presence locations for one species in this exercise.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">spp1</span> <span class="op">&lt;-</span>
-  <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp1"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pr_ab</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">spp1</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp1"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pr_ab</span><span class="op">)</span></span></code></pre></div>
 <p>The calib_area() function offers three methods for defining a
 calibration area: buffer, mcp, bmcp, and mask. We will briefly go over
 each.</p>
@@ -270,19 +267,19 @@ points. User’s can specify the distance around points using the “width”
 argument. The buffer width value is interpreted in m if the CRS has a
 longitude/latitude, or in map units in other cases.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span>, proj<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; [1] "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs"</span>
-
-<span class="va">ca_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">40000</span><span class="op">)</span>, 
-  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Buffer method"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span>, proj<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs"</span></span>
+<span></span>
+<span><span class="va">ca_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">40000</span><span class="op">)</span>, </span>
+<span>  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Buffer method"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/buffer%20method-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -291,17 +288,17 @@ longitude/latitude, or in map units in other cases.</p>
 <p>The minimum convex polygon (mcp) method produces a much simpler
 shape.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ca_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mcp"</span><span class="op">)</span>, 
-  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Minimum convex polygon method"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ca_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mcp"</span><span class="op">)</span>, </span>
+<span>  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Minimum convex polygon method"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/mcp%20method-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -309,17 +306,17 @@ shape.</p>
 </h3>
 <p>You can also create a buffer around the minimum convex polygon.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ca_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bmcp"</span>, width <span class="op">=</span> <span class="fl">40000</span><span class="op">)</span>, 
-  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Buffered minimum convex polygon"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_3</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ca_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bmcp"</span>, width <span class="op">=</span> <span class="fl">40000</span><span class="op">)</span>, </span>
+<span>  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Buffered minimum convex polygon"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_3</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/bmcp%20method-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -334,21 +331,21 @@ within political boundaries. We will use a random set of polygons named
 the left and the polygons that contain points (our “mask” calibration
 area) are on the right.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/clusters.shp"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
-<span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">clusters</span><span class="op">)</span>
-
-<span class="va">ca_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mask"</span>, <span class="va">clusters</span>, <span class="st">"clusters"</span><span class="op">)</span>, 
-  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">clusters</span>, main <span class="op">=</span> <span class="st">"Original polygons"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_4</span>, main <span class="op">=</span> <span class="st">"Polygons with points (mask)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/clusters.shp"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
+<span><span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">clusters</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ca_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mask"</span>, <span class="va">clusters</span>, <span class="st">"clusters"</span><span class="op">)</span>, </span>
+<span>  crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">clusters</span>, main <span class="op">=</span> <span class="st">"Original polygons"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_4</span>, main <span class="op">=</span> <span class="st">"Polygons with points (mask)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/mask%20method-1.png" width="576"></p>
 </div>
 </div>
@@ -366,20 +363,20 @@ model overfitting and inaccurate tests of significance for predictors
 water deficit (CFP_2), maximum temperature of the warmest month (CFP_3),
 and minimum temperature of the coldest month (CFP_4).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span>
-
-<span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/env%20data-1.png" width="576"></p>
 <p>The relationship between different environmental variables can be
 visualized with the pairs() function from the <em>terra</em> package.
 Several of our variables are highly correlated (.89 for predictors tmx
 and tmn).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/pairs%20plot-1.png" width="576"></p>
 <p>So how can we correct for or reduce this collinearity? The function
 correct_colinvar() has four methods to deal with collinearity: pearson,
@@ -425,27 +422,27 @@ of the Royal Society of London. Series B, Biological sciences
 359:1465–1476.<a class="anchor" aria-label="anchor" href="#woodward-f--i--m--r--lomas-and-c--k--kelly--2004--global-climate-and-the-distribution-of-plant-biomes--philosophical-transactions-of-the-royal-society-of-london--series-b-biological-sciences-35914651476-"></a>
 </h4>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pearson_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th <span class="op">=</span> <span class="st">"0.7"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pearson_var</span><span class="op">$</span><span class="va">cor_table</span>
-<span class="co">#&gt;           aet       cwd       tmx       tmn</span>
-<span class="co">#&gt; aet 0.0000000 0.7689893 0.7924813 0.7845401</span>
-<span class="co">#&gt; cwd 0.7689893 0.0000000 0.4168956 0.5881831</span>
-<span class="co">#&gt; tmx 0.7924813 0.4168956 0.0000000 0.7323259</span>
-<span class="co">#&gt; tmn 0.7845401 0.5881831 0.7323259 0.0000000</span>
-<span class="va">pearson_var</span><span class="op">$</span><span class="va">cor_variables</span>
-<span class="co">#&gt; $aet</span>
-<span class="co">#&gt; [1] "cwd" "tmx" "tmn"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $cwd</span>
-<span class="co">#&gt; [1] "aet"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $tmx</span>
-<span class="co">#&gt; [1] "aet" "tmn"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $tmn</span>
-<span class="co">#&gt; [1] "aet" "tmx"</span>
-
-<span class="va">chosen_variables</span> <span class="op">&lt;-</span> <span class="va">somevar</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'cwd'</span>,<span class="st">'aet'</span>,<span class="st">'tmn'</span><span class="op">)</span><span class="op">]</span><span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pearson_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th <span class="op">=</span> <span class="st">"0.7"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pearson_var</span><span class="op">$</span><span class="va">cor_table</span></span>
+<span><span class="co">#&gt;           aet       cwd       tmx       tmn</span></span>
+<span><span class="co">#&gt; aet 0.0000000 0.7689893 0.7924813 0.7845401</span></span>
+<span><span class="co">#&gt; cwd 0.7689893 0.0000000 0.4168956 0.5881831</span></span>
+<span><span class="co">#&gt; tmx 0.7924813 0.4168956 0.0000000 0.7323259</span></span>
+<span><span class="co">#&gt; tmn 0.7845401 0.5881831 0.7323259 0.0000000</span></span>
+<span><span class="va">pearson_var</span><span class="op">$</span><span class="va">cor_variables</span></span>
+<span><span class="co">#&gt; $aet</span></span>
+<span><span class="co">#&gt; [1] "cwd" "tmx" "tmn"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $cwd</span></span>
+<span><span class="co">#&gt; [1] "aet"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tmx</span></span>
+<span><span class="co">#&gt; [1] "aet" "tmn"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tmn</span></span>
+<span><span class="co">#&gt; [1] "aet" "tmx"</span></span>
+<span></span>
+<span><span class="va">chosen_variables</span> <span class="op">&lt;-</span> <span class="va">somevar</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'cwd'</span>,<span class="st">'aet'</span>,<span class="st">'tmn'</span><span class="op">)</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -459,27 +456,27 @@ by the pearson method: 1) environmental layer of retained variables, 2)
 a list of removed variables, and 3) a correlation matrix of all
 variables.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">vif_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vif"</span>, th <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">vif_var</span><span class="op">$</span><span class="va">env_layer</span>
-<span class="co">#&gt; class       : SpatRaster </span>
-<span class="co">#&gt; dimensions  : 558, 394, 4  (nrow, ncol, nlyr)</span>
-<span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span>
-<span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
-<span class="co">#&gt; source      : somevar.tif </span>
-<span class="co">#&gt; names       :        aet,        cwd,        tmx,        tmn </span>
-<span class="co">#&gt; min values  :  0.0000000, -9.3948898, 22.4468510,  0.2591429 </span>
-<span class="co">#&gt; max values  : 1357.86469,   14.20047,  614.69125,   64.37476</span>
-<span class="va">vif_var</span><span class="op">$</span><span class="va">removed_variables</span>
-<span class="co">#&gt; NULL</span>
-<span class="va">vif_var</span><span class="op">$</span><span class="va">vif_table</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span>
-<span class="co">#&gt;   Variables   VIF</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> aet        7.62</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cwd        3.29</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> tmx        3.95</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> tmn        2.89</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">vif_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vif"</span>, th <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">vif_var</span><span class="op">$</span><span class="va">env_layer</span></span>
+<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; dimensions  : 558, 394, 4  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; source      : somevar.tif </span></span>
+<span><span class="co">#&gt; names       :        aet,        cwd,        tmx,        tmn </span></span>
+<span><span class="co">#&gt; min values  :  0.0000000, -9.3948898, 22.4468510,  0.2591429 </span></span>
+<span><span class="co">#&gt; max values  : 1357.86469,   14.20047,  614.69125,   64.37476</span></span>
+<span><span class="va">vif_var</span><span class="op">$</span><span class="va">removed_variables</span></span>
+<span><span class="co">#&gt; NULL</span></span>
+<span><span class="va">vif_var</span><span class="op">$</span><span class="va">vif_table</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
+<span><span class="co">#&gt;   Variables   VIF</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> aet        7.62</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cwd        3.29</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> tmx        3.95</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> tmn        2.89</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="principal-component-analysis">3. Principal component analysis<a class="anchor" aria-label="anchor" href="#principal-component-analysis"></a>
@@ -491,33 +488,33 @@ selected environmental variables, 2) a matrix with the coefficients of
 principal components for predictors, and 3) a tibble with the cumulative
 variance explained in selected principal components.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pca_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pca"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pca_var</span><span class="op">$</span><span class="va">env_layer</span>
-<span class="co">#&gt; class       : SpatRaster </span>
-<span class="co">#&gt; dimensions  : 558, 394, 3  (nrow, ncol, nlyr)</span>
-<span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span>
-<span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
-<span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span>
-<span class="co">#&gt; source      : memory </span>
-<span class="co">#&gt; names       :      lyr1,      lyr2,      lyr3 </span>
-<span class="co">#&gt; min values  : -8.453273, -4.260147, -1.525085 </span>
-<span class="co">#&gt; max values  :  2.827164,  3.337545,  4.342864</span>
-<span class="va">pca_var</span><span class="op">$</span><span class="va">coefficients</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 5</span></span>
-<span class="co">#&gt;   variable    PC1     PC2    PC3     PC4</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> aet       0.550 -<span style="color: #BB0000;">0.072</span><span style="color: #BB0000; text-decoration: underline;">2</span>  0.296 -<span style="color: #BB0000;">0.778</span> </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cwd       0.450 -<span style="color: #BB0000;">0.777</span>   0.103  0.429 </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> tmx      -<span style="color: #BB0000;">0.485</span> -<span style="color: #BB0000;">0.594</span>  -<span style="color: #BB0000;">0.450</span> -<span style="color: #BB0000;">0.459</span> </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> tmn      -<span style="color: #BB0000;">0.511</span> -<span style="color: #BB0000;">0.198</span>   0.836 -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">1</span></span>
-<span class="va">pca_var</span><span class="op">$</span><span class="va">cumulative_variance</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span>
-<span class="co">#&gt;      PC  cvar</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 0.764</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 0.915</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 0.979</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">pca_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span><span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pca"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pca_var</span><span class="op">$</span><span class="va">env_layer</span></span>
+<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; dimensions  : 558, 394, 3  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; source      : memory </span></span>
+<span><span class="co">#&gt; names       :      lyr1,      lyr2,      lyr3 </span></span>
+<span><span class="co">#&gt; min values  : -8.453273, -4.260147, -1.525085 </span></span>
+<span><span class="co">#&gt; max values  :  2.827164,  3.337545,  4.342864</span></span>
+<span><span class="va">pca_var</span><span class="op">$</span><span class="va">coefficients</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 5</span></span></span>
+<span><span class="co">#&gt;   variable    PC1     PC2    PC3     PC4</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> aet       0.550 -<span style="color: #BB0000;">0.072</span><span style="color: #BB0000; text-decoration: underline;">2</span>  0.296 -<span style="color: #BB0000;">0.778</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> cwd       0.450 -<span style="color: #BB0000;">0.777</span>   0.103  0.429 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> tmx      -<span style="color: #BB0000;">0.485</span> -<span style="color: #BB0000;">0.594</span>  -<span style="color: #BB0000;">0.450</span> -<span style="color: #BB0000;">0.459</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> tmn      -<span style="color: #BB0000;">0.511</span> -<span style="color: #BB0000;">0.198</span>   0.836 -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">1</span></span></span>
+<span><span class="va">pca_var</span><span class="op">$</span><span class="va">cumulative_variance</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 2</span></span></span>
+<span><span class="co">#&gt;      PC  cvar</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 0.764</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 0.915</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 0.979</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 1</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="factorial-analysis">4. Factorial analysis<a class="anchor" aria-label="anchor" href="#factorial-analysis"></a>
@@ -527,12 +524,12 @@ dimensionality and selects the predictor(s) with the highest correlation
 to each axis. The outputs for this method are similar to those produced
 by the ‘pca’ method.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fa_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fa"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">fa_var</span><span class="op">$</span><span class="va">env_layer</span>
-<span class="va">fa_var</span><span class="op">$</span><span class="va">number_factors</span>
-<span class="va">fa_var</span><span class="op">$</span><span class="va">removed_variables</span>
-<span class="va">fa_var</span><span class="op">$</span><span class="va">uniqueness</span>
-<span class="va">fa_var</span><span class="op">$</span><span class="va">loadings</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fa_var</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fa"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fa_var</span><span class="op">$</span><span class="va">env_layer</span></span>
+<span><span class="va">fa_var</span><span class="op">$</span><span class="va">number_factors</span></span>
+<span><span class="va">fa_var</span><span class="op">$</span><span class="va">removed_variables</span></span>
+<span><span class="va">fa_var</span><span class="op">$</span><span class="va">uniqueness</span></span>
+<span><span class="va">fa_var</span><span class="op">$</span><span class="va">loadings</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -562,58 +559,58 @@ used to split each environmental condition. Here we will explore the
 results using 5, 8, and 12 bins. Increasing the number of bins increases
 the number of occurrence points retained.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">spp1</span><span class="op">$</span><span class="va">idd</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">)</span>
-
-<span class="va">filt_env5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  id <span class="op">=</span> <span class="st">"idd"</span>,
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  nbins <span class="op">=</span> <span class="fl">5</span>
-<span class="op">)</span>
-<span class="co">#&gt; Extracting values from raster ...</span>
-<span class="co">#&gt; 12 records were removed because they have NAs for some variables</span>
-<span class="co">#&gt; Number of unfiltered records: 238</span>
-<span class="co">#&gt; Number of filtered records: 57</span>
-
-<span class="va">filt_env8</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  id <span class="op">=</span> <span class="st">"idd"</span>,
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  nbins <span class="op">=</span> <span class="fl">8</span>
-<span class="op">)</span>
-<span class="co">#&gt; Extracting values from raster ...</span>
-<span class="co">#&gt; 12 records were removed because they have NAs for some variables</span>
-<span class="co">#&gt; Number of unfiltered records: 238</span>
-<span class="co">#&gt; Number of filtered records: 112</span>
-
-<span class="va">filt_env12</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  id <span class="op">=</span> <span class="st">"idd"</span>,
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  nbins <span class="op">=</span> <span class="fl">12</span>
-<span class="op">)</span>
-<span class="co">#&gt; Extracting values from raster ...</span>
-<span class="co">#&gt; 12 records were removed because they have NAs for some variables</span>
-<span class="co">#&gt; Number of unfiltered records: 238</span>
-<span class="co">#&gt; Number of filtered records: 173</span>
-
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Original occurrence data"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 5 bins"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env5</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 8 bins"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env8</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 12 bins"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env12</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">spp1</span><span class="op">$</span><span class="va">idd</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">filt_env5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"idd"</span>,</span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  nbins <span class="op">=</span> <span class="fl">5</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Extracting values from raster ...</span></span>
+<span><span class="co">#&gt; 12 records were removed because they have NAs for some variables</span></span>
+<span><span class="co">#&gt; Number of unfiltered records: 238</span></span>
+<span><span class="co">#&gt; Number of filtered records: 57</span></span>
+<span></span>
+<span><span class="va">filt_env8</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"idd"</span>,</span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  nbins <span class="op">=</span> <span class="fl">8</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Extracting values from raster ...</span></span>
+<span><span class="co">#&gt; 12 records were removed because they have NAs for some variables</span></span>
+<span><span class="co">#&gt; Number of unfiltered records: 238</span></span>
+<span><span class="co">#&gt; Number of filtered records: 112</span></span>
+<span></span>
+<span><span class="va">filt_env12</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_env.html">occfilt_env</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"idd"</span>,</span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  nbins <span class="op">=</span> <span class="fl">12</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Extracting values from raster ...</span></span>
+<span><span class="co">#&gt; 12 records were removed because they have NAs for some variables</span></span>
+<span><span class="co">#&gt; Number of unfiltered records: 238</span></span>
+<span><span class="co">#&gt; Number of filtered records: 173</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Original occurrence data"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 5 bins"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env5</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 8 bins"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env8</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 12 bins"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env12</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/env%20occurrence%20filtering-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -627,59 +624,59 @@ occurrences based on the resolution of the predictors (or a specified
 coarser resolution); finally, “determined” allows users to manually
 determine the distance threshold.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">filt_geo1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"moran"</span><span class="op">)</span>,
-  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">#&gt; Extracting values from raster ...</span>
-<span class="co">#&gt; 10 records were removed because they have NAs for some variables</span>
-<span class="co">#&gt; Number of unfiltered records: 240</span>
-<span class="co">#&gt; Threshold for Moran: 0.1</span>
-<span class="co">#&gt; Distance threshold(km): 345.859</span>
-<span class="co">#&gt; Number of filtered records: 4</span>
-
-<span class="va">filt_geo2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cellsize"</span>, factor <span class="op">=</span> <span class="st">"3"</span><span class="op">)</span>, <span class="co"># coarser resolution than the provided raster</span>
-  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">#&gt; Extracting values from raster ...</span>
-<span class="co">#&gt; 16 records were removed because they have NAs for some variables</span>
-<span class="co">#&gt; Number of unfiltered records: 234</span>
-<span class="co">#&gt; Distance threshold(km): 4.617</span>
-<span class="co">#&gt; Number of filtered records: 212</span>
-
-<span class="va">filt_geo3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"defined"</span>, d <span class="op">=</span> <span class="st">"30"</span><span class="op">)</span>,
-  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">#&gt; Extracting values from raster ...</span>
-<span class="co">#&gt; 16 records were removed because they have NAs for some variables</span>
-<span class="co">#&gt; Number of unfiltered records: 234</span>
-<span class="co">#&gt; Distance threshold(km): 30</span>
-<span class="co">#&gt; Number of filtered records: 78</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Original occurrence data"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with Moran's I"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with cell size"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with defined distance (30km)"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo3</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">filt_geo1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"moran"</span><span class="op">)</span>,</span>
+<span>  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Extracting values from raster ...</span></span>
+<span><span class="co">#&gt; 16 records were removed because they have NAs for some variables</span></span>
+<span><span class="co">#&gt; Number of unfiltered records: 234</span></span>
+<span><span class="co">#&gt; Threshold for Moran: 0.1</span></span>
+<span><span class="co">#&gt; Distance threshold(km): 345.859</span></span>
+<span><span class="co">#&gt; Number of filtered records: 4</span></span>
+<span></span>
+<span><span class="va">filt_geo2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cellsize"</span>, factor <span class="op">=</span> <span class="st">"3"</span><span class="op">)</span>, <span class="co"># coarser resolution than the provided raster</span></span>
+<span>  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Extracting values from raster ...</span></span>
+<span><span class="co">#&gt; 16 records were removed because they have NAs for some variables</span></span>
+<span><span class="co">#&gt; Number of unfiltered records: 234</span></span>
+<span><span class="co">#&gt; Distance threshold(km): 4.617</span></span>
+<span><span class="co">#&gt; Number of filtered records: 212</span></span>
+<span></span>
+<span><span class="va">filt_geo3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"defined"</span>, d <span class="op">=</span> <span class="st">"30"</span><span class="op">)</span>,</span>
+<span>  prj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Extracting values from raster ...</span></span>
+<span><span class="co">#&gt; 16 records were removed because they have NAs for some variables</span></span>
+<span><span class="co">#&gt; Number of unfiltered records: 234</span></span>
+<span><span class="co">#&gt; Distance threshold(km): 30</span></span>
+<span><span class="co">#&gt; Number of filtered records: 79</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Original occurrence data"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with Moran's I"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with cell size"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with defined distance (30km)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo3</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering-1.png" width="576"></p>
 </div>
 </div>
@@ -701,17 +698,17 @@ bootstrap partitioning.</p>
 This results in 10 folds of occurrence data with 25 observations in each
 fold.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">spp1</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># Add a column with 1 to denote that this is presences only data</span>
-<span class="va">sp_part1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="va">sp_part1</span><span class="op">$</span><span class="va">.part</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; .</span>
-<span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span>
-<span class="co">#&gt; 25 25 25 25 25 25 25 25 25 25</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">spp1</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># Add a column with 1 to denote that this is presences only data</span></span>
+<span><span class="va">sp_part1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sp_part1</span><span class="op">$</span><span class="va">.part</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; .</span></span>
+<span><span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span></span>
+<span><span class="co">#&gt; 25 25 25 25 25 25 25 25 25 25</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="spatial-band-cross-validation-part_sband">2. Spatial band cross-validation (part_sband)<a class="anchor" aria-label="anchor" href="#spatial-band-cross-validation-part_sband"></a>
@@ -730,31 +727,31 @@ presence/absence locations and the assigned partition number, 2) a
 tibble with information about the best partition, and 3) a SpatRaster
 showing the selected grid.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">sp_part2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sband.html">part_sband</a></span><span class="op">(</span>
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
-  type <span class="op">=</span> <span class="st">"lat"</span>, <span class="co"># specify bands across different degrees of longitude 'lon' or latitude 'lat'.</span>
-  min_bands <span class="op">=</span> <span class="fl">2</span>, <span class="co"># minimum number of spatial bands to be tested</span>
-  max_bands <span class="op">=</span> <span class="fl">20</span>, <span class="co"># maximum number of spatial bands to be tested</span>
-  n_part <span class="op">=</span> <span class="fl">2</span>,
-  prop <span class="op">=</span> <span class="fl">0.5</span>
-<span class="op">)</span>
-<span class="co">#&gt; 12 rows were excluded from database because NAs were found</span>
-<span class="co">#&gt; The following number of bands will be tested:</span>
-<span class="co">#&gt; 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20</span>
-<span class="co">#&gt; Creating basic raster mask...</span>
-<span class="co">#&gt; Searching for the optimal number of bands...</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">sp_part2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sband.html">part_sband</a></span><span class="op">(</span></span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"lat"</span>, <span class="co"># specify bands across different degrees of longitude 'lon' or latitude 'lat'.</span></span>
+<span>  min_bands <span class="op">=</span> <span class="fl">2</span>, <span class="co"># minimum number of spatial bands to be tested</span></span>
+<span>  max_bands <span class="op">=</span> <span class="fl">20</span>, <span class="co"># maximum number of spatial bands to be tested</span></span>
+<span>  n_part <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  prop <span class="op">=</span> <span class="fl">0.5</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; 12 rows were excluded from database because NAs were found</span></span>
+<span><span class="co">#&gt; The following number of bands will be tested:</span></span>
+<span><span class="co">#&gt; 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20</span></span>
+<span><span class="co">#&gt; Creating basic raster mask...</span></span>
+<span><span class="co">#&gt; Searching for the optimal number of bands...</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">grid</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,
-  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,
-  cex <span class="op">=</span> <span class="fl">0.9</span>,
-  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">19</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">grid</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">19</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/plot%20spatial%20band%20partition-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -766,31 +763,31 @@ sizes and returns the one that is best suited for the input dataset.
 Here, we can see the data divided into different “blocks” for training
 and testing.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">sp_part3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sblock.html">part_sblock</a></span><span class="op">(</span>
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
-  min_res_mult <span class="op">=</span> <span class="fl">10</span>, <span class="co"># Minimum value used for multiplying raster resolution and define the finest resolution to be tested</span>
-  max_res_mult <span class="op">=</span> <span class="fl">500</span>, <span class="co"># Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested</span>
-  num_grids <span class="op">=</span> <span class="fl">30</span>, <span class="co"># Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)</span>
-  n_part <span class="op">=</span> <span class="fl">2</span>, <span class="co"># Number of partitions</span>
-  prop <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># Proportion of points used for testing autocorrelation between groupds (0-1)</span>
-<span class="op">)</span>
-<span class="co">#&gt; 12 rows were excluded from database because NAs were found</span>
-<span class="co">#&gt; The following grid cell sizes will be tested:</span>
-<span class="co">#&gt; 18900 | 50834.48 | 82768.97 | 114703.45 | 146637.93 | 178572.41 | 210506.9 | 242441.38 | 274375.86 | 306310.34 | 338244.83 | 370179.31 | 402113.79 | 434048.28 | 465982.76 | 497917.24 | 529851.72 | 561786.21 | 593720.69 | 625655.17 | 657589.66 | 689524.14 | 721458.62 | 753393.1 | 785327.59 | 817262.07 | 849196.55 | 881131.03 | 913065.52 | 945000</span>
-<span class="co">#&gt; Creating basic raster mask...</span>
-<span class="co">#&gt; Searching for the optimal grid size...</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,
-  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,
-  cex <span class="op">=</span> <span class="fl">0.5</span>,
-  pch <span class="op">=</span> <span class="fl">19</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">sp_part3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sblock.html">part_sblock</a></span><span class="op">(</span></span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  min_res_mult <span class="op">=</span> <span class="fl">10</span>, <span class="co"># Minimum value used for multiplying raster resolution and define the finest resolution to be tested</span></span>
+<span>  max_res_mult <span class="op">=</span> <span class="fl">500</span>, <span class="co"># Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested</span></span>
+<span>  num_grids <span class="op">=</span> <span class="fl">30</span>, <span class="co"># Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)</span></span>
+<span>  n_part <span class="op">=</span> <span class="fl">2</span>, <span class="co"># Number of partitions</span></span>
+<span>  prop <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># Proportion of points used for testing autocorrelation between groupds (0-1)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; 12 rows were excluded from database because NAs were found</span></span>
+<span><span class="co">#&gt; The following grid cell sizes will be tested:</span></span>
+<span><span class="co">#&gt; 18900 | 50834.48 | 82768.97 | 114703.45 | 146637.93 | 178572.41 | 210506.9 | 242441.38 | 274375.86 | 306310.34 | 338244.83 | 370179.31 | 402113.79 | 434048.28 | 465982.76 | 497917.24 | 529851.72 | 561786.21 | 593720.69 | 625655.17 | 657589.66 | 689524.14 | 721458.62 | 753393.1 | 785327.59 | 817262.07 | 849196.55 | 881131.03 | 913065.52 | 945000</span></span>
+<span><span class="co">#&gt; Creating basic raster mask...</span></span>
+<span><span class="co">#&gt; Searching for the optimal grid size...</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fl">19</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/spatial%20block%20partition-1.png" width="576"></p>
 <p>However, we notice that the grid partition produced by part_sblock
 has a different resolution than the original environmental variables. If
@@ -800,20 +797,20 @@ function to the grid resulting from part_sblock(). This layer can be
 really useful for generating pseudo-absence or background sample points,
 which we will explore in the next section.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
-<span class="co">#&gt; [1] 881131 881131</span>
-<span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1890 1890</span>
-
-<span class="va">grid_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_block.html">get_block</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, best_grid <span class="op">=</span> <span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span> <span class="co"># this is a block layer with the same layer</span>
-<span class="co"># properties as environmental variables.</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,
-  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,
-  cex <span class="op">=</span> <span class="fl">0.5</span>,
-  pch <span class="op">=</span> <span class="fl">19</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 881131 881131</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1890 1890</span></span>
+<span></span>
+<span><span class="va">grid_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_block.html">get_block</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, best_grid <span class="op">=</span> <span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span> <span class="co"># this is a block layer with the same layer</span></span>
+<span><span class="co"># properties as environmental variables.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"blue"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fl">19</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/get%20block%20function-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -827,28 +824,28 @@ similarity, and the number of presence and/or absence records in each
 partition. The map below shows partitioning based on these environmental
 and spatial factors.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">sp_part4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_senv.html">part_senv</a></span><span class="op">(</span>
-  env_layer <span class="op">=</span> <span class="va">somevar</span>,
-  data <span class="op">=</span> <span class="va">spp1</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,
-  min_n_groups <span class="op">=</span> <span class="fl">2</span>, <span class="co"># Minimum number of groups to be tested</span>
-  max_n_groups <span class="op">=</span> <span class="fl">10</span>, <span class="co"># Maximum number of groups to be tested</span>
-  prop <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># Proportion of points used for testing autocorrelation between groups (0-1)</span>
-<span class="op">)</span>
-<span class="co">#&gt; 12 rows were excluded from database because NAs were found</span>
-<span class="co">#&gt; The following grid cell sizes will be tested:</span>
-<span class="co">#&gt; 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10</span>
-<span class="co">#&gt; Searching best partition...</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part4</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,
-  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">hcl.colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sp_part4</span><span class="op">$</span><span class="va">part</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part4</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,
-  cex <span class="op">=</span> <span class="fl">1</span>,
-  pch <span class="op">=</span> <span class="fl">19</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">sp_part4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_senv.html">part_senv</a></span><span class="op">(</span></span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  min_n_groups <span class="op">=</span> <span class="fl">2</span>, <span class="co"># Minimum number of groups to be tested</span></span>
+<span>  max_n_groups <span class="op">=</span> <span class="fl">10</span>, <span class="co"># Maximum number of groups to be tested</span></span>
+<span>  prop <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># Proportion of points used for testing autocorrelation between groups (0-1)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; 12 rows were excluded from database because NAs were found</span></span>
+<span><span class="co">#&gt; The following grid cell sizes will be tested:</span></span>
+<span><span class="co">#&gt; 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10</span></span>
+<span><span class="co">#&gt; Searching best partition...</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part4</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">hcl.colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sp_part4</span><span class="op">$</span><span class="va">part</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part4</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fl">19</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/environmental%20and%20spatial%20cross-validation-1.png" width="576"></p>
 </div>
 </div>
@@ -874,36 +871,36 @@ of background points as our original occurrences and that our
 calibration area will be the buffer area around presence points (see
 section on “Calibration area”).</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">p_data</span> <span class="op">&lt;-</span>
-  <span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span> <span class="co"># presence data from spatial block partition example</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/sample_background.html">sample_background</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="va">p_data</span>,
-    x <span class="op">=</span> <span class="st">"x"</span>,
-    y <span class="op">=</span> <span class="st">"y"</span>,
-    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p_data</span> <span class="op">==</span> <span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,
-    <span class="co"># number of background points to be sampled</span>
-    method <span class="op">=</span> <span class="st">"random"</span>,
-    rlayer <span class="op">=</span> <span class="va">grid_env</span>,
-    maskval <span class="op">=</span> <span class="va">x</span>,
-    calibarea <span class="op">=</span> <span class="va">ca_1</span> <span class="co"># A SpatVector which delimit the calibration area used for a given species</span>
-  <span class="op">)</span>
-<span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pr_ab <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Presence points"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">p_data</span>, cex <span class="op">=</span> <span class="fl">.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Background points"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">bg</span>, cex <span class="op">=</span> <span class="fl">.1</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">p_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span> <span class="co"># presence data from spatial block partition example</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/sample_background.html">sample_background</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">p_data</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p_data</span> <span class="op">==</span> <span class="va">x</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span>
+<span>    <span class="co"># number of background points to be sampled</span></span>
+<span>    method <span class="op">=</span> <span class="st">"random"</span>,</span>
+<span>    rlayer <span class="op">=</span> <span class="va">grid_env</span>,</span>
+<span>    maskval <span class="op">=</span> <span class="va">x</span>,</span>
+<span>    calibarea <span class="op">=</span> <span class="va">ca_1</span> <span class="co"># A SpatVector which delimit the calibration area used for a given species</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pr_ab <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Presence points"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">p_data</span>, cex <span class="op">=</span> <span class="fl">.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Background points"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">bg</span>, cex <span class="op">=</span> <span class="fl">.1</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/sample%20background-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -923,35 +920,35 @@ environmental suitability. The specific method chosen for sampling
 background and/or pseudo-absence points will vary depending on research
 goals.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span>
-    data <span class="op">=</span> <span class="va">p_data</span>,
-    x <span class="op">=</span> <span class="st">"x"</span>,
-    y <span class="op">=</span> <span class="st">"y"</span>,
-    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p_data</span> <span class="op">==</span> <span class="va">x</span><span class="op">)</span>,
-    <span class="co"># number of pseudo-absence points to be sampled</span>
-    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"env_const"</span>, env <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span>,
-    rlayer <span class="op">=</span> <span class="va">grid_env</span>,
-    maskval <span class="op">=</span> <span class="va">x</span>,
-    calibarea <span class="op">=</span> <span class="va">ca_1</span>
-  <span class="op">)</span>
-<span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pr_ab <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="co">#&gt; Extents do not match, raster layers used were croped to minimum extent</span>
-<span class="co">#&gt; Extents do not match, raster layers used were croped to minimum extent</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Presence points"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">p_data</span>, cex <span class="op">=</span> <span class="fl">.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Pseudo-absence points"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span>, cex <span class="op">=</span> <span class="fl">.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">p_data</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">p_data</span> <span class="op">==</span> <span class="va">x</span><span class="op">)</span>,</span>
+<span>    <span class="co"># number of pseudo-absence points to be sampled</span></span>
+<span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"env_const"</span>, env <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span>,</span>
+<span>    rlayer <span class="op">=</span> <span class="va">grid_env</span>,</span>
+<span>    maskval <span class="op">=</span> <span class="va">x</span>,</span>
+<span>    calibarea <span class="op">=</span> <span class="va">ca_1</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pr_ab <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Extents do not match, raster layers used were croped to minimum extent</span></span>
+<span><span class="co">#&gt; Extents do not match, raster layers used were croped to minimum extent</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Presence points"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">p_data</span>, cex <span class="op">=</span> <span class="fl">.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Pseudo-absence points"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span>, cex <span class="op">=</span> <span class="fl">.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/sample%20pseudo-absences-1.png" width="576"></p>
 </div>
 </div>
@@ -967,19 +964,19 @@ columns for the extracted environmental variables at those locations.
 Let’s do this for our original presence points (spp1) and our background
 locations (bg).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">all_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">idd</span><span class="op">)</span>, <span class="va">bg</span><span class="op">)</span>
-
-<span class="va">ex_spp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">all_points</span>,
-  x <span class="op">=</span> <span class="st">"x"</span>,
-  y <span class="op">=</span> <span class="st">"y"</span>,
-  env_layer <span class="op">=</span> <span class="va">somevar</span>, <span class="co"># Raster with environmental variables</span>
-  variables <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Vector with the variable names of predictor variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.</span>
-  filter_na <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-
-<span class="va">ex_spp</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">all_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">idd</span><span class="op">)</span>, <span class="va">bg</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ex_spp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">all_points</span>,</span>
+<span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>  env_layer <span class="op">=</span> <span class="va">somevar</span>, <span class="co"># Raster with environmental variables</span></span>
+<span>  variables <span class="op">=</span> <span class="cn">NULL</span>, <span class="co"># Vector with the variable names of predictor variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.</span></span>
+<span>  filter_na <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ex_spp</span></span></code></pre></div>
 <p>#=========#=========#=========#=========#=========#=========#=========#</p>
 <p><strong>Vignette still under construction and changes</strong></p>
 <p>#=========#=========#=========#=========#=========#=========#=========#</p>
@@ -997,7 +994,7 @@ locations (bg).</p>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer>
