@@ -263,17 +263,31 @@ fit_max <- function(data,
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
       tryCatch({
-        set.seed(1)
-        mod[[i]] <-
-          suppressMessages(
-            maxnet::maxnet(
-              p = train[[i]][, response],
-              data = train[[i]][predictors],
-              f = formula1,
-              regmult = regmult
-            )
-          )
-
+        sampleback = TRUE
+        try(mod[[i]] <-
+              suppressMessages(
+                maxnet::maxnet(
+                  p = train[[i]][, response],
+                  data = train[[i]][predictors],
+                  f = formula1,
+                  regmult = regmult,
+                  addsamplestobackground = sampleback
+                )
+              ))
+        if (length(mod) < i) {
+          message("Refit with addsamplestobackground = FALSE")
+          sampleback = FALSE
+          try(mod[[i]] <-
+                suppressMessages(
+                  maxnet::maxnet(
+                    p = train[[i]][, response],
+                    data = train[[i]][predictors],
+                    f = formula1,
+                    regmult = regmult,
+                    addsamplestobackground = sampleback
+                  )
+                ))
+        }
 
         # Predict for presences absences data
         ## Eliminate factor levels not used in fitting
@@ -292,13 +306,13 @@ fit_max <- function(data,
         # Predict for presences absences data
         pred_test <- data.frame(
           pr_ab = test[[i]][, response],
-          pred =
-            predict_maxnet(
-              mod[[i]],
-              newdata = test[[i]],
-              clamp = clamp,
-              type = pred_type
-            )
+          pred = predict_maxnet(
+            mod[[i]],
+            newdata = test[[i]],
+            clamp = clamp,
+            type = pred_type,
+            addsamplestobackground = sampleback
+          )
         )
 
         pred_test_ens[[h]][[i]] <- pred_test %>%
@@ -314,7 +328,8 @@ fit_max <- function(data,
                   mod[[i]],
                   newdata = bgt_test[[i]][c(predictors, predictors_f)],
                   clamp = clamp,
-                  type = pred_type
+                  type = pred_type,
+                  addsamplestobackground = sampleback
                 )
             )
         }

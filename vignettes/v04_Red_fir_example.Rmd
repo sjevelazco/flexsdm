@@ -124,7 +124,6 @@ abies_pf <- occ_part$part
 # Transform best block partition to a raster layer with same resolution and extent than
 # predictor variables
 block_layer <- get_block(env_layer = somevar, best_grid = occ_part$grid)
-block_layer2 <- terra::as.factor(block_layer)
 
 cl <- c("#64146D", "#9E2962", "#F47C15", "#FCFFA4")
 plot(block_layer, col=cl, legend=FALSE, axes=FALSE)
@@ -180,7 +179,7 @@ psa <- lapply(1:4, function(x) {
 psa <- sdm_extract(data = psa, x = "x", y = "y", env_layer = block_layer)
 
 cl <- c("#280B50", "#9E2962", "#F47C15", "#FCFFA4")
-plot(block_layer2, col="gray80", legend=FALSE, axes=FALSE)
+plot(block_layer, col="gray80", legend=FALSE, axes=FALSE)
 points(bg[,c("x", "y")], col=cl[bg$.part], cex=0.8) # Background points
 points(psa[,c("x", "y")], bg=cl[psa$.part], cex=0.8, pch=21) # Pseudo-absences
 

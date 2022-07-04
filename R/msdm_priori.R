@@ -138,6 +138,7 @@
 #'
 #' @importFrom dplyr tibble select all_of
 #' @importFrom stats na.omit
+#' @importFrom methods is
 #' @importFrom terra rast as.data.frame cellFromXY xyFromCell
 #'
 #' @export
@@ -153,7 +154,7 @@ msdm_priori <- function(data,
   ### Transform inputs
 
   # raster
-  if (class(env_layer) != "SpatRaster") {
+  if (!methods::is(env_layer, "SpatRaster")) {
     env_layer <- terra::rast(env_layer)
   }
   env_layer <- env_layer[[1]]

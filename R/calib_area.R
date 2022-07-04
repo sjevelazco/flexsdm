@@ -21,7 +21,7 @@
 #' @export
 #'
 #' @importFrom grDevices chull
-#' @importFrom methods as
+#' @importFrom methods as is
 #' @importFrom terra vect buffer aggregate union crs extract
 #'
 #' @examples
@@ -141,12 +141,12 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
 
   if (method[1] %in% c("mask")) {
     if (is.na(method[2])) {
-      stop("provide a SpatVector or SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
+      stop("provide a SpatVector in method argument", ", e.g. method = c('mask', clusters)")
     }
-    if (!class(method[[2]]) %in% c("SpatialPolygonsDataFrame", "SpatVector")) {
-      stop("provide a SpatVector or SpatialPolygonDataFrame in method argument", ", e.g. method = c('mask', clusters)")
+    if (!inherits(method[[2]], c("SpatVector"))) {
+      stop("provide a SpatVector in method argument", ", e.g. method = c('mask', clusters)")
     }
-    if (class(method[[2]]) != "SpatVector") {
+    if (!methods::is(method[[2]], "SpatVector")) {
       method[[2]] <- terra::vect(method[[2]])
     }
   }

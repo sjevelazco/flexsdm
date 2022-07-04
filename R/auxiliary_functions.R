@@ -41,12 +41,15 @@ pre_tr_te <- function(data, p_names, h) {
 
 
 # Inverse bioclim
+#'
+#' @noRd
+#'
 bio <- function(data, env_layer) {
   . <- NULL
   if (class(data)[1] != "data.frame") {
     data <- data.frame(data)
   }
-  if (class(env_layer) != "SpatRaster") {
+  if (!methods::is(env_layer, "SpatRaster")) {
     env_layer <- terra::rast(env_layer)
   }
 
@@ -92,7 +95,7 @@ bio <- function(data, env_layer) {
 }
 
 inv_bio <- function(e, p) {
-  if (class(e) != "SpatRaster") {
+  if (!methods::is(e, "SpatRaster")) {
     e <- terra::rast(e)
   }
   r <- bio(data = terra::extract(e, p)[-1], env_layer = e)
@@ -359,10 +362,10 @@ n_coefficients <- function(data, predictors, predictors_f = NULL, k = 10){
 #' @noRd
 #'
 euc_dist <- function(x, y) {
-  if (class(x) != "matrix") {
+  if (!methods::is(x, "matrix")) {
     x <- as.matrix(x)
   }
-  if (class(y) != "matrix") {
+  if (!methods::is(y, "matrix")) {
     y <- as.matrix(y)
   }
   result <- matrix(0, nrow = nrow(x), ncol = nrow(y))

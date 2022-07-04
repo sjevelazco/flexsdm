@@ -113,6 +113,7 @@
 #'
 #' @importFrom dplyr select all_of arrange desc mutate pull filter
 #' @importFrom grDevices chull
+#' @importFrom methods is
 #' @importFrom stats na.exclude
 #' @importFrom terra rast extract vect rasterize crs buffer patches match mask unique as.polygons distance
 #'
@@ -274,7 +275,7 @@ msdm_posteriori <- function(records,
 
 
   #### prepare data sets
-  if (class(cont_suit) != "SpatRaster") {
+  if (!methods::is(cont_suit, "SpatRaster")) {
     cont_suit <- terra::rast(cont_suit)
   }
   if (!any("tbl_df" %in% class(records))) {
