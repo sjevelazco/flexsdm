@@ -52,6 +52,7 @@ test_that("test example tune_max", {
       clamp = TRUE,
       pred_type = "cloglog"
     ))
+  expect_length(max_t, 5)
 })
 
 
@@ -93,7 +94,7 @@ test_that("test NULL predictors_f and NULL grid", {
       classes = c("l", "lq")
     )
 
-  expect_message(max_t <-
+  max_t <-
     tune_max(
       data = abies2,
       response = "pr_ab",
@@ -106,9 +107,10 @@ test_that("test NULL predictors_f and NULL grid", {
       metric = "TSS",
       clamp = TRUE,
       pred_type = "cloglog"
-    ))
+    )
+  expect_length(max_t, 5)
 
-  expect_message(max_t <-
+  max_t <-
     tune_max(
       data = abies2,
       response = "pr_ab",
@@ -121,7 +123,8 @@ test_that("test NULL predictors_f and NULL grid", {
       metric = "TSS",
       clamp = TRUE,
       pred_type = "cloglog"
-    ))
+    )
+  expect_length(max_t, 5)
 })
 
 test_that("test data with NA and without background", {
@@ -165,7 +168,7 @@ test_that("test data with NA and without background", {
       classes = c("l", "lq")
     )
 
-  expect_message(max_t <-
+  max_t <-
     tune_max(
       data = abies2,
       response = "pr_ab",
@@ -178,9 +181,10 @@ test_that("test data with NA and without background", {
       metric = "TSS",
       clamp = TRUE,
       pred_type = "cloglog"
-    ))
+    )
+  expect_length(max_t, 5)
 
-  expect_message(max_t <-
+  max_t <-
     tune_max(
       data = abies2,
       response = "pr_ab",
@@ -193,7 +197,66 @@ test_that("test data with NA and without background", {
       metric = "TSS",
       clamp = TRUE,
       pred_type = "cloglog"
-    ))
+    )
+  expect_length(max_t, 5)
+
+})
+
+test_that("test fit only with presences and background", {
+  require(maxnet)
+  require(dplyr)
+
+  data(abies)
+  data(backg)
+  set.seed(0)
+  abies <- abies %>%
+    dplyr::group_by(pr_ab) %>%
+    dplyr::slice_sample(prop = .2)
+  set.seed(0)
+  backg <- backg %>%
+    dplyr::group_by(pr_ab) %>%
+    dplyr::slice_sample(prop = .2)
+
+  # We will partition the data and background with the k-fold method
+
+  abies2 <- part_random(
+    data = abies,
+    pr_ab = "pr_ab",
+    method = c(method = "kfold", folds = 2)
+  )
+  # Only presences
+  abies2 <- abies2 %>% dplyr::filter(pr_ab==1)
+
+  backg2 <- part_random(
+    data = backg,
+    pr_ab = "pr_ab",
+    method = c(method = "kfold", folds = 2)
+  )
+  backg2
+
+  # Hyper-parameter values for tuning
+  gridtest <-
+    expand.grid(
+      regmult = seq(0.1, 3, 1),
+      classes = c("l", "lq")
+    )
+
+  max_t <-
+    tune_max(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "tmin"),
+      predictors_f = "landform",
+      background = backg2,
+      partition = ".part",
+      grid = gridtest,
+      thr = "max_sens_spec",
+      metric = "TSS",
+      clamp = FALSE,
+      pred_type = "cloglog"
+    )
+  expect_length(max_t, 5)
+
 })
 
 test_that("test background argument names not match

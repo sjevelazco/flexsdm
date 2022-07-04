@@ -50,6 +50,13 @@
 #'  if np between 15 and 80 classes = "lqh",
 #'  and if np >= 80 classes = "lqph"
 #'
+#' When presence-absence (or presence-pseudo-absence) is used in data argument and background
+#' points, function will fit models with presences and background points and validate with
+#' presences and absences. This procedure makes maxent comparable to other presences-absences
+#' models (.e.g., random forest, support vector machine). If only presences and background
+#' points data are used, function will fit and validate model with presences and background
+#' data. If only presence-absences are used in data argument and without background, function
+#' will fit model with those kinds of data. It is not recommended use this last option.
 #'
 #' @seealso \code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},
 #' \code{\link{fit_glm}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
@@ -173,6 +180,11 @@ fit_max <- function(data,
     rm(complete_vec)
   }
 
+  # New predictors vector
+  if (!is.null(predictors_f)) {
+    predictors <- c(predictors, predictors_f)
+  }
+
   # Formula
   if (is.null(fit_formula)) {
     formula1 <- maxnet::maxnet.formula(data[response],
@@ -216,10 +228,6 @@ fit_max <- function(data,
   }
   rm(i)
 
-  # New predictor vectors
-  if (!is.null(predictors_f)) {
-    predictors <- c(predictors, predictors_f)
-  }
 
   # Fit models
   np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
@@ -293,7 +301,7 @@ fit_max <- function(data,
         ## Eliminate factor levels not used in fitting
         # if (!is.null(predictors_f)) {
         #   for (fi in 1:length(predictors_f)) {
-        #     lev <- as.character(unique(mod[[i]]$x[, predictors_f[fi]]))
+        #     lev <- as.character(unique(mod[[i]]$levels[[predictors_f[fi]]]))
         #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
         #     test[[i]] <- test[[i]][lev_filt, ]
         #     if (!is.null(background)) {
@@ -303,15 +311,17 @@ fit_max <- function(data,
         #   }
         # }
 
-        # Predict for presences absences data
+        if(all(test[[i]][,response]==1)){
+        # Test based on presence and background
+          test[[i]] <- bind_rows(test[[i]], bgt_test[[i]])
+        }
         pred_test <- data.frame(
           pr_ab = test[[i]][, response],
           pred = predict_maxnet(
-            mod[[i]],
+            object = mod[[i]],
             newdata = test[[i]],
             clamp = clamp,
-            type = pred_type,
-            addsamplestobackground = sampleback
+            type = pred_type
           )
         )
 
@@ -390,13 +400,45 @@ fit_max <- function(data,
     dplyr::relocate(rnames)
 
   # Fit final models
-  suppressMessages(mod <-
+
+  if(all(data[,response]==1)){
+    data_2 <- bind_rows(data, background)
+  } else {
+    # remove absences
+    data_2 <- bind_rows(data[data[,response]==1,], background)
+  }
+
+
+  sampleback <-  TRUE
+  mod <- NULL
+  try(suppressMessages(mod <-
     maxnet::maxnet(
-      p = data[, response],
-      data = data[predictors],
+      p = data_2[, response],
+      data = data_2[predictors],
       f = formula1,
-      regmult = regmult
-    ))
+      regmult = regmult,
+      addsamplestobackground = sampleback
+    )))
+
+  if (length(mod) < i) {
+    message("Refit with addsamplestobackground = FALSE")
+    sampleback = FALSE
+    try(mod <-
+          suppressMessages(
+            maxnet::maxnet(
+              p = data[, response],
+              data = data[predictors],
+              f = formula1,
+              regmult = regmult,
+              addsamplestobackground = sampleback
+            )
+          ))
+  }
+
+  if(all(data[,response]==1)){
+    # Test based on presence and background
+    data <- bind_rows(data, background)
+  }
 
   pred_test <- data.frame(
     "pr_ab" = data[response],
@@ -417,7 +459,7 @@ fit_max <- function(data,
   } else {
     background <- predict_maxnet(
       mod,
-      newdata = background[c(predictors, predictors_f)],
+      newdata = background[predictors],
       clamp = clamp,
       type = pred_type
     )
