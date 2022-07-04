@@ -45,6 +45,15 @@
 #' and "logistic". Default "cloglog"
 #' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #'
+#' @details
+#' When presence-absence (or presence-pseudo-absence) is used in data argument and background
+#' points, function will fit models with presences and background points and validate with
+#' presences and absences. This procedure makes maxent comparable to other presences-absences
+#' models (.e.g., random forest, support vector machine). If only presences and background
+#' points data are used, function will fit and validate model with presences and background
+#' data. If only presence-absences are used in data argument and without background, function
+#' will fit model with those kinds of data. It is not recommended use this last option.
+#'
 #' @return
 #'
 #' A list object with:
@@ -200,7 +209,7 @@ tune_max <-
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
       grid <- expand.grid(
-        regmult = seq(0.1, 3, 0.5),
+        regmult = seq(0.1, 3, 0.05),
         classes = c("l", "lq", "lqh", "lqhp", "lqhpt")
       )
       message("Hyper-parameter values were not provided, default values will be used")
@@ -281,16 +290,30 @@ tune_max <-
       for(i in 1:np2){
         message("Partition number: ", i, "/", np2)
         mod <- foreach::foreach(ii = 1:nrow(grid), .packages = c("dplyr")) %dopar% {
-          set.seed(1)
           tryCatch({
-            maxnet::maxnet(
+            sampleback = TRUE
+            try(mod <- maxnet::maxnet(
               p = train[[i]][, response],
               data = train[[i]][predictors],
               f = maxnet::maxnet.formula(train[[i]][response],
                                          train[[i]][predictors],
                                          classes = grid$classes[ii]),
-              regmult = grid$regmult[ii]
-            )
+              regmult = grid$regmult[ii],
+              addsamplestobackground = sampleback
+            ))
+            if(!exists("mod")){
+              sampleback = FALSE
+              try(mod <- maxnet::maxnet(
+                p = train[[i]][, response],
+                data = train[[i]][predictors],
+                f = maxnet::maxnet.formula(train[[i]][response],
+                                           train[[i]][predictors],
+                                           classes = grid$classes[ii]),
+                regmult = grid$regmult[ii],
+                addsamplestobackground = sampleback
+              ))
+            }
+            mod
           }, error = function(e) {
             NULL
           })
@@ -303,6 +326,10 @@ tune_max <-
         grid2 <- grid[filt, ]
         tnames <- apply(grid2, 1, function(x) paste(x, collapse = "_"))
 
+        if(all(test[[i]][,response]==1)){
+          # Test based on presence and background
+          test[[i]] <- bind_rows(test[[i]], bgt_test[[i]])
+        }
         # Predict for presences absences data
         pred_test <-
           lapply(mod, function(x) {
@@ -396,7 +423,7 @@ tune_max <-
     mod <- fit_max(
       data = data,
       response = response,
-      predictors = predictors,
+      predictors = predictors[!predictors%in%predictors_f],
       predictors_f = predictors_f,
       partition = partition,
       thr = thr,
@@ -408,6 +435,12 @@ tune_max <-
       regmult = best_tune$regmult
     )
     pred_test_ens <- mod[["data_ens"]]
+
+
+    if(all(data[,response]==1)){
+      # Test based on presence and background
+      data <- bind_rows(data, background)
+    }
 
     pred_test <- data.frame(
       "pr_ab" = data[response],
