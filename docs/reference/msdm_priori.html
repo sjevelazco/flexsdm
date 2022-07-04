@@ -74,30 +74,41 @@ environmental variables, can be used to construct constrained species distributi
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">msdm_priori</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, <span class="va">y</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"xy"</span>, <span class="st">"min"</span>, <span class="st">"cml"</span>, <span class="st">"ker"</span><span class="op">)</span>, <span class="va">env_layer</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">msdm_priori</span><span class="op">(</span><span class="va">data</span>, <span class="va">x</span>, <span class="va">y</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"xy"</span>, <span class="st">"min"</span>, <span class="st">"cml"</span>, <span class="st">"ker"</span><span class="op">)</span>, <span class="va">env_layer</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>tibble or data.frame. A database with geographical coordinates of species presences.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>character. Column name with spatial x coordinates.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>character. Column name with spatial y coordinates.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>character. A character string indicating which MSDM method will be used. The
 following methods are available: 'xy', 'min', 'cml', and 'ker'. Usage method = 'cml'</p></dd>
+
+
 <dt>env_layer</dt>
 <dd><p>A raster layer used to construct species distribution models. This object will
 be used to create constraining variables with the same resolution, extent, and pattern of empty
 cells as the environmental variables. It is advisable to use a raster of an environmental layer
 that will be used to create the species distribution models to avoid mismatch (e.g. resolution,
 extent, cells with NA) between environmental and constraining variables.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>This function returns a SpatRaster object. Such raster/s have to be used together with
+    
+
+<p>This function returns a SpatRaster object. Such raster/s have to be used together with
 environmental variables to construct species distribution models.
 The 'xy' approach creates a single pair of raster layers that can be used for all species that
 share the same study region. Otherwise,
@@ -155,68 +166,68 @@ doi:10.1111/j.1466-8238.2007.00331.x</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Select the presences of a species</span></span>
-<span class="r-in"><span class="va">occ</span> <span class="op">&lt;-</span> <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp3"</span>, <span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Select a raster layer to be used as a basic raster</span></span>
-<span class="r-in"><span class="va">a_variable</span> <span class="op">&lt;-</span> <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">a_variable</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">occ</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">### xy method</span></span>
-<span class="r-in"><span class="va">m_xy</span> <span class="op">&lt;-</span> <span class="fu">msdm_priori</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">occ</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="st">"xy"</span>,</span>
-<span class="r-in">  env_layer <span class="op">=</span> <span class="va">a_variable</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_xy</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">### min method</span></span>
-<span class="r-in"><span class="va">m_min</span> <span class="op">&lt;-</span> <span class="fu">msdm_priori</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">occ</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="st">"min"</span>,</span>
-<span class="r-in">  env_layer <span class="op">=</span> <span class="va">a_variable</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_min</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">### cml method</span></span>
-<span class="r-in"><span class="va">m_cml</span> <span class="op">&lt;-</span> <span class="fu">msdm_priori</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">occ</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="st">"cml"</span>,</span>
-<span class="r-in">  env_layer <span class="op">=</span> <span class="va">a_variable</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_cml</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">### ker method</span></span>
-<span class="r-in"><span class="va">m_ker</span> <span class="op">&lt;-</span> <span class="fu">msdm_priori</span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">occ</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="st">"ker"</span>,</span>
-<span class="r-in">  env_layer <span class="op">=</span> <span class="va">a_variable</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_ker</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Select the presences of a species</span></span></span>
+<span class="r-in"><span><span class="va">occ</span> <span class="op">&lt;-</span> <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp3"</span>, <span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Select a raster layer to be used as a basic raster</span></span></span>
+<span class="r-in"><span><span class="va">a_variable</span> <span class="op">&lt;-</span> <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">a_variable</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">occ</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### xy method</span></span></span>
+<span class="r-in"><span><span class="va">m_xy</span> <span class="op">&lt;-</span> <span class="fu">msdm_priori</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">occ</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"xy"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">a_variable</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_xy</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### min method</span></span></span>
+<span class="r-in"><span><span class="va">m_min</span> <span class="op">&lt;-</span> <span class="fu">msdm_priori</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">occ</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"min"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">a_variable</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_min</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### cml method</span></span></span>
+<span class="r-in"><span><span class="va">m_cml</span> <span class="op">&lt;-</span> <span class="fu">msdm_priori</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">occ</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"cml"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">a_variable</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_cml</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### ker method</span></span></span>
+<span class="r-in"><span><span class="va">m_ker</span> <span class="op">&lt;-</span> <span class="fu">msdm_priori</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">occ</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"ker"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">a_variable</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_ker</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -228,7 +239,7 @@ doi:10.1111/j.1466-8238.2007.00331.x</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>

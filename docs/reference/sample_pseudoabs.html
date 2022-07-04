@@ -74,17 +74,17 @@ totally random sampling method, with the options of using different environmenta
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sample_pseudoabs</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">x</span>,
-  <span class="va">y</span>,
-  <span class="va">n</span>,
-  <span class="va">method</span>,
-  <span class="va">rlayer</span>,
-  maskval <span class="op">=</span> <span class="cn">NULL</span>,
-  calibarea <span class="op">=</span> <span class="cn">NULL</span>,
-  sp_name <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">y</span>,</span>
+<span>  <span class="va">n</span>,</span>
+<span>  <span class="va">method</span>,</span>
+<span>  <span class="va">rlayer</span>,</span>
+<span>  maskval <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  calibarea <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sp_name <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -92,12 +92,20 @@ totally random sampling method, with the options of using different environmenta
     <dl><dt>data</dt>
 <dd><p>data.frame or tibble. Database with presences
 (or presence-absence, or presences-pseudo-absence) records, and coordinates</p></dd>
+
+
 <dt>x</dt>
 <dd><p>character. Column name with spatial x coordinates</p></dd>
+
+
 <dt>y</dt>
 <dd><p>character. Column name with spatial y coordinates</p></dd>
+
+
 <dt>n</dt>
 <dd><p>integer. Number of pseudo-absences to be sampled</p></dd>
+
+
 <dt>method</dt>
 <dd><p>character. Pseudo-absence allocation method. It is necessary to
 provide a vector for this argument. The methods implemented are:</p><ul><li><p>random: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='random'.</p></li>
@@ -106,20 +114,31 @@ provide a vector for this argument. The methods implemented are:</p><ul><li><p>r
 <li><p>geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, a raster with environmental variables stored as SpatRaster object should be provided. A value of the buffer width in m must be provided if raster (used in rlayer) has a longitude/latitude CRS, or in map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar)</p></li>
 <li><p>geo_env_km_const: Pseudo-absences are constrained using a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar)</p></li>
 </ul></dd>
+
+
 <dt>rlayer</dt>
 <dd><p>SpatRaster. A raster layer used for sampling pseudo-absence
 A layer with the same resolution and extent that environmental variables that will be used for modeling is recommended. In the case use maskval argument, this raster layer must contain the values used to constrain sampling</p></dd>
+
+
 <dt>maskval</dt>
 <dd><p>integer, character, or factor. Values of the raster layer used for constraining the pseudo-absence sampling</p></dd>
+
+
 <dt>calibarea</dt>
 <dd><p>SpatVector A SpatVector which delimit the calibration area used for a given species (see <code><a href="calib_area.html">calib_area</a></code> function).</p></dd>
+
+
 <dt>sp_name</dt>
 <dd><p>character. Species name for which the output will be used.
 If this argument is used, the first output column will have the species name. Default NULL.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble object with x y coordinates of sampled pseudo-absence points</p>
+    
+
+<p>A tibble object with x y coordinates of sampled pseudo-absence points</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -128,171 +147,171 @@ If this argument is used, the first output column will have the species name. De
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">single_spp</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp3"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pr_ab</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pseudo-absences randomly sampled throughout study area</span></span>
-<span class="r-in"><span class="va">ps1</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="st">"random"</span>,</span>
-<span class="r-in">    rlayer <span class="op">=</span> <span class="va">regions</span>,</span>
-<span class="r-in">    maskval <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">    sp_name <span class="op">=</span> <span class="st">"sp3"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span> <span class="co"># presences</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span> <span class="co"># absences</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pseudo-absences randomly sampled within a regions where a species occurs</span></span>
-<span class="r-in"><span class="co">## Regions where this species occurrs</span></span>
-<span class="r-in"><span class="va">samp_here</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">regions</span>, <span class="va">single_spp</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.exclude</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ps1</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="st">"random"</span>,</span>
-<span class="r-in">    rlayer <span class="op">=</span> <span class="va">regions</span>,</span>
-<span class="r-in">    maskval <span class="op">=</span> <span class="va">samp_here</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pseudo-absences sampled with geographical constraint</span></span>
-<span class="r-in"><span class="va">ps1</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"geo_const"</span>, width <span class="op">=</span> <span class="st">"30000"</span><span class="op">)</span>,</span>
-<span class="r-in">    rlayer <span class="op">=</span> <span class="va">regions</span>,</span>
-<span class="r-in">    maskval <span class="op">=</span> <span class="va">samp_here</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pseudo-absences sampled with environmental constraint</span></span>
-<span class="r-in"><span class="va">ps1</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"env_const"</span>, env <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span>,</span>
-<span class="r-in">    rlayer <span class="op">=</span> <span class="va">regions</span>,</span>
-<span class="r-in">    maskval <span class="op">=</span> <span class="va">samp_here</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pseudo-absences sampled with environmental and geographical constraint</span></span>
-<span class="r-in"><span class="va">ps1</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"geo_env_const"</span>, width <span class="op">=</span> <span class="st">"50000"</span>, env <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span>,</span>
-<span class="r-in">    rlayer <span class="op">=</span> <span class="va">regions</span>,</span>
-<span class="r-in">    maskval <span class="op">=</span> <span class="va">samp_here</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Pseudo-absences sampled with environmental and geographical constraint and with k-mean clustering</span></span>
-<span class="r-in"><span class="va">ps1</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"geo_env_km_const"</span>, width <span class="op">=</span> <span class="st">"50000"</span>, env <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span>,</span>
-<span class="r-in">    rlayer <span class="op">=</span> <span class="va">regions</span>,</span>
-<span class="r-in">    maskval <span class="op">=</span> <span class="va">samp_here</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Sampling pseudo-absence using a calibration area</span></span>
-<span class="r-in"><span class="va">ca_ps1</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">  x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">50000</span><span class="op">)</span>,</span>
-<span class="r-in">  crs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ps1</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">50</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="st">"random"</span>,</span>
-<span class="r-in">    rlayer <span class="op">=</span> <span class="va">regions</span>,</span>
-<span class="r-in">    maskval <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span class="r-in">    calibarea <span class="op">=</span> <span class="va">ca_ps1</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ps1</span> <span class="op">&lt;-</span></span>
-<span class="r-in">  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">single_spp</span>,</span>
-<span class="r-in">    x <span class="op">=</span> <span class="st">"x"</span>,</span>
-<span class="r-in">    y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span class="r-in">    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">50</span>,</span>
-<span class="r-in">    method <span class="op">=</span> <span class="st">"random"</span>,</span>
-<span class="r-in">    rlayer <span class="op">=</span> <span class="va">regions</span>,</span>
-<span class="r-in">    maskval <span class="op">=</span> <span class="va">samp_here</span>,</span>
-<span class="r-in">    calibarea <span class="op">=</span> <span class="va">ca_ps1</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">single_spp</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="va">spp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp3"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">pr_ab</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pseudo-absences randomly sampled throughout study area</span></span></span>
+<span class="r-in"><span><span class="va">ps1</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="st">"random"</span>,</span></span>
+<span class="r-in"><span>    rlayer <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>    maskval <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>    sp_name <span class="op">=</span> <span class="st">"sp3"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span> <span class="co"># presences</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span> <span class="co"># absences</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pseudo-absences randomly sampled within a regions where a species occurs</span></span></span>
+<span class="r-in"><span><span class="co">## Regions where this species occurrs</span></span></span>
+<span class="r-in"><span><span class="va">samp_here</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">regions</span>, <span class="va">single_spp</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.exclude</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ps1</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="st">"random"</span>,</span></span>
+<span class="r-in"><span>    rlayer <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>    maskval <span class="op">=</span> <span class="va">samp_here</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pseudo-absences sampled with geographical constraint</span></span></span>
+<span class="r-in"><span><span class="va">ps1</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"geo_const"</span>, width <span class="op">=</span> <span class="st">"30000"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    rlayer <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>    maskval <span class="op">=</span> <span class="va">samp_here</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pseudo-absences sampled with environmental constraint</span></span></span>
+<span class="r-in"><span><span class="va">ps1</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"env_const"</span>, env <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    rlayer <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>    maskval <span class="op">=</span> <span class="va">samp_here</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pseudo-absences sampled with environmental and geographical constraint</span></span></span>
+<span class="r-in"><span><span class="va">ps1</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"geo_env_const"</span>, width <span class="op">=</span> <span class="st">"50000"</span>, env <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    rlayer <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>    maskval <span class="op">=</span> <span class="va">samp_here</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Pseudo-absences sampled with environmental and geographical constraint and with k-mean clustering</span></span></span>
+<span class="r-in"><span><span class="va">ps1</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"geo_env_km_const"</span>, width <span class="op">=</span> <span class="st">"50000"</span>, env <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    rlayer <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>    maskval <span class="op">=</span> <span class="va">samp_here</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Sampling pseudo-absence using a calibration area</span></span></span>
+<span class="r-in"><span><span class="va">ca_ps1</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">50000</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  crs<span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ps1</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">50</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="st">"random"</span>,</span></span>
+<span class="r-in"><span>    rlayer <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>    maskval <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>    calibarea <span class="op">=</span> <span class="va">ca_ps1</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ps1</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">sample_pseudoabs</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">single_spp</span>,</span></span>
+<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>    n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">50</span>,</span></span>
+<span class="r-in"><span>    method <span class="op">=</span> <span class="st">"random"</span>,</span></span>
+<span class="r-in"><span>    rlayer <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>    maskval <span class="op">=</span> <span class="va">samp_here</span>,</span></span>
+<span class="r-in"><span>    calibarea <span class="op">=</span> <span class="va">ca_ps1</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ps1</span>, col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">single_spp</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -304,7 +323,7 @@ If this argument is used, the first output column will have the species name. De
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
     </footer></div>
