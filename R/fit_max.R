@@ -50,13 +50,13 @@
 #'  if np between 15 and 80 classes = "lqh",
 #'  and if np >= 80 classes = "lqph"
 #'
-#' When presence-absence (or presence-pseudo-absence) and background points are used
-#' , function will fit models with presences and background points and validate with
-#' presences and absences (or pseudo-absence). This procedure makes maxent comparable to other presences-absences
-#' models (.e.g., random forest, support vector machine). If only presences and background
-#' points data are used, function will fit and validate model with presences and background
-#' data. If only presence-absences are used in data argument and without background, function
-#' will fit model with those kinds of data. It is not recommended use this last option.
+#' When presence-absence (or presence-pseudo-absence) data are used in data argument
+#' in addition to background points, the function will fit models with presences and background
+#' points and validate with presences and absences. This procedure makes maxent comparable to other
+#' presences-absences models (e.g., random forest, support vector machine). If only presences and
+#' background points data are used, function will fit and validate model with presences and
+#' background data. If only presence-absences are used in data argument and without background,
+#' function will fit model with the specified data (not recommended).
 #'
 #' @seealso \code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},
 #' \code{\link{fit_glm}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.

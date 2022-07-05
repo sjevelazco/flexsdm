@@ -180,13 +180,13 @@ database is used in <code><a href="fit_ensemble.html">fit_ensemble</a></code></p
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>When presence-absence (or presence-pseudo-absence) and background points are used
-, function will fit models with presences and background points and validate with
-presences and absences (or pseudo-absence). This procedure makes maxent comparable to other presences-absences
-models (.e.g., random forest, support vector machine). If only presences and background
-points data are used, function will fit and validate model with presences and background
-data. If only presence-absences are used in data argument and without background, function
-will fit model with those kinds of data. It is not recommended use this last option.</p>
+    <p>When presence-absence (or presence-pseudo-absence) data are used in data argument
+in addition to background points, the function will fit models with presences and background
+points and validate with presences and absences. This procedure makes maxent comparable to other
+presences-absences models (e.g., random forest, support vector machine). If only presences and
+background points data are used, function will fit and validate model with presences and
+background data. If only presence-absences are used in data argument and without background,
+function will fit model with the specified data (not recommended).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
