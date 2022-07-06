@@ -6,6 +6,7 @@
 #' (or presence-absence) records, and coordinates
 #' @param x character. Column name with spatial x coordinates
 #' @param y character. Column name with spatial y coordinates
+#' @param pr_ab character. Column name with presences as 1 and absences as 0. If NULL, presence-absence information is disregarded
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
 #' @param env_layer SpatRaster. Rasters with environmental conditions
 #' @param nbins integer. A number of classes used to split each environmental condition
@@ -120,10 +121,10 @@
 #'
 #' @seealso \code{\link{occfilt_geo}}
 #'
-occfilt_env <- function(data, x, y, id, env_layer, nbins) {
+occfilt_env <- function(data, x, y, pr_ab, id, env_layer, nbins) {
   s <- . <- l <- NULL
 
-  da <- data[c(x, y, id)]
+  da <- data[c(x, y, id, pr_ab)]
   coord <- data[c(x, y)]
 
   # Remove factor variables
@@ -150,7 +151,7 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
   rm(filt)
 
   n <- ncol(env_layer)
-  res <- res <- apply(env_layer, 2, function(x) diff(range(x))) / nbins
+  res <- apply(env_layer, 2, function(x) diff(range(x))) / nbins
 
   classes <- list()
   for (i in 1:n) {
@@ -165,17 +166,17 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
     env[[i]] <- terra::classify(env[[i]], classes[[i]], include.lowest = TRUE)
     levels(env[[i]]) <- as.numeric(as.factor(terra::levels(env[[i]])[[1]]))
   }
-  real_p <- terra::extract(env, coord)[-1]
+  real_p <- cbind(terra::extract(env, coord)[-1],da[pr_ab])
   real_p$groupID <- apply(real_p, 1, function(x) paste(x, collapse = "."))
 
   message("Number of unfiltered records: ", nrow(da))
 
   if (any(is.na(real_p$groupID))) {
     nas <- da[is.na(real_p$groupID), c(id, x, y)]
-    no_nas <- da[!duplicated(real_p$groupID) & !is.na(real_p$groupID), c(id, x, y)]
+    no_nas <- da[!duplicated(real_p$groupID) & !is.na(real_p$groupID), c(id, x, y, pr_ab)]
     coord_filter <- unique(dplyr::bind_rows(no_nas, nas))
   } else {
-    coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y)]
+    coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y, pr_ab)]
   }
 
   message("Number of filtered records: ", nrow(coord_filter))
