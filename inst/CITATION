@@ -11,11 +11,11 @@ citEntry(
   journal  = "Methods in Ecology and Evolution",
   year     = 2022,
   volume   = 13,
-  number   = "",
-  pages    = "2041-210X.13874",
+  number   = 8,
+  pages    = "1661-1669",
   url      = "https://onlinelibrary.wiley.com/doi/10.1111/2041-210X.13874",
   textVersion = paste("Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). ",
   "flexsdm: An R package for supporting a comprehensive and flexible species distribution modelling workflow. ",
-  "Methods in Ecology and Evolution, 13() 2041-210X.13874. https://doi.org/10.1111/2041-210X.13874"
+  "Methods in Ecology and Evolution, 13(8) 1661-1669. https://doi.org/10.1111/2041-210X.13874"
   )
 )
