@@ -163,7 +163,9 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
 
   for (i in 1:(terra::nlyr(env))) {
     env[[i]] <- terra::classify(env[[i]], classes[[i]], include.lowest = TRUE)
-    levels(env[[i]]) <- as.numeric(as.factor(terra::levels(env[[i]])[[1]]))
+    lvs <- terra::levels(env[[i]])[[1]]
+    lvs[[2]] <- lvs[[1]]
+    levels(env[[i]]) <- lvs
   }
   real_p <- terra::extract(env, coord)[-1]
   real_p$groupID <- apply(real_p, 1, function(x) paste(x, collapse = "."))

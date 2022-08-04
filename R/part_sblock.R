@@ -400,7 +400,7 @@ unique list values in pr_ab column are: ",
   pp <- sapply(part[pa == 1, ], function(x) {
     length(unique(x))
   })
-  pp <- ifelse(pp == n_part, TRUE, FALSE)
+  pp <- pp == n_part
   # Elimination of those partition that have one record in some group
   pf <- sapply(part[pa == 1, ], table)
   if (is.list(pf) == TRUE) {
@@ -422,7 +422,7 @@ unique list values in pr_ab column are: ",
     pp <- sapply(part[pa == 0, ], function(x) {
       length(unique(x))
     })
-    pp <- ifelse(pp == n_part, TRUE, FALSE)
+    pp <- pp == n_part
     # Elimination of those partition that have one record in some group
     pf <- sapply(part[pa == 0, ], table)
     if (is.list(pf) == TRUE) {
