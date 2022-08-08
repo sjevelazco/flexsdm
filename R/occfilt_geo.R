@@ -171,10 +171,11 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     p <- stats::prcomp(p,
       retx = TRUE,
       scale. = TRUE,
-      center = TRUE
+      center = TRUE,
+      rank. = 1
     )
 
-    env_layer <- terra::predict(env_layer, p, index = 1)
+    env_layer <- terra::predict(env_layer, p)
     names(env_layer) <- "PC1"
 
     # Extract occurrence PC1 values

@@ -260,7 +260,11 @@ correct_colinvar <- function(env_layer,
       x >= 0.95
     }, cvar)
     cvar <- data.frame(cvar)
-    env_layer <- terra::predict(env_layer, p, index = 1:naxis)
+
+    # env_layer <- terra::predict(env_layer, p, index = 1:naxis)
+    p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
+    p <- stats::prcomp(p, retx = TRUE, scale. = TRUE, center = TRUE, rank. = naxis)
+    env_layer <- terra::predict(env_layer, p)
 
     result <- list(
       env_layer = env_layer,
@@ -281,7 +285,7 @@ correct_colinvar <- function(env_layer,
       for (i in 1:length(proj)) {
         scen <- terra::rast(list.files(proj[i], full.names = TRUE))
         scen <- terra::scale(scen, center = means, scale = stds)
-        scen <- terra::predict(scen, p, index = 1:naxis)
+        scen <- terra::predict(scen, p)
         terra::writeRaster(
           scen,
           file.path(subfold[[i]], "pcs.tif"),
