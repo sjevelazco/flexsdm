@@ -32,5 +32,5 @@ We recommend using the function p_pdp and p_extra.
 }
 }
 \seealso{
-\code{\link{extra_eval}}
+\code{\link{extra_eval}}, \code{\link{p_extra}}, \code{\link{p_pdp}}
 }

@@ -4,20 +4,20 @@
 \alias{extra_eval}
 \title{Measure model extrapolation}
 \usage{
-extra_eval(env_calib, env_proj, n_cores = 1, aggreg_factor = 1)
+extra_eval(training_data, projection_data, n_cores = 1, aggreg_factor = 1)
 }
 \arguments{
-\item{env_calib}{SpatRaster or tibble with environmental conditions of the calibration area or the
+\item{training_data}{SpatRaster or tibble with environmental conditions of the calibration area or the
 presence and absence (or background points or pseudo-absences) used for constructing models}
 
-\item{env_proj}{SpatRaster with environmental condition used for projecting a model (e.g., a larger, encompassing region, a spatially separate region, or a different time period)}
+\item{projection_data}{SpatRaster with environmental condition used for projecting a model (e.g., a larger, encompassing region, a spatially separate region, or a different time period)}
 
 \item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 
 \item{aggreg_factor}{positive integer. Aggregation factor expressed as number of cells in each
 direction to reduce raster resolution. Use value higher than 1 would be useful when
 measuring extrapolation using a raster with a high number of cells. The resolution of output will be
-the same as raster object used in 'env_proj' argument. Default 1, i.e., by default, no changes
+the same as raster object used in 'projection_data' argument. Default 1, i.e., by default, no changes
 will be made to the resolution of the environmental variables.}
 }
 \value{
@@ -25,7 +25,7 @@ A SpatRaster object with extrapolation values measured in percentage of extrapol
 }
 \description{
 Measure extrapolation comparing environmental data used for modeling calibration and area for
-model projection. This function use the approach proposed by Velazco et al., in prep
+model projection. This function use the approach proposed by xxx et al., in prep
 (EXPERIMENTAL)
 }
 \examples{
@@ -36,6 +36,8 @@ require(terra)
 data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
+names(somevar) <- c("aet", "cwd", "tmx", "tmn")
+
 
 spp$species \%>\% unique()
 sp <- spp \%>\%
@@ -45,7 +47,7 @@ sp <- spp \%>\%
 # Calibration area based on some criterion such as dispersal ability
 ca <- calib_area(sp, x = "x", y = "y", method = c("bmcp", width = 50000), crs = crs(somevar))
 
-plot(somevar$CFP_1)
+plot(somevar[[1]])
 points(sp)
 plot(ca, add = T)
 
@@ -53,13 +55,13 @@ plot(ca, add = T)
 # Sampling pseudo-absences
 set.seed(10)
 psa <- sample_pseudoabs(
-data = sp,
-x = "x",
-y = "y",
-n = nrow(sp) * 2 , # selecting number of pseudo-absence points twice number of presences
-method = "random",
-rlayer = somevar,
-calibarea = ca
+  data = sp,
+  x = "x",
+  y = "y",
+  n = nrow(sp) * 2, # selecting number of pseudo-absence points twice number of presences
+  method = "random",
+  rlayer = somevar,
+  calibarea = ca
 )
 
 # Merge presences and abasences databases to get a complete calibration data
@@ -71,16 +73,58 @@ sp_pa_2 <- sdm_extract(data = sp_pa, x = "x", y = "y", env_layer = somevar)
 sp_pa_2
 
 # Measure extrapolation based on calibration data (presence and pseudo-absences)
-xp <-
+extr <-
   extra_eval(
-    env_calib = sp_pa_2,
-    env_proj = somevar,
+    training_data = sp_pa_2,
+    projection_data = somevar,
     n_cores = 1,
     aggreg_factor = 1
   )
-plot(xp)
- }
+plot(extr, main = "Extrapolation pattern")
+
+
+
+# Let's fit, predict and truncate a model with extra_truncate
+sp_pa_2 <- part_random(
+  data = sp_pa_2,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
+)
+
+a_model <- fit_glm(
+  data = sp_pa_2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  partition = ".part",
+  thr = c("max_sorensen")
+)
+
+predsuit <- sdm_predict(models = a_model, pred = somevar, thr = "max_sorensen")
+predsuit # list with a raster with two layer
+plot(predsuit[[1]])
+
+# Truncate a model based on a given value of extrapolation based on SHAPE metric
+par(mfrow = c(1, 2))
+plot(extr, main = "Extrapolation")
+plot(predsuit[[1]][[1]], main = "Suitability")
+par(mfrow = c(1, 1))
+
+predsuit_2 <- extra_truncate(
+  suit = predsuit[[1]],
+  extra = extr,
+  threshold = c(50, 100, 200)
+)
+predsuit_2 # a list of continuous and binayr models with differnt truncated at different
+# extrapolation thresholds
+
+plot(predsuit_2$`50`)
+plot(predsuit_2$`100`)
+plot(predsuit_2$`200`)
+
+# See also functions p_extra (to explore extrapolation and suitability paterns in the
+# geographical and environmental space) and p_pdp to construct partial depence plots
+}
 }
 \seealso{
-\code{\link{extra_truncate}}
+\code{\link{extra_truncate}}, \code{\link{p_extra}}, \code{\link{p_pdp}}
 }

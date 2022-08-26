@@ -1,30 +1,30 @@
 #' Measure model extrapolation
 #'
 #' @description Measure extrapolation comparing environmental data used for modeling calibration and area for
-#' model projection. This function use the approach proposed by Velazco et al., in prep
+#' model projection. This function use the approach proposed by xxx et al., in prep
 #' (EXPERIMENTAL)
 #'
-#' @param env_calib SpatRaster or tibble with environmental conditions of the calibration area or the
+#' @param training_data SpatRaster or tibble with environmental conditions of the calibration area or the
 #' presence and absence (or background points or pseudo-absences) used for constructing models
-#' @param env_proj SpatRaster with environmental condition used for projecting a model (e.g., a larger, encompassing region, a spatially separate region, or a different time period)
+#' @param projection_data SpatRaster with environmental condition used for projecting a model (e.g., a larger, encompassing region, a spatially separate region, or a different time period)
 #' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #' @param aggreg_factor positive integer. Aggregation factor expressed as number of cells in each
 #'  direction to reduce raster resolution. Use value higher than 1 would be useful when
 #'  measuring extrapolation using a raster with a high number of cells. The resolution of output will be
-#'  the same as raster object used in 'env_proj' argument. Default 1, i.e., by default, no changes
+#'  the same as raster object used in 'projection_data' argument. Default 1, i.e., by default, no changes
 #'  will be made to the resolution of the environmental variables.
 #'
 #'
 #' @return
 #' A SpatRaster object with extrapolation values measured in percentage of extrapolation (relative Euclidean distance)
 #'
-#' @seealso \code{\link{extra_truncate}}
+#' @seealso \code{\link{extra_truncate}}, \code{\link{p_extra}}, \code{\link{p_pdp}}
 #'
 #' @export
 #'
 #' @importFrom doParallel registerDoParallel
 #' @importFrom dplyr summarise_all
-#' @importFrom foreach foreach %dopar%
+#' @importFrom foreach foreach "%dopar%"
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom stats sd
 #' @importFrom terra mask aggregate as.data.frame resample
@@ -37,6 +37,8 @@
 #' data(spp)
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)
+#' names(somevar) <- c("aet", "cwd", "tmx", "tmn")
+#'
 #'
 #' spp$species %>% unique()
 #' sp <- spp %>%
@@ -46,7 +48,7 @@
 #' # Calibration area based on some criterion such as dispersal ability
 #' ca <- calib_area(sp, x = "x", y = "y", method = c("bmcp", width = 50000), crs = crs(somevar))
 #'
-#' plot(somevar$CFP_1)
+#' plot(somevar[[1]])
 #' points(sp)
 #' plot(ca, add = T)
 #'
@@ -54,13 +56,13 @@
 #' # Sampling pseudo-absences
 #' set.seed(10)
 #' psa <- sample_pseudoabs(
-#' data = sp,
-#' x = "x",
-#' y = "y",
-#' n = nrow(sp) * 2 , # selecting number of pseudo-absence points twice number of presences
-#' method = "random",
-#' rlayer = somevar,
-#' calibarea = ca
+#'   data = sp,
+#'   x = "x",
+#'   y = "y",
+#'   n = nrow(sp) * 2, # selecting number of pseudo-absence points twice number of presences
+#'   method = "random",
+#'   rlayer = somevar,
+#'   calibarea = ca
 #' )
 #'
 #' # Merge presences and abasences databases to get a complete calibration data
@@ -72,33 +74,75 @@
 #' sp_pa_2
 #'
 #' # Measure extrapolation based on calibration data (presence and pseudo-absences)
-#' xp <-
+#' extr <-
 #'   extra_eval(
-#'     env_calib = sp_pa_2,
-#'     env_proj = somevar,
+#'     training_data = sp_pa_2,
+#'     projection_data = somevar,
 #'     n_cores = 1,
 #'     aggreg_factor = 1
 #'   )
-#' plot(xp)
-#'  }
-extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
-  . <- x <- NULL
+#' plot(extr, main = "Extrapolation pattern")
+#'
+#'
+#'
+#' # Let's fit, predict and truncate a model with extra_truncate
+#' sp_pa_2 <- part_random(
+#'   data = sp_pa_2,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 5)
+#' )
+#'
+#' a_model <- fit_glm(
+#'   data = sp_pa_2,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "cwd", "tmx", "tmn"),
+#'   partition = ".part",
+#'   thr = c("max_sorensen")
+#' )
+#'
+#' predsuit <- sdm_predict(models = a_model, pred = somevar, thr = "max_sorensen")
+#' predsuit # list with a raster with two layer
+#' plot(predsuit[[1]])
+#'
+#' # Truncate a model based on a given value of extrapolation based on SHAPE metric
+#' par(mfrow = c(1, 2))
+#' plot(extr, main = "Extrapolation")
+#' plot(predsuit[[1]][[1]], main = "Suitability")
+#' par(mfrow = c(1, 1))
+#'
+#' predsuit_2 <- extra_truncate(
+#'   suit = predsuit[[1]],
+#'   extra = extr,
+#'   threshold = c(50, 100, 200)
+#' )
+#' predsuit_2 # a list of continuous and binayr models with differnt truncated at different
+#' # extrapolation thresholds
+#'
+#' plot(predsuit_2$`50`)
+#' plot(predsuit_2$`100`)
+#' plot(predsuit_2$`200`)
+#'
+#' # See also functions p_extra (to explore extrapolation and suitability paterns in the
+#' # geographical and environmental space) and p_pdp to construct partial depence plots
+#' }
+extra_eval <- function(training_data, projection_data, n_cores = 1, aggreg_factor = 1) {
+  Value <- val <- . <- x <- NULL
 
-  if(any("data.frame"==class(env_calib))){
-    env_calib <- env_calib[names(env_proj)]
+  if (any("data.frame" == class(training_data))) {
+    training_data <- training_data[names(projection_data)]
   }
 
   # Get variable names
-  v0 <- unique(c(names(env_calib), names(env_proj)))
+  v0 <- unique(c(names(training_data), names(projection_data)))
   v0 <- sort(v0)
 
   # Test rasters variable names
   if (!all(c(
-    all(names(env_calib) %in% names(env_proj)),
-    all(names(env_proj) %in% names(env_calib))
+    all(names(training_data) %in% names(projection_data)),
+    all(names(projection_data) %in% names(training_data))
   ))) {
     stop(
-      "colnames of dataframes of env_records, env_calib, and env_proj
+      "colnames of dataframes of env_records, training_data, and projection_data
         do not match each other",
       "\nraster layers names:",
       "\n",
@@ -110,34 +154,34 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
 
 
   # Sort in the same way layer in both raster
-  if(any("data.frame"%in%class(env_calib))){
-    env_calib <- env_calib[v0]
-  }else{
-    env_calib <- env_calib[[v0]]
+  if (any("data.frame" %in% class(training_data))) {
+    training_data <- training_data[v0]
+  } else {
+    training_data <- training_data[[v0]]
   }
-  env_proj <- env_proj[[v0]]
+  projection_data <- projection_data[[v0]]
 
   # Layer base
-  extraraster <- terra::mask(!is.na(env_proj[[1]]), env_proj[[1]])
+  extraraster <- terra::mask(!is.na(projection_data[[1]]), projection_data[[1]])
 
   if (aggreg_factor == 1) {
     aggreg_factor <- NULL
   }
   if (!is.null(aggreg_factor)) {
     disag <- extraraster
-    if(any("SpatRaster"==class(env_calib))){
-      env_calib <- terra::aggregate(env_calib, fact = aggreg_factor, na.rm = TRUE)
+    if (any("SpatRaster" == class(training_data))) {
+      training_data <- terra::aggregate(training_data, fact = aggreg_factor, na.rm = TRUE)
     }
-    env_proj <- terra::aggregate(env_proj, fact = aggreg_factor, na.rm = TRUE)
+    projection_data <- terra::aggregate(projection_data, fact = aggreg_factor, na.rm = TRUE)
     extraraster <- terra::aggregate(extraraster, fact = aggreg_factor, na.rm = TRUE)
   }
 
 
   # Transform raster to df
   env_calib2 <-
-    terra::as.data.frame(env_calib, xy = FALSE, na.rm = TRUE)
+    terra::as.data.frame(training_data, xy = FALSE, na.rm = TRUE)
   env_proj2 <-
-    terra::as.data.frame(env_proj, xy = FALSE, na.rm = TRUE)
+    terra::as.data.frame(projection_data, xy = FALSE, na.rm = TRUE)
 
   # save coordinates and cell number
   ncell <- rownames(env_proj2) %>% as.numeric()
@@ -171,7 +215,7 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
         euc_dist(
           env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
           env_calib2[v0]
-        ) # env_calib environmental conditions used as references
+        ) # training_data environmental conditions used as references
       auclidean <- sapply(data.frame(t(auclidean)), min)
       return(auclidean)
     })
@@ -187,7 +231,7 @@ extra_eval <- function(env_calib, env_proj, n_cores = 1, aggreg_factor = 1) {
         euc_dist(
           env_proj2[rowset, v0], # env_proj2 prediction environmental conditions outside
           env_calib2[v0]
-        ) # env_calib environmental conditions used as references
+        ) # training_data environmental conditions used as references
       auclidean <- sapply(data.frame(t(auclidean)), min)
       auclidean
     }
