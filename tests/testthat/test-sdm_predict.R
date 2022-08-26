@@ -392,7 +392,6 @@ test_that("test for prdicting ensemble of small models", {
   # Environmental variables
   somevar <- system.file("external/somevar.tif", package = "flexsdm") %>% terra::rast()
   regions <- system.file("external/regions.tif", package = "flexsdm") %>% terra::rast()
-  levels(regions) <- c(unique(regions))
   somevar <- terra::rast(x = list(regions, somevar))
   rm(regions)
 

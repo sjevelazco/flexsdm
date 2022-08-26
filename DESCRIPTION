@@ -35,7 +35,9 @@ Imports:
     Rlof,
     terra (>= 1.5-21),
     methods,
-    utils
+    utils,
+    ggplot2,
+    patchwork
 Description: Assist in the construction of flexible species distribution workflow
     by incorporating comprehensive tools for data preparation, model fitting,
     prediction, evaluation, and model post-processing.
@@ -43,7 +45,7 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1
-Suggests: 
+Suggests:
     covr,
     knitr,
     rmarkdown,

@@ -12,7 +12,14 @@ test_that("extra_truncate", {
     dplyr::select(x, y)
 
   # Accessible area
-  ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 30000), crs=crs(somevar))
+  ca <-
+    calib_area(
+      sp,
+      x = "x",
+      y = "y",
+      method = c("buffer", width = 30000),
+      crs = crs(somevar)
+    )
 
   # Get environmental condition of calibration area
   somevar_ca <- somevar %>%
@@ -22,8 +29,8 @@ test_that("extra_truncate", {
 
   xp <-
     extra_eval(
-      env_calib = somevar_ca,
-      env_proj = somevar,
+      training_data = somevar_ca,
+      projection_data = somevar,
       n_cores = 2,
       aggreg_factor = 5
     )
@@ -32,5 +39,5 @@ test_that("extra_truncate", {
     extra = xp,
     threshold = 50
   )
-  expect_equal(class(xp2)[1], "SpatRaster")
+  expect_equal(class(xp2[[1]])[1], "SpatRaster")
 })

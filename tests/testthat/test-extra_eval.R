@@ -22,8 +22,8 @@ test_that("extra_eval one and two cores", {
 
   xp <-
     extra_eval(
-      env_calib = somevar_ca,
-      env_proj = somevar,
+      training_data = somevar_ca,
+      projection_data = somevar,
       n_cores = 2,
       aggreg_factor = 3
     )
@@ -34,8 +34,8 @@ test_that("extra_eval one and two cores", {
 
   xp2 <-
     extra_eval(
-      env_calib = somevar_ca,
-      env_proj = somevar,
+      training_data = somevar_ca,
+      projection_data = somevar,
       n_cores = 1,
       aggreg_factor = 1
     )
@@ -77,8 +77,8 @@ test_that("extra_eval based on tibble object", {
   # Measure extrapolation based on calibratin data (presence and pseudo-absences)
   xp <-
     extra_eval(
-      env_calib = sp_pa_2,
-      env_proj = somevar,
+      training_data = sp_pa_2,
+      projection_data = somevar,
       n_cores = 1,
       aggreg_factor = 1
     )
@@ -111,8 +111,8 @@ test_that("extra_eval wrong use", {
   names(somevar_ca) <- tolower(names(somevar_ca))
 
   expect_error(extra_eval(
-    env_calib = somevar_ca,
-    env_proj = somevar,
+    training_data = somevar_ca,
+    projection_data = somevar,
     n_cores = 1,
     aggreg_factor = 3
   ))

@@ -14,7 +14,7 @@
 #' to those cells assumed to be extrapolative (i.e., higher than a given threshold) based on an extrapolation metric like SHAPE methods (calculated with extra_eval).
 #' We recommend using the function p_pdp and p_extra.
 #'
-#' @seealso \code{\link{extra_eval}}
+#' @seealso \code{\link{extra_eval}}, \code{\link{p_extra}}, \code{\link{p_pdp}}
 #'
 #' @export
 #'
@@ -25,13 +25,14 @@
 #' # see examples in extra_eval function
 #' }
 extra_truncate <- function(suit, extra, threshold = 50, trunc_value = 0) {
-  names(suit) <- "suit"
+  # names(suit) <- "suit"
   l <- as.list(threshold)
   for (i in 1:length(threshold)) {
     l[[i]] <- suit
-    l[[i]][extra > threshold[i]] <- trunc_value
+    for (ii in 1:terra::nlyr(l[[i]])) {
+      l[[i]][[ii]][extra > threshold[i]] <- trunc_value
+    }
   }
   names(l) <- threshold
-  l <- terra::rast(l)
   return(l)
 }

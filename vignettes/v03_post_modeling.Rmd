@@ -386,8 +386,8 @@ plot(somevar_ca)
 
 xp <-
   extra_eval(
-    env_calib = somevar_ca,
-    env_proj = somevar,
+    training_data = somevar_ca,
+    projection_data = somevar,
     n_cores = 1,
     aggreg_factor = 3
   )
