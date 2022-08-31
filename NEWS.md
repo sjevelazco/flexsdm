@@ -1,4 +1,11 @@
-# flexsdm 1.3.0
+# flexsdm 1.3.2
+
+- New function `p_extra` Graphical exploration of extrapolation or suitability pattern in the environmental and geographical space
+- New function `p_pdp` Partial Dependent Plot
+- New function `pdp_data` Calculate data to construct partial dependence plots
+ 
+
+# flexsdm 1.3.1
 
 - New argument "crs" added to function `msdm_posteriori`
 - New argument "sp_name" in `sample_background` and `sample_pseudoabs`

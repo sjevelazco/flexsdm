@@ -13,7 +13,7 @@ fit_net(
   partition,
   thr = NULL,
   size = 2,
-  decay = 0
+  decay = 0.1
 )
 }
 \arguments{
@@ -50,7 +50,7 @@ If more than one threshold type is used they must be concatenated, e.g., thr=c('
 
 \item{size}{numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2.}
 
-\item{decay}{numeric. Parameter for weight decay. Default 0.}
+\item{decay}{numeric. Parameter for weight decay. Default 0.1.}
 }
 \value{
 A list object with:

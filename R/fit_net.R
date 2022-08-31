@@ -25,7 +25,7 @@
 #'   }
 #' If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
 #' @param size numeric. Number of units in the hidden layer. Can be zero if there are skip-layer units. Default 2.
-#' @param decay numeric. Parameter for weight decay. Default 0.
+#' @param decay numeric. Parameter for weight decay. Default 0.1.
 #'
 #' @return
 #'
@@ -101,8 +101,8 @@ fit_net <- function(data,
                     fit_formula = NULL,
                     partition,
                     thr = NULL,
-                    size = 2, # TODO find a formual to calculate default value for this argument
-                    decay = 0) {
+                    size = 2, # TODO find a formula to calculate default value for this argument
+                    decay = 0.1) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
