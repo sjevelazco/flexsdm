@@ -37,7 +37,7 @@
 #' }
 #'
 #'
-#' @importFrom dplyr %>% filter all_of pull bind_rows mutate inner_join select starts_with bind_cols across group_by summarise left_join relocate
+#' @importFrom dplyr %>% filter pull bind_rows mutate inner_join select starts_with bind_cols across group_by summarise left_join relocate
 #' @importFrom stats median sd
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #'
@@ -128,14 +128,14 @@ fit_ensemble <-
       #### Model performances
       perf <- sapply(models, function(x) {
         x[["performance"]] %>%
-          dplyr::filter(threshold == dplyr::all_of(thr_model)) %>%
-          dplyr::pull(dplyr::all_of(metric))
+          dplyr::filter(threshold == {{thr_model}}) %>%
+          dplyr::pull({{metric}})
       })
 
       #### Model thresholds
       thr_v <- sapply(models, function(x) {
         x[["performance"]] %>%
-          dplyr::filter(threshold == dplyr::all_of(thr_model)) %>%
+          dplyr::filter(threshold == {{thr_model}}) %>%
           dplyr::pull(thr_value)
       })
 
@@ -238,7 +238,7 @@ fit_ensemble <-
     data_ens3 <- data_ens2 %>%
       group_by(rnames, pr_ab) %>%
       summarise(dplyr::across(
-        dplyr::all_of(ens_method),
+        {{ens_method}},
         list(mean = function(x) {
           mean(x)
         })
@@ -269,8 +269,8 @@ fit_ensemble <-
             {
               suppressWarnings(eval <-
                 sdm_eval(
-                  p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
-                  a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
+                  p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull({{g}}),
+                  a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull({{g}}),
                   thr = thr
                 ))
               eval_partial[[i]] <- eval
@@ -300,8 +300,8 @@ fit_ensemble <-
       ensemble[[g]] <- eval_final
 
       threshold[[g]] <- sdm_eval(
-        p = data_ens3 %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull(dplyr::all_of(g)),
-        a = data_ens3 %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull(dplyr::all_of(g)),
+        p = data_ens3 %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull({{g}}),
+        a = data_ens3 %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull({{g}}),
         thr = thr
       )
       utils::setTxtProgressBar(pb, which(ens_method == g))

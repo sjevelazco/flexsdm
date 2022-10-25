@@ -286,11 +286,11 @@ n_training <- function(data, partition) {
   if (any(c("train", "train-test", "test")
   %in%
     (data %>%
-      dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
+      dplyr::select(dplyr::starts_with({{partition}})) %>%
       dplyr::pull() %>%
       unique()))) {
     nn_part <- data %>%
-      dplyr::select(dplyr::starts_with(dplyr::all_of(partition))) %>%
+      dplyr::select(dplyr::starts_with({{partition}})) %>%
       apply(., 2, table) %>%
       data.frame()
     nn_part <- nn_part %>% dplyr::mutate(partt = rownames(nn_part))
@@ -301,7 +301,7 @@ n_training <- function(data, partition) {
     nn_part <- colSums(nn_part)
   } else {
     data <- data %>%
-      dplyr::select(dplyr::starts_with(dplyr::all_of(partition)))
+      dplyr::select(dplyr::starts_with({{partition}}))
 
     nn_part <- list()
     for(ppp in 1:ncol(data)){

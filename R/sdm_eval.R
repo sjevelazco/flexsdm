@@ -248,7 +248,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   result <- thr_table
   if (!is.null(thr)) {
     result <- result %>%
-      dplyr::filter(threshold %in% dplyr::all_of(thr))
+      dplyr::filter(threshold %in% thr)
   }
 
   return(result)
