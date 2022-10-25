@@ -107,12 +107,8 @@ sdm_summarize <- function(models) {
   }
 
   perf_tib <- perf_tib %>%
-    dplyr::relocate(
-      dplyr::all_of(
-        names(
-          dplyr::select(perf_tib, model_ID:IMAE_sd)
-        )
-      )
-    )
+    dplyr::relocate( names(
+      dplyr::select(perf_tib, model_ID:IMAE_sd)
+    ))
   return(perf_tib)
 }

@@ -284,7 +284,7 @@ msdm_posteriori <- function(records,
   # creation of a data.frame with presences and absences
   records <- records %>%
     dplyr::select(dplyr::all_of(pr_ab), dplyr::all_of(x), dplyr::all_of(y)) %>%
-    dplyr::arrange(dplyr::all_of(dplyr::desc(pr_ab)))
+    dplyr::arrange({{pr_ab}})
   records <- records[!duplicated(records), ]
   colnames(records) <- c("pr_ab", "x", "y")
 

@@ -462,7 +462,7 @@ tune_max <-
       model = mod$model,
       predictors = variables,
       performance = dplyr::left_join(best_tune, threshold[1:4], by = "threshold") %>%
-        dplyr::relocate(dplyr::all_of(hyperp), model, threshold, thr_value, n_presences, n_absences),
+        dplyr::relocate({{hyperp}}, model, threshold, thr_value, n_presences, n_absences),
       hyper_performance = eval_final,
       data_ens = pred_test_ens
     )

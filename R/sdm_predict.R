@@ -41,7 +41,7 @@
 #'
 #' @seealso \code{\link{fit_ensemble}}
 #'
-#' @importFrom dplyr mutate across left_join pull bind_rows filter all_of select
+#' @importFrom dplyr mutate across left_join pull bind_rows filter  select
 #' @importFrom kernlab predict
 #' @importFrom mgcv predict.gam
 #' @importFrom stats median
@@ -636,8 +636,8 @@ sdm_predict <-
       # Threshold and metric values for performing some ensembles
       if (any(ens_method %in% c("meanw", "meansup", "meanthr"))) {
         weight_data <- single_model_perf %>%
-          dplyr::filter(threshold == dplyr::all_of(ensembles$thr_metric[1])) %>%
-          dplyr::select(model, thr_value, dplyr::all_of(ensembles$thr_metric[2]))
+          dplyr::filter(threshold == ensembles$thr_metric[1]) %>%
+          dplyr::select(model, thr_value, ensembles$thr_metric[2])
       }
 
       ensemble_c <- as.list(ens_method)
