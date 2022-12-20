@@ -1,7 +1,7 @@
 Package: flexsdm
 Type: Package
 Title: Tools for Data Preparation, Fitting, Prediction, Evaluation, and Post-Processing of Species Distribution Models
-Version: 1.3.2
+Version: 1.3.3
 Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
            email = "sjevelazco@gmail.com",
            comment = c(ORCID = "0000-0002-7527-0967")),

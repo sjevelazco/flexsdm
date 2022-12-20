@@ -8,10 +8,10 @@
 <meta name="description" content="flexsdm">
 <title>flexsdm: Overview of Post-modeling functions • flexsdm</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="flexsdm: Overview of Post-modeling functions">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="flexsdm: Overview of Post-modeling functions">
 <meta property="og:description" content="flexsdm">
 <meta name="google-site-verification" content="gcou8tqRTwNjZ_Mf1kbFgAzzUcY3OF-JB2sPRPTA56I">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -149,7 +149,7 @@ patterns</p></li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.6.7</span></span>
+<span><span class="co">#&gt; terra 1.6.47</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'terra'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
@@ -363,8 +363,7 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; sources     : memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       :          glm, max_fpb </span></span>
 <span><span class="co">#&gt; min values  : 2.220446e-16,   FALSE </span></span>
 <span><span class="co">#&gt; max values  : 1.000000e+00,    TRUE</span></span>
@@ -394,8 +393,7 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; sources     : memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       :          glm, max_fpb </span></span>
 <span><span class="co">#&gt; min values  : 2.220446e-16,   FALSE </span></span>
 <span><span class="co">#&gt; max values  : 1.000000e+00,    TRUE </span></span>
@@ -406,8 +404,7 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; sources     : memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       : raf, max_fpb </span></span>
 <span><span class="co">#&gt; min values  :   0,   FALSE </span></span>
 <span><span class="co">#&gt; max values  :   1,    TRUE </span></span>
@@ -418,8 +415,7 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; sources     : memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       :          gbm, max_fpb </span></span>
 <span><span class="co">#&gt; min values  : 0.0002949323,   FALSE </span></span>
 <span><span class="co">#&gt; max values  : 0.9986537352,    TRUE</span></span>
@@ -449,8 +445,7 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; sources     : memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       :      meansup, max_fpb </span></span>
 <span><span class="co">#&gt; min values  : 0.0001474662,   FALSE </span></span>
 <span><span class="co">#&gt; max values  : 0.9972242977,    TRUE</span></span>
@@ -480,11 +475,10 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; sources     : memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       :      esm_gam, max_fpb </span></span>
-<span><span class="co">#&gt; min values  : 2.115545e-05,   FALSE </span></span>
-<span><span class="co">#&gt; max values  : 8.856481e-01,    TRUE</span></span>
+<span><span class="co">#&gt; min values  : 2.236395e-05,   FALSE </span></span>
+<span><span class="co">#&gt; max values  : 8.964436e-01,    TRUE</span></span>
 <span></span>
 <span><span class="co"># Plot to see this layers</span></span>
 <span><span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span></span>
@@ -683,10 +677,7 @@ interpolated values of 0.9, 0.8, 0.7…0.1</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; sources     : memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
-<span><span class="co">#&gt;               ... and 8 more source(s)</span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       : Abies_2010, Abies_2011, Abies_2012, Abies_2013, Abies_2014, Abies_2015, ... </span></span>
 <span><span class="co">#&gt; min values  :  0.0000000,  0.0000000,  0.0000000,  0.0000000,  0.0000000,  0.0000000, ... </span></span>
 <span><span class="co">#&gt; max values  :  0.9756107,  0.9606077,  0.9504615,  0.9440073,  0.9442941,  0.9463548, ...</span></span>
@@ -810,8 +801,7 @@ raster layer.</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; sources     : memory  </span></span>
-<span><span class="co">#&gt;               memory  </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; varnames    : somevar </span></span>
 <span><span class="co">#&gt;               somevar </span></span>
 <span><span class="co">#&gt; names       :  msdm_lon,  msdm_lat </span></span>
@@ -837,7 +827,7 @@ raster layer.</p>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
-<span><span class="co">#&gt; source      : memory </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; varname     : somevar </span></span>
 <span><span class="co">#&gt; name        : msdm_cml </span></span>
 <span><span class="co">#&gt; min value   :        0 </span></span>
@@ -1003,7 +993,7 @@ predicted suitability.</p>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>

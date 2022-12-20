@@ -58,6 +58,95 @@ minimum and maximum values found in a region or time period to which a model wil
 Partial dependence surface plot could be used to interpret a model or to explore how a model my
 extrapolate outside the environmental conditions used to train the model (convex hull polygon).
 }
+\examples{
+\dontrun{
+library(terra)
+library(dplyr)
+
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar) # environmental data
+names(somevar) <- c("aet", "cwd", "tmx", "tmn")
+data(abies)
+
+# set seed
+abies2 <- abies \%>\%
+  dplyr::select(x, y, pr_ab) \%>\%
+  dplyr::group_by(pr_ab) \%>\%
+  dplyr::slice_sample(prop = 0.5)
+
+abies2 <- sdm_extract(abies2,
+                      x = "x",
+                      y = "y",
+                      env_layer = somevar
+)
+abies2 <- part_random(abies2,
+                      pr_ab = "pr_ab",
+                      method = c(method = "kfold", folds = 5)
+)
+
+svm_t1 <- fit_svm(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  partition = ".part",
+  thr = c("max_sens_spec")
+)
+
+# Partial depence surface plot
+p_psp(model = svm_t1$model, training_data = abies2)
+p_psp(model = svm_t1$model, training_data = abies2, predictors = c("aet", "cwd"))
+p_psp(model = svm_t1$model, training_data = abies2, resolution = 10)
+p_psp(model = svm_t1$model, training_data = abies2, resolution = 70)
+p_psp(model = svm_t1$model, training_data = abies2, pchull = TRUE)
+p_psp(model = svm_t1$model, training_data = abies2, pchull = TRUE,
+      color_chull = "orange",
+      color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000"))
+
+# Partial depence surface plot for training and projection condition
+plot(somevar[[1]], main="Projection area")
+p_psp(model = svm_t1$model, training_data = abies2, projection_data = somevar, pchull = TRUE)
+
+
+# PSP with categorical variables
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar) # environmental data
+names(somevar) <- c("aet", "cwd", "tmx", "tmn")
+cat <- system.file("external/clusters.shp", package = "flexsdm")
+cat <- terra::vect(cat)
+cat$clusters <- paste0("c", cat$clusters)
+cat <- terra::rasterize(cat, somevar, field="clusters")
+somevar <- c(somevar, cat)
+plot(somevar)
+
+# set seed
+abies2 <- abies \%>\%
+  dplyr::select(x, y, pr_ab) \%>\%
+  dplyr::group_by(pr_ab) \%>\%
+  dplyr::slice_sample(prop = 0.5)
+
+abies2 <- sdm_extract(data = abies2,
+                      x = "x",
+                      y = "y",
+                      env_layer = somevar
+)
+abies2 <- part_random(abies2,
+                      pr_ab = "pr_ab",
+                      method = c(method = "kfold", folds = 5)
+)
+
+svm_t1 <- fit_svm(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  predictors_f = "clusters",
+  partition = ".part",
+  thr = c("max_sens_spec")
+)
+
+p_psp(model = svm_t1$model, training_data = abies2)
+
+}
+}
 \seealso{
 \code{\link{data_pdp}}, \code{\link{data_psp}}, \code{\link{p_pdp}},
 \code{\link{extra_eval}}, \code{\link{extra_truncate}}
