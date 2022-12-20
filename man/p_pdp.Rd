@@ -125,5 +125,6 @@ p_pdp(model = svm_t1$model, training_data = abies2, projection_data = somevar,
 }
 }
 \seealso{
-\code{\link{pdp_data}}, \code{\link{extra_eval}}, \code{\link{extra_truncate}}
+\code{\link{data_pdp}}, \code{\link{data_psp}}, \code{\link{p_psp}},
+\code{\link{extra_eval}}, \code{\link{extra_truncate}}
 }

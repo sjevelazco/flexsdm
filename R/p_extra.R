@@ -247,15 +247,15 @@ p_extra <- function(training_data,
                     alpha_gradient = 0.5,
                     color_gradient = c(
                       "#FDE725",
-                      "#B3DC2B",
-                      "#6DCC57",
-                      "#36B677",
-                      "#1F9D87",
-                      "#25818E",
-                      "#30678D",
-                      "#3D4988",
-                      "#462777",
-                      "#440154"
+                               "#B3DC2B",
+                               "#6DCC57",
+                               "#36B677",
+                               "#1F9D87",
+                               "#25818E",
+                               "#30678D",
+                               "#3D4988",
+                               "#462777",
+                               "#440154"
                     ),
                     theme = ggplot2::theme_classic()) {
   val <- Value <- NULL

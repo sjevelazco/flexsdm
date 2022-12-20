@@ -194,7 +194,7 @@ boyce <- function(pres,
   return(result)
 }
 
-
+# maxnet:::predict.maxnet()
 #' Predict maxnet
 #' @importFrom stats model.matrix
 #' @noRd
@@ -202,7 +202,8 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
   categoricalval <- function(x, category) {
     ifelse(x == category, 1, 0)
   }
-  thresholdval <- function(x, knot) {
+  thresholdval <- function (x, knot)
+  {
     ifelse(x >= knot, 1, 0)
   }
   hingeval <- function(x, min, max) {
@@ -222,20 +223,25 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
   terms <- sub("thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)",
                terms)
   f <- formula(paste("~", paste(terms, collapse = " + "), "-1"))
-  mm <- stats::model.matrix(f, data.frame(newdata))
+  mm <- model.matrix(f, data.frame(newdata))
   if (clamp)
     mm <- t(pmin(pmax(t(mm), object$featuremins[names(object$betas)]),
                  object$featuremaxs[names(object$betas)]))
   link <- (mm %*% object$betas) + object$alpha
   type <- match.arg(type)
-  if (type == "link")
+
+  if (type == "link"){
     return(link)
-  if (type == "exponential")
+  }
+  if (type == "exponential"){
     return(exp(link))
-  if (type == "cloglog")
+  }
+  if (type == "cloglog"){
     return(1 - exp(0 - exp(object$entropy + link)))
-  if (type == "logistic")
+  }
+  if (type == "logistic"){
     return(1/(1 + exp(-object$entropy - link)))
+  }
 }
 
 #' Outliers with Reverse Jackknife

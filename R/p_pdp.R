@@ -34,7 +34,8 @@
 #' could be used to interpret a model or to explore how a model may extrapolate outside the environmental conditions
 #' used to train the model.
 #'
-#' @seealso \code{\link{pdp_data}}, \code{\link{extra_eval}}, \code{\link{extra_truncate}}
+#' @seealso \code{\link{data_pdp}}, \code{\link{data_psp}}, \code{\link{p_psp}},
+#' \code{\link{extra_eval}}, \code{\link{extra_truncate}}
 #'
 #' @importFrom ggplot2 ggplot aes_string scale_y_continuous geom_point geom_line geom_rug geom_col aes scale_color_manual geom_vline theme element_blank
 #' @importFrom patchwork wrap_plots plot_layout
@@ -133,7 +134,7 @@ p_pdp <-
     if (class(model)[1] == "maxnet") {
       if (rug & is.null(training_data)) {
         stop(
-          "For creating Maxent partial plot with rug it is necessary provide calibration data in 'training_data' argument"
+          "For creating Maxent partial plot with rug it is necessary to provide calibration data in 'training_data' argument"
         )
       }
       v <-
@@ -157,7 +158,7 @@ p_pdp <-
     if (is.null(projection_data)) {
       for (i in 1:length(v)) {
         crv <-
-          pdp_data(
+          data_pdp(
             model = model,
             predictors = names(v[i]),
             resolution = resolution,
@@ -195,7 +196,7 @@ p_pdp <-
     } else {
       for (i in 1:length(v)) {
         crv <-
-          pdp_data(
+          data_pdp(
             model = model,
             predictors = names(v[i]),
             resolution = resolution,
