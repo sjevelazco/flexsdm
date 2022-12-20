@@ -44,7 +44,7 @@ Description: Assist in the construction of flexible species distribution workflo
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests:
     covr,
     knitr,

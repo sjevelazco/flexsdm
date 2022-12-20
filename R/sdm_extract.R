@@ -73,19 +73,33 @@ sdm_extract <-
     # spatial data frame
     sp_data <-
       terra::vect(data,
-        geom = c(x, y),
-        crs = terra::crs(env_layer)
+                  geom = c(x, y),
+                  crs = terra::crs(env_layer)
       )
 
     # extract environmental data at xy locations, if filter_na = FALSE, does not remove rows with NAs
     extract_data <- dplyr::tibble(
       data,
       terra::extract(env_layer[[variables]],
-        sp_data,
-        cells = FALSE
+                     sp_data,
+                     cells = FALSE
       ) %>%
-        dplyr::select(dplyr::all_of(variables))
+        dplyr::select({{variables}})
     )
+
+    # if(any(is.factor(env_layer))){
+    #   envf <- names(env_layer)[is.factor(env_layer)]
+    #   for(i in 1:length(envf)){
+    #     lvls <- levels(env_layer[[envf[i]]])[[1]]
+    #     extract_data[, envf[i]] <-
+    #       factor(
+    #         extract_data %>% dplyr::pull({{envf[i]}}),
+    #         levels = lvls[, 1],
+    #         labels = lvls[, 2]
+    #       )
+    #   }
+    # }
+
 
     # removes rows with NAs for any environmental variable
     if (filter_na) {

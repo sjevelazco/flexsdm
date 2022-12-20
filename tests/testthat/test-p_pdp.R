@@ -6,9 +6,10 @@ somevar <- terra::rast(somevar) # environmental data
 names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 cat <- system.file("external/clusters.shp", package = "flexsdm")
 cat <- terra::vect(cat)
-cat$clusters <- factor(cat$clusters)
+cat$clusters <- paste0("c", cat$clusters)
 cat <- terra::rasterize(cat, somevar, field="clusters")
 somevar <- c(somevar, cat)
+
 
 data(abies)
 
@@ -26,7 +27,7 @@ abies2 <- sdm_extract(abies2,
 ) %>%
   part_random(
     pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 5)
+    method = c(method = "kfold", folds = 3)
   )
 
 
@@ -55,16 +56,16 @@ test_that("test p_pdp with continuous and factor and gam", {
   # Partial depence plot for training and projection condition found in a projection area
   expect_equal(asdf$theme$line$colour, "black")
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,resolution = 50,
-        colorl = c("#CC00FF", "#CCFF00"))
+                colorl = c("#CC00FF", "#CCFF00"))
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   expect_equal(nrow(asdf$data), 50)
 
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
-        theme = ggplot2::theme_dark())
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
+                theme = ggplot2::theme_dark())
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
 })
 
@@ -92,16 +93,16 @@ test_that("test p_pdp with continuous and factor and gau", {
   # Partial depence plot for training and projection condition found in a projection area
   expect_equal(asdf$theme$line$colour, "black")
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,resolution = 50,
-        colorl = c("#CC00FF", "#CCFF00"))
+                colorl = c("#CC00FF", "#CCFF00"))
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   expect_equal(nrow(asdf$data), 50)
 
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
-        theme = ggplot2::theme_dark())
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
+                theme = ggplot2::theme_dark())
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
 })
 
@@ -129,16 +130,16 @@ test_that("test p_pdp with continuous and factor and glm", {
   # Partial depence plot for training and projection condition found in a projection area
   expect_equal(asdf$theme$line$colour, "black")
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,resolution = 50,
-        colorl = c("#CC00FF", "#CCFF00"))
+                colorl = c("#CC00FF", "#CCFF00"))
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   expect_equal(nrow(asdf$data), 50)
 
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
-        theme = ggplot2::theme_dark())
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
+                theme = ggplot2::theme_dark())
   asdf$data
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
 })
@@ -167,16 +168,16 @@ test_that("test p_pdp with continuous and factor and gbm", {
   # Partial depence plot for training and projection condition found in a projection area
   expect_equal(asdf$theme$line$colour, "black")
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,resolution = 50,
-        colorl = c("#CC00FF", "#CCFF00"))
+                colorl = c("#CC00FF", "#CCFF00"))
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   expect_equal(nrow(asdf$data), 50)
 
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
-        theme = ggplot2::theme_dark())
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
+                theme = ggplot2::theme_dark())
   asdf$data
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
 })
@@ -205,16 +206,16 @@ test_that("test p_pdp with continuous and factor and max", {
   # Partial depence plot for training and projection condition found in a projection area
   expect_equal(asdf$theme$line$colour, "black")
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,resolution = 50,
-        colorl = c("#CC00FF", "#CCFF00"))
+                colorl = c("#CC00FF", "#CCFF00"))
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   expect_equal(nrow(asdf$data), 50)
 
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
-        theme = ggplot2::theme_dark())
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
+                theme = ggplot2::theme_dark())
   asdf$data
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
 })
@@ -243,16 +244,16 @@ test_that("test p_pdp with continuous and factor and net", {
   # Partial depence plot for training and projection condition found in a projection area
   expect_equal(asdf$theme$line$colour, "black")
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,resolution = 50,
-        colorl = c("#CC00FF", "#CCFF00"))
+                colorl = c("#CC00FF", "#CCFF00"))
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   expect_equal(nrow(asdf$data), 50)
 
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
-        theme = ggplot2::theme_dark())
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
+                theme = ggplot2::theme_dark())
   asdf$data
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
 })
@@ -281,16 +282,16 @@ test_that("test p_pdp with continuous and factor and raf", {
   # Partial depence plot for training and projection condition found in a projection area
   expect_equal(asdf$theme$line$colour, "black")
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,resolution = 50,
-        colorl = c("#CC00FF", "#CCFF00"))
+                colorl = c("#CC00FF", "#CCFF00"))
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   expect_equal(nrow(asdf$data), 50)
 
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
-        theme = ggplot2::theme_dark())
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
+                theme = ggplot2::theme_dark())
   asdf$data
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
 })
@@ -319,16 +320,16 @@ test_that("test p_pdp with continuous and factor and svm", {
   # Partial depence plot for training and projection condition found in a projection area
   expect_equal(asdf$theme$line$colour, "black")
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,resolution = 50,
-        colorl = c("#CC00FF", "#CCFF00"))
+                colorl = c("#CC00FF", "#CCFF00"))
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   expect_equal(nrow(asdf$data), 50)
 
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray")
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
   asdf <- p_pdp(model = m_$model, training_data = abies2, projection_data = somevar,
-        colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
-        theme = ggplot2::theme_dark())
+                colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
+                theme = ggplot2::theme_dark())
   asdf$data
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
 })

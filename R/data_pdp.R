@@ -5,8 +5,7 @@
 #' @param model A model object of class "gam", "gbm", "glm", "graf", "ksvm", "ksvm", "maxnet”,
 #' “nnet", and "randomForest" This model can be found in the first element of the list returned
 #' by any function from the fit_, tune_, or esm_ function families
-#' @param predictors character. Vector with predictor name(s) to plot. If NULL all predictors will
-#' be plotted. Default NULL
+#' @param predictors character. Vector with a predictor name.
 #' @param resolution numeric. Number of equally spaced points at which to predict continuous predictors. Default 50
 #' @param resid logical. Calculate residuals based on training data. Default FALSE
 #' @param training_data data.frame. Database with response (0,1) and predictor values used
@@ -18,7 +17,7 @@
 #' @param clamping logical. Perform clamping. Only for maxent models. Default FALSE
 #'
 #' @return A list with two tibbles "pdpdata" and "resid".
-#' #' \itemize{
+#' \itemize{
 #' \item pdpdata: has data to construct partial dependence plots, the first column includes values of the selected environmental
 #' variable, the second column with predicted suitability, and the third
 #'  column with range type, with two values Training and Projecting, referring to suitability
@@ -28,7 +27,8 @@
 #'  variable and the second column with predicted suitability.
 #' }
 #'
-#' @seealso \code{\link{p_pdp}}
+#'
+#' @seealso {\code{\link{data_psp}}, \code{\link{p_psp}}, \link{p_pdp}}
 #'
 #' @export
 #' @importFrom dplyr select as_tibble
@@ -69,7 +69,7 @@
 #'   thr = c("max_sens_spec")
 #' )
 #'
-#' df <- pdp_data(
+#' df <- data_pdp(
 #'   model = svm_t1$model,
 #'   predictors = c("aet"),
 #'   resolution = 100,
@@ -89,7 +89,7 @@
 #'
 #' # see p_pdp to construct partial dependence plot with ggplot2
 #' }
-pdp_data <-
+data_pdp <-
   function(model,
            predictors,
            resolution = 50,
@@ -118,7 +118,7 @@ pdp_data <-
     if (any(class(model)[1] == c("nnet.formula", "randomForest.formula", "ksvm", "gbm", "maxnet"))) {
       if (is.null(training_data)) {
         stop(
-          "For estimating partial plot data for Neural Networks, Random Forest, Support Vector Machine it is necessary provide calibration data in 'training_data' argument"
+          "For estimating partial plot data for Neural Networks, Random Forest, Support Vector Machine it is necessary to provide calibration data in 'training_data' argument"
         )
       }
 
@@ -173,7 +173,7 @@ pdp_data <-
     if (class(model)[1] == "gam") {
       suit_c <-
         data.frame(suit_c[1],
-          Suitability = mgcv::predict.gam(model, newdata = suit_c, type = "response")
+                   Suitability = mgcv::predict.gam(model, newdata = suit_c, type = "response")
         )
       if (resid) {
         suit_r <-
@@ -198,11 +198,11 @@ pdp_data <-
       if (resid) {
         suit_r <-
           data.frame(x[predictors],
-            Suitability = predict.graf(
-              object = model,
-              type = "response",
-              CI = NULL
-            )[, 1]
+                     Suitability = predict.graf(
+                       object = model,
+                       type = "response",
+                       CI = NULL
+                     )[, 1]
           )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
@@ -213,7 +213,7 @@ pdp_data <-
     if (class(model)[1] == "glm") {
       suit_c <-
         data.frame(suit_c[1],
-          Suitability = stats::predict.glm(model, newdata = suit_c, type = "response")
+                   Suitability = stats::predict.glm(model, newdata = suit_c, type = "response")
         )
       if (resid) {
         suit_r <-
@@ -227,7 +227,7 @@ pdp_data <-
     if (class(model)[1] == "gbm") {
       suit_c <-
         data.frame(suit_c[1],
-          Suitability = suppressMessages(gbm::predict.gbm(model, newdata = suit_c, type = "response"))
+                   Suitability = suppressMessages(gbm::predict.gbm(model, newdata = suit_c, type = "response"))
         )
       if (resid) {
         suit_r <-
@@ -241,12 +241,12 @@ pdp_data <-
     if (class(model)[1] == "maxnet") {
       suit_c <-
         data.frame(suit_c[1],
-          Suitability = predict_maxnet(
-            model,
-            newdata = suit_c,
-            type = "cloglog",
-            clamp = clamping
-          )
+                   Suitability = predict_maxnet(
+                     model,
+                     newdata = suit_c,
+                     type = "cloglog",
+                     clamp = clamping
+                   )
         )
       if (resid) {
         suit_r <-
@@ -289,12 +289,12 @@ pdp_data <-
     if (class(model)[1] == "ksvm") {
       suit_c <-
         data.frame(suit_c[1],
-          Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2]
+                   Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2]
         )
       if (resid) {
         suit_r <-
           data.frame(x[predictors],
-            Suitability = kernlab::predict(model, x, type = "probabilities")[, 2]
+                     Suitability = kernlab::predict(model, x, type = "probabilities")[, 2]
           )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
@@ -307,9 +307,9 @@ pdp_data <-
       if (!predictors %in% names(fact)) {
         result$pdpdata$Type <-
           ifelse(suit_c[, 1] >= min(x[, predictors]) &
-            suit_c[, 1] <= max(x[, predictors]),
-          "Training",
-          "Projection"
+                   suit_c[, 1] <= max(x[, predictors]),
+                 "Training",
+                 "Projection"
           )
       }
     }
