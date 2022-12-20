@@ -1,8 +1,14 @@
+# flexsdm 1.3.3
+
+- New function `p_psp` Partial Dependent Surface Plot
+- New function `data_psp` Calculate data to construct partial dependence plots
+- Improvements in `p_dpd` Calculate data to construct partial dependence plots
+
 # flexsdm 1.3.2
 
 - New function `p_extra` Graphical exploration of extrapolation or suitability pattern in the environmental and geographical space
 - New function `p_pdp` Partial Dependent Plot
-- New function `pdp_data` Calculate data to construct partial dependence plots
+- New function `data_pdp` Calculate data to construct partial dependence plots
  
 
 # flexsdm 1.3.1
@@ -14,3 +20,4 @@
 - It is possible use a numeric value to specify threshold in `msdm_posteriori` 
 - `extra_eval` can use tibble or SpatRaster object in env_calib argument 
 - `extra_truncate` has a new argument to define values used for model truncation and documentation was improved. 
+# 
