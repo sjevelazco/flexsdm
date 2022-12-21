@@ -162,7 +162,8 @@ extra_eval <- function(training_data, projection_data, n_cores = 1, aggreg_facto
   projection_data <- projection_data[[v0]]
 
   # Layer base
-  extraraster <- terra::mask(!is.na(projection_data[[1]]), projection_data[[1]])
+  extraraster <- projection_data[[1]]
+  extraraster[!is.na(extraraster)] <- 0
 
   if (aggreg_factor == 1) {
     aggreg_factor <- NULL
