@@ -427,7 +427,7 @@ sample_background <-
         data.frame() %>%
         dplyr::tibble()
     }
-    colnames(cell_samp) <- c("x", "y")
+    colnames(cell_samp) <- c(x, y)
     cell_samp$pr_ab <- 0
     if(!is.null(sp_name)){
       cell_samp <- tibble(sp=sp_name, cell_samp)
