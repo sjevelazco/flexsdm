@@ -62,6 +62,7 @@
 #'
 #' @examples
 #' \dontrun{
+#' require(terra)
 #' require(dplyr)
 #' data(spp)
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
