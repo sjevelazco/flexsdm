@@ -46,6 +46,12 @@
     <loc>https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.html</loc>
   </url>
   <url>
+    <loc>https://sjevelazco.github.io/flexsdm/reference/data_pdp.html</loc>
+  </url>
+  <url>
+    <loc>https://sjevelazco.github.io/flexsdm/reference/data_psp.html</loc>
+  </url>
+  <url>
     <loc>https://sjevelazco.github.io/flexsdm/reference/env_outliers.html</loc>
   </url>
   <url>
@@ -158,6 +164,9 @@
   </url>
   <url>
     <loc>https://sjevelazco.github.io/flexsdm/reference/p_pdp.html</loc>
+  </url>
+  <url>
+    <loc>https://sjevelazco.github.io/flexsdm/reference/p_psp.html</loc>
   </url>
   <url>
     <loc>https://sjevelazco.github.io/flexsdm/reference/sample_background.html</loc>
