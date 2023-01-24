@@ -31,7 +31,7 @@
 #' @seealso \code{\link{data_pdp}}, \code{\link{data_psp}}, \code{\link{p_pdp}},
 #' \code{\link{extra_eval}}, \code{\link{extra_truncate}}
 #'
-#' @importFrom ggplot2 ggplot aes_string geom_raster scale_fill_gradientn coord_cartesian geom_polygon theme
+#' @importFrom ggplot2 ggplot aes geom_raster scale_fill_gradientn coord_cartesian geom_polygon theme
 #' @importFrom patchwork wrap_plots plot_layout
 #' @importFrom utils combn
 #'
@@ -222,7 +222,7 @@ p_psp <-
         )
 
       p_list[[i]] <-
-        ggplot2::ggplot(crv[[1]], ggplot2::aes_string(names(crv[[1]])[1], names(crv[[1]])[2])) +
+        ggplot2::ggplot(crv[[1]], ggplot2::aes(names(crv[[1]])[1], names(crv[[1]])[2])) +
         ggplot2::geom_raster(aes(fill = Suitability)) +
         ggplot2::scale_fill_gradientn(colours = color_gradient, limits = c(0, 1)) +
         ggplot2::coord_cartesian(expand = FALSE) +
@@ -230,7 +230,7 @@ p_psp <-
           if (!is.null(crv$pchull)) {
             ggplot2::geom_polygon(
               data = crv[[2]],
-              ggplot2::aes_string(names(crv[[2]])[1], names(crv[[2]])[2]),
+              ggplot2::aes(names(crv[[2]])[1], names(crv[[2]])[2]),
               color = color_chull,
               fill = "transparent"
             )

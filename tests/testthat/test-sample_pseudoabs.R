@@ -87,6 +87,7 @@ test_that("sample_pseudoabs", {
       maskval = samp_here
     )
   expect_equal(class(ps1)[1], "tbl_df")
+  expect_equal(nrow(ps1), nrow(single_spp) * 10)
   rm(ps1)
 
   # Pseudo-absences sampled with environmental and geographical constraint and with k-mean

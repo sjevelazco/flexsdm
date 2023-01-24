@@ -37,7 +37,7 @@
 #' @seealso \code{\link{data_pdp}}, \code{\link{data_psp}}, \code{\link{p_psp}},
 #' \code{\link{extra_eval}}, \code{\link{extra_truncate}}
 #'
-#' @importFrom ggplot2 ggplot aes_string scale_y_continuous geom_point geom_line geom_rug geom_col aes scale_color_manual geom_vline theme element_blank
+#' @importFrom ggplot2 ggplot aes scale_y_continuous geom_point geom_line geom_rug geom_col aes scale_color_manual geom_vline theme element_blank
 #' @importFrom patchwork wrap_plots plot_layout
 #'
 #' @export
@@ -170,10 +170,10 @@ p_pdp <-
 
         if (v[i] == "numeric") {
           p[[i]] <-
-            ggplot2::ggplot(crv[[1]], ggplot2::aes_string(names(crv[[1]])[1], "Suitability")) +
+            ggplot2::ggplot(crv[[1]], ggplot2::aes(names(crv[[1]])[1], "Suitability")) +
             ggplot2::scale_y_continuous(limits = c(0, 1)) +
             {
-              if (resid) ggplot2::geom_point(data = crv[[2]], color = colorp, ggplot2::aes_string(names(crv[[1]])[1], "Suitability"), alpha = alpha)
+              if (resid) ggplot2::geom_point(data = crv[[2]], color = colorp, ggplot2::aes(names(crv[[1]])[1], "Suitability"), alpha = alpha)
             } +
             ggplot2::geom_line(col = rev(colorl)[1], size = 0.8)
 
@@ -181,14 +181,14 @@ p_pdp <-
             p[[i]] <- p[[i]] +
               ggplot2::geom_rug(
                 data = crv[[2]],
-                ggplot2::aes_string(names(crv[[1]])[1], "Suitability"),
+                ggplot2::aes(names(crv[[1]])[1], "Suitability"),
                 sides = "b",
                 alpha = 0.3
               )
           }
         } else {
           p[[i]] <-
-            ggplot2::ggplot(crv[[1]], ggplot2::aes_string(names(crv[[1]])[1], "Suitability")) +
+            ggplot2::ggplot(crv[[1]], ggplot2::aes(names(crv[[1]])[1], "Suitability")) +
             ggplot2::scale_y_continuous(limits = c(0, 1)) +
             ggplot2::geom_col(fill = rev(colorl)[1])
         }
@@ -210,9 +210,9 @@ p_pdp <-
           rvar <- range(crv[[1]][crv[[1]]$Type == "Training", names(v[i])])
 
           p[[i]] <-
-            ggplot2::ggplot(crv[[1]], ggplot2::aes_string(names(crv[[1]])[1], "Suitability")) +
+            ggplot2::ggplot(crv[[1]], ggplot2::aes(names(crv[[1]])[1], "Suitability")) +
             {
-              if (resid) ggplot2::geom_point(data = crv[[2]], ggplot2::aes_string(names(crv[[1]])[1], "Suitability"), alpha = alpha, color = colorp)
+              if (resid) ggplot2::geom_point(data = crv[[2]], ggplot2::aes(names(crv[[1]])[1], "Suitability"), alpha = alpha, color = colorp)
             } +
             ggplot2::geom_line(ggplot2::aes(color = Type, group = 1), size = 0.8) +
             ggplot2::scale_color_manual(
@@ -231,14 +231,14 @@ p_pdp <-
             p[[i]] <- p[[i]] +
               ggplot2::geom_rug(
                 data = crv[[2]],
-                ggplot2::aes_string(names(crv[[1]])[1], "Suitability"),
+                ggplot2::aes(names(crv[[1]])[1], "Suitability"),
                 sides = "b",
                 alpha = 0.5
               )
           }
         } else {
           p[[i]] <-
-            ggplot2::ggplot(crv[[1]], ggplot2::aes_string(names(crv[[1]])[1], "Suitability")) +
+            ggplot2::ggplot(crv[[1]], ggplot2::aes(names(crv[[1]])[1], "Suitability")) +
             ggplot2::scale_y_continuous(limits = c(0, 1)) +
             ggplot2::geom_col(fill = rev(colorl)[1])
         }

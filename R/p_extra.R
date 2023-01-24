@@ -27,7 +27,7 @@
 #' @export
 #'
 #' @importFrom dplyr slice_sample bind_rows
-#' @importFrom ggplot2 ggplot aes_string geom_point aes scale_color_gradientn labs geom_raster scale_fill_gradientn coord_equal theme
+#' @importFrom ggplot2 ggplot geom_point aes scale_color_gradientn labs geom_raster scale_fill_gradientn coord_equal theme
 #' @importFrom patchwork wrap_plots plot_layout
 #' @importFrom terra is.factor as.data.frame spatSample
 #' @importFrom utils combn
@@ -293,13 +293,13 @@ p_extra <- function(training_data,
     dfplot <- dplyr::bind_rows(dfplot2, dfplot)
 
     p_list[[i]] <-
-      ggplot2::ggplot(dfplot, ggplot2::aes_string(xenv, yenv)) +
+      ggplot2::ggplot(dfplot, ggplot2::aes(xenv, yenv)) +
       ggplot2::geom_point(ggplot2::aes(col = val), alpha = alpha_gradient) +
       ggplot2::scale_color_gradientn(colors = color_gradient) +
       ggplot2::labs(color = "Value") +
       ggplot2::geom_point(
         data = training_data,
-        ggplot2::aes_string(xenv, yenv, shape = pr_ab),
+        ggplot2::aes(xenv, yenv, shape = pr_ab),
         color = color_p,
         alpha = alpha_p
       )
@@ -316,7 +316,7 @@ p_extra <- function(training_data,
       ggplot2::scale_fill_gradientn(colors = color_gradient) +
       ggplot2::geom_point(
         data = training_data,
-        ggplot2::aes_string(x, y, shape = pr_ab),
+        ggplot2::aes(x, y, shape = pr_ab),
         alpha = alpha_p,
         color = color_p
       )+
