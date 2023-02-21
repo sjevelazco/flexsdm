@@ -106,13 +106,13 @@ NOTE: The version 1.4-22 of **terra** package is causing errors when trying to i
 Please, first install a version ≥ 1.5-12 of **terra** package available on CRAN or development version of [terra](https://github.com/rspatial/terra) and then **flexsdm**.
 
 ``` r
-# install.packages("devtools")
+# install.packages("remotes")
 
 # For Windows and Mac OS operating systems
-devtools::install_github("sjevelazco/flexsdm")
+remotes::install_github("sjevelazco/flexsdm")
 
 # For Linux operating system
-devtools::install_github("sjevelazco/flexsdm@HEAD")
+remotes::install_github("sjevelazco/flexsdm@HEAD")
 ```
 
 
