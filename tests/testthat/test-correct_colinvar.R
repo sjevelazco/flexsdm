@@ -22,6 +22,11 @@ test_that("correct_colinvar Pearson", {
                    method = c("pearson"))
   expect_equal(length(var$cor_variables), 4)
 
+  # test with maxcell
+  var <- correct_colinvar(env_layer = somevar,
+                          method = c("pearson"), maxcell = 5000)
+  expect_equal(length(var$cor_variables), 4)
+
   # To high th, no variable is expected to be removed
   var <- correct_colinvar(env_layer = somevar,
                           method = c("pearson", th = "0.9"))
@@ -48,6 +53,15 @@ test_that("correct_colinvar VIF", {
   expect_equal(class(var$env_layer)[1], "SpatRaster")
   expect_equal(var$removed_variables, "CFP_2")
   expect_true(all(names(var) %in% c("env_layer", "removed_variables", "vif_table")))
+
+  # test with maxcell
+  var <-
+    correct_colinvar(env_layer = somevar, method = c("vif", th = "8"), maxcell = 50000)
+
+  expect_equal(class(var), "list")
+  expect_equal(class(var$env_layer)[1], "SpatRaster")
+  expect_equal(var$removed_variables, "CFP_2")
+  expect_true(all(names(var) %in% c("env_layer", "removed_variables", "vif_table")))
 })
 
 
@@ -61,6 +75,16 @@ test_that("correct_colinvar PCA", {
   # Perform pearson collinearity control
   var <-
     correct_colinvar(env_layer = somevar, method = "pca")
+
+  expect_equal(length(var), 3)
+  expect_equal(class(var$env_layer)[1], "SpatRaster")
+  expect_equal(nrow(var$coefficients), 4)
+  expect_equal(nrow(var$cumulative_variance), 4)
+  expect_true(all(names(var) %in% c("env_layer", "coefficients", "cumulative_variance")))
+
+   # Test with maxcell
+  var <-
+    correct_colinvar(env_layer = somevar, method = "pca", maxcell = 5000)
 
   expect_equal(length(var), 3)
   expect_equal(class(var$env_layer)[1], "SpatRaster")
@@ -102,6 +126,15 @@ test_that("correct_colinvar FA", {
 
   # Perform pearson collinearity control
   var <- correct_colinvar(env_layer = somevar, method = c("fa"))
+
+  expect_equal(length(var), 5)
+  expect_equal(class(var$env_layer)[1], "SpatRaster")
+  expect_equal(length(var$removed_variables), 3)
+  expect_equal(nrow(var$loadings), 4)
+  expect_true(all(names(var) %in% c("env_layer", "number_factors", "removed_variables", "uniqueness", "loadings")))
+
+  # Test with maxcell
+  var <- correct_colinvar(env_layer = somevar, method = c("fa"), maxcell = 5000)
 
   expect_equal(length(var), 5)
   expect_equal(class(var$env_layer)[1], "SpatRaster")

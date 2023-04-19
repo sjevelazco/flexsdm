@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -141,7 +141,7 @@ observations downloaded from the online database Calflora.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># environmental data</span></span>
@@ -244,7 +244,7 @@ pseudo-absence data that can be used in our SDMs.</p>
 <code class="sourceCode R"><span></span>
 <span></span>
 <span><span class="co"># Bind a presences and pseudo-absences</span></span>
-<span><span class="va">hespero_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">hespero</span>, <span class="va">psa</span><span class="op">)</span></span>
+<span><span class="va">hespero_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">hespero</span>, <span class="va">psa</span><span class="op">)</span></span>
 <span><span class="va">hespero_pa</span> <span class="co"># Presence-Pseudo-absence database</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 42 × 3</span></span></span>
 <span><span class="co">#&gt;          x        y pr_ab</span></span>
@@ -259,7 +259,7 @@ pseudo-absence data that can be used in our SDMs.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">317</span>050. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">043.</span>     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">316</span>655. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">928.</span>     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">316</span>418. -<span style="color: #BB0000; text-decoration: underline;">567</span><span style="color: #BB0000;">439.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 32 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 32 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="partition-data-for-evaluating-models">Partition data for evaluating models<a class="anchor" aria-label="anchor" href="#partition-data-for-evaluating-models"></a>

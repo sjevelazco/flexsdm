@@ -27,7 +27,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,7 +128,7 @@ buffer around presences (shown in the figure below).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/terra/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
@@ -285,7 +285,7 @@ pseudo-absence and background points.</p>
 <span>    calibarea <span class="op">=</span> <span class="va">ca</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bg</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Sample a number of pseudo-absences equal to the presence in each partition</span></span>
@@ -302,7 +302,7 @@ pseudo-absence and background points.</p>
 <span>    calibarea <span class="op">=</span> <span class="va">ca</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">psa</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">block_layer</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#280B50"</span>, <span class="st">"#9E2962"</span>, <span class="st">"#F47C15"</span>, <span class="st">"#FCFFA4"</span><span class="op">)</span></span>
@@ -313,7 +313,7 @@ pseudo-absence and background points.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Bind a presences and pseudo-absences</span></span>
-<span><span class="va">abies_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">abies_pf</span>, <span class="va">psa</span><span class="op">)</span></span>
+<span><span class="va">abies_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">abies_pf</span>, <span class="va">psa</span><span class="op">)</span></span>
 <span><span class="va">abies_pa</span> <span class="co"># Presence-Pseudo-absence database</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 432 × 4</span></span></span>
 <span><span class="co">#&gt;          x        y pr_ab .part</span></span>
@@ -328,7 +328,7 @@ pseudo-absence and background points.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">118</span>707. -<span style="color: #BB0000; text-decoration: underline;">179</span><span style="color: #BB0000;">991.</span>     1     4</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">126</span>141. -<span style="color: #BB0000; text-decoration: underline;">176</span><span style="color: #BB0000;">302.</span>     1     4</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> -<span style="color: #BB0000; text-decoration: underline;">49</span><span style="color: #BB0000;">722.</span>  <span style="text-decoration: underline;">141</span>124.     1     3</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 422 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 422 more rows</span></span></span>
 <span><span class="va">bg</span> <span class="co"># Background points</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,160 × 4</span></span></span>
 <span><span class="co">#&gt;           x       y pr_ab .part</span></span>
@@ -343,7 +343,7 @@ pseudo-absence and background points.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  -<span style="color: #BB0000; text-decoration: underline;">32</span><span style="color: #BB0000;">541.</span> -<span style="color: #BB0000; text-decoration: underline;">51</span><span style="color: #BB0000;">988.</span>     0     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  -<span style="color: #BB0000; text-decoration: underline;">96</span><span style="color: #BB0000;">801.</span>    932.     0     1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  -<span style="color: #BB0000; text-decoration: underline;">47</span><span style="color: #BB0000;">661.</span> -<span style="color: #BB0000; text-decoration: underline;">31</span><span style="color: #BB0000;">198.</span>     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 2,150 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2,150 more rows</span></span></span></code></pre></div>
 <p>Extract environmental data for the presence-absence and background
 data . View the distributions of present points, pseudo-absence points,
 and background points using the blocks as a reference map.</p>
@@ -466,17 +466,16 @@ individual models.</p>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>ens_m<span class="sc">$</span>performance</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m# A tibble: 3 × 25 [39m</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold  thr_v…¹ n_pre…² n_abs…³ TPR_m…⁴ TPR_sd TNR_m…⁵ TNR_sd SOREN…⁶</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m         [3m [38;5;246m&lt;dbl&gt; [39m [23m    [3m [38;5;246m&lt;int&gt; [39m [23m    [3m [38;5;246m&lt;int&gt; [39m [23m    [3m [38;5;246m&lt;dbl&gt; [39m [23m   [3m [38;5;246m&lt;dbl&gt; [39m [23m    [3m [38;5;246m&lt;dbl&gt; [39m [23m   [3m [38;5;246m&lt;dbl&gt; [39m [23m    [3m [38;5;246m&lt;dbl&gt; [39m [23m</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m1 [39m meanw equal_sen…   0.582     216     216   0.787 0.079 [4m5 [24m   0.808 0.076 [4m9 [24m   0.795</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m2 [39m meanw max_sens_…   0.470     216     216   0.949 0.016 [4m2 [24m   0.752 0.124    0.866</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m3 [39m meanw max_soren…   0.449     216     216   0.963 0.014 [4m3 [24m   0.738 0.116    0.867</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m# … with 15 more variables: SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, [39m</span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, [39m</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, [39m</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;, and [39m</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   abbreviated variable names ¹​thr_value, ²​n_presences, ³​n_absences, [39m</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   ⁴​TPR_mean, ⁵​TNR_mean, ⁶​SORENSEN_mean [39m</span></span></code></pre></div>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m               [3m [38;5;246m&lt;dbl&gt; [39m [23m        [3m [38;5;246m&lt;int&gt; [39m [23m       [3m [38;5;246m&lt;int&gt; [39m [23m     [3m [38;5;246m&lt;dbl&gt; [39m [23m   [3m [38;5;246m&lt;dbl&gt; [39m [23m     [3m [38;5;246m&lt;dbl&gt; [39m [23m</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m1 [39m meanw equal_sens_sp…     0.582         216        216    0.787 0.079 [4m5 [24m    0.808</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m2 [39m meanw max_sens_spec      0.470         216        216    0.949 0.016 [4m2 [24m    0.752</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;250m3 [39m meanw max_sorensen       0.449         216        216    0.963 0.014 [4m3 [24m    0.738</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m# ℹ 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, [39m</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, [39m</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, [39m</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, [39m</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [38;5;246m#   IMAE_sd &lt;dbl&gt; [39m</span></span></code></pre></div>
 <p>The output of <em>flexsdm</em> model objects allows you to easily
 compare metrics across models, such as AUC or TSS. For example, we can
 use the sdm_summarize() function to merge model performance tables.</p>
@@ -484,24 +483,23 @@ use the sdm_summarize() function to merge model performance tables.</p>
 <code class="sourceCode R"><span><span class="va">model_perf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">t_max</span>, <span class="va">f_gau</span>, <span class="va">f_glm</span>, <span class="va">ens_m</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">model_perf</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 28</span></span></span>
-<span><span class="co">#&gt;    model_ID model thresh…¹ thr_v…² n_pre…³ n_abs…⁴ TPR_m…⁵ TPR_sd TNR_m…⁶ TNR_sd</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        1 max   max_sen…   0.364     216     216   0.954 0.031<span style="text-decoration: underline;">6</span>   0.750 0.138 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        2 gau   equal_s…   0.643     216     216   0.784 0.089<span style="text-decoration: underline;">0</span>   0.784 0.089<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        2 gau   max_sen…   0.471     216     216   0.952 0.012<span style="text-decoration: underline;">2</span>   0.738 0.116 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>        2 gau   max_sor…   0.471     216     216   0.964 0.010<span style="text-decoration: underline;">8</span>   0.725 0.102 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        3 glm   equal_s…   0.649     216     216   0.800 0.085<span style="text-decoration: underline;">1</span>   0.797 0.083<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        3 glm   max_sen…   0.554     216     216   0.954 0.049<span style="text-decoration: underline;">3</span>   0.716 0.135 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        3 glm   max_sor…   0.423     216     216   0.977 0.037<span style="text-decoration: underline;">9</span>   0.688 0.141 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        4 meanw equal_s…   0.582     216     216   0.787 0.079<span style="text-decoration: underline;">5</span>   0.808 0.076<span style="text-decoration: underline;">9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>        4 meanw max_sen…   0.470     216     216   0.949 0.016<span style="text-decoration: underline;">2</span>   0.752 0.124 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>        4 meanw max_sor…   0.449     216     216   0.963 0.014<span style="text-decoration: underline;">3</span>   0.738 0.116 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 18 more variables: SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   IMAE_sd &lt;dbl&gt;, regmult &lt;dbl&gt;, classes &lt;fct&gt;, and abbreviated variable names</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​threshold, ²​thr_value, ³​n_presences, ⁴​n_absences, ⁵​TPR_mean, ⁶​TNR_mean</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        1 max   max_sens_spec     0.364         216        216    0.954 0.031<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        2 gau   equal_sens_s…     0.643         216        216    0.784 0.089<span style="text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        2 gau   max_sens_spec     0.471         216        216    0.952 0.012<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>        2 gau   max_sorensen      0.471         216        216    0.964 0.010<span style="text-decoration: underline;">8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        3 glm   equal_sens_s…     0.649         216        216    0.800 0.085<span style="text-decoration: underline;">1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        3 glm   max_sens_spec     0.554         216        216    0.954 0.049<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        3 glm   max_sorensen      0.423         216        216    0.977 0.037<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        4 meanw equal_sens_s…     0.582         216        216    0.787 0.079<span style="text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>        4 meanw max_sens_spec     0.470         216        216    0.949 0.016<span style="text-decoration: underline;">2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>        4 meanw max_sorensen      0.449         216        216    0.963 0.014<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;, regmult &lt;dbl&gt;, classes &lt;fct&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="project-the-ensemble-model">Project the ensemble model<a class="anchor" aria-label="anchor" href="#project-the-ensemble-model"></a>

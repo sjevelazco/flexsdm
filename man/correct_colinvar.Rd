@@ -4,7 +4,7 @@
 \alias{correct_colinvar}
 \title{Collinearity reduction of predictor variables}
 \usage{
-correct_colinvar(env_layer, method, proj = NULL)
+correct_colinvar(env_layer, method, proj = NULL, maxcell = NULL)
 }
 \arguments{
 \item{env_layer}{SpatRaster An object of class SpatRaster containing the predictors.
@@ -26,6 +26,10 @@ provide a vector for this argument. The next methods are implemented:
 
 \item{proj}{character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
 scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)}
+
+\item{maxcell}{numeric. Number of raster cells to be randomly sampled. Taking a sample could be
+useful to reduce memory usage for large rasters. If NULL, the function will use all
+raster cells. Default NULL. Usage maxcell = 50000.}
 }
 \value{
 #' If 'pearson', returns a list with the following elements:
@@ -106,7 +110,12 @@ somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
 # Perform pearson collinearity control
-var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.8"))
+var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"))
+var$cor_table
+var$cor_variables
+
+# For all correct_colinvar methods it is possible to take a sample or raster to reduce memory
+var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"), maxcell = 10000)
 var$cor_table
 var$cor_variables
 
