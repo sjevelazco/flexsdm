@@ -1,3 +1,8 @@
+# flexsdm 1.3.4
+- Improvements in `correct_colinvar` It is now possible to sample rasters to reduce machine memory and speed up the process
+- Improvements in `sdm_predict` It is possible predict model in chunks to reduce machine memory
+- `p_extra`, `p_pdp`, and `p_psp` were fixed 
+
 # flexsdm 1.3.3
 
 - New function `p_psp` Partial Dependent Surface Plot

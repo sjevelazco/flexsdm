@@ -18,6 +18,9 @@
 #' }
 #' @param proj character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
 #' scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)
+#' @param maxcell numeric. Number of raster cells to be randomly sampled. Taking a sample could be
+#' useful to reduce memory usage for large rasters. If NULL, the function will use all
+#' raster cells. Default NULL. Usage maxcell = 50000.
 #'
 #' @return
 #' #' If 'pearson', returns a list with the following elements:
@@ -87,8 +90,8 @@
 #'
 #' @export
 #' @importFrom dplyr tibble
-#' @importFrom stats cor lm prcomp factanal
-#' @importFrom terra rast as.data.frame subset predict scale writeRaster
+#' @importFrom stats na.omit cor lm prcomp factanal
+#' @importFrom terra rast as.data.frame spatSample subset predict scale writeRaster
 #'
 #' @examples
 #' \dontrun{
@@ -99,7 +102,12 @@
 #' somevar <- terra::rast(somevar)
 #'
 #' # Perform pearson collinearity control
-#' var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.8"))
+#' var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"))
+#' var$cor_table
+#' var$cor_variables
+#'
+#' # For all correct_colinvar methods it is possible to take a sample or raster to reduce memory
+#' var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"), maxcell = 10000)
 #' var$cor_table
 #' var$cor_variables
 #'
@@ -153,7 +161,8 @@
 #'
 correct_colinvar <- function(env_layer,
                              method,
-                             proj = NULL) {
+                             proj = NULL,
+                             maxcell = NULL) {
   . <- NULL
   if (!any(c("pearson", "vif", "pca", "fa") %in% method)) {
     stop(
@@ -172,7 +181,15 @@ correct_colinvar <- function(env_layer,
       th <- as.numeric(method["th"])
     }
 
-    h <- terra::as.data.frame(env_layer)
+    if(is.null(maxcell)){
+      h <- terra::as.data.frame(env_layer) %>% stats::na.omit()
+    } else {
+      # Raster random sample
+      set.seed(10)
+      h <- env_layer %>%
+        terra::spatSample(., size = maxcell, method="random", na.rm=TRUE, as.df=TRUE) %>%
+        stats::na.omit()
+    }
     h <- abs(stats::cor(h, method = "pearson"))
     diag(h) <- 0
 
@@ -195,7 +212,16 @@ correct_colinvar <- function(env_layer,
       th <- as.numeric(method["th"])
     }
 
-    x <- terra::as.data.frame(env_layer)
+    if(is.null(maxcell)){
+      x <- terra::as.data.frame(env_layer)
+    } else {
+      # Raster random sample
+      set.seed(10)
+      x <- env_layer %>%
+        terra::spatSample(., size = maxcell, method="random", na.rm=TRUE, as.df=TRUE) %>%
+        stats::na.omit()
+    }
+
     LOOP <- TRUE
     if (nrow(x) > 200000) {
       x <- x[sample(1:nrow(x), 200000), ]
@@ -243,7 +269,16 @@ correct_colinvar <- function(env_layer,
   }
 
   if (any(method %in% "pca")) {
-    p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
+
+    if(is.null(maxcell)){
+      p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
+    } else {
+      # Raster random sample
+      set.seed(10)
+      p <- env_layer %>%
+        terra::spatSample(., size = maxcell, method="random", na.rm=TRUE, as.df=TRUE) %>%
+        stats::na.omit()
+    }
 
     p <- stats::prcomp(p,
       retx = TRUE,
@@ -299,7 +334,16 @@ correct_colinvar <- function(env_layer,
 
   if (any(method %in% "fa")) {
     p <- terra::scale(env_layer, center = TRUE, scale = TRUE)
-    p <- terra::as.data.frame(p, xy = FALSE, na.rm = TRUE)
+
+    if(is.null(maxcell)){
+      p <- terra::as.data.frame(p, xy = FALSE, na.rm = TRUE)
+    } else {
+      # Raster random sample
+      set.seed(10)
+      p <- p %>%
+        terra::spatSample(., size = maxcell, method="random", na.rm=TRUE, as.df=TRUE) %>%
+        stats::na.omit()
+    }
 
     if (nrow(p) > 200000) {
       p <- p[sample(1:nrow(p), 200000), ]
