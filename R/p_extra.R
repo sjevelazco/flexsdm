@@ -88,12 +88,12 @@
 #'   )
 #' plot(extr)
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####            Explore extrapolation in the            ####
 #' ####        environmental and geographical space        ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' p_extra(
 #'   training_data = sp_pa_2,
@@ -168,17 +168,17 @@
 #' )
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####           With p_extra also is possible            ####
 #' ####       to explore the patterns of suitability       ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' sp_pa_2 <- part_random(
 #'   data = sp_pa_2,
 #'   pr_ab = "pr_ab",
-#'   method =  c(method = "kfold", folds = 5)
+#'   method = c(method = "kfold", folds = 5)
 #' )
 #'
 #' rf_m1 <- fit_raf(
@@ -205,10 +205,10 @@
 #'   prop_points = 0.05,
 #' )
 #'
-#' # Pasterns of suitability selecting only presences
+#' # Pasterns of suitability plotting as points only presences
 #' p_extra(
 #'   training_data = sp_pa_2 %>%
-#'     dplyr::filter(pr_ab==1),
+#'     dplyr::filter(pr_ab == 1),
 #'   x = "x",
 #'   y = "y",
 #'   pr_ab = "pr_ab",
@@ -218,10 +218,11 @@
 #'   prop_points = 0.05,
 #' )
 #'
-#' # Pasterns of suitability in the environmental spacie only with presences
+#' # Pasterns of suitability in the environmental space only
+#' # and plotting as points only presences
 #' p_extra(
 #'   training_data = sp_pa_2 %>%
-#'     dplyr::filter(pr_ab==1),
+#'     dplyr::filter(pr_ab == 1),
 #'   x = "x",
 #'   y = "y",
 #'   pr_ab = "pr_ab",
@@ -247,18 +248,18 @@ p_extra <- function(training_data,
                     alpha_gradient = 0.5,
                     color_gradient = c(
                       "#FDE725",
-                               "#B3DC2B",
-                               "#6DCC57",
-                               "#36B677",
-                               "#1F9D87",
-                               "#25818E",
-                               "#30678D",
-                               "#3D4988",
-                               "#462777",
-                               "#440154"
+                      "#B3DC2B",
+                      "#6DCC57",
+                      "#36B677",
+                      "#1F9D87",
+                      "#25818E",
+                      "#30678D",
+                      "#3D4988",
+                      "#462777",
+                      "#440154"
                     ),
                     theme = ggplot2::theme_classic()) {
-  val <- Value <- NULL
+  val <- Value <- v1 <- v2 <- NULL
   # Remove factors
   extra_suit_data <- extra_suit_data[[!terra::is.factor(extra_suit_data)]]
 
@@ -292,17 +293,20 @@ p_extra <- function(training_data,
       dplyr::slice_sample(prop = prop_points)
     dfplot <- dplyr::bind_rows(dfplot2, dfplot)
 
+    names(dfplot)[1:2] <- c("v1", "v2")
+    training_data2 <- training_data[c(xenv, yenv, pr_ab)]
+    names(training_data2) <- c("v1", "v2", "pr_ab")
     p_list[[i]] <-
-      ggplot2::ggplot(dfplot, ggplot2::aes(xenv, yenv)) +
+      ggplot2::ggplot(dfplot, ggplot2::aes(v1, v2)) +
       ggplot2::geom_point(ggplot2::aes(col = val), alpha = alpha_gradient) +
       ggplot2::scale_color_gradientn(colors = color_gradient) +
-      ggplot2::labs(color = "Value") +
       ggplot2::geom_point(
-        data = training_data,
-        ggplot2::aes(xenv, yenv, shape = pr_ab),
+        data = training_data2,
+        ggplot2::aes(v1, v2, shape = pr_ab),
         color = color_p,
         alpha = alpha_p
-      )
+      ) +
+      ggplot2::labs(color = "Value", x = xenv, y = yenv, shape = pr_ab)
   }
   message("Number of cell used to plot ", paste0(nrow(dfplot), " (", prop_points * 100, "%)"))
 
@@ -319,32 +323,31 @@ p_extra <- function(training_data,
         ggplot2::aes(x, y, shape = pr_ab),
         alpha = alpha_p,
         color = color_p
-      )+
+      ) +
       ggplot2::coord_equal()
   }
 
   for (i in 1:length(p_list)) {
     p_list[[i]] <- p_list[[i]] + theme +
-      theme(legend.title=element_blank())
+      theme(legend.title = element_blank())
   }
 
   if (geo_space) {
     result <- patchwork::wrap_plots(p_list[-length(p_list)]) +
       patchwork::plot_layout(guides = "collect") &
       ggplot2::theme(legend.position = "bottom") +
-      theme(legend.title=element_blank())
+        theme(legend.title = element_blank())
     rmap <- (p_list[[length(p_list)]] +
-               ggplot2::theme(legend.position = "none"))
-    if(geo_position == "right"){
+      ggplot2::theme(legend.position = "none"))
+    if (geo_position == "right") {
       result <- result | rmap
-    } else if(geo_position == "left"){
+    } else if (geo_position == "left") {
       result <- rmap | result
-    } else if(geo_position == "bottom"){
+    } else if (geo_position == "bottom") {
       result <- result / rmap
-    } else if(geo_position == "upper"){
+    } else if (geo_position == "upper") {
       result <- rmap / result
     }
-
   } else {
     result <- patchwork::wrap_plots(p_list) +
       patchwork::plot_layout(guides = "collect")
