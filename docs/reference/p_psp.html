@@ -171,13 +171,13 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span><span class="va">abies2</span>,</span></span>
-<span class="r-in"><span>                      x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
-<span class="r-in"><span>                      y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>                      env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span><span class="va">abies2</span>,</span></span>
-<span class="r-in"><span>                      pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
-<span class="r-in"><span>                      method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">svm_t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_svm.html">fit_svm</a></span><span class="op">(</span></span></span>
@@ -194,12 +194,14 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span><span class="fu">p_psp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">p_psp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">70</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">p_psp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, pchull <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">p_psp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, pchull <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>      color_chull <span class="op">=</span> <span class="st">"orange"</span>,</span></span>
-<span class="r-in"><span>      color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00007F"</span>, <span class="st">"#007FFF"</span>, <span class="st">"#7FFF7F"</span>, <span class="st">"#FF7F00"</span>, <span class="st">"#7F0000"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_psp</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, pchull <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  color_chull <span class="op">=</span> <span class="st">"orange"</span>,</span></span>
+<span class="r-in"><span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00007F"</span>, <span class="st">"#007FFF"</span>, <span class="st">"#7FFF7F"</span>, <span class="st">"#FF7F00"</span>, <span class="st">"#7F0000"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Partial depence surface plot for training and projection condition</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="st">"Projection area"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"Projection area"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">p_psp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, projection_data <span class="op">=</span> <span class="va">somevar</span>, pchull <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
@@ -210,7 +212,7 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span><span class="va">cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/clusters.shp"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="va">cat</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cat</span><span class="op">$</span><span class="va">clusters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"c"</span>, <span class="va">cat</span><span class="op">$</span><span class="va">clusters</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rasterize.html" class="external-link">rasterize</a></span><span class="op">(</span><span class="va">cat</span>, <span class="va">somevar</span>, field<span class="op">=</span><span class="st">"clusters"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rasterize.html" class="external-link">rasterize</a></span><span class="op">(</span><span class="va">cat</span>, <span class="va">somevar</span>, field <span class="op">=</span> <span class="st">"clusters"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">somevar</span>, <span class="va">cat</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -220,14 +222,15 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">pr_ab</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
-<span class="r-in"><span>                      x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
-<span class="r-in"><span>                      y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>                      env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span><span class="va">abies2</span>,</span></span>
-<span class="r-in"><span>                      pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
-<span class="r-in"><span>                      method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">svm_t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_svm.html">fit_svm</a></span><span class="op">(</span></span></span>
@@ -240,7 +243,6 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">p_psp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>

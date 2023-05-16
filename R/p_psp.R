@@ -54,13 +54,13 @@
 #'   dplyr::slice_sample(prop = 0.5)
 #'
 #' abies2 <- sdm_extract(abies2,
-#'                       x = "x",
-#'                       y = "y",
-#'                       env_layer = somevar
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar
 #' )
 #' abies2 <- part_random(abies2,
-#'                       pr_ab = "pr_ab",
-#'                       method = c(method = "kfold", folds = 5)
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 5)
 #' )
 #'
 #' svm_t1 <- fit_svm(
@@ -77,12 +77,14 @@
 #' p_psp(model = svm_t1$model, training_data = abies2, resolution = 10)
 #' p_psp(model = svm_t1$model, training_data = abies2, resolution = 70)
 #' p_psp(model = svm_t1$model, training_data = abies2, pchull = TRUE)
-#' p_psp(model = svm_t1$model, training_data = abies2, pchull = TRUE,
-#'       color_chull = "orange",
-#'       color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000"))
+#' p_psp(
+#'   model = svm_t1$model, training_data = abies2, pchull = TRUE,
+#'   color_chull = "orange",
+#'   color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000")
+#' )
 #'
 #' # Partial depence surface plot for training and projection condition
-#' plot(somevar[[1]], main="Projection area")
+#' plot(somevar[[1]], main = "Projection area")
 #' p_psp(model = svm_t1$model, training_data = abies2, projection_data = somevar, pchull = TRUE)
 #'
 #'
@@ -93,7 +95,7 @@
 #' cat <- system.file("external/clusters.shp", package = "flexsdm")
 #' cat <- terra::vect(cat)
 #' cat$clusters <- paste0("c", cat$clusters)
-#' cat <- terra::rasterize(cat, somevar, field="clusters")
+#' cat <- terra::rasterize(cat, somevar, field = "clusters")
 #' somevar <- c(somevar, cat)
 #' plot(somevar)
 #'
@@ -103,14 +105,15 @@
 #'   dplyr::group_by(pr_ab) %>%
 #'   dplyr::slice_sample(prop = 0.5)
 #'
-#' abies2 <- sdm_extract(data = abies2,
-#'                       x = "x",
-#'                       y = "y",
-#'                       env_layer = somevar
+#' abies2 <- sdm_extract(
+#'   data = abies2,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar
 #' )
 #' abies2 <- part_random(abies2,
-#'                       pr_ab = "pr_ab",
-#'                       method = c(method = "kfold", folds = 5)
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 5)
 #' )
 #'
 #' svm_t1 <- fit_svm(
@@ -123,7 +126,6 @@
 #' )
 #'
 #' p_psp(model = svm_t1$model, training_data = abies2)
-#'
 #' }
 p_psp <-
   function(model,
@@ -221,21 +223,27 @@ p_psp <-
           clamping = clamping
         )
 
+      v1 <- names(crv[[1]])[1]
+      v2 <- names(crv[[1]])[2]
+      names(crv[[1]])[1:2] <- c("v1", "v2")
+
       p_list[[i]] <-
-        ggplot2::ggplot(crv[[1]], ggplot2::aes(names(crv[[1]])[1], names(crv[[1]])[2])) +
+        ggplot2::ggplot(crv[[1]], ggplot2::aes(v1, v2)) +
         ggplot2::geom_raster(aes(fill = Suitability)) +
         ggplot2::scale_fill_gradientn(colours = color_gradient, limits = c(0, 1)) +
         ggplot2::coord_cartesian(expand = FALSE) +
         {
           if (!is.null(crv$pchull)) {
+            names(crv[[2]]) <- c("v1", "v2")
             ggplot2::geom_polygon(
               data = crv[[2]],
-              ggplot2::aes(names(crv[[2]])[1], names(crv[[2]])[2]),
+              ggplot2::aes(v1, v2),
               color = color_chull,
               fill = "transparent"
             )
           }
-        }
+        } +
+        ggplot2::labs(x = v1, y = v2)
     }
 
     # Theme

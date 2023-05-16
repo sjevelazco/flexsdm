@@ -125,12 +125,12 @@ extr <-
   )
 plot(extr)
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####            Explore extrapolation in the            ####
 ####        environmental and geographical space        ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 
 p_extra(
   training_data = sp_pa_2,
@@ -205,17 +205,17 @@ p_extra(
 )
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####           With p_extra also is possible            ####
 ####       to explore the patterns of suitability       ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 
 sp_pa_2 <- part_random(
   data = sp_pa_2,
   pr_ab = "pr_ab",
-  method =  c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 5)
 )
 
 rf_m1 <- fit_raf(
@@ -242,10 +242,10 @@ p_extra(
   prop_points = 0.05,
 )
 
-# Pasterns of suitability selecting only presences
+# Pasterns of suitability plotting as points only presences
 p_extra(
   training_data = sp_pa_2 \%>\%
-    dplyr::filter(pr_ab==1),
+    dplyr::filter(pr_ab == 1),
   x = "x",
   y = "y",
   pr_ab = "pr_ab",
@@ -255,10 +255,11 @@ p_extra(
   prop_points = 0.05,
 )
 
-# Pasterns of suitability in the environmental spacie only with presences
+# Pasterns of suitability in the environmental space only
+# and plotting as points only presences
 p_extra(
   training_data = sp_pa_2 \%>\%
-    dplyr::filter(pr_ab==1),
+    dplyr::filter(pr_ab == 1),
   x = "x",
   y = "y",
   pr_ab = "pr_ab",

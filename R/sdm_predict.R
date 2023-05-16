@@ -7,8 +7,11 @@
 #'
 #' @param models list of one or more models fitted with fit_ or tune_ functions. In case use models fitted with fit_ensemble or esm_ family function only one model could be used. Usage models = mglm or models = list(mglm, mraf, mgbm)
 #' @param pred SpatRaster. Raster layer with predictor variables. Names of layers must exactly
-#' match those used in model fitting. Usage pred =
-#' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). It is possible
+#' match those used in model fitting.
+#' @param nchunk interger. Number of chunks to split data used to predict models (i.e., SpatRaster
+#' used in pred argument). Predicting models in chunks helps reduce memory requirements in cases
+#' where models are predicted for large scales and high resolution. Default = 1
+#' @param thr character. Threshold used to get binary suitability values (i.e., 0,1). It is possible
 #' to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the
 #' models. The following threshold types are available:
 #' \itemize{
@@ -123,9 +126,9 @@
 #'
 #'
 #' ## %######################################################%##
-#' #                                                          #
-#' ####      Predict different kind of models       ####
-#' #                                                          #
+#' #                                                           #
+#' ####      Predict different kind of models               ####
+#' #                                                           #
 #' ## %######################################################%##
 #'
 #' # sdm_predict can be used for predict one or more models fitted with fit_ or tune_ functions
@@ -167,11 +170,30 @@
 #'   con_thr = FALSE,
 #'   predict_area = NULL
 #' )
+#'
+#' ##%######################################################%##
+#' #                                                          #
+#' ####              Predict model using chunks            ####
+#' #                                                          #
+#' ##%######################################################%##
+#' # Predicting models in chunks helps reduce memory requirements in
+#' # cases where models are predicted for large scales and high resolution
+#'
+#' ind_p <- sdm_predict(
+#'   models = mglm,
+#'   pred = somevar,
+#'   thr = "max_fpb",
+#'   con_thr = FALSE,
+#'   predict_area = NULL,
+#'   nchunk = 4
+#' )
+#'
 #' }
 #'
 sdm_predict <-
   function(models,
            pred,
+           nchunk = 1,
            thr = NULL,
            con_thr = FALSE,
            predict_area = NULL,
@@ -213,9 +235,6 @@ sdm_predict <-
         terra::mask(., predict_area)
     }
 
-    # Transform raster to data.frame
-    pred_df <-
-      terra::as.data.frame(pred, cells = FALSE, na.rm = TRUE)
 
 
     #### Model predictions
@@ -262,336 +281,366 @@ sdm_predict <-
         gsub(".formula", "", .)
     }
 
-    ## %######################################################%##
-    #                                                          #
-    ####          Prediction for different models           ####
-    #                                                          #
-    ## %######################################################%##
+
+
+
+    # Transform raster to data.frame
+
+    # if(chunk){
+    cell <- terra::as.data.frame(pred, cells = TRUE, na.rm = TRUE)[,"cell"]
+    set <-
+      c(seq(1, length(cell), length.out = nchunk) # length.out = nchunk
+        %>% round(),
+        length(cell) + 1
+      )
+    # } #else {
+    #   pred_df <-
+    #   terra::as.data.frame(pred, cells = FALSE, na.rm = TRUE)
+    # }
+
+    r <- pred[[!terra::is.factor(pred)]][[1]]
+    r[!is.na(r)] <- NA
 
     # Create list for storing raster for current condition
     model_c <- as.list(names(m))
     names(model_c) <- names(m)
-
-    #### graf models ####
-    wm <- which(clss == "graf")
-    if (length(wm) > 0) {
-      na_mask <- (sum(is.na(pred)) > 1)
-      wm <- names(wm)
-      for (i in wm) {
-        r <- pred[[!terra::is.factor(pred)]][[1]]
-        r[!is.na(r)] <- NA
-        suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-                           predict.graf(
-                             object = m[[i]],
-                             newdata = pred_df[, names(m[[i]]$obsx)],
-                             type = "response",
-                             CI = NULL
-                           ))
-        if (length(m[[i]]$facs)) {
-          r[(na_mask + is.na(r)) == 1] <- 0
-        }
-        model_c[[i]] <- r
-      }
+    for(i in seq_along(model_c)){
+      model_c[[i]] <- r
     }
 
-    #### gam models ####
-    wm <- which(clss == "gam")
-    if (length(wm) > 0) {
-      wm <- names(wm)
-      for (i in wm) {
-        r <- pred[[!terra::is.factor(pred)]][[1]]
-        r[!is.na(r)] <- NA
 
-        # Test factor levels
-        f <- names(m[[i]]$xlevels)
-        if (length(f) > 0) {
-          for (ii in 1:length(f)) {
-            vf <- m[[i]]$xlevels[[f[ii]]] %>% unique()
-            vf2 <- pred_df[, (f[ii])] %>% unique()
-            vfilter <- list()
-            if (sum(!vf2 %in% vf) > 0) {
-              vfilter[[ii]] <- !pred_df[, (f[ii])] %in% vf
+
+    # Write here the loop
+    for(CH in seq_len((length(set) - 1))){
+      rowset <- set[CH]:(set[CH + 1] - 1)
+      rowset <- cell[rowset]
+      pred_df <- pred[rowset]
+      rownames(pred_df) <- rowset
+
+
+      ## %######################################################%##
+      #                                                          #
+      ####          Prediction for different models           ####
+      #                                                          #
+      ## %######################################################%##
+
+
+      #### gam models ####
+      wm <- which(clss == "gam")
+      if (length(wm) > 0) {
+        wm <- names(wm)
+        for (i in wm) {
+          r <- pred[[!terra::is.factor(pred)]][[1]]
+          r[!is.na(r)] <- NA
+
+          # Test factor levels
+          f <- names(m[[i]]$xlevels)
+          if (length(f) > 0) {
+            for (ii in 1:length(f)) {
+              vf <- m[[i]]$xlevels[[f[ii]]] %>% unique()
+              vf2 <- pred_df[, (f[ii])] %>% unique()
+              vfilter <- list()
+              if (sum(!vf2 %in% vf) > 0) {
+                vfilter[[ii]] <- !pred_df[, (f[ii])] %in% vf
+              }
             }
-          }
-          if (length(vfilter) > 0) {
-            if (length(vfilter) > 1) {
-              vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+            if (length(vfilter) > 0) {
+              if (length(vfilter) > 1) {
+                vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+              } else {
+                vfilter <- vfilter[[1]]
+              }
             } else {
-              vfilter <- vfilter[[1]]
+              vfilter <- 0
             }
           } else {
             vfilter <- 0
           }
-        } else {
-          vfilter <- 0
-        }
 
-        if (sum(vfilter) > 0) {
-          v <- rep(0, nrow(pred_df))
-          v[!vfilter] <-
-            c(mgcv::predict.gam(m[[i]], pred_df[!vfilter, ], type = "response"))
-          r[as.numeric(rownames(pred_df))] <- v
-          rm(v)
-        } else {
-          r[as.numeric(rownames(pred_df))] <-
-            c(mgcv::predict.gam(m[[i]], pred_df, type = "response"))
-        }
-
-        model_c[[i]] <- r
-      }
-    }
-
-    #### glm models ####
-    wm <- which(clss == "glm")
-    if (length(wm) > 0) {
-      wm <- names(wm)
-      for (i in wm) {
-        r <- pred[[!terra::is.factor(pred)]][[1]]
-        r[!is.na(r)] <- NA
-
-        # Test factor levels
-        f <- which(sapply(m[[i]]$data, class) == "factor")
-        if (length(f) > 0) {
-          for (ii in 1:length(f)) {
-            vf <- m[[i]]$data[, f[ii]] %>% unique()
-            vf2 <- pred_df[, names(f[ii])] %>% unique()
-            vfilter <- list()
-            if (sum(!vf2 %in% vf) > 0) {
-              vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
-            }
+          if (sum(vfilter) > 0) {
+            v <- rep(0, nrow(pred_df))
+            v[!vfilter] <-
+              c(mgcv::predict.gam(m[[i]], pred_df[!vfilter, ], type = "response"))
+            r[as.numeric(rownames(pred_df))] <- v
+            rm(v)
+          } else {
+            r[as.numeric(rownames(pred_df))] <-
+              c(mgcv::predict.gam(m[[i]], pred_df, type = "response"))
           }
-          if (length(vfilter) > 0) {
-            if (length(vfilter) > 1) {
-              vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+
+          model_c[[i]][rowset] <- r[rowset]
+        }
+      }
+
+      #### graf models ####
+      wm <- which(clss == "graf")
+      if (length(wm) > 0) {
+        na_mask <- (sum(is.na(pred)) > 1)
+        wm <- names(wm)
+        for (i in wm) {
+          r <- pred[[!terra::is.factor(pred)]][[1]]
+          r[!is.na(r)] <- NA
+          suppressWarnings(r[as.numeric(rownames(pred_df))] <-
+                             predict.graf(
+                               object = m[[i]],
+                               newdata = pred_df[, names(m[[i]]$obsx)],
+                               type = "response",
+                               CI = NULL
+                             ))
+          if (length(m[[i]]$facs)) {
+            r[(na_mask + is.na(r)) == 1] <- 0
+          }
+          model_c[[i]][rowset] <- r[rowset]
+        }
+      }
+
+      #### glm models ####
+      wm <- which(clss == "glm")
+      if (length(wm) > 0) {
+        wm <- names(wm)
+        for (i in wm) {
+          # Test factor levels
+          f <- which(sapply(m[[i]]$data, class) == "factor")
+          if (length(f) > 0) {
+            for (ii in 1:length(f)) {
+              vf <- m[[i]]$data[, f[ii]] %>% unique()
+              vf2 <- pred_df[, names(f[ii])] %>% unique()
+              vfilter <- list()
+              if (sum(!vf2 %in% vf) > 0) {
+                vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
+              }
+            }
+            if (length(vfilter) > 0) {
+              if (length(vfilter) > 1) {
+                vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+              } else {
+                vfilter <- vfilter[[1]]
+              }
             } else {
-              vfilter <- vfilter[[1]]
+              vfilter <- 0
             }
           } else {
             vfilter <- 0
           }
-        } else {
-          vfilter <- 0
-        }
 
-        if (sum(vfilter) > 0) {
-          v <- rep(0, nrow(pred_df))
-          v[!vfilter] <-
-            stats::predict(m[[i]], pred_df[!vfilter, ], type = "response")
-          r[as.numeric(rownames(pred_df))] <- v
-          rm(v)
-        } else {
-          r[as.numeric(rownames(pred_df))] <-
-            stats::predict(m[[i]], pred_df, type = "response")
-        }
-
-        model_c[[i]] <- r
-      }
-    }
-
-    #### gbm models ####
-    wm <- which(clss == "gbm")
-    if (length(wm) > 0) {
-      wm <- names(wm)
-      for (i in wm) {
-        r <- pred[[!terra::is.factor(pred)]][[1]]
-        r[!is.na(r)] <- NA
-        r[as.numeric(rownames(pred_df))] <-
-          suppressMessages(stats::predict(m[[i]], pred_df, type = "response"))
-
-        model_c[[i]] <- r
-        rm(i)
-      }
-    }
-
-
-    #### maxnet models ####
-    wm <- which(clss == "maxnet")
-    if (length(wm) > 0) {
-      wm <- names(wm)
-      for (i in wm) {
-        r <- pred[[!terra::is.factor(pred)]][[1]]
-        r[!is.na(r)] <- NA
-        r[as.numeric(rownames(pred_df))] <-
-          predict_maxnet(
-            object = m[[i]],
-            newdata = pred_df,
-            clamp = clamp,
-            type = pred_type
-          )
-        model_c[[i]] <- r
-        rm(i)
-      }
-    }
-
-    #### nnet class ####
-    wm <- which(clss == "nnet")
-    if (length(wm) > 0) {
-      wm <- names(wm)
-      for (i in wm) {
-        r <- pred[[!terra::is.factor(pred)]][[1]]
-        r[!is.na(r)] <- NA
-
-        # Test factor levels
-        f <- (m[[i]]$xlevels)
-
-        if (length(f) > 0) {
-          for (ii in 1:length(f)) {
-            vf <- f[[ii]] %>%
-              unique()
-            vf2 <- pred_df[, names(f[ii])] %>% unique()
-            vfilter <- list()
-            if (sum(!vf2 %in% vf) > 0) {
-              vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
-            }
+          if (sum(vfilter) > 0) {
+            v <- rep(0, nrow(pred_df))
+            v[!vfilter] <-
+              stats::predict(m[[i]], pred_df[!vfilter, ], type = "response")
+            r[as.numeric(rownames(pred_df))] <- v
+            rm(v)
+          } else {
+            r[as.numeric(rownames(pred_df))] <-
+              stats::predict(m[[i]], pred_df, type = "response")
           }
-          if (length(vfilter) > 0) {
-            if (length(vfilter) > 1) {
-              vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+
+          model_c[[i]][rowset] <- r[rowset]
+        }
+      }
+
+
+      #### gbm models ####
+      wm <- which(clss == "gbm")
+      if (length(wm) > 0) {
+        wm <- names(wm)
+        for (i in wm) {
+          r <- pred[[!terra::is.factor(pred)]][[1]]
+          r[!is.na(r)] <- NA
+          r[as.numeric(rownames(pred_df))] <-
+            suppressMessages(stats::predict(m[[i]], pred_df, type = "response"))
+
+          model_c[[i]][rowset] <- r[rowset]
+        }
+      }
+
+
+      #### maxnet models ####
+      wm <- which(clss == "maxnet")
+      if (length(wm) > 0) {
+        wm <- names(wm)
+        for (i in wm) {
+          r <- pred[[!terra::is.factor(pred)]][[1]]
+          r[!is.na(r)] <- NA
+          r[as.numeric(rownames(pred_df))] <-
+            predict_maxnet(
+              object = m[[i]],
+              newdata = pred_df,
+              clamp = clamp,
+              type = pred_type
+            )
+          model_c[[i]][rowset] <- r[rowset]
+        }
+      }
+
+      #### nnet class ####
+      wm <- which(clss == "nnet")
+      if (length(wm) > 0) {
+        wm <- names(wm)
+        for (i in wm) {
+          r <- pred[[!terra::is.factor(pred)]][[1]]
+          r[!is.na(r)] <- NA
+
+          # Test factor levels
+          f <- (m[[i]]$xlevels)
+
+          if (length(f) > 0) {
+            for (ii in 1:length(f)) {
+              vf <- f[[ii]] %>%
+                unique()
+              vf2 <- pred_df[, names(f[ii])] %>% unique()
+              vfilter <- list()
+              if (sum(!vf2 %in% vf) > 0) {
+                vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
+              }
+            }
+            if (length(vfilter) > 0) {
+              if (length(vfilter) > 1) {
+                vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+              } else {
+                vfilter <- vfilter[[1]]
+              }
             } else {
-              vfilter <- vfilter[[1]]
+              vfilter <- 0
             }
           } else {
             vfilter <- 0
           }
-        } else {
-          vfilter <- 0
-        }
 
-        if (sum(vfilter) > 0) {
-          v <- rep(0, nrow(pred_df))
-          v[!vfilter] <-
-            stats::predict(m[[i]], pred_df[!vfilter, ], type = "raw")
-          r[as.numeric(rownames(pred_df))] <- v
-          rm(v)
-        } else {
-          r[as.numeric(rownames(pred_df))] <-
-            stats::predict(m[[i]], pred_df, type = "raw")
-        }
-
-        if (length(f) > 0) {
-          na_mask <- (sum(is.na(pred)) > 1)
-          r[(na_mask + is.na(r)) == 1] <- 0
-        }
-        model_c[[i]] <- r
-      }
-    }
-
-
-    #### randomforest class ####
-    wm <- which(clss == "randomforest")
-    if (length(wm) > 0) {
-      wm <- names(wm)
-      for (i in wm) {
-        r <- pred[[!terra::is.factor(pred)]][[1]]
-        r[!is.na(r)] <- NA
-
-        # Test factor levels
-        f <-
-          m[[i]]$forest$xlevels[sapply(m[[i]]$forest$xlevels, function(x) {
-            class(x) == "character"
-          })]
-        if (length(f) > 0) {
-          for (ii in 1:length(f)) {
-            vf <- f[[ii]] %>%
-              unique()
-            vf2 <- pred_df[, names(f[ii])] %>% unique()
-            vfilter <- list()
-            if (sum(!vf2 %in% vf) > 0) {
-              vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
-            }
+          if (sum(vfilter) > 0) {
+            v <- rep(0, nrow(pred_df))
+            v[!vfilter] <-
+              stats::predict(m[[i]], pred_df[!vfilter, ], type = "raw")
+            r[as.numeric(rownames(pred_df))] <- v
+            rm(v)
+          } else {
+            r[as.numeric(rownames(pred_df))] <-
+              stats::predict(m[[i]], pred_df, type = "raw")
           }
-          if (length(vfilter) > 0) {
-            if (length(vfilter) > 1) {
-              vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+
+          if (length(f) > 0) {
+            na_mask <- (sum(is.na(pred)) > 1)
+            r[(na_mask + is.na(r)) == 1] <- 0
+          }
+          model_c[[i]][rowset] <- r[rowset]
+        }
+      }
+
+
+      #### randomforest class ####
+      wm <- which(clss == "randomforest")
+      if (length(wm) > 0) {
+        wm <- names(wm)
+        for (i in wm) {
+          r <- pred[[!terra::is.factor(pred)]][[1]]
+          r[!is.na(r)] <- NA
+
+          # Test factor levels
+          f <-
+            m[[i]]$forest$xlevels[sapply(m[[i]]$forest$xlevels, function(x) {
+              class(x) == "character"
+            })]
+          if (length(f) > 0) {
+            for (ii in 1:length(f)) {
+              vf <- f[[ii]] %>%
+                unique()
+              vf2 <- pred_df[, names(f[ii])] %>% unique()
+              vfilter <- list()
+              if (sum(!vf2 %in% vf) > 0) {
+                vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
+              }
+            }
+            if (length(vfilter) > 0) {
+              if (length(vfilter) > 1) {
+                vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+              } else {
+                vfilter <- vfilter[[1]]
+              }
             } else {
-              vfilter <- vfilter[[1]]
+              vfilter <- 0
             }
           } else {
             vfilter <- 0
           }
-        } else {
-          vfilter <- 0
-        }
 
 
-        if (sum(vfilter) > 0) {
-          v <- rep(0, nrow(pred_df))
-          v[!vfilter] <-
-            stats::predict(m[[i]], pred_df[!vfilter, ] %>%
-              dplyr::mutate(dplyr::across(
-                .cols = names(f),
-                .fns = ~ droplevels(.)
-              )),
-            type = "prob"
-            )[, 2]
-          r[as.numeric(rownames(pred_df))] <- v
-          rm(v)
-        } else {
-          r[as.numeric(rownames(pred_df))] <-
-            stats::predict(m[[i]], pred_df, type = "prob")[, 2]
-        }
-
-        model_c[[i]] <- r
-      }
-    }
-
-    #### ksvmj class ####
-    wm <- which(clss == "ksvm")
-    if (length(wm) > 0) {
-      wm <- names(wm)
-      for (i in wm) {
-        r <- pred[[!terra::is.factor(pred)]][[1]]
-        r[!is.na(r)] <- NA
-
-        # Test factor levels
-        f_n <- which(sapply(pred_df, class) == "factor") %>% names()
-        f_n2 <- m[[i]]@xmatrix[[1]] %>% colnames()
-        f <- lapply(f_n, function(x) {
-          gsub(x, "", grep(x, f_n2, value = TRUE))
-        })
-        names(f) <- f_n
-
-        if (length(f) > 0) {
-          for (ii in 1:length(f)) {
-            vf <- f[[ii]] %>%
-              unique()
-            vf2 <- pred_df[, names(f[ii])] %>% unique()
-            vfilter <- list()
-            if (sum(!vf2 %in% vf) > 0) {
-              vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
-            }
+          if (sum(vfilter) > 0) {
+            v <- rep(0, nrow(pred_df))
+            v[!vfilter] <-
+              stats::predict(m[[i]], pred_df[!vfilter, ] %>%
+                               dplyr::mutate(dplyr::across(
+                                 .cols = names(f),
+                                 .fns = ~ droplevels(.)
+                               )),
+                             type = "prob"
+              )[, 2]
+            r[as.numeric(rownames(pred_df))] <- v
+            rm(v)
+          } else {
+            r[as.numeric(rownames(pred_df))] <-
+              stats::predict(m[[i]], pred_df, type = "prob")[, 2]
           }
-          if (length(vfilter) > 0) {
-            if (length(vfilter) > 1) {
-              vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+
+          model_c[[i]][rowset] <- r[rowset]
+        }
+      }
+
+      #### ksvmj class ####
+      wm <- which(clss == "ksvm")
+      if (length(wm) > 0) {
+        wm <- names(wm)
+        for (i in wm) {
+          r <- pred[[!terra::is.factor(pred)]][[1]]
+          r[!is.na(r)] <- NA
+
+          # Test factor levels
+          f_n <- which(sapply(pred_df, class) == "factor") %>% names()
+          f_n2 <- m[[i]]@xmatrix[[1]] %>% colnames()
+          f <- lapply(f_n, function(x) {
+            gsub(x, "", grep(x, f_n2, value = TRUE))
+          })
+          names(f) <- f_n
+
+          if (length(f) > 0) {
+            for (ii in 1:length(f)) {
+              vf <- f[[ii]] %>%
+                unique()
+              vf2 <- pred_df[, names(f[ii])] %>% unique()
+              vfilter <- list()
+              if (sum(!vf2 %in% vf) > 0) {
+                vfilter[[ii]] <- !pred_df[, names(f[ii])] %in% vf
+              }
+            }
+            if (length(vfilter) > 0) {
+              if (length(vfilter) > 1) {
+                vfilter <- vapply(do.call("rbind", vfilter), any, logical(1))
+              } else {
+                vfilter <- vfilter[[1]]
+              }
             } else {
-              vfilter <- vfilter[[1]]
+              vfilter <- 0
             }
           } else {
             vfilter <- 0
           }
-        } else {
-          vfilter <- 0
-        }
 
-        if (sum(vfilter) > 0) {
-          v <- rep(0, nrow(pred_df))
-          v[!vfilter] <-
-            kernlab::predict(m[[i]], pred_df[!vfilter, ] %>%
-              dplyr::mutate(dplyr::across(
-                .cols = names(f),
-                .fns = ~ droplevels(.)
-              )), type = "prob")[, 2]
-          r[as.numeric(rownames(pred_df))] <- v
-          rm(v)
-        } else {
-          r[as.numeric(rownames(pred_df))] <-
-            kernlab::predict(m[[i]], pred_df, type = "prob")[, 2]
+          if (sum(vfilter) > 0) {
+            v <- rep(0, nrow(pred_df))
+            v[!vfilter] <-
+              kernlab::predict(m[[i]], pred_df[!vfilter, ] %>%
+                                 dplyr::mutate(dplyr::across(
+                                   .cols = names(f),
+                                   .fns = ~ droplevels(.)
+                                 )), type = "prob")[, 2]
+            r[as.numeric(rownames(pred_df))] <- v
+            rm(v)
+          } else {
+            r[as.numeric(rownames(pred_df))] <-
+              kernlab::predict(m[[i]], pred_df, type = "prob")[, 2]
+          }
+          model_c[[i]][rowset] <- r[rowset]
         }
-        model_c[[i]] <- r
       }
     }
-
 
     rm(pred_df)
 
@@ -615,7 +664,6 @@ sdm_predict <-
       names(x) <- n
       x
     }, model_c, names(model_c))
-
 
 
     ## %######################################################%##
@@ -654,7 +702,7 @@ sdm_predict <-
       if (any("meansup" == ens_method)) {
         ensemble_c[["meansup"]] <-
           terra::app(model_c[[which(weight_data[[3]] >= mean(weight_data[[3]]))]],
-            fun = mean, cores = 1
+                     fun = mean, cores = 1
           )
       }
 

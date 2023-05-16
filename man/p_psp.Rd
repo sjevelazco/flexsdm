@@ -75,13 +75,13 @@ abies2 <- abies \%>\%
   dplyr::slice_sample(prop = 0.5)
 
 abies2 <- sdm_extract(abies2,
-                      x = "x",
-                      y = "y",
-                      env_layer = somevar
+  x = "x",
+  y = "y",
+  env_layer = somevar
 )
 abies2 <- part_random(abies2,
-                      pr_ab = "pr_ab",
-                      method = c(method = "kfold", folds = 5)
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
 )
 
 svm_t1 <- fit_svm(
@@ -98,12 +98,14 @@ p_psp(model = svm_t1$model, training_data = abies2, predictors = c("aet", "cwd")
 p_psp(model = svm_t1$model, training_data = abies2, resolution = 10)
 p_psp(model = svm_t1$model, training_data = abies2, resolution = 70)
 p_psp(model = svm_t1$model, training_data = abies2, pchull = TRUE)
-p_psp(model = svm_t1$model, training_data = abies2, pchull = TRUE,
-      color_chull = "orange",
-      color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000"))
+p_psp(
+  model = svm_t1$model, training_data = abies2, pchull = TRUE,
+  color_chull = "orange",
+  color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000")
+)
 
 # Partial depence surface plot for training and projection condition
-plot(somevar[[1]], main="Projection area")
+plot(somevar[[1]], main = "Projection area")
 p_psp(model = svm_t1$model, training_data = abies2, projection_data = somevar, pchull = TRUE)
 
 
@@ -114,7 +116,7 @@ names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 cat <- system.file("external/clusters.shp", package = "flexsdm")
 cat <- terra::vect(cat)
 cat$clusters <- paste0("c", cat$clusters)
-cat <- terra::rasterize(cat, somevar, field="clusters")
+cat <- terra::rasterize(cat, somevar, field = "clusters")
 somevar <- c(somevar, cat)
 plot(somevar)
 
@@ -124,14 +126,15 @@ abies2 <- abies \%>\%
   dplyr::group_by(pr_ab) \%>\%
   dplyr::slice_sample(prop = 0.5)
 
-abies2 <- sdm_extract(data = abies2,
-                      x = "x",
-                      y = "y",
-                      env_layer = somevar
+abies2 <- sdm_extract(
+  data = abies2,
+  x = "x",
+  y = "y",
+  env_layer = somevar
 )
 abies2 <- part_random(abies2,
-                      pr_ab = "pr_ab",
-                      method = c(method = "kfold", folds = 5)
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
 )
 
 svm_t1 <- fit_svm(
@@ -144,7 +147,6 @@ svm_t1 <- fit_svm(
 )
 
 p_psp(model = svm_t1$model, training_data = abies2)
-
 }
 }
 \seealso{

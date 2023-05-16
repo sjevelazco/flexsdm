@@ -228,12 +228,12 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">####            Explore extrapolation in the            ####</span></span></span>
 <span class="r-in"><span><span class="co">####        environmental and geographical space        ####</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
@@ -308,17 +308,17 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">####           With p_extra also is possible            ####</span></span></span>
 <span class="r-in"><span><span class="co">####       to explore the patterns of suitability       ####</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sp_pa_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
-<span class="r-in"><span>  method <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">rf_m1</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_raf.html">fit_raf</a></span><span class="op">(</span></span></span>
@@ -345,10 +345,10 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Pasterns of suitability selecting only presences</span></span></span>
+<span class="r-in"><span><span class="co"># Pasterns of suitability plotting as points only presences</span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp_pa_2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
@@ -358,10 +358,11 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Pasterns of suitability in the environmental spacie only with presences</span></span></span>
+<span class="r-in"><span><span class="co"># Pasterns of suitability in the environmental space only</span></span></span>
+<span class="r-in"><span><span class="co"># and plotting as points only presences</span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp_pa_2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span><span class="op">==</span><span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>

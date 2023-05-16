@@ -7,6 +7,7 @@
 sdm_predict(
   models,
   pred,
+  nchunk = 1,
   thr = NULL,
   con_thr = FALSE,
   predict_area = NULL,
@@ -18,9 +19,13 @@ sdm_predict(
 \item{models}{list of one or more models fitted with fit_ or tune_ functions. In case use models fitted with fit_ensemble or esm_ family function only one model could be used. Usage models = mglm or models = list(mglm, mraf, mgbm)}
 
 \item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly
-match those used in model fitting. Usage pred =}
+match those used in model fitting.}
 
-\item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). It is possible
+\item{nchunk}{interger. Number of chunks to split data used to predict models (i.e., SpatRaster
+used in pred argument). Predicting models in chunks helps reduce memory requirements in cases
+where models are predicted for large scales and high resolution. Default = 1}
+
+\item{thr}{character. Threshold used to get binary suitability values (i.e., 0,1). It is possible
 to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the
 models. The following threshold types are available:
 \itemize{
@@ -136,9 +141,9 @@ msmall <- esm_gam(
 
 
 ## \%######################################################\%##
-#                                                          #
-####      Predict different kind of models       ####
-#                                                          #
+#                                                           #
+####      Predict different kind of models               ####
+#                                                           #
 ## \%######################################################\%##
 
 # sdm_predict can be used for predict one or more models fitted with fit_ or tune_ functions
@@ -180,6 +185,24 @@ small_p <- sdm_predict(
   con_thr = FALSE,
   predict_area = NULL
 )
+
+##\%######################################################\%##
+#                                                          #
+####              Predict model using chunks            ####
+#                                                          #
+##\%######################################################\%##
+# Predicting models in chunks helps reduce memory requirements in
+# cases where models are predicted for large scales and high resolution
+
+ind_p <- sdm_predict(
+  models = mglm,
+  pred = somevar,
+  thr = "max_fpb",
+  con_thr = FALSE,
+  predict_area = NULL,
+  nchunk = 4
+)
+
 }
 
 }
