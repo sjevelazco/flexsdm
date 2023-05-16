@@ -16,7 +16,7 @@ continuous or continuous and binary predictions for one or more thresholds"><met
     
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,11 +100,17 @@ continuous or continuous and binary predictions for one or more thresholds</p>
 
 <dt>pred</dt>
 <dd><p>SpatRaster. Raster layer with predictor variables. Names of layers must exactly
-match those used in model fitting. Usage pred =</p></dd>
+match those used in model fitting.</p></dd>
+
+
+<dt>nchunk</dt>
+<dd><p>interger. Number of chunks to split data used to predict models (i.e., SpatRaster
+used in pred argument). Predicting models in chunks helps reduce memory requirements in cases
+where models are predicted for large scales and high resolution. Default = 1</p></dd>
 
 
 <dt>thr</dt>
-<dd><p>character. Threshold used to get binary suitability values (i.e. 0,1). It is possible
+<dd><p>character. Threshold used to get binary suitability values (i.e., 0,1). It is possible
 to use more than one threshold type. It is mandatory to use the same threshold/s used to fit the
 models. The following threshold types are available:</p><ul><li><p>lpt: The highest threshold at which there is no omission.</p></li>
 <li><p>equal_sens_spec: Threshold at which the sensitivity and specificity are equal.</p></li>
