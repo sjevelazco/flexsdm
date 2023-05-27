@@ -165,10 +165,6 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     tr <- c(tr, a)
   }
   tr <- sort(unique(round(tr, 8)))
-  if (any(thr %in% "sensitivity")) {
-    tr <- c(tr, as.numeric(thr["sens"]))
-    tr <- sort(tr)
-  }
 
   res <- matrix(ncol = 4, nrow = length(tr))
   colnames(res) <- c("tp", "fp", "fn", "tn")
@@ -232,12 +228,9 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   suppressWarnings(thresholds$lpt <- max(performance$threshold[performance$TPR == 1]))
 
   if (any(thr == "sensitivity")) {
-    thresholds$sensitivity <- performance$threshold[which(abs(
-      performance$TPR - as.numeric(thr["sens"])
-    ) ==
-      min(abs(performance$TPR - as.numeric(thr["sens"]))))] %>% max()
+    thresholds$sensitivity <- performance$threshold[which.min(performance$TPR >
+                                                                as.numeric(thr["sens"]))]
   }
-
 
   thresholds <- dplyr::bind_cols(thresholds)
 
