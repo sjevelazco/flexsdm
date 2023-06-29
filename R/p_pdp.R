@@ -34,10 +34,10 @@
 #' could be used to interpret a model or to explore how a model may extrapolate outside the environmental conditions
 #' used to train the model.
 #'
-#' @seealso \code{\link{data_pdp}}, \code{\link{data_psp}}, \code{\link{p_psp}},
+#' @seealso \code{\link{data_pdp}}, \code{\link{data_bpdp}}, \code{\link{p_bpdp}},
 #' \code{\link{extra_eval}}, \code{\link{extra_truncate}}
 #'
-#' @importFrom ggplot2 ggplot aes scale_y_continuous geom_point geom_line geom_rug geom_col scale_color_manual geom_vline theme element_blank
+#' @importFrom ggplot2 ggplot aes labs scale_y_continuous geom_point geom_line geom_rug geom_col scale_color_manual geom_vline theme element_blank
 #' @importFrom patchwork wrap_plots plot_layout
 #'
 #' @export
@@ -183,6 +183,7 @@ p_pdp <-
           p[[i]] <-
             ggplot2::ggplot(crv[[1]], ggplot2::aes(x = !!xn, y = Suitability)) +
             ggplot2::scale_y_continuous(limits = c(0, 1)) +
+            ggplot2::labs(x = names(crv[[1]])[1]) +
             {
               if (resid) {
                 xn2 <- data.frame(crv[[2]])[, 1]
@@ -209,7 +210,8 @@ p_pdp <-
           p[[i]] <-
             ggplot2::ggplot(crv[[1]], ggplot2::aes(!!xn, Suitability)) +
             ggplot2::scale_y_continuous(limits = c(0, 1)) +
-            ggplot2::geom_col(fill = rev(colorl)[1])
+            ggplot2::geom_col(fill = rev(colorl)[1]) +
+            ggplot2::labs(x = names(crv[[1]])[1])
         }
       }
     } else {
@@ -231,6 +233,7 @@ p_pdp <-
 
           p[[i]] <-
             ggplot2::ggplot(crv[[1]], ggplot2::aes(!!xn, Suitability)) +
+            ggplot2::labs(x = names(crv[[1]])[1]) +
             {
               if (resid) {
                 xn2 <- data.frame(crv[[2]])[, 1]
@@ -268,7 +271,8 @@ p_pdp <-
           p[[i]] <-
             ggplot2::ggplot(crv[[1]], ggplot2::aes(!!xn, Suitability)) +
             ggplot2::scale_y_continuous(limits = c(0, 1)) +
-            ggplot2::geom_col(fill = rev(colorl)[1])
+            ggplot2::geom_col(fill = rev(colorl)[1]) +
+            ggplot2::labs(x = names(crv[[1]])[1])
         }
       }
     }

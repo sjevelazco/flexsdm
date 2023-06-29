@@ -1,6 +1,6 @@
-#' Partial Dependent Suface Plot
+#' Bivariate partial dependence plot
 #'
-#' @description Create partial dependence surface plot(s) to explore the bivariate marginal effect
+#' @description Create bivariate partial dependence plot(s) to explore the bivariate marginal effect
 #' of predictors on suitability
 #'
 #' @param model A model object of class "gam", "gbm", "glm", "graf", "ksvm", "ksvm", "maxnet”,
@@ -12,14 +12,19 @@
 #' for continuous predictors. Default 50
 #' @param training_data data.frame. Database with response (0,1) and predictor values used
 #' to fit a model. Default NULL
-#' @param pchull logical. Plot convex-hull limit of training data. Default FALSE. If TRUE it is
-#' necessary provide data in training_data argument
+#' @param training_boundaries character. Plot training conditions boundaries based on training
+#' data (i.e., presences, presences and absences, etc).
+#' If training_boundaries = "convexh", function will delimit training environmental region based on a
+#' convex-hull. If training_boundaries = "rectangle", function will delimit training environmental
+#' region based on four straight lines. If used any methods it is necessary provide
+#' data in training_data argument.
+#' If NULL all predictors will be used. Default NULL.
 #' @param projection_data SpatRaster. Raster layer with environmental variables used for model
 #' projection. Default NULL
 #' @param clamping logical. Perform clamping. Only for maxent models. Default FALSE
 #' @param color_gradient character. A vector with range of colors to plot. Default c("#FDE725", "#B3DC2B",
 #' "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
-#' @param color_chull character. A vector with one color used to color points of residuals, Default "white"
+#' @param color_training_boundaries character. A vector with one color used to color points of residuals, Default "white"
 #' @param theme ggplot2 theme. Default ggplot2::theme_classic()
 #'
 #' @details This function creates partial dependent surface plots to explore the bivariate marginal
@@ -28,7 +33,7 @@
 #' Partial dependence surface plot could be used to interpret a model or to explore how a model my
 #' extrapolate outside the environmental conditions used to train the model (convex hull polygon).
 #'
-#' @seealso \code{\link{data_pdp}}, \code{\link{data_psp}}, \code{\link{p_pdp}},
+#' @seealso \code{\link{data_pdp}}, \code{\link{data_bpdp}}, \code{\link{p_pdp}},
 #' \code{\link{extra_eval}}, \code{\link{extra_truncate}}
 #'
 #' @importFrom ggplot2 ggplot aes geom_raster scale_fill_gradientn coord_cartesian geom_polygon theme
@@ -72,23 +77,34 @@
 #' )
 #'
 #' # Partial depence surface plot
-#' p_psp(model = svm_t1$model, training_data = abies2)
-#' p_psp(model = svm_t1$model, training_data = abies2, predictors = c("aet", "cwd"))
-#' p_psp(model = svm_t1$model, training_data = abies2, resolution = 10)
-#' p_psp(model = svm_t1$model, training_data = abies2, resolution = 70)
-#' p_psp(model = svm_t1$model, training_data = abies2, pchull = TRUE)
-#' p_psp(
-#'   model = svm_t1$model, training_data = abies2, pchull = TRUE,
-#'   color_chull = "orange",
+#' p_bpdp(model = svm_t1$model, training_data = abies2)
+#' p_bpdp(model = svm_t1$model, training_data = abies2, predictors = c("aet", "cwd"))
+#' p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 10)
+#' p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 70)
+#' # With training condition boundaires
+#' p_bpdp(model = svm_t1$model, training_data = abies2, training_boundaries = "convexh")
+#' p_bpdp(model = svm_t1$model, training_data = abies2, training_boundaries = "rectangle", color_training_boundaries = "yellow")
+#' p_bpdp(
+#'   model = svm_t1$model, training_data = abies2, training_boundaries = "convexh",
+#'   color_training_boundaries = "orange",
+#'   color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000")
+#' )
+#' # With projection data
+#' p_bpdp(
+#'   model = svm_t1$model, training_data = abies2, training_boundaries = "rectangle",
+#'   projection_data = somevar, # a SpatRaster used to predict or project the model
+#'   color_training_boundaries = "white",
 #'   color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000")
 #' )
 #'
-#' # Partial depence surface plot for training and projection condition
+#' # Bivariate partial dependence plot for training and projection condition
 #' plot(somevar[[1]], main = "Projection area")
-#' p_psp(model = svm_t1$model, training_data = abies2, projection_data = somevar, pchull = TRUE)
+#' p_bpdp(model = svm_t1$model, training_data = abies2,
+#' projection_data = somevar, # a SpatRaster used to predict or project the model
+#' training_boundaries = "convexh")
 #'
 #'
-#' # PSP with categorical variables
+#' # Bivariate partial dependece plot with categorical variables
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar) # environmental data
 #' names(somevar) <- c("aet", "cwd", "tmx", "tmn")
@@ -125,14 +141,14 @@
 #'   thr = c("max_sens_spec")
 #' )
 #'
-#' p_psp(model = svm_t1$model, training_data = abies2)
+#' p_bpdp(model = svm_t1$model, training_data = abies2, training_boundaries = "convexh")
 #' }
-p_psp <-
+p_bpdp <-
   function(model,
            predictors = NULL,
            resolution = 50,
            training_data = NULL,
-           pchull = FALSE,
+           training_boundaries = NULL,
            projection_data = NULL,
            clamping = FALSE,
            color_gradient = c(
@@ -147,14 +163,21 @@ p_psp <-
              "#F7CF3D",
              "#FCFFA4"
            ),
-           color_chull = "white",
+           color_training_boundaries = "white",
            theme = ggplot2::theme_classic()) {
     Suitability <- Type <- Value <- val <- NULL
 
-    if (pchull & is.null(training_data)) {
+    if (!is.null(training_boundaries) & is.null(training_data)) {
       stop(
-        "For ploting partial surface plot with convex hull polygon it is necessary to provide calibration data in 'training_data' argument"
+        "To plot bivariate partial dependence plot with training condition boundaries it is necessary to provide calibration data in 'training_data' argument"
       )
+    }
+    if(!is.null(training_boundaries)){
+      if(!any(training_boundaries %in% c("convexh", "rectangle"))){
+        stop(
+          "'training_boundaries' argument could assume one of the following value: NULL, 'convexh', or 'rectangle'"
+        )
+      }
     }
 
     if (class(model)[1] == "gam") {
@@ -213,11 +236,11 @@ p_psp <-
       yenv <- var_comb[i, 2]
 
       crv <-
-        data_psp(
+        data_bpdp(
           model = model,
           predictors = c(xenv, yenv),
           resolution = resolution,
-          pchull = pchull,
+          training_boundaries = training_boundaries,
           projection_data = projection_data,
           training_data = training_data,
           clamping = clamping
@@ -233,14 +256,30 @@ p_psp <-
         ggplot2::scale_fill_gradientn(colours = color_gradient, limits = c(0, 1)) +
         ggplot2::coord_cartesian(expand = FALSE) +
         {
-          if (!is.null(crv$pchull)) {
-            names(crv[[2]]) <- c("v1", "v2")
-            ggplot2::geom_polygon(
-              data = crv[[2]],
-              ggplot2::aes(v1, v2),
-              color = color_chull,
-              fill = "transparent"
-            )
+          if(!is.null(training_boundaries) & !is.null(crv$training_boundaries)){
+            if (training_boundaries == "convexh") {
+              names(crv[[2]]) <- c("v1", "v2")
+              ggplot2::geom_polygon(
+                data = crv[[2]],
+                ggplot2::aes(v1, v2),
+                color = color_training_boundaries,
+                fill = "transparent"
+              )
+            }
+          }
+        } +
+        {
+          if(!is.null(training_boundaries) & !is.null(crv$training_boundaries)){
+            if (training_boundaries == "rectangle") {
+              names(crv[[2]]) <- c("v1", "v2")
+              ggplot2::geom_rect(
+                data = crv[[2]],
+                ggplot2::aes(xmin = min(v1), xmax = max(v1),
+                             ymin = min(v2), ymax = max(v2)),
+                color = color_training_boundaries,
+                fill = "transparent"
+              )
+            }
           }
         } +
         ggplot2::labs(x = v1, y = v2)
