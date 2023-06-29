@@ -37,7 +37,7 @@
 #' @importFrom dplyr summarise_all
 #' @importFrom foreach foreach "%dopar%"
 #' @importFrom parallel makeCluster stopCluster
-#' @importFrom stats sd mahalanobis
+#' @importFrom stats sd mahalanobis cov
 #' @importFrom terra mask aggregate as.data.frame resample
 #'
 #' @examples
@@ -256,7 +256,7 @@ extra_eval <-
 
     # Calculate covariance matrix based on presences for mahalanobis_pres
     # if (metric == "mahalanobis_pres") {
-    #   s_cov <- cov(training_data_pr_ab[training_data_pr_ab[pr_ab] == 1, names(env_calib2)])
+    #   s_cov <-  stats::cov(training_data_pr_ab[training_data_pr_ab[pr_ab] == 1, names(env_calib2)])
     # }
     rm(training_data_pr_ab)
 
@@ -279,7 +279,7 @@ extra_eval <-
             mah_dist(
               x = env_proj2[rowset, v0], # env_proj2 environmental conditions used to predict
               y = env_calib2[v0], # training_data environmental conditions used as references
-              cov = cov(env_calib2) # covariance matrix based on presences and absences
+              cov = stats::cov(env_calib2) # covariance matrix based on presences and absences
             )
           envdist <- sapply(data.frame(t(envdist)), min)
         }
@@ -315,7 +315,7 @@ extra_eval <-
             mah_dist(
               x = env_proj2[rowset, v0], # env_proj2 environmental conditions used to predict
               y = env_calib2[v0], # training_data environmental conditions used as references
-              cov = cov(env_calib2) # covariance matrix based on presences and absences
+              cov =  stats::cov(env_calib2) # covariance matrix based on presences and absences
             )
           envdist <- sapply(data.frame(t(envdist)), min)
         }
@@ -352,16 +352,16 @@ extra_eval <-
         euc_dist(env_calib2, .) %>%
         mean()
     }
-    if (metric == "mahalanobis_pres") {
-      base_stand_distance <- env_calib2 %>%
-        dplyr::summarise_all(., mean) %>%
-        mah_dist(x = env_calib2, y = ., cov = s_cov) %>%
-        mean()
-    }
+    # if (metric == "mahalanobis_pres") {
+    #   base_stand_distance <- env_calib2 %>%
+    #     dplyr::summarise_all(., mean) %>%
+    #     mah_dist(x = env_calib2, y = ., cov = s_cov) %>%
+    #     mean()
+    # }
     if (metric == "mahalanobis") {
       base_stand_distance <- env_calib2 %>%
         dplyr::summarise_all(., mean) %>%
-        mah_dist(x = env_calib2, y = ., cov = cov(env_calib2)) %>%
+        mah_dist(x = env_calib2, y = ., cov =  stats::cov(env_calib2)) %>%
         mean()
     }
 
