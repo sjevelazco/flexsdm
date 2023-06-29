@@ -135,6 +135,6 @@ p_pdp(
 }
 }
 \seealso{
-\code{\link{data_pdp}}, \code{\link{data_psp}}, \code{\link{p_psp}},
+\code{\link{data_pdp}}, \code{\link{data_bpdp}}, \code{\link{p_bpdp}},
 \code{\link{extra_eval}}, \code{\link{extra_truncate}}
 }

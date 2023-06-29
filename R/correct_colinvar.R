@@ -280,14 +280,30 @@ correct_colinvar <- function(env_layer,
         stats::na.omit()
     }
 
-    p <- stats::prcomp(p,
-      retx = TRUE,
-      scale. = TRUE,
-      center = TRUE
-    )
+    # p <- stats::prcomp(p,
+    #   retx = TRUE,
+    #   scale. = TRUE,
+    #   center = TRUE
+    # )
+    #
+    # means <- p$center
+    # stds <- p$scale
+    # cof <- p$rotation
 
-    means <- p$center
-    stds <- p$scale
+    means <- colMeans(p)
+    stds <- apply(p, 2, stats::sd)
+
+    # Standardize values
+    vnmes <- names(means)
+    for(nl in 1:length(vnmes)){
+      env_layer[[vnmes[nl]]] <- (env_layer[[vnmes[nl]]]-means[vnmes[nl]])/stds[vnmes[nl]]
+    }
+
+    p <- stats::prcomp(p,
+                         retx = TRUE,
+                         scale. = FALSE,
+                         center = FALSE
+                       )
     cof <- p$rotation
 
     cvar <- summary(p)$importance["Cumulative Proportion", ]
@@ -298,7 +314,7 @@ correct_colinvar <- function(env_layer,
 
     # env_layer <- terra::predict(env_layer, p, index = 1:naxis)
     p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
-    p <- stats::prcomp(p, retx = TRUE, scale. = TRUE, center = TRUE, rank. = naxis)
+    p <- stats::prcomp(p, retx = TRUE, scale. = FALSE, center = FALSE, rank. = naxis)
     env_layer <- terra::predict(env_layer, p)
 
     result <- list(
@@ -319,6 +335,7 @@ correct_colinvar <- function(env_layer,
       proj <- list.files(proj, full.names = TRUE)
       for (i in 1:length(proj)) {
         scen <- terra::rast(list.files(proj[i], full.names = TRUE))
+        scen <- scen[[names(means)]]
         scen <- terra::scale(scen, center = means, scale = stds)
         scen <- terra::predict(scen, p)
         terra::writeRaster(

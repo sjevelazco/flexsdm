@@ -403,3 +403,23 @@ morani <- function(x, weight, na.rm = FALSE, scaled = TRUE) {
   return(res)
 }
 
+#' Mahalanobis distance
+#'
+#' @noRd
+#'
+mah_dist <- function(x, y, cov) {
+  if (!methods::is(x, "matrix")) {
+    x <- as.matrix(x)
+  }
+  if (!methods::is(y, "matrix")) {
+    y <- as.matrix(y)
+  }
+  result <- matrix(0, nrow = nrow(x), ncol = nrow(y))
+  for (ii in 1:nrow(y)) {
+    # root square of squared Mahalanobis distance
+    result[, ii] <- sqrt(mahalanobis(x = x, center = y[ii, ], cov = cov))
+  }
+  rownames(result) <- rownames(x)
+  colnames(result) <- rownames(y)
+  return(result)
+}

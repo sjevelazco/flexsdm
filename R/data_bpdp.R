@@ -10,7 +10,13 @@
 #' @param resolution numeric. Number of equally spaced points at which to predict continuous predictors. Default 50
 #' @param training_data data.frame. Database with response (0,1) and predictor values used
 #' to fit a model. Default NULL
-#' @param pchull logical. Extract convex-hull limit of training data. Default FALSE
+#' @param training_boundaries character. Plot training conditions boundaries based on training
+#' data (i.e., presences, presences and absences, etc).
+#' If training_boundaries = "convexh", function will delimit training environmental region based on a
+#' convex-hull. If training_boundaries = "rectangle", function will delimit training environmental
+#' region based on four straight lines. If used any methods it is necessary provide
+#' data in training_data argument.
+#' If NULL all predictors will be used. Default NULL.
 #' @param projection_data SpatRaster. Raster layer with environmental variables used for model
 #' projection. Default NULL
 #' @param clamping logical. Perform clamping. Only for maxent models. Default FALSE
@@ -19,11 +25,11 @@
 #' \itemize{
 #' \item pspdata: has data to construct partial dependence surface plot, the first two column includes
 #' values of the selected environmental variables, the third column with predicted suitability.
-#' \item pchull: has data to plot residuals a convex hull polygon bounding calibration data.
+#' \item training_boundaries: has data to plot boundaries of training data.
 #' }
 #'
 #'
-#' @seealso \code{\link{data_pdp},  \link{p_psp}, \link{p_pdp}}
+#' @seealso \code{\link{data_pdp},  \link{p_bpdp}, \link{p_pdp}}
 #'
 #' @export
 #' @importFrom dplyr select as_tibble
@@ -65,12 +71,12 @@
 #'   thr = c("max_sens_spec")
 #' )
 #'
-#' df <- data_psp(
+#' df <- data_bpdp(
 #'   model = m$model,
 #'   predictors = c("aet", "cwd"),
 #'   resolution = 50,
 #'   projection_data = somevar,
-#'   pchull = TRUE,
+#'   training_boundaries = "rectangle",
 #'   training_data = abies2,
 #'   clamping = TRUE
 #' )
@@ -78,16 +84,16 @@
 #' df
 #' names(df)
 #' df$pspdata
-#' df$pchull
+#' df$training_boundaries
 #'
-#' # see p_psp to construct partial dependence plot with ggplot2
+#' # see p_bpdp to construct partial dependence plot with ggplot2
 #' }
-data_psp <-
+data_bpdp <-
   function(model,
            predictors,
            resolution = 50,
            training_data = NULL,
-           pchull = FALSE,
+           training_boundaries = NULL,
            projection_data = NULL,
            clamping = FALSE) {
     # Extract training data
@@ -107,15 +113,25 @@ data_psp <-
       x <- model$model[flt]
     }
 
+    if (!is.null(training_boundaries) & is.null(training_data)) {
+      stop("To extract data to delimit training boundaries it is necessary to provide training data in 'training_data' argument")
+    }
+    if(!is.null(training_boundaries)){
+      if(!any(training_boundaries %in% c("convexh", "rectangle"))){
+        stop(
+          "'training_boundaries' argument could assume one of the following value: NULL, 'convexh', or 'rectangle'"
+        )
+      }
+    }
+    if (is.null(training_boundaries)) {
+      training_boundaries <- 1
+    }
+
     if (any(class(model)[1] == c("nnet.formula", "randomForest.formula", "ksvm", "gbm", "maxnet"))) {
       if (is.null(training_data)) {
         stop(
-          "For estimating partial plot data for Neural Networks, Random Forest, Support Vector Machine it is necessary to provide calibration data in 'training_data' argument"
+          "To estimate partial plot data for Neural Networks, Random Forest, Support Vector Machine it is necessary to provide calibration data in 'training_data' argument"
         )
-      }
-
-      if (pchull & is.null(training_data)) {
-        stop("To extract data to delimit a convex hull polygon it is necessary to provide calibration data in 'training_data' argument")
       }
 
       if (class(model)[1] == "ksvm") {
@@ -130,11 +146,20 @@ data_psp <-
     }
 
     x <- stats::na.omit(x)
-    if (pchull) {
+    if (training_boundaries == "convexh") {
       if(any(sapply(x[predictors], is.factor))){
         chulld <- NULL
       } else {
         chulld <- x[grDevices::chull(x[predictors]),predictors]
+        chulld <- dplyr::as_tibble(chulld)
+      }
+    } else if (training_boundaries == "rectangle") {
+      if(any(sapply(x[predictors], is.factor))){
+        chulld <- NULL
+      } else {
+        chulld <- apply(x[predictors], 2, range)
+        chulld <- expand.grid(chulld[,1], chulld[,2])
+        names(chulld) <- predictors
         chulld <- dplyr::as_tibble(chulld)
       }
     } else {
@@ -258,6 +283,6 @@ data_psp <-
                    Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2])
     }
 
-    result <- list("pspdata" = dplyr::as_tibble(suit_c), "pchull" = chulld)
+    result <- list("pspdata" = dplyr::as_tibble(suit_c), "training_boundaries" = chulld)
     return(result)
   }

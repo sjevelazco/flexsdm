@@ -28,7 +28,7 @@
 #' }
 #'
 #'
-#' @seealso {\code{\link{data_psp}}, \code{\link{p_psp}}, \link{p_pdp}}
+#' @seealso {\code{\link{data_bpdp}}, \code{\link{p_bpdp}}, \link{p_pdp}}
 #'
 #' @export
 #' @importFrom dplyr select as_tibble
