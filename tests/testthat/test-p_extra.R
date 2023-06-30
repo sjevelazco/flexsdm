@@ -41,6 +41,7 @@ test_that("test p_extra", {
   extr <-
     extra_eval(
       training_data = sp_pa_2, # change by training_data
+      pr_ab = "pr_ab",
       projection_data = somevar, # change to projection_data
       n_cores = 1,
       aggreg_factor = 1
