@@ -140,7 +140,7 @@ coldest month (tmn). Our occurrence data include 21 geo-referenced
 observations downloaded from the online database Calflora.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flexsdm</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm">flexsdm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -532,101 +532,101 @@ case, we use our calibration area for making our predictions.</p>
 <p>Now let’s try each of these algorithms with the ESM approach. Note
 that when predicting an ESM, it is possible to only process one at a
 time.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>eglm  <span class="ot">&lt;-</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">esm_glm</span>(</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> hespero_pa3,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">response =</span> <span class="st">'pr_ab'</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span>),</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">partition =</span> <span class="st">'.part'</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">thr =</span> <span class="st">'max_sens_spec'</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>egbm <span class="ot">&lt;-</span> <span class="fu">esm_gbm</span>(</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> hespero_pa3,</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">'pr_ab'</span>,</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span>),</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">'.part'</span>,</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="st">'max_sens_spec'</span></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>esvm <span class="ot">&lt;-</span>  <span class="fu">esm_svm</span>(</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> hespero_pa3,</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">'pr_ab'</span>,</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span>),</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">'.part'</span>,</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">thr =</span> <span class="st">'max_sens_spec'</span></span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
-<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
-<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
-<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
-<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
-<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
-<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>eglm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
-<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> eglm ,</span>
-<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
-<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
-<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span>
-<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>egbm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
-<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> egbm ,</span>
-<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
-<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
-<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span>
-<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>esvm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
-<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> esvm,</span>
-<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
-<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
-<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>eglm  <span class="ot">&lt;-</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="fu">esm_glm</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    <span class="at">data =</span> hespero_pa3,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="at">response =</span> <span class="st">'pr_ab'</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    <span class="at">partition =</span> <span class="st">'.part'</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    <span class="at">thr =</span> <span class="st">'max_sens_spec'</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  )</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>egbm <span class="ot">&lt;-</span> <span class="fu">esm_gbm</span>(</span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>  <span class="at">data =</span> hespero_pa3,</span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">'pr_ab'</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span>),</span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">'.part'</span>,</span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>  <span class="at">thr =</span> <span class="st">'max_sens_spec'</span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a>)</span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a>esvm <span class="ot">&lt;-</span>  <span class="fu">esm_svm</span>(</span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a>  <span class="at">data =</span> hespero_pa3,</span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">'pr_ab'</span>,</span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span>),</span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">'.part'</span>,</span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a>  <span class="at">thr =</span> <span class="st">'max_sens_spec'</span></span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a>)</span>
+<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
+<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
+<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-64"><a href="#cb8-64" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
+<span id="cb8-65"><a href="#cb8-65" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-66"><a href="#cb8-66" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
+<span id="cb8-67"><a href="#cb8-67" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-68"><a href="#cb8-68" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
+<span id="cb8-69"><a href="#cb8-69" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-70"><a href="#cb8-70" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb8-71"><a href="#cb8-71" tabindex="-1"></a></span>
+<span id="cb8-72"><a href="#cb8-72" tabindex="-1"></a></span>
+<span id="cb8-73"><a href="#cb8-73" tabindex="-1"></a>eglm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
+<span id="cb8-74"><a href="#cb8-74" tabindex="-1"></a>  <span class="at">models =</span> eglm ,</span>
+<span id="cb8-75"><a href="#cb8-75" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
+<span id="cb8-76"><a href="#cb8-76" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-77"><a href="#cb8-77" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
+<span id="cb8-78"><a href="#cb8-78" tabindex="-1"></a>)</span>
+<span id="cb8-79"><a href="#cb8-79" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span>
+<span id="cb8-80"><a href="#cb8-80" tabindex="-1"></a></span>
+<span id="cb8-81"><a href="#cb8-81" tabindex="-1"></a>egbm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
+<span id="cb8-82"><a href="#cb8-82" tabindex="-1"></a>  <span class="at">models =</span> egbm ,</span>
+<span id="cb8-83"><a href="#cb8-83" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
+<span id="cb8-84"><a href="#cb8-84" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-85"><a href="#cb8-85" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
+<span id="cb8-86"><a href="#cb8-86" tabindex="-1"></a>)</span>
+<span id="cb8-87"><a href="#cb8-87" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span>
+<span id="cb8-88"><a href="#cb8-88" tabindex="-1"></a></span>
+<span id="cb8-89"><a href="#cb8-89" tabindex="-1"></a>esvm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
+<span id="cb8-90"><a href="#cb8-90" tabindex="-1"></a>  <span class="at">models =</span> esvm,</span>
+<span id="cb8-91"><a href="#cb8-91" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
+<span id="cb8-92"><a href="#cb8-92" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-93"><a href="#cb8-93" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
+<span id="cb8-94"><a href="#cb8-94" tabindex="-1"></a>)</span>
+<span id="cb8-95"><a href="#cb8-95" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">

@@ -103,8 +103,10 @@ p_bpdp(model = svm_t1$model, training_data = abies2, predictors = c("aet", "cwd"
 p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 10)
 p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 70)
 # With training condition boundaires
-p_bpdp(model = svm_t1$model, training_data = abies2, training_boundaries = "convexh")
-p_bpdp(model = svm_t1$model, training_data = abies2, training_boundaries = "rectangle", color_training_boundaries = "yellow")
+p_bpdp(model = svm_t1$model, training_data = abies2,
+training_boundaries = "convexh")
+p_bpdp(model = svm_t1$model, training_data = abies2,
+training_boundaries = "rectangle", color_training_boundaries = "yellow")
 p_bpdp(
   model = svm_t1$model, training_data = abies2, training_boundaries = "convexh",
   color_training_boundaries = "orange",
