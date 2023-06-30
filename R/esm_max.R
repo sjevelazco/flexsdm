@@ -36,6 +36,13 @@
 #' Breiner et al. (2015, 2018). This function use a default regularization multiplier
 #' equal to 2.5 (see  Breiner et al., 2018)
 #'
+#' When the argument “classes” is set as default MaxEnt will use different features combination
+#' depending of the number of presences (np) with the follow rule:
+#' if np < 10 classes = "l",
+#' if np between 10  and 15 classes = "lq",
+#' if np between 15 and 80 classes = "lqh",
+#' and if np >= 80 classes = "lqph"
+#'
 #' When presence-absence (or presence-pseudo-absence) data are used in data argument
 #' in addition to background points, the function will fit models with presences and background
 #' points and validate with presences and absences. This procedure makes maxent comparable to other
