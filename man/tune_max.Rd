@@ -145,7 +145,7 @@ max_t1 <- tune_max(
   metric = "TSS",
   clamp = TRUE,
   pred_type = "cloglog",
-  n_cores = 2 # activate two cores for speed up this process
+  n_cores = 2 # activate two cores to speed up this process
 )
 
 length(max_t1)

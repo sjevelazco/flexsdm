@@ -353,7 +353,7 @@ fit_glm <- function(data,
     ))
 
   pred_test <- data.frame(
-    pr_ab = data[, response],
+    pr_ab = data.frame(data)[,response],
     pred = suppressMessages(stats::predict.glm(
       mod,
       newdata = data,

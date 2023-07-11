@@ -298,7 +298,7 @@ fit_svm <- function(data,
   }
 
   pred_test <- data.frame(
-    pr_ab = data[, response],
+    pr_ab = data.frame(data)[,response],
     pred = suppressMessages(kernlab::predict(
       mod,
       newdata = data,

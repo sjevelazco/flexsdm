@@ -339,7 +339,7 @@ fit_gam <- function(data,
     ))
 
   pred_test <- data.frame(
-    pr_ab = data[, response],
+    pr_ab = data.frame(data)[,response],
     pred = suppressMessages(mgcv::predict.gam(
       mod,
       newdata = data,

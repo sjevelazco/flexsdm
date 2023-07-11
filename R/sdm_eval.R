@@ -150,7 +150,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   np <- length(p)
   na <- length(a)
   if (na == 0 | np == 0) {
-    stop("cannot evaluate a model without absence and presence data that are not NA")
+    stop("cannot evaluate a model without absence and presence data")
   }
 
   # Threshold breaks:

@@ -324,7 +324,7 @@ tune_svm <-
 
 
     pred_test <- data.frame(
-      pr_ab = data[, response],
+      pr_ab = data.frame(data)[,response],
       pred = kernlab::predict(
         mod$model,
         newdata = data,
