@@ -347,7 +347,7 @@ tune_gbm <-
 
 
     pred_test <- data.frame(
-      pr_ab = data[, response],
+      pr_ab = data.frame(data)[,response],
       pred = suppressMessages(gbm::predict.gbm(
         mod$model,
         newdata = data,

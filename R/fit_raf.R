@@ -250,7 +250,7 @@ fit_raf <- function(data,
     ))
 
   pred_test <- data.frame(
-    pr_ab = data[, response],
+    pr_ab = data.frame(data)[,response],
     pred = stats::predict(
       mod,
       newdata = data,

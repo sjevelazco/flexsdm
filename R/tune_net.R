@@ -315,7 +315,7 @@ tune_net <-
 
 
     pred_test <- data.frame(
-      pr_ab = data[, response],
+      pr_ab = data.frame(data)[,response],
       pred = stats::predict(
         mod$model,
         newdata = data,

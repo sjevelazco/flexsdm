@@ -126,7 +126,7 @@
 #'   metric = "TSS",
 #'   clamp = TRUE,
 #'   pred_type = "cloglog",
-#'   n_cores = 2 # activate two cores for speed up this process
+#'   n_cores = 2 # activate two cores to speed up this process
 #' )
 #'
 #' length(max_t1)
@@ -443,8 +443,8 @@ tune_max <-
     }
 
     pred_test <- data.frame(
-      "pr_ab" = data[response],
-      "pred" = predict_maxnet(
+      pr_ab = data.frame(data)[,response],
+      pred = predict_maxnet(
         mod$model,
         newdata = data,
         clamp = clamp,
