@@ -136,6 +136,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     da <- terra::vect(data, geom = c(x, y), prj)
     da <- terra::project(da, "+proj=longlat +datum=WGS84")
     da <- data.frame(terra::geom(da))
+    names(da)[names(da) %in% c("x", "y")] <- c(x, y)
     da <- dplyr::tibble(cbind(da[c(x, y)]))
     if (!("moran" %in% method)) {
       env_layer <- env_layer[[1]]
@@ -181,10 +182,10 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
     # Extract occurrence PC1 values
     vals <- terra::extract(env_layer, coord)$PC1
     # Trasform coord to vect
-    coord <- vect(coord, geom=c("x", "y"), crs = "+proj=longlat +datum=WGS84")
+    coord <- vect(coord, geom = c(x, y), crs = "+proj=longlat +datum=WGS84")
 
     # Calculate distances & Define breaks
-    dists <- terra::distance(coord, coord)/1000 # dist. in km
+    dists <- terra::distance(coord, coord) / 1000 # dist. in km
     br <- max(dists) / 30
     br <- seq(from = br, to = max(dists), by = br)
 
@@ -216,8 +217,8 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = "y",
-          long.col = "x",
+          lat.col = y,
+          long.col = x,
           spec.col = ".spp",
           thin.par = d,
           reps = 20,
@@ -243,12 +244,11 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
   }
 
   if ("cellsize" %in% method) {
-
     # Haversine Transformation & Distance Threshold
     factor <- as.numeric(method["factor"])
     distance <-
       terra::xyFromCell(env_layer[[1]], 1:2)
-    distance <- as.numeric(abs(terra::distance(distance,distance, lonlat = TRUE)[2] / 1000 * factor))
+    distance <- as.numeric(abs(terra::distance(distance, distance, lonlat = TRUE)[2] / 1000 * factor))
 
     # Thinning
     da$.spp <- "sp"
@@ -256,8 +256,8 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = "y",
-          long.col = "x",
+          lat.col = y,
+          long.col = x,
           spec.col = ".spp",
           thin.par = distance,
           reps = 20,
@@ -281,15 +281,14 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
   }
 
   if ("defined" %in% method) {
-
     # Thinning
     da$.spp <- "sp"
     invisible(utils::capture.output(
       occT <-
         spThin::thin(
           loc.data = da,
-          lat.col = "y",
-          long.col = "x",
+          lat.col = y,
+          long.col = x,
           spec.col = ".spp",
           thin.par = as.numeric(method["d"]),
           reps = 20,
