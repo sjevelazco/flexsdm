@@ -621,7 +621,7 @@ unique list values in pr_ab column are: ",
   result <- result[c("x", "y", "pr_ab", ".part")]
 
   grid <- grid[[Opt2$n_grid]]
-  names(grid) <- "block"
+  names(grid) <- ".part"
 
   # Final data.frame result2----
   out <- list(
