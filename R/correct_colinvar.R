@@ -91,7 +91,7 @@
 #' @export
 #' @importFrom dplyr tibble
 #' @importFrom stats na.omit cor lm prcomp factanal
-#' @importFrom terra rast as.data.frame spatSample subset predict scale writeRaster
+#' @importFrom terra rast as.data.frame subset predict scale writeRaster
 #'
 #' @examples
 #' \dontrun{
@@ -186,8 +186,10 @@ correct_colinvar <- function(env_layer,
     } else {
       # Raster random sample
       set.seed(10)
-      h <- env_layer %>%
-        terra::spatSample(., size = maxcell, method="random", na.rm=TRUE, as.df=TRUE) %>%
+      h <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+        sample(., size = maxcell, replace = FALSE) %>%
+        sort()
+      h <- env_layer[h] %>%
         stats::na.omit()
     }
     h <- abs(stats::cor(h, method = "pearson"))
@@ -217,8 +219,10 @@ correct_colinvar <- function(env_layer,
     } else {
       # Raster random sample
       set.seed(10)
-      x <- env_layer %>%
-        terra::spatSample(., size = maxcell, method="random", na.rm=TRUE, as.df=TRUE) %>%
+      x <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+        sample(., size = maxcell, replace = FALSE) %>%
+        sort()
+      x <- env_layer[x] %>%
         stats::na.omit()
     }
 
@@ -234,7 +238,7 @@ correct_colinvar <- function(env_layer,
       v <- rep(NA, ncol(x))
       names(v) <- colnames(x)
       for (i in 1:ncol(x)) {
-        v[i] <- 1 / (1 - summary(lm(x[, i] ~ ., data = x[-i]))$r.squared)
+        suppressWarnings(v[i] <- 1 / (1 - summary(lm(x[, i] ~ ., data = x[-i]))$r.squared))
       }
       if (v[which.max(v)] >= th) {
         ex <- names(v[which.max(v)])
@@ -275,8 +279,10 @@ correct_colinvar <- function(env_layer,
     } else {
       # Raster random sample
       set.seed(10)
-      p <- env_layer %>%
-        terra::spatSample(., size = maxcell, method="random", na.rm=TRUE, as.df=TRUE) %>%
+      p <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+        sample(., size = maxcell, replace = FALSE) %>%
+        sort()
+      p <- env_layer[p] %>%
         stats::na.omit()
     }
 
@@ -357,8 +363,10 @@ correct_colinvar <- function(env_layer,
     } else {
       # Raster random sample
       set.seed(10)
-      p <- p %>%
-        terra::spatSample(., size = maxcell, method="random", na.rm=TRUE, as.df=TRUE) %>%
+      p <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+        sample(., size = maxcell, replace = FALSE) %>%
+        sort()
+      p <- env_layer[p] %>%
         stats::na.omit()
     }
 

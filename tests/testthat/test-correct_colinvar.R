@@ -56,7 +56,7 @@ test_that("correct_colinvar VIF", {
 
   # test with maxcell
   var <-
-    correct_colinvar(env_layer = somevar, method = c("vif", th = "8"), maxcell = 50000)
+    correct_colinvar(env_layer = somevar, method = c("vif", th = "8"), maxcell = 5000)
 
   expect_equal(class(var), "list")
   expect_equal(class(var$env_layer)[1], "SpatRaster")
