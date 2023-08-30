@@ -1,5 +1,10 @@
-# flexsdm 1.3.3
+# flexsdm 1.3.4
+
+- Improvements in `correct_colinvar` to speed up function when using maxcell argument 
 - Improvements in `correct_colinvar` to project PCA for other time periods
+
+# flexsdm 1.3.3
+
 - Improvements in `correct_colinvar` It is now possible to sample rasters to reduce machine memory and speed up the process
 - Improvements in `sdm_predict` It is possible predict model in chunks to reduce machine memory
 - `p_extra`, `p_pdp`, and `p_bpdp` were fixed 

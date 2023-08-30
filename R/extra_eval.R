@@ -258,6 +258,11 @@ extra_eval <-
     # if (metric == "mahalanobis_pres") {
     #   s_cov <-  stats::cov(training_data_pr_ab[training_data_pr_ab[pr_ab] == 1, names(env_calib2)])
     # }
+
+    for (i in 1:ncol(env_proj2)) {
+      env_proj2[i] <- (env_proj2[i] - s_center[i]) / s_scale[i]
+    }
+
     rm(training_data_pr_ab)
 
     # Measure extrapolation - Euclidean distance
