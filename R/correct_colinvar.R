@@ -91,7 +91,7 @@
 #' @export
 #' @importFrom dplyr tibble
 #' @importFrom stats na.omit cor lm prcomp factanal
-#' @importFrom terra rast as.data.frame subset predict scale writeRaster
+#' @importFrom terra rast as.data.frame subset predict scale writeRaster global
 #'
 #' @examples
 #' \dontrun{
@@ -274,38 +274,31 @@ correct_colinvar <- function(env_layer,
 
   if (any(method %in% "pca")) {
 
+    # mean
+    means <- t(terra::global(env_layer, 'mean', na.rm=T)) %>% c()
+    names(means) <- names(env_layer)
+    # SD
+    stds <- t(terra::global(env_layer, 'sd', na.rm=T)) %>% c()
+    names(stds) <- names(env_layer)
+
+    # Standardize raster values
+    env_layer <- terra::scale(env_layer, center = means, scale = stds)
+    vnmes <- names(means)
+
+
     if(is.null(maxcell)){
-      p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
+      p0 <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
     } else {
       # Raster random sample
       set.seed(10)
-      p <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+      p0 <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
         sample(., size = maxcell, replace = FALSE) %>%
         sort()
-      p <- env_layer[p] %>%
+      p0 <- env_layer[p0] %>%
         stats::na.omit()
     }
 
-    # p <- stats::prcomp(p,
-    #   retx = TRUE,
-    #   scale. = TRUE,
-    #   center = TRUE
-    # )
-    #
-    # means <- p$center
-    # stds <- p$scale
-    # cof <- p$rotation
-
-    means <- colMeans(p)
-    stds <- apply(p, 2, stats::sd)
-
-    # Standardize values
-    vnmes <- names(means)
-    for(nl in 1:length(vnmes)){
-      env_layer[[vnmes[nl]]] <- (env_layer[[vnmes[nl]]]-means[vnmes[nl]])/stds[vnmes[nl]]
-    }
-
-    p <- stats::prcomp(p,
+    p <- stats::prcomp(p0,
                          retx = TRUE,
                          scale. = FALSE,
                          center = FALSE
@@ -318,10 +311,12 @@ correct_colinvar <- function(env_layer,
     }, cvar)
     cvar <- data.frame(cvar)
 
-    # env_layer <- terra::predict(env_layer, p, index = 1:naxis)
-    p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
-    p <- stats::prcomp(p, retx = TRUE, scale. = FALSE, center = FALSE, rank. = naxis)
+
+    # p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
+    p <- stats::prcomp(p0, retx = TRUE, scale. = FALSE, center = FALSE, rank. = naxis)
     env_layer <- terra::predict(env_layer, p)
+
+    rm(p0)
 
     result <- list(
       env_layer = env_layer,
