@@ -1,5 +1,6 @@
 # flexsdm 1.3.4
 
+- Best grid raster names was changed to .part in `part_sblock` and  `part_sband` 
 - Improvements in `correct_colinvar` to speed up function when using maxcell argument 
 - Improvements in `correct_colinvar` to project PCA for other time periods
 
