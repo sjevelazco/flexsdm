@@ -190,7 +190,8 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">pr_ab</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Calibration area based on some criterion such as dispersal ability</span></span></span>
-<span class="r-in"><span><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span><span class="va">sp</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">50000</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span><span class="va">sp</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>                 method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">50000</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span></span></span>
@@ -203,7 +204,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">sp</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>, <span class="co"># selecting number of pseudo-absence points twice number of presences</span></span></span>
+<span class="r-in"><span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"random"</span>,</span></span>
 <span class="r-in"><span>  rlayer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
 <span class="r-in"><span>  calibarea <span class="op">=</span> <span class="va">ca</span></span></span>
@@ -221,18 +222,19 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span><span class="co"># using SHAPE metric</span></span></span>
 <span class="r-in"><span><span class="va">extr</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="extra_eval.html">extra_eval</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    training_data <span class="op">=</span> <span class="va">sp_pa_2</span>, <span class="co"># change by training_data</span></span></span>
-<span class="r-in"><span>    projection_data <span class="op">=</span> <span class="va">somevar</span>, <span class="co"># change to projection_data</span></span></span>
+<span class="r-in"><span>    training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
+<span class="r-in"><span>    pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>    projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>    metric <span class="op">=</span> <span class="st">"mahalanobis"</span>,</span></span>
+<span class="r-in"><span>    univar_comb <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>    n_cores <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>    aggreg_factor <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
-<span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">####            Explore extrapolation in the            ####</span></span></span>
 <span class="r-in"><span><span class="co">####        environmental and geographical space        ####</span></span></span>
-<span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
@@ -308,11 +310,39 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">####                 Explore univariate                 ####</span></span></span>
+<span class="r-in"><span><span class="co">####          and combinatorial extrapolation           ####</span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="va">extr</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="extra_eval.html">extra_eval</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
+<span class="r-in"><span>    pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>    projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>    metric <span class="op">=</span> <span class="st">"mahalanobis"</span>,</span></span>
+<span class="r-in"><span>    univar_comb <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    n_cores <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>    aggreg_factor <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  extra_suit_data <span class="op">=</span> <span class="va">extr</span><span class="op">$</span><span class="va">uni_comb</span>, <span class="co"># use  uni_comb layer</span></span></span>
+<span class="r-in"><span>  projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  geo_space <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
+<span class="r-in"><span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B3DC2B"</span>,<span class="st">"#25818E"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
-<span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">####           With p_extra also is possible            ####</span></span></span>
 <span class="r-in"><span><span class="co">####       to explore the patterns of suitability       ####</span></span></span>
-<span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sp_pa_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
@@ -366,7 +396,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
-<span class="r-in"><span>  extra_suit_data <span class="op">=</span> <span class="va">extr</span>,</span></span>
+<span class="r-in"><span>  extra_suit_data <span class="op">=</span> <span class="va">suit</span>,</span></span>
 <span class="r-in"><span>  projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
 <span class="r-in"><span>  geo_space <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span></span>

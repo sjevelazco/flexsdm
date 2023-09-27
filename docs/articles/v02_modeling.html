@@ -180,7 +180,7 @@ version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm"
 <span><span class="co">#&gt; Loading required package: flexsdm</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: terra</span></span>
-<span><span class="co">#&gt; terra 1.7.39</span></span>
+<span><span class="co">#&gt; terra 1.7.46</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'terra'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
@@ -286,7 +286,7 @@ for presence-absence and for background points datasets.</p>
 <span><span class="co">#&gt; $ awc      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.10837019, 0.16000000, 0.00000000, 0.09719457, 0.00000000, 0…</span></span>
 <span><span class="co">#&gt; $ depth    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 152.000000, 201.000000, 0.000000, 59.759930, 0.000000, 112.99…</span></span>
 <span><span class="co">#&gt; $ landform <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> 7, 11, 15, 14, 15, 15, 7, 15, 4, 10, 6, 10, 10, 15, 10, 11, 1…</span></span>
-<span><span class="co">#&gt; $ .part    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 5, 4, 3, 4, 1, 4, 5, 4, 2, 1, 1, 2, 4, 5, 3, 2, 4, 5, 1, 1, 4…</span></span></code></pre></div>
+<span><span class="co">#&gt; $ .part    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 2, 2, 2, 4, 1, 2, 5, 5, 1, 3, 4, 1, 1, 1, 3, 1, 2, 2, 2, 1, 3…</span></span></code></pre></div>
 <p>Now, in the abies2 object we have a new column called “.part” with
 the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record
 (row) is a member of. Next, we have to apply the same partition method
@@ -315,7 +315,7 @@ points.</p>
 <span><span class="co">#&gt; $ depth        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.00000, 201.00000, 50.07409, 154.39426, 122.39575, 56.17…</span></span>
 <span><span class="co">#&gt; $ percent_clay <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.0000000, 0.4438345, 18.4111176, 46.9751244, 37.1873169,…</span></span>
 <span><span class="co">#&gt; $ landform     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> 13, 10, 6, 6, 10, 14, 8, 14, 6, 7, 11, 14, 14, 10, 6, 6, …</span></span>
-<span><span class="co">#&gt; $ .part        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 3, 3, 3, 3, 4, 2, 3, 2, 1, 2, 4, 2, 1, 3, 2, 3, 5, 4, 2, …</span></span></code></pre></div>
+<span><span class="co">#&gt; $ .part        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> 1, 3, 1, 1, 5, 5, 5, 3, 4, 5, 3, 2, 5, 3, 4, 3, 5, 1, 3, …</span></span></code></pre></div>
 <p>In backg2 object we have a new column called “.part” with the 5
 k-folds (1, 2, 3, 4, 5).</p>
 <div class="section level3">
@@ -384,9 +384,9 @@ values.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 25</span></span></span>
 <span><span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> max   equal_sens_sp…     0.573         700        700    0.674 0.031<span style="text-decoration: underline;">8</span>    0.676</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> max   max_sens_spec      0.416         700        700    0.88  0.041<span style="text-decoration: underline;">8</span>    0.539</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> max   max_sorensen       0.335         700        700    0.94  0.019<span style="text-decoration: underline;">3</span>    0.467</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> max   equal_sens_sp…     0.573         700        700    0.67  0.047<span style="text-decoration: underline;">2</span>    0.671</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> max   max_sens_spec      0.416         700        700    0.891 0.086<span style="text-decoration: underline;">2</span>    0.53 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> max   max_sorensen       0.335         700        700    0.953 0.028<span style="text-decoration: underline;">4</span>    0.446</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;,</span></span></span>
@@ -399,16 +399,16 @@ model. This database is used in fit_ensemble.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,400 × 5</span></span></span>
 <span><span class="co">#&gt;    rnames replicates part  pr_ab   pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 5      .part      1         0 0.593 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 10     .part      1         0 0.771 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 11     .part      1         0 0.218 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 19     .part      1         0 0.778 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 20     .part      1         0 0.088<span style="text-decoration: underline;">3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 26     .part      1         0 0.323 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 27     .part      1         0 0.602 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 31     .part      1         0 0.384 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 33     .part      1         0 0.034<span style="text-decoration: underline;">3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 39     .part      1         0 0.883 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 5      .part      1         0 0.671 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 9      .part      1         0 0.625 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 12     .part      1         0 0.307 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 13     .part      1         0 0.038<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 14     .part      1         0 0.315 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 16     .part      1         0 0.220 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 20     .part      1         0 0.110 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 22     .part      1         0 0.212 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 27     .part      1         0 0.680 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 31     .part      1         0 0.407 </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,390 more rows</span></span></span></code></pre></div>
 <p>II- Random forest models with exploration of hyper-parameters.</p>
 <p>First, we create a data.frame that provides hyper-parameters values
@@ -487,7 +487,7 @@ values.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 26</span></span></span>
 <span><span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3 raf   max_sens_spec     0.638         700        700    0.913 0.043<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3 raf   max_sens_spec     0.638         700        700    0.891 0.043<span style="text-decoration: underline;">3</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span></span>
@@ -500,16 +500,16 @@ model. This database is used in fit_ensemble.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,400 × 5</span></span></span>
 <span><span class="co">#&gt;    rnames replicates part  pr_ab  pred</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 5      .part      1     0     0.548</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 10     .part      1     0     0.14 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 11     .part      1     0     0.088</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 19     .part      1     0     0.01 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 20     .part      1     0     0.506</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 26     .part      1     0     0.34 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 27     .part      1     0     0.184</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 31     .part      1     0     0.106</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 33     .part      1     0     0.014</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 39     .part      1     0     0.56 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 5      .part      1     0     0.468</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 9      .part      1     0     0.408</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 12     .part      1     0     0.534</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 13     .part      1     0     0.018</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 14     .part      1     0     0.05 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 16     .part      1     0     0.02 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 20     .part      1     0     0.452</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 22     .part      1     0     0.032</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 27     .part      1     0     0.226</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 31     .part      1     0     0.194</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,390 more rows</span></span></span></code></pre></div>
 <p>These model objects can be used in flexsdm::fit_ensemble().</p>
 </div>
@@ -546,15 +546,15 @@ model objects that were just created.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> aet   cwd     tmin  ppt_djf ppt_jja landform pH    awc   depth</span></span>
 <span><span class="va">an_ensemble</span><span class="op">$</span><span class="va">performance</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 25</span></span></span>
-<span><span class="co">#&gt;   model   threshold   thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> meansup equal_sens…     0.57          700        700    0.883 0.019<span style="text-decoration: underline;">9</span>     0.883</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> meansup lpt             0.01          700        700    1     0          0.314</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> meansup max_fpb         0.464         700        700    0.929 0.038<span style="text-decoration: underline;">1</span>     0.856</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> meansup max_jaccard     0.464         700        700    0.929 0.038<span style="text-decoration: underline;">1</span>     0.856</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> meansup max_sens_s…     0.558         700        700    0.913 0.043<span style="text-decoration: underline;">3</span>     0.873</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> meansup max_sorens…     0.464         700        700    0.929 0.038<span style="text-decoration: underline;">1</span>     0.856</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> meansup sensitivity     0.518         700        700    0.899 0.003<span style="text-decoration: underline;">19</span>    0.859</span></span>
+<span><span class="co">#&gt;   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> meansup equal_sens_…     0.572         700        700    0.874 0.019<span style="text-decoration: underline;">3</span>    0.876</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> meansup lpt              0.028         700        700    1     0         0.417</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> meansup max_fpb          0.49          700        700    0.919 0.013<span style="text-decoration: underline;">9</span>    0.857</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> meansup max_jaccard      0.49          700        700    0.919 0.013<span style="text-decoration: underline;">9</span>    0.857</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> meansup max_sens_sp…     0.528         700        700    0.891 0.043<span style="text-decoration: underline;">3</span>    0.887</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> meansup max_sorensen     0.49          700        700    0.919 0.013<span style="text-decoration: underline;">9</span>    0.857</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> meansup sensitivity      0.536         700        700    0.9   0         0.866</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 17 more variables: TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;,</span></span></span>
