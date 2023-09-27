@@ -50,7 +50,8 @@
 #'   dplyr::select(x, y, pr_ab)
 #'
 #' # Calibration area based on some criterion such as dispersal ability
-#' ca <- calib_area(sp, x = "x", y = "y", method = c("buffer", width = 50000), crs = crs(somevar))
+#' ca <- calib_area(sp, x = "x", y = "y",
+#'                  method = c("buffer", width = 50000), crs = crs(somevar))
 #'
 #' plot(somevar[[1]])
 #' points(sp)
@@ -63,7 +64,7 @@
 #'   data = sp,
 #'   x = "x",
 #'   y = "y",
-#'   n = nrow(sp) * 2, # selecting number of pseudo-absence points twice number of presences
+#'   n = nrow(sp) * 2,
 #'   method = "random",
 #'   rlayer = somevar,
 #'   calibarea = ca
@@ -81,18 +82,19 @@
 #' # using SHAPE metric
 #' extr <-
 #'   extra_eval(
-#'     training_data = sp_pa_2, # change by training_data
-#'     projection_data = somevar, # change to projection_data
+#'     training_data = sp_pa_2,
+#'     pr_ab = "pr_ab",
+#'     projection_data = somevar,
+#'     metric = "mahalanobis",
+#'     univar_comb = FALSE,
 #'     n_cores = 1,
 #'     aggreg_factor = 1
 #'   )
 #' plot(extr)
 #'
 #' ## %######################################################%##
-#' #                                                          #
 #' ####            Explore extrapolation in the            ####
 #' ####        environmental and geographical space        ####
-#' #                                                          #
 #' ## %######################################################%##
 #'
 #' p_extra(
@@ -168,11 +170,39 @@
 #' )
 #'
 #'
+#' ##%######################################################%##
+#' ####                 Explore univariate                 ####
+#' ####          and combinatorial extrapolation           ####
+#' ##%######################################################%##
+#' extr <-
+#'   extra_eval(
+#'     training_data = sp_pa_2,
+#'     pr_ab = "pr_ab",
+#'     projection_data = somevar,
+#'     metric = "mahalanobis",
+#'     univar_comb = TRUE,
+#'     n_cores = 1,
+#'     aggreg_factor = 1
+#'   )
+#'
+#' plot(extr)
+#'
+#'
+#' p_extra(
+#'   training_data = sp_pa_2,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   extra_suit_data = extr$uni_comb, # use  uni_comb layer
+#'   projection_data = somevar,
+#'   geo_space = TRUE,
+#'   prop_points = 0.05,
+#'   color_gradient = c("#B3DC2B","#25818E")
+#' )
+#'
 #' ## %######################################################%##
-#' #                                                          #
 #' ####           With p_extra also is possible            ####
 #' ####       to explore the patterns of suitability       ####
-#' #                                                          #
 #' ## %######################################################%##
 #'
 #' sp_pa_2 <- part_random(
@@ -226,7 +256,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   pr_ab = "pr_ab",
-#'   extra_suit_data = extr,
+#'   extra_suit_data = suit,
 #'   projection_data = somevar,
 #'   geo_space = FALSE,
 #'   prop_points = 0.05,
