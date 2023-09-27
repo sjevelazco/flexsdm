@@ -30,7 +30,7 @@ extra_truncate <- function(suit, extra, threshold = 50, trunc_value = 0) {
   for (i in 1:length(threshold)) {
     l[[i]] <- suit
     for (ii in 1:terra::nlyr(l[[i]])) {
-      l[[i]][[ii]][extra > threshold[i]] <- trunc_value
+      l[[i]][[ii]][extra[[1]] > threshold[i]] <- trunc_value
     }
   }
   names(l) <- threshold

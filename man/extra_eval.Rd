@@ -9,6 +9,7 @@ extra_eval(
   pr_ab,
   projection_data,
   metric = "mahalanobis",
+  univar_comb = FALSE,
   n_cores = 1,
   aggreg_factor = 1
 )
@@ -31,6 +32,11 @@ Otherwise, as SpatRaster object.}
   \item euclidean: Degree of extrapolation is calculated based on Euclidean distance.
   }}
 
+\item{univar_comb}{logical. If true, the function will add a layer or column to distinguish
+between univariate (i.e., projection data outside the range of training conditions) and
+combinatorial extrapolation (i.e., projection data within the range of training conditions)
+using values 1 and 2, respectively. Default FALSE}
+
 \item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 
 \item{aggreg_factor}{positive integer. Aggregation factor expressed as number of cells in each
@@ -40,7 +46,7 @@ the same as raster object used in 'projection_data' argument. Default 1, i.e., b
 will be made to the resolution of the environmental variables.}
 }
 \value{
-A SpatRaster object with extrapolation values measured in percentage of extrapolation (relative Euclidean distance)
+A SpatRaster object with extrapolation values measured by Shape extrapolation and
 }
 \description{
 Measure extrapolation comparing environmental data used for modeling calibration
@@ -79,7 +85,7 @@ psa <- sample_pseudoabs(
   data = sp,
   x = "x",
   y = "y",
-  n = nrow(sp) * 2, # selecting number of pseudo-absence points twice number of presences
+  n = nrow(sp) * 2,
   method = "random",
   rlayer = somevar,
   calibarea = ca
@@ -90,8 +96,11 @@ sp_pa <- dplyr::bind_rows(sp, psa)
 sp_pa
 
 # Get environmental condition of calibration area
-sp_pa_2 <- sdm_extract(data = sp_pa, x = "x", y = "y", env_layer = somevar)
-sp_pa_2
+sp_pa_2 <- sdm_extract(data = sp_pa,
+                       x = "x",
+                       y = "y",
+                       env_layer = somevar)
+                       sp_pa_2
 
 # Measure degree of extrapolation based on Mahalanobis and
 # for a projection area based on a SpatRaster object
@@ -123,7 +132,9 @@ a_model <- fit_glm(
   thr = c("max_sorensen")
 )
 
-predsuit <- sdm_predict(models = a_model, pred = somevar, thr = "max_sorensen")
+predsuit <- sdm_predict(models = a_model,
+                        pred = somevar,
+                        thr = "max_sorensen")
 predsuit # list with a raster with two layer
 plot(predsuit[[1]])
 
@@ -147,8 +158,11 @@ plot(predsuit_2$`100`)
 plot(predsuit_2$`200`)
 
 
-# Measure degree of extrapolation for projection area
-# based on data.frame
+##\%######################################################\%##
+####        Measure degree of extrapolation for         ####
+####        projection area based on data.frame         ####
+##\%######################################################\%##
+
 extr_df <-
   extra_eval(
     training_data = sp_pa_2,
@@ -161,6 +175,25 @@ extr_df <-
 extr_df
 # see 'p_extra()' to explore extrapolation or suitability pattern in the
 # environmental and/or geographical space
+
+##\%######################################################\%##
+####             Explore Shape metric with              ####
+####     univariate and combinatorial extrapolation     ####
+##\%######################################################\%##
+extr <-
+  extra_eval(
+    training_data = sp_pa_2,
+    projection_data = somevar,
+    pr_ab = "pr_ab",
+    n_cores = 1,
+    aggreg_factor = 1,
+    metric = "mahalanobis",
+    univar_comb = TRUE
+  )
+
+extr
+plot(extr) # In the second layer, values equal to 1 and 2
+# depict univariate and combinatorial extrapolation, respectively
 }
 }
 \seealso{

@@ -13,7 +13,10 @@
 #'   \item mahalanobis: Degree of extrapolation is calculated based on Mahalanobis distance.
 #'   \item euclidean: Degree of extrapolation is calculated based on Euclidean distance.
 #'   }
-#'
+#' @param univar_comb logical. If true, the function will add a layer or column to distinguish
+#' between univariate (i.e., projection data outside the range of training conditions) and
+#' combinatorial extrapolation (i.e., projection data within the range of training conditions)
+#' using values 1 and 2, respectively. Default FALSE
 #' @param projection_data SpatRaster, data.frame or tibble with environmental condition used for projecting a model (e.g.,
 #' a larger, encompassing region, a spatially separate region, or a different time period).
 #' If data.frame or tibble is used function will return a tibble object.
@@ -27,7 +30,7 @@
 #'
 #'
 #' @return
-#' A SpatRaster object with extrapolation values measured in percentage of extrapolation (relative Euclidean distance)
+#' A SpatRaster object with extrapolation values measured by Shape extrapolation and
 #'
 #' @seealso \code{\link{extra_truncate}}, \code{\link{p_extra}}, \code{\link{p_pdp}}, \code{\link{p_bpdp}}
 #'
@@ -72,7 +75,7 @@
 #'   data = sp,
 #'   x = "x",
 #'   y = "y",
-#'   n = nrow(sp) * 2, # selecting number of pseudo-absence points twice number of presences
+#'   n = nrow(sp) * 2,
 #'   method = "random",
 #'   rlayer = somevar,
 #'   calibarea = ca
@@ -83,8 +86,11 @@
 #' sp_pa
 #'
 #' # Get environmental condition of calibration area
-#' sp_pa_2 <- sdm_extract(data = sp_pa, x = "x", y = "y", env_layer = somevar)
-#' sp_pa_2
+#' sp_pa_2 <- sdm_extract(data = sp_pa,
+#'                        x = "x",
+#'                        y = "y",
+#'                        env_layer = somevar)
+#'                        sp_pa_2
 #'
 #' # Measure degree of extrapolation based on Mahalanobis and
 #' # for a projection area based on a SpatRaster object
@@ -116,7 +122,9 @@
 #'   thr = c("max_sorensen")
 #' )
 #'
-#' predsuit <- sdm_predict(models = a_model, pred = somevar, thr = "max_sorensen")
+#' predsuit <- sdm_predict(models = a_model,
+#'                         pred = somevar,
+#'                         thr = "max_sorensen")
 #' predsuit # list with a raster with two layer
 #' plot(predsuit[[1]])
 #'
@@ -140,8 +148,11 @@
 #' plot(predsuit_2$`200`)
 #'
 #'
-#' # Measure degree of extrapolation for projection area
-#' # based on data.frame
+#' ##%######################################################%##
+#' ####        Measure degree of extrapolation for         ####
+#' ####        projection area based on data.frame         ####
+#' ##%######################################################%##
+#'
 #' extr_df <-
 #'   extra_eval(
 #'     training_data = sp_pa_2,
@@ -154,12 +165,32 @@
 #' extr_df
 #' # see 'p_extra()' to explore extrapolation or suitability pattern in the
 #' # environmental and/or geographical space
+#'
+#' ##%######################################################%##
+#' ####             Explore Shape metric with              ####
+#' ####     univariate and combinatorial extrapolation     ####
+#' ##%######################################################%##
+#' extr <-
+#'   extra_eval(
+#'     training_data = sp_pa_2,
+#'     projection_data = somevar,
+#'     pr_ab = "pr_ab",
+#'     n_cores = 1,
+#'     aggreg_factor = 1,
+#'     metric = "mahalanobis",
+#'     univar_comb = TRUE
+#'   )
+#'
+#' extr
+#' plot(extr) # In the second layer, values equal to 1 and 2
+#' # depict univariate and combinatorial extrapolation, respectively
 #' }
 extra_eval <-
   function(training_data,
            pr_ab,
            projection_data,
            metric = "mahalanobis",
+           univar_comb = FALSE,
            n_cores = 1,
            aggreg_factor = 1) {
     Value <- val <- . <- x <- NULL
@@ -386,9 +417,39 @@ extra_eval <-
         extraraster <- terra::mask(extraraster, disag)
       }
       names(extraraster) <- "extrapolation"
+
+      # Univariate and combinatorial extrapolation
+      if (univar_comb) {
+          rng <- apply(training_data, 2, range, na.rm = TRUE)
+          univar_ext <- projection_data
+          for (i in 1:terra::nlyr(projection_data)) {
+            univar_ext[[i]] <- (projection_data[v0[i]] <= rng[, v0[i]][1] |
+                                  projection_data[v0[i]] >= rng[, v0[i]][2])
+          }
+          univar_comb_r <- sum(univar_ext)
+          univar_comb_r[univar_comb_r > 0] <- 2
+          univar_comb_r[univar_comb_r == 0] <- 1
+          names(univar_comb_r) <- "uni_comb"
+          extraraster <- c(extraraster, univar_comb_r)
+      }
     } else {
       for (i in names(s_center)) {
-        env_proj2[i] <- env_proj2[i]*s_scale[i]+s_center[i]
+        env_proj2[i] <- env_proj2[i] * s_scale[i] + s_center[i]
+      }
+      # Univariate and combinatorial extrapolation
+      if (univar_comb) {
+        rng <- apply(training_data, 2, range, na.rm = TRUE)
+        univar_ext <- projection_data
+        for (i in 1:ncol(projection_data)) {
+          univar_ext[, v0[i]] <- (projection_data[,v0[i]] <= rng[, v0[i]][1] |
+                                projection_data[, v0[i]] >= rng[, v0[i]][2])
+        }
+        univar_comb_r <- apply(univar_ext, 1, sum)
+        univar_comb_r[univar_comb_r > 0] <- 2
+        univar_comb_r[univar_comb_r == 0] <- 1
+        env_proj2 <- env_proj2 %>%
+          dplyr::mutate(univar_comb_r) %>%
+          dplyr::relocate(extrapolation, univar_comb = univar_comb_r)
       }
       return(dplyr::as_tibble(env_proj2))
     }

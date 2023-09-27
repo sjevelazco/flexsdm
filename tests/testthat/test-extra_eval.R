@@ -72,6 +72,22 @@ test_that("extra_eval one and two cores", {
   expect_equal(class(extr)[1], "SpatRaster")
 })
 
+test_that("extra_eval with uni_comb argument", {
+  # Measure degree of extrapolation based on Mahalanobis
+  extr <-
+    extra_eval(
+      training_data = sp_pa_2,
+      projection_data = somevar,
+      pr_ab = "pr_ab",
+      n_cores = 1,
+      aggreg_factor = 1,
+      metric = "mahalanobis",
+      univar_comb = TRUE
+    )
+  expect_equal(class(extr)[1], "SpatRaster")
+  expect_equal(names(extr), c("extrapolation", "uni_comb"))
+})
+
 
 test_that("extra_eval based on tibble object", {
   # Based on euclidean distance and dataframe
@@ -87,6 +103,21 @@ test_that("extra_eval based on tibble object", {
   expect_equal(class(extr)[1], "tbl_df")
 })
 
+test_that("extra_eval based on tibble object with uni_comb argument", {
+  # Based on euclidean distance and dataframe
+  extr <-
+    extra_eval(
+      training_data = sp_pa_2,
+      projection_data = as.data.frame(somevar) %>% as_tibble(),
+      pr_ab = "pr_ab",
+      n_cores = 1,
+      aggreg_factor = 1,
+      metric = "euclidean",
+      univar_comb = TRUE
+    )
+  expect_equal(class(extr)[1], "tbl_df")
+  expect_equal(names(extr)[1:2],c("extrapolation", "univar_comb"))
+})
 
 
 test_that("extra_eval wrong use", {

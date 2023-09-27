@@ -82,6 +82,7 @@ and area for model projection. This function use the Shape metric proposed by xx
 <span>  <span class="va">pr_ab</span>,</span>
 <span>  <span class="va">projection_data</span>,</span>
 <span>  metric <span class="op">=</span> <span class="st">"mahalanobis"</span>,</span>
+<span>  univar_comb <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  aggreg_factor <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -112,6 +113,13 @@ Otherwise, as SpatRaster object.</p></dd>
 </ul></dd>
 
 
+<dt>univar_comb</dt>
+<dd><p>logical. If true, the function will add a layer or column to distinguish
+between univariate (i.e., projection data outside the range of training conditions) and
+combinatorial extrapolation (i.e., projection data within the range of training conditions)
+using values 1 and 2, respectively. Default FALSE</p></dd>
+
+
 <dt>n_cores</dt>
 <dd><p>numeric. Number of cores use for parallelization. Default 1</p></dd>
 
@@ -128,7 +136,7 @@ will be made to the resolution of the environmental variables.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A SpatRaster object with extrapolation values measured in percentage of extrapolation (relative Euclidean distance)</p>
+<p>A SpatRaster object with extrapolation values measured by Shape extrapolation and</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -168,7 +176,7 @@ will be made to the resolution of the environmental variables.</p></dd>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">sp</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>, <span class="co"># selecting number of pseudo-absence points twice number of presences</span></span></span>
+<span class="r-in"><span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="st">"random"</span>,</span></span>
 <span class="r-in"><span>  rlayer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
 <span class="r-in"><span>  calibarea <span class="op">=</span> <span class="va">ca</span></span></span>
@@ -179,8 +187,11 @@ will be made to the resolution of the environmental variables.</p></dd>
 <span class="r-in"><span><span class="va">sp_pa</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get environmental condition of calibration area</span></span></span>
-<span class="r-in"><span><span class="va">sp_pa_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sp_pa</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sp_pa_2</span></span></span>
+<span class="r-in"><span><span class="va">sp_pa_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sp_pa</span>,</span></span>
+<span class="r-in"><span>                       x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>                       y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>                       env_layer <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                       <span class="va">sp_pa_2</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Measure degree of extrapolation based on Mahalanobis and</span></span></span>
 <span class="r-in"><span><span class="co"># for a projection area based on a SpatRaster object</span></span></span>
@@ -212,7 +223,9 @@ will be made to the resolution of the environmental variables.</p></dd>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sorensen"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">predsuit</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_predict.html">sdm_predict</a></span><span class="op">(</span>models <span class="op">=</span> <span class="va">a_model</span>, pred <span class="op">=</span> <span class="va">somevar</span>, thr <span class="op">=</span> <span class="st">"max_sorensen"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">predsuit</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_predict.html">sdm_predict</a></span><span class="op">(</span>models <span class="op">=</span> <span class="va">a_model</span>,</span></span>
+<span class="r-in"><span>                        pred <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>                        thr <span class="op">=</span> <span class="st">"max_sorensen"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">predsuit</span> <span class="co"># list with a raster with two layer</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -236,8 +249,11 @@ will be made to the resolution of the environmental variables.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit_2</span><span class="op">$</span><span class="va">`200`</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Measure degree of extrapolation for projection area</span></span></span>
-<span class="r-in"><span><span class="co"># based on data.frame</span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">####        Measure degree of extrapolation for         ####</span></span></span>
+<span class="r-in"><span><span class="co">####        projection area based on data.frame         ####</span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">extr_df</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">extra_eval</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
@@ -250,6 +266,25 @@ will be made to the resolution of the environmental variables.</p></dd>
 <span class="r-in"><span><span class="va">extr_df</span></span></span>
 <span class="r-in"><span><span class="co"># see 'p_extra()' to explore extrapolation or suitability pattern in the</span></span></span>
 <span class="r-in"><span><span class="co"># environmental and/or geographical space</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">####             Explore Shape metric with              ####</span></span></span>
+<span class="r-in"><span><span class="co">####     univariate and combinatorial extrapolation     ####</span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="va">extr</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">extra_eval</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
+<span class="r-in"><span>    projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>    pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>    n_cores <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>    aggreg_factor <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>    metric <span class="op">=</span> <span class="st">"mahalanobis"</span>,</span></span>
+<span class="r-in"><span>    univar_comb <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">extr</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span><span class="op">)</span> <span class="co"># In the second layer, values equal to 1 and 2</span></span></span>
+<span class="r-in"><span><span class="co"># depict univariate and combinatorial extrapolation, respectively</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
