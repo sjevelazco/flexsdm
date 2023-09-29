@@ -1,6 +1,6 @@
 # flexsdm 1.3.4
 
--   New vignette about how use different tools to explore extrapolation and truncate models [#352]()
+-   New vignette about how use different tools to explore extrapolation and truncate models [#352](https://github.com/sjevelazco/flexsdm/pull/352)
 -   Univariate and combinatorial extrapolation metric added to `extra_eval` to project PCA for other time periods [#351](https://github.com/sjevelazco/flexsdm/commit/301e241b150d75da4aa01accb3127331ca3bdcb4)
 -   Best grid raster names was changed to .part in `part_sblock` and `part_sband`
 -   Improvements in `correct_colinvar` to speed up function when using maxcell argument
