@@ -26,6 +26,8 @@ navbar:
          href: articles/v04_Red_fir_example.html
       -  text: "5. Modeling a rare species"
          href: articles/v05_Rare_species_example.html
+      -  text: "6. Tools to explore extrapolation in SDMs"
+         href: articles/v06_Extrapolation_example.html
     - text: "News"
       icon: fa-newspaper-o
       href: news/index.html
