@@ -294,8 +294,6 @@ extra_eval <-
       env_proj2[i] <- (env_proj2[i] - s_center[i]) / s_scale[i]
     }
 
-    rm(training_data_pr_ab)
-
     # Measure extrapolation - Euclidean distance
     set <- c(seq(1, nrow(env_proj2), 200), nrow(env_proj2) + 1)
 
