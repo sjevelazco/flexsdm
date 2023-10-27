@@ -193,7 +193,7 @@ extra_eval <-
            univar_comb = FALSE,
            n_cores = 1,
            aggreg_factor = 1) {
-    Value <- val <- . <- x <- NULL
+    Value <- val <- . <- x <- extrapolation <- NULL
 
     if (!metric %in% c("euclidean", "mahalanobis")) {
       stop("metric argument must be used with 'euclidean' or 'mahalanobis'")
