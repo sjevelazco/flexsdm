@@ -46,12 +46,28 @@ the same as raster object used in 'projection_data' argument. Default 1, i.e., b
 will be made to the resolution of the environmental variables.}
 }
 \value{
-A SpatRaster object with extrapolation values measured by Shape extrapolation and
+A SpatRaster or tibble object with extrapolation values measured by Shape metric. Also it
+is possible estimate univariate and combinatorial extrapolation metric (see `univar_comb` argument).
 }
 \description{
 Measure extrapolation comparing environmental data used for modeling calibration
-and area for model projection. This function use the Shape metric proposed by xxx et al., in prep
-(EXPERIMENTAL)
+and area for model projection. This function use the Shape metric
+proposed by \href{https://doi.org/10.1111/ecog.06992}{Velazco et al., 2023}
+}
+\details{
+This function measure model extrapolation base on the Shape metric
+(\href{https://doi.org/10.1111/ecog.06992}{Velazco et al., 2023}).
+Shape is a model-agnostic approach that calculates the extrapolation
+degree for a given projection data point by its multivariate distance to the nearest training
+data point. Such distances are relativized by a factor that reflects the dispersion of the
+training data in environmental space. Distinct from other approaches (e.g.,
+MESS-Multivariate Environmental Similarity Surfaces, EO-Environmental Overlap,
+MOP-Mobility-Oriented Parity, EXDET-Extrapolation Detection, or AOA-Area of Applicability),
+Shape incorporates an adjustable threshold to control the binary discrimination between
+acceptable and unacceptable extrapolation degrees (see \code{\link{extra_truncate}}).
+
+See this \href{https://sjevelazco.github.io/flexsdm/articles/v06_Extrapolation_example.html}{vignette at flexsdm website}
+for further details about Shape metric, model truncation, and tools to explore model extrapolation.
 }
 \examples{
 \dontrun{
@@ -194,6 +210,13 @@ extr <-
 extr
 plot(extr) # In the second layer, values equal to 1 and 2
 # depict univariate and combinatorial extrapolation, respectively
+}
+}
+\references{
+\itemize{
+\item Velazco, S.J.E., Brooke, M.R., De Marco Jr., P., Regan, H.M. and Franklin, J. 2023.
+How far can I extrapolate my species distribution model? Exploring Shape, a novel method.
+Ecography: e06992. https://doi.org/10.1111/ecog.06992
 }
 }
 \seealso{
