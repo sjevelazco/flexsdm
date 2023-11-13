@@ -92,10 +92,10 @@ Tools related to models’ geographical predictions, evaluation, and correction.
 Useful tools to visually explore models’ geographical and environemtal predictions, model extrapolation, and partial depnendece plot. 
 
 * `p_pdp()` Create partial dependence plot(s) to explore the marginal effect of predictors on suitability
-* `p_psp()` Create partial dependence surface plot(s) to explore the bivariate marginal effect of predictors on suitability
+* `p_bpdp()` Create partial dependence surface plot(s) to explore the bivariate marginal effect of predictors on suitability
 * `p_extra()` Graphical exploration of extrapolation or suitability pattern in the environmental and geographical space
 * `data_pdp()` Calculate data to construct partial dependence plots
-* `data_psp()` Calculate data to construct partial dependence surface plots
+* `data_bpdp()` Calculate data to construct partial dependence surface plots
 
 ### Installation
 You can install the development version of **flexsdm** from
