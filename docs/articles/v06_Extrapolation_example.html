@@ -105,19 +105,20 @@ models often must extrapolate when predicting habitat suitability under
 novel environmental conditions induced by climate change or predicting
 the spread of an invasive species outside of its native range based on
 the species-environment relationship observed in its native range.</p>
-<p>In <em>flexsdm</em>, we offer a new approach (known as Shape) for
-evaluating the extrapolation and truncating spatial predictions based on
-the degree of extrapolation measured. Shape is a model-agnostic approach
-for calculating the degree of extrapolation for a given projection data
-point by its multivariate distance to the nearest training data point –
-capturing the often complex shape of data within environmental space.
-These distances are then relativized by a factor that reflects the
-dispersion of the training data in environmental space. As implemented
-in <em>flexsdm</em>, the Shape approach also incorporates an adjustable
-threshold to allow for binary discrimination between acceptable and
-unacceptable degrees of extrapolation, based on the user’s needs and
-applications. For more information about Shape metric, we recommend
-reading the article ******.</p>
+<p>In <em>flexsdm</em>, we offer a new approach (known as <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/ecog.06992" class="external-link"><strong>Shape</strong></a>)
+for evaluating the extrapolation and truncating spatial predictions
+based on the degree of extrapolation measured. Shape is a model-agnostic
+approach for calculating the degree of extrapolation for a given
+projection data point by its multivariate distance to the nearest
+training data point – capturing the often complex shape of data within
+environmental space. These distances are then relativized by a factor
+that reflects the dispersion of the training data in environmental
+space. As implemented in <em>flexsdm</em>, the Shape approach also
+incorporates an adjustable threshold to allow for binary discrimination
+between acceptable and unacceptable degrees of extrapolation, based on
+the user’s needs and applications. For more information about Shape
+metric, we recommend reading the article <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/ecog.06992" class="external-link">Velazco
+et al., 2023</a>.</p>
 <p>In this vignette, we will walk through how to evaluate model
 extrapolation for <em>Hesperocyparis stephensonii</em> (Cuyamaca
 cypress), a conifer tree species that is endemic to southern California.
@@ -616,7 +617,10 @@ threshold, the more restricted the habitat suitability patterns, while
 higher values retain a greater amount of suitable habitat. Selecting the
 best threshold will depend on modeling goals and objectives, and .</p>
 <p>Want to learn more about Shape and other extrapolation metrics? Read
-the article *****</p>
+the article “Velazco, S. J. E., Brooke, M. R., De Marco Jr., P., Regan,
+H. M., &amp; Franklin, J. (2023). How far can I extrapolate my species
+distribution model? Exploring Shape, a novel method. <em>Ecography</em>,
+<em>11</em>, e06992. <a href="https://doi.org/10.1111/ecog.06992" class="external-link uri">https://doi.org/10.1111/ecog.06992</a>”</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
