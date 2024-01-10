@@ -11,7 +11,7 @@
 #' the raster files will be saved. If NULL, function will return a SpatRaster object, else, it
 #' will save raster in a given directory. Default NULL
 #'
-#' @importFrom terra rast nlyr writeRaster
+#' @importFrom terra rast nlyr writeRaster tmpFiles
 #'
 #' @return If dir_save is NULL, the function returns a SpatRaster with suitability interpolation for each year.
 #' If dir_save is used, function outputs are saved in the directory
@@ -92,4 +92,5 @@ interp <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL) {
   } else {
     return(rlist)
   }
+  terra::tmpFiles(current = TRUE, orphan = TRUE, old = TRUE, remove = TRUE)
 }
