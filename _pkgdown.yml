@@ -28,6 +28,8 @@ navbar:
          href: articles/v05_Rare_species_example.html
       -  text: "6. Tools to explore extrapolation in SDMs"
          href: articles/v06_Extrapolation_example.html
+    - text: "Package citations"
+      href: pkg_citation.html
     - text: "News"
       icon: fa-newspaper-o
       href: news/index.html
