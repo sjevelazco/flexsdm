@@ -134,7 +134,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
 
 
   if (prj != "+proj=longlat +datum=WGS84") {
-    da <- terra::vect(data, geom = c(x, y), prj)
+    da <- terra::vect(da, geom = c(x, y), prj)
     da <- terra::project(da, "+proj=longlat +datum=WGS84")
     da <- data.frame(terra::geom(da))
     names(da)[names(da) %in% c("x", "y")] <- c(x, y)

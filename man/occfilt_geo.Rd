@@ -4,7 +4,7 @@
 \alias{occfilt_geo}
 \title{Perform geographical filtering on species occurrences}
 \usage{
-occfilt_geo(data, x, y, env_layer, method, prj = NULL)
+occfilt_geo(data, x, y, env_layer, method, prj = "+proj=longlat +datum=WGS84")
 }
 \arguments{
 \item{data}{data.frame. Data.frame or tibble object with presences
@@ -30,7 +30,7 @@ based on a geographical distance criteria.The following methods are available:
 }}
 
 \item{prj}{character. Projection string (PROJ4) for occurrences. Not necessary if
-the projection used is WGS84 ("+proj=longlat +datum=WGS84").}
+the projection used is WGS84 ("+proj=longlat +datum=WGS84"). Default "+proj=longlat +datum=WGS84"}
 }
 \value{
 A tibble object with data filtered geographically
