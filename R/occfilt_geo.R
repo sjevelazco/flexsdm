@@ -22,7 +22,7 @@
 #'   Usage method: method = c('defined', d = 300).
 #' }
 #' @param prj character. Projection string (PROJ4) for occurrences. Not necessary if
-#' the projection used is WGS84 ("+proj=longlat +datum=WGS84").
+#' the projection used is WGS84 ("+proj=longlat +datum=WGS84"). Default "+proj=longlat +datum=WGS84"
 #'
 #' @return
 #' A tibble object with data filtered geographically
@@ -127,9 +127,10 @@
 #'
 #' @seealso \code{\link{occfilt_env}}
 #'
-occfilt_geo <- function(data, x, y, env_layer, method, prj = NULL) {
-  data0 <- data
-  data <- data[c(x, y)]
+occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +datum=WGS84") {
+  da <- data0 <- data
+  rm(data)
+  da <- da[c(x, y)]
 
 
   if (prj != "+proj=longlat +datum=WGS84") {
