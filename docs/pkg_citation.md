@@ -9,6 +9,12 @@ We use this space to list published peer-review papers that cited *flexsdm* pack
 
 ------------------------------------------------------------------------
 
+**2024**
+
+1.  Kougioumoutzis, K., Tsakiri, M., Kokkoris, I.P., Trigas, P., Iatrou, G., Lamari, F.N., Tzanoudakis, D., Koumoutsou, E., Dimopoulos, P., Strid, A., Panitsa, M., (2024). Assessing the vulnerability of medicinal and aromatic plants to climate and land-use changes in a Mediterranean biodiversity hotspot. Land 13, 133. <https://doi.org/10.3390/land13020133>
+
+2.  Rodriguez, C.S., Rose, M.B., Velazco, S.J.E., Franklin, J., Larios, L., (2024). High potential for Brassica tournefortii spread in North American introduced range, despite highly conserved niche. Biological Invasions 26, 337–351. <https://doi.org/10.1007/s10530-023-03176-3>
+
 **2023**
 
 1.  Velazco, S. J. E., Brooke, M. R., De Marco Jr., P., Regan, H. M., & Franklin, J. (2023). How far can I extrapolate my species distribution model? Exploring Shape, a novel method. *Ecography*, e06992. <https://doi.org/10.1111/ecog.06992>
@@ -33,15 +39,13 @@ We use this space to list published peer-review papers that cited *flexsdm* pack
 
 11. Kokkoris, I. P., Kougioumoutzis, K., Charalampopoulos, I., Apostolidis, E., Apostolidis, I., Strid, A., & Dimopoulos, P. (2023). Conservation Responsibility for Priority Habitats under Future Climate Conditions: A Case Study on Juniperus drupacea Forests in Greece. *Land*, *12*(11), 1976. <https://doi.org/10.3390/land12111976>
 
-12. Rodriguez, C. S., Rose, M. B., Velazco, S. J. E., Franklin, J., & Larios, L. (2023). High potential for Brassica tournefortii spread in North American introduced range, despite highly conserved niche. *Biological Invasions*. <https://doi.org/10.1007/s10530-023-03176-3>
+12. Wang, X., Xu, Q., & Liu, J. (2023). Determining representative pseudo-absences for invasive plant distribution modeling based on geographic similarity. *Frontiers in Ecology and Evolution*, *11*, 1193602. <https://doi.org/10.3389/fevo.2023.1193602>
 
-13. Wang, X., Xu, Q., & Liu, J. (2023). Determining representative pseudo-absences for invasive plant distribution modeling based on geographic similarity. *Frontiers in Ecology and Evolution*, *11*, 1193602. <https://doi.org/10.3389/fevo.2023.1193602>
+13. Tytar, V., Nekrasova, O., Pupins, M., Skute, A., Kirjušina, M., Gravele, E., Mezaraupe, L., Marushchak, O., Čeirāns, A., Kozynenko, I., & Kulikova, A. A. (2023). Modeling the Distribution of the Chytrid Fungus Batrachochytrium dendrobatidis with Special Reference to Ukraine. *Journal of Fungi*, *9*(6), 607. <https://doi.org/10.3390/jof9060607>
 
-14. Tytar, V., Nekrasova, O., Pupins, M., Skute, A., Kirjušina, M., Gravele, E., Mezaraupe, L., Marushchak, O., Čeirāns, A., Kozynenko, I., & Kulikova, A. A. (2023). Modeling the Distribution of the Chytrid Fungus Batrachochytrium dendrobatidis with Special Reference to Ukraine. *Journal of Fungi*, *9*(6), 607. <https://doi.org/10.3390/jof9060607>
+14. Moura, M. R., Paolucci, L. N., Silva, D. P., & Santos, B. A. (2023). Pervasive impacts of climate change on the woodiness and ecological generalism of dry forest plant assemblages. *Journal of Ecology*, *111*(8), 1762-1776. <https://doi.org/10.1111/1365-2745.14139>
 
-15. Moura, M. R., Paolucci, L. N., Silva, D. P., & Santos, B. A. (2023). Pervasive impacts of climate change on the woodiness and ecological generalism of dry forest plant assemblages. *Journal of Ecology*, *111*(8), 1762-1776. <https://doi.org/10.1111/1365-2745.14139>
-
-16. Zhang, X., Huang, Q., Liu, P., Sun, C., Papa, R. D., Sanoamuang, L., Dumont, H. J., & Han, B. (2023). Geography, ecology, and history synergistically shape across-range genetic variation in a calanoid copepod endemic to the north-eastern Oriental. *Evolution*, *77*(2), 422-436. <https://doi.org/10.1093/evolut/qpac043>
+15. Zhang, X., Huang, Q., Liu, P., Sun, C., Papa, R. D., Sanoamuang, L., Dumont, H. J., & Han, B. (2023). Geography, ecology, and history synergistically shape across-range genetic variation in a calanoid copepod endemic to the north-eastern Oriental. *Evolution*, *77*(2), 422-436. <https://doi.org/10.1093/evolut/qpac043>
 
 **2022**
 
