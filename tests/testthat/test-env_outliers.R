@@ -21,8 +21,8 @@ test_that("test with sp > and < 15 occurrences", {
     env_layer = somevar
   )
 
-  expect_equal(ncol(outs_1 %>% select(starts_with("."))), 7)
-  expect_equal(sum(outs_1$.out_sum, na.rm = TRUE), 13)
+  expect_equal(ncol(outs_1 %>% select(starts_with("."))), 6)
+  expect_equal(sum(outs_1$.out_sum, na.rm = TRUE), 11)
 })
 
 
@@ -49,8 +49,8 @@ test_that("test with dataset  with < 15 occurrences and only presence", {
     id = "idd",
     env_layer = somevar
   )
-  expect_equal(ncol(outs_2 %>% select(starts_with("."))), 7)
-  expect_equal(sum(outs_2$.out_lof, na.rm = TRUE), 1)
+  expect_equal(ncol(outs_2 %>% select(starts_with("."))), 6)
+  expect_equal(sum(outs_2$.out_rfout, na.rm = TRUE), 1)
 })
 
 
@@ -77,7 +77,7 @@ test_that("test NA filtering ", {
     env_layer = somevar
   )
 
-  expect_equal(sum(colSums(is.na(outs_1 %>% select(starts_with("."))))), 7)
+  expect_equal(sum(colSums(is.na(outs_1 %>% select(starts_with("."))))), 6)
 })
 
 
@@ -108,3 +108,4 @@ test_that("test with occurrences fewer than 6", {
     na.omit()
   expect_true(all(colSums(outs_1.1 == 0) == 4))
 })
+

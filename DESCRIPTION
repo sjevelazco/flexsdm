@@ -33,7 +33,6 @@ Imports:
     nnet,
     randomForest,
     spThin,
-    Rlof,
     terra (>= 1.5-21),
     methods,
     utils,

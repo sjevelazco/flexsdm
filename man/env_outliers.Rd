@@ -28,7 +28,6 @@ A tibble object with the same database used in 'data' argument and with seven ad
   \item .out_svm: outliers detected with Support Vector Machine method
   \item .out_rf: outliers detected with Random Forest method
   \item .out_rfout: outliers detected with Random Forest Outliers method
-  \item .out_lof: outliers detected with Local outlier factor  method
   \item .out_sum: frequency of a presences records was detected as outliers
   based on the previews methods (values between 0 and 6).
   }
