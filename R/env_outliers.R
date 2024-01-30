@@ -32,7 +32,6 @@
 #'   \item .out_svm: outliers detected with Support Vector Machine method
 #'   \item .out_rf: outliers detected with Random Forest method
 #'   \item .out_rfout: outliers detected with Random Forest Outliers method
-#'   \item .out_lof: outliers detected with Local outlier factor  method
 #'   \item .out_sum: frequency of a presences records was detected as outliers
 #'   based on the previews methods (values between 0 and 6).
 #'   }
@@ -54,7 +53,6 @@
 #' @importFrom grDevices boxplot.stats
 #' @importFrom kernlab ksvm predict
 #' @importFrom randomForest randomForest outlier
-#' @importFrom Rlof lof
 #' @importFrom stats quantile
 #' @importFrom terra extract
 #'
@@ -165,7 +163,6 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
       .out_svm = 0,
       .out_rf = 0,
       .out_rfout = 0,
-      .out_lof = 0,
       .out_sum = 0
     )
 
@@ -266,24 +263,24 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
     rm(rf)
 
     #### Local outliers factor ####
-    if (nrow(sp_env_1) < 15) {
-      ot <- rep(NA, nrow(sp_env_1))
-      wii = 2
-      while (any(is.na(ot))) {
-        ot <- Rlof::lof(sp_env_1[-1], k = wii, cores = 1)
-        wii <- wii + 1
-      }
-    } else {
-      ot <- rep(NA, nrow(sp_env_1))
-      wii=15
-      while(any(is.na(ot))){
-        ot <- Rlof::lof(sp_env_1[-1], k = ifelse(wii>= nrow(sp_env_1),  nrow(sp_env_1)-1, wii), cores = 1)
-        wii <- wii + 5
-      }
-    }
-    occ_sp_01[occ_sp_01$id %in% sp_env_1$id, ".out_lof"] <-
-      as.integer(ot > stats::quantile(ot, probs = seq(0, 1, 0.05))[20])
-    rm(ot)
+    # if (nrow(sp_env_1) < 15) {
+    #   ot <- rep(NA, nrow(sp_env_1))
+    #   wii = 2
+    #   while (any(is.na(ot))) {
+    #     ot <- Rlof::lof(sp_env_1[-1], k = wii, cores = 1)
+    #     wii <- wii + 1
+    #   }
+    # } else {
+    #   ot <- rep(NA, nrow(sp_env_1))
+    #   wii=15
+    #   while(any(is.na(ot))){
+    #     ot <- Rlof::lof(sp_env_1[-1], k = ifelse(wii>= nrow(sp_env_1),  nrow(sp_env_1)-1, wii), cores = 1)
+    #     wii <- wii + 5
+    #   }
+    # }
+    # occ_sp_01[occ_sp_01$id %in% sp_env_1$id, ".out_lof"] <-
+    #   as.integer(ot > stats::quantile(ot, probs = seq(0, 1, 0.05))[20])
+    # rm(ot)
 
     # Summary outliers
     occ_sp_01[, ".out_sum"] <-
