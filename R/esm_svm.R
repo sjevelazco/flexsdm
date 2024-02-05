@@ -105,6 +105,11 @@ esm_svm <- function(data,
   . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
+  # N of predictor requirement
+  if (length(predictors) <= 2) {
+    stop("The 'esm_' family function should be used to build models with more than 2 predictors, use the 'fit_' or 'tune_' family functions instead")
+  }
+
   # Formula
   formula1 <- utils::combn(variables, 2)
   nms <- apply(utils::combn(variables, 2), 2, function(x) paste(x, collapse = "_")) %>%

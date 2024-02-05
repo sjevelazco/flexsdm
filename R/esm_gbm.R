@@ -112,6 +112,12 @@ esm_gbm <- function(data,
   . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
+
+  # N of predictor requirement
+  if (length(predictors) <= 2) {
+    stop("The 'esm_' family function should be used to build models with more than 2 predictors, use the 'fit_' or 'tune_' family functions instead")
+  }
+
   if (is.null(n_minobsinnode)) {
     n_minobsinnode <- as.integer(nrow(data) * 0.5 / 4)
   }
