@@ -158,6 +158,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
   if (sum(!filt) > 0) {
     message(sum(!filt), " records were removed because they have NAs for some variables")
     da <- da[filt, ]
+    data0 <- data0[filt, ]
     coord <- coord[filt, ]
     env <- env[filt, ]
   }
@@ -234,6 +235,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
       }) == max(sapply(occT, function(x) {
         nrow(x)
       })))[1]]]
+    colnames(occT) <- c(x, y)
     occT <- as.integer(row.names(occT))
 
     # Select Thinned Occurrences
@@ -299,15 +301,13 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
         )
     ))
     occT <-
-      occT[[which(sapply(occT, function(x) {
+      occT[[which.max(sapply(occT, function(x) {
         nrow(x)
-      }) == max(sapply(occT, function(x) {
-        nrow(x)
-      })))[1]]]
-    occT <- as.integer(row.names(occT))
+      }))[1]]]
+    colnames(occT) <- c(x, y)
 
     # Select Thinned Occurrences
-    coord_filter <- data0[occT, ]
+    coord_filter <- data0[which(data0[,x]%in%occT[,x] & data0[,y]%in%occT[,y]), ]
     message("Distance threshold(km): ", round(as.numeric(method["d"]), 3))
     message("Number of filtered records: ", nrow(coord_filter))
   }
