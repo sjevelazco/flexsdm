@@ -1,3 +1,7 @@
+# flexsdm 1.3.5
+
+-   occfilt_geo has a new argument "rep" to control number o repetition to filter occurrences
+
 # flexsdm 1.3.4
 
 -   rgeos was removed from dependencies [#356](https://github.com/sjevelazco/flexsdm/pull/356)
