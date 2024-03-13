@@ -23,6 +23,7 @@
 #' }
 #' @param prj character. Projection string (PROJ4) for occurrences. Not necessary if
 #' the projection used is WGS84 ("+proj=longlat +datum=WGS84"). Default "+proj=longlat +datum=WGS84"
+#' @param reps integer. Number of times to repeat the thinning process. Default 20
 #'
 #' @return
 #' A tibble object with data filtered geographically
@@ -127,7 +128,7 @@
 #'
 #' @seealso \code{\link{occfilt_env}}
 #'
-occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +datum=WGS84") {
+occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +datum=WGS84", reps = 20) {
   da <- data0 <- data
   rm(data)
   da <- da[c(x, y)]
@@ -223,7 +224,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
           long.col = x,
           spec.col = ".spp",
           thin.par = d,
-          reps = 20,
+          reps = reps,
           write.files = FALSE,
           locs.thinned.list.return = TRUE,
           write.log.file = FALSE
@@ -263,7 +264,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
           long.col = x,
           spec.col = ".spp",
           thin.par = distance,
-          reps = 20,
+          reps = reps,
           write.files = FALSE,
           locs.thinned.list.return = TRUE,
           write.log.file = FALSE
@@ -294,7 +295,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
           long.col = x,
           spec.col = ".spp",
           thin.par = as.numeric(method["d"]),
-          reps = 20,
+          reps = reps,
           write.files = FALSE,
           locs.thinned.list.return = TRUE,
           write.log.file = FALSE
