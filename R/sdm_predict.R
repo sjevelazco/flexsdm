@@ -748,7 +748,8 @@ sdm_predict <-
         as.numeric() # get performance of esm
 
       ensemble_c <-
-        terra::app(model_c * weight_data, fun = mean, cores = 1)
+        terra::app(model_c * weight_data, fun = sum, cores = 1)
+      ensemble_c <- ensemble_c/sum(weight_data)
       names(ensemble_c) <- paste0("esm_", unique(names(model_c)))
 
       model_c <- list(ensemble_c)

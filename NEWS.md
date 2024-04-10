@@ -1,5 +1,6 @@
 # flexsdm 1.3.5
 
+-   esm_ family function was improved and debugged 
 -   occfilt_geo has a new argument "rep" to control number o repetition to filter occurrences
 
 # flexsdm 1.3.4
