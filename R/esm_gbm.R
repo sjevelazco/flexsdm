@@ -195,19 +195,23 @@ esm_gbm <- function(data,
       as.double())
   })
 
-  data_ens2 <-
-    dplyr::inner_join(data_ens[[1]],
-      data_ens[[2]],
-      by = c("rnames", "replicates", "part", "pr_ab")
-    )
-  if (length(data_ens) > 2) {
-    for (i in 3:length(data_ens)) {
-      data_ens2 <-
-        dplyr::inner_join(data_ens2,
-          data_ens[[i]],
-          by = c("rnames", "replicates", "part", "pr_ab")
-        )
+  if(length(data_ens) > 1){
+    data_ens2 <-
+      dplyr::inner_join(data_ens[[1]],
+                        data_ens[[2]],
+                        by = c("rnames", "replicates", "part", "pr_ab")
+      )
+    if (length(data_ens) > 2) {
+      for (i in 3:length(data_ens)) {
+        data_ens2 <-
+          dplyr::inner_join(data_ens2,
+                            data_ens[[i]],
+                            by = c("rnames", "replicates", "part", "pr_ab")
+          )
+      }
     }
+  } else {
+    data_ens2 <- data_ens[[1]]
   }
   rm(data_ens)
 
