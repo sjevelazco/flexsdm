@@ -4,7 +4,14 @@
 \alias{correct_colinvar}
 \title{Collinearity reduction of predictor variables}
 \usage{
-correct_colinvar(env_layer, method, proj = NULL, maxcell = NULL)
+correct_colinvar(
+  env_layer,
+  method,
+  proj = NULL,
+  restric_to_region = NULL,
+  restric_pca_proj = FALSE,
+  maxcell = NULL
+)
 }
 \arguments{
 \item{env_layer}{SpatRaster An object of class SpatRaster containing the predictors.
@@ -26,6 +33,10 @@ provide a vector for this argument. The next methods are implemented:
 
 \item{proj}{character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
 scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)}
+
+\item{restric_to_region}{SpatVector. Area used to restrict cells of env_layer at moment to perform collinearity reduction.}
+
+\item{restric_pca_proj}{logical. Area used to restrict geographically PCA projection within SpatVector used in restric_to_region. Only use for PCA analysis. default: FALSE.}
 
 \item{maxcell}{numeric. Number of raster cells to be randomly sampled. Taking a sample could be
 useful to reduce memory usage for large rasters. If NULL, the function will use all
@@ -165,6 +176,49 @@ var$number_factors
 var$removed_variables
 var$uniqueness
 var$loadings
+
+##\%######################################################\%##
+#                                                          #
+####            Other option to perform PCA             ####
+####      considering cell restricted to a region       ####
+#                                                          #
+##\%######################################################\%##
+
+# Define a calibration area
+abies2 <- abies \%>\%
+  dplyr::select(x, y, pr_ab) \%>\%
+  dplyr::filter(pr_ab==1)
+
+plot(somevar[[1]])
+points(abies2[-3])
+ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs=crs(somevar))
+plot(ca, add=T)
+
+# Full geographical range to perform PCA
+pca_fr <- correct_colinvar(env_layer = somevar ,
+                           method = c("pca"),
+                           maxcell = NULL,
+                           restric_to_region = NULL,
+                           restric_pca_proj = FALSE)
+
+# Perform PCA only with cell delimited by polygon used in restric_to_region
+pca_rr <- correct_colinvar(env_layer = somevar ,
+                           method = c("pca"),
+                           maxcell = NULL,
+                           restric_to_region = ca,
+                           restric_pca_proj = FALSE)
+
+# Perform and predicted PCA only with cell delimited by polygon used in restric_to_region
+pca_rrp <- correct_colinvar(env_layer = somevar ,
+                            method = c("pca"),
+                            maxcell = NULL,
+                            restric_to_region = ca,
+                            restric_pca_proj = TRUE)
+
+plot(pca_fr$env_layer) # PCA with all cells
+plot(pca_rr$env_layer) # PCA with calibration area cell but predicted for entire region
+plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibration area (ca)
+
 }
 
 }
