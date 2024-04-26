@@ -16,6 +16,8 @@
 #'   Usage method = c('pca').
 #'   \item fa: Perform a Factorial Analysis and select, from the original predictors, the number of factors is defined by Broken-Stick and variables with the highest correlation to the factors are selected.  Usage method = c('fa').
 #' }
+#' @param restric_to_region SpatVector. Area used to restrict cells of env_layer at moment to perform collinearity reduction. Default: NULL.
+#' @param restric_pca_proj logical. Area used to restrict geographically PCA projection within SpatVector used in restric_to_region. Only use for PCA analysis. Default: FALSE.
 #' @param proj character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
 #' scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)
 #' @param maxcell numeric. Number of raster cells to be randomly sampled. Taking a sample could be
@@ -157,11 +159,56 @@
 #' var$removed_variables
 #' var$uniqueness
 #' var$loadings
+#'
+#' ##%######################################################%##
+#' #                                                          #
+#' ####            Other option to perform PCA             ####
+#' ####      considering cell restricted to a region       ####
+#' #                                                          #
+#' ##%######################################################%##
+#'
+#' # Define a calibration area
+#' abies2 <- abies %>%
+#'   dplyr::select(x, y, pr_ab) %>%
+#'   dplyr::filter(pr_ab==1)
+#'
+#' plot(somevar[[1]])
+#' points(abies2[-3])
+#' ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs=crs(somevar))
+#' plot(ca, add=T)
+#'
+#' # Full geographical range to perform PCA
+#' pca_fr <- correct_colinvar(env_layer = somevar ,
+#'                            method = c("pca"),
+#'                            maxcell = NULL,
+#'                            restric_to_region = NULL,
+#'                            restric_pca_proj = FALSE)
+#'
+#' # Perform PCA only with cell delimited by polygon used in restric_to_region
+#' pca_rr <- correct_colinvar(env_layer = somevar ,
+#'                            method = c("pca"),
+#'                            maxcell = NULL,
+#'                            restric_to_region = ca,
+#'                            restric_pca_proj = FALSE)
+#'
+#' # Perform and predicted PCA only with cell delimited by polygon used in restric_to_region
+#' pca_rrp <- correct_colinvar(env_layer = somevar ,
+#'                             method = c("pca"),
+#'                             maxcell = NULL,
+#'                             restric_to_region = ca,
+#'                             restric_pca_proj = TRUE)
+#'
+#' plot(pca_fr$env_layer) # PCA with all cells
+#' plot(pca_rr$env_layer) # PCA with calibration area cell but predicted for entire region
+#' plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibration area (ca)
+#'
 #' }
 #'
 correct_colinvar <- function(env_layer,
                              method,
                              proj = NULL,
+                             restric_to_region = NULL,
+                             restric_pca_proj = FALSE,
                              maxcell = NULL) {
   . <- NULL
   if (!any(c("pearson", "vif", "pca", "fa") %in% method)) {
@@ -173,8 +220,18 @@ correct_colinvar <- function(env_layer,
   if (class(env_layer)[1] != "SpatRaster") {
     env_layer <- terra::rast(env_layer)
   }
+  if (!is.null(restric_to_region)) {
+    if(any(method %in% c("pca", "fa"))){
+      env_layer_constr <- env_layer %>%
+        terra::crop(., restric_to_region) %>%
+        terra::mask(., restric_to_region)
+    } else {
+      env_layer <- env_layer_constr
+    }
+  }
 
   if (any(method %in% "pearson")) {
+
     if (is.na(method["th"])) {
       th <- 0.7
     } else {
@@ -208,6 +265,7 @@ correct_colinvar <- function(env_layer,
   }
 
   if (any(method %in% "vif")) {
+
     if (is.null(method["th"])) {
       th <- 10
     } else {
@@ -274,6 +332,14 @@ correct_colinvar <- function(env_layer,
 
   if (any(method %in% "pca")) {
 
+    # Restrict cells if required
+    if (!is.null(restric_to_region)) {
+      env_layer_original <- env_layer
+      env_layer <- env_layer_constr
+    } else {
+      env_layer_original <- env_layer
+    }
+
     # mean
     means <- t(terra::global(env_layer, 'mean', na.rm=T)) %>% c()
     names(means) <- names(env_layer)
@@ -314,7 +380,20 @@ correct_colinvar <- function(env_layer,
 
     # p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
     p <- stats::prcomp(p0, retx = TRUE, scale. = FALSE, center = FALSE, rank. = naxis)
-    env_layer <- terra::predict(env_layer, p)
+
+    # env_layer <- terra::predict(env_layer, p)
+    if(restric_pca_proj & is.null(restric_to_region)){
+      message("No data was provided to 'restric_to_region' argument, so no geographical restriction will be applied to PCA projections")
+      restric_pca_proj = FALSE
+    }
+    if(restric_pca_proj){
+      env_layer <- terra::predict(env_layer, p)
+    } else {
+      env_layer_original <- terra::scale(env_layer_original,
+                                         center = means,
+                                         scale = stds)
+      env_layer <- terra::predict(env_layer_original, p)
+    }
 
     rm(p0)
 
@@ -337,6 +416,13 @@ correct_colinvar <- function(env_layer,
       for (i in 1:length(proj)) {
         scen <- terra::rast(list.files(proj[i], full.names = TRUE))
         scen <- scen[[names(means)]]
+
+        if(restric_pca_proj){
+          scen <- scen %>%
+            terra::crop(., restric_to_region) %>%
+            terra::mask(., restric_to_region)
+        }
+
         scen <- terra::scale(scen, center = means, scale = stds)
         scen <- terra::predict(scen, p)
         terra::writeRaster(
@@ -351,6 +437,7 @@ correct_colinvar <- function(env_layer,
   }
 
   if (any(method %in% "fa")) {
+
     p <- terra::scale(env_layer, center = TRUE, scale = TRUE)
 
     if(is.null(maxcell)){

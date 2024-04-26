@@ -1,7 +1,8 @@
 # flexsdm 1.3.5
 
+- it is possible to restrict the cell used to perform collinearity reduction analysis to a geographical area smaller than the full extent of environmental variables in [`correct_clinvar()`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.html)
 -   esm_ family function was improved and debugged 
--   occfilt_geo has a new argument "rep" to control number o repetition to filter occurrences
+-   `occfilt_geo` has a new argument "rep" to control number o repetition to filter occurrences
 
 # flexsdm 1.3.4
 
