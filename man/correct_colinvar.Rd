@@ -8,6 +8,7 @@ correct_colinvar(
   env_layer,
   method,
   proj = NULL,
+  save_proj = NULL,
   restric_to_region = NULL,
   restric_pca_proj = FALSE,
   maxcell = NULL
@@ -34,9 +35,11 @@ provide a vector for this argument. The next methods are implemented:
 \item{proj}{character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
 scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)}
 
-\item{restric_to_region}{SpatVector. Area used to restrict cells of env_layer at moment to perform collinearity reduction.}
+\item{save_proj}{character. Directory to save PCA projection. Default NULL.}
 
-\item{restric_pca_proj}{logical. Area used to restrict geographically PCA projection within SpatVector used in restric_to_region. Only use for PCA analysis. default: FALSE.}
+\item{restric_to_region}{SpatVector. Area used to restrict cells of env_layer at moment to perform collinearity reduction. Default: NULL.}
+
+\item{restric_pca_proj}{logical. Area used to restrict geographically PCA projection within SpatVector used in restric_to_region. Only use for PCA analysis. Default: FALSE.}
 
 \item{maxcell}{numeric. Number of raster cells to be randomly sampled. Taking a sample could be
 useful to reduce memory usage for large rasters. If NULL, the function will use all
