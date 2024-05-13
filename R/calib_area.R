@@ -22,7 +22,7 @@
 #'
 #' @importFrom grDevices chull
 #' @importFrom methods as is
-#' @importFrom terra vect buffer aggregate union crs extract
+#' @importFrom terra vect buffer aggregate union crs extract is.related
 #'
 #' @examples
 #' \dontrun{
@@ -210,8 +210,9 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     data <- data[, c("x", "y")]
     data_sp <- data
     data_sp <- terra::vect(data_sp, geom = names(data_sp), crs = terra::crs(polyc))
-    result <- terra::extract(polyc, data_sp)[, cname] %>% unique()
-    result <- polyc[polyc[[cname]][, 1] %in% result, ]
+
+    result <- polyc[terra::is.related(polyc, data_sp, "intersects"), cname]
+    # result <- polyc[polyc[[cname]][, 1] %in% result, ]
   }
   return(result)
 }
