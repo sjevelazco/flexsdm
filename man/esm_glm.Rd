@@ -37,11 +37,11 @@ Usage predictors = c("aet", "cwd", "tmin").}
   }
 If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 
-\item{poly}{interger >= 2. If used with values >= 2 model will use polynomials
+\item{poly}{integer >= 2. If used with values >= 2 model will use polynomials
 for those continuous variables (i.e. used in predictors argument). Default is 0. Because ESM are
 constructed with few occurrences it is recommended no to use polynomials to avoid overfitting.}
 
-\item{inter_order}{interger >= 0. The interaction order between explanatory variables.
+\item{inter_order}{integer >= 0. The interaction order between explanatory variables.
 Default is 0. Because ESM are constructed with few occurrences it is recommended not to use interaction terms.}
 }
 \value{

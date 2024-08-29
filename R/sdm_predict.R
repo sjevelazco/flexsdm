@@ -8,7 +8,7 @@
 #' @param models list of one or more models fitted with fit_ or tune_ functions. In case use models fitted with fit_ensemble or esm_ family function only one model could be used. Usage models = mglm or models = list(mglm, mraf, mgbm)
 #' @param pred SpatRaster. Raster layer with predictor variables. Names of layers must exactly
 #' match those used in model fitting.
-#' @param nchunk interger. Number of chunks to split data used to predict models (i.e., SpatRaster
+#' @param nchunk integer. Number of chunks to split data used to predict models (i.e., SpatRaster
 #' used in pred argument). Predicting models in chunks helps reduce memory requirements in cases
 #' where models are predicted for large scales and high resolution. Default = 1
 #' @param thr character. Threshold used to get binary suitability values (i.e., 0,1). It is possible

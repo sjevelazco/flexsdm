@@ -21,7 +21,7 @@ sdm_predict(
 \item{pred}{SpatRaster. Raster layer with predictor variables. Names of layers must exactly
 match those used in model fitting.}
 
-\item{nchunk}{interger. Number of chunks to split data used to predict models (i.e., SpatRaster
+\item{nchunk}{integer. Number of chunks to split data used to predict models (i.e., SpatRaster
 used in pred argument). Predicting models in chunks helps reduce memory requirements in cases
 where models are predicted for large scales and high resolution. Default = 1}
 

@@ -1,225 +1,77 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/404.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/articles/v01_pre_modeling.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/articles/v02_modeling.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/articles/v03_post_modeling.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/articles/v04_Red_fir_example.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/articles/v05_Rare_species_example.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/articles/v06_Extrapolation_example.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/googlebe3256cf67d92c55.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/pkg_citation/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/pkg_citation.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/abies.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/backg.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/calib_area.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/data_bpdp.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/data_pdp.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/data_psp.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/env_outliers.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/esm_gam.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/esm_gau.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/esm_gbm.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/esm_glm.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/esm_max.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/esm_net.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/esm_svm.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/extra_correct.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/extra_eval.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/extra_exclude.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/extra_truncate.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_gam.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_gau.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_gbm.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_glm.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_max.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_net.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_raf.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/fit_svm.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/get_block.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/hespero.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/homogenize_na.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/interp.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/msdm_posteriori.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/msdm_priori.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_env.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/part_random.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/part_sband.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/part_sblock.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/part_senv.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/pdp_data.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/plot_res.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/p_bpdp.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/p_extra.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/p_pdp.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/p_psp.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/sample_background.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/sdm_directory.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/sdm_eval.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/sdm_extract.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/sdm_summarize.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/spp.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/tune_gbm.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/tune_max.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/tune_net.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/tune_raf.html</loc>
-  </url>
-  <url>
-    <loc>https://sjevelazco.github.io/flexsdm/reference/tune_svm.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://sjevelazco.github.io/flexsdm/404.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/articles/index.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/articles/v01_pre_modeling.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/articles/v02_modeling.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/articles/v03_post_modeling.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/articles/v04_Red_fir_example.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/articles/v05_Rare_species_example.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/articles/v06_Extrapolation_example.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/authors.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/googlebe3256cf67d92c55.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/index.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/news/index.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/pkg_citation/index.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/pkg_citation.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/abies.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/backg.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/calib_area.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/data_bpdp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/data_pdp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/data_psp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/env_outliers.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/esm_gam.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/esm_gau.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/esm_gbm.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/esm_glm.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/esm_max.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/esm_net.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/esm_svm.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/extra_correct.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/extra_eval.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/extra_exclude.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/extra_truncate.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_gam.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_gau.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_gbm.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_glm.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_max.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_net.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_raf.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/fit_svm.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/get_block.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/hespero.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/homogenize_na.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/index.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/interp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/msdm_posteriori.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/msdm_priori.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_env.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/part_random.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/part_sband.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/part_sblock.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/part_senv.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/pdp_data.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/plot_res.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_bpdp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_extra.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_pdp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_psp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/sample_background.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/sdm_directory.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/sdm_eval.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/sdm_extract.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/sdm_summarize.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/spp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/tune_gbm.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/tune_max.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/tune_net.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/tune_raf.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/tune_svm.html</loc></url>
 </urlset>
+

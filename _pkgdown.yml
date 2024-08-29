@@ -10,8 +10,10 @@ template:
 # navbar setting
 navbar:
   left:
-    - icon: fa-home
+    - text: Home
+      icon: fa-home
       href: index.html
+      aria-label: Home
     - text: "Functions"
       href: reference/index.html
     - text: "Articles"
@@ -33,6 +35,9 @@ navbar:
     - text: "News"
       icon: fa-newspaper-o
       href: news/index.html
+    - text: GitHub
+      href: https://sjevelazco.github.io/flexsdm
+      aria-label: GitHub
 
 components:
     home: ~
