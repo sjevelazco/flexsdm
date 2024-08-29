@@ -15,7 +15,7 @@ Species distribution modeling has become a standard tool in several research are
 The function of **flexsdm** package are organized into three major modeling steps
 
 
-![](https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.svg)
+<a href='https://sjevelazco.github.io/flexsdm'><img src="https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.svg" align="centre" height="550"/></a>
 
 ### 1. Pre-modeling functions 
 Set tools that prepare modeling input data (e.g., species occurrences thinning, sample pseudo-absences or background points, delimitation of calibration area). 
