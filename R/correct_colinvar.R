@@ -223,15 +223,18 @@ correct_colinvar <- function(env_layer,
     env_layer <- terra::rast(env_layer)
   }
   if (!is.null(restric_to_region)) {
-    if(any(method %in% c("pca", "fa"))){
+    if(any(method %in% c("pca"))){
       env_layer_constr <- env_layer %>%
         terra::crop(., restric_to_region) %>%
         terra::mask(., restric_to_region)
     } else {
-      env_layer <- env_layer_constr
+      env_layer <- env_layer %>%
+        terra::crop(., restric_to_region) %>%
+        terra::mask(., restric_to_region)
     }
   }
 
+  #### VIF ####
   if (any(method %in% "pearson")) {
 
     if (is.na(method["th"])) {
@@ -266,6 +269,7 @@ correct_colinvar <- function(env_layer,
     )
   }
 
+  #### Peason ####
   if (any(method %in% "vif")) {
 
     if (is.null(method["th"])) {
@@ -332,12 +336,14 @@ correct_colinvar <- function(env_layer,
     )
   }
 
+  #### PCA ####
   if (any(method %in% "pca")) {
 
     # Restrict cells if required
     if (!is.null(restric_to_region)) {
       env_layer_original <- env_layer
       env_layer <- env_layer_constr
+      rm(env_layer_constr)
     } else {
       env_layer_original <- env_layer
     }
@@ -367,10 +373,10 @@ correct_colinvar <- function(env_layer,
     }
 
     p <- stats::prcomp(p0,
-                         retx = TRUE,
-                         scale. = FALSE,
-                         center = FALSE
-                       )
+                       retx = TRUE,
+                       scale. = FALSE,
+                       center = FALSE
+    )
     cof <- p$rotation
 
     cvar <- summary(p)$importance["Cumulative Proportion", ]
@@ -443,9 +449,10 @@ correct_colinvar <- function(env_layer,
     }
   }
 
+  #### FA ####
   if (any(method %in% "fa")) {
-
     p <- terra::scale(env_layer, center = TRUE, scale = TRUE)
+
 
     if(is.null(maxcell)){
       p <- terra::as.data.frame(p, xy = FALSE, na.rm = TRUE)
@@ -459,9 +466,9 @@ correct_colinvar <- function(env_layer,
         stats::na.omit()
     }
 
-    if (nrow(p) > 200000) {
-      p <- p[sample(1:nrow(p), 200000), ]
-    }
+    # if (nrow(p) > 200000) {
+    #   p <- p[sample(1:nrow(p), 200000), ]
+    # }
 
     e <- eigen(stats::cor(p))
     len <- length(e$values)
@@ -475,23 +482,24 @@ correct_colinvar <- function(env_layer,
 
     ns <- length(which(r > a))
 
-    fit <-
+    lwr <- seq(0.001, 2, length.out = 50)
+    fit <- NULL
+    for(tt in 1:length(lwr)){
       tryCatch(
-        stats::factanal(
+        fit <- stats::factanal(
           x = p,
           factors = ns,
           rotation = "varimax",
-          lower = 0.001
+          lower = lwr[tt]
         ),
         error = function(e) {
-          stats::factanal(
-            x = p,
-            factors = ns - 1,
-            rotation = "varimax",
-            lower = 0.001
-          )
         }
       )
+
+      if (!is.null(fit)) {
+        break
+      }
+    }
 
     sel <-
       row.names(fit$loadings)[apply(fit$loadings, 2, which.max)]
@@ -500,8 +508,7 @@ correct_colinvar <- function(env_layer,
 
     env_layer <- terra::subset(env_layer, sel)
 
-    h <- fit$loadings %>%
-      matrix() %>%
+    h <- fit$loadings[] %>%
       data.frame()
     colnames(h) <- paste("Factor", 1:ncol(h), sep = "_")
 
@@ -516,3 +523,5 @@ correct_colinvar <- function(env_layer,
 
   return(result)
 }
+
+
