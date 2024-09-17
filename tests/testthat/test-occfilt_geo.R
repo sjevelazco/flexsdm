@@ -36,6 +36,7 @@ test_that("occfilt_geo 'cellsize' method", {
   spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 
   # Using cellsize method
+  set.seed(1)
   filtered <- occfilt_geo(
     data = spp1,
     x = "x",
@@ -44,7 +45,7 @@ test_that("occfilt_geo 'cellsize' method", {
     method = c("cellsize", factor = "3"),
     prj = crs(somevar)
   )
-  expect_true(nrow(filtered) > 100)
+  expect_true(nrow(filtered) == 212)
 })
 
 
@@ -62,6 +63,7 @@ test_that("occfilt_geo 'defined' method", {
   spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 
   # Using defined method
+  set.seed(1)
   filtered <- occfilt_geo(
     data = spp1,
     x = "x",
@@ -70,5 +72,5 @@ test_that("occfilt_geo 'defined' method", {
     method = c("defined", d = "30"),
     prj = crs(somevar)
   )
-  expect_true(nrow(filtered) < 100)
+  expect_true(nrow(filtered) == 78)
 })
