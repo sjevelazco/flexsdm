@@ -57,7 +57,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr tibble
+#' @importFrom dplyr tibble as_tibble left_join
 #' @importFrom spThin thin
 #' @importFrom stats complete.cases prcomp
 #' @importFrom terra vect project geom extract as.data.frame predict distance xyFromCell
@@ -308,7 +308,9 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
     colnames(occT) <- c(x, y)
 
     # Select Thinned Occurrences
-    coord_filter <- data0[which(data0[,x]%in%occT[,x] & data0[,y]%in%occT[,y]), ]
+
+    coord_filter <- suppressMessages(dplyr::left_join(occT, data0)[names(data0)]) %>%
+      dplyr::as_tibble()
     message("Distance threshold(km): ", round(as.numeric(method["d"]), 3))
     message("Number of filtered records: ", nrow(coord_filter))
   }
