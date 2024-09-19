@@ -12,7 +12,7 @@ Species distribution modeling has become a standard tool in several research are
 
 
 ### Structure of flexsdm
-The function of **flexsdm** package are organized into three major modeling steps
+The functions of **flexsdm** package are organized into three major modeling steps
 
 
 <a href='https://sjevelazco.github.io/flexsdm'><img src="https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.svg" align="centre" height="550"/></a>
