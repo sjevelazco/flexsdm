@@ -1,7 +1,21 @@
+# flexsdm 1.3.5-5
+
+-   min change in `interp` function by @sjevelazco in [362](https://github.com/sjevelazco/flexsdm/pull/362)
+-   min change in `occfilt_geo` by @sjevelazco in [364](https://github.com/sjevelazco/flexsdm/pull/364)
+-   Rlof was removed from dependencies by @sjevelazco in [365](https://github.com/sjevelazco/flexsdm/pull/365)
+-   min change in `occfilt_geo` by @sjevelazco in [370](https://github.com/sjevelazco/flexsdm/pull/370)
+-   new argument in `occfilt_geo` by @sjevelazco in [371](https://github.com/sjevelazco/flexsdm/pull/371)
+-   `esm_` functions were improved improvements by @sjevelazco in [373](https://github.com/sjevelazco/flexsdm/pull/372) & [373](https://github.com/sjevelazco/flexsdm/pull/373)
+-   geographically constraint cell of env_var argument in `correct_colinvar` by @sjevelazco in [374](https://github.com/sjevelazco/flexsdm/pull/374)
+-   new argument in `correct_colinvar` by @sjevelazco in [375](https://github.com/sjevelazco/flexsdm/pull/375)
+-   `calib_area` was sped up by @sjevelazco in [377](https://github.com/sjevelazco/flexsdm/pull/377)
+-   `correct_colivar` was fixed and improved, FA method by @sjevelazco in [383](https://github.com/sjevelazco/flexsdm/pull/383)
+-   `occfilt_geo` 'defined' method was fixed by @sjevelazco in [384](https://github.com/sjevelazco/flexsdm/pull/384)
+
 # flexsdm 1.3.5
 
-- it is possible to restrict the cell used to perform collinearity reduction analysis to a geographical area smaller than the full extent of environmental variables in [`correct_clinvar()`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.html)
--   esm_ family function was improved and debugged 
+-   it is possible to restrict the cell used to perform collinearity reduction analysis to a geographical area smaller than the full extent of environmental variables in [`correct_clinvar()`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.html)
+-   esm\_ family function was improved and debugged
 -   `occfilt_geo` has a new argument "rep" to control number o repetition to filter occurrences
 
 # flexsdm 1.3.4
