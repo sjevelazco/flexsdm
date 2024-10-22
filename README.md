@@ -1,4 +1,6 @@
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html)
+[![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://codecov.io/gh/sjevelazco/flexsdm)
 [![DOI](https://zenodo.org/badge/354032642.svg)](https://zenodo.org/badge/latestdoi/354032642)
