@@ -246,7 +246,7 @@ fit_raf <- function(data,
       data = data,
       mtry = mtry,
       ntree = 500,
-      importance = FALSE,
+      importance = TRUE,
     ))
 
   pred_test <- data.frame(
