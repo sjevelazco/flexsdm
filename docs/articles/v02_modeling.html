@@ -439,16 +439,16 @@ predicting.</p>
 <code class="sourceCode R"><span><span class="va">rf_t</span><span class="op">$</span><span class="va">model</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
-<span><span class="co">#&gt;  randomForest(formula = formula1, data = data, mtry = mtry, ntree = 500,      importance = FALSE, ) </span></span>
+<span><span class="co">#&gt;  randomForest(formula = formula1, data = data, mtry = mtry, ntree = 500,      importance = TRUE, ) </span></span>
 <span><span class="co">#&gt;                Type of random forest: classification</span></span>
 <span><span class="co">#&gt;                      Number of trees: 500</span></span>
 <span><span class="co">#&gt; No. of variables tried at each split: 3</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;         OOB estimate of  error rate: 11.64%</span></span>
+<span><span class="co">#&gt;         OOB estimate of  error rate: 11.29%</span></span>
 <span><span class="co">#&gt; Confusion matrix:</span></span>
 <span><span class="co">#&gt;     0   1 class.error</span></span>
-<span><span class="co">#&gt; 0 605  95  0.13571429</span></span>
-<span><span class="co">#&gt; 1  68 632  0.09714286</span></span></code></pre></div>
+<span><span class="co">#&gt; 0 605  95   0.1357143</span></span>
+<span><span class="co">#&gt; 1  63 637   0.0900000</span></span></code></pre></div>
 <p>predictors: A tibble with quantitative (c column names) and
 qualitative (f column names) variables use for modeling.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
@@ -466,7 +466,7 @@ values.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 26</span></span></span>
 <span><span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3 raf   max_sens_spec     0.638         700        700    0.911 0.031<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3 raf   max_sens_spec     0.606         700        700    0.911 0.031<span style="text-decoration: underline;">4</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span></span>

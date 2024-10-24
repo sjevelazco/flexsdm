@@ -76,6 +76,7 @@ First, install the flexsdm package. You can install the released version of *fle
 library(flexsdm)
 library(dplyr)
 library(terra)
+library(ggplot2)
 ```
 
 ## Project Directory Setup
@@ -397,6 +398,64 @@ points(filt_geo3 %>% select(x, y))
 
 ```
 
+Also, for the three methods, it is possible methods use several values, turning easier the possibility to explore or test several filtering values.
+
+```{r geo occurrence filtering with different values, message=FALSE}
+
+filt_geo1 <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("moran", c(0.1, 0.2, 0.3, 0.5)),
+  prj = crs(somevar)
+)
+
+filt_geo2 <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("cellsize", factor = c(1, 5, 8, 12)), # coarser resolution than the provided raster
+  prj = crs(somevar)
+)
+
+filt_geo3 <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("defined", d = c(5, 10, 15, 30)),
+  prj = crs(somevar)
+)
+
+# When several values are used, note the function returns a list with the filtered data
+filt_geo1 %>% class
+filt_geo1 %>% names
+
+# Let's plot the results with ggplot2
+bind_rows(filt_geo1, .id="moran") %>%
+dplyr::mutate(moran = as.numeric(moran)) %>%
+ggplot(aes(x, y)) +
+geom_point() +
+facet_wrap(~moran)
+
+
+bind_rows(filt_geo2, .id="cellsize") %>%
+dplyr::mutate(moran = as.numeric(cellsize)) %>%
+ggplot(aes(x, y)) +
+geom_point() +
+facet_wrap(~cellsize)
+
+bind_rows(filt_geo2, .id="determined") %>%
+dplyr::mutate(moran = as.numeric(determined)) %>%
+ggplot(aes(x, y)) +
+geom_point() +
+facet_wrap(~determined)
+
+
+```
+
 ## Data partitioning
 
 Data partitioning, or splitting data into testing and training groups, is a key step in building SDMs. *flexsdm* offers multiple options for data partitioning, including part_random(), part_sband(), part_sblock(), and part_senv(). Let's explore each of these methods.
@@ -605,7 +664,8 @@ ex_spp <- sdm_extract(
   x = "x",
   y = "y",
   env_layer = somevar, # Raster with environmental variables
-  variables = NULL, # Vector with the variable names of predictor variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.
+  variables = NULL, # Vector with the variable names of predictor 
+  # variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.
   filter_na = TRUE
 )
 
