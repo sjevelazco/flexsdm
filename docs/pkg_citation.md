@@ -49,4 +49,4 @@ We use this space to list published peer-review papers that cited *flexsdm* pack
 
 **2022**
 
-1.  Wen, C., Cha, J., Xu, L., Xu, H. Spatial Potential of Recreational Services in Western Hubei Region in Light of the “All-for-One Tourism” Development—A Machine Learning Approach Based on Ensemble Model. (2022) *Landscape Architecture Frontiers*, *10*(5): 8‒31 <https://doi.org/10.15302/J-LAF-1-020073>
+1.  Wen, C., Cha, J., Xu, L., Xu, H. Spatial Potential of Recreational Services in Western Hubei Region in Light of the “All-for-One Tourism” Development—A Machine Learning Approach Based on Ensemble Model. (2022) *Landscape Architecture Frontiers*, *10*(5): 8‒31 <https://doi.org/10.15302/J-LAF-1-020073>
