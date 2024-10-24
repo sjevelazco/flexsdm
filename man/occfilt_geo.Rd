@@ -25,16 +25,16 @@ occfilt_geo(
 \item{env_layer}{SpatRaster. Raster variables that will be used to fit the model}
 
 \item{method}{character. Method to perform geographical thinning. Pairs of points are filtered
-based on a geographical distance criteria.The following methods are available:
+based on a geographical distance criteria. For the three method, is possible to use several values.
+If several values are provided, the function will return a list with the results. The following methods are available:
 \itemize{
-  \item moran: records are filtered based on the smallest distance that reduces Moran's I to
-  values lower than 0.1. Latlong = TRUE if occurrences are in a geographical projection.
-  Usage method: method = c('moran').
+  \item moran: records are filtered based on the smallest distance to the Moran's I value provided. If no Moran's I
+  values is provided it will use 0.1. Usage method: method = c('moran') or  method = c('moran', val = c(0.1, 0.15, 0.2, 0.25, 0.3, 0.35)).
   \item cellsize: records are filtered based on the resolution of the environmental variables which
   can be aggregated to coarser resolution defined by the factor.
-  Usage method: method = c('cellsize', factor = '2').
+  Usage method: method = c('cellsize', factor = '2') or method = c('cellsize', factor = c(1, 4, 8)).
   \item defined: records are filtered based on a  distance value (d) provided in km.
-  Usage method: method = c('defined', d = 300).
+  Usage method: method = c('defined', d = c(20, 40, 60, 80)).
 }}
 
 \item{prj}{character. Projection string (PROJ4) for occurrences. Not necessary if
@@ -52,20 +52,21 @@ different approach to define the minimum nearest-neighbor distance between point
 \details{
 In this function three alternatives are implemented to determine the
 distance threshold between pair of points:
-1-"moran" determines the minimum nearest-neighbor distance that minimizes the spatial
-autocorrelation in occurrence data, following a Moran's semivariogram. A Principal Component
+' \itemize{
+  \item "moran" determines the minimum nearest-neighbor distance that approximate to the spatial
+autocorrelation in occurrence data, following a Moran's I. To do so, a Principal Component
 Analysis with the environmental variables is performed and then the first Principal Component is used
 to calculate the semivariograms. Because of this, this method only allow the use of continuous variables.
 Sometimes, this method can (too) greatly reduce the number of presences.
-2-"cellsize" filters occurrences based on the predictors' resolution. This method will calculate
+  \item "cellsize" filters occurrences based on the predictors' resolution. This method will calculate
 the distance between the first two cells of the environmental variable and use this distance
 as minimum nearest-neighbor distance to filter occurrences.
 The resolution of the raster is aggregated based on the values used in "factor". Thus, the distance
 used for filtering can be adjusted to represent a larger grid size.
-3-"determined" this method uses any minimum nearest-neighbor distance specified in km.
+ \item "determined" this method uses any minimum nearest-neighbor distance specified in km.
+  }
 
-
-For the third method the "thin" function from spThin package is used
+The "thin" function from spThin package is used to filter data
 (Aiello-Lammens et al., 2015) with the following argument settings reps = 20, write.files = FALSE,
 locs.thinned.list.return = TRUE, and write.log.file = FALSE.
 }
@@ -88,22 +89,12 @@ spp1 <- spp \%>\% dplyr::filter(species == "sp1", pr_ab == 1)
 somevar[[1]] \%>\% plot()
 points(spp1 \%>\% select(x, y))
 
-# Using Moran method
-filtered_1 <- occfilt_geo(
-  data = spp1,
-  x = "x",
-  y = "y",
-  env_layer = somevar,
-  method = c("moran"),
-  prj = crs(somevar)
-)
-
-somevar[[1]] \%>\% plot(col = gray.colors(10))
-points(spp1 \%>\% select(x, y)) # raw data
-points(filtered_1 \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
+##\%######################################################\%##
+####                  Cellsize method                   ####
+##\%######################################################\%##
 
 # Using cellsize method
-filtered_2 <- occfilt_geo(
+filtered_occ <- occfilt_geo(
   data = spp1,
   x = "x",
   y = "y",
@@ -114,11 +105,36 @@ filtered_2 <- occfilt_geo(
 
 somevar[[1]] \%>\% plot(col = gray.colors(10))
 points(spp1 \%>\% select(x, y)) # raw data
-points(filtered_2 \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
+points(filtered_occ \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
 
 
+# Using cellsize method with several values
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("cellsize", factor = c(1, 4, 8, 12, 16, 20)),
+  prj = crs(somevar)
+)
+
+filtered_occ # Note that several values are provided for any filtering method
+# fuction will return a list of tibbles with the results.
+# So user must select the desired filtered dataset
+
+# Let's explore the results
+bind_rows(filtered_occ, .id="cellSize") \%>\%
+  dplyr::mutate(cellSize = as.numeric(cellSize)) \%>\%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~cellSize)
+
+
+##\%######################################################\%##
+####                   Defined method                   ####
+##\%######################################################\%##
 # Using defined method
-filtered_3 <- occfilt_geo(
+filtered_occ <- occfilt_geo(
   data = spp1,
   x = "x",
   y = "y",
@@ -129,7 +145,58 @@ filtered_3 <- occfilt_geo(
 
 somevar[[1]] \%>\% plot(col = gray.colors(10))
 points(spp1 \%>\% select(x, y)) # raw data
-points(filtered_3 \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
+points(filtered_occ \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
+
+# Using defined method with several values
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("defined", factor = c(5, 10, 15, 30, 35, 40)),
+  prj = crs(somevar)
+)
+
+bind_rows(filtered_occ, .id="cellSize") \%>\%
+  dplyr::mutate(cellSize = as.numeric(cellSize)) \%>\%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~cellSize)
+
+
+##\%######################################################\%##
+####                  Moran's I method                  ####
+##\%######################################################\%##
+
+# Using Moran's I method
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("moran"),
+  prj = crs(somevar)
+)
+
+somevar[[1]] \%>\% plot(col = gray.colors(10))
+points(spp1 \%>\% select(x, y)) # raw data
+points(filtered_occ \%>\% select(x, y), pch = 19, col = "yellow") # filtered data
+
+# Using Moran's I method with several values
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("moran", c(0.05, 0.15, 0.2, 0.5, 0.7)),
+  prj = crs(somevar)
+)
+
+bind_rows(filtered_occ, .id="moran") \%>\%
+  dplyr::mutate(moran = as.numeric(moran)) \%>\%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~moran)
 }
 
 }
