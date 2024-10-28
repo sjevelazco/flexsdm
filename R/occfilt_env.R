@@ -7,7 +7,7 @@
 #' @param x character. Column name with spatial x coordinates
 #' @param y character. Column name with spatial y coordinates
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
-#' @param env_layer SpatRaster. Rasters with environmental conditions
+#' @param env_layer SpatRaster. Raster variables that will be used to fit the model. Factor variables will be removed.
 #' @param nbins integer. A number of classes used to split each environmental condition. It is possible to use single or several values.
 #' If several values are provided, the function will return a list with the results. Usage nbins =  5 or nbins = c(5, 10, 15)
 #'
@@ -34,11 +34,7 @@
 #'  between 2-5 if more than ten variables are used.
 #'
 #'  Environmental filters are sensitive to the number of bins. A procedure for selecting the number
-#'  of bins was used by Velazco et al. (2020). This selection consists of testing different numbers
-#'  of bins, calculating the average spatial autocorrelation among variables (based on the
-#'  Moran’s I index), and then selecting the lowest average spatial autocorrelation with the
-#'  highest number occurrences. Note that while the greater the number of bins, the greater
-#'  records retained
+#'  of bins was used by Velazco et al. (2020) and it is implemented in \code{\link{occfilt_geo}}.
 #'
 #' @references
 #' \itemize{
@@ -144,7 +140,7 @@
 #' # While the greater the greater the number of bins, the greater records retained
 #' }
 #'
-#' @seealso \code{\link{occfilt_geo}}
+#' @seealso \code{\link{occfilt_geo}}, \code{\link{occfilt_select}}
 #'
 occfilt_env <- function(data, x, y, id, env_layer, nbins) {
 

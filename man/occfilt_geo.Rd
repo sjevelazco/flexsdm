@@ -22,7 +22,7 @@ occfilt_geo(
 
 \item{y}{character. Column name with latitude data}
 
-\item{env_layer}{SpatRaster. Raster variables that will be used to fit the model}
+\item{env_layer}{SpatRaster. Raster variables that will be used to fit the model. Factor variables will be removed.}
 
 \item{method}{character. Method to perform geographical thinning. Pairs of points are filtered
 based on a geographical distance criteria. For the three method, it is possible to use several values.
@@ -210,5 +210,5 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 }
 }
 \seealso{
-\code{\link{occfilt_env}}
+\code{\link{occfilt_env}}, \code{\link{occfilt_select}}
 }

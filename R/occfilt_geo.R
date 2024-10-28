@@ -8,7 +8,7 @@
 #' (or presence-absence) records, and coordinates
 #' @param x character. Column name with longitude data
 #' @param y character. Column name with latitude data
-#' @param env_layer SpatRaster. Raster variables that will be used to fit the model
+#' @param env_layer SpatRaster. Raster variables that will be used to fit the model. Factor variables will be removed.
 #' @param method character. Method to perform geographical thinning. Pairs of points are filtered
 #' based on a geographical distance criteria. For the three method, it is possible to use several values.
 #' If several values are provided, the function will return a list with the results. The following methods are available:
@@ -195,7 +195,7 @@
 #'   facet_wrap(~moran)
 #' }
 #'
-#' @seealso \code{\link{occfilt_env}}
+#' @seealso \code{\link{occfilt_env}}, \code{\link{occfilt_select}}
 #'
 occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +datum=WGS84", reps = 20) {
 
