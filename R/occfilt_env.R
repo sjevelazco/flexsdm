@@ -8,10 +8,12 @@
 #' @param y character. Column name with spatial y coordinates
 #' @param id character. Column names with rows id. It is important that each row has its own unique code.
 #' @param env_layer SpatRaster. Rasters with environmental conditions
-#' @param nbins integer. A number of classes used to split each environmental condition
+#' @param nbins integer. A number of classes used to split each environmental condition. It is possible to use single or several values.
+#' If several values are provided, the function will return a list with the results. Usage nbins =  5 or nbins = c(5, 10, 15)
 #'
 #' @return
-#' A tibble object with data environmentally filtered
+#' If one value is used to filter occurrence funtion will return a tibble object with filtered data. If several
+#' values are used to filter occurrences, the function will return a list of tibbles with filtered data.
 #'
 #' @details This function uses an approach adapted from the approach proposed by Varela et al. (2014).
 #'  It consists of filtering occurrences in  environmental space. First, a regular
@@ -24,8 +26,7 @@
 #'  of filtered records because as the number of bins decreases, the cell size of the grids
 #'  increases, and the number of filtered records decreases (Castellanos et al., 2019).
 #'  occfilt_env works for any number of dimensions (variables) and with the original variables
-#'  without performing
-#'  a PCA beforehand.
+#'  without performing a PCA beforehand.
 #'
 #'  The greater the number of predictor variables (i.e., the number of dimensions of the
 #'  multidimensional environmental grid) and the greater the number of bins, the greater the time processing
@@ -65,6 +66,7 @@
 #' \dontrun{
 #' require(terra)
 #' require(dplyr)
+#' require(ggplot2)
 #'
 #' # Environmental variables
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
@@ -112,6 +114,30 @@
 #'   env_layer = somevar,
 #'   nbins = 12
 #' )
+#'
+#'
+#' ##%######################################################%##
+#' ####         ' # Test different number of bins          ####
+#' ##%######################################################%##
+#'
+#' filtered_dif_bins <- occfilt_env(
+#'   data = spp1,
+#'   x = "x",
+#'   y = "y",
+#'   id = "idd",
+#'   env_layer = somevar,
+#'   nbins = c(4, 6, 8, 10, 12, 14)
+#' )
+#'
+#' class(filtered_dif_bins)
+#' names(filtered_dif_bins)# each elements of this list has the names of the bins
+#'
+#' filtered_dif_bins %>%
+#'   dplyr::bind_rows(.id = "bins") %>%
+#'   dplyr::mutate(bins = as.numeric(bins)) %>%
+#'   ggplot(aes(x = x, y = y)) +
+#'   geom_point() +
+#'   facet_wrap( ~ bins)
 #' # note that the higher the nbins parameter the more
 #' # classes must be processed (4 variables, 30 bins = 923521 classes)
 #'
@@ -121,7 +147,6 @@
 #' @seealso \code{\link{occfilt_geo}}
 #'
 occfilt_env <- function(data, x, y, id, env_layer, nbins) {
-  s <- . <- l <- NULL
 
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
@@ -149,37 +174,66 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
   }
   rm(filt)
 
-  n <- ncol(env_layer)
-  res <- res <- apply(env_layer, 2, function(x) diff(range(x))) / nbins
-
-  classes <- list()
-  for (i in 1:n) {
-    ext1 <- range(env_layer[, i])
-    ext1[2] <- ext1[2] + 0.05
-    ext1 <- c(ext1[1] - 0.000001, ext1[2] + 0.000001)
-    classes[[i]] <- seq(ext1[1], ext1[2], by = res[i])
-    classes[[i]][length(classes[[i]])] <- ext1[2]
-  }
-
-  for (i in 1:(terra::nlyr(env))) {
-    env[[i]] <- terra::classify(env[[i]], classes[[i]], include.lowest = TRUE)
-    lvs <- terra::levels(env[[i]])[[1]]
-    lvs[[2]] <- lvs[[1]]
-    levels(env[[i]]) <- lvs
-  }
-  real_p <- terra::extract(env, coord)[-1]
-  real_p$groupID <- apply(real_p, 1, function(x) paste(x, collapse = "."))
-
   message("Number of unfiltered records: ", nrow(da))
 
-  if (any(is.na(real_p$groupID))) {
-    nas <- da[is.na(real_p$groupID), c(id, x, y)]
-    no_nas <- da[!duplicated(real_p$groupID) & !is.na(real_p$groupID), c(id, x, y)]
-    coord_filter <- unique(dplyr::bind_rows(no_nas, nas))
-  } else {
-    coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y)]
+  occfilt_env_0 <- function(da, x, y, id, coord, env_layer, nbins) {
+    s <- . <- l <- NULL
+
+    n <- ncol(env_layer)
+    res <- res <- apply(env_layer, 2, function(x) diff(range(x))) / nbins
+
+    classes <- list()
+    for (i in 1:n) {
+      ext1 <- range(env_layer[, i])
+      ext1[2] <- ext1[2] + 0.05
+      ext1 <- c(ext1[1] - 0.000001, ext1[2] + 0.000001)
+      classes[[i]] <- seq(ext1[1], ext1[2], by = res[i])
+      classes[[i]][length(classes[[i]])] <- ext1[2]
+    }
+
+    for (i in 1:(terra::nlyr(env))) {
+      env[[i]] <- terra::classify(env[[i]], classes[[i]], include.lowest = TRUE)
+      lvs <- terra::levels(env[[i]])[[1]]
+      lvs[[2]] <- lvs[[1]]
+      levels(env[[i]]) <- lvs
+    }
+    real_p <- terra::extract(env, coord)[-1]
+    real_p$groupID <- apply(real_p, 1, function(x) paste(x, collapse = "."))
+
+    if (any(is.na(real_p$groupID))) {
+      nas <- da[is.na(real_p$groupID), c(id, x, y)]
+      no_nas <- da[!duplicated(real_p$groupID) & !is.na(real_p$groupID), c(id, x, y)]
+      coord_filter <- unique(dplyr::bind_rows(no_nas, nas))
+    } else {
+      coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y)]
+    }
+
+    message("Number of filtered records: ", nrow(coord_filter))
+    return(dplyr::tibble(coord_filter))
   }
 
-  message("Number of filtered records: ", nrow(coord_filter))
-  return(dplyr::tibble(coord_filter))
+  ##%######################################################%##
+  ####                Teste different bins                ####
+  ##%######################################################%##
+
+  result <- list()
+  for (ii in 1:length(nbins)) {
+    result[[ii]] <- occfilt_env_0(
+      da = da,
+      x = x,
+      y = y,
+      id = id,
+      coord = coord,
+      env_layer = env_layer,
+      nbins = nbins[ii]
+    )
+  }
+  names(result) <- nbins
+
+  if(length(nbins) == 1){
+    return(result[[1]])
+  } else {
+    return(result)
+  }
 }
+
