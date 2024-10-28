@@ -10,7 +10,7 @@
 #' @param y character. Column name with latitude data
 #' @param env_layer SpatRaster. Raster variables that will be used to fit the model
 #' @param method character. Method to perform geographical thinning. Pairs of points are filtered
-#' based on a geographical distance criteria. For the three method, is possible to use several values.
+#' based on a geographical distance criteria. For the three method, it is possible to use several values.
 #' If several values are provided, the function will return a list with the results. The following methods are available:
 #' \itemize{
 #'   \item moran: records are filtered based on the smallest distance to the Moran's I value provided. If no Moran's I
@@ -26,7 +26,8 @@
 #' @param reps integer. Number of times to repeat the thinning process. Default 20
 #'
 #' @return
-#' A tibble object with data filtered geographically
+#' If one value is used to filter occurrence funtion will return a tibble object with filtered data. If several
+#' values are used to filter occurrences, the function will return a list of tibbles with filtered data.
 #'
 #' @details In this function three alternatives are implemented to determine the
 #' distance threshold between pair of points:
@@ -68,6 +69,7 @@
 #' \dontrun{
 #' require(terra)
 #' require(dplyr)
+#' require(ggplot2)
 #'
 #' # Environmental variables
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")

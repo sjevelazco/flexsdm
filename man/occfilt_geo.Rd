@@ -25,7 +25,7 @@ occfilt_geo(
 \item{env_layer}{SpatRaster. Raster variables that will be used to fit the model}
 
 \item{method}{character. Method to perform geographical thinning. Pairs of points are filtered
-based on a geographical distance criteria. For the three method, is possible to use several values.
+based on a geographical distance criteria. For the three method, it is possible to use several values.
 If several values are provided, the function will return a list with the results. The following methods are available:
 \itemize{
   \item moran: records are filtered based on the smallest distance to the Moran's I value provided. If no Moran's I
@@ -43,7 +43,8 @@ the projection used is WGS84 ("+proj=longlat +datum=WGS84"). Default "+proj=long
 \item{reps}{integer. Number of times to repeat the thinning process. Default 20}
 }
 \value{
-A tibble object with data filtered geographically
+If one value is used to filter occurrence funtion will return a tibble object with filtered data. If several
+values are used to filter occurrences, the function will return a list of tibbles with filtered data.
 }
 \description{
 This function perform geographical filtering of species occurrences based on
@@ -74,6 +75,7 @@ locs.thinned.list.return = TRUE, and write.log.file = FALSE.
 \dontrun{
 require(terra)
 require(dplyr)
+require(ggplot2)
 
 # Environmental variables
 somevar <- system.file("external/somevar.tif", package = "flexsdm")

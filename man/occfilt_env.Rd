@@ -18,10 +18,12 @@ occfilt_env(data, x, y, id, env_layer, nbins)
 
 \item{env_layer}{SpatRaster. Rasters with environmental conditions}
 
-\item{nbins}{integer. A number of classes used to split each environmental condition}
+\item{nbins}{integer. A number of classes used to split each environmental condition. It is possible to use single or several values.
+If several values are provided, the function will return a list with the results. Usage nbins =  5 or nbins = c(5, 10, 15)}
 }
 \value{
-A tibble object with data environmentally filtered
+If one value is used to filter occurrence funtion will return a tibble object with filtered data. If several
+values are used to filter occurrences, the function will return a list of tibbles with filtered data.
 }
 \description{
 This function perform filtering on species occurrences based on their environmental conditions.
@@ -38,8 +40,7 @@ This function uses an approach adapted from the approach proposed by Varela et a
  of filtered records because as the number of bins decreases, the cell size of the grids
  increases, and the number of filtered records decreases (Castellanos et al., 2019).
  occfilt_env works for any number of dimensions (variables) and with the original variables
- without performing
- a PCA beforehand.
+ without performing a PCA beforehand.
 
  The greater the number of predictor variables (i.e., the number of dimensions of the
  multidimensional environmental grid) and the greater the number of bins, the greater the time processing
@@ -57,6 +58,7 @@ This function uses an approach adapted from the approach proposed by Varela et a
 \dontrun{
 require(terra)
 require(dplyr)
+require(ggplot2)
 
 # Environmental variables
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
@@ -104,6 +106,30 @@ filtered_3 <- occfilt_env(
   env_layer = somevar,
   nbins = 12
 )
+
+
+##\%######################################################\%##
+####         ' # Test different number of bins          ####
+##\%######################################################\%##
+
+filtered_dif_bins <- occfilt_env(
+  data = spp1,
+  x = "x",
+  y = "y",
+  id = "idd",
+  env_layer = somevar,
+  nbins = c(4, 6, 8, 10, 12, 14)
+)
+
+class(filtered_dif_bins)
+names(filtered_dif_bins)# each elements of this list has the names of the bins
+
+filtered_dif_bins \%>\%
+  dplyr::bind_rows(.id = "bins") \%>\%
+  dplyr::mutate(bins = as.numeric(bins)) \%>\%
+  ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  facet_wrap( ~ bins)
 # note that the higher the nbins parameter the more
 # classes must be processed (4 variables, 30 bins = 923521 classes)
 
