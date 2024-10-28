@@ -534,19 +534,20 @@ and reduce redundancy in your data.</p>
 <div class="section level3">
 <h3 id="environmental-filtering">Environmental filtering<a class="anchor" aria-label="anchor" href="#environmental-filtering"></a>
 </h3>
-<p>The function occfilt_env(), which performs environmental filtering on
-species occurrence data. This method basically reduces environmental
-redundancy in your data and is based on methods outlined in Valera et
-al. (2014). However, this function is unique to <em>flexsdm</em>, as it
-is able to use any number of environmental dimensions and does not
-perform a PCA before filtering. In this example, we will use our
-original environmental data (somevar) and occurrence data for a single
-species (spp1). For filtering occurrences, it is important that each row
-in the species data has its own unique code (example: idd). This
-function also gives the user the option of specifying the number classes
-used to split each environmental condition. Here we will explore the
-results using 5, 8, and 12 bins. Increasing the number of bins increases
-the number of occurrence points retained.</p>
+<p>The function <code><a href="../reference/occfilt_env.html">occfilt_env()</a></code>, which performs environmental
+filtering on species occurrence data. This method basically reduces
+environmental redundancy in your data and is based on methods outlined
+in Valera et al. (2014). However, this function is unique to
+<em>flexsdm</em>, as it is able to use any number of environmental
+dimensions and does not perform a PCA before filtering. In this example,
+we will use our original environmental data (somevar) and occurrence
+data for a single species (spp1). For filtering occurrences, it is
+important that each row in the species data has its own unique code
+(example: idd). This function also gives the user the option of
+specifying the number classes used to split each environmental
+condition. Here we will explore the results using 5, 8, and 12 bins.
+Increasing the number of bins increases the number of occurrence points
+retained.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">spp1</span><span class="op">$</span><span class="va">idd</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">)</span></span>
@@ -605,13 +606,13 @@ the number of occurrence points retained.</p>
 <div class="section level3">
 <h3 id="geographical-filtering">Geographical filtering<a class="anchor" aria-label="anchor" href="#geographical-filtering"></a>
 </h3>
-<p>Next, we will look at occfilt_geo(), which has three alternatives to
-determine the distance threshold between a pair of points: “moran”
-determines the threshold as the distance between points that minimizes
-the spatial autocorrelation in occurrence data; “cellsize” filters
-occurrences based on the resolution of the predictors (or a specified
-coarser resolution); finally, “determined” allows users to manually
-determine the distance threshold.</p>
+<p>Next, we will look at <code><a href="../reference/occfilt_geo.html">occfilt_geo()</a></code>, which has three
+alternatives to determine the distance threshold between a pair of
+points: “moran” determines the threshold as the distance between points
+that minimizes the spatial autocorrelation in occurrence data;
+“cellsize” filters occurrences based on the resolution of the predictors
+(or a specified coarser resolution); finally, “determined” allows users
+to manually determine the distance threshold.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">filt_geo1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_geo.html">occfilt_geo</a></span><span class="op">(</span></span>
@@ -730,6 +731,38 @@ filtering values.</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">determined</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-3.png" width="576"></p>
+<p>When tested filtering occurrence with different values, you can use
+the <code><a href="../reference/occfilt_select.html">occfilt_select()</a></code> function to select the filtered
+dataset that equilibrate spatial autocorrelation maximum number of
+presences (see <code><a href="../reference/occfilt_select.html">occfilt_select()</a></code> function help)</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">filt_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occfilt_select.html">occfilt_select</a></span><span class="op">(</span>occ_list <span class="op">=</span> <span class="va">filt_geo2</span>, </span>
+<span>               x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, </span>
+<span>               env_layer <span class="op">=</span> <span class="va">somevar</span>, filter_prop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Dataset with filtered value 8 was selected</span></span>
+<span><span class="va">filt_selected</span></span>
+<span><span class="co">#&gt; $occ</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 156 × 4</span></span></span>
+<span><span class="co">#&gt;    species        x        y   idd</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">269</span><span style="color: #BB0000;">871.</span>   <span style="text-decoration: underline;">69</span>512.     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">149</span><span style="color: #BB0000;">991.</span>  <span style="text-decoration: underline;">267</span>962.     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> sp1       <span style="text-decoration: underline;">91</span>659. -<span style="color: #BB0000; text-decoration: underline;">156</span><span style="color: #BB0000;">748.</span>     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">210</span><span style="color: #BB0000;">471.</span>  <span style="text-decoration: underline;">326</span>282.     5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">140</span><span style="color: #BB0000;">541.</span>  <span style="text-decoration: underline;">284</span>972.     6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">217</span><span style="color: #BB0000;">491.</span>   <span style="text-decoration: underline;">65</span>732.     7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> sp1      -<span style="color: #BB0000; text-decoration: underline;">92</span><span style="color: #BB0000;">481.</span>  <span style="text-decoration: underline;">155</span>642.    12</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">367</span><span style="color: #BB0000;">611.</span>  <span style="text-decoration: underline;">266</span>072.    13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">184</span><span style="color: #BB0000;">551.</span>  <span style="text-decoration: underline;">425</span>372.    15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">260</span><span style="color: #BB0000;">151.</span>   <span style="text-decoration: underline;">57</span>632.    18</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 146 more rows</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $filter_prop</span></span>
+<span><span class="co">#&gt;   filt_value mean_autocorr n_records       aet       cwd       tmx       tmn</span></span>
+<span><span class="co">#&gt; 1          1     0.3219265       233 0.3534014 0.2017850 0.3352363 0.3972832</span></span>
+<span><span class="co">#&gt; 2          5     0.2923551       189 0.3276294 0.1400721 0.3170405 0.3846783</span></span>
+<span><span class="co">#&gt; 3          8     0.2602486       156 0.3055744 0.1287050 0.2635844 0.3431307</span></span>
+<span><span class="co">#&gt; 4         12     0.2291901       118 0.2568785 0.1080880 0.2311247 0.3206691</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -749,7 +782,7 @@ bootstrap partitioning.</p>
 <p>Here, we use the “kfold” method with 10 folds to divide our data.
 This results in 10 folds of occurrence data with 25 observations in each
 fold.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spp1</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># Add a column with 1 to denote that this is presences only data</span></span>
 <span><span class="va">sp_part1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">spp1</span>,</span>
@@ -778,7 +811,7 @@ partition. The function’s output includes 1) a tibble with
 presence/absence locations and the assigned partition number, 2) a
 tibble with information about the best partition, and 3) a SpatRaster
 showing the selected grid.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">sp_part2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sband.html">part_sband</a></span><span class="op">(</span></span>
 <span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
@@ -797,7 +830,7 @@ showing the selected grid.</p>
 <span><span class="co">#&gt; 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20</span></span>
 <span><span class="co">#&gt; Creating basic raster mask...</span></span>
 <span><span class="co">#&gt; Searching for the optimal number of bands...</span></span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">grid</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fl">8</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">.part</span><span class="op">]</span>,</span>
@@ -814,7 +847,7 @@ instead of bands it explores spatial blocks with different raster cells
 sizes and returns the one that is best suited for the input dataset.
 Here, we can see the data divided into different “blocks” for training
 and testing.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">sp_part3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_sblock.html">part_sblock</a></span><span class="op">(</span></span>
 <span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
@@ -848,7 +881,7 @@ NAs) as your original environmental variables, apply the get_block()
 function to the grid resulting from part_sblock(). This layer can be
 really useful for generating pseudo-absence or background sample points,
 which we will explore in the next section.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 881131 881131</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
@@ -875,7 +908,7 @@ particular dataset, considering spatial autocorrelation, environmental
 similarity, and the number of presence and/or absence records in each
 partition. The map below shows partitioning based on these environmental
 and spatial factors.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">sp_part4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_senv.html">part_senv</a></span><span class="op">(</span></span>
 <span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
@@ -922,7 +955,7 @@ blocks (n = 2). We are also specifying that we want ten times the amount
 of background points as our original occurrences and that our
 calibration area will be the buffer area around presence points (see
 section on “Calibration area”).</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">p_data</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">sp_part3</span><span class="op">$</span><span class="va">part</span> <span class="co"># presence data from spatial block partition example</span></span>
@@ -971,7 +1004,7 @@ presence points, but are concentrated in areas that have lower
 environmental suitability. The specific method chosen for sampling
 background and/or pseudo-absence points will vary depending on research
 goals.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
@@ -1015,7 +1048,7 @@ coordinates and returns a tibble with the original data + additional
 columns for the extracted environmental variables at those locations.
 Let’s do this for our original presence points (spp1) and our background
 locations (bg).</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">all_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">idd</span><span class="op">)</span>, <span class="va">bg</span><span class="op">)</span></span>
 <span></span>

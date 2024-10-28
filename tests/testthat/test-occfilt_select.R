@@ -41,10 +41,6 @@ test_that("test occfilt_select filter_prop = FALSE", {
 
 
 
-occ_selected$occ
-
-occ_selected$filter_prop
-
 test_that("test occfilt_select with filter_prop = TRUE", {
   occ_selected <- occfilt_select(occ_list = filtered_occ,
                                  x = "x",
@@ -58,13 +54,7 @@ test_that("test occfilt_select with filter_prop = TRUE", {
   expect_equal(nrow(occ_selected$filter_prop),  6)
 })
 
-test_that("test occfilt_select with filter_prop = TRUE", {
-  occ_selected <- occfilt_select(occ_list = filtered_occ,
-                                 x = "x",
-                                 y = "y",
-                                 env_layer = somevar,
-                                 filter_prop = TRUE)
-
+test_that("expect error", {
   expect_error(occfilt_select(occ_list = filtered_occ[[1]],
                               x = "x",
                               y = "y",

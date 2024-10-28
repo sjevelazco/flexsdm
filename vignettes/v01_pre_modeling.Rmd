@@ -308,7 +308,7 @@ Sample bias in species occurrence data is a common issue in ecological studies a
 
 ### Environmental filtering
 
-The function occfilt_env(), which performs environmental filtering on species occurrence data. This method basically reduces environmental redundancy in your data and is based on methods outlined in Valera et al. (2014). However, this function is unique to *flexsdm*, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering. In this example, we will use our original environmental data (somevar) and occurrence data for a single species (spp1). For filtering occurrences, it is important that each row in the species data has its own unique code (example: idd). This function also gives the user the option of specifying the number classes used to split each environmental condition. Here we will explore the results using 5, 8, and 12 bins. Increasing the number of bins increases the number of occurrence points retained.
+The function `occfilt_env()`, which performs environmental filtering on species occurrence data. This method basically reduces environmental redundancy in your data and is based on methods outlined in Valera et al. (2014). However, this function is unique to *flexsdm*, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering. In this example, we will use our original environmental data (somevar) and occurrence data for a single species (spp1). For filtering occurrences, it is important that each row in the species data has its own unique code (example: idd). This function also gives the user the option of specifying the number classes used to split each environmental condition. Here we will explore the results using 5, 8, and 12 bins. Increasing the number of bins increases the number of occurrence points retained.
 
 ```{r env occurrence filtering}
 
@@ -355,7 +355,7 @@ points(filt_env12 %>% select(x, y))
 
 ### Geographical filtering
 
-Next, we will look at occfilt_geo(), which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of the predictors (or a specified coarser resolution); finally, “determined” allows users to manually determine the distance threshold.
+Next, we will look at `occfilt_geo()`, which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of the predictors (or a specified coarser resolution); finally, “determined” allows users to manually determine the distance threshold.
 
 ```{r geo occurrence filtering}
 
@@ -453,6 +453,16 @@ ggplot(aes(x, y)) +
 geom_point() +
 facet_wrap(~determined)
 
+
+```
+
+When tested filtering occurrence with different values, you can use the `occfilt_select()` function to select the filtered dataset that equilibrate spatial autocorrelation maximum number of presences (see `occfilt_select()` function help)
+
+```{r}
+filt_selected <- occfilt_select(occ_list = filt_geo2, 
+               x = "x", y = "y", 
+               env_layer = somevar, filter_prop = TRUE)
+filt_selected
 
 ```
 
@@ -677,3 +687,4 @@ ex_spp
 **Vignette still under construction and changes**
 
 #=========#=========#=========#=========#=========#=========#=========#
+

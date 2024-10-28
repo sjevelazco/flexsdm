@@ -83,12 +83,12 @@ different approach to define the minimum nearest-neighbor distance between point
 
 
 <dt id="arg-env-layer">env_layer<a class="anchor" aria-label="anchor" href="#arg-env-layer"></a></dt>
-<dd><p>SpatRaster. Raster variables that will be used to fit the model</p></dd>
+<dd><p>SpatRaster. Raster variables that will be used to fit the model. Factor variables will be removed.</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
 <dd><p>character. Method to perform geographical thinning. Pairs of points are filtered
-based on a geographical distance criteria. For the three method, is possible to use several values.
+based on a geographical distance criteria. For the three method, it is possible to use several values.
 If several values are provided, the function will return a list with the results. The following methods are available:</p><ul><li><p>moran: records are filtered based on the smallest distance to the Moran's I value provided. If no Moran's I
   values is provided it will use 0.1. Usage method: method = c('moran') or  method = c('moran', val = c(0.1, 0.15, 0.2, 0.25, 0.3, 0.35)).</p></li>
 <li><p>cellsize: records are filtered based on the resolution of the environmental variables which
@@ -110,7 +110,8 @@ the projection used is WGS84 ("+proj=longlat +datum=WGS84"). Default "+proj=long
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble object with data filtered geographically</p>
+    <p>If one value is used to filter occurrence funtion will return a tibble object with filtered data. If several
+values are used to filter occurrences, the function will return a list of tibbles with filtered data.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -140,7 +141,7 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="occfilt_env.html">occfilt_env</a></code></p></div>
+    <div class="dont-index"><p><code><a href="occfilt_env.html">occfilt_env</a></code>, <code><a href="occfilt_select.html">occfilt_select</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -148,6 +149,7 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Environmental variables</span></span></span>
 <span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
@@ -271,6 +273,17 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">moran</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It is possible select the best of filtered</span></span></span>
+<span class="r-in"><span><span class="co"># datasets using the occfilt_selec function</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">occ_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="occfilt_select.html">occfilt_select</a></span><span class="op">(</span>occ_list <span class="op">=</span> <span class="va">filtered_occ</span>,</span></span>
+<span class="r-in"><span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>filter_prop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">occ_selected</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
