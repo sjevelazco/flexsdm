@@ -37,6 +37,7 @@ Set tools that prepare modeling input data (e.g., species occurrences thinning, 
 * `sdm_extract()` Extract environmental data based on x and y coordinates
 * `occfilt_env()` Perform environmental filtering on species occurrences
 * `occfilt_geo()` Perform geographical filtering on species occurrences
+* `occfilt_select()` Select filtered occurrences when it was tested with different filtering values 
 
 
 ### 2. Modeling functions 

@@ -96,6 +96,8 @@
 #'
 #' }
 occfilt_select <- function(occ_list, x, y, env_layer, filter_prop = FALSE) {
+  mean_autocorr <- n_records <- filt_value <- NULL
+
   if (class(occ_list)[1] != "list") {
     stop("occ_list must be a list")
   }

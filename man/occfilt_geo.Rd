@@ -199,6 +199,17 @@ bind_rows(filtered_occ, .id="moran") \%>\%
   ggplot(aes(x, y)) +
   geom_point() +
   facet_wrap(~moran)
+
+# It is possible select the best of filtered
+# datasets using the occfilt_selec function
+
+occ_selected <- occfilt_select(occ_list = filtered_occ,
+x = "x",
+y = "y",
+env_layer = somevar,
+filter_prop = TRUE)
+
+occ_selected
 }
 
 }

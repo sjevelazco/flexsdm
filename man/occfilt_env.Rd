@@ -130,6 +130,19 @@ filtered_dif_bins \%>\%
 # classes must be processed (4 variables, 30 bins = 923521 classes)
 
 # While the greater the greater the number of bins, the greater records retained
+
+
+# It is possible select the best of filtered
+# datasets using the occfilt_selec function
+
+occ_selected <- occfilt_select(occ_list = filtered_dif_bins,
+x = "x",
+y = "y",
+env_layer = somevar,
+filter_prop = TRUE)
+
+occ_selected
+
 }
 
 }

@@ -76,16 +76,18 @@
 
 
 <dt id="arg-env-layer">env_layer<a class="anchor" aria-label="anchor" href="#arg-env-layer"></a></dt>
-<dd><p>SpatRaster. Rasters with environmental conditions</p></dd>
+<dd><p>SpatRaster. Raster variables that will be used to fit the model. Factor variables will be removed.</p></dd>
 
 
 <dt id="arg-nbins">nbins<a class="anchor" aria-label="anchor" href="#arg-nbins"></a></dt>
-<dd><p>integer. A number of classes used to split each environmental condition</p></dd>
+<dd><p>integer. A number of classes used to split each environmental condition. It is possible to use single or several values.
+If several values are provided, the function will return a list with the results. Usage nbins =  5 or nbins = c(5, 10, 15)</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble object with data environmentally filtered</p>
+    <p>If one value is used to filter occurrence funtion will return a tibble object with filtered data. If several
+values are used to filter occurrences, the function will return a list of tibbles with filtered data.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -100,18 +102,13 @@
  of filtered records because as the number of bins decreases, the cell size of the grids
  increases, and the number of filtered records decreases (Castellanos et al., 2019).
  occfilt_env works for any number of dimensions (variables) and with the original variables
- without performing
- a PCA beforehand.</p>
+ without performing a PCA beforehand.</p>
 <p>The greater the number of predictor variables (i.e., the number of dimensions of the
  multidimensional environmental grid) and the greater the number of bins, the greater the time processing
  and the computer memory used. Therefore, it is recommended to use a small number of bins
  between 2-5 if more than ten variables are used.</p>
 <p>Environmental filters are sensitive to the number of bins. A procedure for selecting the number
- of bins was used by Velazco et al. (2020). This selection consists of testing different numbers
- of bins, calculating the average spatial autocorrelation among variables (based on the
- Moran’s I index), and then selecting the lowest average spatial autocorrelation with the
- highest number occurrences. Note that while the greater the number of bins, the greater
- records retained</p>
+ of bins was used by Velazco et al. (2020) and it is implemented in <code><a href="occfilt_geo.html">occfilt_geo</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -129,7 +126,7 @@ Diversity and Distributions, 27, 512–523. https://doi.org/10.1111/ddi.13215</p
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="occfilt_geo.html">occfilt_geo</a></code></p></div>
+    <div class="dont-index"><p><code><a href="occfilt_geo.html">occfilt_geo</a></code>, <code><a href="occfilt_select.html">occfilt_select</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -137,6 +134,7 @@ Diversity and Distributions, 27, 512–523. https://doi.org/10.1111/ddi.13215</p
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Environmental variables</span></span></span>
 <span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
@@ -184,10 +182,47 @@ Diversity and Distributions, 27, 512–523. https://doi.org/10.1111/ddi.13215</p
 <span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
 <span class="r-in"><span>  nbins <span class="op">=</span> <span class="fl">12</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">####         ' # Test different number of bins          ####</span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">filtered_dif_bins</span> <span class="op">&lt;-</span> <span class="fu">occfilt_env</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp1</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"idd"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  nbins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">14</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">filtered_dif_bins</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">filtered_dif_bins</span><span class="op">)</span><span class="co"># each elements of this list has the names of the bins</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">filtered_dif_bins</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span>.id <span class="op">=</span> <span class="st">"bins"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">bins</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span> <span class="op">~</span> <span class="va">bins</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># note that the higher the nbins parameter the more</span></span></span>
 <span class="r-in"><span><span class="co"># classes must be processed (4 variables, 30 bins = 923521 classes)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># While the greater the greater the number of bins, the greater records retained</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It is possible select the best of filtered</span></span></span>
+<span class="r-in"><span><span class="co"># datasets using the occfilt_selec function</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">occ_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="occfilt_select.html">occfilt_select</a></span><span class="op">(</span>occ_list <span class="op">=</span> <span class="va">filtered_dif_bins</span>,</span></span>
+<span class="r-in"><span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>filter_prop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">occ_selected</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
