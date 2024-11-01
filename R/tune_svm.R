@@ -210,13 +210,13 @@ tune_svm <-
       np2 <- out$np2
       rm(out)
 
-      if(n_cores>np2){
+      if (n_cores > np2) {
         n_cores <- np2
       }
       cl <- parallel::makeCluster(n_cores)
       doParallel::registerDoParallel(cl)
 
-      eval_partial <- foreach::foreach(i = 1:np2, .export=c('sdm_eval', 'boyce'), .packages = c("dplyr")) %dopar%{
+      eval_partial <- foreach::foreach(i = 1:np2, .export = c("sdm_eval", "boyce"), .packages = c("dplyr")) %dopar% {
         # message("Partition number: ", i, "/", np2)
         mod <- as.list(rep(NA, nrow(grid)))
         names(mod) <- 1:nrow(grid)
@@ -245,15 +245,16 @@ tune_svm <-
         # Predict for presences absences data
         pred_test <-
           lapply(mod, function(x) {
-            tryCatch(data.frame(
-              pr_ab = test[[i]][, response],
-              pred = kernlab::predict(
-                x,
-                newdata = test[[i]],
-                type = "prob"
-              )[, 2]
-            ),
-            error = function(cond) {}
+            tryCatch(
+              data.frame(
+                pr_ab = test[[i]][, response],
+                pred = kernlab::predict(
+                  x,
+                  newdata = test[[i]],
+                  type = "prob"
+                )[, 2]
+              ),
+              error = function(cond) {}
             )
           })
 
@@ -324,7 +325,7 @@ tune_svm <-
 
 
     pred_test <- data.frame(
-      pr_ab = data.frame(data)[,response],
+      pr_ab = data.frame(data)[, response],
       pred = kernlab::predict(
         mod$model,
         newdata = data,
@@ -342,7 +343,7 @@ tune_svm <-
       model = mod$model,
       predictors = variables,
       performance = dplyr::left_join(best_tune, threshold[1:4], by = "threshold") %>%
-        dplyr::relocate({{hyperp}}, model, threshold, thr_value, n_presences, n_absences),
+        dplyr::relocate({{ hyperp }}, model, threshold, thr_value, n_presences, n_absences),
       hyper_performance = eval_final,
       data_ens = pred_test_ens
     )

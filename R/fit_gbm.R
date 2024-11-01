@@ -260,7 +260,7 @@ fit_gbm <- function(data,
     ))
 
   pred_test <- data.frame(
-    pr_ab = data.frame(data)[,response],
+    pr_ab = data.frame(data)[, response],
     pred = suppressMessages(gbm::predict.gbm(
       mod,
       newdata = data,

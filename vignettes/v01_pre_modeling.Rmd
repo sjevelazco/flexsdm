@@ -120,7 +120,7 @@ regions <- terra::rast(regions)
 How are the points distributed across our study area?
 
 ```{r map}
-try(plot(regions), silent=TRUE)
+try(plot(regions), silent = TRUE)
 points(spp[, 2:3], pch = 19, cex = 0.5, col = as.factor(spp$species))
 ```
 
@@ -131,13 +131,11 @@ An important decision in SDM is how to delimit your model's calibration area, or
 Let's use presence locations for one species in this exercise.
 
 ```{r spp1}
-
 spp1 <-
   spp %>%
   dplyr::filter(species == "sp1") %>%
   dplyr::filter(pr_ab == 1) %>%
   dplyr::select(-pr_ab)
-
 ```
 
 The calib_area() function offers three methods for defining a calibration area: buffer, mcp, bmcp, and mask. We will briefly go over each.
@@ -147,13 +145,13 @@ The calib_area() function offers three methods for defining a calibration area: 
 Here the calibration area is defined using buffers around presence points. User's can specify the distance around points using the "width" argument. The buffer width value is interpreted in m if the CRS has a longitude/latitude, or in map units in other cases.
 
 ```{r buffer method}
-crs(regions, proj=TRUE)
+crs(regions, proj = TRUE)
 
 ca_1 <- calib_area(
   data = spp1,
   x = "x",
   y = "y",
-  method = c("buffer", width = 40000), 
+  method = c("buffer", width = 40000),
   crs = crs(regions)
 )
 plot(regions, main = "Buffer method")
@@ -170,7 +168,7 @@ ca_2 <- calib_area(
   data = spp1,
   x = "x",
   y = "y",
-  method = c("mcp"), 
+  method = c("mcp"),
   crs = crs(regions)
 )
 
@@ -188,7 +186,7 @@ ca_3 <- calib_area(
   data = spp1,
   x = "x",
   y = "y",
-  method = c("bmcp", width = 40000), 
+  method = c("bmcp", width = 40000),
   crs = crs(regions)
 )
 
@@ -209,7 +207,7 @@ ca_4 <- calib_area(
   data = spp1,
   x = "x",
   y = "y",
-  method = c("mask", clusters, "clusters"), 
+  method = c("mask", clusters, "clusters"),
   crs = crs(regions)
 )
 
@@ -260,7 +258,7 @@ pearson_var <- correct_colinvar(somevar, method = c("pearson", th = "0.7"))
 pearson_var$cor_table
 pearson_var$cor_variables
 
-chosen_variables <- somevar[[c('cwd','aet','tmn')]]
+chosen_variables <- somevar[[c("cwd", "aet", "tmn")]]
 ```
 
 ### 2. Variance inflation factor
@@ -311,7 +309,6 @@ Sample bias in species occurrence data is a common issue in ecological studies a
 The function `occfilt_env()`, which performs environmental filtering on species occurrence data. This method basically reduces environmental redundancy in your data and is based on methods outlined in Valera et al. (2014). However, this function is unique to *flexsdm*, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering. In this example, we will use our original environmental data (somevar) and occurrence data for a single species (spp1). For filtering occurrences, it is important that each row in the species data has its own unique code (example: idd). This function also gives the user the option of specifying the number classes used to split each environmental condition. Here we will explore the results using 5, 8, and 12 bins. Increasing the number of bins increases the number of occurrence points retained.
 
 ```{r env occurrence filtering}
-
 spp1$idd <- 1:nrow(spp1)
 
 filt_env5 <- occfilt_env(
@@ -358,7 +355,6 @@ points(filt_env12 %>% select(x, y))
 Next, we will look at `occfilt_geo()`, which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of the predictors (or a specified coarser resolution); finally, “determined” allows users to manually determine the distance threshold.
 
 ```{r geo occurrence filtering}
-
 filt_geo1 <- occfilt_geo(
   data = spp1,
   x = "x",
@@ -395,13 +391,11 @@ somevar[[1]] %>% plot(main = "Filtering with cell size")
 points(filt_geo2 %>% select(x, y))
 somevar[[1]] %>% plot(main = "Filtering with defined distance (30km)")
 points(filt_geo3 %>% select(x, y))
-
 ```
 
 Also, for the three methods, it is possible methods use several values, turning easier the possibility to explore or test several filtering values.
 
 ```{r geo occurrence filtering with different values, message=FALSE}
-
 filt_geo1 <- occfilt_geo(
   data = spp1,
   x = "x",
@@ -430,40 +424,39 @@ filt_geo3 <- occfilt_geo(
 )
 
 # When several values are used, note the function returns a list with the filtered data
-filt_geo1 %>% class
-filt_geo1 %>% names
+filt_geo1 %>% class()
+filt_geo1 %>% names()
 
 # Let's plot the results with ggplot2
-bind_rows(filt_geo1, .id="moran") %>%
-dplyr::mutate(moran = as.numeric(moran)) %>%
-ggplot(aes(x, y)) +
-geom_point() +
-facet_wrap(~moran)
+bind_rows(filt_geo1, .id = "moran") %>%
+  dplyr::mutate(moran = as.numeric(moran)) %>%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~moran)
 
 
-bind_rows(filt_geo2, .id="cellsize") %>%
-dplyr::mutate(moran = as.numeric(cellsize)) %>%
-ggplot(aes(x, y)) +
-geom_point() +
-facet_wrap(~cellsize)
+bind_rows(filt_geo2, .id = "cellsize") %>%
+  dplyr::mutate(moran = as.numeric(cellsize)) %>%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~cellsize)
 
-bind_rows(filt_geo2, .id="determined") %>%
-dplyr::mutate(moran = as.numeric(determined)) %>%
-ggplot(aes(x, y)) +
-geom_point() +
-facet_wrap(~determined)
-
-
+bind_rows(filt_geo2, .id = "determined") %>%
+  dplyr::mutate(moran = as.numeric(determined)) %>%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~determined)
 ```
 
 When tested filtering occurrence with different values, you can use the `occfilt_select()` function to select the filtered dataset that equilibrate spatial autocorrelation maximum number of presences (see `occfilt_select()` function help)
 
 ```{r}
-filt_selected <- occfilt_select(occ_list = filt_geo2, 
-               x = "x", y = "y", 
-               env_layer = somevar, filter_prop = TRUE)
+filt_selected <- occfilt_select(
+  occ_list = filt_geo2,
+  x = "x", y = "y",
+  env_layer = somevar, filter_prop = TRUE
+)
 filt_selected
-
 ```
 
 ## Data partitioning
@@ -485,7 +478,6 @@ sp_part1 <- part_random(
 )
 
 sp_part1$.part %>% table()
-
 ```
 
 ### 2. Spatial band cross-validation (part_sband)
@@ -522,7 +514,6 @@ points(sp_part2$part[c("x", "y")],
 The part_sblock() function is very similar to part_sband() but instead of bands it explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input dataset. Here, we can see the data divided into different "blocks" for training and testing.
 
 ```{r spatial block partition}
-
 sp_part3 <- part_sblock(
   env_layer = somevar,
   data = spp1,
@@ -566,7 +557,6 @@ points(sp_part3$part[c("x", "y")],
 The final partitioning function in *flexsdm* is part_senv(), which explores different numbers of environmental partitions based on the K-means clustering algorithm and returns the one best-suited for a particular dataset, considering spatial autocorrelation, environmental similarity, and the number of presence and/or absence records in each partition. The map below shows partitioning based on these environmental and spatial factors.
 
 ```{r environmental and spatial cross-validation}
-
 sp_part4 <- part_senv(
   env_layer = somevar,
   data = spp1,
@@ -595,7 +585,6 @@ Presence-only occurrence data are quite common in ecology and researchers may no
 The function sample_background() allows slection of background sample points based on different geographic restrictions and sampling methods. Here, we sample a set of background points based on our earlier spatial block partitioning using the "random" method. Using lapply() in this case ensures that we generate background points in each of our spatial blocks (n = 2). We are also specifying that we want ten times the amount of background points as our original occurrences and that our calibration area will be the buffer area around presence points (see section on "Calibration area").
 
 ```{r sample background}
-
 p_data <-
   sp_part3$part # presence data from spatial block partition example
 
@@ -632,7 +621,6 @@ points(bg, cex = .1, pch = 19)
 Similarly, the function sample_pseudoabs allows random pseudo-absence sampling or based on environmental and/or geographical constraints. For example, specifying method = "env_const" selects pseudo-absences that are environmentally constrained to regions with lower suitability values as predicted by a Bioclim model. Additionally, this function allows users to specify a calibration area from which to generate pseudo-absence points. Here, we will use the buffer area around presence points (ca_1) to show what this might look like. As you can see, we have generated pseudo-absence points that are in the general vicinity of our presence points, but are concentrated in areas that have lower environmental suitability. The specific method chosen for sampling background and/or pseudo-absence points will vary depending on research goals.
 
 ```{r sample pseudo-absences}
-
 set.seed(10)
 psa <- lapply(1:2, function(x) {
   sample_pseudoabs(
@@ -666,7 +654,6 @@ points(psa, cex = .7, pch = 19)
 Finally, before modeling species geographic distributions, we must extract environmental data at the presences + absences/pseudo-absences/background point locations. The function sdm_extract() extracts environmental data values based on x and y coordinates and returns a tibble with the original data + additional columns for the extracted environmental variables at those locations. Let's do this for our original presence points (spp1) and our background locations (bg).
 
 ```{r sdm extract, eval = FALSE}
-
 all_points <- bind_rows(spp1 %>% dplyr::select(-idd), bg)
 
 ex_spp <- sdm_extract(
@@ -674,7 +661,7 @@ ex_spp <- sdm_extract(
   x = "x",
   y = "y",
   env_layer = somevar, # Raster with environmental variables
-  variables = NULL, # Vector with the variable names of predictor 
+  variables = NULL, # Vector with the variable names of predictor
   # variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.
   filter_na = TRUE
 )

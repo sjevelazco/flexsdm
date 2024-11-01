@@ -86,9 +86,11 @@ sp <- spp \%>\%
   dplyr::select(x, y, pr_ab)
 
 # Calibration area based on some criterion such as dispersal ability
-ca <- calib_area(sp, x = "x", y = "y",
-        method = c("bmcp", width = 50000),
-        crs = crs(somevar))
+ca <- calib_area(sp,
+  x = "x", y = "y",
+  method = c("bmcp", width = 50000),
+  crs = crs(somevar)
+)
 
 plot(somevar[[1]])
 points(sp)
@@ -112,11 +114,13 @@ sp_pa <- dplyr::bind_rows(sp, psa)
 sp_pa
 
 # Get environmental condition of calibration area
-sp_pa_2 <- sdm_extract(data = sp_pa,
-                       x = "x",
-                       y = "y",
-                       env_layer = somevar)
-                       sp_pa_2
+sp_pa_2 <- sdm_extract(
+  data = sp_pa,
+  x = "x",
+  y = "y",
+  env_layer = somevar
+)
+sp_pa_2
 
 # Measure degree of extrapolation based on Mahalanobis and
 # for a projection area based on a SpatRaster object
@@ -148,9 +152,11 @@ a_model <- fit_glm(
   thr = c("max_sorensen")
 )
 
-predsuit <- sdm_predict(models = a_model,
-                        pred = somevar,
-                        thr = "max_sorensen")
+predsuit <- sdm_predict(
+  models = a_model,
+  pred = somevar,
+  thr = "max_sorensen"
+)
 predsuit # list with a raster with two layer
 plot(predsuit[[1]])
 
@@ -174,15 +180,15 @@ plot(predsuit_2$`100`)
 plot(predsuit_2$`200`)
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 ####        Measure degree of extrapolation for         ####
 ####        projection area based on data.frame         ####
-##\%######################################################\%##
+## \%######################################################\%##
 
 extr_df <-
   extra_eval(
     training_data = sp_pa_2,
-    projection_data = as.data.frame(somevar, xy=TRUE),
+    projection_data = as.data.frame(somevar, xy = TRUE),
     pr_ab = "pr_ab",
     n_cores = 1,
     aggreg_factor = 1,
@@ -192,10 +198,10 @@ extr_df
 # see 'p_extra()' to explore extrapolation or suitability pattern in the
 # environmental and/or geographical space
 
-##\%######################################################\%##
+## \%######################################################\%##
 ####             Explore Shape metric with              ####
 ####     univariate and combinatorial extrapolation     ####
-##\%######################################################\%##
+## \%######################################################\%##
 extr <-
   extra_eval(
     training_data = sp_pa_2,

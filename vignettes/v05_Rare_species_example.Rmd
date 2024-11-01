@@ -49,7 +49,7 @@ library(dplyr)
 
 # environmental data
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
-somevar <- terra::rast(somevar) 
+somevar <- terra::rast(somevar)
 names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 
 # species occurence data (presence-only)
@@ -79,7 +79,6 @@ terra::inset(
   scale = .3,
   col = cols
 )
-
 ```
 
 ## Delimit calibration area
@@ -87,12 +86,11 @@ terra::inset(
 First, we must define our model's calibration area. The *flexsdm* package offers several methods for defining the model calibration area. Here, we will use 25-km buffer areas around the presence points to select our pseudo-absence locations. 
 
 ```{r calibration area}
-
 ca <- calib_area(
   data = hespero,
   x = "x",
   y = "y",
-  method = c('buffer', width=25000),
+  method = c("buffer", width = 25000),
   crs = crs(somevar)
 )
 
@@ -102,9 +100,10 @@ plot(
   col = "gray80",
   legend = FALSE,
   axes = FALSE,
-  main = "Calibration area and occurrences")
-plot(ca, add=TRUE)
-points(hespero[,c("x", "y")], col = "black", pch = 16)
+  main = "Calibration area and occurrences"
+)
+plot(ca, add = TRUE)
+points(hespero[, c("x", "y")], col = "black", pch = 16)
 ```
 
 
@@ -113,7 +112,6 @@ points(hespero[,c("x", "y")], col = "black", pch = 16)
 As is often the case with rare species, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we use our calibration area to produce pseudo-absence data that can be used in our SDMs. 
 
 ```{r pseudo-absence data}
-
 # Sample the same number of species presences
 set.seed(10)
 psa <- sample_pseudoabs(
@@ -133,11 +131,12 @@ plot(
   legend = FALSE,
   axes = FALSE,
   xlim = c(289347, 353284),
-  ylim = c(-598052,  -520709),
-  main = "Presence = yellow, Pseudo-absence = black")
-plot(ca, add=TRUE)
-points(psa[,c("x", "y")], cex=0.8, pch=16, col = "black") # Pseudo-absences
-points(hespero[,c("x", "y")], col = "yellow", pch = 16, cex = 1.5) # Presences
+  ylim = c(-598052, -520709),
+  main = "Presence = yellow, Pseudo-absence = black"
+)
+plot(ca, add = TRUE)
+points(psa[, c("x", "y")], cex = 0.8, pch = 16, col = "black") # Pseudo-absences
+points(hespero[, c("x", "y")], col = "yellow", pch = 16, cex = 1.5) # Presences
 
 
 # Bind a presences and pseudo-absences
@@ -151,7 +150,6 @@ hespero_pa # Presence-Pseudo-absence database
 To evaluate model performance, we need to specify data for testing and training. *flexsdm* offers a range of random and spatial and random data partition methods for evaluating SDMs. Here we will use repeated K-fold cross-validation, which is a suitable partition approach for performing ESM. 
 
 ```{r rep kfolds partion}
-
 set.seed(10)
 
 # Repeated K-fold method
@@ -167,16 +165,14 @@ hespero_pa2 <- part_random(
 Next, we extract the values of our four environmental predictors at the presence and pseudo-absence locations. 
 
 ```{r sdm extract}
-
 hespero_pa3 <-
   sdm_extract(
     data = hespero_pa2,
-    x = 'x',
-    y = 'y',
+    x = "x",
+    y = "y",
     env_layer = somevar,
-    variables = c('aet', 'cwd', 'tmx', 'tmn')
+    variables = c("aet", "cwd", "tmx", "tmn")
   )
-
 ```
 
 ## Modeling
@@ -189,26 +185,26 @@ First, let's use three standard algorithms to model the distribution of *Hespero
 mglm <-
   fit_glm(
     data = hespero_pa3,
-    response = 'pr_ab',
-    predictors = c('aet', 'cwd', 'tmx', 'tmn'),
-    partition = '.part',
-    thr = 'max_sens_spec'
+    response = "pr_ab",
+    predictors = c("aet", "cwd", "tmx", "tmn"),
+    partition = ".part",
+    thr = "max_sens_spec"
   )
 
 mgbm <- fit_gbm(
   data = hespero_pa3,
-  response = 'pr_ab',
-  predictors = c('aet', 'cwd', 'tmx', 'tmn'),
-  partition = '.part',
-  thr = 'max_sens_spec'
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  partition = ".part",
+  thr = "max_sens_spec"
 )
 
-msvm <-  fit_svm(
+msvm <- fit_svm(
   data = hespero_pa3,
-  response = 'pr_ab',
-  predictors = c('aet', 'cwd', 'tmx', 'tmn'),
-  partition = '.part',
-  thr = 'max_sens_spec'
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  partition = ".part",
+  thr = "max_sens_spec"
 )
 
 
@@ -218,8 +214,6 @@ mpred <- sdm_predict(
   con_thr = TRUE,
   predict_area = ca
 )
-
-
 ```
 
 
@@ -228,42 +222,41 @@ mpred <- sdm_predict(
 Now let's try each of these algorithms with the ESM approach. Note that when predicting an ESM, it is possible to only process one at a time.
 
 ```{r}
-
-eglm  <-
+eglm <-
   esm_glm(
     data = hespero_pa3,
-    response = 'pr_ab',
-    predictors = c('aet', 'cwd', 'tmx', 'tmn'),
-    partition = '.part',
-    thr = 'max_sens_spec'
+    response = "pr_ab",
+    predictors = c("aet", "cwd", "tmx", "tmn"),
+    partition = ".part",
+    thr = "max_sens_spec"
   )
 
 egbm <- esm_gbm(
   data = hespero_pa3,
-  response = 'pr_ab',
-  predictors = c('aet', 'cwd', 'tmx', 'tmn'),
-  partition = '.part',
-  thr = 'max_sens_spec'
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  partition = ".part",
+  thr = "max_sens_spec"
 )
 
-esvm <-  esm_svm(
+esvm <- esm_svm(
   data = hespero_pa3,
-  response = 'pr_ab',
-  predictors = c('aet', 'cwd', 'tmx', 'tmn'),
-  partition = '.part',
-  thr = 'max_sens_spec'
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmx", "tmn"),
+  partition = ".part",
+  thr = "max_sens_spec"
 )
 
 
 eglm_pred <- sdm_predict(
-  models = eglm ,
+  models = eglm,
   pred = somevar,
   con_thr = TRUE,
   predict_area = ca
 )
 
 egbm_pred <- sdm_predict(
-  models = egbm ,
+  models = egbm,
   pred = somevar,
   con_thr = TRUE,
   predict_area = ca
@@ -275,28 +268,25 @@ esvm_pred <- sdm_predict(
   con_thr = TRUE,
   predict_area = ca
 )
-
-
 ```
 
 ## Comparing our models
 
 First, let's take a look at the spatial predictions for our models. The spatial outputs suggest that the standard models tend to predict broader areas with high suitability values that the ESMs. 
 ```{r comparison maps}
-
 par(mfrow = c(3, 2))
-plot(mpred$glm, main = 'Standard GLM')
-#points(hespero$x, hespero$y, pch = 19)
-plot(eglm_pred[[1]], main = 'ESM GLM')
-#points(hespero$x, hespero$y, pch = 19)
-plot(mpred$gbm, main = 'Standard GBM')
-#points(hespero$x, hespero$y, pch = 19)
-plot(egbm_pred[[1]], main = 'ESM GBM')
-#points(hespero$x, hespero$y, pch = 19)
-plot(mpred$svm, main = 'Standard SVM')
-#points(hespero$x, hespero$y, pch = 19)
-plot(esvm_pred[[1]], main = 'ESM SVM')
-#points(hespero$x, hespero$y, pch = 19)
+plot(mpred$glm, main = "Standard GLM")
+# points(hespero$x, hespero$y, pch = 19)
+plot(eglm_pred[[1]], main = "ESM GLM")
+# points(hespero$x, hespero$y, pch = 19)
+plot(mpred$gbm, main = "Standard GBM")
+# points(hespero$x, hespero$y, pch = 19)
+plot(egbm_pred[[1]], main = "ESM GBM")
+# points(hespero$x, hespero$y, pch = 19)
+plot(mpred$svm, main = "Standard SVM")
+# points(hespero$x, hespero$y, pch = 19)
+plot(esvm_pred[[1]], main = "ESM SVM")
+# points(hespero$x, hespero$y, pch = 19)
 ```
 
 Next, we look at some performance metrics for our models, which are based on our repeated k-folds cross-validation partition method. This can be easily done using the "sdm_summarize()" function in *flexsdm*. Here, we can see that AUC, TSS, and Jaccard index are higher for the ESMs than their corresponding standard model. However, the Boyce index and the Inverse Mean Absolute Error are slightly higher for the standard models. 

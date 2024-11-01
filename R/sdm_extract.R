@@ -64,7 +64,6 @@ sdm_extract <-
            env_layer,
            variables = NULL,
            filter_na = TRUE) {
-
     # Predictor vector when variables.=NULL
     if (is.null(variables)) {
       variables <- names(env_layer)
@@ -73,18 +72,18 @@ sdm_extract <-
     # spatial data frame
     sp_data <-
       terra::vect(data,
-                  geom = c(x, y),
-                  crs = terra::crs(env_layer)
+        geom = c(x, y),
+        crs = terra::crs(env_layer)
       )
 
     # extract environmental data at xy locations, if filter_na = FALSE, does not remove rows with NAs
     extract_data <- dplyr::tibble(
       data,
       terra::extract(env_layer[[variables]],
-                     sp_data,
-                     cells = FALSE
+        sp_data,
+        cells = FALSE
       ) %>%
-        dplyr::select({{variables}})
+        dplyr::select({{ variables }})
     )
 
     # if(any(is.factor(env_layer))){

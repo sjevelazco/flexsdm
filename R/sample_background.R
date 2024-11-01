@@ -321,8 +321,9 @@ sample_background <-
       rlayer <- terra::rast(rlayer)
     }
     if (!is.null(rbias)) {
-      if(class(rbias)[1] != "SpatRaster")
+      if (class(rbias)[1] != "SpatRaster") {
         rbias <- terra::rast(rbias)
+      }
     }
 
     rlayer <- rlayer[[1]]
@@ -333,7 +334,9 @@ sample_background <-
 
     # Mask to calibration area
     if (!is.null(calibarea)) {
-      rlayer <- rlayer %>% terra::crop(., calibarea) %>% terra::mask(., calibarea)
+      rlayer <- rlayer %>%
+        terra::crop(., calibarea) %>%
+        terra::mask(., calibarea)
     }
 
     # Mask to maksvalue
@@ -350,8 +353,8 @@ sample_background <-
     # Correct rbias data in case it don't match resolution or extent of rlayer
     if (method[1] %in% c("biased")) {
       if (any(!(ext(rlayer)[1:4] %in% ext(rbias)[1:4])) | all(!res(rlayer) %in% res(rbias))) {
-        if(!all(res(rlayer)%in%res(rbias))){
-          rbias <- terra::resample(rbias, rlayer, method="bilinear")
+        if (!all(res(rlayer) %in% res(rbias))) {
+          rbias <- terra::resample(rbias, rlayer, method = "bilinear")
         }
         rbias2 <- rbias %>%
           terra::crop(., rlayer) %>%
@@ -404,23 +407,23 @@ sample_background <-
       if (any(method == "random")) {
         cell_samp <-
           sample(cell_samp,
-                 size = n,
-                 replace = FALSE,
-                 prob = NULL
+            size = n,
+            replace = FALSE,
+            prob = NULL
           )
       } else if (any(method == "thickening")) {
         cell_samp <-
           sample(cell_samp,
-                 size = n,
-                 replace = FALSE,
-                 prob = buf_r[cell_samp][, 1]
+            size = n,
+            replace = FALSE,
+            prob = buf_r[cell_samp][, 1]
           )
       } else if (any(method == "biased")) {
         cell_samp <-
           sample(cell_samp,
-                 size = n,
-                 replace = FALSE,
-                 prob = rbias[cell_samp][, 1]
+            size = n,
+            replace = FALSE,
+            prob = rbias[cell_samp][, 1]
           )
       }
 
@@ -430,8 +433,8 @@ sample_background <-
     }
     colnames(cell_samp) <- c(x, y)
     cell_samp$pr_ab <- 0
-    if(!is.null(sp_name)){
-      cell_samp <- tibble(sp=sp_name, cell_samp)
+    if (!is.null(sp_name)) {
+      cell_samp <- tibble(sp = sp_name, cell_samp)
     }
     return(cell_samp)
   }

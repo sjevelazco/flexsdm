@@ -97,7 +97,6 @@ data_pdp <-
            training_data = NULL,
            projection_data = NULL,
            clamping = FALSE) {
-
     # Extract training data
     if (class(model)[1] == "gam") {
       x <- model$model[attr(model$terms, "term.labels")]
@@ -173,7 +172,7 @@ data_pdp <-
     if (class(model)[1] == "gam") {
       suit_c <-
         data.frame(suit_c[1],
-                   Suitability = mgcv::predict.gam(model, newdata = suit_c, type = "response")
+          Suitability = mgcv::predict.gam(model, newdata = suit_c, type = "response")
         )
       if (resid) {
         suit_r <-
@@ -198,11 +197,11 @@ data_pdp <-
       if (resid) {
         suit_r <-
           data.frame(x[predictors],
-                     Suitability = predict.graf(
-                       object = model,
-                       type = "response",
-                       CI = NULL
-                     )[, 1]
+            Suitability = predict.graf(
+              object = model,
+              type = "response",
+              CI = NULL
+            )[, 1]
           )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
@@ -213,7 +212,7 @@ data_pdp <-
     if (class(model)[1] == "glm") {
       suit_c <-
         data.frame(suit_c[1],
-                   Suitability = stats::predict.glm(model, newdata = suit_c, type = "response")
+          Suitability = stats::predict.glm(model, newdata = suit_c, type = "response")
         )
       if (resid) {
         suit_r <-
@@ -227,7 +226,7 @@ data_pdp <-
     if (class(model)[1] == "gbm") {
       suit_c <-
         data.frame(suit_c[1],
-                   Suitability = suppressMessages(gbm::predict.gbm(model, newdata = suit_c, type = "response"))
+          Suitability = suppressMessages(gbm::predict.gbm(model, newdata = suit_c, type = "response"))
         )
       if (resid) {
         suit_r <-
@@ -241,12 +240,12 @@ data_pdp <-
     if (class(model)[1] == "maxnet") {
       suit_c <-
         data.frame(suit_c[1],
-                   Suitability = predict_maxnet(
-                     model,
-                     newdata = suit_c,
-                     type = "cloglog",
-                     clamp = clamping
-                   )
+          Suitability = predict_maxnet(
+            model,
+            newdata = suit_c,
+            type = "cloglog",
+            clamp = clamping
+          )
         )
       if (resid) {
         suit_r <-
@@ -289,12 +288,12 @@ data_pdp <-
     if (class(model)[1] == "ksvm") {
       suit_c <-
         data.frame(suit_c[1],
-                   Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2]
+          Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2]
         )
       if (resid) {
         suit_r <-
           data.frame(x[predictors],
-                     Suitability = kernlab::predict(model, x, type = "probabilities")[, 2]
+            Suitability = kernlab::predict(model, x, type = "probabilities")[, 2]
           )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
@@ -307,9 +306,9 @@ data_pdp <-
       if (!predictors %in% names(fact)) {
         result$pdpdata$Type <-
           ifelse(suit_c[, 1] >= min(x[, predictors]) &
-                   suit_c[, 1] <= max(x[, predictors]),
-                 "Training",
-                 "Projection"
+            suit_c[, 1] <= max(x[, predictors]),
+          "Training",
+          "Projection"
           )
       }
     }

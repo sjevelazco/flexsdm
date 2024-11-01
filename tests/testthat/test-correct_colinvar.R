@@ -18,18 +18,24 @@ test_that("correct_colinvar Pearson", {
   expect_true(all(names(var) %in% c("cor_table", "cor_variables")))
 
   # test default correlation threshold
-  var <- correct_colinvar(env_layer = somevar,
-                   method = c("pearson"))
+  var <- correct_colinvar(
+    env_layer = somevar,
+    method = c("pearson")
+  )
   expect_equal(length(var$cor_variables), 4)
 
   # test with maxcell
-  var <- correct_colinvar(env_layer = somevar,
-                          method = c("pearson"), maxcell = 5000)
+  var <- correct_colinvar(
+    env_layer = somevar,
+    method = c("pearson"), maxcell = 5000
+  )
   expect_equal(length(var$cor_variables), 4)
 
   # To high th, no variable is expected to be removed
-  var <- correct_colinvar(env_layer = somevar,
-                          method = c("pearson", th = "0.9"))
+  var <- correct_colinvar(
+    env_layer = somevar,
+    method = c("pearson", th = "0.9")
+  )
   expect_equal(var$cor_variables, "No pair of variables reached the specified correlation threshold.")
 })
 
@@ -43,7 +49,7 @@ test_that("correct_colinvar VIF", {
 
   # Perform pearson collinearity control
   CPF_5 <- somevar[[2]]
-  names(CPF_5) <- 'CPF_5'
+  names(CPF_5) <- "CPF_5"
   somevar <- terra::rast(list(somevar, somevar[[2]]))
   names(somevar)[5] <- "CPF_5"
   var <-
@@ -82,7 +88,7 @@ test_that("correct_colinvar PCA", {
   expect_equal(nrow(var$cumulative_variance), 4)
   expect_true(all(names(var) %in% c("env_layer", "coefficients", "cumulative_variance")))
 
-   # Test with maxcell
+  # Test with maxcell
   var <-
     correct_colinvar(env_layer = somevar, method = "pca", maxcell = 5000)
 
@@ -98,15 +104,15 @@ test_that("correct_colinvar PCA with projections", {
   require(dplyr)
   dir_sc <- file.path(tempdir(), "projections")
   dir.create(dir_sc)
-  dir_sc <- file.path(dir_sc, c('scenario_1', 'scenario_2'))
+  dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
   sapply(dir_sc, dir.create)
 
   somevar <-
     system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
 
-  terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"), overwrite=TRUE)
-  terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite=TRUE)
+  terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"), overwrite = TRUE)
+  terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite = TRUE)
 
   # Perform PCA collinearity control
   var <-
@@ -128,16 +134,18 @@ test_that("correct_colinvar PCA with different projection area", {
   # set seed
   abies2 <- abies %>%
     dplyr::select(x, y, pr_ab) %>%
-    dplyr::filter(pr_ab==1)
+    dplyr::filter(pr_ab == 1)
 
-  ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs=crs(somevar))
+  ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs = crs(somevar))
 
   # Perform PCA only with cell delimited by polygon used in restric_to_region
-  var <- correct_colinvar(env_layer = somevar ,
-                             method = c("pca"),
-                             maxcell = NULL,
-                             restric_to_region = ca,
-                             restric_pca_proj = FALSE)
+  var <- correct_colinvar(
+    env_layer = somevar,
+    method = c("pca"),
+    maxcell = NULL,
+    restric_to_region = ca,
+    restric_pca_proj = FALSE
+  )
   expect_equal(length(var), 3)
   expect_equal(class(var$env_layer)[1], "SpatRaster")
   expect_equal(nrow(var$coefficients), 4)
@@ -145,14 +153,16 @@ test_that("correct_colinvar PCA with different projection area", {
   expect_true(all(names(var) %in% c("env_layer", "coefficients", "cumulative_variance")))
 
   # Perform and predicted PCA only with cell delimited by polygon used in restric_to_region
-  var <- correct_colinvar(env_layer = somevar ,
-                              method = c("pca"),
-                              maxcell = NULL,
-                              restric_to_region = ca,
-                              restric_pca_proj = TRUE)
+  var <- correct_colinvar(
+    env_layer = somevar,
+    method = c("pca"),
+    maxcell = NULL,
+    restric_to_region = ca,
+    restric_pca_proj = TRUE
+  )
   expect_equal(length(var), 3)
   expect_equal(class(var$env_layer)[1], "SpatRaster")
-  expect_true(ext(var$env_layer)[1]> (-310000))
+  expect_true(ext(var$env_layer)[1] > (-310000))
   expect_equal(nrow(var$coefficients), 4)
   expect_equal(nrow(var$cumulative_variance), 4)
   expect_true(all(names(var) %in% c("env_layer", "coefficients", "cumulative_variance")))

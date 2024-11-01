@@ -71,7 +71,7 @@ test_that("test data_bpdp", {
 
   df <- data_bpdp(
     model = svm_t1$model,
-    predictors = c("aet",  "cwd"),
+    predictors = c("aet", "cwd"),
     resolution = 50,
     projection_data = NULL,
     training_data = abies2,
@@ -91,7 +91,7 @@ test_that("test data_bpdp", {
     clamping = FALSE
   )
 
-  expect_true(nrow(df$training_boundaries)==13)
+  expect_true(nrow(df$training_boundaries) == 13)
 })
 
 
@@ -155,7 +155,7 @@ test_that("test psp with gam", {
     training_boundaries = "convexh",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==8)
+  expect_true(nrow(df$training_boundaries) == 8)
 })
 
 test_that("test psp with gau", {
@@ -184,7 +184,7 @@ test_that("test psp with gau", {
     training_boundaries = "rectangle",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==4)
+  expect_true(nrow(df$training_boundaries) == 4)
 })
 
 test_that("test psp with gbm", {
@@ -213,7 +213,7 @@ test_that("test psp with gbm", {
     training_boundaries = "rectangle",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==4)
+  expect_true(nrow(df$training_boundaries) == 4)
 })
 
 test_that("test psp with glm", {
@@ -242,7 +242,7 @@ test_that("test psp with glm", {
     training_boundaries = "convexh",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==8)
+  expect_true(nrow(df$training_boundaries) == 8)
 })
 
 test_that("test psp with max", {
@@ -271,7 +271,7 @@ test_that("test psp with max", {
     training_boundaries = "convexh",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==8)
+  expect_true(nrow(df$training_boundaries) == 8)
 })
 
 test_that("test psp with net", {
@@ -300,7 +300,7 @@ test_that("test psp with net", {
     training_boundaries = "rectangle",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==4)
+  expect_true(nrow(df$training_boundaries) == 4)
 })
 
 test_that("test psp with raf", {
@@ -329,7 +329,7 @@ test_that("test psp with raf", {
     training_boundaries = "convexh",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==8)
+  expect_true(nrow(df$training_boundaries) == 8)
 })
 
 test_that("test psp with svm", {
@@ -358,7 +358,7 @@ test_that("test psp with svm", {
     training_boundaries = "convexh",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==8)
+  expect_true(nrow(df$training_boundaries) == 8)
 })
 
 
@@ -388,5 +388,5 @@ test_that("test psp with factors", {
     training_boundaries = "convexh",
     clamping = FALSE
   )
-  expect_true(nrow(df$training_boundaries)==8)
+  expect_true(nrow(df$training_boundaries) == 8)
 })

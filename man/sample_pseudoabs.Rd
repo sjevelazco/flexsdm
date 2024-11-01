@@ -180,7 +180,7 @@ ca_ps1 <- calib_area(
   x = "x",
   y = "y",
   method = c("buffer", width = 50000),
-  crs=crs(somevar)
+  crs = crs(somevar)
 )
 plot(regions, col = gray.colors(9))
 plot(ca_ps1, add = T)

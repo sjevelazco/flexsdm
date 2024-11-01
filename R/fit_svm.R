@@ -279,8 +279,8 @@ fit_svm <- function(data,
 
   pm <- 3
   i <- 0
-  while(pm>2){
-    i <- i+1
+  while (pm > 2) {
+    i <- i + 1
     set.seed(i)
     suppressMessages(
       mod <-
@@ -298,7 +298,7 @@ fit_svm <- function(data,
   }
 
   pred_test <- data.frame(
-    pr_ab = data.frame(data)[,response],
+    pr_ab = data.frame(data)[, response],
     pred = suppressMessages(kernlab::predict(
       mod,
       newdata = data,

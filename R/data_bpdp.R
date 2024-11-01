@@ -54,13 +54,13 @@
 #'   select(x, y, pr_ab)
 #'
 #' abies2 <- sdm_extract(abies2,
-#'                       x = "x",
-#'                       y = "y",
-#'                       env_layer = somevar
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar
 #' )
 #' abies2 <- part_random(abies2,
-#'                       pr_ab = "pr_ab",
-#'                       method = c(method = "kfold", folds = 5)
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 5)
 #' )
 #'
 #' m <- fit_svm(
@@ -116,8 +116,8 @@ data_bpdp <-
     if (!is.null(training_boundaries) & is.null(training_data)) {
       stop("To extract data to delimit training boundaries it is necessary to provide training data in 'training_data' argument")
     }
-    if(!is.null(training_boundaries)){
-      if(!any(training_boundaries %in% c("convexh", "rectangle"))){
+    if (!is.null(training_boundaries)) {
+      if (!any(training_boundaries %in% c("convexh", "rectangle"))) {
         stop(
           "'training_boundaries' argument could assume one of the following value: NULL, 'convexh', or 'rectangle'"
         )
@@ -147,18 +147,18 @@ data_bpdp <-
 
     x <- stats::na.omit(x)
     if (training_boundaries == "convexh") {
-      if(any(sapply(x[predictors], is.factor))){
+      if (any(sapply(x[predictors], is.factor))) {
         chulld <- NULL
       } else {
-        chulld <- x[grDevices::chull(x[predictors]),predictors]
+        chulld <- x[grDevices::chull(x[predictors]), predictors]
         chulld <- dplyr::as_tibble(chulld)
       }
     } else if (training_boundaries == "rectangle") {
-      if(any(sapply(x[predictors], is.factor))){
+      if (any(sapply(x[predictors], is.factor))) {
         chulld <- NULL
       } else {
         chulld <- apply(x[predictors], 2, range)
-        chulld <- expand.grid(chulld[,1], chulld[,2])
+        chulld <- expand.grid(chulld[, 1], chulld[, 2])
         names(chulld) <- predictors
         chulld <- dplyr::as_tibble(chulld)
       }
@@ -187,14 +187,14 @@ data_bpdp <-
         filt <- sapply(x[predictors], is.factor)
         rng1 <- range(x[predictors][!filt])
         rng1 <- seq(rng1[1], rng1[2], length.out = resolution)
-        rng2 <- sort(data.frame(unique(x[predictors][filt]))[,1]) # factor
+        rng2 <- sort(data.frame(unique(x[predictors][filt]))[, 1]) # factor
       } else {
         # Range projection data
         projection_data <- projection_data[[predictors]]
         filt <- is.factor(projection_data[[predictors]])
         rng1 <- terra::minmax(projection_data[[!filt]])
         rng1 <- seq(rng1[1], rng1[2], length.out = resolution)
-        rng2 <- as.data.frame(projection_data[[predictors]][[filt]])[,1] %>% unique()
+        rng2 <- as.data.frame(projection_data[[predictors]][[filt]])[, 1] %>% unique()
       }
     } else {
       if (is.null(projection_data)) {
@@ -212,13 +212,13 @@ data_bpdp <-
     }
 
     rng <- expand.grid(rng1, rng2)
-    if(any(sapply(rng, is.factor))){
-      rng <- rng[sapply(rng, is.factor)+1]
-      names(rng) <- predictors[sapply(rng, is.factor)+1]
+    if (any(sapply(rng, is.factor))) {
+      rng <- rng[sapply(rng, is.factor) + 1]
+      names(rng) <- predictors[sapply(rng, is.factor) + 1]
     } else {
       names(rng) <- predictors
     }
-    suit_c <- suit_c %>% dplyr::select(!{{predictors}})
+    suit_c <- suit_c %>% dplyr::select(!{{ predictors }})
     suit_c <- data.frame(rng, suit_c)
 
 
@@ -226,50 +226,56 @@ data_bpdp <-
     if (class(model)[1] == "gam") {
       suit_c <-
         data.frame(suit_c[1:2],
-                   Suitability = mgcv::predict.gam(model, newdata = suit_c, type = "response"))
+          Suitability = mgcv::predict.gam(model, newdata = suit_c, type = "response")
+        )
     }
 
     if (class(model)[1] == "graf") {
       suit_c <-
         data.frame(suit_c[1:2],
-                   Suitability = predict.graf(
-                     object = model,
-                     newdata = suit_c[names(model$peak)],
-                     type = "response",
-                     CI = NULL
-                   )[, 1])
+          Suitability = predict.graf(
+            object = model,
+            newdata = suit_c[names(model$peak)],
+            type = "response",
+            CI = NULL
+          )[, 1]
+        )
     }
 
     if (class(model)[1] == "glm") {
       suit_c <-
         data.frame(suit_c[1:2],
-                   Suitability = stats::predict.glm(model, newdata = suit_c, type = "response"))
+          Suitability = stats::predict.glm(model, newdata = suit_c, type = "response")
+        )
     }
 
     if (class(model)[1] == "gbm") {
       suit_c <-
         data.frame(suit_c[1:2],
-                   Suitability = suppressMessages(gbm::predict.gbm(
-                     model, newdata = suit_c, type = "response"
-                   )))
+          Suitability = suppressMessages(gbm::predict.gbm(
+            model,
+            newdata = suit_c, type = "response"
+          ))
+        )
     }
 
     if (class(model)[1] == "maxnet") {
       suit_c <-
         data.frame(suit_c[1:2],
-                   Suitability = predict_maxnet(
-                     object = model,
-                     newdata = suit_c,
-                     type = "cloglog",
-                     clamp = clamping
-                   )
+          Suitability = predict_maxnet(
+            object = model,
+            newdata = suit_c,
+            type = "cloglog",
+            clamp = clamping
+          )
         )
     }
 
     if (class(model)[1] == "nnet.formula") {
       suit_c <-
         data.frame(suit_c[1:2],
-                   Suitability = stats::predict(model, newdata = suit_c, type = "raw"))
+          Suitability = stats::predict(model, newdata = suit_c, type = "raw")
+        )
     }
 
     if (class(model)[1] == "randomForest.formula") {
@@ -280,7 +286,8 @@ data_bpdp <-
     if (class(model)[1] == "ksvm") {
       suit_c <-
         data.frame(suit_c[1:2],
-                   Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2])
+          Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2]
+        )
     }
 
     result <- list("pspdata" = dplyr::as_tibble(suit_c), "training_boundaries" = chulld)

@@ -186,11 +186,11 @@ small_p <- sdm_predict(
   predict_area = NULL
 )
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####              Predict model using chunks            ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 # Predicting models in chunks helps reduce memory requirements in
 # cases where models are predicted for large scales and high resolution
 
@@ -202,7 +202,6 @@ ind_p <- sdm_predict(
   predict_area = NULL,
   nchunk = 4
 )
-
 }
 
 }

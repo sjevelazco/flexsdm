@@ -61,9 +61,9 @@
 #' spp
 #' spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' ####                  Cellsize method                   ####
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' # Using cellsize method
 #' filtered_occ <- occfilt_geo(
 #'   data = spp1,
@@ -78,22 +78,25 @@
 #'
 #' # Select filtered occurrences based on
 #' # number of records and spatial autocorrelation
-#' occ_selected <- occfilt_select(occ_list = filtered_occ,
-#'                                x = "x",
-#'                                y = "y",
-#'                                env_layer = somevar,
-#'                                filter_prop = FALSE)
+#' occ_selected <- occfilt_select(
+#'   occ_list = filtered_occ,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar,
+#'   filter_prop = FALSE
+#' )
 #' occ_selected
 #'
-#' occ_selected <- occfilt_select(occ_list = filtered_occ,
-#'                                x = "x",
-#'                                y = "y",
-#'                                env_layer = somevar,
-#'                                filter_prop = TRUE)
+#' occ_selected <- occfilt_select(
+#'   occ_list = filtered_occ,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar,
+#'   filter_prop = TRUE
+#' )
 #' occ_selected$occ
 #'
 #' occ_selected$filter_prop
-#'
 #' }
 occfilt_select <- function(occ_list, x, y, env_layer, filter_prop = FALSE) {
   mean_autocorr <- n_records <- filt_value <- NULL
@@ -142,7 +145,7 @@ occfilt_select <- function(occ_list, x, y, env_layer, filter_prop = FALSE) {
   if (filter_prop) {
     return(list(
       occ = occ_list[[selected_value]],
-      filter_prop = dplyr::relocate(filtpropr, filt_value, mean_autocorr , n_records)
+      filter_prop = dplyr::relocate(filtpropr, filt_value, mean_autocorr, n_records)
     ))
   } else {
     return(occ_list[[selected_value]])

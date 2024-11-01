@@ -198,8 +198,8 @@ fit_gam <- function(data,
     variables <- variables[variables %in% var_selected]
     predictors <- predictors[predictors %in% var_selected]
     predictors_f <- predictors_f[predictors_f %in% var_selected]
-    if(length(predictors_f)==0) {
-      predictors_f = NULL
+    if (length(predictors_f) == 0) {
+      predictors_f <- NULL
     }
 
     formula1 <-
@@ -339,7 +339,7 @@ fit_gam <- function(data,
     ))
 
   pred_test <- data.frame(
-    pr_ab = data.frame(data)[,response],
+    pr_ab = data.frame(data)[, response],
     pred = suppressMessages(mgcv::predict.gam(
       mod,
       newdata = data,

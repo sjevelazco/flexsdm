@@ -55,7 +55,7 @@ test_that("ESM maximum entropy only with presences and background points", {
   data("backg")
   require(dplyr)
 
-  abies <- abies %>% dplyr::filter(pr_ab==1)
+  abies <- abies %>% dplyr::filter(pr_ab == 1)
 
   # Using k-fold partition method
   set.seed(10)

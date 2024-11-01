@@ -199,7 +199,6 @@ test_that("test data with NA and without background", {
       pred_type = "cloglog"
     )
   expect_length(max_t, 5)
-
 })
 
 test_that("test fit only with presences and background", {
@@ -225,7 +224,7 @@ test_that("test fit only with presences and background", {
     method = c(method = "kfold", folds = 2)
   )
   # Only presences
-  abies2 <- abies2 %>% dplyr::filter(pr_ab==1)
+  abies2 <- abies2 %>% dplyr::filter(pr_ab == 1)
 
   backg2 <- part_random(
     data = backg,
@@ -256,7 +255,6 @@ test_that("test fit only with presences and background", {
       pred_type = "cloglog"
     )
   expect_length(max_t, 5)
-
 })
 
 test_that("test background argument names not match

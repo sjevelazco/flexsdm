@@ -152,15 +152,15 @@ var$cumulative_variance
 ## environmental variables are stored for different scenarios
 dir_sc <- file.path(tempdir(), "projections")
 dir.create(dir_sc)
-dir_sc <- file.path(dir_sc, c('scenario_1', 'scenario_2'))
+dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
 sapply(dir_sc, dir.create)
 
 somevar <-
   system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
 
-terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"), overwrite=TRUE)
-terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite=TRUE)
+terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"), overwrite = TRUE)
+terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite = TRUE)
 
 ## Perform pca with projections
 dir_w_proj <- dirname(dir_sc[1])
@@ -180,48 +180,53 @@ var$removed_variables
 var$uniqueness
 var$loadings
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####            Other option to perform PCA             ####
 ####      considering cell restricted to a region       ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 
 # Define a calibration area
 abies2 <- abies \%>\%
   dplyr::select(x, y, pr_ab) \%>\%
-  dplyr::filter(pr_ab==1)
+  dplyr::filter(pr_ab == 1)
 
 plot(somevar[[1]])
 points(abies2[-3])
-ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs=crs(somevar))
-plot(ca, add=T)
+ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs = crs(somevar))
+plot(ca, add = T)
 
 # Full geographical range to perform PCA
-pca_fr <- correct_colinvar(env_layer = somevar ,
-                           method = c("pca"),
-                           maxcell = NULL,
-                           restric_to_region = NULL,
-                           restric_pca_proj = FALSE)
+pca_fr <- correct_colinvar(
+  env_layer = somevar,
+  method = c("pca"),
+  maxcell = NULL,
+  restric_to_region = NULL,
+  restric_pca_proj = FALSE
+)
 
 # Perform PCA only with cell delimited by polygon used in restric_to_region
-pca_rr <- correct_colinvar(env_layer = somevar ,
-                           method = c("pca"),
-                           maxcell = NULL,
-                           restric_to_region = ca,
-                           restric_pca_proj = FALSE)
+pca_rr <- correct_colinvar(
+  env_layer = somevar,
+  method = c("pca"),
+  maxcell = NULL,
+  restric_to_region = ca,
+  restric_pca_proj = FALSE
+)
 
 # Perform and predicted PCA only with cell delimited by polygon used in restric_to_region
-pca_rrp <- correct_colinvar(env_layer = somevar ,
-                            method = c("pca"),
-                            maxcell = NULL,
-                            restric_to_region = ca,
-                            restric_pca_proj = TRUE)
+pca_rrp <- correct_colinvar(
+  env_layer = somevar,
+  method = c("pca"),
+  maxcell = NULL,
+  restric_to_region = ca,
+  restric_pca_proj = TRUE
+)
 
 plot(pca_fr$env_layer) # PCA with all cells
 plot(pca_rr$env_layer) # PCA with calibration area cell but predicted for entire region
 plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibration area (ca)
-
 }
 
 }

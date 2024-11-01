@@ -103,10 +103,14 @@ p_bpdp(model = svm_t1$model, training_data = abies2, predictors = c("aet", "cwd"
 p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 10)
 p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 70)
 # With training condition boundaires
-p_bpdp(model = svm_t1$model, training_data = abies2,
-training_boundaries = "convexh")
-p_bpdp(model = svm_t1$model, training_data = abies2,
-training_boundaries = "rectangle", color_training_boundaries = "yellow")
+p_bpdp(
+  model = svm_t1$model, training_data = abies2,
+  training_boundaries = "convexh"
+)
+p_bpdp(
+  model = svm_t1$model, training_data = abies2,
+  training_boundaries = "rectangle", color_training_boundaries = "yellow"
+)
 p_bpdp(
   model = svm_t1$model, training_data = abies2, training_boundaries = "convexh",
   color_training_boundaries = "orange",
@@ -122,9 +126,11 @@ p_bpdp(
 
 # Bivariate partial dependence plot for training and projection condition
 plot(somevar[[1]], main = "Projection area")
-p_bpdp(model = svm_t1$model, training_data = abies2,
-projection_data = somevar, # a SpatRaster used to predict or project the model
-training_boundaries = "convexh")
+p_bpdp(
+  model = svm_t1$model, training_data = abies2,
+  projection_data = somevar, # a SpatRaster used to predict or project the model
+  training_boundaries = "convexh"
+)
 
 
 # Bivariate partial dependece plot with categorical variables

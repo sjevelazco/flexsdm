@@ -171,11 +171,11 @@
 #'   predict_area = NULL
 #' )
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####              Predict model using chunks            ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' # Predicting models in chunks helps reduce memory requirements in
 #' # cases where models are predicted for large scales and high resolution
 #'
@@ -187,7 +187,6 @@
 #'   predict_area = NULL,
 #'   nchunk = 4
 #' )
-#'
 #' }
 #'
 sdm_predict <-
@@ -287,9 +286,10 @@ sdm_predict <-
     # Transform raster to data.frame
 
     # if(chunk){
-    cell <- terra::as.data.frame(pred, cells = TRUE, na.rm = TRUE)[,"cell"]
+    cell <- terra::as.data.frame(pred, cells = TRUE, na.rm = TRUE)[, "cell"]
     set <-
-      c(seq(1, length(cell), length.out = nchunk) # length.out = nchunk
+      c(
+        seq(1, length(cell), length.out = nchunk) # length.out = nchunk
         %>% round(),
         length(cell) + 1
       )
@@ -304,14 +304,14 @@ sdm_predict <-
     # Create list for storing raster for current condition
     model_c <- as.list(names(m))
     names(model_c) <- names(m)
-    for(i in seq_along(model_c)){
+    for (i in seq_along(model_c)) {
       model_c[[i]] <- r
     }
 
 
 
     # Write here the loop
-    for(CH in seq_len((length(set) - 1))){
+    for (CH in seq_len((length(set) - 1))) {
       rowset <- set[CH]:(set[CH + 1] - 1)
       rowset <- cell[rowset]
       pred_df <- pred[rowset]
@@ -381,12 +381,12 @@ sdm_predict <-
           r <- pred[[!terra::is.factor(pred)]][[1]]
           r[!is.na(r)] <- NA
           suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-                             predict.graf(
-                               object = m[[i]],
-                               newdata = pred_df[, names(m[[i]]$obsx)],
-                               type = "response",
-                               CI = NULL
-                             ))
+            predict.graf(
+              object = m[[i]],
+              newdata = pred_df[, names(m[[i]]$obsx)],
+              type = "response",
+              CI = NULL
+            ))
           if (length(m[[i]]$facs)) {
             r[(na_mask + is.na(r)) == 1] <- 0
           }
@@ -567,11 +567,11 @@ sdm_predict <-
             v <- rep(0, nrow(pred_df))
             v[!vfilter] <-
               stats::predict(m[[i]], pred_df[!vfilter, ] %>%
-                               dplyr::mutate(dplyr::across(
-                                 .cols = names(f),
-                                 .fns = ~ droplevels(.)
-                               )),
-                             type = "prob"
+                dplyr::mutate(dplyr::across(
+                  .cols = names(f),
+                  .fns = ~ droplevels(.)
+                )),
+              type = "prob"
               )[, 2]
             r[as.numeric(rownames(pred_df))] <- v
             rm(v)
@@ -627,10 +627,10 @@ sdm_predict <-
             v <- rep(0, nrow(pred_df))
             v[!vfilter] <-
               kernlab::predict(m[[i]], pred_df[!vfilter, ] %>%
-                                 dplyr::mutate(dplyr::across(
-                                   .cols = names(f),
-                                   .fns = ~ droplevels(.)
-                                 )), type = "prob")[, 2]
+                dplyr::mutate(dplyr::across(
+                  .cols = names(f),
+                  .fns = ~ droplevels(.)
+                )), type = "prob")[, 2]
             r[as.numeric(rownames(pred_df))] <- v
             rm(v)
           } else {
@@ -696,13 +696,17 @@ sdm_predict <-
       }
 
       if (any("meanw" == ens_method)) {
+        if (any(weight_data[[3]] == 0)) {
+          weight_data[[3]][weight_data[[3]] == 0] <- 0.00000001
+        }
+
         ensemble_c[["meanw"]] <- terra::weighted.mean(model_c, weight_data[[3]])
       }
 
       if (any("meansup" == ens_method)) {
         ensemble_c[["meansup"]] <-
           terra::app(model_c[[which(weight_data[[3]] >= mean(weight_data[[3]]))]],
-                     fun = mean, cores = 1
+            fun = mean, cores = 1
           )
       }
 
@@ -749,7 +753,7 @@ sdm_predict <-
 
       ensemble_c <-
         terra::app(model_c * weight_data, fun = sum, cores = 1)
-      ensemble_c <- ensemble_c/sum(weight_data)
+      ensemble_c <- ensemble_c / sum(weight_data)
       names(ensemble_c) <- paste0("esm_", unique(names(model_c)))
 
       model_c <- list(ensemble_c)
@@ -806,10 +810,10 @@ sdm_predict <-
       }
 
       result <- mapply(mf2, model_c, model_b, SIMPLIFY = FALSE)
-      if(grepl("esm_", names(model_c[[1]]))) {
+      if (grepl("esm_", names(model_c[[1]]))) {
         names(result) <- names(model_c[[1]])
       }
-      for(f in 1:length(result)){
+      for (f in 1:length(result)) {
         terra::crs(result[[f]]) <- terra::crs(pred)
       }
 

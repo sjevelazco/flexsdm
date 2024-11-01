@@ -85,9 +85,9 @@
 #' somevar[[1]] %>% plot()
 #' points(spp1 %>% select(x, y))
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' ####                  Cellsize method                   ####
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' # Using cellsize method
 #' filtered_occ <- occfilt_geo(
@@ -119,16 +119,16 @@
 #' # So user must select the desired filtered dataset
 #'
 #' # Let's explore the results
-#' bind_rows(filtered_occ, .id="cellSize") %>%
+#' bind_rows(filtered_occ, .id = "cellSize") %>%
 #'   dplyr::mutate(cellSize = as.numeric(cellSize)) %>%
 #'   ggplot(aes(x, y)) +
 #'   geom_point() +
 #'   facet_wrap(~cellSize)
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' ####                   Defined method                   ####
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' # Using defined method
 #' filtered_occ <- occfilt_geo(
 #'   data = spp1,
@@ -153,16 +153,16 @@
 #'   prj = crs(somevar)
 #' )
 #'
-#' bind_rows(filtered_occ, .id="cellSize") %>%
+#' bind_rows(filtered_occ, .id = "cellSize") %>%
 #'   dplyr::mutate(cellSize = as.numeric(cellSize)) %>%
 #'   ggplot(aes(x, y)) +
 #'   geom_point() +
 #'   facet_wrap(~cellSize)
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' ####                  Moran's I method                  ####
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' # Using Moran's I method
 #' filtered_occ <- occfilt_geo(
@@ -188,7 +188,7 @@
 #'   prj = crs(somevar)
 #' )
 #'
-#' bind_rows(filtered_occ, .id="moran") %>%
+#' bind_rows(filtered_occ, .id = "moran") %>%
 #'   dplyr::mutate(moran = as.numeric(moran)) %>%
 #'   ggplot(aes(x, y)) +
 #'   geom_point() +
@@ -197,11 +197,13 @@
 #' # It is possible select the best of filtered
 #' # datasets using the occfilt_selec function
 #'
-#' occ_selected <- occfilt_select(occ_list = filtered_occ,
-#' x = "x",
-#' y = "y",
-#' env_layer = somevar,
-#' filter_prop = TRUE)
+#' occ_selected <- occfilt_select(
+#'   occ_list = filtered_occ,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar,
+#'   filter_prop = TRUE
+#' )
 #'
 #' occ_selected
 #' }
@@ -209,7 +211,6 @@
 #' @seealso \code{\link{occfilt_env}}, \code{\link{occfilt_select}}
 #'
 occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +datum=WGS84", reps = 20) {
-
   da <- data0 <- data
   rm(data)
   da <- da[c(x, y)]
@@ -276,22 +277,22 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
       }
 
       # Select threshold
-        if (any(mor <= method[2])) {
-          mor_thr <- as.numeric(method[-1])
-          pos <- which(mor <= mor_thr & mor > mor_thr - 0.005)
-          # Filter distance and imoran values
-          br <- br[pos]
-          mor <- mor[pos]
-          # Select threshold
-          d <- min(br)
-          mor <- mor[which.min(br)]
-          message("Moran's I threshold closest to the supplied value: ", round(mor[br==d], 3))
-        } else {
-          message("No Moran's I <= than the supplied value were found")
-          message("Moran's I threshold used: ", round(min(mor), 2))
-          pos <- which(mor == min(mor))
-          d <- br[pos]
-        }
+      if (any(mor <= method[2])) {
+        mor_thr <- as.numeric(method[-1])
+        pos <- which(mor <= mor_thr & mor > mor_thr - 0.005)
+        # Filter distance and imoran values
+        br <- br[pos]
+        mor <- mor[pos]
+        # Select threshold
+        d <- min(br)
+        mor <- mor[which.min(br)]
+        message("Moran's I threshold closest to the supplied value: ", round(mor[br == d], 3))
+      } else {
+        message("No Moran's I <= than the supplied value were found")
+        message("Moran's I threshold used: ", round(min(mor), 2))
+        pos <- which(mor == min(mor))
+        d <- br[pos]
+      }
 
       options(warn = 1)
 
@@ -408,20 +409,19 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
   }
 
 
-  ##%######################################################%##
+  ## %######################################################%##
   ####    Approach for testing several filter values      ####
-  ##%######################################################%##
+  ## %######################################################%##
 
   if ("moran" %in% method) {
-
     # Perform PCA
     p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
 
     p <- stats::prcomp(p,
-                       retx = TRUE,
-                       scale. = TRUE,
-                       center = TRUE,
-                       rank. = 1
+      retx = TRUE,
+      scale. = TRUE,
+      center = TRUE,
+      rank. = 1
     )
 
     env_layer <- terra::predict(env_layer, p)
@@ -437,7 +437,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
     # Run filter
     val <- as.numeric(method[-1])
     result <- list()
-    for(ii in 1:length(val)){
+    for (ii in 1:length(val)) {
       result[[ii]] <- occfilt_geo_0(
         data = data0, # data without NA
         da = da,
@@ -447,7 +447,6 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
         method = c("moran", factor = val[ii]),
         reps = reps
       )
-
     }
     names(result) <- val
   }
@@ -456,7 +455,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
   if ("cellsize" %in% method) {
     val <- as.numeric(method[-1])
     result <- list()
-    for(ii in 1:length(val)){
+    for (ii in 1:length(val)) {
       result[[ii]] <- occfilt_geo_0(
         data = data0, # data without NA
         da = da,
@@ -466,7 +465,6 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
         method = c("cellsize", factor = val[ii]),
         reps = reps
       )
-
     }
     names(result) <- val
   }
@@ -475,9 +473,9 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
   if ("defined" %in% method) {
     val <- as.numeric(method[-1])
     result <- list()
-    for(ii in 1:length(val)){
+    for (ii in 1:length(val)) {
       result[[ii]] <- occfilt_geo_0(
-        data = data0,# data without NA
+        data = data0, # data without NA
         da = da,
         x = x,
         y = y,
@@ -489,11 +487,9 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
     names(result) <- val
   }
 
-  if(length(val) == 1) {
+  if (length(val) == 1) {
     result <- result[[1]]
   }
 
-return(result)
-
+  return(result)
 }
-

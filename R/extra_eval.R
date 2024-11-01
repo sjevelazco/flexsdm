@@ -83,9 +83,11 @@
 #'   dplyr::select(x, y, pr_ab)
 #'
 #' # Calibration area based on some criterion such as dispersal ability
-#' ca <- calib_area(sp, x = "x", y = "y",
-#'         method = c("bmcp", width = 50000),
-#'         crs = crs(somevar))
+#' ca <- calib_area(sp,
+#'   x = "x", y = "y",
+#'   method = c("bmcp", width = 50000),
+#'   crs = crs(somevar)
+#' )
 #'
 #' plot(somevar[[1]])
 #' points(sp)
@@ -109,11 +111,13 @@
 #' sp_pa
 #'
 #' # Get environmental condition of calibration area
-#' sp_pa_2 <- sdm_extract(data = sp_pa,
-#'                        x = "x",
-#'                        y = "y",
-#'                        env_layer = somevar)
-#'                        sp_pa_2
+#' sp_pa_2 <- sdm_extract(
+#'   data = sp_pa,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar
+#' )
+#' sp_pa_2
 #'
 #' # Measure degree of extrapolation based on Mahalanobis and
 #' # for a projection area based on a SpatRaster object
@@ -145,9 +149,11 @@
 #'   thr = c("max_sorensen")
 #' )
 #'
-#' predsuit <- sdm_predict(models = a_model,
-#'                         pred = somevar,
-#'                         thr = "max_sorensen")
+#' predsuit <- sdm_predict(
+#'   models = a_model,
+#'   pred = somevar,
+#'   thr = "max_sorensen"
+#' )
 #' predsuit # list with a raster with two layer
 #' plot(predsuit[[1]])
 #'
@@ -171,15 +177,15 @@
 #' plot(predsuit_2$`200`)
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' ####        Measure degree of extrapolation for         ####
 #' ####        projection area based on data.frame         ####
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' extr_df <-
 #'   extra_eval(
 #'     training_data = sp_pa_2,
-#'     projection_data = as.data.frame(somevar, xy=TRUE),
+#'     projection_data = as.data.frame(somevar, xy = TRUE),
 #'     pr_ab = "pr_ab",
 #'     n_cores = 1,
 #'     aggreg_factor = 1,
@@ -189,10 +195,10 @@
 #' # see 'p_extra()' to explore extrapolation or suitability pattern in the
 #' # environmental and/or geographical space
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' ####             Explore Shape metric with              ####
 #' ####     univariate and combinatorial extrapolation     ####
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' extr <-
 #'   extra_eval(
 #'     training_data = sp_pa_2,
@@ -221,7 +227,7 @@ extra_eval <-
     if (!metric %in% c("euclidean", "mahalanobis")) {
       stop("metric argument must be used with 'euclidean' or 'mahalanobis'")
     }
-    if (length(metric)>1) {
+    if (length(metric) > 1) {
       stop("metric argument must be used with 'euclidean or 'mahalanobis'")
     }
 
@@ -291,7 +297,7 @@ extra_eval <-
       terra::as.data.frame(projection_data, xy = FALSE, na.rm = TRUE)
 
     # save coordinates and cell number
-    if(any("SpatRaster" == class(projection_data))){
+    if (any("SpatRaster" == class(projection_data))) {
       ncell <- rownames(env_proj2) %>% as.numeric()
     }
 
@@ -392,7 +398,7 @@ extra_eval <-
 
 
     extra <- unlist(extra)
-    if(any("SpatRaster" == class(projection_data))){
+    if (any("SpatRaster" == class(projection_data))) {
       env_proj2 <-
         data.frame(distance = extra)
     } else {
@@ -418,7 +424,7 @@ extra_eval <-
     if (metric == "mahalanobis") {
       base_stand_distance <- env_calib2 %>%
         dplyr::summarise_all(., mean) %>%
-        mah_dist(x = env_calib2, y = ., cov =  stats::cov(env_calib2)) %>%
+        mah_dist(x = env_calib2, y = ., cov = stats::cov(env_calib2)) %>%
         mean()
     }
 
@@ -431,7 +437,7 @@ extra_eval <-
 
 
     # Result
-    if(any("SpatRaster" == class(projection_data))){
+    if (any("SpatRaster" == class(projection_data))) {
       extraraster[ncell] <- env_proj2[, "extrapolation"]
       if (!is.null(aggreg_factor)) {
         extraraster <- terra::resample(x = extraraster, y = disag)
@@ -441,17 +447,17 @@ extra_eval <-
 
       # Univariate and combinatorial extrapolation
       if (univar_comb) {
-          rng <- apply(training_data, 2, range, na.rm = TRUE)
-          univar_ext <- projection_data
-          for (i in 1:terra::nlyr(projection_data)) {
-            univar_ext[[i]] <- (projection_data[v0[i]] <= rng[, v0[i]][1] |
-                                  projection_data[v0[i]] >= rng[, v0[i]][2])
-          }
-          univar_comb_r <- sum(univar_ext)
-          univar_comb_r[univar_comb_r > 0] <- 2
-          univar_comb_r[univar_comb_r == 0] <- 1
-          names(univar_comb_r) <- "uni_comb"
-          extraraster <- c(extraraster, univar_comb_r)
+        rng <- apply(training_data, 2, range, na.rm = TRUE)
+        univar_ext <- projection_data
+        for (i in 1:terra::nlyr(projection_data)) {
+          univar_ext[[i]] <- (projection_data[v0[i]] <= rng[, v0[i]][1] |
+            projection_data[v0[i]] >= rng[, v0[i]][2])
+        }
+        univar_comb_r <- sum(univar_ext)
+        univar_comb_r[univar_comb_r > 0] <- 2
+        univar_comb_r[univar_comb_r == 0] <- 1
+        names(univar_comb_r) <- "uni_comb"
+        extraraster <- c(extraraster, univar_comb_r)
       }
     } else {
       for (i in names(s_center)) {
@@ -462,8 +468,8 @@ extra_eval <-
         rng <- apply(training_data, 2, range, na.rm = TRUE)
         univar_ext <- projection_data
         for (i in 1:ncol(projection_data)) {
-          univar_ext[, v0[i]] <- (projection_data[,v0[i]] <= rng[, v0[i]][1] |
-                                projection_data[, v0[i]] >= rng[, v0[i]][2])
+          univar_ext[, v0[i]] <- (projection_data[, v0[i]] <= rng[, v0[i]][1] |
+            projection_data[, v0[i]] >= rng[, v0[i]][2])
         }
         univar_comb_r <- apply(univar_ext, 1, sum)
         univar_comb_r[univar_comb_r > 0] <- 2

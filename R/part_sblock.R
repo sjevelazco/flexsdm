@@ -260,10 +260,10 @@
 #'
 #' plot(part$grid)
 #' points(
-#' part$part[c("x", "y")],
-#' col = c("blue", "red", "green", "black")[part$part$.part],
-#' cex = 0.5,
-# 'pch = 19
+#'   part$part[c("x", "y")],
+#'   col = c("blue", "red", "green", "black")[part$part$.part],
+#'   cex = 0.5,
+#'   #' pch = 19
 #' )
 #' }
 #'
@@ -278,7 +278,6 @@ part_sblock <- function(env_layer,
                         num_grids = 30,
                         min_occ = 10,
                         prop = 0.5) {
-
   # Select columns
   data <- dplyr::tibble(data)
   data <- data[, c(pr_ab, x, y)]

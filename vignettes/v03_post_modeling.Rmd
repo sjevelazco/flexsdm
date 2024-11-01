@@ -291,7 +291,6 @@ rf_t1 <-
 
 rf_t1$performance
 # Note in rf_t1$performance the best model was the one with mtry = 3 and threshold = 'max_sens_spec'
-
 ```
 
 

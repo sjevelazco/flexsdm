@@ -177,7 +177,6 @@ part_sband <- function(env_layer,
                        max_bands = 20,
                        min_occ = 10,
                        prop = 0.5) {
-
   # Select columns
   data <- dplyr::tibble(data)
   data <- data[, c(pr_ab, x, y)]

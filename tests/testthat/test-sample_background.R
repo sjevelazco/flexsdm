@@ -82,7 +82,7 @@ test_that("sample_background random method", {
     x = "x",
     y = "y",
     method = c("buffer", width = 50000),
-    crs=crs(somevar)
+    crs = crs(somevar)
   )
   bg <- sample_background(
     data = spp_p,
@@ -158,7 +158,7 @@ test_that("sample_background Thickening method", {
     x = "x",
     y = "y",
     method = c("buffer", width = 50000),
-    crs=crs(somevar)
+    crs = crs(somevar)
   )
 
   bg <- sample_background(
@@ -271,5 +271,6 @@ test_that("sample_background misuse of argument", {
       method = "biased",
       rlayer = regions
       # rbias = occ_density
-    ))
+    )
+  )
 })
