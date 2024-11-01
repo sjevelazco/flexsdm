@@ -154,8 +154,8 @@ esm_gam <- function(data,
     paste0(".", .)
 
   # Check amount of data and number of coefficients
-  if(k<0){
-    k=10
+  if (k < 0) {
+    k <- 10
   }
   ncoef <- n_coefficients(
     data = data,
@@ -164,7 +164,7 @@ esm_gam <- function(data,
     k = k
   )
 
-  if (any(n_training(data = data, partition = partition) < ncoef )) {
+  if (any(n_training(data = data, partition = partition) < ncoef)) {
     message("\nModel has more coefficients than data used for training it. Try to reduce k")
     return(NULL)
   }
@@ -191,7 +191,7 @@ esm_gam <- function(data,
         partition = partition,
         fit_formula = formula_esm,
         thr = thr,
-        k=k
+        k = k
       )
     )
 
@@ -244,18 +244,18 @@ esm_gam <- function(data,
       as.double())
   })
 
-  if(length(data_ens) > 1){
+  if (length(data_ens) > 1) {
     data_ens2 <-
       dplyr::inner_join(data_ens[[1]],
-                        data_ens[[2]],
-                        by = c("rnames", "replicates", "part", "pr_ab")
+        data_ens[[2]],
+        by = c("rnames", "replicates", "part", "pr_ab")
       )
     if (length(data_ens) > 2) {
       for (i in 3:length(data_ens)) {
         data_ens2 <-
           dplyr::inner_join(data_ens2,
-                            data_ens[[i]],
-                            by = c("rnames", "replicates", "part", "pr_ab")
+            data_ens[[i]],
+            by = c("rnames", "replicates", "part", "pr_ab")
           )
       }
     }

@@ -82,10 +82,14 @@
 #' p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 10)
 #' p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 70)
 #' # With training condition boundaires
-#' p_bpdp(model = svm_t1$model, training_data = abies2,
-#' training_boundaries = "convexh")
-#' p_bpdp(model = svm_t1$model, training_data = abies2,
-#' training_boundaries = "rectangle", color_training_boundaries = "yellow")
+#' p_bpdp(
+#'   model = svm_t1$model, training_data = abies2,
+#'   training_boundaries = "convexh"
+#' )
+#' p_bpdp(
+#'   model = svm_t1$model, training_data = abies2,
+#'   training_boundaries = "rectangle", color_training_boundaries = "yellow"
+#' )
 #' p_bpdp(
 #'   model = svm_t1$model, training_data = abies2, training_boundaries = "convexh",
 #'   color_training_boundaries = "orange",
@@ -101,9 +105,11 @@
 #'
 #' # Bivariate partial dependence plot for training and projection condition
 #' plot(somevar[[1]], main = "Projection area")
-#' p_bpdp(model = svm_t1$model, training_data = abies2,
-#' projection_data = somevar, # a SpatRaster used to predict or project the model
-#' training_boundaries = "convexh")
+#' p_bpdp(
+#'   model = svm_t1$model, training_data = abies2,
+#'   projection_data = somevar, # a SpatRaster used to predict or project the model
+#'   training_boundaries = "convexh"
+#' )
 #'
 #'
 #' # Bivariate partial dependece plot with categorical variables
@@ -174,8 +180,8 @@ p_bpdp <-
         "To plot bivariate partial dependence plot with training condition boundaries it is necessary to provide calibration data in 'training_data' argument"
       )
     }
-    if(!is.null(training_boundaries)){
-      if(!any(training_boundaries %in% c("convexh", "rectangle"))){
+    if (!is.null(training_boundaries)) {
+      if (!any(training_boundaries %in% c("convexh", "rectangle"))) {
         stop(
           "'training_boundaries' argument could assume one of the following value: NULL, 'convexh', or 'rectangle'"
         )
@@ -258,7 +264,7 @@ p_bpdp <-
         ggplot2::scale_fill_gradientn(colours = color_gradient, limits = c(0, 1)) +
         ggplot2::coord_cartesian(expand = FALSE) +
         {
-          if(!is.null(training_boundaries) & !is.null(crv$training_boundaries)){
+          if (!is.null(training_boundaries) & !is.null(crv$training_boundaries)) {
             if (training_boundaries == "convexh") {
               names(crv[[2]]) <- c("v1", "v2")
               ggplot2::geom_polygon(
@@ -271,13 +277,15 @@ p_bpdp <-
           }
         } +
         {
-          if(!is.null(training_boundaries) & !is.null(crv$training_boundaries)){
+          if (!is.null(training_boundaries) & !is.null(crv$training_boundaries)) {
             if (training_boundaries == "rectangle") {
               names(crv[[2]]) <- c("v1", "v2")
               ggplot2::geom_rect(
                 data = crv[[2]],
-                ggplot2::aes(xmin = min(v1), xmax = max(v1),
-                             ymin = min(v2), ymax = max(v2)),
+                ggplot2::aes(
+                  xmin = min(v1), xmax = max(v1),
+                  ymin = min(v2), ymax = max(v2)
+                ),
                 color = color_training_boundaries,
                 fill = "transparent"
               )

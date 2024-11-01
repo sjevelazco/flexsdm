@@ -121,7 +121,7 @@ gbm_t <-
     grid = tune_grid,
     thr = "max_sens_spec",
     metric = "TSS",
-   n_cores = 1
+    n_cores = 1
   )
 
 # Outputs

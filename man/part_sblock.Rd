@@ -266,9 +266,10 @@ part$grid
 
 plot(part$grid)
 points(
-part$part[c("x", "y")],
-col = c("blue", "red", "green", "black")[part$part$.part],
-cex = 0.5,
+  part$part[c("x", "y")],
+  col = c("blue", "red", "green", "black")[part$part$.part],
+  cex = 0.5,
+  #' pch = 19
 )
 }
 

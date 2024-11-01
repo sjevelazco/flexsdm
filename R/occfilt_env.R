@@ -112,9 +112,9 @@
 #' )
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' ####         ' # Test different number of bins          ####
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' filtered_dif_bins <- occfilt_env(
 #'   data = spp1,
@@ -126,14 +126,14 @@
 #' )
 #'
 #' class(filtered_dif_bins)
-#' names(filtered_dif_bins)# each elements of this list has the names of the bins
+#' names(filtered_dif_bins) # each elements of this list has the names of the bins
 #'
 #' filtered_dif_bins %>%
 #'   dplyr::bind_rows(.id = "bins") %>%
 #'   dplyr::mutate(bins = as.numeric(bins)) %>%
 #'   ggplot(aes(x = x, y = y)) +
 #'   geom_point() +
-#'   facet_wrap( ~ bins)
+#'   facet_wrap(~bins)
 #' # note that the higher the nbins parameter the more
 #' # classes must be processed (4 variables, 30 bins = 923521 classes)
 #'
@@ -143,27 +143,27 @@
 #' # It is possible select the best of filtered
 #' # datasets using the occfilt_selec function
 #'
-#' occ_selected <- occfilt_select(occ_list = filtered_dif_bins,
-#' x = "x",
-#' y = "y",
-#' env_layer = somevar,
-#' filter_prop = TRUE)
+#' occ_selected <- occfilt_select(
+#'   occ_list = filtered_dif_bins,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar,
+#'   filter_prop = TRUE
+#' )
 #'
 #' occ_selected
-#'
 #' }
 #'
 #' @seealso \code{\link{occfilt_geo}}, \code{\link{occfilt_select}}
 #'
 occfilt_env <- function(data, x, y, id, env_layer, nbins) {
-
   da <- data[c(x, y, id)]
   coord <- data[c(x, y)]
 
   # Remove factor variables
   filt <- terra::is.factor(env_layer)
   names(filt) <- names(env_layer)
-  if(sum(filt)>0){
+  if (sum(filt) > 0) {
     env_layer <- env_layer[[!filt]]
     message("Next categorical variables were removed: ", names(filt)[filt])
   }
@@ -221,9 +221,9 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
     return(dplyr::tibble(coord_filter))
   }
 
-  ##%######################################################%##
+  ## %######################################################%##
   ####                Teste different bins                ####
-  ##%######################################################%##
+  ## %######################################################%##
 
   result <- list()
   for (ii in 1:length(nbins)) {
@@ -239,10 +239,9 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
   }
   names(result) <- nbins
 
-  if(length(nbins) == 1){
+  if (length(nbins) == 1) {
     return(result[[1]])
   } else {
     return(result)
   }
 }
-

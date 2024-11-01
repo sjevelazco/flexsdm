@@ -336,7 +336,7 @@ fit_gau <- function(data,
     ))
 
   suppressWarnings(pred_test <- data.frame(
-    pr_ab = data.frame(data)[,response],
+    pr_ab = data.frame(data)[, response],
     pred = suppressMessages(
       predict.graf(
         mod,

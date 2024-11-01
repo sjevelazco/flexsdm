@@ -108,4 +108,3 @@ test_that("test with occurrences fewer than 6", {
     na.omit()
   expect_true(all(colSums(outs_1.1 == 0) == 4))
 })
-

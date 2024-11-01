@@ -162,7 +162,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   method = c("buffer", width = 50000),
-#'   crs=crs(somevar)
+#'   crs = crs(somevar)
 #' )
 #' plot(regions, col = gray.colors(9))
 #' plot(ca_ps1, add = T)
@@ -220,7 +220,9 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
   data <- data[, c(x, y)]
 
   if (!is.null(calibarea)) {
-    rlayer <- rlayer %>% terra::crop(., calibarea) %>% terra::mask(., calibarea)
+    rlayer <- rlayer %>%
+      terra::crop(., calibarea) %>%
+      terra::mask(., calibarea)
   }
 
   # Random method
@@ -345,8 +347,8 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     cell_samp$pr_ab <- 0
   }
   colnames(cell_samp) <- c(x, y, "pr_ab")
-  if(!is.null(sp_name)){
-    cell_samp <- tibble(sp=sp_name, cell_samp)
+  if (!is.null(sp_name)) {
+    cell_samp <- tibble(sp = sp_name, cell_samp)
   }
   return(cell_samp)
 }

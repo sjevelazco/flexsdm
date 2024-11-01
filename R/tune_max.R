@@ -287,46 +287,51 @@ tune_max <-
       }
 
       eval_partial <- list()
-      for(i in 1:np2){
+      for (i in 1:np2) {
         message("Partition number: ", i, "/", np2)
         mod <- foreach::foreach(ii = 1:nrow(grid), .packages = c("dplyr")) %dopar% {
-          tryCatch({
-            sampleback = TRUE
-            try(mod <- maxnet::maxnet(
-              p = train[[i]][, response],
-              data = train[[i]][predictors],
-              f = maxnet::maxnet.formula(train[[i]][response],
-                                         train[[i]][predictors],
-                                         classes = grid$classes[ii]),
-              regmult = grid$regmult[ii],
-              addsamplestobackground = sampleback
-            ))
-            if(!exists("mod")){
-              sampleback = FALSE
+          tryCatch(
+            {
+              sampleback <- TRUE
               try(mod <- maxnet::maxnet(
                 p = train[[i]][, response],
                 data = train[[i]][predictors],
                 f = maxnet::maxnet.formula(train[[i]][response],
-                                           train[[i]][predictors],
-                                           classes = grid$classes[ii]),
+                  train[[i]][predictors],
+                  classes = grid$classes[ii]
+                ),
                 regmult = grid$regmult[ii],
                 addsamplestobackground = sampleback
               ))
+              if (!exists("mod")) {
+                sampleback <- FALSE
+                try(mod <- maxnet::maxnet(
+                  p = train[[i]][, response],
+                  data = train[[i]][predictors],
+                  f = maxnet::maxnet.formula(train[[i]][response],
+                    train[[i]][predictors],
+                    classes = grid$classes[ii]
+                  ),
+                  regmult = grid$regmult[ii],
+                  addsamplestobackground = sampleback
+                ))
+              }
+              mod
+            },
+            error = function(e) {
+              NULL
             }
-            mod
-          }, error = function(e) {
-            NULL
-          })
+          )
         }
         names(mod) <- 1:nrow(grid)
 
         filt <- sapply(mod, function(x) length(class(x)) == 3)
-        filt <- filt&!is.na(sapply(mod, function(x) x$entropy))
+        filt <- filt & !is.na(sapply(mod, function(x) x$entropy))
         mod <- mod[filt]
         grid2 <- grid[filt, ]
         tnames <- apply(grid2, 1, function(x) paste(x, collapse = "_"))
 
-        if(all(test[[i]][,response]==1)){
+        if (all(test[[i]][, response] == 1)) {
           # Test based on presence and background
           test[[i]] <- bind_rows(test[[i]], bgt_test[[i]])
         }
@@ -385,8 +390,8 @@ tune_max <-
 
         eval <-
           dplyr::tibble(dplyr::left_join(dplyr::mutate(grid2, tnames),
-                                         eval,
-                                         by = "tnames"
+            eval,
+            by = "tnames"
           )) %>%
           dplyr::select(-tnames)
         eval_partial[[i]] <- eval
@@ -423,7 +428,7 @@ tune_max <-
     mod <- fit_max(
       data = data,
       response = response,
-      predictors = predictors[!predictors%in%predictors_f],
+      predictors = predictors[!predictors %in% predictors_f],
       predictors_f = predictors_f,
       partition = partition,
       thr = thr,
@@ -437,13 +442,13 @@ tune_max <-
     pred_test_ens <- mod[["data_ens"]]
 
 
-    if(all(data[,response]==1)){
+    if (all(data[, response] == 1)) {
       # Test based on presence and background
       data <- bind_rows(data, background)
     }
 
     pred_test <- data.frame(
-      pr_ab = data.frame(data)[,response],
+      pr_ab = data.frame(data)[, response],
       pred = predict_maxnet(
         mod$model,
         newdata = data,
@@ -462,10 +467,9 @@ tune_max <-
       model = mod$model,
       predictors = variables,
       performance = dplyr::left_join(best_tune, threshold[1:4], by = "threshold") %>%
-        dplyr::relocate({{hyperp}}, model, threshold, thr_value, n_presences, n_absences),
+        dplyr::relocate({{ hyperp }}, model, threshold, thr_value, n_presences, n_absences),
       hyper_performance = eval_final,
       data_ens = pred_test_ens
     )
     return(result)
   }
-

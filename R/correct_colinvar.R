@@ -133,15 +133,15 @@
 #' ## environmental variables are stored for different scenarios
 #' dir_sc <- file.path(tempdir(), "projections")
 #' dir.create(dir_sc)
-#' dir_sc <- file.path(dir_sc, c('scenario_1', 'scenario_2'))
+#' dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
 #' sapply(dir_sc, dir.create)
 #'
 #' somevar <-
 #'   system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)
 #'
-#' terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"), overwrite=TRUE)
-#' terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite=TRUE)
+#' terra::writeRaster(somevar, file.path(dir_sc[1], "somevar.tif"), overwrite = TRUE)
+#' terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite = TRUE)
 #'
 #' ## Perform pca with projections
 #' dir_w_proj <- dirname(dir_sc[1])
@@ -161,48 +161,53 @@
 #' var$uniqueness
 #' var$loadings
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####            Other option to perform PCA             ####
 #' ####      considering cell restricted to a region       ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' # Define a calibration area
 #' abies2 <- abies %>%
 #'   dplyr::select(x, y, pr_ab) %>%
-#'   dplyr::filter(pr_ab==1)
+#'   dplyr::filter(pr_ab == 1)
 #'
 #' plot(somevar[[1]])
 #' points(abies2[-3])
-#' ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs=crs(somevar))
-#' plot(ca, add=T)
+#' ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs = crs(somevar))
+#' plot(ca, add = T)
 #'
 #' # Full geographical range to perform PCA
-#' pca_fr <- correct_colinvar(env_layer = somevar ,
-#'                            method = c("pca"),
-#'                            maxcell = NULL,
-#'                            restric_to_region = NULL,
-#'                            restric_pca_proj = FALSE)
+#' pca_fr <- correct_colinvar(
+#'   env_layer = somevar,
+#'   method = c("pca"),
+#'   maxcell = NULL,
+#'   restric_to_region = NULL,
+#'   restric_pca_proj = FALSE
+#' )
 #'
 #' # Perform PCA only with cell delimited by polygon used in restric_to_region
-#' pca_rr <- correct_colinvar(env_layer = somevar ,
-#'                            method = c("pca"),
-#'                            maxcell = NULL,
-#'                            restric_to_region = ca,
-#'                            restric_pca_proj = FALSE)
+#' pca_rr <- correct_colinvar(
+#'   env_layer = somevar,
+#'   method = c("pca"),
+#'   maxcell = NULL,
+#'   restric_to_region = ca,
+#'   restric_pca_proj = FALSE
+#' )
 #'
 #' # Perform and predicted PCA only with cell delimited by polygon used in restric_to_region
-#' pca_rrp <- correct_colinvar(env_layer = somevar ,
-#'                             method = c("pca"),
-#'                             maxcell = NULL,
-#'                             restric_to_region = ca,
-#'                             restric_pca_proj = TRUE)
+#' pca_rrp <- correct_colinvar(
+#'   env_layer = somevar,
+#'   method = c("pca"),
+#'   maxcell = NULL,
+#'   restric_to_region = ca,
+#'   restric_pca_proj = TRUE
+#' )
 #'
 #' plot(pca_fr$env_layer) # PCA with all cells
 #' plot(pca_rr$env_layer) # PCA with calibration area cell but predicted for entire region
 #' plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibration area (ca)
-#'
 #' }
 #'
 correct_colinvar <- function(env_layer,
@@ -223,7 +228,7 @@ correct_colinvar <- function(env_layer,
     env_layer <- terra::rast(env_layer)
   }
   if (!is.null(restric_to_region)) {
-    if(any(method %in% c("pca"))){
+    if (any(method %in% c("pca"))) {
       env_layer_constr <- env_layer %>%
         terra::crop(., restric_to_region) %>%
         terra::mask(., restric_to_region)
@@ -236,19 +241,18 @@ correct_colinvar <- function(env_layer,
 
   #### VIF ####
   if (any(method %in% "pearson")) {
-
     if (is.na(method["th"])) {
       th <- 0.7
     } else {
       th <- as.numeric(method["th"])
     }
 
-    if(is.null(maxcell)){
+    if (is.null(maxcell)) {
       h <- terra::as.data.frame(env_layer) %>% stats::na.omit()
     } else {
       # Raster random sample
       set.seed(10)
-      h <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+      h <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
         sample(., size = maxcell, replace = FALSE) %>%
         sort()
       h <- env_layer[h] %>%
@@ -257,10 +261,10 @@ correct_colinvar <- function(env_layer,
     h <- abs(stats::cor(h, method = "pearson"))
     diag(h) <- 0
 
-    cor_var <- h>th
-    cor_var <- apply(cor_var,2, function(x) colnames(h)[x])
-    if(length(cor_var)==0){
-      cor_var <- 'No pair of variables reached the specified correlation threshold.'
+    cor_var <- h > th
+    cor_var <- apply(cor_var, 2, function(x) colnames(h)[x])
+    if (length(cor_var) == 0) {
+      cor_var <- "No pair of variables reached the specified correlation threshold."
     }
 
     result <- list(
@@ -271,19 +275,18 @@ correct_colinvar <- function(env_layer,
 
   #### Peason ####
   if (any(method %in% "vif")) {
-
     if (is.null(method["th"])) {
       th <- 10
     } else {
       th <- as.numeric(method["th"])
     }
 
-    if(is.null(maxcell)){
+    if (is.null(maxcell)) {
       x <- terra::as.data.frame(env_layer)
     } else {
       # Raster random sample
       set.seed(10)
-      x <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+      x <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
         sample(., size = maxcell, replace = FALSE) %>%
         sort()
       x <- env_layer[x] %>%
@@ -338,7 +341,6 @@ correct_colinvar <- function(env_layer,
 
   #### PCA ####
   if (any(method %in% "pca")) {
-
     # Restrict cells if required
     if (!is.null(restric_to_region)) {
       env_layer_original <- env_layer
@@ -349,10 +351,10 @@ correct_colinvar <- function(env_layer,
     }
 
     # mean
-    means <- t(terra::global(env_layer, 'mean', na.rm=T)) %>% c()
+    means <- t(terra::global(env_layer, "mean", na.rm = T)) %>% c()
     names(means) <- names(env_layer)
     # SD
-    stds <- t(terra::global(env_layer, 'sd', na.rm=T)) %>% c()
+    stds <- t(terra::global(env_layer, "sd", na.rm = T)) %>% c()
     names(stds) <- names(env_layer)
 
     # Standardize raster values
@@ -360,12 +362,12 @@ correct_colinvar <- function(env_layer,
     vnmes <- names(means)
 
 
-    if(is.null(maxcell)){
+    if (is.null(maxcell)) {
       p0 <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
     } else {
       # Raster random sample
       set.seed(10)
-      p0 <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+      p0 <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
         sample(., size = maxcell, replace = FALSE) %>%
         sort()
       p0 <- env_layer[p0] %>%
@@ -373,9 +375,9 @@ correct_colinvar <- function(env_layer,
     }
 
     p <- stats::prcomp(p0,
-                       retx = TRUE,
-                       scale. = FALSE,
-                       center = FALSE
+      retx = TRUE,
+      scale. = FALSE,
+      center = FALSE
     )
     cof <- p$rotation
 
@@ -390,16 +392,17 @@ correct_colinvar <- function(env_layer,
     p <- stats::prcomp(p0, retx = TRUE, scale. = FALSE, center = FALSE, rank. = naxis)
 
     # env_layer <- terra::predict(env_layer, p)
-    if(restric_pca_proj & is.null(restric_to_region)){
+    if (restric_pca_proj & is.null(restric_to_region)) {
       message("No data was provided to 'restric_to_region' argument, so no geographical restriction will be applied to PCA projections")
-      restric_pca_proj = FALSE
+      restric_pca_proj <- FALSE
     }
-    if(restric_pca_proj){
+    if (restric_pca_proj) {
       env_layer <- terra::predict(env_layer, p)
     } else {
       env_layer_original <- terra::scale(env_layer_original,
-                                         center = means,
-                                         scale = stds)
+        center = means,
+        scale = stds
+      )
       env_layer <- terra::predict(env_layer_original, p)
     }
 
@@ -412,7 +415,7 @@ correct_colinvar <- function(env_layer,
     )
 
     if (!is.null(proj)) {
-      if(is.null(save_proj)){
+      if (is.null(save_proj)) {
         dpca <- file.path(dirname(proj), "Projection_PCA")
         dir.create(dpca)
       } else {
@@ -430,7 +433,7 @@ correct_colinvar <- function(env_layer,
         scen <- terra::rast(list.files(proj[i], full.names = TRUE))
         scen <- scen[[names(means)]]
 
-        if(restric_pca_proj){
+        if (restric_pca_proj) {
           scen <- scen %>%
             terra::crop(., restric_to_region) %>%
             terra::mask(., restric_to_region)
@@ -441,7 +444,7 @@ correct_colinvar <- function(env_layer,
         terra::writeRaster(
           scen,
           file.path(subfold[[i]], "pcs.tif"),
-          overwrite=TRUE
+          overwrite = TRUE
         )
       }
 
@@ -454,12 +457,12 @@ correct_colinvar <- function(env_layer,
     p <- terra::scale(env_layer, center = TRUE, scale = TRUE)
 
 
-    if(is.null(maxcell)){
+    if (is.null(maxcell)) {
       p <- terra::as.data.frame(p, xy = FALSE, na.rm = TRUE)
     } else {
       # Raster random sample
       set.seed(10)
-      p <- terra::as.data.frame(env_layer[[1]], cells=TRUE)[,1] %>%
+      p <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
         sample(., size = maxcell, replace = FALSE) %>%
         sort()
       p <- env_layer[p] %>%
@@ -484,7 +487,7 @@ correct_colinvar <- function(env_layer,
 
     lwr <- seq(0.001, 2, length.out = 50)
     fit <- NULL
-    for(tt in 1:length(lwr)){
+    for (tt in 1:length(lwr)) {
       tryCatch(
         fit <- stats::factanal(
           x = p,
@@ -523,5 +526,3 @@ correct_colinvar <- function(env_layer,
 
   return(result)
 }
-
-

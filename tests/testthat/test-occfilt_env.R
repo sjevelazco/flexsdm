@@ -1,4 +1,3 @@
-
 require(terra)
 require(dplyr)
 
@@ -20,7 +19,8 @@ test_that("test occfilt_env", {
     y = "y",
     id = "idd",
     env_layer = somevar,
-    nbins = 5)
+    nbins = 5
+  )
 
   expect_true(nrow(filtered_1) < nrow(spp1))
 
@@ -45,12 +45,12 @@ test_that("test occfilt_env with different values", {
     y = "y",
     id = "idd",
     env_layer = somevar,
-    nbins = c(5, 7, 9))
+    nbins = c(5, 7, 9)
+  )
 
   expect_equal(class(filtered_1), "list")
-  expect_equal(length(filtered_1),  3)
+  expect_equal(length(filtered_1), 3)
   expect_true(all(sapply(filtered_1, nrow) %in% c("16", "20", "21")))
-
 })
 
 test_that("test occfilt_env with factor as variables", {
@@ -63,8 +63,8 @@ test_that("test occfilt_env with factor as variables", {
     y = "y",
     id = "idd",
     env_layer = somevar,
-    nbins = 5)
+    nbins = 5
+  )
 
   expect_true(nrow(filtered_1) == 16)
 })
-

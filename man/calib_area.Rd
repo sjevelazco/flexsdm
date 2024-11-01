@@ -49,8 +49,8 @@ single_spp <-
 
 
 plot(clusters)
-points(single_spp[-1], col="red")
-crs(clusters, proj=TRUE) # coordinate reference system (CRS) used for this points database
+points(single_spp[-1], col = "red")
+crs(clusters, proj = TRUE) # coordinate reference system (CRS) used for this points database
 # note that the unit of this CRS is in m, consequently the buffer width
 # will be interpreted in m too
 

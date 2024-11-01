@@ -181,18 +181,18 @@ esm_glm <- function(data,
       as.double())
   })
 
-  if(length(data_ens) > 1){
+  if (length(data_ens) > 1) {
     data_ens2 <-
       dplyr::inner_join(data_ens[[1]],
-                        data_ens[[2]],
-                        by = c("rnames", "replicates", "part", "pr_ab")
+        data_ens[[2]],
+        by = c("rnames", "replicates", "part", "pr_ab")
       )
     if (length(data_ens) > 2) {
       for (i in 3:length(data_ens)) {
         data_ens2 <-
           dplyr::inner_join(data_ens2,
-                            data_ens[[i]],
-                            by = c("rnames", "replicates", "part", "pr_ab")
+            data_ens[[i]],
+            by = c("rnames", "replicates", "part", "pr_ab")
           )
       }
     }

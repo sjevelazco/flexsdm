@@ -65,13 +65,13 @@ abies2 <- abies \%>\%
   select(x, y, pr_ab)
 
 abies2 <- sdm_extract(abies2,
-                      x = "x",
-                      y = "y",
-                      env_layer = somevar
+  x = "x",
+  y = "y",
+  env_layer = somevar
 )
 abies2 <- part_random(abies2,
-                      pr_ab = "pr_ab",
-                      method = c(method = "kfold", folds = 5)
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
 )
 
 m <- fit_svm(

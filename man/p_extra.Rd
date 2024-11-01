@@ -87,8 +87,10 @@ sp <- spp \%>\%
   dplyr::select(x, y, pr_ab)
 
 # Calibration area based on some criterion such as dispersal ability
-ca <- calib_area(sp, x = "x", y = "y",
-                 method = c("buffer", width = 50000), crs = crs(somevar))
+ca <- calib_area(sp,
+  x = "x", y = "y",
+  method = c("buffer", width = 50000), crs = crs(somevar)
+)
 
 plot(somevar[[1]])
 points(sp)
@@ -207,10 +209,10 @@ p_extra(
 )
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 ####                 Explore univariate                 ####
 ####          and combinatorial extrapolation           ####
-##\%######################################################\%##
+## \%######################################################\%##
 extr <-
   extra_eval(
     training_data = sp_pa_2,
@@ -234,7 +236,7 @@ p_extra(
   projection_data = somevar,
   geo_space = TRUE,
   prop_points = 0.05,
-  color_gradient = c("#B3DC2B","#25818E")
+  color_gradient = c("#B3DC2B", "#25818E")
 )
 
 ## \%######################################################\%##

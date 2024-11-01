@@ -135,5 +135,3 @@ test_that("test select_var argument", {
 
   expect_equal(class(gam_t3), "list")
 })
-
-

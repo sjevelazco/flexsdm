@@ -168,7 +168,7 @@
 #'   cont_suit = m_pred,
 #'   thr = "equal_sens_spec",
 #'   buffer = 30000,
-#'   crs=crs(m_pred)
+#'   crs = crs(m_pred)
 #' )
 #'
 #' plot(m_bmcp)
@@ -251,7 +251,7 @@ msdm_posteriori <- function(records,
   if (method == "bmcp" & is.null(crs)) {
     stop("If 'bmcp' method is used, a coordinate reference system is needed in 'crs' agument")
   }
-  if(is.character(thr)){
+  if (is.character(thr)) {
     if (any(
       thr[1] == c(
         "lpt",
@@ -284,12 +284,12 @@ msdm_posteriori <- function(records,
   # creation of a data.frame with presences and absences
   records <- records %>%
     dplyr::select(dplyr::all_of(pr_ab), dplyr::all_of(x), dplyr::all_of(y)) %>%
-    dplyr::arrange({{pr_ab}})
+    dplyr::arrange({{ pr_ab }})
   records <- records[!duplicated(records), ]
   colnames(records) <- c("pr_ab", "x", "y")
 
   # Extract values for one species and calculate the threshold
-  if(!is.character(thr)){
+  if (!is.character(thr)) {
     thr_2 <- thr
   } else {
     suit_point <- terra::extract(cont_suit, records[, c("x", "y")])[, 2]

@@ -175,7 +175,7 @@ m_bmcp <- msdm_posteriori(
   cont_suit = m_pred,
   thr = "equal_sens_spec",
   buffer = 30000,
-  crs=crs(m_pred)
+  crs = crs(m_pred)
 )
 
 plot(m_bmcp)

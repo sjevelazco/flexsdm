@@ -47,7 +47,6 @@ psi <-
 
 # moments of the standard normal distribution for EP on the probit GP
 ep.moments <- function(y, sigma2, mu) {
-
   # 1 + sigma^{2}
   sigma2p1 <- 1 + sigma2
 
@@ -239,7 +238,6 @@ cov.SE.d1 <- function(x, e = NULL, l) {
 
   # loop through them
   for (i in 1:n) {
-
     # squared distances
     d2_i <- as.matrix(dist(x[, i])^2)
 
@@ -312,7 +310,6 @@ d3 <- function(z, y) {
 # define the objective and gradient functions to optimise the hyperparameters
 # of a GRaF model
 objective <- function(theta, prior.pars, isfac, args, fun) {
-
   # unpack theta
   l <- ifelse(isfac, 0.01, NA)
   l[!isfac] <- exp(theta)
@@ -338,7 +335,6 @@ objective <- function(theta, prior.pars, isfac, args, fun) {
 
 
 gradient <- function(theta, prior.pars, isfac, args, fun) {
-
   # unpack theta
   l <- ifelse(isfac, 0.01, NA)
   l[!isfac] <- exp(theta)
@@ -601,7 +597,6 @@ graf.fit.ep <-
 
     while (!converged) {
       if (parallel) {
-
         # calculate key parameters
         dSigma <- diag(Sigma)
         tau <- 1 / dSigma - ttau
@@ -743,7 +738,6 @@ graf <-
 
     # optionally optimise graf (by recursively calling this function)
     if (opt.l) {
-
       # get all visible object as a list
       args <- capture.all()
 
@@ -900,7 +894,6 @@ predict.graf <-
       for (i in 1:ncol(newdata)) if (is.integer(newdata[, i])) newdata[, i] <- as.numeric(newdata[, i])
 
       if (is.data.frame(newdata) & all(sapply(object$obsx, class) == sapply(newdata, class))) {
-
         # get mean on raw data
         mn <- object$mnfun(newdata)
 

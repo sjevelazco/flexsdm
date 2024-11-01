@@ -229,7 +229,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
 
   if (any(thr == "sensitivity")) {
     thresholds$sensitivity <- performance$threshold[which.min(performance$TPR >
-                                                                as.numeric(thr["sens"]))]
+      as.numeric(thr["sens"]))]
   }
 
   thresholds <- dplyr::bind_cols(thresholds)

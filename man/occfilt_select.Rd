@@ -63,9 +63,9 @@ data("spp")
 spp
 spp1 <- spp \%>\% dplyr::filter(species == "sp1", pr_ab == 1)
 
-##\%######################################################\%##
+## \%######################################################\%##
 ####                  Cellsize method                   ####
-##\%######################################################\%##
+## \%######################################################\%##
 # Using cellsize method
 filtered_occ <- occfilt_geo(
   data = spp1,
@@ -80,22 +80,25 @@ filtered_occ
 
 # Select filtered occurrences based on
 # number of records and spatial autocorrelation
-occ_selected <- occfilt_select(occ_list = filtered_occ,
-                               x = "x",
-                               y = "y",
-                               env_layer = somevar,
-                               filter_prop = FALSE)
+occ_selected <- occfilt_select(
+  occ_list = filtered_occ,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  filter_prop = FALSE
+)
 occ_selected
 
-occ_selected <- occfilt_select(occ_list = filtered_occ,
-                               x = "x",
-                               y = "y",
-                               env_layer = somevar,
-                               filter_prop = TRUE)
+occ_selected <- occfilt_select(
+  occ_list = filtered_occ,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  filter_prop = TRUE
+)
 occ_selected$occ
 
 occ_selected$filter_prop
-
 }
 }
 \references{

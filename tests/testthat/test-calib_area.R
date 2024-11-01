@@ -23,7 +23,6 @@ test_that("buffer method", {
   )
 
   expect_equal(class(ca_1)[1], "SpatVector")
-
 })
 
 test_that("mcp method", {

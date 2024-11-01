@@ -91,9 +91,9 @@ spp1 <- spp \%>\% dplyr::filter(species == "sp1", pr_ab == 1)
 somevar[[1]] \%>\% plot()
 points(spp1 \%>\% select(x, y))
 
-##\%######################################################\%##
+## \%######################################################\%##
 ####                  Cellsize method                   ####
-##\%######################################################\%##
+## \%######################################################\%##
 
 # Using cellsize method
 filtered_occ <- occfilt_geo(
@@ -125,16 +125,16 @@ filtered_occ # Note that several values are provided for any filtering method
 # So user must select the desired filtered dataset
 
 # Let's explore the results
-bind_rows(filtered_occ, .id="cellSize") \%>\%
+bind_rows(filtered_occ, .id = "cellSize") \%>\%
   dplyr::mutate(cellSize = as.numeric(cellSize)) \%>\%
   ggplot(aes(x, y)) +
   geom_point() +
   facet_wrap(~cellSize)
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 ####                   Defined method                   ####
-##\%######################################################\%##
+## \%######################################################\%##
 # Using defined method
 filtered_occ <- occfilt_geo(
   data = spp1,
@@ -159,16 +159,16 @@ filtered_occ <- occfilt_geo(
   prj = crs(somevar)
 )
 
-bind_rows(filtered_occ, .id="cellSize") \%>\%
+bind_rows(filtered_occ, .id = "cellSize") \%>\%
   dplyr::mutate(cellSize = as.numeric(cellSize)) \%>\%
   ggplot(aes(x, y)) +
   geom_point() +
   facet_wrap(~cellSize)
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 ####                  Moran's I method                  ####
-##\%######################################################\%##
+## \%######################################################\%##
 
 # Using Moran's I method
 filtered_occ <- occfilt_geo(
@@ -194,7 +194,7 @@ filtered_occ <- occfilt_geo(
   prj = crs(somevar)
 )
 
-bind_rows(filtered_occ, .id="moran") \%>\%
+bind_rows(filtered_occ, .id = "moran") \%>\%
   dplyr::mutate(moran = as.numeric(moran)) \%>\%
   ggplot(aes(x, y)) +
   geom_point() +
@@ -203,11 +203,13 @@ bind_rows(filtered_occ, .id="moran") \%>\%
 # It is possible select the best of filtered
 # datasets using the occfilt_selec function
 
-occ_selected <- occfilt_select(occ_list = filtered_occ,
-x = "x",
-y = "y",
-env_layer = somevar,
-filter_prop = TRUE)
+occ_selected <- occfilt_select(
+  occ_list = filtered_occ,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  filter_prop = TRUE
+)
 
 occ_selected
 }

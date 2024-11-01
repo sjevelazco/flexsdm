@@ -59,9 +59,9 @@ abies_p <- abies %>%
 ca <-
   calib_area(
     data = abies_p,
-    x = 'x',
-    y = 'y',
-    method =  c('buffer', width = 100000),
+    x = "x",
+    y = "y",
+    method = c("buffer", width = 100000),
     crs = crs(somevar)
   ) # create a calibration area with 100 km buffer around occurrence points
 
@@ -69,9 +69,9 @@ ca <-
 layer1 <- somevar[[1]]
 layer1[!is.na(layer1)] <- 1
 
-plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
-plot(crop(ca, layer1), add=TRUE)
-points(abies_p[,c("x", "y")], col = "#00000480")
+plot(layer1, col = "gray80", legend = FALSE, axes = FALSE)
+plot(crop(ca, layer1), add = TRUE)
+points(abies_p[, c("x", "y")], col = "#00000480")
 ```
 
 ## Occurrence filtering
@@ -93,10 +93,10 @@ abies_pf <- abies_p %>%
   ) %>%
   left_join(abies_p, by = c("id", "x", "y"))
 
-plot(layer1, col="gray80", legend=FALSE, axes=FALSE)
-plot(crop(ca, layer1), add=TRUE)
-points(abies_p[,c("x", "y")], col = "#00000480")
-points(abies_pf[,c("x", "y")], col = "#5DC86180")
+plot(layer1, col = "gray80", legend = FALSE, axes = FALSE)
+plot(crop(ca, layer1), add = TRUE)
+points(abies_p[, c("x", "y")], col = "#00000480")
+points(abies_pf[, c("x", "y")], col = "#5DC86180")
 ```
 
 ## Block partition with 4 folds
@@ -126,8 +126,8 @@ abies_pf <- occ_part$part
 block_layer <- get_block(env_layer = somevar, best_grid = occ_part$grid)
 
 cl <- c("#64146D", "#9E2962", "#F47C15", "#FCFFA4")
-plot(block_layer, col=cl, legend=FALSE, axes=FALSE)
-points(abies_pf[,c("x", "y")])
+plot(block_layer, col = cl, legend = FALSE, axes = FALSE)
+points(abies_pf[, c("x", "y")])
 
 
 # Number of presences per block
@@ -179,9 +179,9 @@ psa <- lapply(1:4, function(x) {
 psa <- sdm_extract(data = psa, x = "x", y = "y", env_layer = block_layer)
 
 cl <- c("#280B50", "#9E2962", "#F47C15", "#FCFFA4")
-plot(block_layer, col="gray80", legend=FALSE, axes=FALSE)
-points(bg[,c("x", "y")], col=cl[bg$.part], cex=0.8) # Background points
-points(psa[,c("x", "y")], bg=cl[psa$.part], cex=0.8, pch=21) # Pseudo-absences
+plot(block_layer, col = "gray80", legend = FALSE, axes = FALSE)
+points(bg[, c("x", "y")], col = cl[bg$.part], cex = 0.8) # Background points
+points(psa[, c("x", "y")], bg = cl[psa$.part], cex = 0.8, pch = 21) # Pseudo-absences
 
 # Bind a presences and pseudo-absences
 abies_pa <- bind_rows(abies_pf, psa)
@@ -289,7 +289,7 @@ unconstrained <- pr_1$meanw[[1]]
 names(unconstrained) <- "unconstrained"
 
 cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
-plot(unconstrained, col=cl, legend=FALSE, axes=FALSE)
+plot(unconstrained, col = cl, legend = FALSE, axes = FALSE)
 ```
 
 ## Constrain the model with msdm_posterior 
@@ -317,7 +317,7 @@ constrained <- m_pres$meanw[[1]]
 names(constrained) <- "constrained"
 
 cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
-plot(constrained, col=cl, legend=FALSE, axes=FALSE)
+plot(constrained, col = cl, legend = FALSE, axes = FALSE)
 ```
 #=========#=========#=========#=========#=========#=========#=========#
 

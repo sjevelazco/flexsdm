@@ -75,7 +75,7 @@ test_that("fit model only with presences and background points", {
   data("abies")
 
   # Only presences
-  abies2 <- abies %>% dplyr::filter(pr_ab==1)
+  abies2 <- abies %>% dplyr::filter(pr_ab == 1)
   # Using k-fold partition method
   abies2 <- part_random(
     data = abies2,

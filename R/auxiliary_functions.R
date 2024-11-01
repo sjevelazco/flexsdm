@@ -202,8 +202,7 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
   categoricalval <- function(x, category) {
     ifelse(x == category, 1, 0)
   }
-  thresholdval <- function (x, knot)
-  {
+  thresholdval <- function(x, knot) {
     ifelse(x >= knot, 1, 0)
   }
   hingeval <- function(x, min, max) {
@@ -212,35 +211,46 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
 
   if (clamp) {
     for (v in intersect(names(object$varmax), names(newdata))) {
-      newdata[, v] <- pmin(pmax(newdata[, v], object$varmin[v]),
-                           object$varmax[v])
+      newdata[, v] <- pmin(
+        pmax(newdata[, v], object$varmin[v]),
+        object$varmax[v]
+      )
     }
   }
-  terms <- sub("hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)",
-               names(object$betas))
-  terms <- sub("categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\"\\2\")",
-               terms)
-  terms <- sub("thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)",
-               terms)
+  terms <- sub(
+    "hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)",
+    names(object$betas)
+  )
+  terms <- sub(
+    "categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\"\\2\")",
+    terms
+  )
+  terms <- sub(
+    "thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)",
+    terms
+  )
   f <- formula(paste("~", paste(terms, collapse = " + "), "-1"))
   mm <- model.matrix(f, data.frame(newdata))
-  if (clamp)
-    mm <- t(pmin(pmax(t(mm), object$featuremins[names(object$betas)]),
-                 object$featuremaxs[names(object$betas)]))
+  if (clamp) {
+    mm <- t(pmin(
+      pmax(t(mm), object$featuremins[names(object$betas)]),
+      object$featuremaxs[names(object$betas)]
+    ))
+  }
   link <- (mm %*% object$betas) + object$alpha
   type <- match.arg(type)
 
-  if (type == "link"){
+  if (type == "link") {
     return(link)
   }
-  if (type == "exponential"){
+  if (type == "exponential") {
     return(exp(link))
   }
-  if (type == "cloglog"){
+  if (type == "cloglog") {
     return(1 - exp(0 - exp(object$entropy + link)))
   }
-  if (type == "logistic"){
-    return(1/(1 + exp(-object$entropy - link)))
+  if (type == "logistic") {
+    return(1 / (1 + exp(-object$entropy - link)))
   }
 }
 
@@ -292,11 +302,11 @@ n_training <- function(data, partition) {
   if (any(c("train", "train-test", "test")
   %in%
     (data %>%
-      dplyr::select(dplyr::starts_with({{partition}})) %>%
+      dplyr::select(dplyr::starts_with({{ partition }})) %>%
       dplyr::pull() %>%
       unique()))) {
     nn_part <- data %>%
-      dplyr::select(dplyr::starts_with({{partition}})) %>%
+      dplyr::select(dplyr::starts_with({{ partition }})) %>%
       apply(., 2, table) %>%
       data.frame()
     nn_part <- nn_part %>% dplyr::mutate(partt = rownames(nn_part))
@@ -307,13 +317,16 @@ n_training <- function(data, partition) {
     nn_part <- colSums(nn_part)
   } else {
     data <- data %>%
-      dplyr::select(dplyr::starts_with({{partition}}))
+      dplyr::select(dplyr::starts_with({{ partition }}))
 
     nn_part <- list()
-    for(ppp in 1:ncol(data)){
-      nn_part[[ppp]] <- data %>% dplyr::pull(ppp) %>% table() %>% c()
+    for (ppp in 1:ncol(data)) {
+      nn_part[[ppp]] <- data %>%
+        dplyr::pull(ppp) %>%
+        table() %>%
+        c()
       sm <- nn_part[[ppp]] %>% sum()
-      nn_part[[ppp]] <- sapply(nn_part[[ppp]], function(x) sum(sm-x))
+      nn_part[[ppp]] <- sapply(nn_part[[ppp]], function(x) sum(sm - x))
     }
     nn_part <- unlist(nn_part)
   }
@@ -324,18 +337,20 @@ n_training <- function(data, partition) {
 #'
 #' @noRd
 #'
-n_coefficients <- function(data, predictors, predictors_f = NULL, k = 10){
+n_coefficients <- function(data, predictors, predictors_f = NULL, k = 10) {
   data <- data.frame(data)
-  if(k<0){
-    k=10
+  if (k < 0) {
+    k <- 10
   }
-  if(!is.null(predictors_f)){
+  if (!is.null(predictors_f)) {
     n_levels <- rep(NA, length(predictors_f))
-    for(fff in 1:length(predictors_f)){
-      n_levels[fff] <- unique(data[, predictors_f]) %>% na.omit() %>% length()
+    for (fff in 1:length(predictors_f)) {
+      n_levels[fff] <- unique(data[, predictors_f]) %>%
+        na.omit() %>%
+        length()
     }
     n_levels <- sum(n_levels)
-  }else{
+  } else {
     n_levels <- 0
   }
   n <- (k - 1) * length(predictors) + n_levels
@@ -355,7 +370,7 @@ euc_dist <- function(x, y) {
   }
   result <- matrix(0, nrow = nrow(x), ncol = nrow(y))
   for (ii in 1:nrow(y)) {
-    result[, ii] <- sqrt(colSums((t(x) - y[ii, ]) ^ 2))
+    result[, ii] <- sqrt(colSums((t(x) - y[ii, ])^2))
   }
   rownames(result) <- rownames(x)
   colnames(result) <- rownames(y)

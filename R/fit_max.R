@@ -271,30 +271,30 @@ fit_max <- function(data,
     for (i in 1:np2) {
       message("Partition number: ", i, "/", np2)
       tryCatch({
-        sampleback = TRUE
+        sampleback <- TRUE
         try(mod[[i]] <-
-              suppressMessages(
-                maxnet::maxnet(
-                  p = train[[i]][, response],
-                  data = train[[i]][predictors],
-                  f = formula1,
-                  regmult = regmult,
-                  addsamplestobackground = sampleback
-                )
-              ))
+          suppressMessages(
+            maxnet::maxnet(
+              p = train[[i]][, response],
+              data = train[[i]][predictors],
+              f = formula1,
+              regmult = regmult,
+              addsamplestobackground = sampleback
+            )
+          ))
         if (length(mod) < i) {
           message("Refit with addsamplestobackground = FALSE")
-          sampleback = FALSE
+          sampleback <- FALSE
           try(mod[[i]] <-
-                suppressMessages(
-                  maxnet::maxnet(
-                    p = train[[i]][, response],
-                    data = train[[i]][predictors],
-                    f = formula1,
-                    regmult = regmult,
-                    addsamplestobackground = sampleback
-                  )
-                ))
+            suppressMessages(
+              maxnet::maxnet(
+                p = train[[i]][, response],
+                data = train[[i]][predictors],
+                f = formula1,
+                regmult = regmult,
+                addsamplestobackground = sampleback
+              )
+            ))
         }
 
         # Predict for presences absences data
@@ -311,8 +311,8 @@ fit_max <- function(data,
         #   }
         # }
 
-        if(all(test[[i]][,response]==1)){
-        # Test based on presence and background
+        if (all(test[[i]][, response] == 1)) {
+          # Test based on presence and background
           test[[i]] <- bind_rows(test[[i]], bgt_test[[i]])
         }
         pred_test <- data.frame(
@@ -401,15 +401,15 @@ fit_max <- function(data,
 
   # Fit final models
 
-  if(all(data[,response]==1)){
+  if (all(data[, response] == 1)) {
     data_2 <- bind_rows(data, background)
   } else {
     # remove absences
-    data_2 <- bind_rows(data[data[,response]==1,], background)
+    data_2 <- bind_rows(data[data[, response] == 1, ], background)
   }
 
 
-  sampleback <-  TRUE
+  sampleback <- TRUE
   mod <- NULL
   try(suppressMessages(mod <-
     maxnet::maxnet(
@@ -422,26 +422,26 @@ fit_max <- function(data,
 
   if (length(mod) < i) {
     message("Refit with addsamplestobackground = FALSE")
-    sampleback = FALSE
+    sampleback <- FALSE
     try(mod <-
-          suppressMessages(
-            maxnet::maxnet(
-              p = data[, response],
-              data = data[predictors],
-              f = formula1,
-              regmult = regmult,
-              addsamplestobackground = sampleback
-            )
-          ))
+      suppressMessages(
+        maxnet::maxnet(
+          p = data[, response],
+          data = data[predictors],
+          f = formula1,
+          regmult = regmult,
+          addsamplestobackground = sampleback
+        )
+      ))
   }
 
-  if(all(data[,response]==1)){
+  if (all(data[, response] == 1)) {
     # Test based on presence and background
     data <- bind_rows(data, background)
   }
 
   pred_test <- data.frame(
-    "pr_ab" = data.frame(data)[,response],
+    "pr_ab" = data.frame(data)[, response],
     "pred" = predict_maxnet(
       mod,
       newdata = data,

@@ -116,7 +116,7 @@ test_that("extra_eval based on tibble object with uni_comb argument", {
       univar_comb = TRUE
     )
   expect_equal(class(extr)[1], "tbl_df")
-  expect_equal(names(extr)[1:2],c("extrapolation", "univar_comb"))
+  expect_equal(names(extr)[1:2], c("extrapolation", "univar_comb"))
 })
 
 

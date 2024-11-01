@@ -7,20 +7,20 @@ names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 cat <- system.file("external/clusters.shp", package = "flexsdm")
 cat <- terra::vect(cat)
 cat$clusters <- paste0("c", cat$clusters)
-cat <- terra::rasterize(cat, somevar, field="clusters")
+cat <- terra::rasterize(cat, somevar, field = "clusters")
 somevar <- c(somevar, cat)
 
 abies2 <- abies %>%
   select(x, y, pr_ab)
 
 abies2 <- sdm_extract(abies2,
-                      x = "x",
-                      y = "y",
-                      env_layer = somevar
+  x = "x",
+  y = "y",
+  env_layer = somevar
 )
 abies2 <- part_random(abies2,
-                      pr_ab = "pr_ab",
-                      method = c(method = "kfold", folds = 3)
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
 )
 
 svm_t1 <- fit_svm(
@@ -33,7 +33,6 @@ svm_t1 <- fit_svm(
 )
 
 test_that("test data_pdp with factor", {
-
   df <- data_pdp(
     model = svm_t1$model,
     predictors = c("clusters"),
@@ -49,7 +48,6 @@ test_that("test data_pdp with factor", {
 })
 
 test_that("test data_pdp", {
-
   df <- data_pdp(
     model = svm_t1$model,
     predictors = c("aet"),
@@ -110,7 +108,7 @@ names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 cat <- system.file("external/clusters.shp", package = "flexsdm")
 cat <- terra::vect(cat)
 cat$clusters <- paste0("c", cat$clusters)
-cat <- terra::rasterize(cat, somevar, field="clusters")
+cat <- terra::rasterize(cat, somevar, field = "clusters")
 somevar <- c(somevar, cat)
 
 data(abies)
@@ -123,9 +121,9 @@ abies2 <- abies %>%
 
 set.seed(210)
 abies2 <- sdm_extract(abies2,
-                      x = "x",
-                      y = "y",
-                      env_layer = somevar
+  x = "x",
+  y = "y",
+  env_layer = somevar
 ) %>%
   part_random(
     pr_ab = "pr_ab",
@@ -404,7 +402,3 @@ test_that("test pdp with factors", {
   )
   expect_true(is.null(df$resid))
 })
-
-
-
-
