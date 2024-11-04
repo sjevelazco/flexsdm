@@ -20,13 +20,16 @@ with the spatial autocorrelation and number of occurrence values}
 }
 \value{
 If filter_prop = FALSE, a tibble with selected filtered occurrences.
-If filter_prop is TRUE, a list with following elemts:
-tibble with the spatial autocorrelation and number of occurrence values
+If filter_prop = TRUE, a list with following objects:
 \itemize{
   \item A tibble with selected filtered occurrences
-  \item A tibble with values used to filter (filt_value), number of occurrence (n_records), and
-  mean spatial autocorrelation (mean_autocorr).
-  From mean_autocorr column the spatial autocorrelation values for each variable are presented.
+  \item A tibble with filter properties with columns:
+  \itemize{
+  \item filt_value: values used for filtering, the value with an asterisk will denote the one selected
+  \item n_records: number of occurrence
+  \item mean_autocorr: mean spatial autocorrelation.
+  \item the remaining columns have the spatial autocorrelation values for each variable.
+  }
   }
 }
 \description{
