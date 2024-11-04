@@ -59,7 +59,8 @@
 <span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">partition</span>,</span>
 <span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">predictors</span>, <span class="va">predictors_f</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">predictors</span>, <span class="va">predictors_f</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  ntree <span class="op">=</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -111,6 +112,10 @@ response, predictors, and predictors_f arguments. Default NULL</p></dd>
 
 <dt id="arg-mtry">mtry<a class="anchor" aria-label="anchor" href="#arg-mtry"></a></dt>
 <dd><p>numeric. Number of variables randomly sampled as candidates at each split. Default sqrt(length(c(predictors, predictors_f)))</p></dd>
+
+
+<dt id="arg-ntree">ntree<a class="anchor" aria-label="anchor" href="#arg-ntree"></a></dt>
+<dd><p>numeric. Number of trees to grow. Default 500</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -171,7 +176,9 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class="r-in"><span>  predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  mtry <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  ntree <span class="op">=</span> <span class="fl">500</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rf_t2</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>

@@ -164,9 +164,11 @@ Ecography: e06992. https://doi.org/10.1111/ecog.06992</p></li>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">pr_ab</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Calibration area based on some criterion such as dispersal ability</span></span></span>
-<span class="r-in"><span><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span><span class="va">sp</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>        method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bmcp"</span>, width <span class="op">=</span> <span class="fl">50000</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>        crs <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span><span class="va">sp</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bmcp"</span>, width <span class="op">=</span> <span class="fl">50000</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  crs <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span></span></span>
@@ -190,11 +192,13 @@ Ecography: e06992. https://doi.org/10.1111/ecog.06992</p></li>
 <span class="r-in"><span><span class="va">sp_pa</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Get environmental condition of calibration area</span></span></span>
-<span class="r-in"><span><span class="va">sp_pa_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sp_pa</span>,</span></span>
-<span class="r-in"><span>                       x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
-<span class="r-in"><span>                       y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>                       env_layer <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
-<span class="r-in"><span>                       <span class="va">sp_pa_2</span></span></span>
+<span class="r-in"><span><span class="va">sp_pa_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">sp_pa</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sp_pa_2</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Measure degree of extrapolation based on Mahalanobis and</span></span></span>
 <span class="r-in"><span><span class="co"># for a projection area based on a SpatRaster object</span></span></span>
@@ -226,9 +230,11 @@ Ecography: e06992. https://doi.org/10.1111/ecog.06992</p></li>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sorensen"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">predsuit</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_predict.html">sdm_predict</a></span><span class="op">(</span>models <span class="op">=</span> <span class="va">a_model</span>,</span></span>
-<span class="r-in"><span>                        pred <span class="op">=</span> <span class="va">somevar</span>,</span></span>
-<span class="r-in"><span>                        thr <span class="op">=</span> <span class="st">"max_sorensen"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">predsuit</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_predict.html">sdm_predict</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  models <span class="op">=</span> <span class="va">a_model</span>,</span></span>
+<span class="r-in"><span>  pred <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="st">"max_sorensen"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">predsuit</span> <span class="co"># list with a raster with two layer</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -252,15 +258,15 @@ Ecography: e06992. https://doi.org/10.1111/ecog.06992</p></li>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit_2</span><span class="op">$</span><span class="va">`200`</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">####        Measure degree of extrapolation for         ####</span></span></span>
 <span class="r-in"><span><span class="co">####        projection area based on data.frame         ####</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">extr_df</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">extra_eval</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
-<span class="r-in"><span>    projection_data <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">somevar</span>, xy<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    projection_data <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">somevar</span>, xy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
 <span class="r-in"><span>    n_cores <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>    aggreg_factor <span class="op">=</span> <span class="fl">1</span>,</span></span>
@@ -270,10 +276,10 @@ Ecography: e06992. https://doi.org/10.1111/ecog.06992</p></li>
 <span class="r-in"><span><span class="co"># see 'p_extra()' to explore extrapolation or suitability pattern in the</span></span></span>
 <span class="r-in"><span><span class="co"># environmental and/or geographical space</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">####             Explore Shape metric with              ####</span></span></span>
 <span class="r-in"><span><span class="co">####     univariate and combinatorial extrapolation     ####</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="va">extr</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">extra_eval</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>

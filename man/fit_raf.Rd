@@ -12,7 +12,8 @@ fit_raf(
   fit_formula = NULL,
   partition,
   thr = NULL,
-  mtry = sqrt(length(c(predictors, predictors_f)))
+  mtry = sqrt(length(c(predictors, predictors_f))),
+  ntree = 500
 )
 }
 \arguments{
@@ -48,6 +49,8 @@ response, predictors, and predictors_f arguments. Default NULL}
 If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.}
 
 \item{mtry}{numeric. Number of variables randomly sampled as candidates at each split. Default sqrt(length(c(predictors, predictors_f)))}
+
+\item{ntree}{numeric. Number of trees to grow. Default 500}
 }
 \value{
 A list object with:
@@ -105,7 +108,9 @@ rf_t2 <- fit_raf(
   predictors_f = c("landform"),
   partition = ".part",
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
-  fit_formula = NULL
+  fit_formula = NULL,
+  mtry = 2,
+  ntree = 500
 )
 rf_t2
 }

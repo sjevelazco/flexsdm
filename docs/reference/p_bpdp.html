@@ -181,10 +181,14 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">70</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># With training condition boundaires</span></span></span>
-<span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
-<span class="r-in"><span>training_boundaries <span class="op">=</span> <span class="st">"convexh"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
-<span class="r-in"><span>training_boundaries <span class="op">=</span> <span class="st">"rectangle"</span>, color_training_boundaries <span class="op">=</span> <span class="st">"yellow"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  training_boundaries <span class="op">=</span> <span class="st">"rectangle"</span>, color_training_boundaries <span class="op">=</span> <span class="st">"yellow"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, training_boundaries <span class="op">=</span> <span class="st">"convexh"</span>,</span></span>
 <span class="r-in"><span>  color_training_boundaries <span class="op">=</span> <span class="st">"orange"</span>,</span></span>
@@ -200,9 +204,11 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Bivariate partial dependence plot for training and projection condition</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"Projection area"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
-<span class="r-in"><span>projection_data <span class="op">=</span> <span class="va">somevar</span>, <span class="co"># a SpatRaster used to predict or project the model</span></span></span>
-<span class="r-in"><span>training_boundaries <span class="op">=</span> <span class="st">"convexh"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  projection_data <span class="op">=</span> <span class="va">somevar</span>, <span class="co"># a SpatRaster used to predict or project the model</span></span></span>
+<span class="r-in"><span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Bivariate partial dependece plot with categorical variables</span></span></span>

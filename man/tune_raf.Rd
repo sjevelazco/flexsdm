@@ -37,7 +37,7 @@ response, predictors, and predictors_f arguments. Default NULL}
 
 \item{grid}{data.frame. A data frame object with algorithm hyper-parameters values to be tested.
 It is recommended to generate this data.frame with the grid() function. Hyper-parameter needed
-for tuning is 'mtry'. The maximum mtry cannot exceed the total number of predictors.}
+for tuning is 'mtry' and 'ntree'. The maximum mtry cannot exceed the total number of predictors.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1), needed for
 threshold-dependent performance metrics. It is possible to use more than one threshold type.
@@ -96,8 +96,12 @@ abies2 <- part_random(
   method = c(method = "kfold", folds = 5)
 )
 
-tune_grid <-
-  expand.grid(mtry = seq(1, 7, 1))
+tune_grid <- expand.grid(
+  mtry = seq(1, 7, 1),
+  ntree = c(400, 600, 800)
+)
+
+tune_grid
 
 rf_t <-
   tune_raf(

@@ -3,19 +3,41 @@
 ####          Set of tests for testing errors           ####
 #                                                          #
 ## %######################################################%##
-test_that("class and lenght of raf_t object", {
-  data(abies)
-  abies
+data(abies)
 
-  # We will partition the data with the k-fold method
+# We will partition the data with the k-fold method
+abies2 <- part_random(
+  data = abies %>% dplyr::group_by(pr_ab) %>%
+    dplyr::slice_sample(prop = .2),
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 2)
+)
 
-  abies2 <- part_random(
-    data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 2)
-  )
 
+test_that("tuen", {
+  # Hyper-parameter values for tuning
+  tune_grid <-
+    expand.grid(mtry = seq(1, 4, 1),
+                ntree  = c(200,400,600,800))
+
+  raf_t <-
+    tune_raf(
+      data = abies2,
+      response = "pr_ab",
+      predictors = c("aet", "cwd", "awc", "depth"),
+      predictors_f = c("landform"),
+      partition = ".part",
+      grid = tune_grid,
+      thr = "max_sens_spec",
+      metric = "TSS"
+    )
+
+  expect_equal(class(raf_t), "list")
+  expect_equal(length(raf_t), 5)
+})
+
+
+test_that("tuen without ntree hyperparamenter", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(mtry = seq(1, 4, 1))
@@ -36,20 +58,12 @@ test_that("class and lenght of raf_t object", {
   expect_equal(length(raf_t), 5)
 })
 
+
 test_that("test of 0-1 response argument", {
-  data(abies)
-
-  # We will partition the data with the k-fold method
-  abies2 <- part_random(
-    data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 2)
-  )
-
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1))
+    expand.grid(mtry = seq(1, 4, 1),
+                ntree  = c(400,600))
 
   expect_error(
     raf_t <-
@@ -68,17 +82,9 @@ test_that("test of 0-1 response argument", {
 
 
 test_that("test NULL in predictors_f", {
-  data(abies)
-
-  abies2 <- part_random(
-    data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 2)
-  )
-
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1))
+    expand.grid(mtry = seq(1, 4, 1),
+                ntree  = c(400,600))
 
   raf_t <-
     tune_raf(
@@ -107,19 +113,10 @@ test_that("test NULL in predictors_f", {
 })
 
 test_that("test if remove NAs rows works", {
-  data(abies)
-
-  # We will partition the data with the k-fold method
-  abies2 <- part_random(
-    data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 2)
-  )
-
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1))
+    expand.grid(mtry = seq(1, 4, 1),
+                ntree  = c(400,600))
 
   # Insert NAs in rows 3 and 4 for response column.
   abies2[3:4, 1] <- NA
@@ -153,18 +150,10 @@ test_that("test if remove NAs rows works", {
 })
 
 test_that("test fit_formula", {
-  data(abies)
-
-  abies2 <- part_random(
-    data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 2)
-  )
-
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1))
+    expand.grid(mtry = seq(1, 4, 1),
+                ntree  = c(400,600))
 
   raf_t <-
     tune_raf(
@@ -176,21 +165,16 @@ test_that("test fit_formula", {
       partition = ".part",
       grid = tune_grid,
       thr = "max_sens_spec",
-      metric = "TSS"
+      metric = "TSS",
+      n_cores = 3
     )
   expect_equal(length(raf_t), 5)
 })
 
 test_that("grid = NULL ", {
-  data(abies)
-
-  abies2 <- part_random(
-    data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 2)
-  )
-
+  tune_grid <-
+    expand.grid(mtry = seq(1, 4, 1),
+                ntree  = c(400,600))
   expect_message(
     raf_t <-
       tune_raf(
@@ -208,18 +192,10 @@ test_that("grid = NULL ", {
 
 
 test_that("missuse of grid ", {
-  data(abies)
-
-  abies2 <- part_random(
-    data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 2)
-  )
-
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtryyy = seq(1, 4, 1))
+    expand.grid(mtrsdfy = seq(1, 4, 1),
+                ntrdee  = c(400,600))
 
   expect_error(
     raf_t <-

@@ -14,7 +14,7 @@
 #' @param partition character. Column name with training and validation partition groups.
 #' @param grid data.frame. A data frame object with algorithm hyper-parameters values to be tested.
 #' It is recommended to generate this data.frame with the grid() function. Hyper-parameter needed
-#' for tuning is 'mtry'. The maximum mtry cannot exceed the total number of predictors.
+#' for tuning is 'mtry' and 'ntree'. The maximum mtry cannot exceed the total number of predictors.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for
 #' threshold-dependent performance metrics. It is possible to use more than one threshold type.
 #' It is necessary to provide a vector for this argument. The following threshold types are
@@ -76,8 +76,12 @@
 #'   method = c(method = "kfold", folds = 5)
 #' )
 #'
-#' tune_grid <-
-#'   expand.grid(mtry = seq(1, 7, 1))
+#' tune_grid <- expand.grid(
+#'   mtry = seq(1, 7, 1),
+#'   ntree = c(400, 600, 800)
+#' )
+#'
+#' tune_grid
 #'
 #' rf_t <-
 #'   tune_raf(
@@ -168,17 +172,26 @@ tune_raf <-
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
       nv <- length(stats::na.omit(c(predictors, predictors_f)))
-      grid <- expand.grid(mtry = seq(2, nv, 1))
+      grid <- expand.grid(
+        mtry = seq(2, nv, 1),
+        ntree = c(200, 400, 600, 800, 1000, 1200)
+      )
       message("Hyper-parameter values were not provided, default values will be used")
       message(paste("mtry = ", paste(seq(2, paste(
         nv
       ), 1), collapse = ",")))
+      message(paste("ntree = ", paste(c(200, 400, 600, 800, 1000), collapse = ",")))
+    }
+    if (!("ntree" %in% names(grid))) {
+      message("ntree parameter was not provided, following value will be used")
+      message(paste("ntree = ", paste(c(200, 400, 600, 800, 1000), collapse = ",")))
+      grid <- expand.grid(mtry = grid$mtry, ntree = c(200, 400, 600, 800, 1000))
     }
 
     # Test hyper-parameters names
     hyperp <- names(grid)
     if (!all(c("mtry") %in% hyperp)) {
-      stop("Database used in 'grid' argument has to contain this columns for tunning: 'mtry'")
+      stop("Database used in 'grid' argument has to contain this columns for tunning: 'mtry' and/or 'ntree'")
     }
 
     grid$tune <- 1:nrow(grid)
@@ -218,7 +231,7 @@ tune_raf <-
                 formula1,
                 data = train[[i]],
                 mtry = grid$mtry[ii],
-                ntree = 500,
+                ntree = grid$ntree[ii],
                 importance = FALSE
               )
           )

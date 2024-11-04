@@ -26,6 +26,7 @@
 #' If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified.
 #'
 #' @param mtry numeric. Number of variables randomly sampled as candidates at each split. Default sqrt(length(c(predictors, predictors_f)))
+#' @param ntree numeric. Number of trees to grow. Default 500
 #'
 #' @return
 #'
@@ -90,7 +91,9 @@
 #'   predictors_f = c("landform"),
 #'   partition = ".part",
 #'   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
-#'   fit_formula = NULL
+#'   fit_formula = NULL,
+#'   mtry = 2,
+#'   ntree = 500
 #' )
 #' rf_t2
 #' }
@@ -101,7 +104,8 @@ fit_raf <- function(data,
                     fit_formula = NULL,
                     partition,
                     thr = NULL,
-                    mtry = sqrt(length(c(predictors, predictors_f)))) {
+                    mtry = sqrt(length(c(predictors, predictors_f))),
+                    ntree = 500) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
