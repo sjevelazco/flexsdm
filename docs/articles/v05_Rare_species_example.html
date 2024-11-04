@@ -125,7 +125,7 @@ observations downloaded from the online database Calflora.</p>
 <span></span>
 <span><span class="co"># environmental data</span></span>
 <span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
-<span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> </span>
+<span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># species occurence data (presence-only)</span></span>
@@ -165,12 +165,11 @@ observations downloaded from the online database Calflora.</p>
 calibration area. Here, we will use 25-km buffer areas around the
 presence points to select our pseudo-absence locations.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">hespero</span>,</span>
 <span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'buffer'</span>, width<span class="op">=</span><span class="fl">25000</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"buffer"</span>, width <span class="op">=</span> <span class="fl">25000</span><span class="op">)</span>,</span>
 <span>  crs <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -180,9 +179,10 @@ presence points to select our pseudo-absence locations.</p>
 <span>  col <span class="op">=</span> <span class="st">"gray80"</span>,</span>
 <span>  legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  axes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  main <span class="op">=</span> <span class="st">"Calibration area and occurrences"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<span>  main <span class="op">=</span> <span class="st">"Calibration area and occurrences"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/calibration%20area-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -193,8 +193,7 @@ data. However, most SDM methods require either pseudo-absence or
 background data. Here, we use our calibration area to produce
 pseudo-absence data that can be used in our SDMs.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Sample the same number of species presences</span></span>
+<code class="sourceCode R"><span><span class="co"># Sample the same number of species presences</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_pseudoabs.html">sample_pseudoabs</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">hespero</span>,</span>
@@ -213,11 +212,12 @@ pseudo-absence data that can be used in our SDMs.</p>
 <span>  legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  axes <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">289347</span>, <span class="fl">353284</span><span class="op">)</span>,</span>
-<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">598052</span>,  <span class="op">-</span><span class="fl">520709</span><span class="op">)</span>,</span>
-<span>  main <span class="op">=</span> <span class="st">"Presence = yellow, Pseudo-absence = black"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, cex<span class="op">=</span><span class="fl">0.8</span>, pch<span class="op">=</span><span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="co"># Pseudo-absences</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="co"># Presences</span></span></code></pre></div>
+<span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">598052</span>, <span class="op">-</span><span class="fl">520709</span><span class="op">)</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Presence = yellow, Pseudo-absence = black"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.8</span>, pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="co"># Pseudo-absences</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="co"># Presences</span></span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/pseudo-absence%20data-1.png" width="576"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -249,8 +249,7 @@ random data partition methods for evaluating SDMs. Here we will use
 repeated K-fold cross-validation, which is a suitable partition approach
 for performing ESM.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Repeated K-fold method</span></span>
 <span><span class="va">hespero_pa2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span></span>
@@ -265,14 +264,13 @@ for performing ESM.</p>
 <p>Next, we extract the values of our four environmental predictors at
 the presence and pseudo-absence locations.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">hespero_pa3</span> <span class="op">&lt;-</span></span>
+<code class="sourceCode R"><span><span class="va">hespero_pa3</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">hespero_pa2</span>,</span>
-<span>    x <span class="op">=</span> <span class="st">'x'</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">'y'</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>    env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span></span>
+<span>    variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -288,10 +286,10 @@ case, we use our calibration area for making our predictions.</p>
 <code class="sourceCode R"><span><span class="va">mglm</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/fit_glm.html">fit_glm</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>    response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
-<span>    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
-<span>    partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
-<span>    thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span>    response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
+<span>    partition <span class="op">=</span> <span class="st">".part"</span>,</span>
+<span>    thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Formula used for model fitting:</span></span>
 <span><span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2)</span></span>
@@ -358,10 +356,10 @@ case, we use our calibration area for making our predictions.</p>
 <span></span>
 <span><span class="va">mgbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_gbm.html">fit_gbm</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>  response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
-<span>  partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
-<span>  thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
+<span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Formula used for model fitting:</span></span>
 <span><span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span></span>
@@ -426,12 +424,12 @@ case, we use our calibration area for making our predictions.</p>
 <span><span class="co">#&gt; Partition number: 4/5</span></span>
 <span><span class="co">#&gt; Partition number: 5/5</span></span>
 <span></span>
-<span><span class="va">msvm</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/fit_svm.html">fit_svm</a></span><span class="op">(</span></span>
+<span><span class="va">msvm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_svm.html">fit_svm</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>  response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
-<span>  partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
-<span>  thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
+<span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Formula used for model fitting:</span></span>
 <span><span class="co">#&gt; pr_ab ~ aet + cwd + tmx + tmn</span></span>
@@ -512,38 +510,37 @@ case, we use our calibration area for making our predictions.</p>
 that when predicting an ESM, it is possible to only process one at a
 time.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">eglm</span>  <span class="op">&lt;-</span></span>
+<code class="sourceCode R"><span><span class="va">eglm</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/esm_glm.html">esm_glm</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>    response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
-<span>    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
-<span>    partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
-<span>    thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span>    response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
+<span>    partition <span class="op">=</span> <span class="st">".part"</span>,</span>
+<span>    thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</span></span>
 <span></span>
 <span><span class="va">egbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gbm.html">esm_gbm</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>  response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
-<span>  partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
-<span>  thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
+<span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</span></span>
 <span></span>
-<span><span class="va">esvm</span> <span class="op">&lt;-</span>  <span class="fu"><a href="../reference/esm_svm.html">esm_svm</a></span><span class="op">(</span></span>
+<span><span class="va">esvm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_svm.html">esm_svm</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>  response <span class="op">=</span> <span class="st">'pr_ab'</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'aet'</span>, <span class="st">'cwd'</span>, <span class="st">'tmx'</span>, <span class="st">'tmn'</span><span class="op">)</span>,</span>
-<span>  partition <span class="op">=</span> <span class="st">'.part'</span>,</span>
-<span>  thr <span class="op">=</span> <span class="st">'max_sens_spec'</span></span>
+<span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
+<span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
+<span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</span></span>
 <span></span>
 <span></span>
 <span><span class="va">eglm_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span></span>
-<span>  models <span class="op">=</span> <span class="va">eglm</span> ,</span>
+<span>  models <span class="op">=</span> <span class="va">eglm</span>,</span>
 <span>  pred <span class="op">=</span> <span class="va">somevar</span>,</span>
 <span>  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  predict_area <span class="op">=</span> <span class="va">ca</span></span>
@@ -551,7 +548,7 @@ time.</p>
 <span><span class="co">#&gt; Predicting ensemble of small models</span></span>
 <span></span>
 <span><span class="va">egbm_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span></span>
-<span>  models <span class="op">=</span> <span class="va">egbm</span> ,</span>
+<span>  models <span class="op">=</span> <span class="va">egbm</span>,</span>
 <span>  pred <span class="op">=</span> <span class="va">somevar</span>,</span>
 <span>  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  predict_area <span class="op">=</span> <span class="va">ca</span></span>
@@ -574,22 +571,21 @@ time.</p>
 The spatial outputs suggest that the standard models tend to predict
 broader areas with high suitability values that the ESMs.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">glm</span>, main <span class="op">=</span> <span class="st">'Standard GLM'</span><span class="op">)</span></span>
-<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eglm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GLM'</span><span class="op">)</span></span>
-<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">gbm</span>, main <span class="op">=</span> <span class="st">'Standard GBM'</span><span class="op">)</span></span>
-<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">egbm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM GBM'</span><span class="op">)</span></span>
-<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">svm</span>, main <span class="op">=</span> <span class="st">'Standard SVM'</span><span class="op">)</span></span>
-<span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">esvm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">'ESM SVM'</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">glm</span>, main <span class="op">=</span> <span class="st">"Standard GLM"</span><span class="op">)</span></span>
+<span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eglm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"ESM GLM"</span><span class="op">)</span></span>
+<span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">gbm</span>, main <span class="op">=</span> <span class="st">"Standard GBM"</span><span class="op">)</span></span>
+<span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">egbm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"ESM GBM"</span><span class="op">)</span></span>
+<span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">svm</span>, main <span class="op">=</span> <span class="st">"Standard SVM"</span><span class="op">)</span></span>
+<span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">esvm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"ESM SVM"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v05_Rare_species_example_files/figure-html/comparison%20maps-1.png" width="576"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#points(hespero$x, hespero$y, pch = 19)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span></code></pre></div>
 <p>Next, we look at some performance metrics for our models, which are
 based on our repeated k-folds cross-validation partition method. This
 can be easily done using the “sdm_summarize()” function in

@@ -165,9 +165,9 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class="r-in"><span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">####                  Cellsize method                   ####</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using cellsize method</span></span></span>
 <span class="r-in"><span><span class="va">filtered_occ</span> <span class="op">&lt;-</span> <span class="fu">occfilt_geo</span><span class="op">(</span></span></span>
@@ -199,16 +199,16 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class="r-in"><span><span class="co"># So user must select the desired filtered dataset</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Let's explore the results</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">filtered_occ</span>, .id<span class="op">=</span><span class="st">"cellSize"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">filtered_occ</span>, .id <span class="op">=</span> <span class="st">"cellSize"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>cellSize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">cellSize</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">cellSize</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">####                   Defined method                   ####</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co"># Using defined method</span></span></span>
 <span class="r-in"><span><span class="va">filtered_occ</span> <span class="op">&lt;-</span> <span class="fu">occfilt_geo</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp1</span>,</span></span>
@@ -233,16 +233,16 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class="r-in"><span>  prj <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">filtered_occ</span>, .id<span class="op">=</span><span class="st">"cellSize"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">filtered_occ</span>, .id <span class="op">=</span> <span class="st">"cellSize"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>cellSize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">cellSize</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">cellSize</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">####                  Moran's I method                  ####</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using Moran's I method</span></span></span>
 <span class="r-in"><span><span class="va">filtered_occ</span> <span class="op">&lt;-</span> <span class="fu">occfilt_geo</span><span class="op">(</span></span></span>
@@ -268,7 +268,7 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class="r-in"><span>  prj <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">filtered_occ</span>, .id<span class="op">=</span><span class="st">"moran"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">filtered_occ</span>, .id <span class="op">=</span> <span class="st">"moran"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>moran <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">moran</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
@@ -277,11 +277,13 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 <span class="r-in"><span><span class="co"># It is possible select the best of filtered</span></span></span>
 <span class="r-in"><span><span class="co"># datasets using the occfilt_selec function</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">occ_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="occfilt_select.html">occfilt_select</a></span><span class="op">(</span>occ_list <span class="op">=</span> <span class="va">filtered_occ</span>,</span></span>
-<span class="r-in"><span>x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
-<span class="r-in"><span>y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
-<span class="r-in"><span>filter_prop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">occ_selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="occfilt_select.html">occfilt_select</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  occ_list <span class="op">=</span> <span class="va">filtered_occ</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  filter_prop <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">occ_selected</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>

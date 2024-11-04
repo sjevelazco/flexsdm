@@ -1,4 +1,4 @@
-test_that("multiplication works", {
+test_that("sdm summarize", {
   data(abies)
 
   # We will partition the data with the k-fold method

@@ -101,7 +101,7 @@ response, predictors, and predictors_f arguments. Default NULL</p></dd>
 <dt id="arg-grid">grid<a class="anchor" aria-label="anchor" href="#arg-grid"></a></dt>
 <dd><p>data.frame. A data frame object with algorithm hyper-parameters values to be tested.
 It is recommended to generate this data.frame with the grid() function. Hyper-parameter needed
-for tuning is 'mtry'. The maximum mtry cannot exceed the total number of predictors.</p></dd>
+for tuning is 'mtry' and 'ntree'. The maximum mtry cannot exceed the total number of predictors.</p></dd>
 
 
 <dt id="arg-thr">thr<a class="anchor" aria-label="anchor" href="#arg-thr"></a></dt>
@@ -165,8 +165,12 @@ database is used in <code><a href="fit_ensemble.html">fit_ensemble</a></code></p
 <span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">tune_grid</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">tune_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">600</span>, <span class="fl">800</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">tune_grid</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">rf_t</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">tune_raf</span><span class="op">(</span></span></span>

@@ -205,7 +205,9 @@ First, we create a	data.frame that provides hyper-parameters values to be tested
 
 ```{r tune_grid}
 tune_grid <-
-  expand.grid(mtry = seq(1, 7, 1))
+  expand.grid(mtry = seq(1, 7, 1), 
+              ntree = c(300, 500, 700, 900)
+  )
 ```
 
 We use the same data object abies2, with the same k-fold partition method:

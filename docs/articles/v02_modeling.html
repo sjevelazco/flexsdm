@@ -159,7 +159,7 @@ version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm"
 <span><span class="co">#&gt; Loading required package: flexsdm</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: terra</span></span>
-<span><span class="co">#&gt; terra 1.7.78</span></span>
+<span><span class="co">#&gt; terra 1.7.83</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'terra'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
@@ -396,7 +396,9 @@ Hyper-parameter needed for tuning is ‘mtry’. The maximum mtry must be
 equal to total number of predictors.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tune_grid</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span>, </span>
+<span>              ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">500</span>, <span class="fl">700</span>, <span class="fl">900</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p>We use the same data object abies2, with the same k-fold partition
 method:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -463,10 +465,10 @@ specified in the argument. We can see all the selected threshold
 values.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rf_t</span><span class="op">$</span><span class="va">performance</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 26</span></span></span>
-<span><span class="co">#&gt;    mtry model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3 raf   max_sens_spec     0.606         700        700    0.911 0.031<span style="text-decoration: underline;">4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 27</span></span></span>
+<span><span class="co">#&gt;    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3   300 raf   max_sens_s…     0.606         700        700    0.911 0.031<span style="text-decoration: underline;">4</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 18 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span></span>
