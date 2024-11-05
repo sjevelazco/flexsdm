@@ -17,8 +17,10 @@ abies2 <- part_random(
 test_that("tuen", {
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1),
-                ntree  = c(200,400,600,800))
+    expand.grid(
+      mtry = seq(1, 4, 1),
+      ntree = c(200, 400, 600, 800)
+    )
 
   raf_t <-
     tune_raf(
@@ -62,8 +64,10 @@ test_that("tuen without ntree hyperparamenter", {
 test_that("test of 0-1 response argument", {
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1),
-                ntree  = c(400,600))
+    expand.grid(
+      mtry = seq(1, 4, 1),
+      ntree = c(400, 600)
+    )
 
   expect_error(
     raf_t <-
@@ -83,8 +87,10 @@ test_that("test of 0-1 response argument", {
 
 test_that("test NULL in predictors_f", {
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1),
-                ntree  = c(400,600))
+    expand.grid(
+      mtry = seq(1, 4, 1),
+      ntree = c(400, 600)
+    )
 
   raf_t <-
     tune_raf(
@@ -115,8 +121,10 @@ test_that("test NULL in predictors_f", {
 test_that("test if remove NAs rows works", {
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1),
-                ntree  = c(400,600))
+    expand.grid(
+      mtry = seq(1, 4, 1),
+      ntree = c(400, 600)
+    )
 
   # Insert NAs in rows 3 and 4 for response column.
   abies2[3:4, 1] <- NA
@@ -152,8 +160,10 @@ test_that("test if remove NAs rows works", {
 test_that("test fit_formula", {
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1),
-                ntree  = c(400,600))
+    expand.grid(
+      mtry = seq(1, 4, 1),
+      ntree = c(400, 600)
+    )
 
   raf_t <-
     tune_raf(
@@ -173,8 +183,10 @@ test_that("test fit_formula", {
 
 test_that("grid = NULL ", {
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1),
-                ntree  = c(400,600))
+    expand.grid(
+      mtry = seq(1, 4, 1),
+      ntree = c(400, 600)
+    )
   expect_message(
     raf_t <-
       tune_raf(
@@ -194,8 +206,10 @@ test_that("grid = NULL ", {
 test_that("missuse of grid ", {
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtrsdfy = seq(1, 4, 1),
-                ntrdee  = c(400,600))
+    expand.grid(
+      mtrsdfy = seq(1, 4, 1),
+      ntrdee = c(400, 600)
+    )
 
   expect_error(
     raf_t <-

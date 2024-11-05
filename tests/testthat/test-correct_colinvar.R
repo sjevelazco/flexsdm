@@ -1,10 +1,11 @@
-test_that("correct_colinvar Pearson", {
-  require(terra)
-  require(dplyr)
-  somevar <-
-    system.file("external/somevar.tif", package = "flexsdm")
-  somevar <- terra::rast(somevar)
 
+require(terra)
+require(dplyr)
+somevar <-
+  system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+test_that("correct_colinvar Pearson", {
   # Perform pearson collinearity control
   var <-
     correct_colinvar(
@@ -41,12 +42,6 @@ test_that("correct_colinvar Pearson", {
 
 
 test_that("correct_colinvar VIF", {
-  require(terra)
-  require(dplyr)
-  somevar <-
-    system.file("external/somevar.tif", package = "flexsdm")
-  somevar <- terra::rast(somevar)
-
   # Perform pearson collinearity control
   CPF_5 <- somevar[[2]]
   names(CPF_5) <- "CPF_5"
@@ -72,12 +67,6 @@ test_that("correct_colinvar VIF", {
 
 
 test_that("correct_colinvar PCA", {
-  require(terra)
-  require(dplyr)
-  somevar <-
-    system.file("external/somevar.tif", package = "flexsdm")
-  somevar <- terra::rast(somevar)
-
   # Perform pearson collinearity control
   var <-
     correct_colinvar(env_layer = somevar, method = "pca")
@@ -100,8 +89,6 @@ test_that("correct_colinvar PCA", {
 })
 
 test_that("correct_colinvar PCA with projections", {
-  require(terra)
-  require(dplyr)
   dir_sc <- file.path(tempdir(), "projections")
   dir.create(dir_sc)
   dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
@@ -125,12 +112,6 @@ test_that("correct_colinvar PCA with projections", {
 
 
 test_that("correct_colinvar PCA with different projection area", {
-  require(terra)
-  require(dplyr)
-  somevar <-
-    system.file("external/somevar.tif", package = "flexsdm")
-  somevar <- terra::rast(somevar)
-
   # set seed
   abies2 <- abies %>%
     dplyr::select(x, y, pr_ab) %>%
@@ -180,8 +161,6 @@ test_that("correct_colinvar PCA with different projection area", {
 })
 
 test_that("correct_colinvar FA", {
-  require(terra)
-  require(dplyr)
   somevar <-
     system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
@@ -205,12 +184,73 @@ test_that("correct_colinvar FA", {
   expect_true(all(names(var) %in% c("env_layer", "number_factors", "removed_variables", "uniqueness", "loadings")))
 })
 
-test_that("misuse of argument", {
-  require(terra)
-  require(dplyr)
-  somevar <-
-    system.file("external/somevar.tif", package = "flexsdm")
 
+test_that("misuse of argument", {
   # Perform pearson collinearity control
-  expect_error(var <- correct_colinvar(env_layer = somevar, method = c("faasdf")))
+  expect_error(correct_colinvar(env_layer = somevar, method = c("faasdf")))
+  expect_error(correct_colinvar(
+    env_layer = somevar,
+    method = c("pca"),
+    maxcell = NULL,
+    restric_pca_proj = FALSE,
+    based_on_points = TRUE
+  ))
+})
+
+test_that("based on points", {
+  data("abies")
+  abies2 <- abies %>%
+    dplyr::select(x, y, pr_ab)
+
+  # Perform pca collinearity control
+  v <- correct_colinvar(
+    env_layer = somevar,
+    method = c("pca"),
+    maxcell = NULL,
+    restric_pca_proj = FALSE,
+    based_on_points = TRUE,
+    data = abies2,
+    x='x',
+    y='y'
+  )
+  expect_equal(length(v), 3)
+
+  # Perform fa collinearity control
+  v <- correct_colinvar(
+    env_layer = somevar,
+    method = c("fa"),
+    maxcell = NULL,
+    restric_pca_proj = FALSE,
+    based_on_points = TRUE,
+    data = abies2,
+    x='x',
+    y='y'
+  )
+  expect_equal(length(v), 5)
+
+  # Perform vif collinearity control
+  v <- correct_colinvar(
+    env_layer = somevar,
+    method = c('vif', th = '5'),
+    maxcell = NULL,
+    restric_pca_proj = FALSE,
+    based_on_points = TRUE,
+    data = abies2,
+    x='x',
+    y='y'
+  )
+  expect_equal(length(v), 3)
+
+    # Perform pearson collinearity control
+  v <- correct_colinvar(
+    env_layer = somevar,
+    method = c('pearson', th = '0.7'),
+    maxcell = NULL,
+    restric_pca_proj = FALSE,
+    based_on_points = TRUE,
+    data = abies2,
+    x='x',
+    y='y'
+  )
+  expect_equal(length(v), 2)
 })

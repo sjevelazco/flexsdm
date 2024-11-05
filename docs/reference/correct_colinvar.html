@@ -58,7 +58,11 @@
 <span>  save_proj <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  restric_to_region <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  restric_pca_proj <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  maxcell <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  maxcell <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  based_on_points <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -107,11 +111,31 @@ scenarios. Variables names must have the same names as in the raster used in env
 useful to reduce memory usage for large rasters. If NULL, the function will use all
 raster cells. Default NULL. Usage maxcell = 50000.</p></dd>
 
+
+<dt id="arg-based-on-points">based_on_points<a class="anchor" aria-label="anchor" href="#arg-based-on-points"></a></dt>
+<dd><p>logical. If TRUE, collinearity reduction method will be based on species points data (i.e., presences, and absences, pseudo-absences or background points). If TRUE, data, x and y arguments must be provided. Default FALSE.</p></dd>
+
+
+<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>tibble or data.frame. Database with species data used to model
+(i.e., presence + absence, or presence + pseudo-absence + background points)
+with x and y coordinates</p></dd>
+
+
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>character. Column name with spatial x coordinates</p></dd>
+
+
+<dt id="arg-y">y<a class="anchor" aria-label="anchor" href="#arg-y"></a></dt>
+<dd><p>character. Column name with spatial y coordinates</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>#' If 'pearson', returns a list with the following elements:</p><ul><li><p>cor_table: a matrix object with pairwise correlation values of the environmental variables</p></li>
-<li><p>cor_variables: a list object with the same length of the number of environmental values containing the pairwise relations that exceeded the correlation threshold for each one of the environmental variables</p></li>
+<li><p>cor_variables: a list object with the same length of the number of environmental
+ values containing the pairwise relations that exceeded the correlation
+ threshold for each one of the environmental variables</p></li>
 </ul><p>If 'vif' method, returns a list with the following elements:</p><ul><li><p>env_layer: a SpatRaster object with selected environmental variables</p></li>
 <li><p>removed_variables: a character vector with removed environmental variables</p></li>
 <li><p>vif_table: a data frame with VIF values for all environmental variables</p></li>
@@ -157,6 +181,13 @@ system of sub-folders and multiband raster with the principal components (pcs.ti
       │   └── pcs.tif<br>
       ├── UKESM_2050_ssp370<br>
       │   └── pcs.tif</p>
+<p>Perform collinearity reduction based on points</p>
+<p>Evaluating collinearity based on all environmental conditions of a
+calibration area or study area could yield different results than evaluating
+collinearity based on points used to construct the models. If you want to
+perform collinearity reduction based on species points data, it is strongly
+recommended to use all the point data used for modeling
+(i.e., presence + absence or presence + pseudo-absence/background points).</p>
     </div>
 
     <div class="section level2">
@@ -193,8 +224,8 @@ system of sub-folders and multiband raster with the principal components (pcs.ti
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Perform pca collinearity control with different projections</span></span></span>
-<span class="r-in"><span><span class="co">## Below will be created a set of folders to simulate the structure of the directory where</span></span></span>
-<span class="r-in"><span><span class="co">## environmental variables are stored for different scenarios</span></span></span>
+<span class="r-in"><span><span class="co">## Below will be created a set of folders to simulate the structure of the</span></span></span>
+<span class="r-in"><span><span class="co">## directory where environmental variables are stored for different scenarios</span></span></span>
 <span class="r-in"><span><span class="va">dir_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"projections"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dir_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_sc</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"scenario_1"</span>, <span class="st">"scenario_2"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -231,6 +262,7 @@ system of sub-folders and multiband raster with the principal components (pcs.ti
 <span class="r-in"><span><span class="co">####      considering cell restricted to a region       ####</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Define a calibration area</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -272,6 +304,61 @@ system of sub-folders and multiband raster with the principal components (pcs.ti
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pca_fr</span><span class="op">$</span><span class="va">env_layer</span><span class="op">)</span> <span class="co"># PCA with all cells</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pca_rr</span><span class="op">$</span><span class="va">env_layer</span><span class="op">)</span> <span class="co"># PCA with calibration area cell but predicted for entire region</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pca_rrp</span><span class="op">$</span><span class="va">env_layer</span><span class="op">)</span> <span class="co"># PCA performed and predicted for cells within calibration area (ca)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">#                                                          #</span></span></span>
+<span class="r-in"><span><span class="co">####       Use correct_colinvar with points data        ####</span></span></span>
+<span class="r-in"><span><span class="co">#                                                          #</span></span></span>
+<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Presence-absence database</span></span></span>
+<span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">pr_ab</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Perform collinearity control</span></span></span>
+<span class="r-in"><span><span class="co"># Pearson</span></span></span>
+<span class="r-in"><span><span class="fu">correct_colinvar</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th <span class="op">=</span> <span class="st">"0.6"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  based_on_points <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># VIF</span></span></span>
+<span class="r-in"><span><span class="fu">correct_colinvar</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vif"</span>, th <span class="op">=</span> <span class="st">"8"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  based_on_points <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># PCA</span></span></span>
+<span class="r-in"><span><span class="fu">correct_colinvar</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pca"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  based_on_points <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># FA</span></span></span>
+<span class="r-in"><span><span class="fu">correct_colinvar</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"fa"</span>,</span></span>
+<span class="r-in"><span>  based_on_points <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
