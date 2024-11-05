@@ -11,7 +11,11 @@ correct_colinvar(
   save_proj = NULL,
   restric_to_region = NULL,
   restric_pca_proj = FALSE,
-  maxcell = NULL
+  maxcell = NULL,
+  based_on_points = FALSE,
+  data = NULL,
+  x = NULL,
+  y = NULL
 )
 }
 \arguments{
@@ -44,12 +48,24 @@ scenarios. Variables names must have the same names as in the raster used in env
 \item{maxcell}{numeric. Number of raster cells to be randomly sampled. Taking a sample could be
 useful to reduce memory usage for large rasters. If NULL, the function will use all
 raster cells. Default NULL. Usage maxcell = 50000.}
+
+\item{based_on_points}{logical. If TRUE, collinearity reduction method will be based on species points data (i.e., presences, and absences, pseudo-absences or background points). If TRUE, data, x and y arguments must be provided. Default FALSE.}
+
+\item{data}{tibble or data.frame. Database with species data used to model
+(i.e., presence + absence, or presence + pseudo-absence + background points)
+with x and y coordinates}
+
+\item{x}{character. Column name with spatial x coordinates}
+
+\item{y}{character. Column name with spatial y coordinates}
 }
 \value{
 #' If 'pearson', returns a list with the following elements:
 \itemize{
 \item cor_table: a matrix object with pairwise correlation values of the environmental variables
-\item cor_variables: a list object with the same length of the number of environmental values containing the pairwise relations that exceeded the correlation threshold for each one of the environmental variables
+\item cor_variables: a list object with the same length of the number of environmental
+ values containing the pairwise relations that exceeded the correlation
+ threshold for each one of the environmental variables
 }
 
 If 'vif' method, returns a list with the following elements:
@@ -114,6 +130,15 @@ C:/Users/my_pc/Projection_PCA/\cr
       │   └── pcs.tif\cr
       ├── UKESM_2050_ssp370\cr
       │   └── pcs.tif
+
+Perform collinearity reduction based on points
+
+Evaluating collinearity based on all environmental conditions of a
+calibration area or study area could yield different results than evaluating
+collinearity based on points used to construct the models. If you want to
+perform collinearity reduction based on species points data, it is strongly
+recommended to use all the point data used for modeling
+(i.e., presence + absence or presence + pseudo-absence/background points).
 }
 \examples{
 \dontrun{
@@ -148,8 +173,8 @@ var$cumulative_variance
 
 
 # Perform pca collinearity control with different projections
-## Below will be created a set of folders to simulate the structure of the directory where
-## environmental variables are stored for different scenarios
+## Below will be created a set of folders to simulate the structure of the
+## directory where environmental variables are stored for different scenarios
 dir_sc <- file.path(tempdir(), "projections")
 dir.create(dir_sc)
 dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
@@ -186,6 +211,7 @@ var$loadings
 ####      considering cell restricted to a region       ####
 #                                                          #
 ## \%######################################################\%##
+data("abies")
 
 # Define a calibration area
 abies2 <- abies \%>\%
@@ -227,6 +253,61 @@ pca_rrp <- correct_colinvar(
 plot(pca_fr$env_layer) # PCA with all cells
 plot(pca_rr$env_layer) # PCA with calibration area cell but predicted for entire region
 plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibration area (ca)
+
+
+
+##\%######################################################\%##
+#                                                          #
+####       Use correct_colinvar with points data        ####
+#                                                          #
+##\%######################################################\%##
+data("abies")
+
+# Presence-absence database
+abies2 <- abies \%>\%
+  dplyr::select(x, y, pr_ab)
+
+# Perform collinearity control
+# Pearson
+correct_colinvar(
+  env_layer = somevar,
+  method = c("pearson", th = "0.6"),
+  based_on_points = TRUE,
+  data = abies2,
+  x = "x",
+  y = "y"
+)
+
+# VIF
+correct_colinvar(
+  env_layer = somevar,
+  method = c("vif", th = "8"),
+  based_on_points = TRUE,
+  data = abies2,
+  x = "x",
+  y = "y"
+)
+
+# PCA
+correct_colinvar(
+  env_layer = somevar,
+  method = c("pca"),
+  based_on_points = TRUE,
+  data = abies2,
+  x = "x",
+  y = "y"
+)
+
+# FA
+correct_colinvar(
+  env_layer = somevar,
+  method = "fa",
+  based_on_points = TRUE,
+  data = abies2,
+  x = "x",
+  y = "y"
+)
+
 }
 
 }

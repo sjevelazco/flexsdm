@@ -396,8 +396,9 @@ Hyper-parameter needed for tuning is ‘mtry’. The maximum mtry must be
 equal to total number of predictors.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tune_grid</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span>, </span>
-<span>              ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">500</span>, <span class="fl">700</span>, <span class="fl">900</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
+<span>    mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">500</span>, <span class="fl">700</span>, <span class="fl">900</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>We use the same data object abies2, with the same k-fold partition
 method:</p>

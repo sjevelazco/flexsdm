@@ -366,7 +366,14 @@ predictor selection in SDMs is complicated and ultimately should be
 based on the relationship between the environment and species’ biology.
 With that being said, these functions offer options for exploring the
 relationships between predictor variables that can aid in the predictor
-selection process. Let’s look at each method:</p>
+selection process.</p>
+<p>All collinearity analysis could be based on entire cells of
+environmental rasters or just using those cells with species points used
+to construct the models (see <code>details</code> and
+<code>based_on_points</code> argument of <code>correct_colivar()</code>
+function). Use or not <code>based_on_points</code> approach could yield
+different results.</p>
+<p>Let’s look at each method:</p>
 </div>
 <div class="section level3">
 <h3 id="pearson-correlation">1. Pearson correlation<a class="anchor" aria-label="anchor" href="#pearson-correlation"></a>

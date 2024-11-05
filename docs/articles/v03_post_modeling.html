@@ -535,8 +535,10 @@ output.</p>
 <span></span>
 <span><span class="co"># Prepare the grid object to use in grid argument</span></span>
 <span><span class="va">tune_grid</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span>, </span>
-<span>              ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">1500</span>, <span class="fl">200</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
+<span>    mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">1500</span>, <span class="fl">200</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Build a tuned random forest model</span></span>
 <span><span class="va">rf_t1</span> <span class="op">&lt;-</span></span>

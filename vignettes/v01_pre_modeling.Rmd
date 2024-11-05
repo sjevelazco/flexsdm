@@ -241,7 +241,11 @@ The relationship between different environmental variables can be visualized wit
 terra::pairs(somevar)
 ```
 
-So how can we correct for or reduce this collinearity? The function correct_colinvar() has four methods to deal with collinearity: pearson, vif, pca, and fa. Each method returns 1) a raster object (SpatRaster) with the selected predictors and 2) other useful outputs relevant to each method. These functions should be used as supplementary tools, as predictor selection in SDMs is complicated and ultimately should be based on the relationship between the environment and species' biology. With that being said, these functions offer options for exploring the relationships between predictor variables that can aid in the predictor selection process. Let's look at each method:
+So how can we correct for or reduce this collinearity? The function correct_colinvar() has four methods to deal with collinearity: pearson, vif, pca, and fa. Each method returns 1) a raster object (SpatRaster) with the selected predictors and 2) other useful outputs relevant to each method. These functions should be used as supplementary tools, as predictor selection in SDMs is complicated and ultimately should be based on the relationship between the environment and species' biology. With that being said, these functions offer options for exploring the relationships between predictor variables that can aid in the predictor selection process.
+
+All collinearity analysis could be based on entire cells of environmental rasters or just using those cells with species points used to construct the models (see `details` and `based_on_points` argument of `correct_colivar()` function). Use or not `based_on_points` approach could yield different results.
+
+Let's look at each method:
 
 ### 1. Pearson correlation
 
@@ -674,4 +678,3 @@ ex_spp
 **Vignette still under construction and changes**
 
 #=========#=========#=========#=========#=========#=========#=========#
-
