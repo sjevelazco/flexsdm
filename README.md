@@ -9,6 +9,10 @@
 
 # flexsdm
 
+### _flexsdm_ - email list
+Dear flexsdm user, if you are interested in receiving email notifications about modifications made to the package (e.g., new functions, arguments, or vignettes), please [**fill out this form**](https://docs.google.com/forms/d/1DMRgBS3wc8fVp9ZzeWktRb-NlV9s4x5OCfHuS12JvVI/prefill) so we can keep you updated on what is new in flexsdm.
+
+
 ### Overview 
 Species distribution modeling has become a standard tool in several research areas such as ecology, conservation biology, biogeography, paleobiogeography, and epidemiology. Species distribution modeling is an area of active research in both theoretical and methodological aspects. One of the most exciting features of **flexsdm** is its high manipulation and parametrization capacity based on different functions and arguments. These attributes enable users to define a complete or partial modeling workflow specific for a modeling situation (e.g., number of variables, number of records, different algorithms, algorithms tuning, ensemble methods).
 
