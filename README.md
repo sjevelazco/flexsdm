@@ -10,7 +10,7 @@
 # flexsdm
 
 ### _flexsdm_ - email list
-Dear flexsdm user, if you are interested in receiving email notifications about modifications made to the package (e.g., new functions, arguments, or vignettes), please [**fill out this form**](https://docs.google.com/forms/d/1DMRgBS3wc8fVp9ZzeWktRb-NlV9s4x5OCfHuS12JvVI/prefill) so we can keep you updated on what is new in flexsdm.
+Dear flexsdm user, if you are interested in receiving email notifications about modifications made to the package (e.g., new functions, arguments, or vignettes), please [**fill out this form**](https://forms.gle/neJweyd2hSxVVdUE6) so we can keep you updated on what is new in flexsdm.
 
 
 ### Overview 
