@@ -9,6 +9,10 @@ We use this space to list published peer-review papers that cited *flexsdm* pack
 
 ------------------------------------------------------------------------
 
+**2025**
+
+1.  Rahimi, E., Ahmadzadeh, F., 2025. Investigating climate-driven corridor networks for Golden Jackal (Canis aureus) in Northern Parts of Iran. *Journal of Wildlife and Biodiversity* 9, 1–16. <https://www.wildlife-biodiversity.com/index.php/jwb/article/view/728>
+
 **2024**
 
 1.  Kougioumoutzis, K., Tsakiri, M., Kokkoris, I.P., Trigas, P., Iatrou, G., Lamari, F.N., Tzanoudakis, D., Koumoutsou, E., Dimopoulos, P., Strid, A., Panitsa, M., (2024). Assessing the vulnerability of medicinal and aromatic plants to climate and land-use changes in a Mediterranean biodiversity hotspot. Land 13, 133. <https://doi.org/10.3390/land13020133>
