@@ -3,7 +3,7 @@ title: "Where flexsdm was cited?"
 output: html_document
 ---
 
-We use this space to list published peer-review papers that cited *flexsdm* package. Some of the following research used flexsdm for the entire modeling protocols, others used a couple of flexsdm functions, and others just mentioned our package.
+Here we provide a list published peer-review papers that cited *flexsdm* package. Some of the following research used flexsdm for the entire modeling protocols, others used a couple of flexsdm functions, and others just mentioned our package.
 
 **Thanks to the authors for citing our package.**
 
@@ -15,9 +15,77 @@ We use this space to list published peer-review papers that cited *flexsdm* pack
 
 **2024**
 
-1.  Kougioumoutzis, K., Tsakiri, M., Kokkoris, I.P., Trigas, P., Iatrou, G., Lamari, F.N., Tzanoudakis, D., Koumoutsou, E., Dimopoulos, P., Strid, A., Panitsa, M., (2024). Assessing the vulnerability of medicinal and aromatic plants to climate and land-use changes in a Mediterranean biodiversity hotspot. Land 13, 133. <https://doi.org/10.3390/land13020133>
+1.  Kougioumoutzis, K., Tsakiri, M., Kokkoris, I.P., Trigas, P., Iatrou, G., Lamari, F.N., Tzanoudakis, D., Koumoutsou, E., Dimopoulos, P., Strid, A., Panitsa, M., (2024). Assessing the vulnerability of medicinal and aromatic plants to climate and land-use changes in a Mediterranean biodiversity hotspot. *Land,* *13*(2), 133. <https://doi.org/10.3390/land13020133>
 
-2.  Rodriguez, C.S., Rose, M.B., Velazco, S.J.E., Franklin, J., Larios, L., (2024). High potential for Brassica tournefortii spread in North American introduced range, despite highly conserved niche. Biological Invasions 26, 337–351. <https://doi.org/10.1007/s10530-023-03176-3>
+2.  Rodriguez, C.S., Rose, M.B., Velazco, S.J.E., Franklin, J., & Larios, L., (2024). High potential for Brassica tournefortii spread in North American introduced range, despite highly conserved niche. *Biological Invasions,* *26*(1), 337-351. <https://doi.org/10.1007/s10530-023-03176-3>
+
+3.  Chartois, M., Fried, G. & Rossi, J.-P. (2024) Climate and host plant availability are favourable to the establishment of Lycorma delicatula in Europe. *Agricultural and Forest Entomology,* 1–13. Available from: <https://doi.org/10.1111/afe.12665>
+
+4.  Syphard, A. D., Velazco, S. J. E., Rose, M. B., Franklin, J., & Regan, H. M. (2024). The importance of geography in forecasting future fire patterns under climate change. *Proceedings of the National Academy of Sciences,* *121*(32), e2310076121. <https://doi.org/10.1073/pnas.2310076121>
+
+5.  Rose, M. B., Velazco, S. J. E., Regan, H. M., Flint, A. L., Flint, L. E., Thorne, J. H., & Franklin, J. (2024). Uncertainty in consensus predictions of plant species' vulnerability to climate change. *Diversity and Distributions*, *30*(8), e13898. <https://doi.org/10.1111/ddi.13898>
+
+6.  Aidoo, O.F., Amaro, G.C., Souza, P.G.C., Picanço, M.C., Awuah-Mensah, K.A. & Silva, R.S.d. (2024), Climate change impacts on worldwide ecological niche and invasive potential of Sternochetus mangiferae. *Pest Management Science*, <https://doi.org/10.1002/ps.8465>
+
+7.  Pires, M. B., Kougioumoutzis, K., Norder, S., Dimopoulos, P., Strid, A., & Panitsa, M. (2024). The future of plant diversity within a Mediterranean endemism centre: Modelling the synergistic effects of climate and land-use change in Peloponnese, Greece. *Science of The Total Environment*, 947, 174622.<https://doi.org/10.1016/j.scitotenv.2024.174622>
+
+8.  Noel, A., Schlaepfer, D.R., Butterfield, B.J., Swan, M.C., Norris, J., Hartwig, K., Duniway, M.C. & Bradford, J.B. (2024). Most Pinyon–Juniper Woodland Species Distributions Are Projected to Shrink Rather Than Shift Under Climate Change. *Rangeland Ecology & Management*, <https://doi.org/10.1016/j.rama.2024.09.002>
+
+9.  Stefanidis, A., Kougioumoutzis, K., Zografou, K., Fotiadis, G., Tzortzakaki, O., Willemse, L. & Kati, V., (2024) Mitigating the extinction risk of globally threatened and endemic mountainous Orthoptera species: Parnassiana parnassica and Oropodisma parnassica. *Insect Conservation and Diversity*, 1–15. Available from: <https://doi.org/10.1111/icad.12784>
+
+10. Rahimi E, Jung C. (2024) A New SDM-Based Approach for Assessing Climate Change Effects on Plant–Pollinator Networks. *Insects*, *15*(11):842. <https://doi.org/10.3390/insects15110842>
+
+11. Rahimi, E., Dong, P. & Ahmadzadeh, F. (2024). Assessing climate niche similarity between persian fallow deer (Dama mesopotamica) areas in Iran. *BMC Ecology and Evolution*, *24*(1), 93. <https://doi.org/10.1186/s12862-024-02281-8>
+
+12. Ramírez‐Arce, D. G., Ochoa‐Ochoa, L. M., Lira‐Noriega, A., & Martorell, C. (2024). Reptile Diversity Patterns Under Climate and Land Use Change Scenarios in a Subtropical Montane Landscape in Mexico. *Journal of Biogeography*, <https://doi.org/10.1111/jbi.15017>
+
+13. Rahimi, E., & Jung, C. (2024). Global trends in climate suitability of bees: Ups and downs in a warming world. *Insects*, *15*(2), 127. <https://doi.org/10.3390/insects15020127>
+
+14. Lazagabaster, I. A., Thomas, C. D., Spedding, J. V., Ikram, S., Solano‐Regadera, I., Snape, S., & Bro‐Jørgensen, J. (2024). Evaluating species distribution model predictions through time against paleozoological records. *Ecology and evolution*, *14*(10), e70288. <https://doi.org/10.1002/ece3.70288>
+
+15. Habibi, I., Achour, H., Bounaceur, F., Benaradj, A., & Aulagnier, S. (2024). Predicting the future distribution of the Barbary ground squirrel (Atlantoxerus getulus) under climate change using niche overlap analysis and species distribution modeling. *Environmental Monitoring and Assessment*, *196*(11), 1-18. <https://doi.org/10.1007/s10661-024-13350-2>
+
+16. Nelson, D. L., Marneweck, C. J., McShea, W. J., Shamon, H., & Jachowski, D. S. (2024). Predicted future range expansion of a small carnivore: swift fox in North America. *Landscape Ecology*, *39*(9), 164. <https://doi.org/10.1007/s10980-024-01962-5>
+
+17. Rahimi, E., & Jung, C. (2024). A Global Estimation of Potential Climate Change Effects on Pollinator-Dependent Crops. *Agricultural Research*, 1-11. <https://doi.org/10.1007/s40003-024-00802-x>
+
+18. Rahimi, E., Dong, P., Ahmadzadeh, F., & Jung, C. (2024). Assessing climate change threats to biodiversity and protected areas of Iran. *European Journal of Wildlife Research*, *70*(5), 1-11. <https://doi.org/10.1007/s10344-024-01842-y>
+
+19. He, J., Lu, L., He, H., Zhang, Z., Hao, M., Zhang, C., Zhao, X. & von Gadow, K. (2024). Estimating the dynamics of ecosystem functions under climate change in a temperate forest region. *Ecological Indicators*, *166*, 112353. <https://doi.org/10.1016/j.ecolind.2024.112353>
+
+20. Nieto‐Lugilde, M., Nieto‐Lugilde, D., Piatkowski, B., Duffy, A.M., Robinson, S.C., Aguero, B., Schuette, S., Wilkens, R., Yavitt, J. & Shaw, A.J.(2024). Ecological differentiation and sympatry of cryptic species in the Sphagnum magellanicum complex (Bryophyta). *American Journal of Botany*, e16401. <https://doi.org/10.1002/ajb2.16401>
+
+21. Serra‐Diaz, J.M., Borderieux, J., Maitner, B., Boonman, C.C., Park, D., Guo, W.Y., Callebaut, A., Enquist, B.J., Svenning, J.C. & Merow, C. (2024). occTest: An integrated approach for quality control of species occurrence data. *Global Ecology and Biogeography*, e13847. <https://doi.org/10.1111/geb.13847>
+
+22. Bayraktarov, E., Low-Choy, S., Singh, A.R., Beaumont, L.J., Williams, K.J., Baumgartner, J., Laffan, S.W., Vasco, D., Cosgrove, R., Wraith, J. & Antunes, J.F. (2024). EcoCommons Australia Virtual Laboratories with Cloud Computing: Meeting Diverse User Needs for Ecological Modeling and Decision-making. *Environmental Modelling & Software*, 106255. <https://doi.org/10.1016/j.envsoft.2024.106255>
+
+23. Lamboley, Q., & Fourcade, Y. (2024). No optimal spatial filtering distance for mitigating sampling bias in ecological niche models. *Journal of Biogeography*, *51*, 1783–1794. <https://doi.org/10.1111/jbi.14854>
+
+24. Delle Monache, D., Martino, G., Chiocchio, A., Siclari, A., Bisconti, R., Maiorano, L., & Canestrelli, D. (2024). Mapping local climates in highly heterogeneous mountain regions: Interpolation of meteorological station data vs. downscaling of macroclimate grids. *Ecological Informatics*, 102674. <https://doi.org/10.1016/j.ecoinf.2024.102674>
+
+25. Rahimi, E., & Jung, C. (2024). Identifying pollinator‐friendly sites within urban green spaces for sustainable urban agriculture. *Journal of Sustainable Agriculture and Environment*, *3*(3), e12109. <https://doi.org/10.1002/sae2.12109>
+
+26. Vélez, D., & Vivallo, F. (2024). Key areas for conserving and sustainably using oil-collecting bees (Apidae: Centridini, Tapinotaspidini, Tetrapediini) in the Americas. *Journal of Insect Conservation*, 1-17. <https://doi.org/10.1007/s10841-024-00620-0>
+
+27. Ninsin, K.D., Souza, P.G.C., Amaro, G.C., Aidoo, O.F., Barry, E.J.D.V., da Silva, R.S., Osei-Owusu, J., Dofuor, A.K., Ablormeti, F.K., Heve, W.K. & Edusei, G., (2024). Risk of spread of the Asian citrus psyllid Diaphorina citri Kuwayama (Hemiptera: Liviidae) in Ghana. *Bulletin of Entomological Research*, 1-20. <https://doi.org/10.1017/S0007485324000105>
+
+28. Buebos-Esteve, D. E., Redeña-Santos, J. C., & Dagamac, N. H. A. (2024). Ensemble modeling to identify high conservation value areas for endemic and elusive large-sized mammals of the Philippines. *Journal for Nature Conservation*, 126657. <https://doi.org/10.1016/j.jnc.2024.126657>
+
+29. Esparza-Orozco, A., & Lira-Noriega, A. (2024). Use of secondary diversity data to improve diversity estimates at multiple geographic scales. *Biodiversity and Conservation*, 1-18. <https://doi.org/10.1007/s10531-024-02844-7>
+
+30. Gandaho, S. M., Sogbohossou, E. A., & Thompson, L. J. (2024). NIMO: A graphical user interface‐based R package for species distribution modelling. *Ecological Solutions and Evidence*, *5*(3), e12385. <https://doi.org/10.1002/2688-8319.12385>
+
+31. Kougioumoutzis, K., Constantinou, I., & Panitsa, M. (2024). Rising Temperatures, Falling Leaves: Predicting the Fate of Cyprus’s Endemic Oak under Climate and Land Use Change. *Plants*, *13*(8), 1109. <https://doi.org/10.3390/plants13081109>
+
+32. Somerville, R., MacNeil, C., & Lee, F. (2024). Habitat suitability of Aotearoa New Zealand for the recently invaded gold clam (Corbicula fluminea). *New Zealand Journal of Marine and Freshwater Research*, 1-18. <https://doi.org/10.1080/00288330.2024.2368856>
+
+33. Marom, N., Peretz, A. O., Lazagabaster, I. A., Meiri, M., & Meiri, S. (2024). Water voles of Lake Hula: assessing their past, present, and future. *European Journal of Wildlife Research*, *70*(2), 34. <https://doi.org/10.1007/s10344-024-01781-8>
+
+34. Rahimi, E., & Jung, C. (2024). A global evaluation of urban agriculture potential for pollinator‐dependent crops in major cities. *Urban Agriculture & Regional Food Systems*, *9*(1), e20058. <https://doi.org/10.1002/uar2.20058>
+
+35. Castillo, D. S. C., & Higa, M. (2024). Strengthening ecologically based rodent management in the Philippines using maximum entropy (MaxEnt) predictions. *Journal of Tropical Ecology*, *40*, e19. <https://doi.org/10.1017/S0266467424000208>
+
+36. Tytar, V., Kozynenko, I., & Navakatikyan, M. (2024). Modelling the distribution of the proboscis monkey (Nasalis larvatus) in Sabah (Borneo) based on remotely sensed high-resolution global cloud dynamics. *Theriologia Ukrainica*, *27*, 103-111. <http://doi.org/10.53452/TU2711>
 
 **2023**
 
