@@ -125,7 +125,7 @@
 calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   . <- NULL
   if (!method[1] %in% c("buffer", "mcp", "bmcp", "mask")) {
-    stop("argument 'method' was misused, available methods buffer, mcp, bmpc, and mask")
+    stop("argument 'method' was misused, available methods buffer, mcp, bmcp, and mask")
   }
 
   if (method[1] %in% c("bmcp", "buffer")) {
