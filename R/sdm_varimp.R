@@ -56,7 +56,7 @@
 #' @importFrom kernlab predict
 #' @importFrom mgcv predict.gam
 #' @importFrom parallel makeCluster stopCluster
-#' @importFrom stats predict.glm predict
+#' @importFrom stats predict.glm
 #'
 #' @export
 #'
