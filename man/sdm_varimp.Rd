@@ -69,7 +69,10 @@ a tibble with the columns:
 }
 }
 \description{
-This function calculates permutation-based variable importance scores for species distribution models (SDMs) based on the
+This function calculates permutation-based variable importance scores for species distribution models (SDMs) based on model performance.
+}
+\details{
+This function calculates permutation-based variable importance scores for species distribution models (SDMs) based on model performance when each predictor value are permuted. Thus, the function calculates the model performance using the original data and the model performance using the permuted data. The difference between the two performances is the variable importance score.
 }
 \examples{
 \dontrun{

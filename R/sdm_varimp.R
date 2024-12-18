@@ -1,6 +1,6 @@
 #' Calculate permutation-based variable importance scores for SDMs
 #'
-#' @description This function calculates permutation-based variable importance scores for species distribution models (SDMs) based on the
+#' @description This function calculates permutation-based variable importance scores for species distribution models (SDMs) based on model performance.
 #'
 #' @param models list of one or more models fitted with fit_ or tune_ functions. In case use models fitted with fit_ensemble or esm_ family function only one model could be used. Usage models = mglm or models = list(mglm, mraf, mgbm)
 #' @param data data.frame. Database with response (0,1) and predictors values.
@@ -57,6 +57,8 @@
 #' @importFrom mgcv predict.gam
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom stats predict.glm
+#'
+#' @details This function calculates permutation-based variable importance scores for species distribution models (SDMs) based on model performance when each predictor value are permuted. Thus, the function calculates the model performance using the original data and the model performance using the permuted data. The difference between the two performances is the variable importance score.
 #'
 #' @export
 #'
