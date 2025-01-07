@@ -152,12 +152,12 @@ part_random <- function(data, pr_ab, method = NULL) {
         dplyr::slice_sample(prop = prop2) %>%
         dplyr::mutate(BOOT2 = "test")
 
-      data2 <- dplyr::full_join(data_train, data_ttest, by = c("pr_ab", "IDBOOT")) %>%
+      data2 <- dplyr::full_join(data_train, data_ttest, by = c(pr_ab, "IDBOOT")) %>%
         dplyr::mutate(boot = paste(BOOT1, BOOT2, sep = "-")) %>%
         dplyr::select(-BOOT1, -BOOT2) %>%
         dplyr::mutate(boot = gsub(paste(c("-NA", "NA-"), collapse = "|"), "", boot))
 
-      data <- dplyr::left_join(data, data2, by = c("pr_ab", "IDBOOT"))
+      data <- dplyr::left_join(data, data2, by = c(pr_ab, "IDBOOT"))
       colnames(data)[colnames(data) == "boot"] <- paste0(".part", i)
     }
     data$IDBOOT <- NULL
