@@ -30,10 +30,20 @@ sample_pseudoabs(
 provide a vector for this argument. The methods implemented are:
 \itemize{
 \item random: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='random'.
-\item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster stack or brick object with environmental variables Usage method=c(method='env_const', env = somevar).
+\item kmeans: Pseudo-absences are sampled randomly within environmental clusters defined by k-means
+cluster analysis (the number of clusters will equal than number of pseudo-absences defined in 'n').
+For this method, it is necessary to provide a raster object with environmental
+variables. Usage method = c('kmeans', env = somevar).
+throughout the area used for model fitting. Usage method='random'.
+\item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster object with environmental variables Usage method=c(method='env_const', env = somevar).
 \item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. A value of the buffer width in m must be provided if raster (used in rlayer) has a longitude/latitude CRS, or in map units in other cases. Usage method=c('geo_const', width='50000').
 \item geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, a raster with environmental variables stored as SpatRaster object should be provided. A value of the buffer width in m must be provided if raster (used in rlayer) has a longitude/latitude CRS, or in map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar).
-\item geo_env_km_const: Pseudo-absences are constrained using a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar).
+\item geo_env_km_const: Pseudo-absences are constrained using a three-level procedure; it is similar to
+the geo_env_const with an additional step which distributes the pseudo-absences in environmental space
+using k-means cluster analysis. For this method, it is necessary to provide a raster object with
+environmental variables and a value of the buffer width in m if raster (used in rlayer) has a
+longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const',
+width='50000', env = somevar).
 }}
 
 \item{rlayer}{SpatRaster. A raster layer used for sampling pseudo-absence
@@ -113,6 +123,21 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
+# Pseudo-absences sampled within K-mean approach
+set.seed(123)
+ps1 <-
+  sample_pseudoabs(
+    data = single_spp,
+    x = "x",
+    y = "y",
+    n = nrow(single_spp) * 10,
+    method=c(method='env_const', env = somevar),
+    rlayer = regions
+  )
+
+plot(regions, col = gray.colors(9))
+points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+points(ps1, col = "red", cex = 0.7, pch = 19)
 
 # Pseudo-absences sampled with geographical constraint
 ps1 <-

@@ -27,6 +27,20 @@ test_that("sample_pseudoabs", {
   expect_equal(class(ps1)[1], "tbl_df")
   rm(ps1)
 
+  # Pseudo-absences k-means approach
+  ps1 <-
+    sample_pseudoabs(
+      data = single_spp,
+      x = "x",
+      y = "y",
+      n = nrow(single_spp) * 10,
+      method = c(method = 'kmeans', env = somevar),
+      rlayer = regions,
+      maskval = NULL
+    )
+  expect_equal(class(ps1)[1], "tbl_df")
+  rm(ps1)
+
   # Pseudo-absences randomly sampled within a regions where a species occurs
   ## Regions where this species occurrs
   samp_here <- terra::extract(regions, single_spp[2:3])[, 2] %>%
@@ -165,6 +179,16 @@ test_that("function misuse", {
     y = "y",
     n = nrow(single_spp) * 10,
     method = "env_const_XXXX",
+    rlayer = regions,
+    maskval = NULL
+  ))
+
+  expect_error(sample_pseudoabs(
+    data = single_spp,
+    x = "x",
+    y = "y",
+    n = nrow(single_spp) * 10,
+    method = "kmeans",
     rlayer = regions,
     maskval = NULL
   ))
