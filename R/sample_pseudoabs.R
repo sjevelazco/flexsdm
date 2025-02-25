@@ -396,7 +396,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     # K-mean procedure
     env_changed <- terra::mask(env, envp)
     env_changed <- terra::scale(env_changed)
-    env_changed <- terra::as.data.frame(env_changed, xy = TRUE)
+    env_changed <- terra::as.data.frame(env_changed, na.rm = TRUE, cells = TRUE, xy = TRUE)
     env_changed <- stats::na.exclude(env_changed)
     cell_samp <- kf(df = env_changed, n)
   }
