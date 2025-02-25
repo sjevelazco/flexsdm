@@ -12,10 +12,20 @@
 #' provide a vector for this argument. The methods implemented are:
 #' \itemize{
 #' \item random: Random allocation of pseudo-absences throughout the area used for model fitting. Usage method='random'.
-#' \item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster stack or brick object with environmental variables Usage method=c(method='env_const', env = somevar).
+#' \item kmeans: Pseudo-absences are sampled randomly within environmental clusters defined by k-means
+#' cluster analysis (the number of clusters will equal than number of pseudo-absences defined in 'n').
+#' For this method, it is necessary to provide a raster object with environmental
+#' variables. Usage method = c('kmeans', env = somevar).
+#' throughout the area used for model fitting. Usage method='random'.
+#' \item env_const: Pseudo-absences are environmentally constrained to regions with lower suitability values predicted by a Bioclim model. For this method, it is necessary to provide a raster object with environmental variables Usage method=c(method='env_const', env = somevar).
 #' \item geo_const: Pseudo-absences are allocated far from occurrences based on a geographical buffer. A value of the buffer width in m must be provided if raster (used in rlayer) has a longitude/latitude CRS, or in map units in other cases. Usage method=c('geo_const', width='50000').
 #' \item geo_env_const: Pseudo-absences are constrained environmentally (based on Bioclim model) and distributed geographically far from occurrences based on a geographical buffer. For this method, a raster with environmental variables stored as SpatRaster object should be provided. A value of the buffer width in m must be provided if raster (used in rlayer) has a longitude/latitude CRS, or in map units in other cases. Usage method=c('geo_env_const', width='50000', env = somevar).
-#' \item geo_env_km_const: Pseudo-absences are constrained using a three-level procedure; it is similar to the geo_env_const with an additional step which distributes the pseudo-absences in environmental space using k-means cluster analysis. For this method, it is necessary to provide a raster stack or brick object with environmental variables and a value of the buffer width in m if raster (used in rlayer) has a longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const', width='50000', env = somevar).
+#' \item geo_env_km_const: Pseudo-absences are constrained using a three-level procedure; it is similar to
+#' the geo_env_const with an additional step which distributes the pseudo-absences in environmental space
+#' using k-means cluster analysis. For this method, it is necessary to provide a raster object with
+#' environmental variables and a value of the buffer width in m if raster (used in rlayer) has a
+#' longitude/latitude CRS, or map units in other cases. Usage method=c('geo_env_km_const',
+#' width='50000', env = somevar).
 #' }
 #'
 #' @param rlayer SpatRaster. A raster layer used for sampling pseudo-absence
@@ -27,7 +37,7 @@
 #'
 #' @importFrom dplyr %>% select mutate
 #' @importFrom stats na.exclude kmeans
-#' @importFrom terra mask ext extract match as.data.frame
+#' @importFrom terra mask ext extract match as.data.frame scale
 #'
 #' @return A tibble object with x y coordinates of sampled pseudo-absence points
 #'
@@ -95,6 +105,21 @@
 #' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 #' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
+#' # Pseudo-absences sampled with K-mean approach
+#' set.seed(123)
+#' ps1 <-
+#'   sample_pseudoabs(
+#'     data = single_spp,
+#'     x = "x",
+#'     y = "y",
+#'     n = nrow(single_spp) * 10,
+#'     method = c(method='kmeans', env = somevar),
+#'     rlayer = regions
+#'   )
+#'
+#' plot(regions, col = gray.colors(9))
+#' points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+#' points(ps1, col = "red", cex = 0.7, pch = 19)
 #'
 #' # Pseudo-absences sampled with geographical constraint
 #' ps1 <-
@@ -206,6 +231,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
   if (!any(c(
     "random",
+    "kmeans",
     "env_const",
     "geo_const",
     "geo_env_const",
@@ -225,12 +251,48 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
       terra::mask(., calibarea)
   }
 
-  # Random method
+  #### Random method ####
   if (any(method %in% "random")) {
     cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = rlayer, maskval = maskval)
   }
 
-  # env_const method
+  #### K-means method ####
+  if (any(method == "kmeans")) {
+    if (is.na(method["env"])) {
+      stop("Provide a environmental stack/brick variables for env_const method, \ne.g. method = c('kmeans', env=somevar)")
+    }
+
+    env <- method[["env"]]
+    # Test extent
+    if (!all(as.vector(terra::ext(env)) %in% as.vector(terra::ext(rlayer)))) {
+      message("Extents do not match, raster layers used were croped to minimum extent")
+      df_ext <- data.frame(as.vector(terra::ext(env)), as.vector(terra::ext(rlayer)))
+
+      e <- terra::ext(apply(df_ext, 1, function(x) x[which.min(abs(x))]))
+      env <- crop(env, e)
+      rlayer <- crop(rlayer, e)
+    }
+
+    # Restriction for a given region
+    if (!is.null(maskval)) {
+      if (is.factor(maskval)) {
+        maskval <-
+          which(levels(maskval) %in% as.character(maskval))
+        rlayer <- rlayer * 1
+      }
+      filt <- terra::match(rlayer, maskval)
+      rlayer <- terra::mask(rlayer, filt)
+      rm(filt)
+      env <- terra::mask(rlayer, env)
+    }
+
+    # K-mean procedure
+    env <- terra::scale(env)
+    env_changed <- terra::as.data.frame(env, na.rm = TRUE, cells = TRUE, xy = TRUE)
+    cell_samp <- kf(df = env_changed, n)
+  }
+
+  #### env_const method ####
   if (any(method == "env_const")) {
     if (is.na(method["env"])) {
       stop("Provide a environmental stack/brick variables for env_const method, \ne.g. method = c('env_const', env=somevar)")
@@ -253,7 +315,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = envp, maskval = maskval)
   }
 
-  # geo_const method
+  #### geo_const method ####
   if (any(method == "geo_const")) {
     if (!"width" %in% names(method)) {
       stop("Provide a width value for 'geo_const' method, \ne.g. method=c('geo_const', width='50000')")
@@ -265,7 +327,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = envp, maskval = maskval)
   }
 
-  # geo_env_const method
+  #### geo_env_const method ####
   if (any(method == "geo_env_const")) {
     if (!all(c("env", "width") %in% names(method))) {
       stop("Provide a width value and environmental stack/brick variables for 'geo_env_const' method, \ne.g. method=c('geo_env_const', width='50000', env=somevar)")
@@ -293,7 +355,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     cell_samp <- sample_background(data = data, x = x, y = y, method = "random", n = n, rlayer = envp, maskval = maskval)
   }
 
-  # geo_env_km_const
+  #### geo_env_km_const ####
   if (any(method == "geo_env_km_const")) {
     if (!all(c("env", "width") %in% names(method))) {
       stop("Provide a width value and environmental stack/brick variables for 'geo_env_km_const' method, \ne.g. method=c('geo_env_const', width='50000', env=somevar)")
@@ -333,19 +395,12 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
     # K-mean procedure
     env_changed <- terra::mask(env, envp)
+    env_changed <- terra::scale(env_changed)
     env_changed <- terra::as.data.frame(env_changed, xy = TRUE)
     env_changed <- stats::na.exclude(env_changed)
-
-    suppressWarnings(km <- stats::kmeans(env_changed, centers = n))
-    cell_samp <- km$centers[, 1:2] %>% data.frame()
-    val <- terra::extract(envp, cell_samp, method = "simple", xy = TRUE) %>%
-      dplyr::select(-c(ID, x, y))
-    cell_samp <-
-      cell_samp %>% dplyr::mutate(val = val[, 1])
-    cell_samp <- cell_samp[!is.na(cell_samp$val), -3]
-    cell_samp <- dplyr::tibble(cell_samp)
-    cell_samp$pr_ab <- 0
+    cell_samp <- kf(df = env_changed, n)
   }
+
   colnames(cell_samp) <- c(x, y, "pr_ab")
   if (!is.null(sp_name)) {
     cell_samp <- tibble(sp = sp_name, cell_samp)
