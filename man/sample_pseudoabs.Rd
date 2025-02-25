@@ -123,7 +123,7 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
-# Pseudo-absences sampled within K-mean approach
+# Pseudo-absences sampled with K-mean approach
 set.seed(123)
 ps1 <-
   sample_pseudoabs(
@@ -131,7 +131,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method=c(method='env_const', env = somevar),
+    method = c(method='kmeans', env = somevar),
     rlayer = regions
   )
 

@@ -1,3 +1,8 @@
+# flexsdm 1.3.x
+
+-   `sample_pseudoabs` it was implemented a sample approach based on environmental K-means [#410](https://github.com/sjevelazco/flexsdm/pull/410)
+-   `sample_pseudoabs` K-means step was improved for the geo_env_km_const approach [#410](https://github.com/sjevelazco/flexsdm/pull/410)
+
 # flexsdm 1.3.6
 
 -   `occfilt_geo` adapted to test different values for the three methods by @sjevelazco in [386](https://github.com/sjevelazco/flexsdm/pull/386)
