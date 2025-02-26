@@ -162,6 +162,8 @@ sdm_varimp <- function(models,
                        thr = NULL,
                        clamp = TRUE,
                        pred_type = "cloglog") {
+  . <- model <- threshold <- TPR <- IMAE <- TSS <- BOYCE <- NULL
+
   # Function to calculate performance
   var_perf <- function(x) {
     p <- sdm_eval(
@@ -716,8 +718,8 @@ sdm_varimp <- function(models,
   )
   names(var_i) <- dplyr::left_join(data.frame(alg = clss), df, by = "alg")[, 2]
 
-  if(!is.null(esm)){
-    names(var_i) <- paste("esm", names(var_i), 1:length(var_i), sep="_")
+  if (!is.null(esm)) {
+    names(var_i) <- paste("esm", names(var_i), 1:length(var_i), sep = "_")
   }
 
   result <- dplyr::bind_rows(var_i, .id = "model") %>%
@@ -725,8 +727,10 @@ sdm_varimp <- function(models,
     as_tibble()
 
   # In result, for metrics except IAME, if the value is less than 0, transform that value to 0
-  nsm <- result %>% dplyr::select(TPR:IMAE) %>% names()
-  result[, nsm][result[, nsm]<0] <- 0
+  nsm <- result %>%
+    dplyr::select(TPR:IMAE) %>%
+    names()
+  result[, nsm][result[, nsm] < 0] <- 0
 
   return(result)
 }
