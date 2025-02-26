@@ -438,3 +438,26 @@ mah_dist <- function(x, y, cov) {
   colnames(result) <- rownames(y)
   return(result)
 }
+
+#' K-means sample
+#'
+#' @noRd
+#'
+kf <- function(df, n){
+  suppressWarnings(km <- stats::kmeans(df %>% dplyr::select(-c(cell:y)),
+                                       centers = n))
+  result <- data.frame(cluster = km$cluster, cell = names(km$cluster)) %>%
+    dplyr::as_tibble() %>%
+    dplyr::arrange(cluster) %>%
+    dplyr::group_by(cluster) %>%
+    dplyr::sample_n(1, replace = FALSE) %>%
+    dplyr::group_by() %>%
+    dplyr::pull(cell) %>%
+    as.numeric()
+  result <- df %>%
+    dplyr::filter(cell %in% result) %>%
+    dplyr::select(x, y) %>%
+    dplyr::as_tibble()
+  result$pr_ab <- 0
+  return(result)
+}

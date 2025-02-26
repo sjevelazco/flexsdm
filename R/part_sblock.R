@@ -602,10 +602,6 @@ unique list values in pr_ab column are: ",
       }
     }
 
-    if (unique(Opt2$spa_auto) &&
-      unique(Opt2$env_sim) && unique(Opt2$sd_p)) {
-      Opt2 <- Opt2[nrow(Opt2), ]
-    }
   }
 
   if (nrow(Opt2) > 1) {

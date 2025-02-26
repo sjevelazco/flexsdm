@@ -1,18 +1,37 @@
-# flexsdm 1.3.5-5
+# flexsdm 1.3.x
+
+-   `sample_pseudoabs` it was implemented a sample approach based on environmental K-means [#410](https://github.com/sjevelazco/flexsdm/pull/410)
+-   `sample_pseudoabs` K-means step was improved for the geo_env_km_const approach [#410](https://github.com/sjevelazco/flexsdm/pull/410)
+
+# flexsdm 1.3.6
+
+-   `occfilt_geo` adapted to test different values for the three methods by @sjevelazco in [386](https://github.com/sjevelazco/flexsdm/pull/386)
+-   `occfilt_env` now can filter with several bins by @sjevelazco in [388](https://github.com/sjevelazco/flexsdm/pull/388)
+-   `occfilt_select` was created and test protocol written by @sjevelazco in [389](https://github.com/sjevelazco/flexsdm/pull/389)
+-   `occfit_select` included in vignette and website by @sjevelazco in [390](https://github.com/sjevelazco/flexsdm/pull/390)
+-   mean change in `sdm_predict` to handle 0 weight value for weighted mean by @sjevelazco in [391](https://github.com/sjevelazco/flexsdm/pull/391)
+-   documentation of `occfilt_select` was improved by @sjevelazco in [392](https://github.com/sjevelazco/flexsdm/pull/392)
+-   It is possible to tune ntree hyperparameter of random forest algorithm by @sjevelazco in [393](https://github.com/sjevelazco/flexsdm/pull/393)
+-   `correct_colinvar` can be used with species points by @sjevelazco in [394](https://github.com/sjevelazco/flexsdm/pull/394)
+-   Update pkg_citation.md by @mrose048 in [396](https://github.com/sjevelazco/flexsdm/pull/396)
+-   `sdm_varimp` was added and tested by @mrose048 and @sjevelazco in [399](https://github.com/sjevelazco/flexsdm/pull/399)
+-   min change in warning message `calib_area` by @sjevelazco in [400](https://github.com/sjevelazco/flexsdm/pull/400)
+
+# flexsdm 1.3.4-5
 
 -   min change in `interp` function by @sjevelazco in [362](https://github.com/sjevelazco/flexsdm/pull/362)
 -   min change in `occfilt_geo` by @sjevelazco in [364](https://github.com/sjevelazco/flexsdm/pull/364)
 -   Rlof was removed from dependencies by @sjevelazco in [365](https://github.com/sjevelazco/flexsdm/pull/365)
 -   min change in `occfilt_geo` by @sjevelazco in [370](https://github.com/sjevelazco/flexsdm/pull/370)
 -   new argument in `occfilt_geo` by @sjevelazco in [371](https://github.com/sjevelazco/flexsdm/pull/371)
--   `esm_` functions were improved improvements by @sjevelazco in [373](https://github.com/sjevelazco/flexsdm/pull/372) & [373](https://github.com/sjevelazco/flexsdm/pull/373)
+-   `esm_` functions were improved by @sjevelazco in [373](https://github.com/sjevelazco/flexsdm/pull/372) & [373](https://github.com/sjevelazco/flexsdm/pull/373)
 -   geographically constraint cell of env_var argument in `correct_colinvar` by @sjevelazco in [374](https://github.com/sjevelazco/flexsdm/pull/374)
 -   new argument in `correct_colinvar` by @sjevelazco in [375](https://github.com/sjevelazco/flexsdm/pull/375)
 -   `calib_area` was sped up by @sjevelazco in [377](https://github.com/sjevelazco/flexsdm/pull/377)
 -   `correct_colivar` was fixed and improved, FA method by @sjevelazco in [383](https://github.com/sjevelazco/flexsdm/pull/383)
 -   `occfilt_geo` 'defined' method was fixed by @sjevelazco in [384](https://github.com/sjevelazco/flexsdm/pull/384)
 
-# flexsdm 1.3.5
+# flexsdm 1.3.4
 
 -   it is possible to restrict the cell used to perform collinearity reduction analysis to a geographical area smaller than the full extent of environmental variables in [`correct_clinvar()`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.html)
 -   esm\_ family function was improved and debugged
