@@ -468,7 +468,9 @@ correct_colinvar <- function(env_layer,
 
 
     # Standardize raster values
-    env_layer <- terra::scale(env_layer, center = means, scale = stds)
+    if(!based_on_points){
+      env_layer <- terra::scale(env_layer, center = means, scale = stds)
+    }
     vnmes <- names(means)
 
     if(based_on_points){
@@ -522,10 +524,12 @@ correct_colinvar <- function(env_layer,
     if (restric_pca_proj) {
       env_layer <- terra::predict(env_layer, p)
     } else {
-      env_layer_original <- terra::scale(env_layer_original,
-        center = means,
-        scale = stds
-      )
+      if(!based_on_points){
+        env_layer_original <- terra::scale(env_layer_original,
+                                           center = means,
+                                           scale = stds
+        )
+      }
       env_layer <- terra::predict(env_layer_original, p)
     }
 
@@ -562,7 +566,9 @@ correct_colinvar <- function(env_layer,
             terra::mask(., restric_to_region)
         }
 
-        scen <- terra::scale(scen, center = means, scale = stds)
+        if(!based_on_points){
+           scen <- terra::scale(scen, center = means, scale = stds)
+        }
         scen <- terra::predict(scen, p)
         terra::writeRaster(
           scen,
