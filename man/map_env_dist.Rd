@@ -51,8 +51,7 @@ sp_pa_2 <- sdm_extract(
 )
 sp_pa_2
 
-# Measure degree of extrapolation based on Mahalanobis and
-# for a projection area based on a SpatRaster object
+# Measure environmental distance between presences and projection data
 envdist <-
   map_env_dist(
     training_data = sp_pa_2,
