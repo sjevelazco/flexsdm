@@ -11,6 +11,7 @@
 #' @return
 #' A SpatRaster or tibble object with the nearest environmental distance between presences and projection data.
 #' So far only the Domain algorithm (based on the Gower distance) has been implemented.
+#'
 #' @export
 #'
 #' @examples

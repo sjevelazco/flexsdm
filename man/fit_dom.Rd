@@ -64,6 +64,7 @@ This function fits and validates Domain models. The Domain model is a simple mod
 calculate environmental similarity between the presence data and test data.
 Gower range of values area based on presences data. Gower distance are transformed to max(0, 1 - Gower).
 This involves subtracting the distance from 1 and then ensuring the result is not negative (clamping it at zero).
+Gower distance is calculated with \code{\link{map_env_dist}} funcion
 
 This function fit and validate Domain models. The Domain model is a simple model that uses the Gower distance to calculate
 the similarity between the presences training and presence-absences test data.

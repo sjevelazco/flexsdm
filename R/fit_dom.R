@@ -31,6 +31,7 @@
 #' calculate environmental similarity between the presence data and test data.
 #' Gower range of values area based on presences data. Gower distance are transformed to max(0, 1 - Gower).
 #' This involves subtracting the distance from 1 and then ensuring the result is not negative (clamping it at zero).
+#' Gower distance is calculated with \code{\link{map_env_dist}} funcion
 #'
 #'
 #' @return
