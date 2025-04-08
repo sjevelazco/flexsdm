@@ -27,7 +27,7 @@
 #' @export
 #'
 #' @importFrom dplyr slice_sample bind_rows
-#' @importFrom ggplot2 ggplot geom_point aes scale_color_gradientn labs geom_raster scale_fill_gradientn coord_equal theme
+#' @importFrom ggplot2 ggplot geom_point aes scale_color_gradientn labs geom_raster scale_fill_gradientn scale_fill_manual coord_equal theme
 #' @importFrom patchwork wrap_plots plot_layout
 #' @importFrom terra is.factor as.data.frame spatSample
 #' @importFrom utils combn
@@ -331,7 +331,14 @@ p_extra <- function(training_data,
     p_list[[i]] <-
       ggplot2::ggplot(dfplot, ggplot2::aes(v1, v2)) +
       ggplot2::geom_point(ggplot2::aes(col = val), alpha = alpha_gradient) +
-      ggplot2::scale_color_gradientn(colors = color_gradient) +
+      {
+        if (class(dfplot[, "val"]) %in% c("integer", "numeric")) {
+          ggplot2::scale_color_gradientn(colors = color_gradient)
+        } else {
+          ggplot2::scale_color_manual(values = color_gradient)
+        }
+      } +
+      # ggplot2::scale_color_gradientn(colors = color_gradient) +
       ggplot2::geom_point(
         data = training_data2,
         ggplot2::aes(v1, v2, shape = pr_ab),
@@ -349,7 +356,14 @@ p_extra <- function(training_data,
     names(rext) <- c("x", "y", "Value")
     p_list[[i + 1]] <- ggplot2::ggplot(rext, ggplot2::aes(x, y)) +
       ggplot2::geom_raster(ggplot2::aes(fill = Value)) +
-      ggplot2::scale_fill_gradientn(colors = color_gradient) +
+      {
+        if (class(rext[, "Value"]) %in% c("integer", "numeric")) {
+          ggplot2::scale_fill_gradientn(colors = color_gradient)
+        } else {
+          ggplot2::scale_fill_manual(values = color_gradient)
+        }
+      } +
+      # ggplot2::scale_fill_gradientn(colors = color_gradient) +
       ggplot2::geom_point(
         data = training_data,
         ggplot2::aes(x, y, shape = pr_ab),
