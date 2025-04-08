@@ -2,7 +2,7 @@
 % Please edit documentation in R/map_env_dist.R
 \name{map_env_dist}
 \alias{map_env_dist}
-\title{Predict environmental distance}
+\title{Calculate environmental distance between presences and projection data}
 \usage{
 map_env_dist(training_data, projection_data, metric = "domain")
 }
@@ -19,10 +19,10 @@ Otherwise, as SpatRaster object.}
 }
 \value{
 A SpatRaster or tibble object with the nearest environmental distance between presences and projection data.
-So far only the Domain algorithm (based on the Gower distance) has been implemented.
+So far only the Domain algorithm (based on the Gower distance; Carpenter et al., 1993) has been implemented.
 }
 \description{
-Predict environmental distance
+Calculate environmental distance between presences and projection data
 }
 \examples{
 \dontrun{
@@ -74,5 +74,10 @@ p_extra(
   color_gradient = c("#000033", "#1400FF", "#C729D6", "#FF9C63", "#FFFF60")
 )
 
+}
+}
+\references{
+\itemize{
+\item Carpenter, G., Gillison, A.N., Winter, J., 1993. DOMAIN: a flexible modelling procedure for mapping potential distributions of plants and animals. Biodiversity & Conservation 2, 667–680
 }
 }

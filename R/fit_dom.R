@@ -28,10 +28,10 @@
 #'
 #' @details
 #' This function fits and validates Domain models. The Domain model is a simple model that uses the Gower distance to
-#' calculate environmental similarity between the presence data and test data.
+#' calculate environmental similarity between the presence data and test data (Carpenter et al., 1993).
 #' Gower range of values area based on presences data. Gower distance are transformed to max(0, 1 - Gower).
 #' This involves subtracting the distance from 1 and then ensuring the result is not negative (clamping it at zero).
-#' Gower distance is calculated with \code{\link{map_env_dist}} funcion
+#' Gower distance is calculated with \code{\link{map_env_dist}} function
 #'
 #'
 #' @return
@@ -53,6 +53,11 @@
 #' \code{\link{fit_max}}, \code{\link{fit_net}}, \code{\link{fit_raf}}, and \code{\link{fit_svm}}.
 #'
 #' @export
+#'
+#' @references
+#' \itemize{
+#' \item Carpenter, G., Gillison, A.N., Winter, J., 1993. DOMAIN: a flexible modelling procedure for mapping potential distributions of plants and animals. Biodiversity & Conservation 2, 667–680
+#' }
 #'
 #' @importFrom dplyr bind_rows select all_of starts_with filter reframe across everything mutate tibble group_by summarise relocate left_join
 #' @importFrom stats complete.cases formula na.exclude sd

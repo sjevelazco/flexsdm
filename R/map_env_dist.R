@@ -1,4 +1,4 @@
-#' Predict environmental distance
+#' Calculate environmental distance between presences and projection data
 #'
 #' @param training_data data.frame or tibble with environmental conditions of
 #' presence used for constructing models
@@ -10,9 +10,14 @@
 #'
 #' @return
 #' A SpatRaster or tibble object with the nearest environmental distance between presences and projection data.
-#' So far only the Domain algorithm (based on the Gower distance) has been implemented.
+#' So far only the Domain algorithm (based on the Gower distance; Carpenter et al., 1993) has been implemented.
 #'
 #' @export
+#'
+#' @references
+#' \itemize{
+#' \item Carpenter, G., Gillison, A.N., Winter, J., 1993. DOMAIN: a flexible modelling procedure for mapping potential distributions of plants and animals. Biodiversity & Conservation 2, 667–680
+#' }
 #'
 #' @examples
 #' \dontrun{
