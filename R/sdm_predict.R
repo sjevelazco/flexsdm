@@ -250,6 +250,12 @@ sdm_predict <-
       }) %>%
         tolower() %>%
         gsub(".formula", "", .)
+
+      # Detect models based on distance
+      di <- which(sapply(m, names) == "domain")
+      if(length(di) > 0){
+        clss[di] <- "domain"
+      }
     }
 
     #### Ensemble predictions
@@ -264,6 +270,12 @@ sdm_predict <-
       }) %>%
         tolower() %>%
         gsub(".formula", "", .)
+
+      # # Detect models based on distance
+      # di <- which(sapply(m, names) == "domain")
+      # if(length(di) > 0){
+      #   clss[di] <- "domain"
+      # }
     }
 
     #### ESM predictions
@@ -640,6 +652,19 @@ sdm_predict <-
           model_c[[i]][rowset] <- r[rowset]
         }
       }
+
+      #### domain class ####
+      wm <- which(clss == "domain")
+      if (length(wm) > 0) {
+        wm <- names(wm)
+        for (i in wm) {
+          r <- pred[[!terra::is.factor(pred)]][[1]]
+          r[!is.na(r)] <- NA
+            r[as.numeric(rownames(pred_df))] <-
+              map_env_dist(training_data = m[[i]]$domain, projection_data = pred_df, metric = "domain")
+          model_c[[i]][rowset] <- r[rowset]
+        }
+      }
     }
 
     rm(pred_df)
@@ -653,9 +678,11 @@ sdm_predict <-
         "maxnet",
         "nnet",
         "randomforest",
-        "ksvm"
+        "ksvm",
+        "domain"
+
       ),
-      names = c("gam", "gau", "glm", "gbm", "max", "net", "raf", "svm")
+      names = c("gam", "gau", "glm", "gbm", "max", "net", "raf", "svm", "dom")
     )
 
     names(model_c) <-
@@ -791,7 +818,8 @@ sdm_predict <-
           lapply(thr_df[[i]]$thr_value, function(x) {
             model_c[[i]] >= x
           }) %>% terra::rast()
-        names(model_b[[i]]) <- names(thr_df[[i]]$thr_value)
+        # names(model_b[[i]]) <- names(thr_df[[i]]$thr_value)
+        names(model_b[[i]]) <- thr_df[[i]]$threshold
       }
 
       names(model_b) <- names(model_c)
