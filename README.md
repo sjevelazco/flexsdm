@@ -37,6 +37,7 @@ Set tools that prepare modeling input data (e.g., species occurrences thinning, 
 -   `occfilt_env()` Perform environmental filtering on species occurrences
 -   `occfilt_geo()` Perform geographical filtering on species occurrences
 -   `occfilt_select()` Select filtered occurrences when it was tested with different filtering values
+-   `map_env_dist()` Calculate environmental distance between presences and projection data
 
 ### 2. Modeling functions
 
