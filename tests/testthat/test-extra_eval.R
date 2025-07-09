@@ -1,5 +1,4 @@
 require(dplyr)
-require(dplyr)
 require(terra)
 
 data(spp)

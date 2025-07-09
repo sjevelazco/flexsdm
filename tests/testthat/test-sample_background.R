@@ -216,7 +216,7 @@ test_that("sample_background biased method", {
     method = "biased",
     rlayer = regions,
     rbias = occ_density,
-    maskval = c(1, 2)
+    maskval = c("CRR", "SNR")
   )
   expect_equal(class(bg)[1], "tbl_df")
   rm(bg)
@@ -274,3 +274,4 @@ test_that("sample_background misuse of argument", {
     )
   )
 })
+
