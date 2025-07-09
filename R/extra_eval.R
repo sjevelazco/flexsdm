@@ -293,8 +293,14 @@ extra_eval <-
     # Transform raster to df
     env_calib2 <-
       terra::as.data.frame(training_data, xy = FALSE, na.rm = TRUE)
-    env_proj2 <-
-      terra::as.data.frame(projection_data, xy = FALSE, na.rm = TRUE)
+    if("SpatRaster" == class(projection_data)){
+      env_proj2 <-
+        terra::as.data.frame(projection_data, xy = FALSE, na.rm = TRUE)
+    } else {
+      env_proj2 <- projection_data
+      # names(env_proj2) <- names(projection_data)
+    }
+
 
     # save coordinates and cell number
     if (any("SpatRaster" == class(projection_data))) {
@@ -403,7 +409,7 @@ extra_eval <-
         data.frame(distance = extra)
     } else {
       env_proj2 <-
-        data.frame(distance = extra, env_proj2)
+        cbind(data.frame(distance = extra), env_proj2)
     }
     rm(extra)
 
@@ -430,11 +436,9 @@ extra_eval <-
 
     # Standardization of projection points
     env_proj2 <-
-      data.frame(
-        extrapolation = env_proj2$distance / base_stand_distance * 100,
-        env_proj2
-      ) %>% dplyr::select(-distance)
-
+      data.frame(extrapolation = env_proj2$distance / base_stand_distance * 100) %>%
+      cbind(., env_proj2) %>%
+      dplyr::select(-distance)
 
     # Result
     if (any("SpatRaster" == class(projection_data))) {
@@ -460,7 +464,7 @@ extra_eval <-
         extraraster <- c(extraraster, univar_comb_r)
       }
     } else {
-      for (i in names(s_center)) {
+      for (i in 2:length(s_center)) { # process from the 2nd column to skip extrapolation column
         env_proj2[i] <- env_proj2[i] * s_scale[i] + s_center[i]
       }
       # Univariate and combinatorial extrapolation
