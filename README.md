@@ -37,6 +37,7 @@ Set tools that prepare modeling input data (e.g., species occurrences thinning, 
 -   `occfilt_env()` Perform environmental filtering on species occurrences
 -   `occfilt_geo()` Perform geographical filtering on species occurrences
 -   `occfilt_select()` Select filtered occurrences when it was tested with different filtering values
+-   `map_env_dist()` Calculate environmental distance between presences and projection data
 
 ### 2. Modeling functions
 
@@ -48,6 +49,7 @@ It includes functions related to modeling construction and validation. Several o
 
 #### `fit_*` functions family
 
+-   `fit_dom()` Fit and validate Domain models
 -   `fit_gam()` Fit and validate Generalized Additive Models
 -   `fit_gau()` Fit and validate Gaussian Process models
 -   `fit_gbm()` Fit and validate Generalized Boosted Regression models

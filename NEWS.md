@@ -2,6 +2,9 @@
 
 -   `sample_pseudoabs` it was implemented a sample approach based on environmental K-means [#410](https://github.com/sjevelazco/flexsdm/pull/410)
 -   `sample_pseudoabs` K-means step was improved for the geo_env_km_const approach [#410](https://github.com/sjevelazco/flexsdm/pull/410)
+-   `p_extra` Now can handle binary maps to plot suitability or extrapolation values in the geographical or environmental space [418](https://github.com/sjevelazco/flexsdm/pull/418) 
+-   `map_env_dist` This new function calculates environmental distance between presences and projection data. Only the nearest Gower distace was implemented (Domain algorithm) [419](https://github.com/sjevelazco/flexsdm/pull/419/commits/8345526cc87e50d3194030f0ef24f9202bc43a7d) 
+-   `fit_dom` This is a new function to fit and validate Domain algorithm
 
 # flexsdm 1.3.6
 

@@ -37,7 +37,8 @@ Imports:
     methods,
     utils,
     ggplot2,
-    patchwork
+    patchwork,
+    Rcpp
 Description: Assist in the construction of flexible species distribution workflow
     by incorporating comprehensive tools for data preparation, model fitting,
     prediction, evaluation, and model post-processing.
@@ -53,3 +54,5 @@ Suggests:
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
+LinkingTo: 
+    Rcpp
