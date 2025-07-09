@@ -247,7 +247,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
   rm(filt)
   rm(env)
 
-  message("Number of unfiltered records: ", nrow(data), "\n")
+  message("Number of unfiltered records: ", nrow(data0), "\n")
 
 
   occfilt_geo_0 <- function(data, da, x, y, env_layer, method, reps) {
