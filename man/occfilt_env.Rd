@@ -48,7 +48,7 @@ This function uses an approach adapted from the approach proposed by Varela et a
  between 2-5 if more than ten variables are used.
 
  Environmental filters are sensitive to the number of bins. A procedure for selecting the number
- of bins was used by Velazco et al. (2020) and it is implemented in \code{\link{occfilt_geo}}.
+ of bins was used by Velazco et al. (2020) and it is implemented in \code{\link{occfilt_select}}.
 }
 \examples{
 \dontrun{
