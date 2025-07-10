@@ -110,7 +110,7 @@ the projection used is WGS84 ("+proj=longlat +datum=WGS84"). Default "+proj=long
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>If one value is used to filter occurrence funtion will return a tibble object with filtered data. If several
+    <p>If one value is used to filter occurrence function will return a tibble object with filtered data. If several
 values are used to filter occurrences, the function will return a list of tibbles with filtered data.</p>
     </div>
     <div class="section level2">
@@ -131,6 +131,9 @@ used for filtering can be adjusted to represent a larger grid size.</p></li>
 </ul><p>The "thin" function from spThin package is used to filter data
 (Aiello-Lammens et al., 2015) with the following argument settings reps = 20, write.files = FALSE,
 locs.thinned.list.return = TRUE, and write.log.file = FALSE.</p>
+<p>In the case that more than one value was used in some of the methods, it is possible to use
+use <code><a href="occfilt_select.html">occfilt_select</a></code> function to automatically select a filtered database based on
+number of records and spatial autocorrelation.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -299,7 +302,7 @@ in ecological niche models. Ecography, 38(5), 541-545. https://doi.org/10.1111/e
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

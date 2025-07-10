@@ -43,7 +43,7 @@ the projection used is WGS84 ("+proj=longlat +datum=WGS84"). Default "+proj=long
 \item{reps}{integer. Number of times to repeat the thinning process. Default 20}
 }
 \value{
-If one value is used to filter occurrence funtion will return a tibble object with filtered data. If several
+If one value is used to filter occurrence function will return a tibble object with filtered data. If several
 values are used to filter occurrences, the function will return a list of tibbles with filtered data.
 }
 \description{
@@ -70,6 +70,10 @@ used for filtering can be adjusted to represent a larger grid size.
 The "thin" function from spThin package is used to filter data
 (Aiello-Lammens et al., 2015) with the following argument settings reps = 20, write.files = FALSE,
 locs.thinned.list.return = TRUE, and write.log.file = FALSE.
+
+In the case that more than one value was used in some of the methods, it is possible to use
+use \code{\link{occfilt_select}} function to automatically select a filtered database based on
+number of records and spatial autocorrelation.
 }
 \examples{
 \dontrun{
