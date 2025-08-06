@@ -60,7 +60,7 @@ test_that("test p_pdp with continuous and factor and gam", {
     colorl = c("#CC00FF", "#CCFF00")
   )
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
-  expect_equal(nrow(asdf$data), 50)
+  expect_equal(nrow(asdf$data), 52)
 
   asdf <- p_pdp(
     model = m_$model, training_data = abies2, projection_data = somevar,
@@ -103,7 +103,7 @@ test_that("test p_pdp with continuous and factor and gau", {
     colorl = c("#CC00FF", "#CCFF00")
   )
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
-  expect_equal(nrow(asdf$data), 50)
+  expect_equal(nrow(asdf$data), 52)
 
   asdf <- p_pdp(
     model = m_$model, training_data = abies2, projection_data = somevar,
@@ -146,7 +146,7 @@ test_that("test p_pdp with continuous and factor and glm", {
     colorl = c("#CC00FF", "#CCFF00")
   )
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
-  expect_equal(nrow(asdf$data), 50)
+  expect_equal(nrow(asdf$data), 52)
 
   asdf <- p_pdp(
     model = m_$model, training_data = abies2, projection_data = somevar,
@@ -190,7 +190,7 @@ test_that("test p_pdp with continuous and factor and gbm", {
     colorl = c("#CC00FF", "#CCFF00")
   )
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
-  expect_equal(nrow(asdf$data), 50)
+  expect_equal(nrow(asdf$data), 52)
 
   asdf <- p_pdp(
     model = m_$model, training_data = abies2, projection_data = somevar,
@@ -234,7 +234,7 @@ test_that("test p_pdp with continuous and factor and max", {
     colorl = c("#CC00FF", "#CCFF00")
   )
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
-  expect_equal(nrow(asdf$data), 50)
+  expect_equal(nrow(asdf$data), 52)
 
   asdf <- p_pdp(
     model = m_$model, training_data = abies2, projection_data = somevar,
@@ -278,7 +278,7 @@ test_that("test p_pdp with continuous and factor and net", {
     colorl = c("#CC00FF", "#CCFF00")
   )
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
-  expect_equal(nrow(asdf$data), 50)
+  expect_equal(nrow(asdf$data), 52)
 
   asdf <- p_pdp(
     model = m_$model, training_data = abies2, projection_data = somevar,
@@ -322,7 +322,7 @@ test_that("test p_pdp with continuous and factor and raf", {
     colorl = c("#CC00FF", "#CCFF00")
   )
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
-  expect_equal(nrow(asdf$data), 50)
+  expect_equal(nrow(asdf$data), 52)
 
   asdf <- p_pdp(
     model = m_$model, training_data = abies2, projection_data = somevar,
@@ -366,7 +366,7 @@ test_that("test p_pdp with continuous and factor and svm", {
     colorl = c("#CC00FF", "#CCFF00")
   )
   expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
-  expect_equal(nrow(asdf$data), 50)
+  expect_equal(nrow(asdf$data), 52)
 
   asdf <- p_pdp(
     model = m_$model, training_data = abies2, projection_data = somevar,

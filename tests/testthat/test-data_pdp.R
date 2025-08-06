@@ -71,7 +71,7 @@ test_that("test data_pdp", {
     clamping = FALSE
   )
 
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
 
   df <- data_pdp(
     model = svm_t1$model,
@@ -145,7 +145,7 @@ test_that("test pdp with gam", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
 
   # without residuals
@@ -174,7 +174,7 @@ test_that("test pdp with gau", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
 
   # without residuals
@@ -203,7 +203,7 @@ test_that("test pdp with gbm", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
 
   # without residuals
@@ -232,7 +232,7 @@ test_that("test pdp with glm", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
 
   # without residuals
@@ -261,7 +261,7 @@ test_that("test pdp with max", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
 
   # without residuals
@@ -290,7 +290,7 @@ test_that("test pdp with net", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
   expect_error(data_pdp(
     model = m_$model,
@@ -328,7 +328,7 @@ test_that("test pdp with raf", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
 
   # without residuals
@@ -357,7 +357,7 @@ test_that("test pdp with svm", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
 
   # without residuals
@@ -387,7 +387,7 @@ test_that("test pdp with factors", {
     training_data = abies2,
     clamping = FALSE
   )
-  expect_equal(nrow(df$pdpdata), 50)
+  expect_equal(nrow(df$pdpdata), 52)
   expect_equal(length(df), 2)
 
   # without residuals
