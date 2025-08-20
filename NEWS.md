@@ -1,6 +1,6 @@
 # flexsdm 1.3.x
 
-- `p_pdp` was improved to depict exactly training range values when projection data are used [#429](https://github.com/sjevelazco/flexsdm/pull/429)
+-   `p_pdp` was improved to depict exactly training range values when projection data are used [#429](https://github.com/sjevelazco/flexsdm/pull/429)
 -   `sample_pseudoabs` it was implemented a sample approach based on environmental K-means [#410](https://github.com/sjevelazco/flexsdm/pull/410)
 -   `sample_pseudoabs` K-means step was improved for the geo_env_km_const approach [#410](https://github.com/sjevelazco/flexsdm/pull/410)
 -   `p_extra` Now can handle binary maps to plot suitability or extrapolation values in the geographical or environmental space [418](https://github.com/sjevelazco/flexsdm/pull/418)

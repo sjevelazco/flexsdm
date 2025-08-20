@@ -3,9 +3,34 @@ title: "Where flexsdm was cited?"
 output: html_document
 ---
 
-Here we provide a list published peer-review papers that cited *flexsdm* package. Some of the following research used flexsdm for the entire modeling protocols, others used a couple of flexsdm functions, and others just mentioned our package.
+Here we provide a list of published peer-reviewed papers that cited *flexsdm* package. Some of the following research used flexsdm for the entire modeling protocol, others used a couple of flexsdm functions, and others just mentioned our package.
+
+Cite our package as
+
+Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). flexsdm: An R package for supporting a comprehensive and flexible species distribution modelling workflow. Methods in Ecology and Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
+
+``` bib
+@article{velazco_flexsdm_2022,
+    title = {flexsdm: An r package for supporting a comprehensive and flexible species distribution modelling workflow},
+    volume = {13},
+    rights = {© 2022 The Authors. Methods in Ecology and Evolution published by John Wiley \& Sons Ltd on behalf of British Ecological Society.},
+    issn = {2041-210X},
+    url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13874},
+    doi = {10.1111/2041-210X.13874},
+    pages = {1661--1669},
+    number = {8},
+    journaltitle = {Methods in Ecology and Evolution},
+    author = {Velazco, Santiago José Elías and Rose, Miranda Brooke and de Andrade, André Felipe Alves and Minoli, Ignacio and Franklin, Janet},
+    date = {2022},
+    note = {\_eprint: https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.13874}
+}
+```
 
 **Thanks to the authors for citing our package.**
+
+```{=html}
+<p><span class="__dimensions_badge_embed__" data-doi="10.1111/2041-210X.13874" data-legend="always" data-style="medium_circle"></span><script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
+```
 
 ------------------------------------------------------------------------
 
