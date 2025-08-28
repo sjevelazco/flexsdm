@@ -1,5 +1,5 @@
 ---
-title: "Where flexsdm was cited?"
+title: 'Where flexsdm was cited?'
 output: html_document
 ---
 
@@ -31,6 +31,7 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 ```{=html}
 <p><span class="__dimensions_badge_embed__" data-doi="10.1111/2041-210X.13874" data-legend="always" data-style="medium_circle"></span><script async src="https://badge.dimensions.ai/badge.js" charset="utf-8"></script>
 ```
+
 
 ------------------------------------------------------------------------
 

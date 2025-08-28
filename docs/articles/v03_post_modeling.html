@@ -41,9 +41,11 @@
     <li><a class="dropdown-item" href="../articles/v04_Red_fir_example.html">4. An example with Red Fir</a></li>
     <li><a class="dropdown-item" href="../articles/v05_Rare_species_example.html">5. Modeling a rare species</a></li>
     <li><a class="dropdown-item" href="../articles/v06_Extrapolation_example.html">6. Tools to explore extrapolation in SDMs</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/pkg_citation.html">Citations</a></li>
   </ul>
 </li>
-<li class="nav-item"><a class="nav-link" href="../pkg_citation.html">Package citations</a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/pkg_citation.html">Citations</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html"><span class="fa fa-newspaper-o"></span> News</a></li>
 <li class="nav-item"><a class="nav-link" href="https://sjevelazco.github.io/flexsdm" aria-label="GitHub">GitHub</a></li>
       </ul>
@@ -128,7 +130,7 @@ patterns</p></li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.7.83</span></span>
+<span><span class="co">#&gt; terra 1.8.60</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'terra'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
@@ -322,7 +324,7 @@ and/or binary predictions.</p>
 <span><span class="va">ind_p</span></span>
 <span><span class="co">#&gt; $glm</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -354,7 +356,7 @@ and/or binary predictions.</p>
 <span><span class="va">list_p</span></span>
 <span><span class="co">#&gt; $glm</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -367,7 +369,7 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $raf</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -380,7 +382,7 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $gbm</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -412,7 +414,7 @@ and/or binary predictions.</p>
 <span><span class="va">ensemble_p</span></span>
 <span><span class="co">#&gt; $meansup</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -444,7 +446,7 @@ and/or binary predictions.</p>
 <span><span class="va">small_p</span></span>
 <span><span class="co">#&gt; $esm_gam</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -648,7 +650,7 @@ interpolated values of 0.9, 0.8, 0.7…0.1</p>
 <span><span class="co"># Layers in the int SpatRaster</span></span>
 <span><span class="va">int</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 11  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 11  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -776,7 +778,7 @@ raster layer.</p>
 <span><span class="co"># Explore the object. This method assumes that spatial structure can partially explain species distribution (Bahn &amp; Mcgill, 2007). Therefore, the result are two raster layers containing the latitude and longitude of pixels, respectively. This method could be used for all species set that share the same study area region.</span></span>
 <span><span class="va">m_xy</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -802,7 +804,7 @@ raster layer.</p>
 <span><span class="co"># Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species.</span></span>
 <span><span class="va">m_cml</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 558, 394, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 558, 394, 1  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
@@ -970,7 +972,7 @@ predicted suitability.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

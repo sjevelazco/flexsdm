@@ -18,26 +18,26 @@ navbar:
       href: reference/index.html
     - text: "Articles"
       menu:
-      -  text: "1. Overview of Pre-modeling functions"
-         href: articles/v01_pre_modeling.html
-      -  text: "2. Overview of Modeling functions"
-         href: articles/v02_modeling.html
-      -  text: "3. Overview of Post-modeling functions"
-         href: articles/v03_post_modeling.html
-      -  text: "4. An example with Red Fir"
-         href: articles/v04_Red_fir_example.html
-      -  text: "5. Modeling a rare species"
-         href: articles/v05_Rare_species_example.html
-      -  text: "6. Tools to explore extrapolation in SDMs"
-         href: articles/v06_Extrapolation_example.html
-    - text: "Package citations"
-      href: pkg_citation.html
+      - text: "1. Overview of Pre-modeling functions"
+        href: articles/v01_pre_modeling.html
+      - text: "2. Overview of Modeling functions"
+        href: articles/v02_modeling.html
+      - text: "3. Overview of Post-modeling functions"
+        href: articles/v03_post_modeling.html
+      - text: "4. An example with Red Fir"
+        href: articles/v04_Red_fir_example.html
+      - text: "5. Modeling a rare species"
+        href: articles/v05_Rare_species_example.html
+      - text: "6. Tools to explore extrapolation in SDMs"
+        href: articles/v06_Extrapolation_example.html
+      - text: "-------"
+      - text: "Citations"
+        href: articles/pkg_citation.html
+    - text: "Citations"
+      href: articles/pkg_citation.html
     - text: "News"
       icon: fa-newspaper-o
       href: news/index.html
     - text: GitHub
       href: https://sjevelazco.github.io/flexsdm
       aria-label: GitHub
-
-components:
-    home: ~
