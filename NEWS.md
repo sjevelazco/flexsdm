@@ -1,5 +1,6 @@
 # flexsdm 1.3.x
 
+-   fit_, tune_ and fit_ensemble functions now return performance table for each partition and replicate (performance_part) [#432](https://github.com/sjevelazco/flexsdm/pull/432)
 -   `p_pdp` was improved to depict exactly training range values when projection data are used [#429](https://github.com/sjevelazco/flexsdm/pull/429)
 -   `sample_pseudoabs` it was implemented a sample approach based on environmental K-means [#410](https://github.com/sjevelazco/flexsdm/pull/410)
 -   `sample_pseudoabs` K-means step was improved for the geo_env_km_const approach [#410](https://github.com/sjevelazco/flexsdm/pull/410)
