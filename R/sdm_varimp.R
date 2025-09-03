@@ -222,7 +222,7 @@ sdm_varimp <- function(models,
     ensembles <- models
     models <- NULL
     esm <- NULL
-  } else if (all(names(models) %in% c("esm_model", "predictors", "performance"))) {
+  } else if (all(names(models) %in% c("esm_model", "predictors", "performance", "performance_part"))) {
     message("Calculating variable importance for ensemble of small models")
     esm <- models
     models <- NULL
