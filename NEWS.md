@@ -1,18 +1,18 @@
-# flexsdm 1.3.x
+# flexsdm 1.3.8
 
--   fit_, tune_ and fit_ensemble functions now return performance table for each partition and replicate (performance_part) [#432](https://github.com/sjevelazco/flexsdm/pull/432)
--   `p_pdp` was improved to depict exactly training range values when projection data are used [#429](https://github.com/sjevelazco/flexsdm/pull/429)
--   `sample_pseudoabs` it was implemented a sample approach based on environmental K-means [#410](https://github.com/sjevelazco/flexsdm/pull/410)
--   `sample_pseudoabs` K-means step was improved for the geo_env_km_const approach [#410](https://github.com/sjevelazco/flexsdm/pull/410)
--   `p_extra` Now can handle binary maps to plot suitability or extrapolation values in the geographical or environmental space [418](https://github.com/sjevelazco/flexsdm/pull/418)
--   `map_env_dist` This new function calculates environmental distance between presences and projection data. Only the nearest Gower distace was implemented (Domain algorithm) [419](https://github.com/sjevelazco/flexsdm/pull/419/commits/8345526cc87e50d3194030f0ef24f9202bc43a7d)
--   `fit_dom` This is a new function to fit and validate Domain algorithm
+-   [`fit_`](https://sjevelazco.github.io/flexsdm/index.html#fit_-functions-family), [tune\_](https://sjevelazco.github.io/flexsdm/index.html#tune_-functions-family), [esm\_](https://sjevelazco.github.io/flexsdm/index.html#esm_-functions-family) and `fit_ensemble` functions now return a performance table for each partition and replicate (performance_part), by @sjevelazco [#432](https://github.com/sjevelazco/flexsdm/pull/432) and [434](https://github.com/sjevelazco/flexsdm/pull/434)
+-   `p_pdp` was improved to depict exactly training range values when projection data are used, by @sjevelazco [#429](https://github.com/sjevelazco/flexsdm/pull/429)
+-   `sample_pseudoabs` a sample approach was implemented based on environmental K-means, by @sjevelazco [#410](https://github.com/sjevelazco/flexsdm/pull/410)
+-   `sample_pseudoabs` K-means step was improved for the geo_env_km_const approach, by @sjevelazco [#410](https://github.com/sjevelazco/flexsdm/pull/410)
+-   `p_extra` Now can handle binary maps to plot suitability or extrapolation values in the geographical or environmental space, by @sjevelazco [418](https://github.com/sjevelazco/flexsdm/pull/418)
+-   `map_env_dist` This new function calculates environmental distance between presences and projection data. Only the nearest Gower distance was implemented (Domain algorithm), by @sjevelazco [419](https://github.com/sjevelazco/flexsdm/pull/419/commits/8345526cc87e50d3194030f0ef24f9202bc43a7d)
+-   `fit_dom` This is a new function to fit and validate the Domain algorithm, by @sjevelazco
 
 # flexsdm 1.3.6
 
 -   `occfilt_geo` adapted to test different values for the three methods by @sjevelazco in [386](https://github.com/sjevelazco/flexsdm/pull/386)
 -   `occfilt_env` now can filter with several bins by @sjevelazco in [388](https://github.com/sjevelazco/flexsdm/pull/388)
--   `occfilt_select` was created and test protocol written by @sjevelazco in [389](https://github.com/sjevelazco/flexsdm/pull/389)
+-   `occfilt_select` was created and a test protocol was written by @sjevelazco in [389](https://github.com/sjevelazco/flexsdm/pull/389)
 -   `occfit_select` included in vignette and website by @sjevelazco in [390](https://github.com/sjevelazco/flexsdm/pull/390)
 -   mean change in `sdm_predict` to handle 0 weight value for weighted mean by @sjevelazco in [391](https://github.com/sjevelazco/flexsdm/pull/391)
 -   documentation of `occfilt_select` was improved by @sjevelazco in [392](https://github.com/sjevelazco/flexsdm/pull/392)
