@@ -33,6 +33,7 @@
 #' \item thr_metric: Threshold and metric specified in the function.
 #' \item predictors: A tibble of quantitative (column names with c) and qualitative (column names with f) variables used in each models.
 #' \item performance: A tibble with performance metrics (see \code{\link{sdm_eval}}).
+#' \item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 #' Those metrics that are threshold-dependent are calculated based on the threshold specified in the argument.
 #' }
 #'
@@ -102,6 +103,9 @@
 #'   thr_model = "max_sens_spec",
 #'   metric = "TSS"
 #' )
+#' 
+#' mensemble
+#' 
 #' }
 fit_ensemble <-
   function(models,
@@ -248,6 +252,8 @@ fit_ensemble <-
 
     #### Objects to store outputs
     eval_partial_list <- list()
+    eval_partial_list_2 <- as.list(ens_method)
+    names(eval_partial_list_2) <- ens_method
     threshold <- ensemble <- as.list(rep(NA, length(ens_method)))
     names(threshold) <- names(ensemble) <- ens_method
 
@@ -290,6 +296,8 @@ fit_ensemble <-
       eval_partial <- eval_partial_list %>%
         dplyr::bind_rows(., .id = "replica")
 
+      eval_partial_list_2[[g]] <- eval_partial
+
       eval_final <- eval_partial %>%
         dplyr::group_by(threshold) %>%
         dplyr::summarise(dplyr::across(
@@ -314,7 +322,8 @@ fit_ensemble <-
 
     # Bind ensemble performance
     ensemble <- dplyr::bind_rows(ensemble, .id = "model")
-
+    eval_partial_list_2 <- dplyr::bind_rows(eval_partial_list_2, .id = "model")
+    
     #### Model object
     m <- lapply(models, function(x) x[c("model", "performance")])
     names(m) <- nms
@@ -324,7 +333,8 @@ fit_ensemble <-
       thr_metric = c(thr_model, metric),
       predictors = variables,
       performance = dplyr::left_join(ensemble, threshold, by = c("model", "threshold")) %>%
-        dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
+        dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+      performance_part = eval_partial_list_2
     )
 
     return(result)

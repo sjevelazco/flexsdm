@@ -73,6 +73,7 @@ A list object with:
  variables use for modeling.
 \item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}})
 for the best hyper-parameters combination.
+\item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 \item hyper_performance: Performance metrics (see \code{\link{sdm_eval}}) for each combination
 of the hyper-parameters.
 \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
@@ -124,6 +125,7 @@ svm_t <-
 svm_t$model
 svm_t$predictors
 svm_t$performance
+svm_t$performance_part
 svm_t$hyper_performance
 svm_t$data_ens
 }

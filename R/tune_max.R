@@ -63,6 +63,7 @@
 #'  variables use for modeling.
 #' \item performance: Hyper-parameters values and performance metrics (see \code{\link{sdm_eval}})
 #' for the best hyper-parameters combination.
+#' \item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 #' \item hyper_performance: Performance metrics (see \code{\link{sdm_eval}}) for each combination
 #' of the hyper-parameters.
 #' \item data_ens: Predicted suitability for each test partition based on the best model. This
@@ -133,6 +134,7 @@
 #' max_t1$model
 #' max_t1$predictors
 #' max_t1$performance
+#' max_t1$performance_part
 #' max_t1$data_ens
 #' }
 tune_max <-
@@ -468,6 +470,7 @@ tune_max <-
       predictors = variables,
       performance = dplyr::left_join(best_tune, threshold[1:4], by = "threshold") %>%
         dplyr::relocate({{ hyperp }}, model, threshold, thr_value, n_presences, n_absences),
+      performance_part = mod[["performance_part"]],
       hyper_performance = eval_final,
       data_ens = pred_test_ens
     )

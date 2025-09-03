@@ -67,7 +67,7 @@ test_that("sdm_varimp", {
 })
 
 test_that("esemble", {
-  vmensemble <- fit_ensemble(
+  vmensemble <- flexsdm::fit_ensemble(
     models = list(svm_f1, max_t1),
     ens_method = "mean",
     thr = NULL,

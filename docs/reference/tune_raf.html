@@ -143,6 +143,7 @@ AUC, and BOYCE. TSS is used as default.</p></dd>
 variables use for modeling.</p></li>
 <li><p>performance: Hyper-parameters values and performance metric (see <code><a href="sdm_eval.html">sdm_eval</a></code>)
 for the best hyper-parameters combination.</p></li>
+<li><p>performance_part: Performance metric for each replica and partition (see <code><a href="sdm_eval.html">sdm_eval</a></code>).</p></li>
 <li><p>hyper_performance: Performance metric (see <code><a href="sdm_eval.html">sdm_eval</a></code>) for each combination of
 the hyper-parameters.</p></li>
 <li><p>data_ens: Predicted suitability for each test partition based on the best model. This
@@ -193,7 +194,7 @@ database is used in <code><a href="fit_ensemble.html">fit_ensemble</a></code></p
 <span class="r-in"><span><span class="co"># Outputs</span></span></span>
 <span class="r-in"><span><span class="va">rf_t</span><span class="op">$</span><span class="va">model</span></span></span>
 <span class="r-in"><span><span class="va">rf_t</span><span class="op">$</span><span class="va">predictors</span></span></span>
-<span class="r-in"><span><span class="va">rf_t</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-in"><span><span class="va">rf_t</span><span class="op">$</span><span class="va">performance_part</span></span></span>
 <span class="r-in"><span><span class="va">rf_t</span><span class="op">$</span><span class="va">hyper_performance</span></span></span>
 <span class="r-in"><span><span class="va">rf_t</span><span class="op">$</span><span class="va">data_ens</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>

@@ -36,6 +36,7 @@
 #' \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 #' \item performance: Performance metrics (see \code{\link{sdm_eval}}).
 #' Threshold dependent metrics are calculated based on the threshold specified in the argument.
+#' \item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 #' \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 #' }
 #'
@@ -73,6 +74,7 @@
 #' rf_t1$model
 #' rf_t1$predictors
 #' rf_t1$performance
+#' rf_t1$performance_part
 #' rf_t1$data_ens
 #'
 #' # Using bootstrap partition method and only with presence-absence
@@ -271,7 +273,9 @@ fit_raf <- function(data,
   result <- list(
     model = mod,
     predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% 
+      dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+    performance_part = eval_partial,
     data_ens = pred_test_ens
   )
   return(result)

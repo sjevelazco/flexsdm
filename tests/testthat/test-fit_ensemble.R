@@ -61,7 +61,7 @@ test_that("multiplication works", {
   )
 
   expect_equal(class(mensemble), "list")
-  expect_equal(length(mensemble), 4)
+  expect_equal(length(mensemble), 5)
   expect_equal(
     unique(mensemble$performance$model),
     c("mean", "meanw", "meansup", "meanthr", "median")

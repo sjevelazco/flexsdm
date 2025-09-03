@@ -51,6 +51,7 @@ A list object with:
 \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 \item performance: Performance metrics (see \code{\link{sdm_eval}}).
 Threshold dependent metrics are calculated based on the threshold criteria specified in the argument.
+\item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 }
 }
@@ -86,6 +87,7 @@ gaup_t1 <- fit_gau(
 gaup_t1$model
 gaup_t1$predictors
 gaup_t1$performance
+gaup_t1$performance_part
 gaup_t1$data_ens
 
 # Using bootstrap partition method only with presence-absence

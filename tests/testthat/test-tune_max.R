@@ -52,7 +52,7 @@ test_that("test example tune_max", {
       clamp = TRUE,
       pred_type = "cloglog"
     ))
-  expect_length(max_t, 5)
+  expect_length(max_t, 6)
 })
 
 
@@ -108,7 +108,7 @@ test_that("test NULL predictors_f and NULL grid", {
       clamp = TRUE,
       pred_type = "cloglog"
     )
-  expect_length(max_t, 5)
+  expect_length(max_t, 6)
 
   max_t <-
     tune_max(
@@ -124,7 +124,7 @@ test_that("test NULL predictors_f and NULL grid", {
       clamp = TRUE,
       pred_type = "cloglog"
     )
-  expect_length(max_t, 5)
+  expect_length(max_t, 6)
 })
 
 test_that("test data with NA and without background", {
@@ -182,7 +182,7 @@ test_that("test data with NA and without background", {
       clamp = TRUE,
       pred_type = "cloglog"
     )
-  expect_length(max_t, 5)
+  expect_length(max_t, 6)
 
   max_t <-
     tune_max(
@@ -198,7 +198,7 @@ test_that("test data with NA and without background", {
       clamp = TRUE,
       pred_type = "cloglog"
     )
-  expect_length(max_t, 5)
+  expect_length(max_t, 6)
 })
 
 test_that("test fit only with presences and background", {
@@ -254,7 +254,7 @@ test_that("test fit only with presences and background", {
       clamp = FALSE,
       pred_type = "cloglog"
     )
-  expect_length(max_t, 5)
+  expect_length(max_t, 6)
 })
 
 test_that("test background argument names not match

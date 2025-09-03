@@ -74,6 +74,7 @@ A list object with:
 variables use for modeling.
 \item performance: Hyper-parameter values and performance metric (see \code{\link{sdm_eval}})
 for the best hyper-parameter combination.
+\item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 \item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of
 the hyper-parameters.
 \item data_ens: Predicted suitability for each test partition based on the best model. This
@@ -128,6 +129,7 @@ gbm_t <-
 gbm_t$model
 gbm_t$predictors
 gbm_t$performance
+gbm_t$performance_part
 gbm_t$data_ens
 gbm_t$hyper_performance
 

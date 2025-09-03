@@ -49,6 +49,7 @@
 #' variables use for modeling.
 #' \item performance: Hyper-parameter values and performance metric (see \code{\link{sdm_eval}})
 #' for the best hyper-parameter combination.
+#' \item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 #' \item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of
 #' the hyper-parameters.
 #' \item data_ens: Predicted suitability for each test partition based on the best model. This
@@ -108,6 +109,7 @@
 #' gbm_t$model
 #' gbm_t$predictors
 #' gbm_t$performance
+#' gbm_t$performance_part
 #' gbm_t$data_ens
 #' gbm_t$hyper_performance
 #'
@@ -366,8 +368,10 @@ tune_gbm <-
       predictors = variables,
       performance = dplyr::left_join(best_tune, threshold[1:4], by = "threshold") %>%
         dplyr::relocate({{ hyperp }}, model, threshold, thr_value, n_presences, n_absences),
+      performance_part = mod[["performance_part"]],
       hyper_performance = eval_final,
       data_ens = pred_test_ens
     )
     return(result)
   }
+
