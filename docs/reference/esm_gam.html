@@ -104,6 +104,7 @@ for predicting an ensemble of small models with the <code><a href="sdm_predict.h
 <li><p>predictors: A tibble with variables use for modeling.</p></li>
 <li><p>performance: Performance metrics (see <code><a href="sdm_eval.html">sdm_eval</a></code>).
 Threshold dependent metrics are calculated based on the threshold specified in the argument.</p></li>
+<li><p>performance_part: Performance metric for each replica and partition (see <code><a href="sdm_eval.html">sdm_eval</a></code>).</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -136,7 +137,7 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-in"><span><span class="co"># Using k-fold partition method</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/na.omit.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">pr_ab</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -160,6 +161,7 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-in"><span><span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">esm_model</span> <span class="co"># bivariate model</span></span></span>
 <span class="r-in"><span><span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">predictors</span></span></span>
 <span class="r-in"><span><span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-in"><span><span class="va">esm_gam_t1</span><span class="op">$</span><span class="va">performance_part</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test with rep_kfold partition</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span><span class="op">)</span></span></span>

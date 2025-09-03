@@ -26,6 +26,6 @@ test_that("ESM Support Vectro Machine", {
     thr = NULL
   )
 
-  expect_equal(length(esm_svm_t1), 3)
+  expect_equal(length(esm_svm_t1), 4)
   expect_equal(class(esm_svm_t1), "list")
 })

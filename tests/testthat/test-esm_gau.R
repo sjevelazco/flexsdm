@@ -28,5 +28,5 @@ test_that("ESM gaussain process", {
   )
 
   expect_equal(class(esm_gau_t1), "list")
-  expect_equal(length(esm_gau_t1), 3)
+  expect_equal(length(esm_gau_t1), 4)
 })

@@ -46,7 +46,7 @@ test_that("ESM maximum entropy", {
     regmult = 1
   )
 
-  expect_equal(length(esm_max_t1), 3)
+  expect_equal(length(esm_max_t1), 4)
   expect_equal(class(esm_max_t1), "list")
 })
 
@@ -101,5 +101,5 @@ test_that("ESM maximum entropy only with presences and background points", {
   )
 
   expect_equal(class(esm_max_t1), "list")
-  expect_equal(length(esm_max_t1), 3)
+  expect_equal(length(esm_max_t1), 4)
 })

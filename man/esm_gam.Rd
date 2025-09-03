@@ -40,6 +40,7 @@ for predicting an ensemble of small models with the \code{\link{sdm_predict}} fu
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metrics (see \code{\link{sdm_eval}}).
 Threshold dependent metrics are calculated based on the threshold specified in the argument.
+\item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 }
 }
 \description{
@@ -88,6 +89,7 @@ esm_gam_t1 <- esm_gam(
 esm_gam_t1$esm_model # bivariate model
 esm_gam_t1$predictors
 esm_gam_t1$performance
+esm_gam_t1$performance_part
 
 # Test with rep_kfold partition
 abies2 <- abies2 \%>\% select(-starts_with("."))
