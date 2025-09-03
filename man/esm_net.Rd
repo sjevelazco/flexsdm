@@ -41,6 +41,7 @@ for predicting ensemble of small model with \code{\link{sdm_predict}} function.
 \item predictors: A tibble with variables use for modeling.
 \item performance: Performance metric (see \code{\link{sdm_eval}}).
 Those threshold dependent metric are calculated based on the threshold specified in thr argument.
+\item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 }
 }
 \description{
@@ -87,6 +88,7 @@ esm_net_t1 <- esm_net(
 esm_net_t1$esm_model # bivariate model
 esm_net_t1$predictors
 esm_net_t1$performance
+esm_net_t1$performance_part
 }
 }
 \references{

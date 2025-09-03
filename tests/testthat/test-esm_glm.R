@@ -29,5 +29,5 @@ test_that("ESM Generalized linear models", {
     inter_order = 0
   )
   expect_equal(class(esm_glm_t1), "list")
-  expect_equal(length(esm_glm_t1), 3)
+  expect_equal(length(esm_glm_t1), 4)
 })

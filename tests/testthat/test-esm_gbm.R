@@ -29,5 +29,5 @@ test_that("ESM Generalized Boosted Regression", {
     shrinkage = 0.1
   )
   expect_equal(class(esm_gbm_t1), "list")
-  expect_equal(length(esm_gbm_t1), 3)
+  expect_equal(length(esm_gbm_t1), 4)
 })

@@ -43,6 +43,7 @@
 #' \item predictors: A tibble with variables use for modeling.
 #' \item performance: Performance metric (see \code{\link{sdm_eval}}).
 #' Those threshold dependent metric are calculated based on the threshold specified in thr argument.
+#' \item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 #' }
 #'
 #' @seealso \code{\link{esm_gam}}, \code{\link{esm_gau}}, \code{\link{esm_gbm}},
@@ -93,6 +94,7 @@
 #' esm_glm_t1$esm_model # bivariate model
 #' esm_glm_t1$predictors
 #' esm_glm_t1$performance
+#' esm_glm_t1$performancePart
 #' }
 esm_glm <- function(data,
                     response,
@@ -267,7 +269,8 @@ esm_glm <- function(data,
       threshold[1:4],
       by = "threshold"
     ) %>%
-      dplyr::relocate(model, threshold, thr_value, n_presences, n_absences)
+      dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+    performance_part = tibble(model = "esm_glm", eval_esm)
   )
 
   return(result)
