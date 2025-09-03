@@ -63,7 +63,8 @@ A list object with:
 \item model: A "glm" class object from stats package. This object can be used for predicting.
 \item predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.
 \item performance: Performance metrics (see \code{\link{sdm_eval}}).
-Threshold dependent metric are calculated based on the threshold specified in thr argument .
+Threshold dependent metric are calculated based on the threshold specified in thr argument.
+\item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 \item data_ens: Predicted suitability for each test partition. This database is used in \code{\link{fit_ensemble}}
 }
 }
@@ -97,6 +98,7 @@ glm_t1 <- fit_glm(
 glm_t1$model
 glm_t1$predictors
 glm_t1$performance
+glm_t1$performance_part
 glm_t1$data_ens
 
 # Using second order polynomial terms and first-order interaction terms

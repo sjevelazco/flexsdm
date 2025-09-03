@@ -132,7 +132,8 @@ for those continuous variables (i.e. used in predictors argument). Default is 0.
     <p>A list object with:</p><ul><li><p>model: A "glm" class object from stats package. This object can be used for predicting.</p></li>
 <li><p>predictors: A tibble with quantitative (c column names) and qualitative (f column names) variables use for modeling.</p></li>
 <li><p>performance: Performance metrics (see <code><a href="sdm_eval.html">sdm_eval</a></code>).
-Threshold dependent metric are calculated based on the threshold specified in thr argument .</p></li>
+Threshold dependent metric are calculated based on the threshold specified in thr argument.</p></li>
+<li><p>performance_part: Performance metric for each replica and partition (see <code><a href="sdm_eval.html">sdm_eval</a></code>).</p></li>
 <li><p>data_ens: Predicted suitability for each test partition. This database is used in <code><a href="fit_ensemble.html">fit_ensemble</a></code></p></li>
 </ul></div>
     <div class="section level2">
@@ -169,6 +170,7 @@ Threshold dependent metric are calculated based on the threshold specified in th
 <span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">model</span></span></span>
 <span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">predictors</span></span></span>
 <span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">performance_part</span></span></span>
 <span class="r-in"><span><span class="va">glm_t1</span><span class="op">$</span><span class="va">data_ens</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using second order polynomial terms and first-order interaction terms</span></span></span>

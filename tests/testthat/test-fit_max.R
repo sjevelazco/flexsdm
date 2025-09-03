@@ -23,7 +23,7 @@ test_that("test different function setting ", {
   )
 
   expect_equal(class(max_t1), "list")
-  expect_length(max_t1, 4)
+  expect_length(max_t1, 5)
 
   # Using bootstrap partition method
   abies2 <- part_random(
@@ -47,7 +47,7 @@ test_that("test different function setting ", {
   )
 
   expect_equal(class(max_t2), "list")
-  expect_length(max_t1, 4)
+  expect_length(max_t1, 5)
 
   # Does the function work without predictors_f?
   max_t3 <- fit_max(
@@ -98,7 +98,7 @@ test_that("fit model only with presences and background points", {
   )
 
   expect_equal(class(max_t1), "list")
-  expect_length(max_t1, 4)
+  expect_length(max_t1, 5)
 
   # What about no predictors? Does not work
   expect_error(fit_max(
@@ -138,5 +138,5 @@ test_that("test max with NA, no factor variable and using formula", {
   )
 
   expect_equal(class(max_t1), "list")
-  expect_length(max_t1, 4)
+  expect_length(max_t1, 5)
 })

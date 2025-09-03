@@ -205,7 +205,7 @@ sdm_predict <-
       message("Predicting list of individual models")
       ensembles <- NULL
       esm <- NULL
-    } else if (all(names(models) %in% c("models", "thr_metric", "predictors", "performance"))) {
+    } else if (all(names(models) %in% c("models", "thr_metric", "predictors", "performance", "performance_part"))) {
       message("Predicting ensembles")
       ensembles <- models
       models <- NULL

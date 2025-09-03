@@ -35,7 +35,7 @@ test_that("tuen", {
     )
 
   expect_equal(class(raf_t), "list")
-  expect_equal(length(raf_t), 5)
+  expect_equal(length(raf_t), 6)
 })
 
 
@@ -57,7 +57,7 @@ test_that("tuen without ntree hyperparamenter", {
     )
 
   expect_equal(class(raf_t), "list")
-  expect_equal(length(raf_t), 5)
+  expect_equal(length(raf_t), 6)
 })
 
 
@@ -115,7 +115,7 @@ test_that("test NULL in predictors_f", {
     )
 
   expect_equal(class(raf_t), "list")
-  expect_equal(length(raf_t), 5)
+  expect_equal(length(raf_t), 6)
 })
 
 test_that("test if remove NAs rows works", {
@@ -178,7 +178,7 @@ test_that("test fit_formula", {
       metric = "TSS",
       n_cores = 3
     )
-  expect_equal(length(raf_t), 5)
+  expect_equal(length(raf_t), 6)
 })
 
 test_that("grid = NULL ", {

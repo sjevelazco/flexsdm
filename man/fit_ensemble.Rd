@@ -48,6 +48,7 @@ A list object with:
 \item thr_metric: Threshold and metric specified in the function.
 \item predictors: A tibble of quantitative (column names with c) and qualitative (column names with f) variables used in each models.
 \item performance: A tibble with performance metrics (see \code{\link{sdm_eval}}).
+\item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 Those metrics that are threshold-dependent are calculated based on the threshold specified in the argument.
 }
 }
@@ -113,5 +114,8 @@ mensemble <- fit_ensemble(
   thr_model = "max_sens_spec",
   metric = "TSS"
 )
+
+mensemble
+
 }
 }

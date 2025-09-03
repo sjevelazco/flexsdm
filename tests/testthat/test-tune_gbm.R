@@ -40,7 +40,7 @@ test_that("class and lenght of gbm_t object", {
     )
 
   expect_equal(class(gbm_t), "list")
-  expect_equal(length(gbm_t), 5)
+  expect_equal(length(gbm_t), 6)
 })
 
 test_that("test of 0-1 response argument", {
@@ -110,7 +110,7 @@ test_that("test NULL in predictors_f", {
     )
 
   expect_equal(class(gbm_t), "list")
-  expect_equal(length(gbm_t), 5)
+  expect_equal(length(gbm_t), 6)
 })
 
 test_that("test if remove NAs rows works", {

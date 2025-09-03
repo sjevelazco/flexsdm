@@ -51,6 +51,7 @@
 #' variables use for modeling.
 #' \item performance: Hyper-parameters values and performance metric (see \code{\link{sdm_eval}})
 #' for the best hyper-parameters combination.
+#' \item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 #' \item hyper_performance: Performance metric (see \code{\link{sdm_eval}}) for each combination of
 #' the hyper-parameters.
 #' \item data_ens: Predicted suitability for each test partition based on the best model. This database is used in \code{\link{fit_ensemble}}
@@ -103,6 +104,7 @@
 #' net_t$model
 #' net_t$predictors
 #' net_t$performance
+#' net_t$performance_part
 #' net_t$hyper_performance
 #' net_t$data_ens
 #' }
@@ -333,6 +335,7 @@ tune_net <-
       predictors = variables,
       performance = dplyr::left_join(best_tune, threshold[1:4], by = "threshold") %>%
         dplyr::relocate({{ hyperp }}, model, threshold, thr_value, n_presences, n_absences),
+      performance_part = mod[["performance_part"]],
       hyper_performance = eval_final,
       data_ens = pred_test_ens
     )

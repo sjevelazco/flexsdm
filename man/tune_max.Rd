@@ -82,6 +82,7 @@ A list object with:
  variables use for modeling.
 \item performance: Hyper-parameters values and performance metrics (see \code{\link{sdm_eval}})
 for the best hyper-parameters combination.
+\item performance_part: Performance metric for each replica and partition (see \code{\link{sdm_eval}}).
 \item hyper_performance: Performance metrics (see \code{\link{sdm_eval}}) for each combination
 of the hyper-parameters.
 \item data_ens: Predicted suitability for each test partition based on the best model. This
@@ -152,6 +153,7 @@ length(max_t1)
 max_t1$model
 max_t1$predictors
 max_t1$performance
+max_t1$performance_part
 max_t1$data_ens
 }
 }
