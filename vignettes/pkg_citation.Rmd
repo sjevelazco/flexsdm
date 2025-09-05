@@ -5,7 +5,7 @@ output: html_document
 
 Here we provide a list of published peer-reviewed papers that cited *flexsdm* package. Some of the following research used flexsdm for the entire modeling protocol, others used a couple of flexsdm functions, and others just mentioned our package.
 
-Cite our package as
+## Cite our package as
 
 Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). flexsdm: An R package for supporting a comprehensive and flexible species distribution modelling workflow. Methods in Ecology and Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
 
@@ -34,7 +34,7 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 ------------------------------------------------------------------------
 
-**2025**
+## 2025
 
 1.  Rahimi, E., Ahmadzadeh, F., 2025. Investigating climate-driven corridor networks for Golden Jackal (Canis aureus) in Northern Parts of Iran. *Journal of Wildlife and Biodiversity* 9, 1–16. <https://www.wildlife-biodiversity.com/index.php/jwb/article/view/728>
 
@@ -124,7 +124,7 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 44. Aidoo, O.F., Amaro, G.C., Souza, P.G.C., Picanço, M.C., Awuah‐Mensah, K.A. and Silva, R.S.D., 2025. Climate change impacts on worldwide ecological niche and invasive potential of Sternochetus mangiferae. *Pest Management Science*, *81*(2), pp.667-677. <https://scijournals.onlinelibrary.wiley.com/doi/abs/10.1002/ps.8465>
 
-**2024**
+## 2024
 
 1.  Kougioumoutzis, K., Tsakiri, M., Kokkoris, I.P., Trigas, P., Iatrou, G., Lamari, F.N., Tzanoudakis, D., Koumoutsou, E., Dimopoulos, P., Strid, A., Panitsa, M., (2024). Assessing the vulnerability of medicinal and aromatic plants to climate and land-use changes in a Mediterranean biodiversity hotspot. *Land,* *13*(2), 133. <https://doi.org/10.3390/land13020133>
 
@@ -198,7 +198,7 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 36. Tytar, V., Kozynenko, I., & Navakatikyan, M. (2024). Modelling the distribution of the proboscis monkey (Nasalis larvatus) in Sabah (Borneo) based on remotely sensed high-resolution global cloud dynamics. *Theriologia Ukrainica*, *27*, 103-111. <http://doi.org/10.53452/TU2711>
 
-**2023**
+## 2023
 
 1.  Velazco, S. J. E., Brooke, M. R., De Marco Jr., P., Regan, H. M., & Franklin, J. (2023). How far can I extrapolate my species distribution model? Exploring Shape, a novel method. *Ecography*, e06992. <https://doi.org/10.1111/ecog.06992>
 
@@ -230,6 +230,6 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 15. Zhang, X., Huang, Q., Liu, P., Sun, C., Papa, R. D., Sanoamuang, L., Dumont, H. J., & Han, B. (2023). Geography, ecology, and history synergistically shape across-range genetic variation in a calanoid copepod endemic to the north-eastern Oriental. *Evolution*, *77*(2), 422-436. <https://doi.org/10.1093/evolut/qpac043>
 
-**2022**
+## 2022
 
 1.  Wen, C., Cha, J., Xu, L., Xu, H. Spatial Potential of Recreational Services in Western Hubei Region in Light of the “All-for-One Tourism” Development—A Machine Learning Approach Based on Ensemble Model. (2022) *Landscape Architecture Frontiers*, *10*(5): 8‒31 <https://doi.org/10.15302/J-LAF-1-020073>
