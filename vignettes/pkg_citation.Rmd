@@ -48,7 +48,7 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 6.  Demir, M.A. and Kabalak, M., 2025. Predicting the suitable habitats of Alosimus marginicollis (Haag-Rutenberg, 1880)(Coleoptera: Meloidae) and evaluating its potential distribution in relation to geographical and climatic barriers. *Turkish Journal of Zoology*, *49*(2), pp.75-91. <https://journals.tubitak.gov.tr/zoology/vol49/iss2/3/>
 
-7.  Antonio, A.I., de Oliveira Junior, A.C., Villalobos, F. and Velazco, S.J.E., 2025. Environmental heterogeneity as a determinant of bee diversity patterns in the Atlantic Forest. *Frontiers of Biogeography*, *18*, p.e142410. <https://biogeography.pensoft.net/article/142410/download/pdf/>
+7.  Antonio, A.I., de Oliveira Junior, A.C., Villalobos, F. and Velazco, S.J.E., 2025. Environmental heterogeneity as a determinant of bee diversity patterns in the Atlantic Forest. *Frontiers of Biogeography*, *18*, p.e142410. <https://doi.org/10.21425/fob.18.142410>
 
 8.  Bayraktarov, E., Low-Choy, S., Singh, A.R., Beaumont, L.J., Williams, K.J., Baumgartner, J.B., Laffan, S.W., Vasco, D., Cosgrove, R., Wraith, J. and Antunes, J.F., 2025. EcoCommons Australia virtual laboratories with cloud computing: Meeting diverse user needs for ecological modeling and decision-making. *Environmental Modelling & Software*, *183*, p.106255. <https://www.sciencedirect.com/science/article/pii/S1364815224003165>
 
