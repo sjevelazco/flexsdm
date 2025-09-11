@@ -1629,7 +1629,7 @@ This workflow represents a complete SDM analysis, from data preparation to final
 
 The flexibility of `flexsdm` makes it an excellent choice for SDM analyses, allowing researchers to implement best practices in species distribution modeling within a unified framework.
 
-# 16. Other examples of an entire modeling workflow with flexsdm.
+# 16. Other examples of entire modeling workflows with flexsdm.
 
 If you are interested in learning more about constructing SDM for different species, types, and amounts of occurrence, we also recommend exploring the codes of the following papers:
 
