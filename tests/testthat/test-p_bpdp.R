@@ -36,24 +36,24 @@ test_that("test p_bpdp with continuous predictors and gam", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 4)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, predictors = c("aet", "cwd"))
-  expect_equal(class(asdf), c("gg", "ggplot"))
+  expect_equal(class(asdf)[1], "ggplot2::ggplot")
   expect_equal(length(asdf$patches$plots), 0)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh", resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -64,24 +64,24 @@ test_that("test p_bpdp with continuous predictors and gau", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 4)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, predictors = c("aet", "cwd"))
-  expect_equal(class(asdf), c("gg", "ggplot"))
+  expect_equal(class(asdf)[1], "ggplot2::ggplot")
   expect_equal(length(asdf$patches$plots), 0)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh", resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -92,24 +92,24 @@ test_that("test p_bpdp with continuous predictors and glm", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 4)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, predictors = c("aet", "cwd"))
-  expect_equal(class(asdf), c("gg", "ggplot"))
+  expect_equal(class(asdf)[1], "ggplot2::ggplot")
   expect_equal(length(asdf$patches$plots), 0)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh", resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -120,24 +120,24 @@ test_that("test p_bpdp with continuous predictors and gbm", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 4)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, predictors = c("aet", "cwd"))
-  expect_equal(class(asdf), c("gg", "ggplot"))
+  expect_equal(class(asdf)[1], "ggplot2::ggplot")
   expect_equal(length(asdf$patches$plots), 0)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh", resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -148,24 +148,24 @@ test_that("test p_bpdp with continuous predictors and max", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 4)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, predictors = c("aet", "cwd"))
-  expect_equal(class(asdf), c("gg", "ggplot"))
+  expect_equal(class(asdf)[1], "ggplot2::ggplot")
   expect_equal(length(asdf$patches$plots), 0)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh", resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -176,24 +176,24 @@ test_that("test p_bpdp with continuous predictors and net", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 4)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, predictors = c("aet", "cwd"))
-  expect_equal(class(asdf), c("gg", "ggplot"))
+  expect_equal(class(asdf)[1], "ggplot2::ggplot")
   expect_equal(length(asdf$patches$plots), 0)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh", resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -204,24 +204,24 @@ test_that("test p_bpdp with continuous predictors and raf", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 4)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, predictors = c("aet", "cwd"))
-  expect_equal(class(asdf), c("gg", "ggplot"))
+  expect_equal(class(asdf)[1], "ggplot2::ggplot")
   expect_equal(length(asdf$patches$plots), 0)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh", resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -232,24 +232,24 @@ test_that("test p_bpdp with continuous predictors and svm", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 4)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, predictors = c("aet", "cwd"))
-  expect_equal(class(asdf), c("gg", "ggplot"))
+  expect_equal(class(asdf)[1], "ggplot2::ggplot")
   expect_equal(length(asdf$patches$plots), 0)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh", resolution = 5)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 25)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -262,12 +262,12 @@ test_that("test p_bpdp with continuous and factor predictors and svm", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 8)
 
   # Partial dependence plot for training and projection condition found in a projection area
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50)
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })
 
@@ -280,11 +280,11 @@ test_that("training_boundaries = convexh and rectangle", {
   )
 
   asdf <- p_bpdp(model = m_$model, training_data = abies2, training_boundaries = "convexh")
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(length(asdf$patches$plots), 8)
 
   # Partial dependence plot for training and projection condition and rectangle
   asdf <- p_bpdp(model = m_$model, training_data = abies2, projection_data = somevar, resolution = 50, training_boundaries = "rectangle")
-  expect_equal(class(asdf), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asdf)[1], "patchwork")
   expect_equal(nrow(asdf$data), 2500)
 })

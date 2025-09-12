@@ -62,7 +62,7 @@ test_that("test p_extra", {
     geo_space = TRUE,
     prop_points = 0.01
   )
-  expect_equal(class(asfd), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asfd)[1], "patchwork")
   expect_equal(nrow(asfd$data), 33207)
 
 
@@ -77,7 +77,7 @@ test_that("test p_extra", {
     geo_space = TRUE,
     prop_points = 0.05
   )
-  expect_equal(class(asfd), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asfd)[1], "patchwork")
   expect_equal(nrow(asfd$data), 33207)
 
   asdf <- p_extra(
@@ -98,7 +98,7 @@ test_that("test p_extra", {
     theme = ggplot2::theme_dark()
   )
 
-  expect_equal(class(asfd), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asfd)[1], "patchwork")
   expect_equal(nrow(asfd$data), 33207)
 
   asdf <- p_extra(
@@ -117,7 +117,7 @@ test_that("test p_extra", {
     theme = ggplot2::theme_dark()
   )
 
-  expect_equal(class(asfd), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asfd)[1], "patchwork")
   expect_equal(nrow(asfd$data), 33207)
 
   # Explore extrapolation only in the environmental space
@@ -135,6 +135,6 @@ test_that("test p_extra", {
     theme = ggplot2::theme_minimal()
   )
 
-  expect_equal(class(asfd), c("patchwork", "gg", "ggplot"))
+  expect_equal(class(asfd)[1], "patchwork")
   expect_equal(nrow(asfd$data), 33207)
 })

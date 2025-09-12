@@ -5,7 +5,7 @@ test_that("msdm_posteriori", {
   data("spp")
   somevar <- system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
-
+  names(spp)[4] <- "presence_absence"
 
   # It will prepared data for modeling a species
   set.seed(10)
@@ -16,14 +16,14 @@ test_that("msdm_posteriori", {
       env_layer = somevar, filter_na = TRUE
     ) %>% # extrac variables values
     part_random(.,
-      pr_ab = "pr_ab",
+      pr_ab = "presence_absence",
       method = c(method = "kfold", folds = 10)
     ) # add columns with partition
 
   # Lets fit and predict a model
   m_glm <- fit_glm(
     data = occ,
-    response = "pr_ab",
+    response = "presence_absence",
     predictors = names(somevar),
     partition = ".part",
     thr = "equal_sens_spec",
@@ -36,7 +36,7 @@ test_that("msdm_posteriori", {
     records = occ,
     x = "x",
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "bmcp",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec",
@@ -50,7 +50,7 @@ test_that("msdm_posteriori", {
     records = occ,
     x = "x",
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "mcp",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec",
@@ -65,7 +65,7 @@ test_that("msdm_posteriori", {
     records = occ,
     x = "x",
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "pres",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec",
@@ -79,7 +79,7 @@ test_that("msdm_posteriori", {
     records = occ,
     x = "x",
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "lq",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec",
@@ -93,7 +93,7 @@ test_that("msdm_posteriori", {
     records = occ,
     x = "x",
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "obr",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec",
@@ -120,14 +120,14 @@ test_that("msdm_posteriori", {
 #       env_layer = somevar, filter_na = TRUE
 #     ) %>% # extrac variables values
 #     part_random(.,
-#       pr_ab = "pr_ab",
+#       pr_ab = "presence_absence",
 #       method = c(method = "kfold", folds = 10)
 #     ) # add columns with partition
 #
 #   # Lets fit and predict a model
 #   m_glm <- fit_glm(
 #     data = occ,
-#     response = "pr_ab",
+#     response = "presence_absence",
 #     predictors = names(somevar),
 #     partition = ".part",
 #     thr = "equal_sens_spec",
@@ -141,7 +141,7 @@ test_that("msdm_posteriori", {
 #     records = data.frame(occ),
 #     x = "x",
 #     y = "y",
-#     pr_ab = "pr_ab",
+#     pr_ab = "presence_absence",
 #     method = "bmcp",
 #     cont_suit = m_pred[[1]],
 #     thr = "equal_sens_spec",
@@ -154,6 +154,7 @@ test_that("missuse of function", {
   require(terra)
 
   data("spp")
+  names(spp)[4] <- "presence_absence"
   somevar <- system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
 
@@ -167,14 +168,14 @@ test_that("missuse of function", {
       env_layer = somevar, filter_na = TRUE
     ) %>% # extrac variables values
     part_random(.,
-      pr_ab = "pr_ab",
+      pr_ab = "presence_absence",
       method = c(method = "kfold", folds = 10)
     ) # add columns with partition
 
   # Lets fit and predict a model
   m_glm <- fit_glm(
     data = occ,
-    response = "pr_ab",
+    response = "presence_absence",
     predictors = names(somevar),
     partition = ".part",
     thr = "equal_sens_spec",
@@ -188,7 +189,7 @@ test_that("missuse of function", {
     records = occ,
     x = "x",
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "bmcp",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec",
@@ -200,7 +201,7 @@ test_that("missuse of function", {
     records = occ,
     x = "x",
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "bmcp",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec_XXXX",
@@ -212,7 +213,7 @@ test_that("missuse of function", {
     records = occ,
     x = "xXXXX",
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "bmcp",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec_XXXX",
@@ -224,7 +225,7 @@ test_that("missuse of function", {
     records = occ,
     # x = 'x',
     y = "y",
-    pr_ab = "pr_ab",
+    pr_ab = "presence_absence",
     method = "bmcp",
     cont_suit = m_pred[[1]],
     thr = "equal_sens_spec_XXXX",

@@ -287,6 +287,7 @@ msdm_posteriori <- function(records,
     dplyr::arrange({{ pr_ab }})
   records <- records[!duplicated(records), ]
   colnames(records) <- c("pr_ab", "x", "y")
+  pr_ab <- "pr_ab"
 
   # Extract values for one species and calculate the threshold
   if (!is.character(thr)) {
@@ -313,7 +314,8 @@ msdm_posteriori <- function(records,
 
 
   records <- records %>%
-    dplyr::filter(dplyr::all_of(pr_ab) == 1)
+    dplyr::filter(.data[[pr_ab]] == 1)
+  
 
   # 'mcp' method----
   if (method == "mcp") {
@@ -348,7 +350,7 @@ msdm_posteriori <- function(records,
   if (method %in% c("obr", "lq", "pres")) {
     # Transform coordinate to SpatVector object
     pts1 <- records %>%
-      dplyr::filter(dplyr::all_of(pr_ab) == 1) %>%
+      dplyr::filter(.data[[pr_ab]] == 1) %>%
       dplyr::select(-dplyr::all_of(pr_ab))
     pts1 <- terra::vect(as.matrix(pts1))
     terra::crs(pts1) <- terra::crs(cont_suit)
