@@ -816,7 +816,7 @@ sdm_predict <-
       for (i in 1:length(model_c)) {
         model_b[[i]] <-
           lapply(thr_df[[i]]$thr_value, function(x) {
-            model_c[[i]] >= x
+            as.numeric(model_c[[i]] >= x)
           }) %>% terra::rast()
         # names(model_b[[i]]) <- names(thr_df[[i]]$thr_value)
         names(model_b[[i]]) <- thr_df[[i]]$threshold
