@@ -210,7 +210,7 @@ sdm_predict <-
       ensembles <- models
       models <- NULL
       esm <- NULL
-    } else if (all(names(models) %in% c("esm_model", "predictors", "performance"))) {
+    } else if (all(names(models) %in% c("esm_model", "predictors", "performance", "performance_part"))) {
       message("Predicting ensemble of small models")
       esm <- models
       models <- NULL
