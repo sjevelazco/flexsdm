@@ -40,29 +40,29 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 2.  Kass, J.M., Smith, A.B., Warren, D.L., Vignali, S., Schmitt, S., Aiello‐Lammens, M.E., Arlé, E., Márcia Barbosa, A., Broennimann, O., Cobos, M.E. and Guéguen, M., 2025. Achieving higher standards in species distribution modeling by leveraging the diversity of available software. *Ecography*, *2025*(2), p.e07346. <https://nsojournals.onlinelibrary.wiley.com/doi/full/10.1111/ecog.07346>
 
-3.  Hesabi, A., Alavi, S.J. and Esmailzadeh, O., 2025. Evaluation of the accuracy of climatic data from the WorldClim and Chelsa databases in three northern provinces of Iran. *Forest Research and Development*, *11*(1), pp.109-132. <https://jfrd.urmia.ac.ir/article_121653.html?lang=en>
+3.  Hesabi, A., Alavi, S.J. and Esmailzadeh, O., 2025. Evaluation of the accuracy of climatic data from the WorldClim and Chelsa databases in three northern provinces of Iran. *Forest Research and Development*, *11*(1), 109-132. <https://jfrd.urmia.ac.ir/article_121653.html?lang=en>
 
-4.  Withers, A.J., Croft, S., Budgey, R., Warren, D. and Johnson, N., 2025. Predicting West Nile Virus risk across Europe for the current and future conditions. *bioRxiv*, pp.2025-03. <https://www.biorxiv.org/content/10.1101/2025.03.04.640552v1.abstract>
+4.  Withers, A.J., Croft, S., Budgey, R., Warren, D. and Johnson, N., 2025. Predicting West Nile Virus risk across Europe for the current and future conditions. *bioRxiv*, 2025-03. <https://www.biorxiv.org/content/10.1101/2025.03.04.640552v1.abstract>
 
-5.  da Mota Porto, A.C. and Novaes, E., 2025. Prediction of current and future environmental suitability for Toona ciliata cultivation in Brazil. *Discover Forests*, *1*(1), pp.1-14. <https://link.springer.com/article/10.1007/s44415-025-00029-w>
+5.  da Mota Porto, A.C. and Novaes, E., 2025. Prediction of current and future environmental suitability for Toona ciliata cultivation in Brazil. *Discover Forests*, *1*(1), 1-14. <https://link.springer.com/article/10.1007/s44415-025-00029-w>
 
-6.  Demir, M.A. and Kabalak, M., 2025. Predicting the suitable habitats of Alosimus marginicollis (Haag-Rutenberg, 1880)(Coleoptera: Meloidae) and evaluating its potential distribution in relation to geographical and climatic barriers. *Turkish Journal of Zoology*, *49*(2), pp.75-91. <https://journals.tubitak.gov.tr/zoology/vol49/iss2/3/>
+6.  Demir, M.A. and Kabalak, M., 2025. Predicting the suitable habitats of Alosimus marginicollis (Haag-Rutenberg, 1880)(Coleoptera: Meloidae) and evaluating its potential distribution in relation to geographical and climatic barriers. *Turkish Journal of Zoology*, *49*(2), 75-91. <https://journals.tubitak.gov.tr/zoology/vol49/iss2/3/>
 
 7.  Antonio, A.I., de Oliveira Junior, A.C., Villalobos, F. and Velazco, S.J.E., 2025. Environmental heterogeneity as a determinant of bee diversity patterns in the Atlantic Forest. *Frontiers of Biogeography*, *18*, p.e142410. <https://doi.org/10.21425/fob.18.142410>
 
 8.  Bayraktarov, E., Low-Choy, S., Singh, A.R., Beaumont, L.J., Williams, K.J., Baumgartner, J.B., Laffan, S.W., Vasco, D., Cosgrove, R., Wraith, J. and Antunes, J.F., 2025. EcoCommons Australia virtual laboratories with cloud computing: Meeting diverse user needs for ecological modeling and decision-making. *Environmental Modelling & Software*, *183*, p.106255. <https://www.sciencedirect.com/science/article/pii/S1364815224003165>
 
-9.  Rahimi, E. and Jung, C., 2025. Mapping co-occurrence dynamics between crops and honeybees under climate change in North America. *Community Ecology*, pp.1-11. <https://link.springer.com/article/10.1007/s42974-025-00262-5>
+9.  Rahimi, E. and Jung, C., 2025. Mapping co-occurrence dynamics between crops and honeybees under climate change in North America. *Community Ecology*, 1-11. <https://link.springer.com/article/10.1007/s42974-025-00262-5>
 
-10. Castillo, D.S.C. and Higa, M., 2025. Effectiveness and implications of spatial background restrictions on model performance and predictions: a special reference for Rattus species. *Landscape and Ecological Engineering*, pp.1-15. <https://link.springer.com/article/10.1007/s11355-025-00653-w>
+10. Castillo, D.S.C. and Higa, M., 2025. Effectiveness and implications of spatial background restrictions on model performance and predictions: a special reference for Rattus species. *Landscape and Ecological Engineering*, 1-15. <https://link.springer.com/article/10.1007/s11355-025-00653-w>
 
 11. Shitara, T., Aihara, T., Momohara, A., Tsuyama, I. and Matsui, T., 2025. Are disjunct populations of Betula costata in the Japanese Archipelago glacial relict? An attempt at verification by species distribution modeling. *Ecological Research*. <https://esj-journals.onlinelibrary.wiley.com/doi/abs/10.1111/1440-1703.12541>
 
-12. Somerville, R., MacNeil, C. and Lee, F., 2025. Habitat suitability of Aotearoa New Zealand for the recently invaded gold clam (Corbicula fluminea). *New Zealand Journal of Marine and Freshwater Research*, *59*(4), pp.762-779. <https://www.tandfonline.com/doi/abs/10.1080/00288330.2024.2368856>
+12. Somerville, R., MacNeil, C. and Lee, F., 2025. Habitat suitability of Aotearoa New Zealand for the recently invaded gold clam (Corbicula fluminea). *New Zealand Journal of Marine and Freshwater Research*, *59*(4), 762-779. <https://www.tandfonline.com/doi/abs/10.1080/00288330.2024.2368856>
 
-13. Porto, A.C., Santos, M.L., Lima, R.P., Filho, D.S., Souza, A.M., da Silva, J.C. and de Oliveira, A.C., 2025. Modelled potential changes in the climate-related geographic distribution of species of the Passiflora genus in Brazil. *Plant Ecology & Diversity*, pp.1-14. <https://www.tandfonline.com/doi/abs/10.1080/17550874.2025.2505425>
+13. Porto, A.C., Santos, M.L., Lima, R.P., Filho, D.S., Souza, A.M., da Silva, J.C. and de Oliveira, A.C., 2025. Modelled potential changes in the climate-related geographic distribution of species of the Passiflora genus in Brazil. *Plant Ecology & Diversity*, 1-14. <https://www.tandfonline.com/doi/abs/10.1080/17550874.2025.2505425>
 
-14. Chartois, M., Fried, G. and Rossi, J.P., 2025. Climate and host plant availability are favourable to the establishment of Lycorma delicatula in Europe. *Agricultural and Forest Entomology*, *27*(2), pp.316-328. <https://resjournals.onlinelibrary.wiley.com/doi/abs/10.1111/afe.12665>
+14. Chartois, M., Fried, G. and Rossi, J.P., 2025. Climate and host plant availability are favourable to the establishment of Lycorma delicatula in Europe. *Agricultural and Forest Entomology*, *27*(2), 316-328. <https://resjournals.onlinelibrary.wiley.com/doi/abs/10.1111/afe.12665>
 
 15. Fisher, R. J. (2025). Changes in urban landcover picks winners and losers in the non-invasive bird community. *Urban Ecosystems*, *28*(2), 95. <https://link.springer.com/article/10.1007/s11252-025-01710-w>
 
@@ -72,7 +72,7 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 18. Georgopoulou, E., Kougioumoutzis, K. and Simaiakis, S.M., 2025. The Impact of Climate and Land Use Change on Greek Centipede Biodiversity and Conservation. *Land*, *14, p1685*. <https://www.mdpi.com/2073-445X/14/8/1685>
 
-19. Dos Santos, J.C.B., Ramos, R.S., DAS GRAÇAS Do CARMO, D.A.I.A.N.E., Picanco, M.C., Guedes, E.P., Junior, P.A.S., Sarmento, R.A., De SOUZA RIBAS, N.A.T.Á.L.I.A.X., Correa Amaro, G. and Da SILVA, R.S., 2025. Assessing the impact of climate changes on the distribution of two corn diseases: corn stunt and corn reddening. *Canadian Journal of Plant Pathology*, pp.1-20. <https://www.tandfonline.com/doi/abs/10.1080/07060661.2025.2533964>
+19. Dos Santos, J.C.B., Ramos, R.S., DAS GRAÇAS Do CARMO, D.A.I.A.N.E., Picanco, M.C., Guedes, E.P., Junior, P.A.S., Sarmento, R.A., De SOUZA RIBAS, N.A.T.Á.L.I.A.X., Correa Amaro, G. and Da SILVA, R.S., 2025. Assessing the impact of climate changes on the distribution of two corn diseases: corn stunt and corn reddening. *Canadian Journal of Plant Pathology*, 1-20. <https://www.tandfonline.com/doi/abs/10.1080/07060661.2025.2533964>
 
 20. Withers, A.J., Croft, S., Budgey, R., Warren, D.A. and Johnson, N., 2025. Modelling vector and host distributions to inform potential disease risk: A case study of West Nile virus in the United Kingdom. *Medical and Veterinary Entomology*. <https://resjournals.onlinelibrary.wiley.com/doi/abs/10.1111/mve.12825>
 
@@ -80,7 +80,7 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 22. Patron-Rivero, C., Yañez-Arenas, C., Chiappa-Carrara, X., Rojas-Soto, O., Ruane, S. and Guevara, L., 2025. Ecological and biogeographic drivers of speciation in neotropical hognose pit vipers, Porthidium (Squamata, Viperidae). *Zoologischer Anzeiger*. <https://www.sciencedirect.com/science/article/pii/S004452312500083X>
 
-23. Ramírez‐Arce, D.G., Ochoa‐Ochoa, L.M., Lira‐Noriega, A. and Martorell, C., 2025. Reptile Diversity Patterns Under Climate and Land Use Change Scenarios in a Subtropical Montane Landscape in Mexico. *Journal of Biogeography*, *52*(1), pp.108-121. <https://onlinelibrary.wiley.com/doi/abs/10.1111/jbi.15017>
+23. Ramírez‐Arce, D.G., Ochoa‐Ochoa, L.M., Lira‐Noriega, A. and Martorell, C., 2025. Reptile Diversity Patterns Under Climate and Land Use Change Scenarios in a Subtropical Montane Landscape in Mexico. *Journal of Biogeography*, *52*(1), 108-121. <https://onlinelibrary.wiley.com/doi/abs/10.1111/jbi.15017>
 
 24. Gehman, C.S. and Gienger, C.M., 2025. Predicting the potential distribution of the Gila Monster and evaluating the extent of protected natural areas for conservation. *Journal for Nature Conservation*, *86*, p.126944. <https://www.sciencedirect.com/science/article/pii/S1617138125001219>
 
@@ -106,13 +106,13 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 35. Hubbard, J.A., Andrew R. Drake, D. and Mandrak, N.E., 2025. ‘Euclimatch': an R package for climate matching with Euclidean distance metrics. *Ecography*, *2025*(4), p.e07614. <https://nsojournals.onlinelibrary.wiley.com/doi/abs/10.1111/ecog.07614>
 
-36. Stefanidis, A., Kougioumoutzis, K., Zografou, K., Fotiadis, G., Tzortzakaki, O., Willemse, L. and Kati, V., 2025. Mitigating the extinction risk of globally threatened and endemic mountainous Orthoptera species: Parnassiana parnassica and Oropodisma parnassica. *Insect Conservation and Diversity*, *18*(1), pp.54-68. <https://resjournals.onlinelibrary.wiley.com/doi/abs/10.1111/icad.12784>
+36. Stefanidis, A., Kougioumoutzis, K., Zografou, K., Fotiadis, G., Tzortzakaki, O., Willemse, L. and Kati, V., 2025. Mitigating the extinction risk of globally threatened and endemic mountainous Orthoptera species: Parnassiana parnassica and Oropodisma parnassica. *Insect Conservation and Diversity*, *18*(1), 54-68. <https://resjournals.onlinelibrary.wiley.com/doi/abs/10.1111/icad.12784>
 
-37. Noel, A., Schlaepfer, D.R., Butterfield, B.J., Swan, M.C., Norris, J., Hartwig, K., Duniway, M.C. and Bradford, J.B., 2025. Most Pinyon–Juniper Woodland Species Distributions Are Projected to Shrink Rather Than Shift Under Climate Change. *Rangeland Ecology & Management*, *98*, pp.454-466. <https://www.sciencedirect.com/science/article/pii/S1550742424001659>
+37. Noel, A., Schlaepfer, D.R., Butterfield, B.J., Swan, M.C., Norris, J., Hartwig, K., Duniway, M.C. and Bradford, J.B., 2025. Most Pinyon–Juniper Woodland Species Distributions Are Projected to Shrink Rather Than Shift Under Climate Change. *Rangeland Ecology & Management*, *98*, 454-466. <https://www.sciencedirect.com/science/article/pii/S1550742424001659>
 
 38. de Oliveira Junior, A.C. and Velazco, S.J.E., 2025. adm: An R package for constructing abundance‐based species distribution models. *Methods in Ecology and Evolution*. <https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.70074>
 
-39. Fonteyn, W., Serra‐Diaz, J.M., Muys, B. and Van Meerbeek, K., 2025. Incorporating climatic extremes using the GEV distribution improves SDM range edge performance. *Journal of Biogeography*, *52*(3), pp.780-791. <https://onlinelibrary.wiley.com/doi/abs/10.1111/jbi.15067>
+39. Fonteyn, W., Serra‐Diaz, J.M., Muys, B. and Van Meerbeek, K., 2025. Incorporating climatic extremes using the GEV distribution improves SDM range edge performance. *Journal of Biogeography*, *52*(3), 780-791. <https://onlinelibrary.wiley.com/doi/abs/10.1111/jbi.15067>
 
 40. Harapan, T.S., Ong, L., Agung, A.P., Rafia, R., Tjong, D.H., Novarino, W. and Campos‐Arceiz, A., 2025. A Slow and Underappreciated Forest Megafauna: Food Habits, Movements, and Multiscale Habitat Preferences of Critically Endangered Sundaic Giant Tortoises (Manouria emys emys). *Integrative Zoology*. <https://onlinelibrary.wiley.com/doi/abs/10.1111/1749-4877.12965>
 
@@ -120,9 +120,16 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 
 42. Zhang, Z., Kass, J.M., Bede‐Fazekas, Á., Mammola, S., Qu, J., Molinos, J.G., Gu, J., Huang, H., Qu, M., Yue, Y. and Qin, G., 2025. Differences in predictions of marine species distribution models based on expert maps and opportunistic occurrences. *Conservation Biology*, p.e70015. <https://conbio.onlinelibrary.wiley.com/doi/abs/10.1111/cobi.70015>
 
-43. Rey Pullido, K.G. and Velazco, S.J.E. On protected areas and other effective area-based conservation measures to conserve biodiversity. Exploring their contribution to Colombian snakes. *Perspective in Ecology and Conservation,* *23(2)*, pp.110-120. <https://www.sciencedirect.com/science/article/pii/S2530064425000173?via%3Dihub>
+43. Rey Pullido, K.G. and Velazco, S.J.E. On protected areas and other effective area-based conservation measures to conserve biodiversity. Exploring their contribution to Colombian snakes. *Perspective in Ecology and Conservation,* *23(2)*, 110-120. <https://www.sciencedirect.com/science/article/pii/S2530064425000173?via%3Dihub>
 
-44. Aidoo, O.F., Amaro, G.C., Souza, P.G.C., Picanço, M.C., Awuah‐Mensah, K.A. and Silva, R.S.D., 2025. Climate change impacts on worldwide ecological niche and invasive potential of Sternochetus mangiferae. *Pest Management Science*, *81*(2), pp.667-677. <https://scijournals.onlinelibrary.wiley.com/doi/abs/10.1002/ps.8465>
+44. Aidoo, O.F., Amaro, G.C., Souza, P.G.C., Picanço, M.C., Awuah‐Mensah, K.A. and Silva, R.S.D., 2025. Climate change impacts on worldwide ecological niche and invasive potential of Sternochetus mangiferae. *Pest Management Science*, *81*(2), 667-677. <https://scijournals.onlinelibrary.wiley.com/doi/abs/10.1002/ps.8465>
+
+45. Tytar, V., Kozynenko, I., & Navakatikyan, M. (2025). A species distribution modelling analysis of Rafflesia pricei (Rafflesiaceae), a parasitic flowering plant endemic to Borneo. *Geo&Biol*, *27*, 215-233. <http://dx.doi.org/10.53452/gb2717>
+
+46. do Nascimento, E. L. M., Velazco, S. J. E., Ramos, F. M., Ramos, R. G., Soterroni, A. C., & Tessarolo, G. (2025). Climate change and feeble governance threaten the endangered endemic Cerrado flora in Brazil*. *Perspectives in Ecology and Conservation*.
+
+47. Amaro, G. C., Aidoo, O. F., Souza, P. G. C., Nyarko, E. S., Adjei‐Mantey, K., Agboyi, L. K., ... & da Silva, R. S. (2025). Global Climate Suitability and Economic Risks of the Fall Armyworm Spodoptera frugiperda to Key Crops in Brazil. *Food and Energy Security*, 14(5), e70120.
+
 
 ## 2024
 
@@ -197,6 +204,8 @@ Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J. (2022). f
 35. Castillo, D. S. C., & Higa, M. (2024). Strengthening ecologically based rodent management in the Philippines using maximum entropy (MaxEnt) predictions. *Journal of Tropical Ecology*, *40*, e19. <https://doi.org/10.1017/S0266467424000208>
 
 36. Tytar, V., Kozynenko, I., & Navakatikyan, M. (2024). Modelling the distribution of the proboscis monkey (Nasalis larvatus) in Sabah (Borneo) based on remotely sensed high-resolution global cloud dynamics. *Theriologia Ukrainica*, *27*, 103-111. <http://doi.org/10.53452/TU2711>
+
+
 
 ## 2023
 
