@@ -57,7 +57,7 @@ sapply(
   c(
     "flexsdm", "terra", "geodata", "tidyterra", "ggplot2", "dplyr", "tidyr",
     "readr", "sf", "ggspatial", "reshape2", "stringr", "purrr"
-  ), 
+  ),
   require,
   character.only = TRUE
 )
@@ -71,7 +71,6 @@ set.seed(123)
 First, let's setup a directory for our project. This will create a structured directory for storing data, models, and results. You can adjust the `main_dir` to your preferred location. You can also adjust the other parameters to your needs, but the defaults should work well for most cases. The `projections` parameter is set to `NULL` to use the default projections, but we are specifying the projection scenarios we will use later. If you change the scenarios you evaluate, be sure to change this part so that your file structure is compatible with your project. This will ensure that you have folders for each of your climate change scenarios in the 1_Inputs/2_Predictors/2_Projection and 2_Outputs/2_Projection folders. The `algorithm` and `ensemble` parameters specify the algorithms and ensemble methods to be used in the modeling process. The `threshold` parameter is set to `FALSE`, meaning we will not create separate folders for continuous and thresholded map outputs -- though this is an option.
 
 ```{r directory_setup, eval = FALSE}
-
 # Future scenarios (we will use the function geodata::cmip6_world() to download future climate data but this will be highly dependent on the source of your future data
 
 # Define scenario components
@@ -80,21 +79,23 @@ time <- c("2041-2060") # just one time frame but you can have multiple
 models <- c("CNRM-CM6-1", "MIROC6") # two climate models
 
 # Expand into all combinations
-scenarios <- expand.grid(model = models, ssp = ssps, time = time, 
-                         stringsAsFactors = FALSE)
+scenarios <- expand.grid(
+  model = models, ssp = ssps, time = time,
+  stringsAsFactors = FALSE
+)
 
 # Create identifiers for each scenario combination
 scenarios$filename <- apply(scenarios, 1, function(x) {
   paste0(
-    tolower(gsub("-", "", x["model"])), "_", 
-    x["ssp"], "_", 
+    tolower(gsub("-", "", x["model"])), "_",
+    x["ssp"], "_",
     gsub("-", "_", x["time"])
   )
 })
 
 
 # Let's create a directory to create a directory system to store models inputs and outputs
-temp_dir <- tempdir() # This directory is temporary. We advise using a non-temporary directory to keep outputs saved when you test or adapt these codes. 
+temp_dir <- tempdir() # This directory is temporary. We advise using a non-temporary directory to keep outputs saved when you test or adapt these codes.
 proj_dir <- file.path(temp_dir, "1_SDM")
 dir.create(proj_dir)
 
@@ -155,8 +156,8 @@ species_data <- species_data %>%
 ggplot(data = species_data, aes(x, y)) +
   geom_point(aes(color = species)) +
   theme_minimal() +
-  labs(title = "Palm species occurrences in Southern Brazil") + 
-  facet_grid(.~species)
+  labs(title = "Palm species occurrences in Southern Brazil") +
+  facet_grid(. ~ species)
 ```
 
 # 3. Environmental Data
@@ -234,24 +235,24 @@ Now let's download the same variables for our future scenarios using geodata::cm
 # Download future climate change projecitons of the bioclim variables
 fut_env <- list()
 
-for(i in 1:nrow(scenarios)) {
+for (i in 1:nrow(scenarios)) {
   print(scenarios$filename[i])
-  
+
   fut <- geodata::cmip6_world(
     model = scenarios$model[i],
-    ssp   = scenarios$ssp[i],
-    time  = scenarios$time[i],
-    var   = "bioc",
-    res   = 10,
+    ssp = scenarios$ssp[i],
+    time = scenarios$time[i],
+    var = "bioc",
+    res = 10,
     path = tempdir()
   )
-  
+
   fut_env[[i]] <- terra::crop(fut, terra::ext(bbox)) # if you want your future data cropped to the extent we defined earlier
-  
-  names(fut_env[[i]] ) <- paste0('bio_', 1:nlyr(fut_env[[i]]))
-  
+
+  names(fut_env[[i]]) <- paste0("bio_", 1:nlyr(fut_env[[i]]))
+
   path <- file.path(temp_dir, "1_SDM/1_Inputs/2_Predictors/2_Projection", scenarios$filename[i])
-  
+
   # Save raster for future scenario
   terra::writeRaster(fut_env[[i]], file.path(path, paste0(scenarios$filename[i], "_bio_var.tif")), overwrite = TRUE)
 }
@@ -266,12 +267,12 @@ bio1_range <- range(unlist(lapply(fut_env, function(r) minmax(r[["bio_1"]]))))
 par(mfrow = c(2, 2))
 
 # Plot with consistent zlim
-for(i in seq_along(fut_env)){
+for (i in seq_along(fut_env)) {
   plot(fut_env[[i]][["bio_1"]],
-       main = scenarios$filename[i],
-       zlim = bio1_range)
+    main = scenarios$filename[i],
+    zlim = bio1_range
+  )
 }
-
 ```
 
 # 4. Define species training area
@@ -284,7 +285,8 @@ sp_names <- unique(species_data$species) %>% sort()
 
 # Directory to save training areas to shapefiles
 calib_dir <- proj_dir[grep(
-  paste0("1_Inputs/3_Calibration_area"), proj_dir)] 
+  paste0("1_Inputs/3_Calibration_area"), proj_dir
+)]
 calib_dir
 
 
@@ -428,10 +430,10 @@ plot(v)
 # - based_on_points: FALSE means PCA is based on the entire environmental layer within the region, not just the occurrence points.
 pca_out <- flexsdm::correct_colinvar(
   env_layer = env_data,
-  restric_to_region = v,      # Restrict to the training area polygon
-  restric_pca_proj = TRUE,    # Apply PCA projection only to the training area
-  method = c("pca"),          # Use Principal Component Analysis
-  based_on_points = FALSE     # Base PCA on environmental data, not just points
+  restric_to_region = v, # Restrict to the training area polygon
+  restric_pca_proj = TRUE, # Apply PCA projection only to the training area
+  method = c("pca"), # Use Principal Component Analysis
+  based_on_points = FALSE # Base PCA on environmental data, not just points
 )
 
 # Print the results of the PCA correction to examine the structure of the output object.
@@ -453,7 +455,6 @@ pca_out$coefficients
 # 7. Process environmental PCA for all species
 
 ```{r correct collinearity -pca all species, eval = FALSE}
-
 # Lets create a new folder to store variables of each species
 save_dir <- file.path(proj_dir[2], "4_Predictors_by_sp")
 dir.create(save_dir)
@@ -461,17 +462,19 @@ save_dir
 
 # path with future scenarios
 scenario_path <- proj_dir[grep(
-  paste0("1_Inputs/2_Predictors/2_Projection"), proj_dir)][1]
+  paste0("1_Inputs/2_Predictors/2_Projection"), proj_dir
+)][1]
 
 # Separate directories for current and future
-folders <- c('1_Current', '2_Projection')
+folders <- c("1_Current", "2_Projection")
 
 # Create subfolders inside the base folder
 folder_paths <- sapply(folders, function(f) {
   dir_path <- file.path(save_dir, f)
-  if (!dir.exists(dir_path))
+  if (!dir.exists(dir_path)) {
     dir.create(dir_path, recursive = TRUE)
-  dir_path  # return the created path
+  }
+  dir_path # return the created path
 }, USE.NAMES = TRUE)
 
 env_new <- list()
@@ -479,36 +482,35 @@ env_new <- list()
 # Perform PCA for each species and save the outputs
 for (i in 1:length(sp_names)) {
   message("Processing species: ", sp_names[i])
-  
+
   v <- calib_a[i] %>% terra::vect()
-  
+
   # species-specific predictor projection folders
-  
+
   fut_folder <- file.path(folder_paths[2], sp_names[i])
   dir.create(fut_folder)
-  
-  
+
+
   # Run PCA collinearity correction
   env_new[[i]] <- flexsdm::correct_colinvar(
     env_layer = env_data,
     proj = scenario_path,
-    save_proj =  fut_folder,
+    save_proj = fut_folder,
     restric_to_region = v,
     restric_pca_proj = TRUE,
     method = "pca",
     based_on_points = FALSE
   )
-  
+
   # Save tables
-  
+
   env_new[[i]]$cumulative_variance %>% readr::write_tsv(file.path(folder_paths[1], paste0(sp_names[i], "-cum_var.txt")))
-  
+
   env_new[[i]]$coefficients %>% readr::write_tsv(file.path(folder_paths[1], paste0(sp_names[i], "-coefficients.txt")))
-  
+
   # Saver raster for current conditions
   terra::writeRaster(env_new[[i]]$env_layer, file.path(folder_paths[1], paste0(sp_names[i], ".tif")), overwrite = TRUE)
 }
-
 ```
 
 These principal components will be used as uncorrelated predictors in SDMs. To interpret ecological meaning of each PC, explore the loading coefficients—e.g., a PC heavily influenced by bio1, bio5, and bio6 may represent a temperature gradient.
@@ -552,7 +554,7 @@ for (s in 1:length(sp_names)) {
   # Extract occurrence data for the current species.
   occ_data <- species_data %>%
     dplyr::filter(species == sp_names[s])
-  
+
   # Add a unique identifier to each occurrence record (required for filtering).
   occ_data$idd <- seq_len(nrow(occ_data))
 
@@ -627,7 +629,7 @@ filtered_occurrences$pr_ab <- 1
 
 # Prepare to load environmental PCA predictors for each species.
 # Find all .tif files in the '4_Predictors_by_sp' directory (one per species).
-sp_pc <- file.path(proj_dir[2], "4_Predictors_by_sp/1_Current/") %>% 
+sp_pc <- file.path(proj_dir[2], "4_Predictors_by_sp/1_Current/") %>%
   list.files(., full.names = TRUE, pattern = ".tif")
 
 # Set the names of the vector to the species names (by stripping ".tif" extension from the file names).
@@ -645,13 +647,13 @@ background <- list()
 # Loop over each species to generate pseudo-absences and background points.
 for (i in 1:length(sp_names)) {
   message("species ", i)
-  
+
   # Extract filtered occurrence records for the current species.
   coord <- dplyr::filter(filtered_occurrences, species == sp_names[i])
-  
+
   # Load the PCA-reduced environmental raster for the current species.
   pred <- terra::rast(sp_pc[sp_names[i]])
-  
+
   set.seed(15) # Set random seed for reproducibility.
 
   # Generate pseudo-absence points for the current species.
@@ -663,8 +665,8 @@ for (i in 1:length(sp_names)) {
       x = "x",
       y = "y",
       n = nrow(coord) * 2, # 2x number of presences
-      method = "random",    # Random selection
-      rlayer = pred         # Within the species-specific training area
+      method = "random", # Random selection
+      rlayer = pred # Within the species-specific training area
     ) %>%
     dplyr::mutate(
       species = sp_names[i] # Label with species name
@@ -711,7 +713,7 @@ dir_fig # Directory where figure files will be saved
 # These polygons define the modeling extent (calibration area) for each species.
 calib_a <- list.files(calib_dir, full.names = TRUE, pattern = ".gpkg")
 
-# Assign species names to each element of the calib_a vector, 
+# Assign species names to each element of the calib_a vector,
 # by extracting the filename and removing the ".gpkg" extension.
 names(calib_a) <- basename(calib_a) %>% gsub(".gpkg", "", .)
 
@@ -724,31 +726,31 @@ for (i in 1:length(sp_names)) {
 
   # Plot
   p <- ggplot() +
-  geom_spatvector(data = ca, fill = NA, color = "black", linetype = "dashed") +
-  geom_point(data = bg_data, aes(x = x, y = y), color = "gray60", size = 0.7, alpha = 0.5) +
-  geom_point(data = pa_data, aes(x = x, y = y, color = as.factor(pr_ab))) +
-  scale_color_manual(
-         values = c("1" = "blue", "0" = "red"),
-       ) +
-  coord_sf() +
-  theme_bw() +
-  labs(
-    title = paste("Species:", sp_names),
-    subtitle = "Blue = Presence | Red = Pseudo-Absence | Gray = Background",
-    x = "Longitude", y = "Latitude"
-  ) +
-  annotation_scale(location = "br", width_hint = 0.3) +
-  annotation_north_arrow(
-    location = "bl",
-    style = north_arrow_fancy_orienteering,
-    height = unit(1.5, "cm"),
-    width = unit(1.5, "cm")
-  ) + 
-  labs(color = element_blank()) 
+    geom_spatvector(data = ca, fill = NA, color = "black", linetype = "dashed") +
+    geom_point(data = bg_data, aes(x = x, y = y), color = "gray60", size = 0.7, alpha = 0.5) +
+    geom_point(data = pa_data, aes(x = x, y = y, color = as.factor(pr_ab))) +
+    scale_color_manual(
+      values = c("1" = "blue", "0" = "red"),
+    ) +
+    coord_sf() +
+    theme_bw() +
+    labs(
+      title = paste("Species:", sp_names),
+      subtitle = "Blue = Presence | Red = Pseudo-Absence | Gray = Background",
+      x = "Longitude", y = "Latitude"
+    ) +
+    annotation_scale(location = "br", width_hint = 0.3) +
+    annotation_north_arrow(
+      location = "bl",
+      style = north_arrow_fancy_orienteering,
+      height = unit(1.5, "cm"),
+      width = unit(1.5, "cm")
+    ) +
+    labs(color = element_blank())
 
   # Print the plot to the console
   p
-  
+
   # Save
   ggsave(
     filename = file.path(dir_fig, paste0(sp_names[i], "_pr-ab-bg_map.png")),
@@ -772,16 +774,16 @@ partitioned_bg <- list()
 # Loop through each species to perform spatial partitioning for cross-validation.
 for (i in seq_along(sp_names)) {
   message("Processing spatial partitioning for: ", i)
-  
+
   # Select presence + pseudo-absence data for the current species.
   psa_select <- pres_pabsences %>% dplyr::filter(species == sp_names[i])
-  
+
   # Select background points for the current species.
   bg_select <- background %>% dplyr::filter(species == sp_names[i])
-  
+
   # Load PCA-reduced environmental raster for the species (used for spatial partitioning).
   env_subset <- terra::rast(sp_pc[sp_names[i]])
-  
+
   # Attempt spatial partitioning using spatial blocks (grids).
   # This method divides the study area into blocks, assigning data in each block to the same fold.
   part <-
@@ -791,14 +793,14 @@ for (i in seq_along(sp_names)) {
       x = "x",
       y = "y",
       pr_ab = "pr_ab",
-      n_part = 4,         # Number of partitions/folds
-      min_res_mult = 4,   # Controls minimum block size (relative to raster resolution)
+      n_part = 4, # Number of partitions/folds
+      min_res_mult = 4, # Controls minimum block size (relative to raster resolution)
       max_res_mult = 300, # Controls maximum block size
-      num_grids = 60,     # Number of candidate grids to test
-      min_occ = 5,        # Minimum number of occurrences per fold
-      prop = 0.9          # Proportion of data to be included in the partition (for exclusion of sparse blocks)
+      num_grids = 60, # Number of candidate grids to test
+      min_occ = 5, # Minimum number of occurrences per fold
+      prop = 0.9 # Proportion of data to be included in the partition (for exclusion of sparse blocks)
     )
-  
+
   # If block partitioning fails (e.g., too few records per block), try latitudinal bands.
   if (length(part) < 3) {
     part <-
@@ -808,7 +810,7 @@ for (i in seq_along(sp_names)) {
         x = "x",
         y = "y",
         pr_ab = "pr_ab",
-        type = "lat",      # Split into horizontal (latitudinal) bands
+        type = "lat", # Split into horizontal (latitudinal) bands
         n_part = 4,
         min_bands = 2,
         max_bands = 60,
@@ -825,7 +827,7 @@ for (i in seq_along(sp_names)) {
         x = "x",
         y = "y",
         pr_ab = "pr_ab",
-        type = "lon",      # Split into vertical (longitudinal) bands
+        type = "lon", # Split into vertical (longitudinal) bands
         n_part = 4,
         min_bands = 2,
         max_bands = 60,
@@ -841,7 +843,7 @@ for (i in seq_along(sp_names)) {
       pr_ab = "pr_ab",
       method = c(method = "kfold", folds = 5)
     )
-    
+
     # Randomly assign background points to 5 folds.
     partitioned_bg[[i]] <- flexsdm::part_random(
       data = bg_select,
@@ -849,25 +851,25 @@ for (i in seq_along(sp_names)) {
       method = c(method = "kfold", folds = 5)
     )
   }
-  
+
   # If spatial partitioning was successful (contains "best_part_info"), store results and save partition details.
   if (any("best_part_info" == names(part))) {
     # Store partitioned presence/pseudo-absence data, adding the species name.
     partitioned_psa[[i]] <- part$part %>% dplyr::mutate(species = sp_names[i])
-    
+
     # Save the spatial partition grid (as a raster) for reference or plotting later.
     terra::writeRaster(
       part$grid,
       file.path(points_dir, paste0(sp_names[i], "_best_part.tif")),
       overwrite = TRUE
     )
-    
+
     # Save partitioning summary (e.g., number of records per fold, SD, etc.).
     readr::write_tsv(
       part$best_part_info,
       file.path(points_dir, paste0(sp_names[i], "_best_part.txt"))
     )
-    
+
     # Assign each background point to a partition/fold according to the spatial partitioning.
     partitioned_bg[[i]] <-
       flexsdm::sdm_extract(
@@ -877,7 +879,7 @@ for (i in seq_along(sp_names)) {
         env_layer = part$grid
       )
   }
-  
+
   # Run garbage collection to free memory before next iteration (useful in large species datasets).
   gc()
 }
@@ -916,7 +918,7 @@ sp_pc <- list.files(
 
 # List all future environmental raster files (principal component layers) for each species.
 # These are the PCA-reduced predictor rasters stored in the specified directory.
-dir_futur_pca <- file.path(proj_dir[2], "4_Predictors_by_sp/2_Projection/") 
+dir_futur_pca <- file.path(proj_dir[2], "4_Predictors_by_sp/2_Projection/")
 
 # Get all species folders (exclude the base folder itself)
 species_dirs <- list.dirs(dir_futur_pca, recursive = FALSE)
@@ -956,8 +958,7 @@ psa <- readr::read_tsv(file.path(proj_dir[1], "1_Inputs/1_Occurrences/0_partitio
 
 # Load the partitioned background points dataset from file.
 # Background points are used in algorithms like Maxent and should also have partition assignments.
-bkgrnd <- readr::read_tsv(file.path(proj_dir[1], "1_Inputs/1_Occurrences/0_partitioned_background.txt")
-
+bkgrnd <- readr::read_tsv(file.path(proj_dir[1], "1_Inputs/1_Occurrences/0_partitioned_background.txt"))
 ```
 
 # 12. Main loop by species for model fitting, evaluation and prediction
@@ -973,9 +974,9 @@ for (i in 1:length(sp_names)) {
   # Print a message to the console to track progress.
   message(paste0("\n===== Processing species: ", s_name, " ====="))
 
-  ##%######################################################%##
+  ## %######################################################%##
   ####      1. Prepare Data for the Current Species       ####
-  ##%######################################################%##
+  ## %######################################################%##
 
   # Load the environmental raster data specific to the species.
   env_r <- terra::rast(sp_pc[s_name])
@@ -1179,40 +1180,41 @@ for (i in 1:length(sp_names)) {
   readr::write_tsv(varimp, file.path(dir_perf, paste0(s_name, "_varimp.txt")))
 
   # Create a bar plot to visualize variable importance across models.
-  varimp2 <- varimp %>% tidyr::pivot_longer(
-    cols = TPR:IMAE,
-    names_to = "metric",
-    values_to = "value"
-  ) %>%
+  varimp2 <- varimp %>%
+    tidyr::pivot_longer(
+      cols = TPR:IMAE,
+      names_to = "metric",
+      values_to = "value"
+    ) %>%
     filter(metric %in% c("AUC", "TSS", "SORENSEN")) # Filter for specific metrics
-  
-  p_vi <-  ggplot(varimp2, aes(x = predictors, y = value, fill = model)) +
+
+  p_vi <- ggplot(varimp2, aes(x = predictors, y = value, fill = model)) +
     scale_fill_brewer(palette = "Set1") +
     geom_bar(stat = "identity", position = position_dodge()) +
-    facet_grid(model~metric, scales = "free") +
+    facet_grid(model ~ metric, scales = "free") +
     coord_flip() +
     labs(
       x = "Predictor variables",
       y = "Variable importance"
     ) +
     theme_bw()
-  
+
   print(p_vi)
   ggsave(
     filename = file.path(dir_fig, paste0(s_name, "_varImp.png")),
     plot = p_vi,
-    width = 12, height = 14, dpi = 300, unit="cm", scale=1.5
+    width = 12, height = 14, dpi = 300, unit = "cm", scale = 1.5
   )
-  
+
   # Summarize performance metrics (e.g., SORENSEN, TSS) for all individual models.
   model_perf <- flexsdm::sdm_summarize(model_obj_list)
   # Save the performance summary to a text file.
   readr::write_tsv(model_perf, file.path(dir_perf, paste0(s_name, "_models_performance.txt")))
 
 
-  ##%######################################################%##
+  ## %######################################################%##
   ####        4. Filter Models for Ensemble              ####
-  ##%######################################################%##
+  ## %######################################################%##
   message("  > Filtering models to perform ensemble...")
 
   # Filter models based on performance criteria to select the "best" ones for the ensemble.
@@ -1264,7 +1266,8 @@ for (i in 1:length(sp_names)) {
     # Combine the performance tables of individual models and ensemble models.
     model_perf_with_ens <- dplyr::bind_rows(model_perf, ens_perf)
     # Overwrite the previous performance file to include the ensemble results.
-    readr::write_tsv(model_perf_with_ens,
+    readr::write_tsv(
+      model_perf_with_ens,
       file.path(dir_perf, paste0(s_name, "_models_performance.txt"))
     )
   }
@@ -1276,7 +1279,7 @@ for (i in 1:length(sp_names)) {
   message("  > Predicting models ...")
 
   names(good_models) <- NULL
-  
+
   # Predict habitat suitability for each of the "good" individual models.
   if (length(good_models) > 0) {
     prd_list <- flexsdm::sdm_predict(
@@ -1300,18 +1303,18 @@ for (i in 1:length(sp_names)) {
   }
 
   # Predict habitat suitability for the ensemble models.
-  
+
   if (length(ensemble_list) > 0) {
-    for(i in seq_along(ensemble_list)){
+    for (i in seq_along(ensemble_list)) {
       ens_prd <- sdm_predict(
-      models = ensemble_list[[i]],
-      pred = env_r,
-      thr = "max_sorensen",
-      con_thr = TRUE,
-      clamp = TRUE,
-      pred_type = "cloglog"
-    )
-      
+        models = ensemble_list[[i]],
+        pred = env_r,
+        thr = "max_sorensen",
+        con_thr = TRUE,
+        clamp = TRUE,
+        pred_type = "cloglog"
+      )
+
       # Save prediction as a GeoTIFF.
       writeRaster(
         ens_prd[[1]],
@@ -1321,22 +1324,22 @@ for (i in 1:length(sp_names)) {
       )
     }
   }
-  
-  ##%######################################################%##
+
+  ## %######################################################%##
   ####               7. Future projections                ####
-  ##%######################################################%##
-  
+  ## %######################################################%##
+
   message("  > Predicting models for future projections ...")
-  
+
   fut_env <- fut_sp_pc_list[[s_name]]
-  
+
   # Loop over each scenario raster stack (fut_sp_pc_list already has species->scenario->raster)
   for (sc_name in names(fut_env)) {
-    env_r <- fut_env[[sc_name]]  # raster stack for this scenario
-    
+    env_r <- fut_env[[sc_name]] # raster stack for this scenario
+
     # Create output folder if it doesn't exist
     dir_future <- proj_dir[grep(paste0("2_Outputs/2_Projection"), proj_dir)][1]
-    
+
     # --- Predict individual models ---
     if (length(good_models) > 0) {
       prd_list <- flexsdm::sdm_predict(
@@ -1347,18 +1350,18 @@ for (i in 1:length(sp_names)) {
         con_thr = TRUE,
         pred_type = "cloglog"
       )
-      
+
       # Save individual model predictions
       for (alg in names(prd_list)) {
         terra::writeRaster(
           prd_list[[alg]],
-          file.path(dir_future, sc_name, paste0('Algorithm'), alg, paste0(s_name, ".tif")),
+          file.path(dir_future, sc_name, paste0("Algorithm"), alg, paste0(s_name, ".tif")),
           overwrite = TRUE,
           filetype = "GTiff"
         )
       }
     }
-    
+
     # --- Predict ensemble models ---
     if (length(ensemble_list) > 0) {
       for (i in seq_along(ensemble_list)) {
@@ -1370,14 +1373,14 @@ for (i in 1:length(sp_names)) {
           con_thr = TRUE,
           pred_type = "cloglog"
         )
-        
+
         # Save ensemble prediction
         writeRaster(
           ens_prd[[1]],
           filename = file.path(
             dir_future,
             sc_name,
-            paste0('Algorithm'),
+            paste0("Algorithm"),
             paste0(names(ensemble_list[i])),
             paste0(s_name, ".tif")
           ),
@@ -1387,8 +1390,8 @@ for (i in 1:length(sp_names)) {
       }
     }
   }
-  
-  
+
+
   ## %######################################################%##
   ####                 8. Clean Up for Next Iteration      ####
   ## %######################################################%##
@@ -1398,7 +1401,6 @@ for (i in 1:length(sp_names)) {
   if (exists("alg_prd_cont")) rm(alg_prd_cont)
   # Trigger garbage collection to release memory explicitly.
   gc()
-
 } # End of the main species loop.
 ```
 
@@ -1409,7 +1411,7 @@ Iterate through each species to process its maps in isolation. This is more memo
 ```{r visualization_spatial_pred, eval = FALSE}
 for (s_name in sp_names) {
   message(paste("  - Processing maps for:", s_name))
-  
+
   # 1. Search recursively for all prediction raster files (.tif) for the current species.
   #    Each file represents a prediction from a different model or ensemble.
   #    The pattern ensures only files ending with the species name and .tif extension are matched.
@@ -1419,52 +1421,52 @@ for (s_name in sp_names) {
     recursive = TRUE,
     full.names = TRUE
   )
-  
+
   # If no prediction files are found for this species, output a message and skip to the next species.
   if (length(species_files) == 0) {
     message(paste("    - No prediction files were found for", s_name, ". Skipping."))
     next
   }
-  
+
   # 2. Load all prediction raster files and convert them to a format suitable for plotting with ggplot2.
-  r_cont <- list() # list to store continuous models 
+  r_cont <- list() # list to store continuous models
   r_semibin <- list() # list to store semi-binary models
 
-for(i in 1:length(species_files)){
-  r_cont[[i]] <- terra::rast(species_files[i])[[1]]  
-  r_semibin[[i]] <- terra::rast(species_files[i])[[2]]  
-}
-r_cont <- do.call("c", r_cont)  
-r_semibin <- do.call("c", r_semibin)  
-names(r_semibin) <- names(r_cont)
+  for (i in 1:length(species_files)) {
+    r_cont[[i]] <- terra::rast(species_files[i])[[1]]
+    r_semibin[[i]] <- terra::rast(species_files[i])[[2]]
+  }
+  r_cont <- do.call("c", r_cont)
+  r_semibin <- do.call("c", r_semibin)
+  names(r_semibin) <- names(r_cont)
 
-# 3. Plot the continuous habitat suitability maps for this species, with one facet per model.
-p_map_cont <- ggplot() +
-  tidyterra::geom_spatraster(data = r_cont) +
-  facet_wrap( ~ lyr) + 
-  scale_fill_princess_c(palette = "america") + 
-  theme_bw()
+  # 3. Plot the continuous habitat suitability maps for this species, with one facet per model.
+  p_map_cont <- ggplot() +
+    tidyterra::geom_spatraster(data = r_cont) +
+    facet_wrap(~lyr) +
+    scale_fill_princess_c(palette = "america") +
+    theme_bw()
 
-# 4. Plot the semibinary habitat suitability maps for this species, with one facet per model.
-p_map_semibin <- ggplot() +
-  tidyterra::geom_spatraster(data = r_semibin) +
-  facet_wrap( ~ lyr) + 
-  scale_fill_princess_c(palette = "america") + 
-  theme_bw()
+  # 4. Plot the semibinary habitat suitability maps for this species, with one facet per model.
+  p_map_semibin <- ggplot() +
+    tidyterra::geom_spatraster(data = r_semibin) +
+    facet_wrap(~lyr) +
+    scale_fill_princess_c(palette = "america") +
+    theme_bw()
 
 
-# 5. Save the generated map as a PNG file in the figures directory, one file per species.
-ggsave(
-  filename = file.path(dir_fig, paste0(s_name, "_cont_map", ".png")),
-  plot = p_map_cont,
-  width = 12, height = 10, dpi = 300
-)
-ggsave(
-  filename = file.path(dir_fig, paste0(s_name, "_semibin_map", ".png")),
-  plot = p_map_semibin,
-  width = 12, height = 10, dpi = 300
-)
-message(paste(" - Map saved for:", s_name))
+  # 5. Save the generated map as a PNG file in the figures directory, one file per species.
+  ggsave(
+    filename = file.path(dir_fig, paste0(s_name, "_cont_map", ".png")),
+    plot = p_map_cont,
+    width = 12, height = 10, dpi = 300
+  )
+  ggsave(
+    filename = file.path(dir_fig, paste0(s_name, "_semibin_map", ".png")),
+    plot = p_map_semibin,
+    width = 12, height = 10, dpi = 300
+  )
+  message(paste(" - Map saved for:", s_name))
 }
 
 message("\nCheck figures output in 'dir_fig' path")
@@ -1474,83 +1476,82 @@ message("\nScript successfully completed!")
 # 14. Visualize future projections
 
 ```{r vis_future_proj, eval = FALSE}
-
 # Base folder with future projections
 dir_future <- proj_dir[grep(paste0("2_Outputs/2_Projection"), proj_dir)][1]
 
 # List of scenarios (folders)
 scenario_folders <- list.dirs(dir_future, recursive = FALSE, full.names = TRUE)
 
-for(s_name in sp_names){
+for (s_name in sp_names) {
   message("Processing species: ", s_name)
-  
-  for(sc_folder in scenario_folders){
+
+  for (sc_folder in scenario_folders) {
     sc_name <- basename(sc_folder)
-    
+
     # List algorithm folders
     alg_folders <- list.dirs(file.path(sc_folder, "Algorithm"), recursive = FALSE, full.names = TRUE)
-    
+
     r_cont_list <- list()
     r_semibin_list <- list()
     alg_names <- character()
-    
-    for(alg_folder in alg_folders){
+
+    for (alg_folder in alg_folders) {
       alg_name <- basename(alg_folder)
       r_file <- list.files(alg_folder, pattern = paste0(s_name, ".tif$"), full.names = TRUE)
-      if(length(r_file) == 0) next
-      
+      if (length(r_file) == 0) next
+
       r_stack <- terra::rast(r_file)
       r_cont_list[[alg_name]] <- r_stack[[1]]
       r_semibin_list[[alg_name]] <- r_stack[[2]]
       alg_names <- c(alg_names, alg_name)
     }
-    
+
     # Skip if no raster files found
-    if(length(r_cont_list) == 0){
+    if (length(r_cont_list) == 0) {
       message("  - No raster files found for species ", s_name, " in scenario ", sc_name, ". Skipping.")
       next
     }
-    
+
     # Combine rasters into a single SpatRaster for ggplot faceting
     r_cont <- r_cont_list[[1]]
     for (i in 2:length(r_cont_list)) {
       r_cont <- c(r_cont, r_cont_list[[i]])
     }
-    
+
     r_semibin <- r_semibin_list[[1]]
     for (i in 2:length(r_semibin_list)) {
       r_semibin <- c(r_semibin, r_semibin_list[[i]])
     }
-    
+
     names(r_semibin) <- names(r_cont)
-    
+
     # Continuous map
     p_cont <- ggplot() +
       tidyterra::geom_spatraster(data = r_cont) +
-      facet_wrap(~ lyr) +
+      facet_wrap(~lyr) +
       scale_fill_princess_c(palette = "america") +
       theme_bw() +
       ggtitle(paste(s_name, sc_name, "Continuous"))
-    
+
     ggsave(file.path(dir_fig, paste0(s_name, "_", sc_name, "_cont.png")),
-           plot = p_cont, width = 12, height = 10, dpi = 300)
-    
+      plot = p_cont, width = 12, height = 10, dpi = 300
+    )
+
     # Semibinary map
     p_semibin <- ggplot() +
       tidyterra::geom_spatraster(data = r_semibin) +
-      facet_wrap(~ lyr) +
+      facet_wrap(~lyr) +
       scale_fill_princess_c(palette = "america") +
       theme_bw() +
       ggtitle(paste(s_name, sc_name, "Semibinary"))
-    
+
     ggsave(file.path(dir_fig, paste0(s_name, "_", sc_name, "_semibin.png")),
-           plot = p_semibin, width = 12, height = 10, dpi = 300)
-    
+      plot = p_semibin, width = 12, height = 10, dpi = 300
+    )
+
     message("  - Faceted maps saved for scenario ", sc_name)
   }
 }
-
-
 ```
 
 # 15. Conclusion

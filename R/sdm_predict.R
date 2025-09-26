@@ -253,7 +253,7 @@ sdm_predict <-
 
       # Detect models based on distance
       di <- which(sapply(m, names) == "domain")
-      if(length(di) > 0){
+      if (length(di) > 0) {
         clss[di] <- "domain"
       }
     }
@@ -660,8 +660,8 @@ sdm_predict <-
         for (i in wm) {
           r <- pred[[!terra::is.factor(pred)]][[1]]
           r[!is.na(r)] <- NA
-            r[as.numeric(rownames(pred_df))] <-
-              map_env_dist(training_data = m[[i]]$domain, projection_data = pred_df, metric = "domain")
+          r[as.numeric(rownames(pred_df))] <-
+            map_env_dist(training_data = m[[i]]$domain, projection_data = pred_df, metric = "domain")
           model_c[[i]][rowset] <- r[rowset]
         }
       }
@@ -680,7 +680,6 @@ sdm_predict <-
         "randomforest",
         "ksvm",
         "domain"
-
       ),
       names = c("gam", "gau", "glm", "gbm", "max", "net", "raf", "svm", "dom")
     )

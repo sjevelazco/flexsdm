@@ -113,7 +113,7 @@
 #'     x = "x",
 #'     y = "y",
 #'     n = nrow(single_spp) * 10,
-#'     method = c(method='kmeans', env = somevar),
+#'     method = c(method = "kmeans", env = somevar),
 #'     rlayer = regions
 #'   )
 #'

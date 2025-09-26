@@ -229,11 +229,11 @@
 #'
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####       Use correct_colinvar with points data        ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' data("abies")
 #'
 #' # Presence-absence database
@@ -280,7 +280,6 @@
 #'   x = "x",
 #'   y = "y"
 #' )
-#'
 #' }
 #'
 correct_colinvar <- function(env_layer,
@@ -340,20 +339,20 @@ correct_colinvar <- function(env_layer,
       th <- as.numeric(method["th"])
     }
 
-    if(based_on_points){
+    if (based_on_points) {
       h <- data
     } else {
-        if (is.null(maxcell)) {
-      h <- terra::as.data.frame(env_layer) %>% stats::na.omit()
-    } else {
-      # Raster random sample
-      set.seed(10)
-      h <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
-        sample(., size = maxcell, replace = FALSE) %>%
-        sort()
-      h <- env_layer[h] %>%
-        stats::na.omit()
-    }
+      if (is.null(maxcell)) {
+        h <- terra::as.data.frame(env_layer) %>% stats::na.omit()
+      } else {
+        # Raster random sample
+        set.seed(10)
+        h <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
+          sample(., size = maxcell, replace = FALSE) %>%
+          sort()
+        h <- env_layer[h] %>%
+          stats::na.omit()
+      }
     }
 
     h <- abs(stats::cor(h, method = "pearson"))
@@ -361,7 +360,7 @@ correct_colinvar <- function(env_layer,
 
     cor_var <- h > th
     cor_var <- apply(cor_var, 2, function(x) colnames(h)[x], simplify = FALSE)
-    if (all(sapply(cor_var, length)==0)) {
+    if (all(sapply(cor_var, length) == 0)) {
       cor_var <- "No pair of variables reached the specified correlation threshold."
     }
 
@@ -452,11 +451,11 @@ correct_colinvar <- function(env_layer,
       env_layer_original <- env_layer
     }
 
-    if(based_on_points){
+    if (based_on_points) {
       # mean
-      means <- apply(data, 2, mean, na.rm=TRUE)
+      means <- apply(data, 2, mean, na.rm = TRUE)
       # SD
-      stds <- apply(data, 2, sd, na.rm=TRUE)
+      stds <- apply(data, 2, sd, na.rm = TRUE)
     } else {
       # mean
       means <- t(terra::global(env_layer, "mean", na.rm = T)) %>% c()
@@ -468,12 +467,12 @@ correct_colinvar <- function(env_layer,
 
 
     # Standardize raster values
-    if(!based_on_points){
+    if (!based_on_points) {
       env_layer <- terra::scale(env_layer, center = means, scale = stds)
     }
     vnmes <- names(means)
 
-    if(based_on_points){
+    if (based_on_points) {
       # Statandarize data
       p0 <- data %>%
         scale(center = means, scale = stds)
@@ -524,10 +523,10 @@ correct_colinvar <- function(env_layer,
     if (restric_pca_proj) {
       env_layer <- terra::predict(env_layer, p)
     } else {
-      if(!based_on_points){
+      if (!based_on_points) {
         env_layer_original <- terra::scale(env_layer_original,
-                                           center = means,
-                                           scale = stds
+          center = means,
+          scale = stds
         )
       }
       env_layer <- terra::predict(env_layer_original, p)
@@ -566,8 +565,8 @@ correct_colinvar <- function(env_layer,
             terra::mask(., restric_to_region)
         }
 
-        if(!based_on_points){
-           scen <- terra::scale(scen, center = means, scale = stds)
+        if (!based_on_points) {
+          scen <- terra::scale(scen, center = means, scale = stds)
         }
         scen <- terra::predict(scen, p)
         terra::writeRaster(
@@ -583,7 +582,7 @@ correct_colinvar <- function(env_layer,
 
   #### FA ####
   if (any(method %in% "fa")) {
-    if(based_on_points){
+    if (based_on_points) {
       p <- as.data.frame(data) %>%
         scale(center = TRUE, scale = TRUE)
       rm(data)
@@ -637,9 +636,9 @@ correct_colinvar <- function(env_layer,
       }
     }
 
-    if(is.null(fit)){
-      message("Factorial analysis could not be performed because ", ns, " factors are too many for ", ncol(p),  " variables")
-      message("It will tested with ", ns-1, " factors")
+    if (is.null(fit)) {
+      message("Factorial analysis could not be performed because ", ns, " factors are too many for ", ncol(p), " variables")
+      message("It will tested with ", ns - 1, " factors")
       ns <- ns - 1
       for (tt in 1:length(lwr)) {
         tryCatch(

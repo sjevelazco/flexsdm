@@ -556,7 +556,6 @@ unique list values in pr_ab column are: ",
         break
       }
     }
-
   }
 
   if (nrow(Opt2) > 1) {

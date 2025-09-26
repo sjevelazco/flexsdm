@@ -23,7 +23,6 @@ This data set contains presences of 11 palm species from Southern Brazil sourced
 \dontrun{
 require(dplyr)
 data("palms")
-
 }
 }
 \references{
