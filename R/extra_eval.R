@@ -293,7 +293,7 @@ extra_eval <-
     # Transform raster to df
     env_calib2 <-
       terra::as.data.frame(training_data, xy = FALSE, na.rm = TRUE)
-    if(any("SpatRaster" == class(projection_data))) {
+    if (any("SpatRaster" == class(projection_data))) {
       env_proj2 <-
         terra::as.data.frame(projection_data, xy = FALSE, na.rm = TRUE)
     } else {

@@ -90,6 +90,5 @@
 #' \dontrun{
 #' require(dplyr)
 #' data("palms")
-#'
 #' }
 "palms"

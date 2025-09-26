@@ -1,4 +1,3 @@
-
 require(terra)
 require(dplyr)
 somevar <-
@@ -210,8 +209,8 @@ test_that("based on points", {
     restric_pca_proj = FALSE,
     based_on_points = TRUE,
     data = abies2,
-    x='x',
-    y='y'
+    x = "x",
+    y = "y"
   )
   expect_equal(length(v), 3)
 
@@ -223,34 +222,34 @@ test_that("based on points", {
     restric_pca_proj = FALSE,
     based_on_points = TRUE,
     data = abies2,
-    x='x',
-    y='y'
+    x = "x",
+    y = "y"
   )
   expect_equal(length(v), 5)
 
   # Perform vif collinearity control
   v <- correct_colinvar(
     env_layer = somevar,
-    method = c('vif', th = '5'),
+    method = c("vif", th = "5"),
     maxcell = NULL,
     restric_pca_proj = FALSE,
     based_on_points = TRUE,
     data = abies2,
-    x='x',
-    y='y'
+    x = "x",
+    y = "y"
   )
   expect_equal(length(v), 3)
 
-    # Perform pearson collinearity control
+  # Perform pearson collinearity control
   v <- correct_colinvar(
     env_layer = somevar,
-    method = c('pearson', th = '0.7'),
+    method = c("pearson", th = "0.7"),
     maxcell = NULL,
     restric_pca_proj = FALSE,
     based_on_points = TRUE,
     data = abies2,
-    x='x',
-    y='y'
+    x = "x",
+    y = "y"
   )
   expect_equal(length(v), 2)
 })

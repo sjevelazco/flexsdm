@@ -256,11 +256,11 @@ plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibrati
 
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####       Use correct_colinvar with points data        ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 data("abies")
 
 # Presence-absence database
@@ -307,7 +307,6 @@ correct_colinvar(
   x = "x",
   y = "y"
 )
-
 }
 
 }

@@ -315,7 +315,7 @@ msdm_posteriori <- function(records,
 
   records <- records %>%
     dplyr::filter(.data[[pr_ab]] == 1)
-  
+
 
   # 'mcp' method----
   if (method == "mcp") {

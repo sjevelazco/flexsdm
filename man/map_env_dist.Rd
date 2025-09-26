@@ -72,7 +72,6 @@ p_extra(
   color_p = "red",
   color_gradient = c("#000033", "#1400FF", "#C729D6", "#FF9C63", "#FFFF60")
 )
-
 }
 }
 \references{

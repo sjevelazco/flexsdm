@@ -274,4 +274,3 @@ test_that("sample_background misuse of argument", {
     )
   )
 })
-

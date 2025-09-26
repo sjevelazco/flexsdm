@@ -443,9 +443,10 @@ mah_dist <- function(x, y, cov) {
 #'
 #' @noRd
 #'
-kf <- function(df, n){
+kf <- function(df, n) {
   suppressWarnings(km <- stats::kmeans(df %>% dplyr::select(-c(cell:y)),
-                                       centers = n))
+    centers = n
+  ))
   result <- data.frame(cluster = km$cluster, cell = names(km$cluster)) %>%
     dplyr::as_tibble() %>%
     dplyr::arrange(cluster) %>%

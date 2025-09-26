@@ -67,13 +67,12 @@
 #'   color_p = "red",
 #'   color_gradient = c("#000033", "#1400FF", "#C729D6", "#FF9C63", "#FFFF60")
 #' )
-#'
 #' }
 map_env_dist <- function(
     training_data,
     projection_data,
     metric = "domain") {
-  cell <- y <- x <- cluster <- . <-  NULL
+  cell <- y <- x <- cluster <- . <- NULL
 
   # Gower distance
 
