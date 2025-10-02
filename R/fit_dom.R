@@ -8,6 +8,7 @@
 #' @param predictors_f character. Vector with the column names of qualitative
 #' predictor variables (i.e. ordinal or nominal variables; factors). Usage predictors_f = c("landform")
 #' @param partition character. Column name with training and validation partition groups.
+#' If partition = NULL, the model will be validated with the same data used for fitting.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1). This is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
@@ -92,11 +93,11 @@
 #' )
 #'
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####                Fit a Domain model                  ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' # Fit some models
 #' mdom <- fit_dom(
 #'   data = some_sp,
@@ -120,15 +121,15 @@
 #' )
 #' plot(ind_p$dom)
 #'
-#' ##%######################################################%##
+#' ## %######################################################%##
 #' #                                                          #
 #' ####             Explore Domain suitabiltiy             ####
 #' ####             in the environmental space             ####
 #' #                                                          #
-#' ##%######################################################%##
+#' ## %######################################################%##
 #'
 #' p_extra(
-#'   training_data = some_sp %>% dplyr::filter(pr_ab == 1), #select only presences
+#'   training_data = some_sp %>% dplyr::filter(pr_ab == 1), # select only presences
 #'   x = "x",
 #'   y = "y",
 #'   pr_ab = "pr_ab",
@@ -142,7 +143,7 @@
 #' )
 #'
 #' p_extra(
-#'   training_data = some_sp %>% dplyr::filter(pr_ab == 1), #select only presences
+#'   training_data = some_sp %>% dplyr::filter(pr_ab == 1), # select only presences
 #'   x = "x",
 #'   y = "y",
 #'   pr_ab = "pr_ab",
@@ -155,13 +156,12 @@
 #'   color_p = "black",
 #'   color_gradient = c("#1400FF", "#C729D6")
 #' )
-#'
 #' }
 fit_dom <- function(data,
                     response,
                     predictors,
                     predictors_f = NULL,
-                    partition,
+                    partition = NULL,
                     thr = NULL,
                     fit_formula = NULL) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
@@ -170,11 +170,11 @@ fit_dom <- function(data,
   data <- data.frame(data)
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
     data <- data.frame(data)
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
@@ -203,165 +203,182 @@ fit_dom <- function(data,
   } else {
     formula1 <- fit_formula
   }
-  message(
-    "Formula used for model fitting:\n",
-    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
-    "\n"
-  )
+
+  if (!is.null(partition)) {
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
+    )
+  }
+
 
 
   # Calculate range for each column
   # range_var <- data[, predictors] %>% dplyr::reframe(dplyr::across(dplyr::everything(), range))
 
   # Fit models
-  np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
-  p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
-  eval_partial_list <- list()
-  pred_test_ens <- data %>%
-    dplyr::select(dplyr::starts_with(partition)) %>%
-    apply(., 2, unique) %>%
-    data.frame() %>%
-    as.list() %>%
-    lapply(., function(x) {
-      x <- stats::na.exclude(x)
-      x[!(x %in% c("train-test", "test"))] %>% as.list()
-    })
+  if (is.null(partition)) {
+    result <- list(
+      model = list(domain = data[data[, response] == 1, c(predictors, predictors_f)])
+    )
+    return(result)
+  } else {
+    np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
+    p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
+    eval_partial_list <- list()
+    pred_test_ens <- data %>%
+      dplyr::select(dplyr::starts_with(partition)) %>%
+      apply(., 2, unique) %>%
+      data.frame() %>%
+      as.list() %>%
+      lapply(., function(x) {
+        x <- stats::na.exclude(x)
+        x[!(x %in% c("train-test", "test"))] %>% as.list()
+      })
 
-  for (h in 1:np) {
-    message("Replica number: ", h, "/", np)
+    for (h in 1:np) {
+      message("Replica number: ", h, "/", np)
 
-    out <- pre_tr_te(data, p_names, h)
-    train <- out$train
-    train <- lapply(train, function(x) x[x[, response] == 1, ]) # this algorithm only works with presence data
-    test <- out$test
-    np2 <- out$np2
-    rm(out)
+      out <- pre_tr_te(data, p_names, h)
+      train <- out$train
+      train <- lapply(train, function(x) x[x[, response] == 1, ]) # this algorithm only works with presence data
+      test <- out$test
+      np2 <- out$np2
+      rm(out)
 
-    eval_partial <- as.list(rep(NA, np2))
-    pred_test <- list()
-    mod <- list()
+      eval_partial <- as.list(rep(NA, np2))
+      pred_test <- list()
+      mod <- list()
 
-    for (i in 1:np2) {
-      message("Partition number: ", i, "/", np2)
-      tryCatch(
-        {
-          mod[[i]] <- min_gower_rcpp(
-            train[[i]][, c(predictors, predictors_f)],
-            test[[i]][, c(predictors, predictors_f)]
-          )
-
-          pred_test <- data.frame(
-            pr_ab = test[[i]][, response],
-            pred = mod[[i]]
-          )
-
-          pred_test_ens[[h]][[i]] <- pred_test %>%
-            dplyr::mutate(rnames = rownames(test[[i]]))
-
-          # Validation of model
-          eval <-
-            sdm_eval(
-              p = pred_test$pred[pred_test$pr_ab == 1],
-              a = pred_test$pred[pred_test$pr_ab == 0],
-              thr = thr
+      for (i in 1:np2) {
+        message("Partition number: ", i, "/", np2)
+        tryCatch(
+          {
+            mod[[i]] <- min_gower_rcpp(
+              train[[i]][, c(predictors, predictors_f)],
+              test[[i]][, c(predictors, predictors_f)]
             )
-          eval_partial[[i]] <- dplyr::tibble(model = "dom", eval)
-        },
-        error = function(cond) {
-          message("Sorry, but it was not possible to fit the model with this data")
-        }
+
+            pred_test <- data.frame(
+              pr_ab = test[[i]][, response],
+              pred = mod[[i]]
+            )
+
+            pred_test_ens[[h]][[i]] <- pred_test %>%
+              dplyr::mutate(rnames = rownames(test[[i]]))
+
+            # Validation of model
+            eval <-
+              sdm_eval(
+                p = pred_test$pred[pred_test$pr_ab == 1],
+                a = pred_test$pred[pred_test$pr_ab == 0],
+                thr = thr
+              )
+            eval_partial[[i]] <- dplyr::tibble(model = "dom", eval)
+          },
+          error = function(cond) {
+            message("Sorry, but it was not possible to fit the model with this data")
+          }
+        )
+      }
+
+      # Create final database with parameter performance
+      names(eval_partial) <- 1:np2
+      eval_partial <-
+        eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
+        dplyr::bind_rows(., .id = "partition")
+      eval_partial_list[[h]] <- eval_partial
+    }
+
+    eval_partial <- eval_partial_list %>%
+      dplyr::bind_rows(., .id = "replica")
+
+    eval_final <- eval_partial %>%
+      dplyr::group_by(model, threshold) %>%
+      dplyr::summarise(dplyr::across(
+        TPR:IMAE,
+        list(mean = mean, sd = stats::sd)
+      ), .groups = "drop")
+
+
+    # Bind data for ensemble
+    pred_test_ens <-
+      lapply(pred_test_ens, function(x) {
+        dplyr::bind_rows(x, .id = "part")
+      }) %>%
+      dplyr::bind_rows(., .id = "replicates") %>%
+      dplyr::tibble() %>%
+      dplyr::relocate(rnames)
+
+
+    # Fit final models with best settings
+    # mod <- min_gower_rcpp(
+    #   data[data[, response] == 1, c(predictors, predictors_f)],
+    #   data[, c(predictors, predictors_f)]
+    # )
+    #
+    # pred_test <- data.frame(
+    #   pr_ab = data[, response],
+    #   pred = mod
+    # )
+    #
+    # threshold <- sdm_eval(
+    #   p = pred_test$pred[pred_test$pr_ab == 1],
+    #   a = pred_test$pred[pred_test$pr_ab == 0],
+    #   thr = thr
+    # )
+
+    da_pres <- data[data[, response] == 1, c(predictors, predictors_f)]
+    nnn <- ifelse(nrow(da_pres) >= 100, 50, nrow(da_pres))
+
+    threshold <- list()
+    for (i in 1:nnn) {
+      if (nnn == 50) {
+        set.seed(i)
+        mod <- min_gower_rcpp(
+          da_pres %>% dplyr::slice_sample(prop = 0.50),
+          data[, c(predictors, predictors_f)]
+        )
+      } else {
+        mod <- min_gower_rcpp(
+          da_pres[-i, ],
+          data[, c(predictors, predictors_f)]
+        )
+      }
+
+      pred_test <- data.frame(
+        pr_ab = data[, response],
+        pred = mod
+      )
+
+      threshold[[i]] <- sdm_eval(
+        p = pred_test$pred[pred_test$pr_ab == 1],
+        a = pred_test$pred[pred_test$pr_ab == 0],
+        thr = thr
       )
     }
 
-    # Create final database with parameter performance
-    names(eval_partial) <- 1:np2
-    eval_partial <-
-      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
-      dplyr::bind_rows(., .id = "partition")
-    eval_partial_list[[h]] <- eval_partial
-  }
-
-  eval_partial <- eval_partial_list %>%
-    dplyr::bind_rows(., .id = "replica")
-
-  eval_final <- eval_partial %>%
-    dplyr::group_by(model, threshold) %>%
-    dplyr::summarise(dplyr::across(
-      TPR:IMAE,
-      list(mean = mean, sd = stats::sd)
-    ), .groups = "drop")
-
-
-  # Bind data for ensemble
-  pred_test_ens <-
-    lapply(pred_test_ens, function(x) {
-      dplyr::bind_rows(x, .id = "part")
-    }) %>%
-    dplyr::bind_rows(., .id = "replicates") %>%
-    dplyr::tibble() %>%
-    dplyr::relocate(rnames)
-
-
-  # Fit final models with best settings
-  # mod <- min_gower_rcpp(
-  #   data[data[, response] == 1, c(predictors, predictors_f)],
-  #   data[, c(predictors, predictors_f)]
-  # )
-  #
-  # pred_test <- data.frame(
-  #   pr_ab = data[, response],
-  #   pred = mod
-  # )
-  #
-  # threshold <- sdm_eval(
-  #   p = pred_test$pred[pred_test$pr_ab == 1],
-  #   a = pred_test$pred[pred_test$pr_ab == 0],
-  #   thr = thr
-  # )
-
-  da_pres <- data[data[, response] == 1, c(predictors, predictors_f)]
-  nnn <- ifelse(nrow(da_pres)>=100, 50, nrow(da_pres))
-
-  threshold <- list()
-  for(i in 1:nnn){
-    if(nnn==50){
-      set.seed(i)
-      mod <- min_gower_rcpp(da_pres %>% dplyr::slice_sample(prop = 0.50),
-                             data[, c(predictors, predictors_f)])
-    } else {
-      mod <- min_gower_rcpp(da_pres[-i,],
-                             data[, c(predictors, predictors_f)])
-    }
-
-    pred_test <- data.frame(
-      pr_ab = data[, response],
-      pred = mod)
-
-    threshold[[i]] <- sdm_eval(
+    threshold <- threshold %>%
+      dplyr::bind_rows(threshold) %>%
+      dplyr::group_by(threshold) %>%
+      dplyr::filter(!is.na(n_presences)) %>%
+      dplyr::summarise(thr_value = mean(thr_value))
+    threshold <- dplyr::bind_cols(threshold, sdm_eval(
       p = pred_test$pred[pred_test$pr_ab == 1],
       a = pred_test$pred[pred_test$pr_ab == 0],
-      thr = thr)
+      thr = thr
+    )[c("n_presences", "n_absences")])
+
+    # create a new object similar than data.frame
+    result <- list(
+      model = list(domain = data[data[, response] == 1, c(predictors, predictors_f)]),
+      predictors = variables,
+      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+        dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+      performance_part = eval_partial,
+      data_ens = pred_test_ens
+    )
+    return(result)
   }
-
-  threshold <- threshold %>%
-    dplyr::bind_rows(threshold) %>%
-    dplyr::group_by(threshold) %>%
-    dplyr::filter(!is.na(n_presences)) %>%
-    dplyr::summarise(thr_value=mean(thr_value))
-  threshold <- dplyr::bind_cols(threshold, sdm_eval(
-    p = pred_test$pred[pred_test$pr_ab == 1],
-    a = pred_test$pred[pred_test$pr_ab == 0],
-    thr = thr)[c("n_presences", "n_absences")]
-  )
-
-  # create a new object similar than data.frame
-  result <- list(
-    model = list(domain = data[data[, response] == 1, c(predictors, predictors_f)]),
-    predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
-      dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
-    performance_part = eval_partial,
-    data_ens = pred_test_ens
-  )
-  return(result)
 }

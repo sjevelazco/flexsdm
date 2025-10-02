@@ -42,7 +42,7 @@
 #'
 #' @export
 #'
-#' @seealso \code{\link{fit_ensemble}}
+#' @seealso \code{\link{sdm_uncertainty}}
 #'
 #' @importFrom dplyr mutate across left_join pull bind_rows filter  select
 #' @importFrom kernlab predict

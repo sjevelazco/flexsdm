@@ -10,7 +10,7 @@ fit_gau(
   predictors,
   predictors_f = NULL,
   background = NULL,
-  partition,
+  partition = NULL,
   thr = NULL
 )
 }
@@ -29,7 +29,8 @@ predictor variables (i.e. ordinal or nominal variables type). Usage predictors_f
 \item{background}{data.frame. Database with response column only with 0 and predictors variables. All
 column names must be consistent with data}
 
-\item{partition}{character. Column name with training and validation partition groups.}
+\item{partition}{character. Column name with training and validation partition groups.
+If partition = NULL, the model will be validated with the same data used for fitting.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1), useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. A vector must be provided for this argument. The following threshold criteria are available:
 \itemize{

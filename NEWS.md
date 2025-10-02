@@ -1,3 +1,7 @@
+# flexsdm 1.3.x
+-   `sdm_uncertainty` This new function calculates species distribution model uncertainty using a bootstrap procedure, by @sjevelazco
+
+
 # flexsdm 1.3.8
 
 -   [`fit_`](https://sjevelazco.github.io/flexsdm/index.html#fit_-functions-family), [tune\_](https://sjevelazco.github.io/flexsdm/index.html#tune_-functions-family), [esm\_](https://sjevelazco.github.io/flexsdm/index.html#esm_-functions-family) and `fit_ensemble` functions now return a performance table for each partition and replicate (performance_part), by @sjevelazco [#432](https://github.com/sjevelazco/flexsdm/pull/432) and [434](https://github.com/sjevelazco/flexsdm/pull/434)

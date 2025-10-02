@@ -10,7 +10,7 @@ fit_raf(
   predictors,
   predictors_f = NULL,
   fit_formula = NULL,
-  partition,
+  partition = NULL,
   thr = NULL,
   mtry = sqrt(length(c(predictors, predictors_f))),
   ntree = 500
@@ -33,7 +33,8 @@ variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments. Default NULL}
 
-\item{partition}{character. Column name with training and validation partition groups.}
+\item{partition}{character. Column name with training and validation partition groups.
+If partition = NULL, the model will be validated with the same data used for fitting.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be used. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{

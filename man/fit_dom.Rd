@@ -9,7 +9,7 @@ fit_dom(
   response,
   predictors,
   predictors_f = NULL,
-  partition,
+  partition = NULL,
   thr = NULL,
   fit_formula = NULL
 )
@@ -26,7 +26,8 @@ Usage predictors = c("aet", "cwd", "tmin")}
 \item{predictors_f}{character. Vector with the column names of qualitative
 predictor variables (i.e. ordinal or nominal variables; factors). Usage predictors_f = c("landform")}
 
-\item{partition}{character. Column name with training and validation partition groups.}
+\item{partition}{character. Column name with training and validation partition groups.
+If partition = NULL, the model will be validated with the same data used for fitting.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). This is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{
@@ -99,11 +100,11 @@ some_sp <- part_random(
 )
 
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####                Fit a Domain model                  ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 # Fit some models
 mdom <- fit_dom(
   data = some_sp,
@@ -127,15 +128,15 @@ ind_p <- sdm_predict(
 )
 plot(ind_p$dom)
 
-##\%######################################################\%##
+## \%######################################################\%##
 #                                                          #
 ####             Explore Domain suitabiltiy             ####
 ####             in the environmental space             ####
 #                                                          #
-##\%######################################################\%##
+## \%######################################################\%##
 
 p_extra(
-  training_data = some_sp \%>\% dplyr::filter(pr_ab == 1), #select only presences
+  training_data = some_sp \%>\% dplyr::filter(pr_ab == 1), # select only presences
   x = "x",
   y = "y",
   pr_ab = "pr_ab",
@@ -149,7 +150,7 @@ p_extra(
 )
 
 p_extra(
-  training_data = some_sp \%>\% dplyr::filter(pr_ab == 1), #select only presences
+  training_data = some_sp \%>\% dplyr::filter(pr_ab == 1), # select only presences
   x = "x",
   y = "y",
   pr_ab = "pr_ab",
@@ -162,7 +163,6 @@ p_extra(
   color_p = "black",
   color_gradient = c("#1400FF", "#C729D6")
 )
-
 }
 }
 \references{

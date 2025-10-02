@@ -10,7 +10,7 @@ fit_gbm(
   predictors,
   predictors_f = NULL,
   fit_formula = NULL,
-  partition,
+  partition = NULL,
   thr = NULL,
   n_trees = 100,
   n_minobsinnode = as.integer(nrow(data) * 0.5/4),
@@ -34,7 +34,8 @@ variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments. Default is NULL.}
 
-\item{partition}{character. Column name with training and validation partition groups.}
+\item{partition}{character. Column name with training and validation partition groups.
+If partition = NULL, the model will be validated with the same data used for fitting.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1) needed for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{

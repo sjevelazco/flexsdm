@@ -59,7 +59,7 @@
 <span>  <span class="va">response</span>,</span>
 <span>  <span class="va">predictors</span>,</span>
 <span>  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">partition</span>,</span>
+<span>  partition <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -89,7 +89,8 @@ predictor variables (i.e. ordinal or nominal variables; factors). Usage predicto
 
 
 <dt id="arg-partition">partition<a class="anchor" aria-label="anchor" href="#arg-partition"></a></dt>
-<dd><p>character. Column name with training and validation partition groups.</p></dd>
+<dd><p>character. Column name with training and validation partition groups.
+If partition = NULL, the model will be validated with the same data used for fitting.</p></dd>
 
 
 <dt id="arg-thr">thr<a class="anchor" aria-label="anchor" href="#arg-thr"></a></dt>
@@ -171,11 +172,11 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">####                Fit a Domain model                  ####</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co"># Fit some models</span></span></span>
 <span class="r-in"><span><span class="va">mdom</span> <span class="op">&lt;-</span> <span class="fu">fit_dom</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">some_sp</span>,</span></span>
@@ -199,15 +200,15 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ind_p</span><span class="op">$</span><span class="va">dom</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
 <span class="r-in"><span><span class="co">####             Explore Domain suitabiltiy             ####</span></span></span>
 <span class="r-in"><span><span class="co">####             in the environmental space             ####</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
-<span class="r-in"><span><span class="co">##%######################################################%##</span></span></span>
+<span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="p_extra.html">p_extra</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">some_sp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="co">#select only presences</span></span></span>
+<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">some_sp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="co"># select only presences</span></span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
@@ -221,7 +222,7 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="p_extra.html">p_extra</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">some_sp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="co">#select only presences</span></span></span>
+<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">some_sp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="co"># select only presences</span></span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
@@ -234,7 +235,6 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span>  color_p <span class="op">=</span> <span class="st">"black"</span>,</span></span>
 <span class="r-in"><span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#1400FF"</span>, <span class="st">"#C729D6"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

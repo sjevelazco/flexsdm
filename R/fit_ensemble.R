@@ -103,9 +103,8 @@
 #'   thr_model = "max_sens_spec",
 #'   metric = "TSS"
 #' )
-#' 
+#'
 #' mensemble
-#' 
 #' }
 fit_ensemble <-
   function(models,
@@ -323,7 +322,7 @@ fit_ensemble <-
     # Bind ensemble performance
     ensemble <- dplyr::bind_rows(ensemble, .id = "model")
     eval_partial_list_2 <- dplyr::bind_rows(eval_partial_list_2, .id = "model")
-    
+
     #### Model object
     m <- lapply(models, function(x) x[c("model", "performance")])
     names(m) <- nms

@@ -206,5 +206,5 @@ ind_p <- sdm_predict(
 
 }
 \seealso{
-\code{\link{fit_ensemble}}
+\code{\link{sdm_uncertainty}}
 }
