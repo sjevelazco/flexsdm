@@ -1,6 +1,6 @@
 # flexsdm 1.3.x
--   `sdm_uncertainty` This new function calculates species distribution model uncertainty using a bootstrap procedure, by @sjevelazco
-
+-   `sdm_uncertainty` This new function calculates species distribution model uncertainty using a bootstrap procedure, by @sjevelazco [#442](https://github.com/sjevelazco/flexsdm/pull/442)
+-   fit_ functions now can handle partition = NULL, by @sjevelazco [#442](https://github.com/sjevelazco/flexsdm/pull/442)
 
 # flexsdm 1.3.8
 

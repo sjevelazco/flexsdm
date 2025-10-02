@@ -125,7 +125,7 @@ sdm_uncertainty <- function(
       ii = 1:iteration,
       .packages = c("dplyr", "mgcv", "kernlab"), # Packages needed on each worker
       .export = c("part_random", "predict.graf", "predict_maxnet", "extract.maxnet.classes", "fit_gam", "fit_gau", "fit_glm", "fit_gbm", "fit_dom", "fit_max", "fit_net", "fit_raf", "fit_svm", "map_env_dist"),
-      .errorhandling = "pass" # If an error occurs, save the error message and continue
+      .errorhandling = "pass" # 
     ) %dopar% {
       set.seed(ii)
       db <- part_random(
