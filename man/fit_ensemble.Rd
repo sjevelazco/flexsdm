@@ -116,6 +116,5 @@ mensemble <- fit_ensemble(
 )
 
 mensemble
-
 }
 }

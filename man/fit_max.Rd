@@ -10,7 +10,7 @@ fit_max(
   predictors,
   predictors_f = NULL,
   fit_formula = NULL,
-  partition,
+  partition = NULL,
   background = NULL,
   thr = NULL,
   clamp = TRUE,
@@ -36,7 +36,8 @@ variables. See maxnet.formula function from maxnet package.
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments. Default NULL.}
 
-\item{partition}{character. Column name with training and validation partition groups.}
+\item{partition}{character. Column name with training and validation partition groups.
+If partition = NULL, the model will be validated with the same data used for fitting.}
 
 \item{background}{data.frame. Database including only those rows with 0 values in the response column and the predictors variables. All
 column names must be consistent with data. Default NULL}

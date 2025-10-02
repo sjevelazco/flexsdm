@@ -12,6 +12,7 @@
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments. Default NULL.
 #' @param partition character. Column name with training and validation partition groups.
+#' If partition = NULL, the model will be validated with the same data used for fitting.
 #' @param background data.frame. Database including only those rows with 0 values in the response column and the predictors variables. All
 #' column names must be consistent with data. Default NULL
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be used. It is necessary to provide a vector for this argument. The following threshold criteria are available:
@@ -106,7 +107,7 @@
 #'   regmult = 1
 #' )
 #' length(max_t1)
-#' 
+#'
 #' max_t1$model
 #' max_t1$predictors
 #' max_t1$performance
@@ -118,7 +119,7 @@ fit_max <- function(data,
                     predictors,
                     predictors_f = NULL,
                     fit_formula = NULL,
-                    partition,
+                    partition = NULL,
                     background = NULL,
                     thr = NULL,
                     clamp = TRUE,
@@ -139,10 +140,10 @@ fit_max <- function(data,
 
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
     if (!is.null(background)) {
       background <- background %>%
-        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
+        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
     }
   } else {
     data <- data %>%
@@ -197,97 +198,112 @@ fit_max <- function(data,
   } else {
     formula1 <- fit_formula
   }
-  message(
-    "Formula used for model fitting:\n",
-    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
-    "\n"
-  )
+  if (!is.null(partition)) {
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
+    )
+  }
 
 
   # Compare pr_ab and background column names
-  p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
-  for (i in p_names) {
-    if (!is.null(background)) {
-      Npart_p <- data %>%
-        dplyr::filter(!!as.symbol(response) == 1) %>%
-        dplyr::pull({{ i }}) %>%
-        unique() %>%
-        sort()
-      Npart_bg <- background %>%
-        dplyr::filter(!!as.symbol(response) == 0) %>%
-        dplyr::pull({{ i }}) %>%
-        unique() %>%
-        sort()
-      if (!all(table(c(Npart_p, Npart_bg)) == 2)) {
-        stop(
-          paste(
-            "Partition groups between presences and background do not match:\n",
-            paste("Part. group presences:", paste(Npart_p, collapse = " "), "\n"),
-            paste("Part. group background:", paste(Npart_bg, collapse = " "), "\n")
+  if (!is.null(partition)) {
+    p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
+    for (i in p_names) {
+      if (!is.null(background)) {
+        Npart_p <- data %>%
+          dplyr::filter(!!as.symbol(response) == 1) %>%
+          dplyr::pull({{ i }}) %>%
+          unique() %>%
+          sort()
+        Npart_bg <- background %>%
+          dplyr::filter(!!as.symbol(response) == 0) %>%
+          dplyr::pull({{ i }}) %>%
+          unique() %>%
+          sort()
+        if (!all(table(c(Npart_p, Npart_bg)) == 2)) {
+          stop(
+            paste(
+              "Partition groups between presences and background do not match:\n",
+              paste("Part. group presences:", paste(Npart_p, collapse = " "), "\n"),
+              paste("Part. group background:", paste(Npart_bg, collapse = " "), "\n")
+            )
           )
-        )
+        }
       }
     }
+    rm(i)
   }
-  rm(i)
+
 
 
   # Fit models
-  np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
-  p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
-  eval_partial_list <- list()
-  pred_test_ens <- data %>%
-    dplyr::select(dplyr::starts_with(partition)) %>%
-    apply(., 2, unique) %>%
-    data.frame() %>%
-    as.list() %>%
-    lapply(., function(x) {
-      x <- stats::na.exclude(x)
-      x[!(x %in% c("train-test", "test"))] %>% as.list()
-    })
-
-  for (h in 1:np) {
-    message("Replica number: ", h, "/", np)
-
-    out <- pre_tr_te(data, p_names, h)
-    train <- out$train
-    test <- out$test
-    np2 <- out$np2
-    rm(out)
-
-    # In the follow code function will substitutes absences by background points
-    # only in train database in order to fit maxent with presences and background
-    # and validate models with presences and absences
+  if (is.null(partition)) {
+    # Combine presences with background points
     if (!is.null(background)) {
-      background2 <- pre_tr_te(background, p_names, h)
-      train <- lapply(train, function(x) x[x[, response] == 1, ])
-      train <- mapply(dplyr::bind_rows, train, background2$train, SIMPLIFY = FALSE)
-      bgt_test <- background2$test
-      rm(background2)
+      data <- bind_rows(
+        data[data[, response] == 1, ],
+        background[, names(data)]
+      )
     }
+    # Fit the model
+    suppressWarnings(mod <-
+      maxnet::maxnet(
+        p = data[, response],
+        data = data[predictors],
+        f = formula1,
+        regmult = regmult,
+        addsamplestobackground = TRUE
+      ))
 
-    eval_partial <- as.list(rep(NA, np2))
-    pred_test <- list()
-    mod <- list()
+    result <- list(
+      model = mod
+    )
+    return(result)
+  } else {
+    np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
+    p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
+    eval_partial_list <- list()
+    pred_test_ens <- data %>%
+      dplyr::select(dplyr::starts_with(partition)) %>%
+      apply(., 2, unique) %>%
+      data.frame() %>%
+      as.list() %>%
+      lapply(., function(x) {
+        x <- stats::na.exclude(x)
+        x[!(x %in% c("train-test", "test"))] %>% as.list()
+      })
+
+    for (h in 1:np) {
+      message("Replica number: ", h, "/", np)
+
+      out <- pre_tr_te(data, p_names, h)
+      train <- out$train
+      test <- out$test
+      np2 <- out$np2
+      rm(out)
+
+      # In the follow code function will substitutes absences by background points
+      # only in train database in order to fit maxent with presences and background
+      # and validate models with presences and absences
+      if (!is.null(background)) {
+        background2 <- pre_tr_te(background, p_names, h)
+        train <- lapply(train, function(x) x[x[, response] == 1, ])
+        train <- mapply(dplyr::bind_rows, train, background2$train, SIMPLIFY = FALSE)
+        bgt_test <- background2$test
+        rm(background2)
+      }
+
+      eval_partial <- as.list(rep(NA, np2))
+      pred_test <- list()
+      mod <- list()
 
 
-    for (i in 1:np2) {
-      message("Partition number: ", i, "/", np2)
-      tryCatch({
-        sampleback <- TRUE
-        try(mod[[i]] <-
-          suppressMessages(
-            maxnet::maxnet(
-              p = train[[i]][, response],
-              data = train[[i]][predictors],
-              f = formula1,
-              regmult = regmult,
-              addsamplestobackground = sampleback
-            )
-          ))
-        if (length(mod) < i) {
-          message("Refit with addsamplestobackground = FALSE")
-          sampleback <- FALSE
+      for (i in 1:np2) {
+        message("Partition number: ", i, "/", np2)
+        tryCatch({
+          sampleback <- TRUE
           try(mod[[i]] <-
             suppressMessages(
               maxnet::maxnet(
@@ -298,189 +314,203 @@ fit_max <- function(data,
                 addsamplestobackground = sampleback
               )
             ))
-        }
-
-        # Predict for presences absences data
-        ## Eliminate factor levels not used in fitting
-        # if (!is.null(predictors_f)) {
-        #   for (fi in 1:length(predictors_f)) {
-        #     lev <- as.character(unique(mod[[i]]$levels[[predictors_f[fi]]]))
-        #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-        #     test[[i]] <- test[[i]][lev_filt, ]
-        #     if (!is.null(background)) {
-        #       lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
-        #       bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
-        #     }
-        #   }
-        # }
-
-        if (all(test[[i]][, response] == 1)) {
-          # Test based on presence and background
-          test[[i]] <- bind_rows(test[[i]], bgt_test[[i]])
-        }
-        pred_test <- data.frame(
-          pr_ab = test[[i]][, response],
-          pred = predict_maxnet(
-            object = mod[[i]],
-            newdata = test[[i]],
-            clamp = clamp,
-            type = pred_type
-          )
-        )
-
-        pred_test_ens[[h]][[i]] <- pred_test %>%
-          dplyr::mutate(rnames = rownames(test[[i]]))
-
-        # Predict for background data
-        if (!is.null(background)) {
-          bgt <-
-            data.frame(
-              pr_ab = bgt_test[[i]][, response],
-              pred =
-                predict_maxnet(
-                  mod[[i]],
-                  newdata = bgt_test[[i]][c(predictors, predictors_f)],
-                  clamp = clamp,
-                  type = pred_type,
+          if (length(mod) < i) {
+            message("Refit with addsamplestobackground = FALSE")
+            sampleback <- FALSE
+            try(mod[[i]] <-
+              suppressMessages(
+                maxnet::maxnet(
+                  p = train[[i]][, response],
+                  data = train[[i]][predictors],
+                  f = formula1,
+                  regmult = regmult,
                   addsamplestobackground = sampleback
                 )
-            )
-        }
+              ))
+          }
 
-        # Validation of model
-        if (is.null(background)) {
-          eval <-
-            sdm_eval(
-              p = pred_test$pred[pred_test$pr_ab == 1],
-              a = pred_test$pred[pred_test$pr_ab == 0],
-              thr = thr
-            )
-        } else {
-          eval <-
-            sdm_eval(
-              p = pred_test$pred[pred_test$pr_ab == 1],
-              a = pred_test$pred[pred_test$pr_ab == 0],
-              thr = thr,
-              bg = bgt$pred
-            )
-        }
+          # Predict for presences absences data
+          ## Eliminate factor levels not used in fitting
+          # if (!is.null(predictors_f)) {
+          #   for (fi in 1:length(predictors_f)) {
+          #     lev <- as.character(unique(mod[[i]]$levels[[predictors_f[fi]]]))
+          #     lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
+          #     test[[i]] <- test[[i]][lev_filt, ]
+          #     if (!is.null(background)) {
+          #       lev_filt <- bgt_test[[i]][, predictors_f[fi]] %in% lev
+          #       bgt_test[[i]] <- bgt_test[[i]][lev_filt, ]
+          #     }
+          #   }
+          # }
 
-        eval_partial[[i]] <- dplyr::tibble(model = "max", eval)
+          if (all(test[[i]][, response] == 1)) {
+            # Test based on presence and background
+            test[[i]] <- bind_rows(test[[i]], bgt_test[[i]])
+          }
+          pred_test <- data.frame(
+            pr_ab = test[[i]][, response],
+            pred = predict_maxnet(
+              object = mod[[i]],
+              newdata = test[[i]],
+              clamp = clamp,
+              type = pred_type
+            )
+          )
 
-        names(eval_partial) <- i
-      })
+          pred_test_ens[[h]][[i]] <- pred_test %>%
+            dplyr::mutate(rnames = rownames(test[[i]]))
+
+          # Predict for background data
+          if (!is.null(background)) {
+            bgt <-
+              data.frame(
+                pr_ab = bgt_test[[i]][, response],
+                pred =
+                  predict_maxnet(
+                    mod[[i]],
+                    newdata = bgt_test[[i]][c(predictors, predictors_f)],
+                    clamp = clamp,
+                    type = pred_type,
+                    addsamplestobackground = sampleback
+                  )
+              )
+          }
+
+          # Validation of model
+          if (is.null(background)) {
+            eval <-
+              sdm_eval(
+                p = pred_test$pred[pred_test$pr_ab == 1],
+                a = pred_test$pred[pred_test$pr_ab == 0],
+                thr = thr
+              )
+          } else {
+            eval <-
+              sdm_eval(
+                p = pred_test$pred[pred_test$pr_ab == 1],
+                a = pred_test$pred[pred_test$pr_ab == 0],
+                thr = thr,
+                bg = bgt$pred
+              )
+          }
+
+          eval_partial[[i]] <- dplyr::tibble(model = "max", eval)
+
+          names(eval_partial) <- i
+        })
+      }
+
+      # Create final database with parameter performance
+      eval_partial <-
+        eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
+        dplyr::bind_rows(., .id = "partition")
+      eval_partial_list[[h]] <- eval_partial
     }
 
-    # Create final database with parameter performance
-    eval_partial <-
-      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
-      dplyr::bind_rows(., .id = "partition")
-    eval_partial_list[[h]] <- eval_partial
-  }
+    eval_partial <- eval_partial_list %>%
+      dplyr::bind_rows(., .id = "replica")
 
-  eval_partial <- eval_partial_list %>%
-    dplyr::bind_rows(., .id = "replica")
+    eval_final <- eval_partial %>%
+      dplyr::group_by(model, threshold) %>%
+      dplyr::summarise(dplyr::across(
+        TPR:IMAE,
+        list(mean = mean, sd = stats::sd)
+      ), .groups = "drop")
 
-  eval_final <- eval_partial %>%
-    dplyr::group_by(model, threshold) %>%
-    dplyr::summarise(dplyr::across(
-      TPR:IMAE,
-      list(mean = mean, sd = stats::sd)
-    ), .groups = "drop")
+    # Bind data for ensemble
+    for (e in 1:length(pred_test_ens)) {
+      fitl <- sapply(pred_test_ens[[e]], function(x) !is.null(nrow(x)))
+      pred_test_ens[[e]] <- pred_test_ens[[e]][fitl]
+    }
 
-  # Bind data for ensemble
-  for (e in 1:length(pred_test_ens)) {
-    fitl <- sapply(pred_test_ens[[e]], function(x) !is.null(nrow(x)))
-    pred_test_ens[[e]] <- pred_test_ens[[e]][fitl]
-  }
+    pred_test_ens <-
+      lapply(pred_test_ens, function(x) {
+        bind_rows(x, .id = "part")
+      }) %>%
+      bind_rows(., .id = "replicates") %>%
+      dplyr::tibble() %>%
+      dplyr::relocate(rnames)
 
-  pred_test_ens <-
-    lapply(pred_test_ens, function(x) {
-      bind_rows(x, .id = "part")
-    }) %>%
-    bind_rows(., .id = "replicates") %>%
-    dplyr::tibble() %>%
-    dplyr::relocate(rnames)
+    # Fit final models
 
-  # Fit final models
-
-  if (all(data[, response] == 1)) {
-    data_2 <- bind_rows(data, background)
-  } else {
-    # remove absences
-    data_2 <- bind_rows(data[data[, response] == 1, ], background)
-  }
+    if (all(data[, response] == 1)) {
+      data_2 <- bind_rows(data, background)
+    } else {
+      # remove absences
+      data_2 <- bind_rows(data[data[, response] == 1, ], background)
+    }
 
 
-  sampleback <- TRUE
-  mod <- NULL
-  try(suppressMessages(mod <-
-    maxnet::maxnet(
-      p = data_2[, response],
-      data = data_2[predictors],
-      f = formula1,
-      regmult = regmult,
-      addsamplestobackground = sampleback
-    )))
+    sampleback <- TRUE
+    mod <- NULL
+    try(suppressMessages(mod <-
+      maxnet::maxnet(
+        p = data_2[, response],
+        data = data_2[predictors],
+        f = formula1,
+        regmult = regmult,
+        addsamplestobackground = sampleback
+      )))
 
-  if (length(mod) < i) {
-    message("Refit with addsamplestobackground = FALSE")
-    sampleback <- FALSE
-    try(mod <-
-      suppressMessages(
-        maxnet::maxnet(
-          p = data[, response],
-          data = data[predictors],
-          f = formula1,
-          regmult = regmult,
-          addsamplestobackground = sampleback
-        )
-      ))
-  }
+    if (length(mod) < i) {
+      message("Refit with addsamplestobackground = FALSE")
+      sampleback <- FALSE
+      try(mod <-
+        suppressMessages(
+          maxnet::maxnet(
+            p = data[, response],
+            data = data[predictors],
+            f = formula1,
+            regmult = regmult,
+            addsamplestobackground = sampleback
+          )
+        ))
+    }
 
-  if (all(data[, response] == 1)) {
-    # Test based on presence and background
-    data <- bind_rows(data, background)
-  }
+    if (all(data[, response] == 1)) {
+      # Test based on presence and background
+      data <- bind_rows(data, background)
+    }
 
-  pred_test <- data.frame(
-    "pr_ab" = data.frame(data)[, response],
-    "pred" = predict_maxnet(
-      mod,
-      newdata = data,
-      clamp = clamp,
-      type = pred_type
+    pred_test <- data.frame(
+      "pr_ab" = data.frame(data)[, response],
+      "pred" = predict_maxnet(
+        mod,
+        newdata = data,
+        clamp = clamp,
+        type = pred_type
+      )
     )
-  )
 
-  if (is.null(background)) {
-    threshold <- sdm_eval(
-      p = pred_test$pred[pred_test$pr_ab == 1],
-      a = pred_test$pred[pred_test$pr_ab == 0],
-      thr = thr
+    if (is.null(background)) {
+      threshold <- sdm_eval(
+        p = pred_test$pred[pred_test$pr_ab == 1],
+        a = pred_test$pred[pred_test$pr_ab == 0],
+        thr = thr
+      )
+    } else {
+      background <- predict_maxnet(
+        mod,
+        newdata = background[predictors],
+        clamp = clamp,
+        type = pred_type
+      )
+      threshold <- sdm_eval(
+        p = pred_test$pred[pred_test$pr_ab == 1],
+        a = pred_test$pred[pred_test$pr_ab == 0],
+        thr = thr,
+        bg = background
+      )
+    }
+
+    result <- list(
+      model = mod,
+      predictors = variables,
+      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+        dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+      performance_part = eval_partial,
+      data_ens = pred_test_ens
     )
-  } else {
-    background <- predict_maxnet(
-      mod,
-      newdata = background[predictors],
-      clamp = clamp,
-      type = pred_type
-    )
-    threshold <- sdm_eval(
-      p = pred_test$pred[pred_test$pr_ab == 1],
-      a = pred_test$pred[pred_test$pr_ab == 0],
-      thr = thr,
-      bg = background
-    )
+    return(result)
   }
-
-  result <- list(
-    model = mod,
-    predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% 
-      dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
-    performance_part = eval_partial,
-    data_ens = pred_test_ens
-  )
-  return(result)
 }

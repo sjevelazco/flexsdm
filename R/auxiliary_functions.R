@@ -254,6 +254,74 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
   }
 }
 
+#' Extract maxent classes based on a formula
+#'
+#' @param f A formula object.
+#' @return A character string concatenating the identified feature classes
+#'   (e.g., "lqh"). The classes are returned in a standard order (l, q, p, h, t)
+#'   for consistency.
+#' @noRd
+extract.maxnet.classes <- function(f) {
+  # Ensure the input is a formula and get the terms as a character vector
+  if (!inherits(f, "formula")) {
+    stop("Input must be a formula object.")
+  }
+
+  # labels(terms(f)) is the canonical way to get the RHS terms
+  formula_terms <- labels(terms(f))
+
+  # Initialize a vector to store the classes we find
+  detected_classes <- character(0)
+
+  # --- Logic to detect each class based on term structure ---
+
+  # 1. Check for quadratic features ('q'): terms like I(var^2)
+  # The regex looks for a term starting with "I(" and containing "^2)"
+  if (any(grepl("^I\\(.*\\^2\\)$", formula_terms))) {
+    detected_classes <- c(detected_classes, "q")
+  }
+
+  # 2. Check for hinge features ('h'): terms like hinge(var)
+  if (any(grepl("^hinge\\(", formula_terms))) {
+    detected_classes <- c(detected_classes, "h")
+  }
+
+  # 3. Check for threshold features ('t'): terms like thresholds(var)
+  if (any(grepl("^thresholds\\(", formula_terms))) {
+    detected_classes <- c(detected_classes, "t")
+  }
+
+  # 4. Check for product features ('p'): terms containing a colon, like var1:var2
+  if (any(grepl(":", formula_terms))) {
+    detected_classes <- c(detected_classes, "p")
+  }
+
+  # 5. Check for linear features ('l'). This is the trickiest.
+  # A linear term is a plain variable name, not wrapped in a function
+  # call (like hinge()) and not part of an interaction (like var1:var2).
+  # We identify these by finding terms that DO NOT match any of the other patterns.
+
+  # Identify all terms that are *not* simple linear terms
+  is_complex_or_categorical <- grepl("^I\\(|^hinge\\(|^thresholds\\(|^categorical\\(|:", formula_terms)
+
+  # If there are any terms left over, they must be linear terms.
+  if (any(!is_complex_or_categorical)) {
+    detected_classes <- c(detected_classes, "l")
+  }
+
+  # --- Finalize the output ---
+
+  # Define the canonical order to ensure consistent output (e.g., "lqph" not "hqlp")
+  class_order <- c("l", "q", "p", "h", "t")
+
+  # Filter the detected classes and sort them according to the canonical order
+  ordered_classes <- intersect(class_order, detected_classes)
+
+  # Collapse the sorted vector into a single string
+  return(paste(ordered_classes, collapse = ""))
+}
+
+
 #' Outliers with Reverse Jackknife
 #'
 #' @noRd

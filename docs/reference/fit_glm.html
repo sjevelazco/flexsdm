@@ -60,7 +60,7 @@
 <span>  <span class="va">predictors</span>,</span>
 <span>  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  select_pred <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">partition</span>,</span>
+<span>  partition <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  poly <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -97,7 +97,8 @@ If TRUE predictors will be selected based on backward step wise approach. Defaul
 
 
 <dt id="arg-partition">partition<a class="anchor" aria-label="anchor" href="#arg-partition"></a></dt>
-<dd><p>character. Column name with training and validation partition groups.</p></dd>
+<dd><p>character. Column name with training and validation partition groups.
+If partition = NULL, the model will be validated with the same data used for fitting.</p></dd>
 
 
 <dt id="arg-thr">thr<a class="anchor" aria-label="anchor" href="#arg-thr"></a></dt>

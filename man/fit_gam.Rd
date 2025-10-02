@@ -10,7 +10,7 @@ fit_gam(
   predictors,
   predictors_f = NULL,
   select_pred = FALSE,
-  partition,
+  partition = NULL,
   thr = NULL,
   fit_formula = NULL,
   k = -1
@@ -30,7 +30,8 @@ predictor variables (i.e. ordinal or nominal variables; factors). Usage predicto
 
 \item{select_pred}{logical. Perform predictor selection. Default FALSE.}
 
-\item{partition}{character. Column name with training and validation partition groups.}
+\item{partition}{character. Column name with training and validation partition groups.
+If partition = NULL, the model will be validated with the same data used for fitting.}
 
 \item{thr}{character. Threshold used to get binary suitability values (i.e. 0,1). This is useful for threshold-dependent performance metrics. It is possible to use more than one threshold type. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 \itemize{

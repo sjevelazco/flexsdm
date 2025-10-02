@@ -10,6 +10,7 @@
 #' @param select_pred logical. Perform predictor selection.
 #' If TRUE predictors will be selected based on backward step wise approach. Default FALSE.
 #' @param partition character. Column name with training and validation partition groups.
+#' If partition = NULL, the model will be validated with the same data used for fitting.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be used. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
@@ -120,7 +121,7 @@ fit_glm <- function(data,
                     predictors,
                     predictors_f = NULL,
                     select_pred = FALSE,
-                    partition,
+                    partition = NULL,
                     thr = NULL,
                     fit_formula = NULL,
                     poly = 2,
@@ -131,11 +132,11 @@ fit_glm <- function(data,
   data <- data.frame(data)
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
     data <- data.frame(data)
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
@@ -206,11 +207,15 @@ fit_glm <- function(data,
   } else {
     formula1 <- fit_formula
   }
-  message(
-    "Formula used for model fitting:\n",
-    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
-    "\n"
-  )
+
+  if (!is.null(partition)) {
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
+    )
+  }
+
 
   # Selection predictor
   if (select_pred) {
@@ -248,134 +253,147 @@ fit_glm <- function(data,
   }
 
   # Fit models
-  np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
-  p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
-  eval_partial_list <- list()
-  pred_test_ens <- data %>%
-    dplyr::select(dplyr::starts_with(partition)) %>%
-    apply(., 2, unique) %>%
-    data.frame() %>%
-    as.list() %>%
-    lapply(., function(x) {
-      x <- stats::na.exclude(x)
-      x[!(x %in% c("train-test", "test"))] %>% as.list()
-    })
+  if (is.null(partition)) {
+    suppressWarnings(mod <-
+      stats::glm(formula1,
+        data = data,
+        family = "binomial"
+      ))
 
-  for (h in 1:np) {
-    message("Replica number: ", h, "/", np)
+    result <- list(
+      model = mod
+    )
+    return(result)
+  } else {
+    np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
+    p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
+    eval_partial_list <- list()
+    pred_test_ens <- data %>%
+      dplyr::select(dplyr::starts_with(partition)) %>%
+      apply(., 2, unique) %>%
+      data.frame() %>%
+      as.list() %>%
+      lapply(., function(x) {
+        x <- stats::na.exclude(x)
+        x[!(x %in% c("train-test", "test"))] %>% as.list()
+      })
 
-    out <- pre_tr_te(data, p_names, h)
-    train <- out$train
-    test <- out$test
-    np2 <- out$np2
-    rm(out)
+    for (h in 1:np) {
+      message("Replica number: ", h, "/", np)
 
-    eval_partial <- as.list(rep(NA, np2))
-    pred_test <- list()
-    mod <- list()
+      out <- pre_tr_te(data, p_names, h)
+      train <- out$train
+      test <- out$test
+      np2 <- out$np2
+      rm(out)
 
-    for (i in 1:np2) {
-      tryCatch({
-        message("Partition number: ", i, "/", np2)
-        suppressWarnings(mod[[i]] <-
-          stats::glm(formula1,
-            data = train[[i]],
-            family = "binomial"
+      eval_partial <- as.list(rep(NA, np2))
+      pred_test <- list()
+      mod <- list()
+
+      for (i in 1:np2) {
+        tryCatch({
+          message("Partition number: ", i, "/", np2)
+          suppressWarnings(mod[[i]] <-
+            stats::glm(formula1,
+              data = train[[i]],
+              family = "binomial"
+            ))
+
+
+          # Predict for presences absences data
+          ## Eliminate factor levels not used for fitting
+          if (!is.null(predictors_f)) {
+            for (fi in 1:length(predictors_f)) {
+              lev <- as.character(unique(mod[[i]]$data[, predictors_f[fi]]))
+              lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
+              test[[i]] <- test[[i]][lev_filt, ]
+            }
+          }
+
+          pred_test <- try(data.frame(
+            pr_ab = test[[i]][, response],
+            pred = suppressWarnings(
+              stats::predict.glm(
+                mod[[i]],
+                newdata = test[[i]],
+                type = "response",
+                se.fit = FALSE
+              )
+            )
           ))
 
+          pred_test_ens[[h]][[i]] <- pred_test %>%
+            dplyr::mutate(rnames = rownames(test[[i]]))
 
-        # Predict for presences absences data
-        ## Eliminate factor levels not used for fitting
-        if (!is.null(predictors_f)) {
-          for (fi in 1:length(predictors_f)) {
-            lev <- as.character(unique(mod[[i]]$data[, predictors_f[fi]]))
-            lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
-            test[[i]] <- test[[i]][lev_filt, ]
-          }
-        }
-
-        pred_test <- try(data.frame(
-          pr_ab = test[[i]][, response],
-          pred = suppressWarnings(
-            stats::predict.glm(
-              mod[[i]],
-              newdata = test[[i]],
-              type = "response",
-              se.fit = FALSE
+          # Validation of model
+          eval <-
+            sdm_eval(
+              p = pred_test$pred[pred_test$pr_ab == 1],
+              a = pred_test$pred[pred_test$pr_ab == 0],
+              thr = thr
             )
-          )
-        ))
+          eval_partial[[i]] <- dplyr::tibble(model = "glm", eval)
+        })
+      }
 
-        pred_test_ens[[h]][[i]] <- pred_test %>%
-          dplyr::mutate(rnames = rownames(test[[i]]))
-
-        # Validation of model
-        eval <-
-          sdm_eval(
-            p = pred_test$pred[pred_test$pr_ab == 1],
-            a = pred_test$pred[pred_test$pr_ab == 0],
-            thr = thr
-          )
-        eval_partial[[i]] <- dplyr::tibble(model = "glm", eval)
-      })
+      # Create final database with parameter performance
+      names(eval_partial) <- 1:np2
+      eval_partial <-
+        eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
+        dplyr::bind_rows(., .id = "partition")
+      eval_partial_list[[h]] <- eval_partial
     }
 
-    # Create final database with parameter performance
-    names(eval_partial) <- 1:np2
-    eval_partial <-
-      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
-      dplyr::bind_rows(., .id = "partition")
-    eval_partial_list[[h]] <- eval_partial
+    eval_partial <- eval_partial_list %>%
+      dplyr::bind_rows(., .id = "replica")
+
+    eval_final <- eval_partial %>%
+      dplyr::group_by(model, threshold) %>%
+      dplyr::summarise(dplyr::across(
+        TPR:IMAE,
+        list(mean = mean, sd = stats::sd)
+      ), .groups = "drop")
+
+    # Bind data for ensemble
+    pred_test_ens <-
+      lapply(pred_test_ens, function(x) {
+        bind_rows(x, .id = "part")
+      }) %>%
+      bind_rows(., .id = "replicates") %>%
+      dplyr::tibble() %>%
+      dplyr::relocate(rnames)
+
+    # Fit final models with best settings
+    suppressWarnings(mod <-
+      stats::glm(formula1,
+        data = data,
+        family = "binomial"
+      ))
+
+    pred_test <- data.frame(
+      pr_ab = data.frame(data)[, response],
+      pred = suppressMessages(stats::predict.glm(
+        mod,
+        newdata = data,
+        type = "response"
+      ))
+    )
+
+    threshold <- sdm_eval(
+      p = pred_test$pred[pred_test$pr_ab == 1],
+      a = pred_test$pred[pred_test$pr_ab == 0],
+      thr = thr
+    )
+
+    result <- list(
+      model = mod,
+      predictors = variables,
+      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+        dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+      performance_part = eval_partial,
+      data_ens = pred_test_ens
+    )
+    return(result)
   }
-
-  eval_partial <- eval_partial_list %>%
-    dplyr::bind_rows(., .id = "replica")
-
-  eval_final <- eval_partial %>%
-    dplyr::group_by(model, threshold) %>%
-    dplyr::summarise(dplyr::across(
-      TPR:IMAE,
-      list(mean = mean, sd = stats::sd)
-    ), .groups = "drop")
-
-  # Bind data for ensemble
-  pred_test_ens <-
-    lapply(pred_test_ens, function(x) {
-      bind_rows(x, .id = "part")
-    }) %>%
-    bind_rows(., .id = "replicates") %>%
-    dplyr::tibble() %>%
-    dplyr::relocate(rnames)
-
-  # Fit final models with best settings
-  suppressWarnings(mod <-
-    stats::glm(formula1,
-      data = data,
-      family = "binomial"
-    ))
-
-  pred_test <- data.frame(
-    pr_ab = data.frame(data)[, response],
-    pred = suppressMessages(stats::predict.glm(
-      mod,
-      newdata = data,
-      type = "response"
-    ))
-  )
-
-  threshold <- sdm_eval(
-    p = pred_test$pred[pred_test$pr_ab == 1],
-    a = pred_test$pred[pred_test$pr_ab == 0],
-    thr = thr
-  )
-
-  result <- list(
-    model = mod,
-    predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% 
-      dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
-    performance_part = eval_partial,
-    data_ens = pred_test_ens
-  )
-  return(result)
 }

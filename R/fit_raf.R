@@ -12,6 +12,7 @@
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments. Default NULL
 #' @param partition character. Column name with training and validation partition groups.
+#' If partition = NULL, the model will be validated with the same data used for fitting.
 #' @param thr character. Threshold used to get binary suitability values (i.e. 0,1), needed for threshold-dependent performance metrics. More than one threshold type can be used. It is necessary to provide a vector for this argument. The following threshold criteria are available:
 #' \itemize{
 #'   \item lpt: The highest threshold at which there is no omission.
@@ -104,7 +105,7 @@ fit_raf <- function(data,
                     predictors,
                     predictors_f = NULL,
                     fit_formula = NULL,
-                    partition,
+                    partition = NULL,
                     thr = NULL,
                     mtry = sqrt(length(c(predictors, predictors_f))),
                     ntree = 500) {
@@ -118,7 +119,7 @@ fit_raf <- function(data,
 
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::starts_with(partition))
+      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
     data <- data.frame(data)
   } else {
     data <- data %>%
@@ -146,137 +147,155 @@ fit_raf <- function(data,
   } else {
     formula1 <- fit_formula
   }
-  message(
-    "Formula used for model fitting:\n",
-    Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
-    "\n"
-  )
+  if (!is.null(partition)) {
+    message(
+      "Formula used for model fitting:\n",
+      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      "\n"
+    )
+  }
 
 
   # Fit models
-  np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
-  p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
-  eval_partial_list <- list()
-  pred_test_ens <- data %>%
-    dplyr::select(dplyr::starts_with(partition)) %>%
-    apply(., 2, unique) %>%
-    data.frame() %>%
-    as.list() %>%
-    lapply(., function(x) {
-      x <- stats::na.exclude(x)
-      x[!(x %in% c("train-test", "test"))] %>% as.list()
-    })
+  if (is.null(partition)) {
+    suppressWarnings(mod <-
+      randomForest::randomForest(
+        formula1,
+        data = data,
+        mtry = mtry,
+        ntree = 500,
+        importance = TRUE,
+      ))
 
-  for (h in 1:np) {
-    message("Replica number: ", h, "/", np)
-
-    out <- pre_tr_te(data, p_names, h)
-    train <- out$train
-    test <- out$test
-    np2 <- out$np2
-    rm(out)
-
-    eval_partial <- as.list(rep(NA, np2))
-    pred_test <- list()
-    mod <- list()
-
-
-    for (i in 1:np2) {
-      message("Partition number: ", i, "/", np2)
-      tryCatch({
-        set.seed(1)
-        mod[[i]] <-
-          randomForest::randomForest(
-            formula1,
-            data = train[[i]],
-            mtry = mtry,
-            ntree = 500,
-            importance = FALSE,
-          )
-
-        pred_test <- data.frame(
-          pr_ab = test[[i]][, response],
-          pred = suppressMessages(stats::predict(
-            mod[[i]],
-            newdata = test[[i]],
-            type = "prob",
-          )[, 2])
-        )
-
-        pred_test_ens[[h]][[i]] <- pred_test %>%
-          dplyr::mutate(rnames = rownames(test[[i]]))
-
-        # Validation of model
-        eval <-
-          sdm_eval(
-            p = pred_test$pred[pred_test$pr_ab == 1],
-            a = pred_test$pred[pred_test$pr_ab == 0],
-            thr = thr
-          )
-        eval_partial[[i]] <- dplyr::tibble(model = "raf", eval)
+    result <- list(
+      model = mod
+    )
+    return(result)
+  } else {
+    np <- ncol(data %>% dplyr::select(dplyr::starts_with(partition)))
+    p_names <- names(data %>% dplyr::select(dplyr::starts_with(partition)))
+    eval_partial_list <- list()
+    pred_test_ens <- data %>%
+      dplyr::select(dplyr::starts_with(partition)) %>%
+      apply(., 2, unique) %>%
+      data.frame() %>%
+      as.list() %>%
+      lapply(., function(x) {
+        x <- stats::na.exclude(x)
+        x[!(x %in% c("train-test", "test"))] %>% as.list()
       })
+
+    for (h in 1:np) {
+      message("Replica number: ", h, "/", np)
+
+      out <- pre_tr_te(data, p_names, h)
+      train <- out$train
+      test <- out$test
+      np2 <- out$np2
+      rm(out)
+
+      eval_partial <- as.list(rep(NA, np2))
+      pred_test <- list()
+      mod <- list()
+
+
+      for (i in 1:np2) {
+        message("Partition number: ", i, "/", np2)
+        tryCatch({
+          set.seed(1)
+          mod[[i]] <-
+            randomForest::randomForest(
+              formula1,
+              data = train[[i]],
+              mtry = mtry,
+              ntree = 500,
+              importance = FALSE,
+            )
+
+          pred_test <- data.frame(
+            pr_ab = test[[i]][, response],
+            pred = suppressMessages(stats::predict(
+              mod[[i]],
+              newdata = test[[i]],
+              type = "prob",
+            )[, 2])
+          )
+
+          pred_test_ens[[h]][[i]] <- pred_test %>%
+            dplyr::mutate(rnames = rownames(test[[i]]))
+
+          # Validation of model
+          eval <-
+            sdm_eval(
+              p = pred_test$pred[pred_test$pr_ab == 1],
+              a = pred_test$pred[pred_test$pr_ab == 0],
+              thr = thr
+            )
+          eval_partial[[i]] <- dplyr::tibble(model = "raf", eval)
+        })
+      }
+
+      # Create final database with parameter performance
+      names(eval_partial) <- 1:np2
+      eval_partial <-
+        eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
+        dplyr::bind_rows(., .id = "partition")
+      eval_partial_list[[h]] <- eval_partial
     }
 
-    # Create final database with parameter performance
-    names(eval_partial) <- 1:np2
-    eval_partial <-
-      eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
-      dplyr::bind_rows(., .id = "partition")
-    eval_partial_list[[h]] <- eval_partial
+    eval_partial <- eval_partial_list %>%
+      dplyr::bind_rows(., .id = "replica")
+
+    eval_final <- eval_partial %>%
+      dplyr::group_by(model, threshold) %>%
+      dplyr::summarise(dplyr::across(
+        TPR:IMAE,
+        list(mean = mean, sd = stats::sd)
+      ), .groups = "drop")
+
+    # Bind data for ensemble
+    pred_test_ens <-
+      lapply(pred_test_ens, function(x) {
+        bind_rows(x, .id = "part")
+      }) %>%
+      bind_rows(., .id = "replicates") %>%
+      dplyr::tibble() %>%
+      dplyr::relocate(rnames)
+
+    # Fit final models with best settings
+    set.seed(1)
+    suppressMessages(mod <-
+      randomForest::randomForest(
+        formula1,
+        data = data,
+        mtry = mtry,
+        ntree = ntree,
+        importance = TRUE,
+      ))
+
+    pred_test <- data.frame(
+      pr_ab = data.frame(data)[, response],
+      pred = stats::predict(
+        mod,
+        newdata = data,
+        type = "prob"
+      )[, 2]
+    )
+
+    threshold <- sdm_eval(
+      p = pred_test$pred[pred_test$pr_ab == 1],
+      a = pred_test$pred[pred_test$pr_ab == 0],
+      thr = thr
+    )
+
+    result <- list(
+      model = mod,
+      predictors = variables,
+      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+        dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
+      performance_part = eval_partial,
+      data_ens = pred_test_ens
+    )
+    return(result)
   }
-
-  eval_partial <- eval_partial_list %>%
-    dplyr::bind_rows(., .id = "replica")
-
-  eval_final <- eval_partial %>%
-    dplyr::group_by(model, threshold) %>%
-    dplyr::summarise(dplyr::across(
-      TPR:IMAE,
-      list(mean = mean, sd = stats::sd)
-    ), .groups = "drop")
-
-  # Bind data for ensemble
-  pred_test_ens <-
-    lapply(pred_test_ens, function(x) {
-      bind_rows(x, .id = "part")
-    }) %>%
-    bind_rows(., .id = "replicates") %>%
-    dplyr::tibble() %>%
-    dplyr::relocate(rnames)
-
-  # Fit final models with best settings
-  set.seed(1)
-  suppressMessages(mod <-
-    randomForest::randomForest(
-      formula1,
-      data = data,
-      mtry = mtry,
-      ntree = 500,
-      importance = TRUE,
-    ))
-
-  pred_test <- data.frame(
-    pr_ab = data.frame(data)[, response],
-    pred = stats::predict(
-      mod,
-      newdata = data,
-      type = "prob"
-    )[, 2]
-  )
-
-  threshold <- sdm_eval(
-    p = pred_test$pred[pred_test$pr_ab == 1],
-    a = pred_test$pred[pred_test$pr_ab == 0],
-    thr = thr
-  )
-
-  result <- list(
-    model = mod,
-    predictors = variables,
-    performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>% 
-      dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
-    performance_part = eval_partial,
-    data_ens = pred_test_ens
-  )
-  return(result)
 }
