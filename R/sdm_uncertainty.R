@@ -81,7 +81,7 @@ sdm_uncertainty <- function(
 
 
   # Prepare training dataset
-  training_data <- training_data |> dplyr::select(-starts_with(".part"))
+  training_data <- training_data %>% dplyr::select(-starts_with(".part"))
 
   # Prepare raster
   proj_data_df <- as.data.frame(projection_data)
@@ -89,11 +89,11 @@ sdm_uncertainty <- function(
   r <- terra::ifel(!is.na(r), 0, NA)
 
   # Prepare predictors
-  pr_c <- models$predictors |>
-    dplyr::select(dplyr::starts_with("c")) |>
+  pr_c <- models$predictors %>%
+    dplyr::select(dplyr::starts_with("c")) %>%
     unlist()
-  pr_f <- models$predictors |>
-    dplyr::select(dplyr::starts_with("f")) |>
+  pr_f <- models$predictors %>%
+    dplyr::select(dplyr::starts_with("f")) %>%
     unlist()
   names(pr_c) <- NULL
   names(pr_f) <- NULL
@@ -108,7 +108,7 @@ sdm_uncertainty <- function(
         data = training_data,
         pr_ab = response,
         method = c(method = "boot", replicates = "1", proportion = "0.8")
-      ) |> dplyr::filter(grepl("train", .part1))
+      ) %>% dplyr::filter(grepl("train", .part1))
 
       m <- switch(clss,
         "domain" = fit_dom(data = db, response = response, predictors = pr_c, predictors_f = pr_f, partition = NULL)$model
@@ -132,7 +132,7 @@ sdm_uncertainty <- function(
         data = training_data,
         pr_ab = response,
         method = c(method = "boot", replicates = "1", proportion = "0.8")
-      ) |> dplyr::filter(grepl("train", .part1))
+      ) %>% dplyr::filter(grepl("train", .part1))
 
       m <- switch(clss,
         "gam" = fit_gam(data = db, response = response, predictors = pr_c, predictors_f = pr_f, fit_formula = models$model$formula, partition = NULL)$model,
@@ -143,12 +143,12 @@ sdm_uncertainty <- function(
         "randomforest" = fit_raf(data = db, response = response, predictors = pr_c, predictors_f = pr_f, fit_formula = NULL, partition = NULL, mtry = models$model$mtry, ntree = models$model$ntree)$model,
         "ksvm" = fit_svm(data = db, response = response, predictors = pr_c, predictors_f = pr_f, fit_formula = NULL, partition = NULL, sigma = models$model@kernelf@kpar$sigma, C = models$model@param$C)$model,
         "maxnet" = {
-          terms <- models$model$beta |> rownames()
-          nums <- lapply(strsplit(terms, ":"), function(x) x[2]) |> unlist()
+          terms <- models$model$beta %>% rownames()
+          nums <- lapply(strsplit(terms, ":"), function(x) x[2]) %>% unlist()
           suppressWarnings(is_num <- !is.na(as.numeric(nums)))
-          terms <- c(terms[!is_num], sapply(strsplit(terms[is_num], ":"), function(x) x[1]) |> unique()) |>
+          terms <- c(terms[!is_num], sapply(strsplit(terms[is_num], ":"), function(x) x[1]) %>% unique()) %>%
             paste(collapse = " + ")
-          terms <- paste("~", terms) |> as.formula()
+          terms <- paste("~", terms) %>% as.formula()
           terms <- extract.maxnet.classes(terms)
           fit_max(data = db, response = response, predictors = pr_c, predictors_f = pr_f, fit_formula = NULL, partition = NULL, background = background, clamp = clamp, pred_type = pred_type, classes = terms, regmult = 1)$model
         }
@@ -171,8 +171,8 @@ sdm_uncertainty <- function(
   }
 
   names(r_list) <- 1:length(r_list)
-  r_list <- data.frame(r_list) |> apply(1, sd, na.rm = TRUE)
-  r[rownames(proj_data_df) |> as.numeric()] <- r_list
+  r_list <- data.frame(r_list) %>% apply(1, sd, na.rm = TRUE)
+  r[rownames(proj_data_df) %>% as.numeric()] <- r_list
   rm(r_list)
 
   names(r) <- "uncertainty"

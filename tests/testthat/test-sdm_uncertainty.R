@@ -3,7 +3,7 @@ require(dplyr)
 require(terra)
 
 data("spp")
-somevar <- system.file("external/somevar.tif", package = "flexsdm") |>
+somevar <- system.file("external/somevar.tif", package = "flexsdm") %>%
   terra::rast()
 
 # Extract data
