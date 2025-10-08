@@ -138,8 +138,8 @@ boyce <- function(pres,
   highs <- seq(lowest + window_width + .Machine$double.eps, highest, length.out = n_bins)
 
   ## initiate variables to store predicted/expected (P/E) values
-  freq_pres <- NA
-  freq_contrast <- NA
+  freq_pres <- numeric(n_bins)
+  freq_contrast <- numeric(n_bins)
 
   # tally proportion of test presences/background in each class
   for (i in 1:n_bins) {
@@ -171,7 +171,7 @@ boyce <- function(pres,
 
   # remove classes with 0 background frequency
   if (any(0 %in% freq_contrast)) {
-    zeros <- which(freq_pres == 0)
+    zeros <- which(freq_contrast == 0)
     mean_pred[zeros] <- NA
     freq_pres[zeros] <- NA
     freq_contrast[zeros] <- NA
@@ -182,16 +182,67 @@ boyce <- function(pres,
   PE <- P / E
 
   # remove NAs
-  rm_nas <- stats::complete.cases(data.frame(mean_pred, PE))
-  # mean_pred <- mean_pred[rm_nas]
-  # PE <- PE[rm_nas]
+  complete_cases <- stats::complete.cases(data.frame(mean_pred, PE))
+  mean_pred_complete <- mean_pred[complete_cases]
+  PE_complete <- PE[complete_cases]
 
   # calculate Boyce index
   result <- stats::cor(
-    x = ifelse(is.na(mean_pred), 0, mean_pred),
-    y = ifelse(is.na(PE), 0, PE), method = "spearman"
+    x = mean_pred_complete,
+    y = PE_complete, method = "spearman"
   )
   return(result)
+}
+
+#' Boyce Index based
+#' @description This function calculate Boyce index performance metric.
+#' Codes were adapted from ecospat package.
+#' @references Hirzel, A. H., Le Lay, G., Helfer, V., Randin, C., & Guisan, A. (2006).
+#' Evaluating the ability of habitat suitability models to predict species presences.
+#' Ecological Modelling, 199(2), 142-152.
+#' @noRd
+boyce_ <- function(fit, obs, n_bins = 101) {
+  # Range of suitability values
+  fit.all <- c(fit, obs)
+  if (length(unique(fit.all)) == 1) {
+    return(NA)
+  }
+  
+  # Determine window width
+  h_w <- (max(fit.all) - min(fit.all)) / 10
+  
+  # Create bins
+  if (length(unique(fit.all)) < n_bins) {
+    bins <- sort(unique(fit.all))
+  } else {
+    bins <- seq(min(fit.all), max(fit.all), length.out = n_bins)
+  }
+  
+  # Calculate frequencies
+  obs_freq <- sapply(bins, function(i) {
+    sum(obs >= i - h_w & obs < i + h_w)
+  })
+  
+  fit_freq <- sapply(bins, function(i) {
+    sum(fit >= i - h_w & fit < i + h_w)
+  })
+  
+  # Calculate Predicted/Expected ratio
+  P <- obs_freq / sum(obs_freq)
+  E <- fit_freq / sum(fit_freq)
+  
+  # Handle cases where E is zero
+  PE_ratio <- P / E
+  
+  # Remove bins with no presences
+  to_keep <- which(P > 0 & E > 0)
+  
+  if (length(to_keep) < 2) {
+    return(NA)
+  }
+  
+  # Calculate Spearman correlation
+  cor(bins[to_keep], PE_ratio[to_keep], method = "spearman")
 }
 
 # maxnet:::predict.maxnet()

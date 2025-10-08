@@ -27,9 +27,10 @@
 #' 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity').
 #' Function will use all thresholds if no threshold type is specified
 #' @param bg numeric. Predicted suitability for background points, used for BOYCE metric.
-#' It bg is set as NULL, BOYCE metric will be calculated with presences and absences suitabilities
-#' values
+#' If not provided (NULL), the Boyce index will be calculated using absence data instead.
+#' **Note:** Using absence data for the Boyce index is not standard practice and may result in inflated performance values. It is highly recommended to provide background points for a correct calculation. The Boyce index is calculated using the `boyce_` function, which is an adaptation of the method implemented in the `ecospat` package.
 #'
+#' @md
 #' @details This function is used for evaluating different models approaches base on the combination
 #' of presence-absences or presence-pseudo-absences and background point data and
 #' suitability predicted by any model or flexsdm modeling function families (fit_, esm_, and tune_.)
@@ -50,15 +51,11 @@
 #'   | BOYCE  (continuous Boyce index)*                  | no | -1 - 1 |
 #'   | IMAE (Inverse Mean Absolute Error)**              | no | 0 - 1 |
 #'
-#' \* BOYCE is calculated based on presences and background points, in case that background points
-#' is not provided it is calculated using presences and absences. The codes for calculating
-#' this metric is and adaptation of enmSdm package (https://github.com/adamlilith/enmSdm)
+#' \* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the `ecospat` package (see [boyce_()]).
 #'
 #' \** IMAE is calculated as 1-(Mean Absolute Error) in order to be consistent with the other
-#' metrics where the higher the value of a given performance metric, the greater the model's
+#' metrics where the higher the value of a given performance metric, the greater the model's.
 #' accuracy
-#'
-#' @md
 #'
 #' @return a tibble with next columns
 #' \itemize{
@@ -164,16 +161,16 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   } else {
     tr <- c(tr, a)
   }
-  tr <- sort(unique(round(tr, 8)))
+  tr <- sort(unique(tr))
 
   res <- matrix(ncol = 4, nrow = length(tr))
   colnames(res) <- c("tp", "fp", "fn", "tn")
   # Confusion Matrix
   for (i in 1:length(tr)) {
-    res[i, 1] <- length(p[p >= tr[i]]) # a  true positives
-    res[i, 2] <- length(a[a >= tr[i]]) # b  false positives
-    res[i, 3] <- length(p[p < tr[i]]) # c  false negatives
-    res[i, 4] <- length(a[a < tr[i]]) # d  true negatives
+    res[i, 1] <- sum(p >= tr[i]) # a  true positives
+    res[i, 2] <- sum(a >= tr[i]) # b  false positives
+    res[i, 3] <- sum(p < tr[i]) # c  false negatives
+    res[i, 4] <- sum(a < tr[i]) # d  true negatives
   }
   res <- data.frame(res)
 
@@ -195,9 +192,9 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   performance <- performance %>% dplyr::mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
 
   if (is.null(bg)) {
-    performance <- performance %>% dplyr::mutate(BOYCE = boyce(pres = p, contrast = c(p, a)))
+    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(fit = a, obs = p, n_bins = 101))
   } else {
-    performance <- performance %>% dplyr::mutate(BOYCE = boyce(pres = p, contrast = c(p, bg)))
+    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(fit = bg, obs = p, n_bins = 101))
   }
 
   real <- c(rep(1, length(p)), rep(0, length(a)))
@@ -227,9 +224,11 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
 
   suppressWarnings(thresholds$lpt <- max(performance$threshold[performance$TPR == 1]))
 
+  # finding the maximum threshold
+    # that results in a sensitivity >= target
   if (any(thr == "sensitivity")) {
-    thresholds$sensitivity <- performance$threshold[which.min(performance$TPR >
-      as.numeric(thr["sens"]))]
+    thresholds$sensitivity <- max(performance$threshold[performance$TPR >=
+      as.numeric(thr["sens"])])
   }
 
   thresholds <- dplyr::bind_cols(thresholds)

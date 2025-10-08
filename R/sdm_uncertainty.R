@@ -85,6 +85,7 @@ sdm_uncertainty <- function(
 
   # Prepare raster
   proj_data_df <- as.data.frame(projection_data)
+  proj_data_df <-  proj_data_df[complete.cases(proj_data_df),]
   r <- projection_data[[!terra::is.factor(projection_data)]][[1]]
   r <- terra::ifel(!is.na(r), 0, NA)
 

@@ -12,8 +12,8 @@ sdm_eval(p, a, bg = NULL, thr = NULL)
 \item{a}{numeric. Predicted suitability for absences}
 
 \item{bg}{numeric. Predicted suitability for background points, used for BOYCE metric.
-It bg is set as NULL, BOYCE metric will be calculated with presences and absences suitabilities
-values}
+If not provided (NULL), the Boyce index will be calculated using absence data instead.
+\strong{Note:} Using absence data for the Boyce index is not standard practice and may result in inflated performance values. It is highly recommended to provide background points for a correct calculation. The Boyce index is calculated using the \code{boyce_} function, which is an adaptation of the method implemented in the \code{ecospat} package.}
 
 \item{thr}{character. Threshold criterion used to get binary suitability values (i.e. 0,1).
 Used for threshold-dependent performance metrics.
@@ -72,12 +72,10 @@ It calculates the next performance metric:\tabular{lcr}{
 }
 
 
-\* BOYCE is calculated based on presences and background points, in case that background points
-is not provided it is calculated using presences and absences. The codes for calculating
-this metric is and adaptation of enmSdm package (https://github.com/adamlilith/enmSdm)
+\* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the \code{ecospat} package (see \code{\link[=boyce_]{boyce_()}}).
 
 \** IMAE is calculated as 1-(Mean Absolute Error) in order to be consistent with the other
-metrics where the higher the value of a given performance metric, the greater the model's
+metrics where the higher the value of a given performance metric, the greater the model's.
 accuracy
 }
 \examples{
