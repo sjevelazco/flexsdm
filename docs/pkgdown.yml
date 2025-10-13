@@ -9,7 +9,8 @@ articles:
   v04_Red_fir_example: v04_Red_fir_example.html
   v05_Rare_species_example: v05_Rare_species_example.html
   v06_Extrapolation_example: v06_Extrapolation_example.html
-last_built: 2025-09-03T21:14Z
+  v07_Complete_workflow: v07_Complete_workflow.html
+last_built: 2025-10-13T16:16Z
 urls:
   reference: https://sjevelazco.github.io/flexsdm/reference
   article: https://sjevelazco.github.io/flexsdm/articles

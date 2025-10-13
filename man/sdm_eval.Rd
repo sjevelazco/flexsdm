@@ -62,18 +62,18 @@ It calculates the next performance metric:\tabular{lcr}{
    Performance metric \tab Threshold dependent \tab Values ranges \cr
    TPR (True Positive Rate, also called Sensitivity) \tab yes \tab 0 - 1 \cr
    TNR (True Negative Rate, also called Specificity) \tab yes \tab 0 - 1 \cr
-   W_TPR_TNR (Weighted TPR-TNR) \tab yes \tab 0 - 1 \cr
+   W_TPR_TNR (Weighted TPR-TNR; Li et al. 2020) \tab yes \tab 0 - 1 \cr
    SORENSEN \tab yes \tab 0 - 1 \cr
    JACCARD \tab yes \tab 0 - 1 \cr
    FPB (F-measure on presence-background) \tab yes \tab 0 - 2 \cr
    OR (Omission Rate) \tab yes \tab 0 - 1 \cr
    TSS (True Skill Statistic) \tab yes \tab -1 - 1 \cr
    KAPPA \tab yes \tab 0 - 1 \cr
-   MCC (Matthews Correlation Coefficient) \tab yes \tab -1 - 1 (1 is best) \cr
+   MCC (Matthews Correlation Coefficient; Matthews 1975) \tab yes \tab -1 - 1 (1 is best) \cr
    AUC (Area Under Curve) \tab no \tab 0 - 1 \cr
    BOYCE  (continuous Boyce index)* \tab no \tab -1 - 1 \cr
    IMAE (Inverse Mean Absolute Error)** \tab no \tab 0 - 1 \cr
-   CRPS (Continuous Ranked Probability Score)** \tab no \tab 0 - 1 \cr
+   CRPS (Continuous Ranked Probability Score based on Brier Score, Brier 1950)** \tab no \tab 0 - 1 \cr
 }
 
 
@@ -81,7 +81,6 @@ It calculates the next performance metric:\tabular{lcr}{
 
 \** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
 metrics where the higher the value of a given performance metric, the greater the model's.
-accuracy
 
 To define the formulas, the following components of the confusion matrix are used:
 \itemize{
@@ -97,17 +96,17 @@ The formulas are:
 \itemize{
 \item \strong{TPR (Sensitivity)}: \deqn{TPR = \frac{tp}{tp + fn}}{TPR = tp / (tp + fn)}
 \item \strong{TNR (Specificity)}: \deqn{TNR = \frac{tn}{tn + fp}}{TNR = tn / (tn + fp)}
-\item \strong{W_TPR_TNR}: \deqn{W\_TPR\_TNR = w \cdot TPR + (1-w) \cdot TNR}{W_TPR_TNR = w * TPR + (1-w) * TNR}, where \deqn{w = \frac{na}{na + np}}{w = na / (na + np)}
+\item \strong{W_TPR_TNR} (Li et al. 2020): \deqn{W\_TPR\_TNR = w \cdot TPR + (1-w) \cdot TNR}{W_TPR_TNR = w * TPR + (1-w) * TNR}, where \deqn{w = \frac{na}{na + np}}{w = na / (na + np)}
 \item \strong{SORENSEN}: \deqn{Sorensen = \frac{2 \cdot tp}{fn + 2 \cdot tp + fp}}{Sorensen = 2*tp / (fn + 2*tp + fp)}
 \item \strong{JACCARD}: \deqn{Jaccard = \frac{tp}{fn + tp + fp}}{Jaccard = tp / (fn + tp + fp)}
 \item \strong{FPB}: \deqn{FPB = 2 \cdot Jaccard}{FPB = 2 * Jaccard}
 \item \strong{OR}: \deqn{OR = 1 - TPR}{OR = 1 - TPR}
 \item \strong{TSS}: \deqn{TSS = TPR + TNR - 1}{TSS = TPR + TNR - 1}
 \item \strong{KAPPA}: \deqn{KAPPA = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}}{KAPPA = (Pr(a) - Pr(e)) / (1 - Pr(e))}, where \deqn{Pr(a) = \frac{tp+tn}{tp+tn+fp+fn}}{Pr(a) = (tp+tn)/(tp+tn+fp+fn)} and \deqn{Pr(e) = \frac{(tp+fp)(tp+fn) + (fn+tn)(fp+tn)}{(tp+tn+fp+fn)^2}}{Pr(e) = ((tp+fp)*(tp+fn) + (fn+tn)*(fp+tn))/(tp+tn+fp+fn)^2}
-\item \strong{MCC}: \deqn{MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}}{MCC = (tp*tn - fp*fn) / sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))}
+\item \strong{MCC} (Matthews 1975): \deqn{MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}}{MCC = (tp*tn - fp*fn) / sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))}
 \item \strong{AUC}: Calculated as the Wilcoxon-Mann-Whitney U statistic, which is equivalent to the area under the ROC curve.
 \item \strong{BOYCE}: The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.
-\item \strong{CRPS}: For binary outcomes, this is calculated as \deqn{1 - \frac{\sum(predicted - observed)^2}{N}}{1 - (sum(predicted - observed)^2/N)}, which is 1 minus the Brier Score.
+\item \strong{CRPS} (Brier 1950): For binary outcomes, this is calculated as \deqn{1 - \frac{\sum(predicted - observed)^2}{N}}{1 - (sum(predicted - observed)^2/N)}, which is 1 minus the Brier Score.
 \item \strong{IMAE}: \deqn{IMAE = 1 - \frac{\sum|predicted - observed|}{N}}{IMAE = 1 - (sum|predicted - observed|/N)}, where N is the total number of records.
 }
 }
@@ -148,5 +147,12 @@ sdm_eval(p, a, thr = c("max_sens_spec"), bg = backg)
 # If background will be used to calculate all other metrics
 # background values can be used in "a" argument
 sdm_eval(p, backg, thr = "max_sens_spec")
+}
+}
+\references{
+\itemize{
+\item Brier GW. (1950) Verification of forecasts expressed in terms of probability. Monthly Weather Review 78(1): 1–3. https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
+\item Li, J., Liu, H., & Li, L. (2020). A novel performance metric for imbalanced learning and its application in credit default prediction. Expert Systems with Applications, 152, 113382. https://doi.org/10.1016/j.eswa.2020.113382
+\item Matthews BW. (1975) Comparison of the predicted and observed secondary structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9
 }
 }

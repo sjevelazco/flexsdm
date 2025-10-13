@@ -9,7 +9,7 @@ metrics."><meta name="google-site-verification" content="gcou8tqRTwNjZ_Mf1kbFgAz
 
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@ metrics."><meta name="google-site-verification" content="gcou8tqRTwNjZ_Mf1kbFgAz
     <li><a class="dropdown-item" href="../articles/v04_Red_fir_example.html">4. An example with Red Fir</a></li>
     <li><a class="dropdown-item" href="../articles/v05_Rare_species_example.html">5. Modeling a rare species</a></li>
     <li><a class="dropdown-item" href="../articles/v06_Extrapolation_example.html">6. Tools to explore extrapolation in SDMs</a></li>
+    <li><a class="dropdown-item" href="../articles/v07_Complete_workflow.html">7. Modeling workflow for several species</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/pkg_citation.html">Citations</a></li>
   </ul></li>
@@ -73,8 +74,9 @@ metrics.</p>
 
 <dt id="arg-bg">bg<a class="anchor" aria-label="anchor" href="#arg-bg"></a></dt>
 <dd><p>numeric. Predicted suitability for background points, used for BOYCE metric.
-It bg is set as NULL, BOYCE metric will be calculated with presences and absences suitabilities
-values</p></dd>
+If not provided (NULL), the Boyce index will be calculated using absence data instead.
+<strong>Note:</strong> Using absence data for the Boyce index is not standard practice and may result in inflated performance values. It is highly recommended to provide background points for a correct calculation.
+The Boyce index is calculated using the <code>boyce</code> function, which is an adaptation of the method implemented in the <code>ecospat</code> package.</p></dd>
 
 
 <dt id="arg-thr">thr<a class="anchor" aria-label="anchor" href="#arg-thr"></a></dt>
@@ -104,20 +106,49 @@ Function will use all thresholds if no threshold type is specified</p></dd>
 <li><p>thr_value: threshold values</p></li>
 <li><p>n_presences: number of presences</p></li>
 <li><p>n_absences: number of absences</p></li>
-<li><p>from TPR to IMAE: performance metrics</p></li>
+<li><p>from TPR to CRPS: performance metrics</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This function is used for evaluating different models approaches base on the combination
 of presence-absences or presence-pseudo-absences and background point data and
-suitability predicted by any model or flexsdm modeling function families (fit_, esm_, and tune_.)</p>
-<p>It calculates the next performance metric:</p><table class="table table"><tr><td>Performance metric</td><td>Threshold dependent</td><td>Values ranges</td></tr><tr><td>TPR (True Positive Rate, also called Sensitivity)</td><td>yes</td><td>0 - 1</td></tr><tr><td>TNR (True Negative Rate, also called Specificity)</td><td>yes</td><td>0 - 1</td></tr><tr><td>SORENSEN</td><td>yes</td><td>0 - 1</td></tr><tr><td>JACCARD</td><td>yes</td><td>0 - 1</td></tr><tr><td>FPB (F-measure on presence-background)</td><td>yes</td><td>0 - 2</td></tr><tr><td>OR (Omission Rate)</td><td>yes</td><td>0 - 1</td></tr><tr><td>TSS (True Skill Statistic)</td><td>yes</td><td>-1 - 1</td></tr><tr><td>KAPPA</td><td>yes</td><td>0 - 1</td></tr><tr><td>AUC (Area Under Curve)</td><td>no</td><td>0 - 1</td></tr><tr><td>BOYCE  (continuous Boyce index)*</td><td>no</td><td>-1 - 1</td></tr><tr><td>IMAE (Inverse Mean Absolute Error)**</td><td>no</td><td>0 - 1</td></tr></table><p>\* BOYCE is calculated based on presences and background points, in case that background points
-is not provided it is calculated using presences and absences. The codes for calculating
-this metric is and adaptation of enmSdm package (https://github.com/adamlilith/enmSdm)</p>
-<p>\** IMAE is calculated as 1-(Mean Absolute Error) in order to be consistent with the other
-metrics where the higher the value of a given performance metric, the greater the model's
-accuracy</p>
+suitability predicted by any model or flexsdm modeling function families (fit_, esm_, and tune_.)</p><div class="section">
+<h3 id="performance-metrics-formulas">Performance Metrics Formulas<a class="anchor" aria-label="anchor" href="#performance-metrics-formulas"></a></h3>
+
+
+<p>It calculates the next performance metric:</p><table class="table table"><tr><td>Performance metric</td><td>Threshold dependent</td><td>Values ranges</td></tr><tr><td>TPR (True Positive Rate, also called Sensitivity)</td><td>yes</td><td>0 - 1</td></tr><tr><td>TNR (True Negative Rate, also called Specificity)</td><td>yes</td><td>0 - 1</td></tr><tr><td>W_TPR_TNR (Weighted TPR-TNR; Li et al. 2020)</td><td>yes</td><td>0 - 1</td></tr><tr><td>SORENSEN</td><td>yes</td><td>0 - 1</td></tr><tr><td>JACCARD</td><td>yes</td><td>0 - 1</td></tr><tr><td>FPB (F-measure on presence-background)</td><td>yes</td><td>0 - 2</td></tr><tr><td>OR (Omission Rate)</td><td>yes</td><td>0 - 1</td></tr><tr><td>TSS (True Skill Statistic)</td><td>yes</td><td>-1 - 1</td></tr><tr><td>KAPPA</td><td>yes</td><td>0 - 1</td></tr><tr><td>MCC (Matthews Correlation Coefficient; Matthews 1975)</td><td>yes</td><td>-1 - 1 (1 is best)</td></tr><tr><td>AUC (Area Under Curve)</td><td>no</td><td>0 - 1</td></tr><tr><td>BOYCE  (continuous Boyce index)*</td><td>no</td><td>-1 - 1</td></tr><tr><td>IMAE (Inverse Mean Absolute Error)**</td><td>no</td><td>0 - 1</td></tr><tr><td>CRPS (Continuous Ranked Probability Score based on Brier Score, Brier 1950)**</td><td>no</td><td>0 - 1</td></tr></table><p>\* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the <code>ecospat</code> package (see <code>boyce_()</code>).</p>
+<p>\** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
+metrics where the higher the value of a given performance metric, the greater the model's.</p>
+<p>To define the formulas, the following components of the confusion matrix are used:</p><ul><li><p><code>tp</code>: True Positives (presences correctly predicted as presences)</p></li>
+<li><p><code>tn</code>: True Negatives (absences correctly predicted as absences)</p></li>
+<li><p><code>fp</code>: False Positives (absences incorrectly predicted as presences)</p></li>
+<li><p><code>fn</code>: False Negatives (presences incorrectly predicted as absences)</p></li>
+<li><p><code>np</code>: Number of presences (<code>length(p)</code>)</p></li>
+<li><p><code>na</code>: Number of absences (<code>length(a)</code>)</p></li>
+</ul><p>The formulas are:</p><ul><li><p><strong>TPR (Sensitivity)</strong>: $$TPR = \frac{tp}{tp + fn}$$</p></li>
+<li><p><strong>TNR (Specificity)</strong>: $$TNR = \frac{tn}{tn + fp}$$</p></li>
+<li><p><strong>W_TPR_TNR</strong> (Li et al. 2020): $$W\_TPR\_TNR = w \cdot TPR + (1-w) \cdot TNR$$, where $$w = \frac{na}{na + np}$$</p></li>
+<li><p><strong>SORENSEN</strong>: $$Sorensen = \frac{2 \cdot tp}{fn + 2 \cdot tp + fp}$$</p></li>
+<li><p><strong>JACCARD</strong>: $$Jaccard = \frac{tp}{fn + tp + fp}$$</p></li>
+<li><p><strong>FPB</strong>: $$FPB = 2 \cdot Jaccard$$</p></li>
+<li><p><strong>OR</strong>: $$OR = 1 - TPR$$</p></li>
+<li><p><strong>TSS</strong>: $$TSS = TPR + TNR - 1$$</p></li>
+<li><p><strong>KAPPA</strong>: $$KAPPA = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}$$, where $$Pr(a) = \frac{tp+tn}{tp+tn+fp+fn}$$ and $$Pr(e) = \frac{(tp+fp)(tp+fn) + (fn+tn)(fp+tn)}{(tp+tn+fp+fn)^2}$$</p></li>
+<li><p><strong>MCC</strong> (Matthews 1975): $$MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}$$</p></li>
+<li><p><strong>AUC</strong>: Calculated as the Wilcoxon-Mann-Whitney U statistic, which is equivalent to the area under the ROC curve.</p></li>
+<li><p><strong>BOYCE</strong>: The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.</p></li>
+<li><p><strong>CRPS</strong> (Brier 1950): For binary outcomes, this is calculated as $$1 - \frac{\sum(predicted - observed)^2}{N}$$, which is 1 minus the Brier Score.</p></li>
+<li><p><strong>IMAE</strong>: $$IMAE = 1 - \frac{\sum|predicted - observed|}{N}$$, where N is the total number of records.</p></li>
+</ul></div>
+
     </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+
+<ul><li><p>Brier GW. (1950) Verification of forecasts expressed in terms of probability. Monthly Weather Review 78(1): 1–3. https://doi.org/10.1175/1520-0493(1950)078&lt;0001:VOFEIT&gt;2.0.CO;2</p></li>
+<li><p>Li, J., Liu, H., &amp; Li, L. (2020). A novel performance metric for imbalanced learning and its application in credit default prediction. Expert Systems with Applications, 152, 113382. https://doi.org/10.1016/j.eswa.2020.113382</p></li>
+<li><p>Matthews BW. (1975) Comparison of the predicted and observed secondary structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -157,7 +188,6 @@ accuracy</p>
 <span class="r-in"><span><span class="co"># background values can be used in "a" argument</span></span></span>
 <span class="r-in"><span><span class="fu">sdm_eval</span><span class="op">(</span><span class="va">p</span>, <span class="va">backg</span>, thr <span class="op">=</span> <span class="st">"max_sens_spec"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
