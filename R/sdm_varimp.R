@@ -309,7 +309,7 @@ sdm_varimp <- function(models,
         var_rand <- foreach::foreach(
           j = 1:n_sim,
           .combine = rbind,
-          .export = c("sdm_eval", "boyce"),
+          .export = c("sdm_eval"),
           .packages = c("dplyr")
         ) %dopar% {
           data_2[, predictors[jj]] <- data[sample(nrow(data)), predictors[jj]]
@@ -366,7 +366,7 @@ sdm_varimp <- function(models,
         var_rand <- foreach::foreach(
           j = 1:n_sim,
           .combine = rbind,
-          .export = c("sdm_eval", "boyce", "predict.graf"),
+          .export = c("sdm_eval", "predict.graf"),
           .packages = c("dplyr")
         ) %dopar% {
           data_2[, predictors[jj]] <- data[sample(nrow(data)), predictors[jj]]
@@ -423,7 +423,7 @@ sdm_varimp <- function(models,
         var_rand <- foreach::foreach(
           j = 1:n_sim,
           .combine = rbind,
-          .export = c("sdm_eval", "boyce"),
+          .export = c("sdm_eval"),
           .packages = c("dplyr")
         ) %dopar% {
           data_2[, predictors[jj]] <- data[sample(nrow(data)), predictors[jj]]
@@ -480,7 +480,7 @@ sdm_varimp <- function(models,
         var_rand <- foreach::foreach(
           j = 1:n_sim,
           .combine = rbind,
-          .export = c("sdm_eval", "boyce"),
+          .export = c("sdm_eval"),
           .packages = c("dplyr")
         ) %dopar% {
           data_2[, predictors[jj]] <- data[sample(nrow(data)), predictors[jj]]
@@ -530,7 +530,7 @@ sdm_varimp <- function(models,
         var_rand <- foreach::foreach(
           j = 1:n_sim,
           .combine = rbind,
-          .export = c("sdm_eval", "boyce"),
+          .export = c("sdm_eval"),
           .packages = c("dplyr")
         ) %dopar% {
           data_2[, predictors[jj]] <- data[sample(nrow(data)), predictors[jj]]
@@ -578,7 +578,7 @@ sdm_varimp <- function(models,
         var_rand <- foreach::foreach(
           j = 1:n_sim,
           .combine = rbind,
-          .export = c("sdm_eval", "boyce", "predict_maxnet"),
+          .export = c("sdm_eval", "predict_maxnet"),
           .packages = c("dplyr")
         ) %dopar% {
           data_2[, predictors[jj]] <- data[sample(nrow(data)), predictors[jj]]
@@ -629,7 +629,7 @@ sdm_varimp <- function(models,
         var_rand <- foreach::foreach(
           j = 1:n_sim,
           .combine = rbind,
-          .export = c("sdm_eval", "boyce"),
+          .export = c("sdm_eval"),
           .packages = c("dplyr")
         ) %dopar% {
           data_2[, predictors[jj]] <- data[sample(nrow(data)), predictors[jj]]
@@ -679,7 +679,7 @@ sdm_varimp <- function(models,
         var_rand <- foreach::foreach(
           j = 1:n_sim,
           .combine = rbind,
-          .export = c("sdm_eval", "boyce"),
+          .export = c("sdm_eval"),
           .packages = c("dplyr")
         ) %dopar% {
           data_2[, predictors[jj]] <- data[sample(nrow(data)), predictors[jj]]

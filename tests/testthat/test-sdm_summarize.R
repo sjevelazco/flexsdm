@@ -36,7 +36,7 @@ test_that("sdm summarize", {
   # Build a tuned random forest model using tune_raf
 
   tune_grid <-
-    expand.grid(mtry = seq(1, 7, 1))
+    expand.grid(mtry = seq(1, 5, 1), ntree = c(800, 1000))
 
   rf_t1 <-
     tune_raf(

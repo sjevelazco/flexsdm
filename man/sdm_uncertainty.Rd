@@ -60,17 +60,17 @@ sp_data <- part_random(
 )
 
 sp_data <- sdm_extract(
-    data = sp_data,
-    x = "x",
-    y = "y",
-    env_layer = somevar
-  )
+  data = sp_data,
+  x = "x",
+  y = "y",
+  env_layer = somevar
+)
 
 m <- fit_svm(
   data = sp_data,
   response = "pr_ab",
-  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"), 
-    partition = ".part"
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part"
 )
 
 unc <- sdm_uncertainty(

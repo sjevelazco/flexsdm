@@ -1,6 +1,10 @@
 #' Fit and validate Generalized Boosted Regression models with exploration of
 #' hyper-parameters that optimize performance
 #'
+#' @description
+#' This function fits and validates Generalized Boosted Regression models (GBM) while exploring
+#' different hyper-parameter combinations to find the one that optimizes model performance.
+#' It is a tune version of [fit_gbm()].
 #'
 #' @param data data.frame. Database with response (0,1) and predictors values.
 #' @param response character. Column name with species absence-presence data (0,1).
@@ -62,8 +66,7 @@
 #' @importFrom gbm gbm predict.gbm
 #' @importFrom stats formula na.omit
 #'
-#' @seealso \code{\link{tune_max}}, \code{\link{tune_net}}, \code{\link{tune_raf}},
-#' and \code{\link{tune_svm}}.
+#' @seealso [tune_max], [tune_net], [tune_raf], [tune_svm].
 #'
 #' @examples
 #' \dontrun{
@@ -110,8 +113,8 @@
 #' gbm_t$predictors
 #' gbm_t$performance
 #' gbm_t$performance_part
-#' gbm_t$data_ens
 #' gbm_t$hyper_performance
+#' gbm_t$data_ens
 #'
 #' # Graphical exploration of performance of each hyper-parameter setting
 #' require(ggplot2)
@@ -152,9 +155,9 @@ tune_gbm <-
     data <- data.frame(data)
 
     # Test response variable
-    r_test <- (data %>% dplyr::pull(response) %>% unique() %>% na.omit())
-    if ((!all(r_test %in% c(0, 1)))) {
-      stop("values of response variable do not match with 0 and 1")
+    r_test <- na.omit(unique(data[, response]))
+    if (!all(r_test %in% c(0, 1))) {
+      stop("Response variable must be a binary vector (0/1).")
     }
 
     if (is.null(predictors_f)) {
@@ -236,11 +239,26 @@ tune_gbm <-
       cl <- parallel::makeCluster(n_cores)
       doParallel::registerDoParallel(cl)
 
-      eval_partial <- foreach::foreach(i = 1:np2, .export = c("sdm_eval", "boyce"), .packages = c("dplyr")) %dopar% {
+      eval_partial <- foreach::foreach(i = 1:np2, .export = c("sdm_eval"), .packages = c("dplyr")) %dopar% {
         # message("Partition number: ", i, "/", np2)
         mod <- as.list(rep(NA, nrow(grid)))
         names(mod) <- 1:nrow(grid)
         for (ii in 1:nrow(grid)) {
+          # Ensure n.minobsinnode is an integer and valid
+          n_minobsinnode_val <- as.integer(grid$n.minobsinnode[ii])
+          if (is.na(n_minobsinnode_val) || n_minobsinnode_val < 1) {
+            n_minobsinnode_val <- 1 # Default to 1 if invalid
+          }
+
+          # Check if n.minobsinnode is too large for the training data
+          nTrain <- nrow(train[[i]])
+          bag.fraction <- 0.5 # gbm default
+          if (nTrain * bag.fraction <= 2 * n_minobsinnode_val + 1) {
+            # Adjust n.minobsinnode to be valid
+            n_minobsinnode_val <- floor((nTrain * bag.fraction - 1) / 2)
+            if (n_minobsinnode_val < 1) n_minobsinnode_val <- 1
+          }
+
           set.seed(1)
           try(mod[[ii]] <-
             suppressMessages(
@@ -248,11 +266,12 @@ tune_gbm <-
                 formula1,
                 data = train[[i]],
                 distribution = "bernoulli",
-                bag.fraction = 0.9,
                 n.trees = grid$n.trees[ii],
-                interaction.depth = 1,
+                interaction.depth = 1, # for gbm.step compatibility
                 shrinkage = grid$shrinkage[ii],
-                n.minobsinnode = grid$n.minobsinnode[ii]
+                n.minobsinnode = n_minobsinnode_val,
+                bag.fraction = 0.9,
+                verbose = FALSE
               )
             ))
           try(
@@ -321,8 +340,7 @@ tune_gbm <-
       dplyr::summarise(dplyr::across(
         TPR:IMAE,
         list(mean = mean, sd = sd)
-      ), .groups = "drop") %>%
-      na.omit()
+      ), .groups = "drop")
 
     # Find the bets parameter setting
     filt <- eval_final %>% dplyr::pull(paste0(metric, "_mean"))
@@ -330,6 +348,10 @@ tune_gbm <-
     best_tune <- eval_final[filt, ]
     best_hyperp <- eval_final[filt, hyperp]
 
+    # Fit final model with the best hyper-parameters
+    message("Fitting final model with best hyper-parameters...")
+    n_minobsinnode_best <- as.integer(best_tune$n.minobsinnode)
+    if (is.na(n_minobsinnode_best) || n_minobsinnode_best < 1) n_minobsinnode_best <- 1
 
     # Get data for ensemble
     # Fit final models with best settings

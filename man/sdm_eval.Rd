@@ -13,7 +13,8 @@ sdm_eval(p, a, bg = NULL, thr = NULL)
 
 \item{bg}{numeric. Predicted suitability for background points, used for BOYCE metric.
 If not provided (NULL), the Boyce index will be calculated using absence data instead.
-\strong{Note:} Using absence data for the Boyce index is not standard practice and may result in inflated performance values. It is highly recommended to provide background points for a correct calculation. The Boyce index is calculated using the \code{boyce_} function, which is an adaptation of the method implemented in the \code{ecospat} package.}
+\strong{Note:} Using absence data for the Boyce index is not standard practice and may result in inflated performance values. It is highly recommended to provide background points for a correct calculation.
+The Boyce index is calculated using the \code{boyce} function, which is an adaptation of the method implemented in the \code{ecospat} package.}
 
 \item{thr}{character. Threshold criterion used to get binary suitability values (i.e. 0,1).
 Used for threshold-dependent performance metrics.
@@ -44,7 +45,7 @@ a tibble with next columns
 \item thr_value: threshold values
 \item n_presences: number of presences
 \item n_absences: number of absences
-\item from TPR to IMAE: performance metrics
+\item from TPR to CRPS: performance metrics
 }
 }
 \description{
@@ -55,28 +56,61 @@ metrics.
 This function is used for evaluating different models approaches base on the combination
 of presence-absences or presence-pseudo-absences and background point data and
 suitability predicted by any model or flexsdm modeling function families (fit_, esm_, and tune_.)
+\subsection{Performance Metrics Formulas}{
 
 It calculates the next performance metric:\tabular{lcr}{
    Performance metric \tab Threshold dependent \tab Values ranges \cr
    TPR (True Positive Rate, also called Sensitivity) \tab yes \tab 0 - 1 \cr
    TNR (True Negative Rate, also called Specificity) \tab yes \tab 0 - 1 \cr
+   W_TPR_TNR (Weighted TPR-TNR) \tab yes \tab 0 - 1 \cr
    SORENSEN \tab yes \tab 0 - 1 \cr
    JACCARD \tab yes \tab 0 - 1 \cr
    FPB (F-measure on presence-background) \tab yes \tab 0 - 2 \cr
    OR (Omission Rate) \tab yes \tab 0 - 1 \cr
    TSS (True Skill Statistic) \tab yes \tab -1 - 1 \cr
    KAPPA \tab yes \tab 0 - 1 \cr
+   MCC (Matthews Correlation Coefficient) \tab yes \tab -1 - 1 (1 is best) \cr
    AUC (Area Under Curve) \tab no \tab 0 - 1 \cr
    BOYCE  (continuous Boyce index)* \tab no \tab -1 - 1 \cr
    IMAE (Inverse Mean Absolute Error)** \tab no \tab 0 - 1 \cr
+   CRPS (Continuous Ranked Probability Score)** \tab no \tab 0 - 1 \cr
 }
 
 
 \* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the \code{ecospat} package (see \code{\link[=boyce_]{boyce_()}}).
 
-\** IMAE is calculated as 1-(Mean Absolute Error) in order to be consistent with the other
+\** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
 metrics where the higher the value of a given performance metric, the greater the model's.
 accuracy
+
+To define the formulas, the following components of the confusion matrix are used:
+\itemize{
+\item \code{tp}: True Positives (presences correctly predicted as presences)
+\item \code{tn}: True Negatives (absences correctly predicted as absences)
+\item \code{fp}: False Positives (absences incorrectly predicted as presences)
+\item \code{fn}: False Negatives (presences incorrectly predicted as absences)
+\item \code{np}: Number of presences (\code{length(p)})
+\item \code{na}: Number of absences (\code{length(a)})
+}
+
+The formulas are:
+\itemize{
+\item \strong{TPR (Sensitivity)}: \deqn{TPR = \frac{tp}{tp + fn}}{TPR = tp / (tp + fn)}
+\item \strong{TNR (Specificity)}: \deqn{TNR = \frac{tn}{tn + fp}}{TNR = tn / (tn + fp)}
+\item \strong{W_TPR_TNR}: \deqn{W\_TPR\_TNR = w \cdot TPR + (1-w) \cdot TNR}{W_TPR_TNR = w * TPR + (1-w) * TNR}, where \deqn{w = \frac{na}{na + np}}{w = na / (na + np)}
+\item \strong{SORENSEN}: \deqn{Sorensen = \frac{2 \cdot tp}{fn + 2 \cdot tp + fp}}{Sorensen = 2*tp / (fn + 2*tp + fp)}
+\item \strong{JACCARD}: \deqn{Jaccard = \frac{tp}{fn + tp + fp}}{Jaccard = tp / (fn + tp + fp)}
+\item \strong{FPB}: \deqn{FPB = 2 \cdot Jaccard}{FPB = 2 * Jaccard}
+\item \strong{OR}: \deqn{OR = 1 - TPR}{OR = 1 - TPR}
+\item \strong{TSS}: \deqn{TSS = TPR + TNR - 1}{TSS = TPR + TNR - 1}
+\item \strong{KAPPA}: \deqn{KAPPA = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}}{KAPPA = (Pr(a) - Pr(e)) / (1 - Pr(e))}, where \deqn{Pr(a) = \frac{tp+tn}{tp+tn+fp+fn}}{Pr(a) = (tp+tn)/(tp+tn+fp+fn)} and \deqn{Pr(e) = \frac{(tp+fp)(tp+fn) + (fn+tn)(fp+tn)}{(tp+tn+fp+fn)^2}}{Pr(e) = ((tp+fp)*(tp+fn) + (fn+tn)*(fp+tn))/(tp+tn+fp+fn)^2}
+\item \strong{MCC}: \deqn{MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}}{MCC = (tp*tn - fp*fn) / sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))}
+\item \strong{AUC}: Calculated as the Wilcoxon-Mann-Whitney U statistic, which is equivalent to the area under the ROC curve.
+\item \strong{BOYCE}: The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.
+\item \strong{CRPS}: For binary outcomes, this is calculated as \deqn{1 - \frac{\sum(predicted - observed)^2}{N}}{1 - (sum(predicted - observed)^2/N)}, which is 1 minus the Brier Score.
+\item \strong{IMAE}: \deqn{IMAE = 1 - \frac{\sum|predicted - observed|}{N}}{IMAE = 1 - (sum|predicted - observed|/N)}, where N is the total number of records.
+}
+}
 }
 \examples{
 \dontrun{
@@ -115,5 +149,4 @@ sdm_eval(p, a, thr = c("max_sens_spec"), bg = backg)
 # background values can be used in "a" argument
 sdm_eval(p, backg, thr = "max_sens_spec")
 }
-
 }

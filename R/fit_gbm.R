@@ -158,13 +158,28 @@ fit_gbm <- function(data,
 
   # Fit models
   if (is.null(partition)) {
+    # Ensure n.minobsinnode is an integer and valid
+    if (n_minobsinnode < 1) {
+      n_minobsinnode <- 1 # Default to 1 if invalid
+    }
+
+    # Check if n.minobsinnode is too large for the training data
+    nTrain <- nrow(data)
+    bag.fraction <- 0.9 #
+    if (nTrain * bag.fraction <= 2 * n_minobsinnode + 1) {
+      # Adjust n.minobsinnode to be valid
+      n_minobsinnode <- floor((nTrain * bag.fraction - 1) / 2)
+      if (n_minobsinnode < 1) n_minobsinnode <- 1
+    }
+
     suppressWarnings(mod <-
       gbm::gbm(formula1,
         data = data,
         distribution = "bernoulli",
         n.trees = n_trees,
         n.minobsinnode = n_minobsinnode,
-        shrinkage = shrinkage
+        shrinkage = shrinkage,
+        bag.fraction = 0.9
       ))
 
     result <- list(
@@ -197,6 +212,21 @@ fit_gbm <- function(data,
       eval_partial <- as.list(rep(NA, np2))
       pred_test <- list()
       mod <- list()
+
+      # Ensure n.minobsinnode is an integer and valid
+      if (n_minobsinnode < 1) {
+        n_minobsinnode <- 1 # Default to 1 if invalid
+      }
+
+      # Check if n.minobsinnode is too large for the training data
+      nTrain <- nrow(train)
+      bag.fraction <- 0.9 #
+      if (nTrain * bag.fraction <= 2 * n_minobsinnode + 1) {
+        # Adjust n.minobsinnode to be valid
+        n_minobsinnode <- floor((nTrain * bag.fraction - 1) / 2)
+        if (n_minobsinnode < 1) n_minobsinnode <- 1
+      }
+
 
       for (i in 1:np2) {
         tryCatch({

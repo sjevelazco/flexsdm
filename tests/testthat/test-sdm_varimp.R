@@ -63,10 +63,10 @@ test_that("sdm_varimp", {
       n_sim = 10,
       n_cores = 1
     )
-  expect_length(v_ip, 13)
+  expect_length(v_ip, 17)
 })
 
-test_that("esemble", {
+test_that("ensemble", {
   vmensemble <- flexsdm::fit_ensemble(
     models = list(svm_f1, max_t1),
     ens_method = "mean",
@@ -89,6 +89,7 @@ test_that("esemble", {
 
   expect_true(all(c("svm", "max") %in% v_ip$model))
 })
+
 
 test_that("sdm_varimp for esm", {
   data("abies")

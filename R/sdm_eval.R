@@ -28,12 +28,15 @@
 #' Function will use all thresholds if no threshold type is specified
 #' @param bg numeric. Predicted suitability for background points, used for BOYCE metric.
 #' If not provided (NULL), the Boyce index will be calculated using absence data instead.
-#' **Note:** Using absence data for the Boyce index is not standard practice and may result in inflated performance values. It is highly recommended to provide background points for a correct calculation. The Boyce index is calculated using the `boyce_` function, which is an adaptation of the method implemented in the `ecospat` package.
+#' **Note:** Using absence data for the Boyce index is not standard practice and may result in inflated performance values. It is highly recommended to provide background points for a correct calculation.
+#' The Boyce index is calculated using the `boyce` function, which is an adaptation of the method implemented in the `ecospat` package.
 #'
 #' @md
 #' @details This function is used for evaluating different models approaches base on the combination
 #' of presence-absences or presence-pseudo-absences and background point data and
 #' suitability predicted by any model or flexsdm modeling function families (fit_, esm_, and tune_.)
+#'
+#' ### Performance Metrics Formulas
 #'
 #' It calculates the next performance metric:
 #'
@@ -41,21 +44,48 @@
 #'   | :------------- |:-------------:| -----:|
 #'   | TPR (True Positive Rate, also called Sensitivity) | yes | 0 - 1 |
 #'   | TNR (True Negative Rate, also called Specificity) | yes | 0 - 1 |
+#'   | W_TPR_TNR (Weighted TPR-TNR)                      | yes | 0 - 1 |
 #'   | SORENSEN                                          | yes | 0 - 1 |
 #'   | JACCARD                                           | yes | 0 - 1 |
 #'   | FPB (F-measure on presence-background)            | yes | 0 - 2 |
 #'   | OR (Omission Rate)                                | yes | 0 - 1 |
 #'   | TSS (True Skill Statistic)                        | yes | -1 - 1 |
 #'   | KAPPA                                             | yes | 0 - 1 |
+#'   | MCC (Matthews Correlation Coefficient)            | yes | -1 - 1 (1 is best)         |
 #'   | AUC (Area Under Curve)                            | no | 0 - 1 |
 #'   | BOYCE  (continuous Boyce index)*                  | no | -1 - 1 |
 #'   | IMAE (Inverse Mean Absolute Error)**              | no | 0 - 1 |
+#'   | CRPS (Continuous Ranked Probability Score)**        | no  | 0 - 1 |
 #'
 #' \* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the `ecospat` package (see [boyce_()]).
 #'
-#' \** IMAE is calculated as 1-(Mean Absolute Error) in order to be consistent with the other
+#' \** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
 #' metrics where the higher the value of a given performance metric, the greater the model's.
 #' accuracy
+#'
+#' To define the formulas, the following components of the confusion matrix are used:
+#' - `tp`: True Positives (presences correctly predicted as presences)
+#' - `tn`: True Negatives (absences correctly predicted as absences)
+#' - `fp`: False Positives (absences incorrectly predicted as presences)
+#' - `fn`: False Negatives (presences incorrectly predicted as absences)
+#' - `np`: Number of presences (`length(p)`)
+#' - `na`: Number of absences (`length(a)`)
+#'
+#' The formulas are:
+#' - **TPR (Sensitivity)**: \deqn{TPR = \frac{tp}{tp + fn}}{TPR = tp / (tp + fn)}
+#' - **TNR (Specificity)**: \deqn{TNR = \frac{tn}{tn + fp}}{TNR = tn / (tn + fp)}
+#' - **W_TPR_TNR**: \deqn{W\_TPR\_TNR = w \cdot TPR + (1-w) \cdot TNR}{W_TPR_TNR = w * TPR + (1-w) * TNR}, where \deqn{w = \frac{na}{na + np}}{w = na / (na + np)}
+#' - **SORENSEN**: \deqn{Sorensen = \frac{2 \cdot tp}{fn + 2 \cdot tp + fp}}{Sorensen = 2*tp / (fn + 2*tp + fp)}
+#' - **JACCARD**: \deqn{Jaccard = \frac{tp}{fn + tp + fp}}{Jaccard = tp / (fn + tp + fp)}
+#' - **FPB**: \deqn{FPB = 2 \cdot Jaccard}{FPB = 2 * Jaccard}
+#' - **OR**: \deqn{OR = 1 - TPR}{OR = 1 - TPR}
+#' - **TSS**: \deqn{TSS = TPR + TNR - 1}{TSS = TPR + TNR - 1}
+#' - **KAPPA**: \deqn{KAPPA = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}}{KAPPA = (Pr(a) - Pr(e)) / (1 - Pr(e))}, where \deqn{Pr(a) = \frac{tp+tn}{tp+tn+fp+fn}}{Pr(a) = (tp+tn)/(tp+tn+fp+fn)} and \deqn{Pr(e) = \frac{(tp+fp)(tp+fn) + (fn+tn)(fp+tn)}{(tp+tn+fp+fn)^2}}{Pr(e) = ((tp+fp)*(tp+fn) + (fn+tn)*(fp+tn))/(tp+tn+fp+fn)^2}
+#' - **MCC**: \deqn{MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}}{MCC = (tp*tn - fp*fn) / sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))}
+#' - **AUC**: Calculated as the Wilcoxon-Mann-Whitney U statistic, which is equivalent to the area under the ROC curve.
+#' - **BOYCE**: The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.
+#' - **CRPS**: For binary outcomes, this is calculated as \deqn{1 - \frac{\sum(predicted - observed)^2}{N}}{1 - (sum(predicted - observed)^2/N)}, which is 1 minus the Brier Score.
+#' - **IMAE**: \deqn{IMAE = 1 - \frac{\sum|predicted - observed|}{N}}{IMAE = 1 - (sum|predicted - observed|/N)}, where N is the total number of records.
 #'
 #' @return a tibble with next columns
 #' \itemize{
@@ -63,7 +93,7 @@
 #' \item thr_value: threshold values
 #' \item n_presences: number of presences
 #' \item n_absences: number of absences
-#' \item from TPR to IMAE: performance metrics
+#' \item from TPR to CRPS: performance metrics
 #' }
 #'
 #'
@@ -109,9 +139,60 @@
 #' # background values can be used in "a" argument
 #' sdm_eval(p, backg, thr = "max_sens_spec")
 #' }
-#'
 sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   TPR <- TNR <- JACCARD <- SORENSEN <- threshold <- FPB <- TSS <- NULL
+
+  # Boyce Index based
+  # This function calculate Boyce index performance metric.
+  # Codes were adapted from ecospat package.
+  # Hirzel, A. H., Le Lay, G., Helfer, V., Randin, C., & Guisan, A. (2006).
+  # Evaluating the ability of habitat suitability models to predict species presences.
+  # Ecological Modelling, 199(2), 142-152.
+  #
+  boyce_ <- function(fit, obs, n_bins = 101) {
+    # Range of suitability values
+    fit.all <- c(fit, obs)
+    if (length(unique(fit.all)) == 1) {
+      return(NA)
+    }
+
+    # Determine window width
+    h_w <- (max(fit.all) - min(fit.all)) / 10
+
+    # Create bins
+    if (length(unique(fit.all)) < n_bins) {
+      bins <- sort(unique(fit.all))
+    } else {
+      bins <- seq(min(fit.all), max(fit.all), length.out = n_bins)
+    }
+
+    # Calculate frequencies
+    obs_freq <- sapply(bins, function(i) {
+      sum(obs >= i - h_w & obs < i + h_w)
+    })
+
+    fit_freq <- sapply(bins, function(i) {
+      sum(fit >= i - h_w & fit < i + h_w)
+    })
+
+    # Calculate Predicted/Expected ratio
+    P <- obs_freq / sum(obs_freq)
+    E <- fit_freq / sum(fit_freq)
+
+    # Handle cases where E is zero
+    PE_ratio <- P / E
+
+    # Remove bins with no presences
+    to_keep <- which(P > 0 & E > 0)
+
+    if (length(to_keep) < 2) {
+      return(NA)
+    }
+
+    # Calculate Spearman correlation
+    cor(bins[to_keep], PE_ratio[to_keep], method = "spearman")
+  }
+
   if (any(
     !(thr[is.na(suppressWarnings(as.numeric(thr)))]) %in% c(
       "lpt",
@@ -130,7 +211,6 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     thr <- c(
       "lpt",
       "max_sens_spec",
-      "max_kappa",
       "equal_sens_spec",
       "sensitivity",
       "max_jaccard",
@@ -183,10 +263,28 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     TNR = res$tn / (res$tn + res$fp),
     SORENSEN = 2 * res$tp / (res$fn + (2 * res$tp) + res$fp),
     JACCARD = res$tp / (res$fn + res$tp + res$fp),
+    KAPPA = (res$tp + res$tn) / (res$tp + res$tn + res$fp + res$fn) -
+      (res$fp + res$fn) / (res$tp + res$tn + res$fp + res$fn)^2,
     FPB = 2 * JACCARD,
     OR = (1 - TPR),
     TSS = (TPR + TNR) - 1
   )
+
+  # Add Weighted TPR-TNR
+  # w = n / (n + p) -> na / (na + np)
+  w <- na / (na + np)
+  performance <- performance %>%
+    dplyr::mutate(W_TPR_TNR = w * TPR + (1 - w) * TNR)
+  # dplyr::mutate(W_TPR_TNR = TPR * (na/(na+np))  + TNR * (np/(na+np)))
+
+  # Add MCC (Matthews Correlation Coefficient)
+  mcc_num <- (res$tp * res$tn) - (res$fp * res$fn)
+  mcc_den <- sqrt(as.numeric(res$tp + res$fp) * as.numeric(res$tp + res$fn) * as.numeric(res$tn + res$fp) * as.numeric(res$tn + res$fn))
+  mcc <- mcc_num / mcc_den
+  mcc[is.na(mcc)] <- 0 # Handle cases where the denominator is 0
+
+  performance <- performance %>% dplyr::mutate(MCC = mcc)
+
 
   R <- sum(rank(c(p, a))[1:np]) - (np * (np + 1) / 2)
   performance <- performance %>% dplyr::mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
@@ -200,6 +298,11 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   real <- c(rep(1, length(p)), rep(0, length(a)))
   pred <- c(p, a)
   performance <- performance %>% dplyr::mutate(IMAE = 1 - (sum(abs(real - pred)) / length(pred)))
+
+  # Add 1-CRPS (Brier Score for binary outcomes)
+  crps_val <- 1 - mean((pred - real)^2)
+  performance <- performance %>% dplyr::mutate(CRPS = crps_val)
+
 
   # Thresholds
   thresholds <- list()
@@ -225,7 +328,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   suppressWarnings(thresholds$lpt <- max(performance$threshold[performance$TPR == 1]))
 
   # finding the maximum threshold
-    # that results in a sensitivity >= target
+  # that results in a sensitivity >= target
   if (any(thr == "sensitivity")) {
     thresholds$sensitivity <- max(performance$threshold[performance$TPR >=
       as.numeric(thr["sens"])])
@@ -243,5 +346,9 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
       dplyr::filter(threshold %in% thr)
   }
 
+  result <- result[c(
+    "threshold", "thr_value", "n_presences", "n_absences", "TPR", "TNR", "W_TPR_TNR",
+    "SORENSEN", "JACCARD", "FPB", "OR", "TSS", "KAPPA", "MCC", "AUC", "BOYCE", "CRPS", "IMAE"
+  )]
   return(result)
 }
