@@ -82,8 +82,9 @@ database is used in \code{\link{fit_ensemble}}
 }
 }
 \description{
-Fit and validate Generalized Boosted Regression models with exploration of
-hyper-parameters that optimize performance
+This function fits and validates Generalized Boosted Regression models (GBM) while exploring
+different hyper-parameter combinations to find the one that optimizes model performance.
+It is a tune version of [fit_gbm()].
 }
 \examples{
 \dontrun{
@@ -130,8 +131,8 @@ gbm_t$model
 gbm_t$predictors
 gbm_t$performance
 gbm_t$performance_part
-gbm_t$data_ens
 gbm_t$hyper_performance
+gbm_t$data_ens
 
 # Graphical exploration of performance of each hyper-parameter setting
 require(ggplot2)
@@ -157,6 +158,5 @@ ggplot(gbm_t$hyper_performance, aes(factor(n.minobsinnode),
 
 }
 \seealso{
-\code{\link{tune_max}}, \code{\link{tune_net}}, \code{\link{tune_raf}},
-and \code{\link{tune_svm}}.
+[tune_max], [tune_net], [tune_raf], [tune_svm].
 }

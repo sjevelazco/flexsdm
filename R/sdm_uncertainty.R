@@ -22,32 +22,32 @@
 #' \dontrun{
 #' require(terra)
 #' require(dplyr)
-#' 
+#'
 #' data(spp)
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)
-#' 
+#'
 #' sp_data <- spp %>% filter(species == "sp3")
 #' sp_data <- part_random(
 #'   data = sp_data,
 #'   pr_ab = "pr_ab",
 #'   method = c(method = "kfold", folds = 3)
 #' )
-#' 
+#'
 #' sp_data <- sdm_extract(
-#'     data = sp_data,
-#'     x = "x",
-#'     y = "y",
-#'     env_layer = somevar
-#'   )
-#' 
+#'   data = sp_data,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar
+#' )
+#'
 #' m <- fit_svm(
 #'   data = sp_data,
 #'   response = "pr_ab",
-#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"), 
-#'     partition = ".part"
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part"
 #' )
-#' 
+#'
 #' unc <- sdm_uncertainty(
 #'   models = m,
 #'   training_data = sp_data,
@@ -56,7 +56,7 @@
 #'   iteration = 10,
 #'   n_cores = 2
 #' )
-#' 
+#'
 #' plot(unc)
 #' }
 #' @export
@@ -85,6 +85,7 @@ sdm_uncertainty <- function(
 
   # Prepare raster
   proj_data_df <- as.data.frame(projection_data)
+  proj_data_df <- proj_data_df[complete.cases(proj_data_df), ]
   r <- projection_data[[!terra::is.factor(projection_data)]][[1]]
   r <- terra::ifel(!is.na(r), 0, NA)
 
@@ -114,7 +115,7 @@ sdm_uncertainty <- function(
         "domain" = fit_dom(data = db, response = response, predictors = pr_c, predictors_f = pr_f, partition = NULL)$model
       )
       r_list[[ii]] <- switch(clss,
-        "domain" = 1-map_env_dist(training_data = m$domain, projection_data = proj_data_df, metric = "domain")
+        "domain" = 1 - map_env_dist(training_data = m$domain, projection_data = proj_data_df, metric = "domain")
       )
     }
   } else {
@@ -125,7 +126,7 @@ sdm_uncertainty <- function(
       ii = 1:iteration,
       .packages = c("dplyr", "mgcv", "kernlab"), # Packages needed on each worker
       .export = c("part_random", "predict.graf", "predict_maxnet", "extract.maxnet.classes", "fit_gam", "fit_gau", "fit_glm", "fit_gbm", "fit_dom", "fit_max", "fit_net", "fit_raf", "fit_svm", "map_env_dist"),
-      .errorhandling = "pass" # 
+      .errorhandling = "pass" #
     ) %dopar% {
       set.seed(ii)
       db <- part_random(

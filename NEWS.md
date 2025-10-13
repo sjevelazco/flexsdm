@@ -1,6 +1,9 @@
-# flexsdm 1.3.x
+# flexsdm 1.3.9
+-   `sdm_eval()` now calculates three additional performance metrics: the Matthews Correlation Coefficient (MCC). the Continuous Ranked Probability Score (CRPS), and a prevalence-weighted average of TPR and TNR (W_TPR_TNR), by @sjevelazco.
+-   `fit_gbm()` and `tune_gbm()` were improved to prevent the `argument is of length zero` error. This was achieved by adding a safeguard that dynamically adjusts `n.minobsinnode` based on the size of the training data partition, ensuring it remains valid for the `gbm` algorithm, by @sjevelazco.
 -   `sdm_uncertainty` This new function calculates species distribution model uncertainty using a bootstrap procedure, by @sjevelazco [#442](https://github.com/sjevelazco/flexsdm/pull/442)
 -   fit_ functions now can handle partition = NULL, by @sjevelazco [#442](https://github.com/sjevelazco/flexsdm/pull/442)
+
 
 # flexsdm 1.3.8
 

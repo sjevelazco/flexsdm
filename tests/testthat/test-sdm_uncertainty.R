@@ -67,13 +67,13 @@ test_that("test with GAM", {
 
 test_that("test with GLM", {
   m <- fit_glm(
-  data = some_sp,
-  response = "pres_abs",
-  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
-  partition = ".part",
-  poly = 2,
-  inter_order = 2
-)
+    data = some_sp,
+    response = "pres_abs",
+    predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+    partition = ".part",
+    poly = 2,
+    inter_order = 2
+  )
   unc <- sdm_uncertainty(
     model = m,
     training_data = some_sp,
@@ -94,10 +94,10 @@ test_that("test with GBM", {
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
     grid = expand.grid(
-    n.trees = c(50, 100),
-    shrinkage = c(1),
-    n.minobsinnode = c(5, 9)
-  ),
+      n.trees = c(50, 100),
+      shrinkage = c(1),
+      n.minobsinnode = c(5, 9)
+    ),
     thr = "max_sens_spec",
     metric = "TSS",
     n_cores = 1
@@ -142,11 +142,11 @@ test_that("test with NET", {
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
     grid = expand.grid(
-    size = c(2:3),
-    decay = c(1, 3)
-  ),
-  n_cores = 2,
-  thr = "equal_sens_spec"
+      size = c(2:3),
+      decay = c(1, 3)
+    ),
+    n_cores = 2,
+    thr = "equal_sens_spec"
   )
   unc <- sdm_uncertainty(
     models = m,
@@ -168,11 +168,11 @@ test_that("test with RAF", {
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
     grid = expand.grid(
-    mtry = seq(1, 7, 1),
-    ntree = c(400, 600, 800)
-  ),
-  n_cores = 2,
-  thr = "equal_sens_spec"
+      mtry = seq(1, 7, 1),
+      ntree = c(400, 600, 800)
+    ),
+    n_cores = 2,
+    thr = "equal_sens_spec"
   )
   unc <- sdm_uncertainty(
     models = m,
@@ -194,11 +194,11 @@ test_that("test with SVM", {
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
     grid = expand.grid(
-    C = c(2, 8, 20),
-    sigma = c(0.01, 0.1, 0.4)
-  ),
-  n_cores = 2,
-  thr = "equal_sens_spec"
+      C = c(2, 8, 20),
+      sigma = c(0.01, 0.1, 0.4)
+    ),
+    n_cores = 2,
+    thr = "equal_sens_spec"
   )
   unc <- sdm_uncertainty(
     models = m,
@@ -221,11 +221,11 @@ test_that("test with MAX", {
     partition = ".part",
     background = backg,
     grid = expand.grid(
-    regmult = seq(0.1, 3, 0.5),
-    classes = c("lqpht")
-  ),
-  n_cores = 2,
-  thr = "equal_sens_spec"
+      regmult = seq(0.1, 3, 0.5),
+      classes = c("lqpht")
+    ),
+    n_cores = 2,
+    thr = "equal_sens_spec"
   )
 
   unc <- sdm_uncertainty(
@@ -260,4 +260,3 @@ test_that("test with DOM", {
   expect_equal(class(unc)[[1]], "SpatRaster")
   expect_true(terra::global(unc, max, na.rm = TRUE)[1, 1] > 0)
 })
-
