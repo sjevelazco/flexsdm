@@ -213,7 +213,6 @@ fit_dom <- function(data,
   }
 
 
-
   # Calculate range for each column
   # range_var <- data[, predictors] %>% dplyr::reframe(dplyr::across(dplyr::everything(), range))
 

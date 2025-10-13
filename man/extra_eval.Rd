@@ -136,7 +136,6 @@ extr <-
 plot(extr, main = "Extrapolation pattern")
 
 
-
 # Let's fit, predict and truncate a model with extra_truncate
 sp_pa_2 <- part_random(
   data = sp_pa_2,

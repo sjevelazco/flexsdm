@@ -200,7 +200,6 @@ tune_svm <-
     eval_partial_list <- list()
 
 
-
     message("Tuning model...")
 
     for (h in 1:np) {

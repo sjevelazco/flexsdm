@@ -113,7 +113,6 @@ test_that("fit_gam with error: number of data minor than parameters ", {
 })
 
 
-
 test_that("test select_var argument", {
   abies2 <- part_random(
     data = abies,

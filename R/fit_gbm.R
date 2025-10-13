@@ -111,7 +111,7 @@ fit_gbm <- function(data,
                     partition = NULL,
                     thr = NULL,
                     n_trees = 100,
-                    n_minobsinnode = as.integer(nrow(data) * 0.5 / 4),
+                    n_minobsinnode = as.integer(nrow(data) * 0.9 / 4),
                     shrinkage = 0.1) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
@@ -213,22 +213,21 @@ fit_gbm <- function(data,
       pred_test <- list()
       mod <- list()
 
-      # Ensure n.minobsinnode is an integer and valid
-      if (n_minobsinnode < 1) {
-        n_minobsinnode <- 1 # Default to 1 if invalid
-      }
-
-      # Check if n.minobsinnode is too large for the training data
-      nTrain <- nrow(train)
-      bag.fraction <- 0.9 #
-      if (nTrain * bag.fraction <= 2 * n_minobsinnode + 1) {
-        # Adjust n.minobsinnode to be valid
-        n_minobsinnode <- floor((nTrain * bag.fraction - 1) / 2)
-        if (n_minobsinnode < 1) n_minobsinnode <- 1
-      }
-
 
       for (i in 1:np2) {
+        # Ensure n.minobsinnode is an integer and valid
+        if (n_minobsinnode < 1) {
+          n_minobsinnode <- 1 # Default to 1 if invalid
+        }
+
+        # Check if n.minobsinnode is too large for the training data
+        nTrain <- nrow(train[[i]])
+        bag.fraction <- 0.9 #
+        if (nTrain * bag.fraction <= 2 * n_minobsinnode + 1) {
+          # Adjust n.minobsinnode to be valid
+          n_minobsinnode <- floor((nTrain * bag.fraction - 1) / 2)
+          if (n_minobsinnode < 1) n_minobsinnode <- 1
+        }
         tryCatch({
           message("Partition number: ", i, "/", np2)
           set.seed(1)

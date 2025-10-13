@@ -77,7 +77,7 @@ It calculates the next performance metric:\tabular{lcr}{
 }
 
 
-\* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the \code{ecospat} package (see \code{\link[=boyce_]{boyce_()}}).
+\* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the \code{ecospat} package.
 
 \** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
 metrics where the higher the value of a given performance metric, the greater the model's.

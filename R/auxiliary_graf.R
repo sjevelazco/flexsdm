@@ -909,7 +909,7 @@ predict.graf <-
           notfacs <- (1:k)
           if (length(object$facs) > 0) notfacs <- notfacs[-object$facs]
           for (i in 1:length(notfacs)) {
-            newdata[, notfacs[i]] <- (newdata[, notfacs[i]] - object$scaling[1, i]) / object$   scaling[2, i]
+            newdata[, notfacs[i]] <- (newdata[, notfacs[i]] - object$scaling[1, i]) / object$scaling[2, i]
           }
         }
       } else {

@@ -176,7 +176,6 @@ fit_gam <- function(data,
   }
 
 
-
   # Check amount of data and number of coefficients
   # if (k < 0) {
   #   k <- 10

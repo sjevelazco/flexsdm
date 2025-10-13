@@ -41,8 +41,6 @@ test_that("test occfilt_select filter_prop = FALSE", {
 })
 
 
-
-
 test_that("test occfilt_select with filter_prop = TRUE", {
   occ_selected <- occfilt_select(
     occ_list = filtered_occ,

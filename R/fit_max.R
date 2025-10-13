@@ -237,7 +237,6 @@ fit_max <- function(data,
   }
 
 
-
   # Fit models
   if (is.null(partition)) {
     # Combine presences with background points

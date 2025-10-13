@@ -127,7 +127,6 @@ abies2 <- sdm_extract(abies2,
   )
 
 
-
 test_that("test psp with gam", {
   m_ <- fit_gam(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")

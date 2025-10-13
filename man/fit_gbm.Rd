@@ -13,7 +13,7 @@ fit_gbm(
   partition = NULL,
   thr = NULL,
   n_trees = 100,
-  n_minobsinnode = as.integer(nrow(data) * 0.5/4),
+  n_minobsinnode = as.integer(nrow(data) * 0.9/4),
   shrinkage = 0.1
 )
 }

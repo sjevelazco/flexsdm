@@ -61,15 +61,16 @@
 #' }
 #' @export
 sdm_uncertainty <- function(
-    models,
-    training_data,
-    background = NULL,
-    response,
-    projection_data,
-    iteration = 50,
-    n_cores = 5,
-    clamp = TRUE,
-    pred_type = "cloglog") {
+  models,
+  training_data,
+  background = NULL,
+  response,
+  projection_data,
+  iteration = 50,
+  n_cores = 5,
+  clamp = TRUE,
+  pred_type = "cloglog"
+) {
   # Extract model names object
   if ("domain" %in% names(models[[1]])) {
     clss <- "domain"

@@ -38,7 +38,6 @@ test_that("occfilt_geo 'cellsize' method for different values", {
 })
 
 
-
 test_that("occfilt_geo 'cellsize' method", {
   # Using cellsize method
   set.seed(1)

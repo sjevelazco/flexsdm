@@ -69,9 +69,10 @@
 #' )
 #' }
 map_env_dist <- function(
-    training_data,
-    projection_data,
-    metric = "domain") {
+  training_data,
+  projection_data,
+  metric = "domain"
+) {
   cell <- y <- x <- cluster <- . <- NULL
 
   # Gower distance

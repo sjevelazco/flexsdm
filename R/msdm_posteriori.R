@@ -273,13 +273,11 @@ msdm_posteriori <- function(records,
   }
 
 
-
   #### prepare data sets
   if (!methods::is(cont_suit, "SpatRaster")) {
     cont_suit <- terra::rast(cont_suit)
   }
-  if (!any("tbl_df" %in% class(records))) {
-  }
+  if (!any("tbl_df" %in% class(records))) {}
 
   # creation of a data.frame with presences and absences
   records <- records %>%
@@ -310,7 +308,6 @@ msdm_posteriori <- function(records,
       thr_2 <- eval %>% dplyr::pull(thr_value)
     }
   }
-
 
 
   records <- records %>%

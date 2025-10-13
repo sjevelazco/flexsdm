@@ -43,7 +43,7 @@
 #'   | Performance metric | Threshold dependent   | Values ranges  |
 #'   | :------------- |:-------------:| -----:|
 #'   | TPR (True Positive Rate, also called Sensitivity) | yes | 0 - 1 |
-#'   | TNR (True Negative Rate, also called Specificity) | yes | 0 - 1 | 
+#'   | TNR (True Negative Rate, also called Specificity) | yes | 0 - 1 |
 #'   | W_TPR_TNR (Weighted TPR-TNR; Li et al. 2020)      | yes | 0 - 1 |
 #'   | SORENSEN                                          | yes | 0 - 1 |
 #'   | JACCARD                                           | yes | 0 - 1 |
@@ -57,11 +57,11 @@
 #'   | IMAE (Inverse Mean Absolute Error)**              | no | 0 - 1 |
 #'   | CRPS (Continuous Ranked Probability Score based on Brier Score, Brier 1950)**        | no  | 0 - 1 |
 #'
-#' \* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the `ecospat` package (see [boyce_()]).
+#' \* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the `ecospat` package.
 #'
 #' \** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
 #' metrics where the higher the value of a given performance metric, the greater the model's.
-#' 
+#'
 #'
 #' To define the formulas, the following components of the confusion matrix are used:
 #' - `tp`: True Positives (presences correctly predicted as presences)
@@ -93,7 +93,7 @@
 #'   \item Li, J., Liu, H., & Li, L. (2020). A novel performance metric for imbalanced learning and its application in credit default prediction. Expert Systems with Applications, 152, 113382. https://doi.org/10.1016/j.eswa.2020.113382
 #'   \item Matthews BW. (1975) Comparison of the predicted and observed secondary structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9
 #' }
-#' 
+#'
 #' @return a tibble with next columns
 #' \itemize{
 #' \item threshold: threshold names

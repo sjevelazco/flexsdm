@@ -179,7 +179,6 @@ sample_background(
   points(col = "red")
 
 
-
 ## \%######################################################\%##
 #                                                          #
 ####            Thickening background method            ####

@@ -255,7 +255,6 @@ plot(pca_rr$env_layer) # PCA with calibration area cell but predicted for entire
 plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibration area (ca)
 
 
-
 ## \%######################################################\%##
 #                                                          #
 ####       Use correct_colinvar with points data        ####

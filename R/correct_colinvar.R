@@ -228,7 +228,6 @@
 #' plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibration area (ca)
 #'
 #'
-#'
 #' ## %######################################################%##
 #' #                                                          #
 #' ####       Use correct_colinvar with points data        ####
@@ -628,8 +627,7 @@ correct_colinvar <- function(env_layer,
           rotation = "varimax",
           lower = lwr[tt]
         ),
-        error = function(e) {
-        }
+        error = function(e) {}
       )
       if (!is.null(fit)) {
         break
@@ -648,8 +646,7 @@ correct_colinvar <- function(env_layer,
             rotation = "varimax",
             lower = lwr[tt]
           ),
-          error = function(e) {
-          }
+          error = function(e) {}
         )
         if (!is.null(fit)) {
           break

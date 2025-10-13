@@ -39,7 +39,6 @@ pre_tr_te <- function(data, p_names, h) {
 }
 
 
-
 # Inverse bioclim
 #'
 #' @noRd

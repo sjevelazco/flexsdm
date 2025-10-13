@@ -235,7 +235,6 @@ sdm_predict <-
     }
 
 
-
     #### Model predictions
     if (!is.null(models)) {
       # Prepare model list
@@ -293,8 +292,6 @@ sdm_predict <-
     }
 
 
-
-
     # Transform raster to data.frame
 
     # if(chunk){
@@ -319,7 +316,6 @@ sdm_predict <-
     for (i in seq_along(model_c)) {
       model_c[[i]] <- r
     }
-
 
 
     # Write here the loop

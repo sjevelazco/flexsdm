@@ -392,7 +392,6 @@ unique list values in pr_ab column are: ",
   }
 
 
-
   if (ncol(part) == 0) {
     message("It was not possible to find a good partition. Try to change values in 'n_part', or in 'min_band', or 'max_band'")
     return(NA)
