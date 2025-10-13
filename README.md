@@ -89,6 +89,7 @@ Tools related to models’ geographical predictions, evaluation, and correction.
 
 -   `sdm_predict()` Spatial predictions of individual and ensemble model
 -   `sdm_summarize()` Merge model performance tables
+-   `sdm_uncertainity()` Calculate species distribution model uncertainty using a bootstrap procedure
 -   `interp()` Raster interpolation between two time periods
 -   `extra_eval()` Measure model extrapolation
 -   `extra_truncate()` Constraint suitability values under a given extrapolation value
@@ -109,8 +110,6 @@ Useful tools to visually explore models’ geographical and environemtal predict
 
 You can install the development version of **flexsdm** from [github](https://github.com/sjevelazco/flexsdm)
 
-:warning: NOTE: The version 1.4-22 of **terra** package is causing errors when trying to instal **flexsdm**. Please, first install a version ≥ 1.5-12 of **terra** package available on CRAN or development version of [terra](https://github.com/rspatial/terra) and then **flexsdm**.
-
 ``` r
 # install.packages("remotes")
 
@@ -120,6 +119,14 @@ remotes::install_github("sjevelazco/flexsdm")
 # For Linux operating system
 remotes::install_github("sjevelazco/flexsdm@HEAD")
 ```
+:warning: NOTE: If you have the following error 
+```
+Error: Failed to install 'flexsdm' from GitHub:
+Could not find tools necessary to compile a package
+Call `pkgbuild::check_build_tools(debug = TRUE) to diagnose the problem.
+```
+Install the latest version of Rtools https://cran.r-project.org/bin/windows/Rtools/rtools45/rtools.html
+
 
 ### Package website
 
