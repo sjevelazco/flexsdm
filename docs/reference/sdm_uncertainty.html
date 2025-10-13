@@ -11,7 +11,7 @@ all iterations."><meta name="google-site-verification" content="gcou8tqRTwNjZ_Mf
 
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.9</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,17 +140,17 @@ all iterations.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sp_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    data <span class="op">=</span> <span class="va">sp_data</span>,</span></span>
-<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
-<span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
-<span class="r-in"><span>    env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">sp_data</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_svm.html">fit_svm</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">sp_data</span>,</span></span>
 <span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
-<span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_1"</span>, <span class="st">"CFP_2"</span>, <span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>    partition <span class="op">=</span> <span class="st">".part"</span></span></span>
+<span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_1"</span>, <span class="st">"CFP_2"</span>, <span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">unc</span> <span class="op">&lt;-</span> <span class="fu">sdm_uncertainty</span><span class="op">(</span></span></span>

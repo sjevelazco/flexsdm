@@ -43,25 +43,25 @@
 #'   | Performance metric | Threshold dependent   | Values ranges  |
 #'   | :------------- |:-------------:| -----:|
 #'   | TPR (True Positive Rate, also called Sensitivity) | yes | 0 - 1 |
-#'   | TNR (True Negative Rate, also called Specificity) | yes | 0 - 1 |
-#'   | W_TPR_TNR (Weighted TPR-TNR)                      | yes | 0 - 1 |
+#'   | TNR (True Negative Rate, also called Specificity) | yes | 0 - 1 | 
+#'   | W_TPR_TNR (Weighted TPR-TNR; Li et al. 2020)      | yes | 0 - 1 |
 #'   | SORENSEN                                          | yes | 0 - 1 |
 #'   | JACCARD                                           | yes | 0 - 1 |
 #'   | FPB (F-measure on presence-background)            | yes | 0 - 2 |
 #'   | OR (Omission Rate)                                | yes | 0 - 1 |
 #'   | TSS (True Skill Statistic)                        | yes | -1 - 1 |
 #'   | KAPPA                                             | yes | 0 - 1 |
-#'   | MCC (Matthews Correlation Coefficient)            | yes | -1 - 1 (1 is best)         |
+#'   | MCC (Matthews Correlation Coefficient; Matthews 1975)            | yes | -1 - 1 (1 is best)         |
 #'   | AUC (Area Under Curve)                            | no | 0 - 1 |
 #'   | BOYCE  (continuous Boyce index)*                  | no | -1 - 1 |
 #'   | IMAE (Inverse Mean Absolute Error)**              | no | 0 - 1 |
-#'   | CRPS (Continuous Ranked Probability Score)**        | no  | 0 - 1 |
+#'   | CRPS (Continuous Ranked Probability Score based on Brier Score, Brier 1950)**        | no  | 0 - 1 |
 #'
 #' \* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the `ecospat` package (see [boyce_()]).
 #'
 #' \** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
 #' metrics where the higher the value of a given performance metric, the greater the model's.
-#' accuracy
+#' 
 #'
 #' To define the formulas, the following components of the confusion matrix are used:
 #' - `tp`: True Positives (presences correctly predicted as presences)
@@ -74,19 +74,26 @@
 #' The formulas are:
 #' - **TPR (Sensitivity)**: \deqn{TPR = \frac{tp}{tp + fn}}{TPR = tp / (tp + fn)}
 #' - **TNR (Specificity)**: \deqn{TNR = \frac{tn}{tn + fp}}{TNR = tn / (tn + fp)}
-#' - **W_TPR_TNR**: \deqn{W\_TPR\_TNR = w \cdot TPR + (1-w) \cdot TNR}{W_TPR_TNR = w * TPR + (1-w) * TNR}, where \deqn{w = \frac{na}{na + np}}{w = na / (na + np)}
+#' - **W_TPR_TNR** (Li et al. 2020): \deqn{W\_TPR\_TNR = w \cdot TPR + (1-w) \cdot TNR}{W_TPR_TNR = w * TPR + (1-w) * TNR}, where \deqn{w = \frac{na}{na + np}}{w = na / (na + np)}
 #' - **SORENSEN**: \deqn{Sorensen = \frac{2 \cdot tp}{fn + 2 \cdot tp + fp}}{Sorensen = 2*tp / (fn + 2*tp + fp)}
 #' - **JACCARD**: \deqn{Jaccard = \frac{tp}{fn + tp + fp}}{Jaccard = tp / (fn + tp + fp)}
 #' - **FPB**: \deqn{FPB = 2 \cdot Jaccard}{FPB = 2 * Jaccard}
 #' - **OR**: \deqn{OR = 1 - TPR}{OR = 1 - TPR}
 #' - **TSS**: \deqn{TSS = TPR + TNR - 1}{TSS = TPR + TNR - 1}
 #' - **KAPPA**: \deqn{KAPPA = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}}{KAPPA = (Pr(a) - Pr(e)) / (1 - Pr(e))}, where \deqn{Pr(a) = \frac{tp+tn}{tp+tn+fp+fn}}{Pr(a) = (tp+tn)/(tp+tn+fp+fn)} and \deqn{Pr(e) = \frac{(tp+fp)(tp+fn) + (fn+tn)(fp+tn)}{(tp+tn+fp+fn)^2}}{Pr(e) = ((tp+fp)*(tp+fn) + (fn+tn)*(fp+tn))/(tp+tn+fp+fn)^2}
-#' - **MCC**: \deqn{MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}}{MCC = (tp*tn - fp*fn) / sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))}
+#' - **MCC** (Matthews 1975): \deqn{MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}}{MCC = (tp*tn - fp*fn) / sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))}
 #' - **AUC**: Calculated as the Wilcoxon-Mann-Whitney U statistic, which is equivalent to the area under the ROC curve.
 #' - **BOYCE**: The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.
-#' - **CRPS**: For binary outcomes, this is calculated as \deqn{1 - \frac{\sum(predicted - observed)^2}{N}}{1 - (sum(predicted - observed)^2/N)}, which is 1 minus the Brier Score.
+#' - **CRPS** (Brier 1950): For binary outcomes, this is calculated as \deqn{1 - \frac{\sum(predicted - observed)^2}{N}}{1 - (sum(predicted - observed)^2/N)}, which is 1 minus the Brier Score.
 #' - **IMAE**: \deqn{IMAE = 1 - \frac{\sum|predicted - observed|}{N}}{IMAE = 1 - (sum|predicted - observed|/N)}, where N is the total number of records.
 #'
+#' @references
+#' \itemize{
+#'   \item Brier GW. (1950) Verification of forecasts expressed in terms of probability. Monthly Weather Review 78(1): 1–3. https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
+#'   \item Li, J., Liu, H., & Li, L. (2020). A novel performance metric for imbalanced learning and its application in credit default prediction. Expert Systems with Applications, 152, 113382. https://doi.org/10.1016/j.eswa.2020.113382
+#'   \item Matthews BW. (1975) Comparison of the predicted and observed secondary structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9
+#' }
+#' 
 #' @return a tibble with next columns
 #' \itemize{
 #' \item threshold: threshold names
