@@ -307,7 +307,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   performance <- performance %>% dplyr::mutate(IMAE = 1 - (sum(abs(real - pred)) / length(pred)))
 
   # Add 1-CRPS (Brier Score for binary outcomes)
-  crps_val <- 1 - mean((pred - real)^2)
+  crps_val <- 1 - mean((pred - real)^2) 
   performance <- performance %>% dplyr::mutate(CRPS = crps_val)
 
 
