@@ -156,49 +156,59 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   # Evaluating the ability of habitat suitability models to predict species presences.
   # Ecological Modelling, 199(2), 142-152.
   #
-  boyce_ <- function(fit, obs, n_bins = 101) {
-    # Range of suitability values
-    fit.all <- c(fit, obs)
-    if (length(unique(fit.all)) == 1) {
+  boyce_ <- function(pres, contrst,  n_bins = 101, bin_width = 0.1, na.rm = TRUE) {
+    if (all(is.na(pres)) || all(is.na(contrst))) {
       return(NA)
     }
-
-    # Determine window width
-    h_w <- (max(fit.all) - min(fit.all)) / 10
-
-    # Create bins
-    if (length(unique(fit.all)) < n_bins) {
-      bins <- sort(unique(fit.all))
-    } else {
-      bins <- seq(min(fit.all), max(fit.all), length.out = n_bins)
+    
+    fit.all <- c(pres, contrst)
+    lowest <- min(fit.all, na.rm = na.rm)
+    highest <- max(fit.all, na.rm = na.rm)
+    
+    if (lowest == highest) {
+      return(NA)
     }
-
+    
+    w_width <- (highest - lowest) * bin_width
+    
+    # Define bins
+    lows <- seq(lowest, highest - w_width, length.out = n_bins)
+    highs <- seq(lowest + w_width, highest, length.out = n_bins)
+    
     # Calculate frequencies
-    obs_freq <- sapply(bins, function(i) {
-      sum(obs >= i - h_w & obs < i + h_w)
-    })
-
-    fit_freq <- sapply(bins, function(i) {
-      sum(fit >= i - h_w & fit < i + h_w)
-    })
-
+    fit_freq <- numeric(n_bins)
+    contrst_freq <- numeric(n_bins)
+    
+    for (i in 1:n_bins) {
+      fit_freq[i] <- sum(pres >= lows[i] & pres < highs[i], na.rm = na.rm)
+      contrst_freq[i] <- sum(contrst >= lows[i] & contrst < highs[i], na.rm = na.rm)
+    }
+    
+    if (any(fit_freq > 0 & contrst_freq == 0)) {
+        contrst_freq[fit_freq > 0 & contrst_freq == 0] <- 0.5
+    }
+  
+    mean_pred <- rowMeans(cbind(lows, highs))
+    
     # Calculate Predicted/Expected ratio
-    P <- obs_freq / sum(obs_freq)
-    E <- fit_freq / sum(fit_freq)
-
-    # Handle cases where E is zero
+    P <- fit_freq / sum(fit_freq, na.rm = na.rm)
+    E <- contrst_freq / sum(contrst_freq, na.rm = na.rm)
+    
+    # Add a small value to avoid division by zero
+    E[E == 0] <- 0.00001
+    
     PE_ratio <- P / E
-
-    # Remove bins with no presences
-    to_keep <- which(P > 0 & E > 0)
-
+    
+    # Remove bins with no presences or absences for correlation calculation
+    to_keep <- which(contrst_freq > 0 & fit_freq > 0)
+    
     if (length(to_keep) < 2) {
       return(NA)
     }
-
+    
     # Calculate Spearman correlation
-    cor(bins[to_keep], PE_ratio[to_keep], method = "spearman")
-  }
+    cor(mean_pred[to_keep], PE_ratio[to_keep], method = "spearman", use = "complete.obs")
+}
 
   if (any(
     !(thr[is.na(suppressWarnings(as.numeric(thr)))]) %in% c(
@@ -297,9 +307,9 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   performance <- performance %>% dplyr::mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
 
   if (is.null(bg)) {
-    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(fit = a, obs = p, n_bins = 101))
+    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(pres = p, contrst = a, n_bins = 101))
   } else {
-    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(fit = bg, obs = p, n_bins = 101))
+    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(pres = p, contrst = bg, n_bins = 101))
   }
 
   real <- c(rep(1, length(p)), rep(0, length(a)))
