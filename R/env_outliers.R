@@ -169,8 +169,8 @@ env_outliers <- function(data, x, y, pr_ab, id, env_layer) {
   sp_env_01 <-
     terra::extract(
       env_layer,
-      terra::vect(occ_sp_01[c("x", "y")] %>%
-        dplyr::rename(lon = x, lat = y))
+      terra::vect(occ_sp_01[c("x", "y")] ,
+      geom=c("x", "y"))
     )[-1] %>%
     data.frame() %>%
     dplyr::tibble(id = occ_sp_01$id, pr_ab = occ_sp_01$pr_ab, .)
