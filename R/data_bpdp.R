@@ -107,8 +107,7 @@ data_bpdp <-
     }
 
     if (class(model)[1] == "glm") {
-      flt <- grepl("[I(]", attr(model$terms, "term.labels")) |
-        grepl(":", attr(model$terms, "term.labels"))
+      flt <- grepl("^I\\(", model$terms) | grepl(":", model$terms)
       flt <- attr(model$terms, "term.labels")[!flt]
       x <- model$model[flt]
     }
