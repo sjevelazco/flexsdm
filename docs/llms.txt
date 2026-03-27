@@ -1,0 +1,418 @@
+# flexsdm [![](reference/figures/flexsdm_logo.svg)](https://sjevelazco.github.io/flexsdm)
+
+[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.md)
+[![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![R-CMD-check](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://codecov.io/gh/sjevelazco/flexsdm)
+[![DOI](https://zenodo.org/badge/354032642.svg)](https://zenodo.org/badge/latestdoi/354032642)
+[![DOI](https://img.shields.io/badge/DOI-10.1111%2F2041--210X.13874-orange)](https://doi.org/10.1111/2041-210X.13874)
+
+------------------------------------------------------------------------
+
+### *flexsdm* - email list
+
+Dear flexsdm user, if you are interested in receiving email
+notifications about modifications made to the package (e.g., new
+functions, arguments, or vignettes), please [**fill out this
+form**](https://forms.gle/neJweyd2hSxVVdUE6) so we can keep you updated
+on what is new in flexsdm.
+
+Explore our new R package [**adm**](https://sjevelazco.github.io/adm/)
+to construct abundance-based species distribution models.
+
+### Overview
+
+Species distribution modeling has become a standard tool in several
+research areas such as ecology, conservation biology, biogeography,
+paleobiogeography, and epidemiology. Species distribution modeling is an
+area of active research in both theoretical and methodological aspects.
+One of the most exciting features of **flexsdm** is its high
+manipulation and parametrization capacity based on different functions
+and arguments. These attributes enable users to define a complete or
+partial modeling workflow specific for a modeling situation (e.g.,
+number of variables, number of records, different algorithms, algorithms
+tuning, ensemble methods).
+
+### Structure of flexsdm
+
+The functions of **flexsdm** package are organized into three major
+modeling steps
+
+[![](https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.svg)](https://sjevelazco.github.io/flexsdm)
+
+### 1. Pre-modeling functions
+
+Set tools that prepare modeling input data (e.g., species occurrences
+thinning, sample pseudo-absences or background points, delimitation of
+calibration area).
+
+- [`calib_area()`](https://sjevelazco.github.io/flexsdm/reference/calib_area.md)
+  Delimit calibration area for constructing species distribution models
+- [`correct_colinvar()`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.md)
+  Collinearity reduction on predictors
+- [`env_outliers()`](https://sjevelazco.github.io/flexsdm/reference/env_outliers.md)
+  Integration of outliers detection methods in the environmental space
+- [`part_random()`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)
+  Data partitioning for training and testing models
+- [`part_sblock()`](https://sjevelazco.github.io/flexsdm/reference/part_sblock.md)
+  Spatial block cross validation
+- [`part_sband()`](https://sjevelazco.github.io/flexsdm/reference/part_sband.md)
+  Spatial band cross validation
+- [`part_senv()`](https://sjevelazco.github.io/flexsdm/reference/part_senv.md)
+  Environmental cross-validation
+- [`plot_res()`](https://sjevelazco.github.io/flexsdm/reference/plot_res.md)
+  Plot different resolutions to be used in part_sblock
+- [`get_block()`](https://sjevelazco.github.io/flexsdm/reference/get_block.md)
+  Transform a spatial partition layer to the same spatial properties of
+  environmental variables
+- [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
+  Sample background points
+- [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
+  Sampel pseudo-absence
+- [`sdm_directory()`](https://sjevelazco.github.io/flexsdm/reference/sdm_directory.md)
+  Create directories for saving the outputs of the flexsdm
+- [`sdm_extract()`](https://sjevelazco.github.io/flexsdm/reference/sdm_extract.md)
+  Extract environmental data based on x and y coordinates
+- [`occfilt_env()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_env.md)
+  Perform environmental filtering on species occurrences
+- [`occfilt_geo()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)
+  Perform geographical filtering on species occurrences
+- [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
+  Select filtered occurrences when it was tested with different
+  filtering values
+- [`map_env_dist()`](https://sjevelazco.github.io/flexsdm/reference/map_env_dist.md)
+  Calculate environmental distance between presences and projection data
+
+### 2. Modeling functions
+
+It includes functions related to modeling construction and validation.
+Several of them can be grouped into `fit_*`, `tune_*`, and `esm_*`
+family functions. `fit_*` construct and validate models with default
+hyper-parameter values. `tune_*` construct and validate models searching
+for the best hyper-parameter values combination. `esm_` construct and
+validate Ensemble of Small Models.
+
+#### Model evaluation
+
+- [`sdm_eval()`](https://sjevelazco.github.io/flexsdm/reference/sdm_eval.md)
+  Calculate different model performance metrics
+
+#### `fit_*` functions family
+
+- [`fit_dom()`](https://sjevelazco.github.io/flexsdm/reference/fit_dom.md)
+  Fit and validate Domain models
+- [`fit_gam()`](https://sjevelazco.github.io/flexsdm/reference/fit_gam.md)
+  Fit and validate Generalized Additive Models
+- [`fit_gau()`](https://sjevelazco.github.io/flexsdm/reference/fit_gau.md)
+  Fit and validate Gaussian Process models
+- [`fit_gbm()`](https://sjevelazco.github.io/flexsdm/reference/fit_gbm.md)
+  Fit and validate Generalized Boosted Regression models
+- [`fit_glm()`](https://sjevelazco.github.io/flexsdm/reference/fit_glm.md)
+  Fit and validate Generalized Linear Models
+- [`fit_max()`](https://sjevelazco.github.io/flexsdm/reference/fit_max.md)
+  Fit and validate Maximum Entropy models
+- [`fit_net()`](https://sjevelazco.github.io/flexsdm/reference/fit_net.md)
+  Fit and validate Neural Networks models
+- [`fit_raf()`](https://sjevelazco.github.io/flexsdm/reference/fit_raf.md)
+  Fit and validate Random Forest models
+- [`fit_svm()`](https://sjevelazco.github.io/flexsdm/reference/fit_svm.md)
+  Fit and validate Support Vector Machine models
+
+#### `tune_*` functions family
+
+- [`tune_gbm()`](https://sjevelazco.github.io/flexsdm/reference/tune_gbm.md)
+  Fit and validate Generalized Boosted Regression models with
+  exploration of hyper-parameters
+- [`tune_max()`](https://sjevelazco.github.io/flexsdm/reference/tune_max.md)
+  Fit and validate Maximum Entropy models with exploration of
+  hyper-parameters
+- [`tune_net()`](https://sjevelazco.github.io/flexsdm/reference/tune_net.md)
+  Fit and validate Neural Networks models with exploration of
+  hyper-parameters
+- [`tune_raf()`](https://sjevelazco.github.io/flexsdm/reference/tune_raf.md)
+  Fit and validate Random Forest models with exploration of
+  hyper-parameters
+- [`tune_svm()`](https://sjevelazco.github.io/flexsdm/reference/tune_svm.md)
+  Fit and validate Support Vector Machine models with exploration of
+  hyper-parameters
+
+#### Model ensemble
+
+- [`fit_ensemble()`](https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.md)
+  Fit and validate ensemble models with different ensemble methods
+
+#### `esm_*` functions family
+
+- [`esm_gam()`](https://sjevelazco.github.io/flexsdm/reference/esm_gam.md)
+  Fit and validate Generalized Additive Models with Ensemble of Small
+  Model approach
+- [`esm_gau()`](https://sjevelazco.github.io/flexsdm/reference/esm_gau.md)
+  Fit and validate Gaussian Process models Models with Ensemble of Small
+  Model approach
+- [`esm_gbm()`](https://sjevelazco.github.io/flexsdm/reference/esm_gbm.md)
+  Fit and validate Generalized Boosted Regression models with Ensemble
+  of Small Model approach
+- [`esm_glm()`](https://sjevelazco.github.io/flexsdm/reference/esm_glm.md)
+  Fit and validate Generalized Linear Models with Ensemble of Small
+  Model approach
+- [`esm_max()`](https://sjevelazco.github.io/flexsdm/reference/esm_max.md)
+  Fit and validate Maximum Entropy models with Ensemble of Small Model
+  approach
+- [`esm_net()`](https://sjevelazco.github.io/flexsdm/reference/esm_net.md)
+  Fit and validate Neural Networks models with Ensemble of Small Model
+  approach
+- [`esm_svm()`](https://sjevelazco.github.io/flexsdm/reference/esm_svm.md)
+  Fit and validate Support Vector Machine models with Ensemble of Small
+  Model approach
+
+### 3. Post-modeling functions
+
+Tools related to models’ geographical predictions, evaluation, and
+correction.
+
+- [`sdm_predict()`](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.md)
+  Spatial predictions of individual and ensemble model
+- [`sdm_summarize()`](https://sjevelazco.github.io/flexsdm/reference/sdm_summarize.md)
+  Merge model performance tables
+- `sdm_uncertainity()` Calculate species distribution model uncertainty
+  using a bootstrap procedure
+- [`interp()`](https://sjevelazco.github.io/flexsdm/reference/interp.md)
+  Raster interpolation between two time periods
+- [`extra_eval()`](https://sjevelazco.github.io/flexsdm/reference/extra_eval.md)
+  Measure model extrapolation
+- [`extra_truncate()`](https://sjevelazco.github.io/flexsdm/reference/extra_truncate.md)
+  Constraint suitability values under a given extrapolation value
+- [`msdm_priori()`](https://sjevelazco.github.io/flexsdm/reference/msdm_priori.md)
+  Create spatial predictor variables to reduce overprediction of species
+  distribution models
+- [`msdm_posteriori()`](https://sjevelazco.github.io/flexsdm/reference/msdm_posteriori.md)
+  Methods to correct overprediction of species distribution models based
+  on occurrences and suitability patterns.
+
+### 4. Graphical model exploration
+
+Useful tools to visually explore models’ geographical and environemtal
+predictions, model extrapolation, and partial depnendece plot.
+
+- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md)
+  Create partial dependence plot(s) to explore the marginal effect of
+  predictors on suitability
+- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
+  Create partial dependence surface plot(s) to explore the bivariate
+  marginal effect of predictors on suitability
+- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
+  Graphical exploration of extrapolation or suitability pattern in the
+  environmental and geographical space
+- [`data_pdp()`](https://sjevelazco.github.io/flexsdm/reference/data_pdp.md)
+  Calculate data to construct partial dependence plots
+- [`data_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/data_bpdp.md)
+  Calculate data to construct partial dependence surface plots
+
+### Installation
+
+You can install the development version of **flexsdm** from
+[github](https://github.com/sjevelazco/flexsdm)
+
+``` r
+# install.packages("remotes")
+
+# For Windows and Mac OS operating systems
+remotes::install_github("sjevelazco/flexsdm")
+
+# For Linux operating system
+remotes::install_github("sjevelazco/flexsdm@HEAD")
+```
+
+⚠️ NOTE: If you have the following error
+
+    Error: Failed to install 'flexsdm' from GitHub:
+    Could not find tools necessary to compile a package
+    Call `pkgbuild::check_build_tools(debug = TRUE) to diagnose the problem.
+
+Install the latest version of Rtools
+<https://cran.r-project.org/bin/windows/Rtools/rtools45/rtools.html>
+
+### Package website
+
+See the package website (<https://sjevelazco.github.io/flexsdm/>) for
+functions explanation and vignettes.
+
+### Package citation
+
+Velazco, S.J.E., Rose, M.B., Andrade, A.F.A., Minoli, I., Franklin, J.
+(2022). flexsdm: An R package for supporting a comprehensive and
+flexible species distribution modelling workflow. Methods in Ecology and
+Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
+
+> Test the package and give us your feedback
+> [here](https://github.com/sjevelazco/flexsdm/issues) or send an e-mail
+> to <sjevelazco@gmail.com>.
+
+# Package index
+
+## All functions
+
+- [`abies`](https://sjevelazco.github.io/flexsdm/reference/abies.md) : A
+  data set containing localities and environmental condition of an Abies
+  (fir tree) species in California, USA
+- [`backg`](https://sjevelazco.github.io/flexsdm/reference/backg.md) : A
+  data set containing environmental conditions of background points
+- [`calib_area()`](https://sjevelazco.github.io/flexsdm/reference/calib_area.md)
+  : Delimit calibration area for constructing species distribution
+  models
+- [`correct_colinvar()`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.md)
+  : Collinearity reduction of predictor variables
+- [`data_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/data_bpdp.md)
+  : Calculate data to construct partial dependence surface plots
+- [`data_pdp()`](https://sjevelazco.github.io/flexsdm/reference/data_pdp.md)
+  : Calculate data to construct partial dependence plots
+- [`env_outliers()`](https://sjevelazco.github.io/flexsdm/reference/env_outliers.md)
+  : Integration of outliers detection methods in environmental space
+- [`esm_gam()`](https://sjevelazco.github.io/flexsdm/reference/esm_gam.md)
+  : Fit and validate Generalized Additive Models based on Ensembles of
+  Small Models approach
+- [`esm_gau()`](https://sjevelazco.github.io/flexsdm/reference/esm_gau.md)
+  : Fit and validate Gaussian Process models based on Ensembles of Small
+  Models approach
+- [`esm_gbm()`](https://sjevelazco.github.io/flexsdm/reference/esm_gbm.md)
+  : Fit and validate Generalized Boosted Regression models based on
+  Ensembles of Small Models approach
+- [`esm_glm()`](https://sjevelazco.github.io/flexsdm/reference/esm_glm.md)
+  : Fit and validate Generalized Linear Models based on Ensembles of
+  Small Models approach
+- [`esm_max()`](https://sjevelazco.github.io/flexsdm/reference/esm_max.md)
+  : Fit and validate Maximum Entropy Models based on Ensemble of Small
+  of Model approach
+- [`esm_net()`](https://sjevelazco.github.io/flexsdm/reference/esm_net.md)
+  : Fit and validate Neural Networks based on Ensembles of Small of
+  Models approach
+- [`esm_svm()`](https://sjevelazco.github.io/flexsdm/reference/esm_svm.md)
+  : Fit and validate Support Vector Machine models based on Ensembles of
+  Small of Models approach
+- [`extra_eval()`](https://sjevelazco.github.io/flexsdm/reference/extra_eval.md)
+  : Measure model extrapolation based on Shape extrapolation metric
+- [`extra_truncate()`](https://sjevelazco.github.io/flexsdm/reference/extra_truncate.md)
+  : Truncate suitability predictions based on an extrapolation value
+- [`fit_dom()`](https://sjevelazco.github.io/flexsdm/reference/fit_dom.md)
+  : Fit and validate Domain models
+- [`fit_ensemble()`](https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.md)
+  : Ensemble model fitting and validation
+- [`fit_gam()`](https://sjevelazco.github.io/flexsdm/reference/fit_gam.md)
+  : Fit and validate Generalized Additive Models
+- [`fit_gau()`](https://sjevelazco.github.io/flexsdm/reference/fit_gau.md)
+  : Fit and validate Gaussian Process models
+- [`fit_gbm()`](https://sjevelazco.github.io/flexsdm/reference/fit_gbm.md)
+  : Fit and validate Generalized Boosted Regression models
+- [`fit_glm()`](https://sjevelazco.github.io/flexsdm/reference/fit_glm.md)
+  : Fit and validate Generalized Linear Models
+- [`fit_max()`](https://sjevelazco.github.io/flexsdm/reference/fit_max.md)
+  : Fit and validate Maximum Entropy models
+- [`fit_net()`](https://sjevelazco.github.io/flexsdm/reference/fit_net.md)
+  : Fit and validate Neural Networks models
+- [`fit_raf()`](https://sjevelazco.github.io/flexsdm/reference/fit_raf.md)
+  : Fit and validate Random Forests models
+- [`fit_svm()`](https://sjevelazco.github.io/flexsdm/reference/fit_svm.md)
+  : Fit and validate Support Vector Machine models
+- [`get_block()`](https://sjevelazco.github.io/flexsdm/reference/get_block.md)
+  : Transform a spatial partition layer to the same spatial properties
+  as environmental variables
+- [`hespero`](https://sjevelazco.github.io/flexsdm/reference/hespero.md)
+  : A data set containing localities of Hesperocyparis stephensonii
+  species in California, USA
+- [`homogenize_na()`](https://sjevelazco.github.io/flexsdm/reference/homogenize_na.md)
+  : Homogenize cells with NAs across all layers
+- [`interp()`](https://sjevelazco.github.io/flexsdm/reference/interp.md)
+  : Raster interpolation between two time periods
+- [`map_env_dist()`](https://sjevelazco.github.io/flexsdm/reference/map_env_dist.md)
+  : Calculate environmental distance between presences and projection
+  data
+- [`msdm_posteriori()`](https://sjevelazco.github.io/flexsdm/reference/msdm_posteriori.md)
+  : Methods to correct overprediction of species distribution models
+  based on occurrences and suitability patterns.
+- [`msdm_priori()`](https://sjevelazco.github.io/flexsdm/reference/msdm_priori.md)
+  : Create spatial predictor variables to reduce overprediction of
+  species distribution models
+- [`occfilt_env()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_env.md)
+  : Perform environmental filtering on species occurrences
+- [`occfilt_geo()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)
+  : Perform geographical filtering on species occurrences
+- [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
+  : Select filtered occurrences
+- [`palms`](https://sjevelazco.github.io/flexsdm/reference/palms.md) : A
+  data set containing presences of palms species from Southern Brazil
+- [`part_random()`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)
+  : Conventional data partitioning methods
+- [`part_sband()`](https://sjevelazco.github.io/flexsdm/reference/part_sband.md)
+  : Spatial band cross-validation
+- [`part_sblock()`](https://sjevelazco.github.io/flexsdm/reference/part_sblock.md)
+  : Spatial block cross-validation
+- [`part_senv()`](https://sjevelazco.github.io/flexsdm/reference/part_senv.md)
+  : Environmental and spatial cross-validation
+- [`plot_res()`](https://sjevelazco.github.io/flexsdm/reference/plot_res.md)
+  : Plot different resolutions to be used in part_sblock
+- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
+  : Bivariate partial dependence plot
+- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
+  : Graphical exploration of extrapolation or suitability pattern in the
+  environmental and geographical space
+- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
+  Partial Dependent Plot
+- [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
+  : Sample background points
+- [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
+  : Sample pseudo-absences
+- [`sdm_directory()`](https://sjevelazco.github.io/flexsdm/reference/sdm_directory.md)
+  : Create directories for saving the outputs of the flexsdm
+- [`sdm_eval()`](https://sjevelazco.github.io/flexsdm/reference/sdm_eval.md)
+  : Calculate different model performance metrics
+- [`sdm_extract()`](https://sjevelazco.github.io/flexsdm/reference/sdm_extract.md)
+  : Extract environmental data values from a spatial raster based on x
+  and y coordinates
+- [`sdm_predict()`](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.md)
+  : Spatial predictions from individual and ensemble models
+- [`sdm_summarize()`](https://sjevelazco.github.io/flexsdm/reference/sdm_summarize.md)
+  : Merge model performance tables
+- [`sdm_uncertainty()`](https://sjevelazco.github.io/flexsdm/reference/sdm_uncertainty.md)
+  : Calculate species distribution model uncertainty
+- [`sdm_varimp()`](https://sjevelazco.github.io/flexsdm/reference/sdm_varimp.md)
+  : Calculate permutation-based variable importance scores for SDMs
+- [`spp`](https://sjevelazco.github.io/flexsdm/reference/spp.md) : A
+  data set containing presences and absences of three virtual species
+- [`tune_gbm()`](https://sjevelazco.github.io/flexsdm/reference/tune_gbm.md)
+  : Fit and validate Generalized Boosted Regression models with
+  exploration of hyper-parameters that optimize performance
+- [`tune_max()`](https://sjevelazco.github.io/flexsdm/reference/tune_max.md)
+  : Fit and validate Maximum Entropy models with exploration of
+  hyper-parameters that optimize performance
+- [`tune_net()`](https://sjevelazco.github.io/flexsdm/reference/tune_net.md)
+  : Fit and validate Neural Networks models with exploration of
+  hyper-parameters
+- [`tune_raf()`](https://sjevelazco.github.io/flexsdm/reference/tune_raf.md)
+  : Fit and validate Random Forest models with exploration of
+  hyper-parameters that optimize performance
+- [`tune_svm()`](https://sjevelazco.github.io/flexsdm/reference/tune_svm.md)
+  : Fit and validate Support Vector Machine models with exploration of
+  hyper-parameters that optimize performance
+
+# Articles
+
+### All vignettes
+
+- [Where flexsdm was
+  cited?](https://sjevelazco.github.io/flexsdm/articles/pkg_citation.md):
+- [flexsdm: Overview of Pre-modeling
+  functions](https://sjevelazco.github.io/flexsdm/articles/v01_pre_modeling.md):
+- [flexsdm: Overview of Modeling
+  functions](https://sjevelazco.github.io/flexsdm/articles/v02_modeling.md):
+- [flexsdm: Overview of Post-modeling
+  functions](https://sjevelazco.github.io/flexsdm/articles/v03_post_modeling.md):
+- [flexsdm: Red Fir
+  example](https://sjevelazco.github.io/flexsdm/articles/v04_Red_fir_example.md):
+- [flexsdm: Modeling a rare
+  species](https://sjevelazco.github.io/flexsdm/articles/v05_Rare_species_example.md):
+- [flexsdm: Tools to explore extrapolation in
+  SDMs](https://sjevelazco.github.io/flexsdm/articles/v06_Extrapolation_example.md):
+- [Species distribution modeling for several species and climate change
+  scenarios](https://sjevelazco.github.io/flexsdm/articles/v07_Complete_workflow.md):

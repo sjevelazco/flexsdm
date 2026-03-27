@@ -1,0 +1,271 @@
+# Perform geographical filtering on species occurrences
+
+This function perform geographical filtering of species occurrences
+based on different approach to define the minimum nearest-neighbor
+distance between points.
+
+## Usage
+
+``` r
+occfilt_geo(
+  data,
+  x,
+  y,
+  env_layer,
+  method,
+  prj = "+proj=longlat +datum=WGS84",
+  reps = 20
+)
+```
+
+## Arguments
+
+- data:
+
+  data.frame. Data.frame or tibble object with presences (or
+  presence-absence) records, and coordinates
+
+- x:
+
+  character. Column name with longitude data
+
+- y:
+
+  character. Column name with latitude data
+
+- env_layer:
+
+  SpatRaster. Raster variables that will be used to fit the model.
+  Factor variables will be removed.
+
+- method:
+
+  character. Method to perform geographical thinning. Pairs of points
+  are filtered based on a geographical distance criteria. For the three
+  method, it is possible to use several values. If several values are
+  provided, the function will return a list with the results. The
+  following methods are available:
+
+  - moran: records are filtered based on the smallest distance to the
+    Moran's I value provided. If no Moran's I values is provided it will
+    use 0.1. Usage method: method = c('moran') or method = c('moran',
+    val = c(0.1, 0.15, 0.2, 0.25, 0.3, 0.35)).
+
+  - cellsize: records are filtered based on the resolution of the
+    environmental variables which can be aggregated to coarser
+    resolution defined by the factor. Usage method: method =
+    c('cellsize', factor = '2') or method = c('cellsize', factor = c(1,
+    4, 8)).
+
+  - defined: records are filtered based on a distance value (d) provided
+    in km. Usage method: method = c('defined', d = c(20, 40, 60, 80)).
+
+- prj:
+
+  character. Projection string (PROJ4) for occurrences. Not necessary if
+  the projection used is WGS84 ("+proj=longlat +datum=WGS84"). Default
+  "+proj=longlat +datum=WGS84"
+
+- reps:
+
+  integer. Number of times to repeat the thinning process. Default 20
+
+## Value
+
+If one value is used to filter occurrence function will return a tibble
+object with filtered data. If several values are used to filter
+occurrences, the function will return a list of tibbles with filtered
+data.
+
+## Details
+
+In this function three alternatives are implemented to determine the
+distance threshold between pair of points: '
+
+- "moran" determines the minimum nearest-neighbor distance that
+  approximate to the spatial autocorrelation in occurrence data,
+  following a Moran's I. To do so, a Principal Component Analysis with
+  the environmental variables is performed and then the first Principal
+  Component is used to calculate the semivariograms. Because of this,
+  this method only allow the use of continuous variables. Sometimes,
+  this method can (too) greatly reduce the number of presences.
+
+- "cellsize" filters occurrences based on the predictors' resolution.
+  This method will calculate the distance between the first two cells of
+  the environmental variable and use this distance as minimum
+  nearest-neighbor distance to filter occurrences. The resolution of the
+  raster is aggregated based on the values used in "factor". Thus, the
+  distance used for filtering can be adjusted to represent a larger grid
+  size.
+
+- "determined" this method uses any minimum nearest-neighbor distance
+  specified in km.
+
+The "thin" function from spThin package is used to filter data
+(Aiello-Lammens et al., 2015) with the following argument settings reps
+= 20, write.files = FALSE, locs.thinned.list.return = TRUE, and
+write.log.file = FALSE.
+
+In the case that more than one value was used in some of the methods, it
+is possible to use use
+[`occfilt_select`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
+function to automatically select a filtered database based on number of
+records and spatial autocorrelation.
+
+## References
+
+- Aiello-Lammens, M. E., Boria, R. A., Radosavljevic, A., Vilela, B., &
+  Anderson, R. P. (2015). spThin: An R package for spatial thinning of
+  species occurrence records for use in ecological niche models.
+  Ecography, 38(5), 541-545. https://doi.org/10.1111/ecog.01132
+
+## See also
+
+[`occfilt_env`](https://sjevelazco.github.io/flexsdm/reference/occfilt_env.md),
+[`occfilt_select`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+require(terra)
+require(dplyr)
+require(ggplot2)
+
+# Environmental variables
+somevar <- system.file("external/somevar.tif", package = "flexsdm")
+somevar <- terra::rast(somevar)
+
+plot(somevar)
+
+# Species occurrences
+data("spp")
+spp
+spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
+
+somevar[[1]] %>% plot()
+points(spp1 %>% select(x, y))
+
+## %######################################################%##
+####                  Cellsize method                   ####
+## %######################################################%##
+
+# Using cellsize method
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("cellsize", factor = "3"),
+  prj = crs(somevar)
+)
+
+somevar[[1]] %>% plot(col = gray.colors(10))
+points(spp1 %>% select(x, y)) # raw data
+points(filtered_occ %>% select(x, y), pch = 19, col = "yellow") # filtered data
+
+
+# Using cellsize method with several values
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("cellsize", factor = c(1, 4, 8, 12, 16, 20)),
+  prj = crs(somevar)
+)
+
+filtered_occ # Note that several values are provided for any filtering method
+# fuction will return a list of tibbles with the results.
+# So user must select the desired filtered dataset
+
+# Let's explore the results
+bind_rows(filtered_occ, .id = "cellSize") %>%
+  dplyr::mutate(cellSize = as.numeric(cellSize)) %>%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~cellSize)
+
+
+## %######################################################%##
+####                   Defined method                   ####
+## %######################################################%##
+# Using defined method
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("defined", d = "30"),
+  prj = crs(somevar)
+)
+
+somevar[[1]] %>% plot(col = gray.colors(10))
+points(spp1 %>% select(x, y)) # raw data
+points(filtered_occ %>% select(x, y), pch = 19, col = "yellow") # filtered data
+
+# Using defined method with several values
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("defined", factor = c(5, 10, 15, 30, 35, 40)),
+  prj = crs(somevar)
+)
+
+bind_rows(filtered_occ, .id = "cellSize") %>%
+  dplyr::mutate(cellSize = as.numeric(cellSize)) %>%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~cellSize)
+
+
+## %######################################################%##
+####                  Moran's I method                  ####
+## %######################################################%##
+
+# Using Moran's I method
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("moran"),
+  prj = crs(somevar)
+)
+
+somevar[[1]] %>% plot(col = gray.colors(10))
+points(spp1 %>% select(x, y)) # raw data
+points(filtered_occ %>% select(x, y), pch = 19, col = "yellow") # filtered data
+
+# Using Moran's I method with several values
+filtered_occ <- occfilt_geo(
+  data = spp1,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("moran", c(0.05, 0.15, 0.2, 0.5, 0.7)),
+  prj = crs(somevar)
+)
+
+bind_rows(filtered_occ, .id = "moran") %>%
+  dplyr::mutate(moran = as.numeric(moran)) %>%
+  ggplot(aes(x, y)) +
+  geom_point() +
+  facet_wrap(~moran)
+
+# It is possible select the best of filtered
+# datasets using the occfilt_selec function
+
+occ_selected <- occfilt_select(
+  occ_list = filtered_occ,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  filter_prop = TRUE
+)
+
+occ_selected
+} # }
+```

@@ -75,7 +75,8 @@ environmental similarity, and the number of presence and/or absence records in e
 <span>  min_n_groups <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  max_n_groups <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  min_occ <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  prop <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  prop <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  include_coords <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -127,6 +128,10 @@ or error when fitting models for a given fold. Default 10.</p></dd>
 <dd><p>numeric. Proportion of point used for testing autocorrelation between
 groups (values &gt; 0 and &lt;=1). The smaller this number is, the faster the function will work.
 Default 0.5</p></dd>
+
+
+<dt id="arg-include-coords">include_coords<a class="anchor" aria-label="anchor" href="#arg-include-coords"></a></dt>
+<dd><p>logical. Whether to include coordinates in the clustering. If False, only environmental variables will be used for clustering. Default TRUE</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -232,7 +237,7 @@ ineffectiveness. Diversity and Distributions, 25(4), 660-673. https://doi.org/10
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

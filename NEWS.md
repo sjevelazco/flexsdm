@@ -1,3 +1,6 @@
+# flexsdm 1.4.0 - pre-release
+-  part_senv: new argument to use or not presences-absences coordinate to perform environmental partition, by @sjevelazco [445](https://github.com/sjevelazco/flexsdm/pull/453)
+
 # flexsdm 1.3.9
 -   `map_env_dist` was improved. Now it is possible to calculate Euclidean and Mahalanobis distances in addition to the Gower distance (Domain algorithm), by @sjevelazco.
 -   `sdm_eval()` now calculates three additional performance metrics: the Matthews Correlation Coefficient (MCC). the Continuous Ranked Probability Score (CRPS), and a prevalence-weighted average of TPR and TNR (W_TPR_TNR), by @sjevelazco [445](https://github.com/sjevelazco/flexsdm/pull/445).
