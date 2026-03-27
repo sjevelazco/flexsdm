@@ -25,6 +25,7 @@
 #' @param prop numeric. Proportion of point used for testing autocorrelation between
 #' groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
 #' Default 0.5
+#' @param include_coords logical. Whether to include coordinates in the clustering. If False, only environmental variables will be used for clustering. Default TRUE
 #'
 #' @return
 #' A list with:
@@ -130,7 +131,8 @@ part_senv <- function(env_layer,
                       min_n_groups = 2,
                       max_n_groups = 10,
                       min_occ = 10,
-                      prop = 0.5) {
+                      prop = 0.5,
+                      include_coords = TRUE) {
   group <- NULL
   # Select columns
   data <- data.frame(data)
@@ -173,7 +175,12 @@ unique list values in pr_ab column are: ",
   # k-mean algorithm
   part <- list()
   for (i in 1:length(cell_size)) {
-    part[[i]] <- stats::kmeans(data[, -1], centers = cell_size[i])$cluster
+    if(include_coords){
+      part[[i]] <- stats::kmeans(scale(data[, -1]), centers = cell_size[i])$cluster
+    } else {
+      part[[i]] <- stats::kmeans(scale(data[,!names(data) %in% c(pr_ab, x, y)]), centers = cell_size[i])$cluster
+    }
+
   }
 
   names(part) <- paste0(".g", cell_size)

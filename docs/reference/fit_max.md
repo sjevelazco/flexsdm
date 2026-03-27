@@ -1,0 +1,219 @@
+# Fit and validate Maximum Entropy models
+
+Fit and validate Maximum Entropy models
+
+## Usage
+
+``` r
+fit_max(
+  data,
+  response,
+  predictors,
+  predictors_f = NULL,
+  fit_formula = NULL,
+  partition = NULL,
+  background = NULL,
+  thr = NULL,
+  clamp = TRUE,
+  classes = "default",
+  pred_type = "cloglog",
+  regmult = 1
+)
+```
+
+## Arguments
+
+- data:
+
+  data.frame. Database with response (0,1) and predictors values.
+
+- response:
+
+  character. Column name with species absence-presence data (0,1).
+
+- predictors:
+
+  character. Vector with the column names of quantitative predictor
+  variables (i.e. continuous variables). Usage predictors = c("aet",
+  "cwd", "tmin")
+
+- predictors_f:
+
+  character. Vector with the column names of qualitative predictor
+  variables (i.e. ordinal or nominal variables type). Usage predictors_f
+  = c("landform")
+
+- fit_formula:
+
+  formula. A formula object with response and predictor variables. See
+  maxnet.formula function from maxnet package. Note that the variables
+  used here must be consistent with those used in response, predictors,
+  and predictors_f arguments. Default NULL.
+
+- partition:
+
+  character. Column name with training and validation partition groups.
+  If partition = NULL, the model will be validated with the same data
+  used for fitting.
+
+- background:
+
+  data.frame. Database including only those rows with 0 values in the
+  response column and the predictors variables. All column names must be
+  consistent with data. Default NULL
+
+- thr:
+
+  character. Threshold used to get binary suitability values (i.e. 0,1),
+  needed for threshold-dependent performance metrics. More than one
+  threshold type can be used. It is necessary to provide a vector for
+  this argument. The following threshold criteria are available:
+
+  - lpt: The highest threshold at which there is no omission.
+
+  - equal_sens_spec: Threshold at which the sensitivity and specificity
+    are equal.
+
+  - max_sens_spec: Threshold at which the sum of the sensitivity and
+    specificity is the highest (aka threshold that maximizes the TSS).
+
+  - max_jaccard: The threshold at which the Jaccard index is the
+    highest.
+
+  - max_sorensen: The threshold at which the Sorensen index is highest.
+
+  - max_fpb: The threshold at which FPB (F-measure on
+    presence-background data) is highest.
+
+  - sensitivity: Threshold based on a specified sensitivity value. Usage
+    thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens'
+    refers to sensitivity value. If a sensitivity values is not
+    specified the default used is 0.9.
+
+  If more than one threshold type is used they must be concatenated,
+  e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt',
+  'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt',
+  'max_sens_spec', 'sensitivity'). Function will use all thresholds if
+  no threshold is specified.
+
+- clamp:
+
+  logical. If TRUE, predictors and features are restricted to the range
+  seen during model training.
+
+- classes:
+
+  character. A single feature of any combinations of them. Features are
+  symbolized by letters: l (linear), q (quadratic), h (hinge), p
+  (product), and t (threshold). Usage classes = "lpq". Default "default"
+  (see details).
+
+- pred_type:
+
+  character. Type of response required available "link", "exponential",
+  "cloglog" and "logistic". Default "cloglog"
+
+- regmult:
+
+  numeric. A constant to adjust regularization. Default 1.
+
+## Value
+
+A list object with:
+
+- model: A "maxnet" class object from maxnet package. This object can be
+  used for predicting.
+
+- predictors: A tibble with quantitative (c column names) and
+  qualitative (f column names) variables use for modeling.
+
+- performance: Performance metrics (see
+  [`sdm_eval`](https://sjevelazco.github.io/flexsdm/reference/sdm_eval.md)).
+  Threshold dependent metrics are calculated based on the threshold
+  specified in thr argument.
+
+- performance_part: Performance metric for each replica and partition
+  (see
+  [`sdm_eval`](https://sjevelazco.github.io/flexsdm/reference/sdm_eval.md)).
+
+- data_ens: Predicted suitability for each test partition based on the
+  best model. This database is used in
+  [`fit_ensemble`](https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.md)
+
+## Details
+
+When the argument “classes” is set as default MaxEnt will use different
+features combination depending of the number of presences (np) with the
+follow rule: if np \< 10 classes = "l", if np between 10 and 15 classes
+= "lq", if np between 15 and 80 classes = "lqh", and if np \>= 80
+classes = "lqph"
+
+When presence-absence (or presence-pseudo-absence) data are used in data
+argument in addition to background points, the function will fit models
+with presences and background points and validate with presences and
+absences. This procedure makes maxent comparable to other
+presences-absences models (e.g., random forest, support vector machine).
+If only presences and background points data are used, function will fit
+and validate model with presences and background data. If only
+presence-absences are used in data argument and without background,
+function will fit model with the specified data (not recommended).
+
+## See also
+
+[`fit_gam`](https://sjevelazco.github.io/flexsdm/reference/fit_gam.md),
+[`fit_gau`](https://sjevelazco.github.io/flexsdm/reference/fit_gau.md),
+[`fit_gbm`](https://sjevelazco.github.io/flexsdm/reference/fit_gbm.md),
+[`fit_glm`](https://sjevelazco.github.io/flexsdm/reference/fit_glm.md),
+[`fit_net`](https://sjevelazco.github.io/flexsdm/reference/fit_net.md),
+[`fit_raf`](https://sjevelazco.github.io/flexsdm/reference/fit_raf.md),
+and
+[`fit_svm`](https://sjevelazco.github.io/flexsdm/reference/fit_svm.md).
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+data("abies")
+data("backg")
+abies # environmental conditions of presence-absence data
+backg # environmental conditions of background points
+
+# Using k-fold partition method
+# Note that the partition method, number of folds or replications must
+# be the same for presence-absence and background points datasets
+abies2 <- part_random(
+  data = abies,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
+)
+abies2
+
+backg2 <- part_random(
+  data = backg,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 5)
+)
+backg2
+
+max_t1 <- fit_max(
+  data = abies2,
+  response = "pr_ab",
+  predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
+  predictors_f = c("landform"),
+  partition = ".part",
+  background = backg2,
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+  clamp = TRUE,
+  classes = "default",
+  pred_type = "cloglog",
+  regmult = 1
+)
+length(max_t1)
+
+max_t1$model
+max_t1$predictors
+max_t1$performance
+max_t1$performance_part
+max_t1$data_ens
+} # }
+```

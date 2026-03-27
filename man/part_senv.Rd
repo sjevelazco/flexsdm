@@ -13,7 +13,8 @@ part_senv(
   min_n_groups = 2,
   max_n_groups = 10,
   min_occ = 10,
-  prop = 0.5
+  prop = 0.5,
+  include_coords = TRUE
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ or error when fitting models for a given fold. Default 10.}
 \item{prop}{numeric. Proportion of point used for testing autocorrelation between
 groups (values > 0 and <=1). The smaller this number is, the faster the function will work.
 Default 0.5}
+
+\item{include_coords}{logical. Whether to include coordinates in the clustering. If False, only environmental variables will be used for clustering. Default TRUE}
 }
 \value{
 A list with:
