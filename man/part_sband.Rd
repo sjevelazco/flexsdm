@@ -92,13 +92,13 @@ the selection of partitions with very little data that may be problematic for mo
 Partitions that are geographically structured tend to evaluate model transferability more directly than
 conventional ones (e.g., those performed by \code{\link{part_random}}) (Roberts et al., 2017;
 Santini et al., 2021), being relevant for models that are to be used for projections in other
-regions outside the calibration area or for other time periods. Band partitions can be an option
+regions outside the training area or for other time periods. Band partitions can be an option
 for those species where no best partition is found with part_sblock or for species
 that are distributed linearly (e.g., species that inhabit coastlines).
 
 This function can interact with \code{\link{get_block}}, \code{\link{sample_background}},
 and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-absences within
-spatial partition broups
+spatial partition groups
 }
 \examples{
 \dontrun{
