@@ -62,11 +62,11 @@
 #' Geographically structured partitions tend to evaluate model transferability more directly than
 #' conventional ones (e.g., those performed by \code{\link{part_random}}) (Roberts et al., 2017;
 #' Santini et al., 2021), and are relevant for models that are to be used for projections in other
-#' regions outside the calibration area or for other time periods.
+#' regions outside the training area or for other time periods.
 #'
 #' This function can interact with \code{\link{get_block}}, \code{\link{sample_background}},
 #' and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-absences within
-#' spatial partition broups
+#' spatial partition groups
 #'
 #' @references
 #' \itemize{
