@@ -110,6 +110,7 @@ m_min <- msdm_priori(
 )
 
 plot(m_min)
+points(occ \%>\% dplyr::select(x, y), col = "red", pch = 16)
 
 ### cml method
 m_cml <- msdm_priori(
@@ -121,6 +122,7 @@ m_cml <- msdm_priori(
 )
 
 plot(m_cml)
+points(occ \%>\% dplyr::select(x, y), col = "red", pch = 16)
 
 ### ker method
 m_ker <- msdm_priori(
@@ -132,6 +134,8 @@ m_ker <- msdm_priori(
 )
 
 plot(m_ker)
+points(occ \%>\% dplyr::select(x, y), col = "red", pch = 16)
+
 }
 
 }

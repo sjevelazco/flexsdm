@@ -110,6 +110,7 @@
 #' )
 #'
 #' plot(m_min)
+#' points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
 #'
 #' ### cml method
 #' m_cml <- msdm_priori(
@@ -121,7 +122,8 @@
 #' )
 #'
 #' plot(m_cml)
-#'
+#' points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
+#' 
 #' ### ker method
 #' m_ker <- msdm_priori(
 #'   data = occ,
@@ -132,6 +134,8 @@
 #' )
 #'
 #' plot(m_ker)
+#' points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
+#' 
 #' }
 #'
 #' @seealso \code{\link{msdm_posteriori}}
@@ -147,6 +151,8 @@ msdm_priori <- function(data,
                         y,
                         method = c("xy", "min", "cml", "ker"),
                         env_layer) {
+  method <- match.arg(method)
+
   if (is.null(env_layer)) {
     stop("Complete env_layer argument")
   }
@@ -159,98 +165,70 @@ msdm_priori <- function(data,
   }
   env_layer <- env_layer[[1]]
 
+  # Helper for min-max normalization
+  .min_max <- function(v) {
+    rng <- range(v, na.rm = TRUE)
+    if (diff(rng) == 0) {
+      return(v * 0)
+    }
+    (v - rng[1]) / diff(rng)
+  }
+
   # database
   data <- dplyr::tibble(data)
-  records <-
-    data %>% dplyr::select(dplyr::all_of(x), dplyr::all_of(y))
-  names(records) <- c("x", "y")
+  records <- data %>%
+    dplyr::select(dplyr::all_of(x), dplyr::all_of(y))
+  colnames(records) <- c("x", "y")
 
+  if (method == "xy") {
+    lon <- terra::init(env_layer, "x")
+    lat <- terra::init(env_layer, "y")
+    result <- terra::mask(c(lon, lat), env_layer)
+    names(result) <- c("msdm_lon", "msdm_lat")
 
-  # Prepare data for calculation
-  if (any(method %in% c("min", "cml", "ker"))) {
-    spi <- terra::as.data.frame(env_layer,
-      xy = TRUE,
-      na.rm = TRUE
-    ) %>%
+  } else {
+    
+    # Prepare coordinates for distance-based methods
+    spi <- terra::as.data.frame(env_layer, xy = TRUE, na.rm = TRUE) %>%
       dplyr::select(x, y)
 
-    r <- terra::cellFromXY(env_layer, xy = as.matrix(records))
-    r <- terra::xyFromCell(object = env_layer, cell = r) %>%
-      data.frame() %>%
-      stats::na.omit(r)
-  }
+    cells <- terra::cellFromXY(env_layer, xy = as.matrix(records))
+    r_coords <- terra::xyFromCell(object = env_layer, cell = stats::na.omit(cells)) %>%
+      as.data.frame()
 
-
-  #### Method 1: xy ####
-  if (method == "xy") {
-    # Extract coordinates of raster layer
-    df <-
-      terra::as.data.frame(env_layer,
-        xy = TRUE,
-        na.rm = TRUE,
-        cells = TRUE
-      )[1:3]
-    lon <- lat <- env_layer
-    lon[df$cell] <- df$x
-    lat[df$cell] <- df$y
-
-    # Create LatLong Stack
-    result <- terra::rast(list(lon, lat))
-    names(result) <- c("msdm_lon", "msdm_lat")
-    rm(lat, lon, df)
-
-    return(result)
-  }
-
-  # Method 2- Minimum distance ----
-  if (method == "min") {
-    distr <- euc_dist(x = spi, y = r)
-    distr <- apply(distr, 1, min)
-    distr <- (distr - min(distr)) / (max(distr) - min(distr))
-    result <- env_layer
-    result[!is.na(result)] <- distr
-    names(result) <- "msdm_min"
-    rm(distr, spi, r)
-    return(result)
-  }
-
-  # Method 3: Cummulative distance----
-  if (method == "cml") {
-    distr <- euc_dist(spi, r)
-    distr <- distr + 1
-    distr <- 1 / (1 / distr^2)
-    distr <- apply(distr, 1, sum)
-    distr <- (distr - min(distr)) / (max(distr) - min(distr))
-
-    result <- env_layer
-    result[!is.na(result)] <- distr
-    names(result) <- "msdm_cml"
-    rm(distr, spi, r)
-    return(result)
-  }
-
-  # Method 4: Gaussian Kernel----
-  if (method == "ker") {
-    distp <- euc_dist(r, r)
-    distp1 <- matrix(0, nrow(euc_dist(r, r)), 1)
-
-    for (c in 1:nrow(distp)) {
-      vec <- distp[c, ]
-      distp1[c] <- min(vec[vec != min(vec)])
+    if (method == "min") {
+      distr <- euc_dist(x = spi, y = r_coords)
+      dist_vec <- apply(distr, 1, min)
+      val <- .min_max(dist_vec)
+      result <- env_layer
+      result[!is.na(result)] <- val
+      names(result) <- "msdm_min"
     }
-    rm(vec)
-    sd_graus <- max(distp1)
-    distr <- euc_dist(spi, r)
-    # distr2 <- distr
-    distr <-
-      (1 / sqrt(2 * pi * sd_graus) * exp(-1 * (distr / (2 * sd_graus^
-        2))))
-    distr <- apply(distr, 1, sum)
-    distr <- (distr - min(distr)) / (max(distr) - min(distr))
-    result <- env_layer
-    result[!is.na(result)] <- distr
-    rm(distr, spi, r)
-    names(result) <- "msdm_ker"
-    return(result)
+
+    if (method == "cml") {
+      distr <- euc_dist(spi, r_coords)
+      dist_vec <- rowSums((distr + 1)^2)
+      val <- .min_max(dist_vec)
+      result <- env_layer
+      result[!is.na(result)] <- val
+      names(result) <- "msdm_cml"
+    }
+
+    if (method == "ker") {
+      distp <- euc_dist(r_coords, r_coords)
+      diag(distp) <- Inf
+      sd_graus <- max(apply(distp, 1, min))
+
+      distr <- euc_dist(spi, r_coords)
+      ker_mat <- (1 / sqrt(2 * pi * sd_graus) * exp(-1 * (distr / (2 * sd_graus^2))))
+      dist_vec <- rowSums(ker_mat)
+      val <- .min_max(dist_vec)
+      result <- env_layer
+      result[!is.na(result)] <- val
+      names(result) <- "msdm_ker"
+    }
+
   }
+
+  return(result)
 }
