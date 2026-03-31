@@ -28,6 +28,10 @@
 #'   Also, it is possible specifying the threshold value using a numeric values (thr = 0.623).
 #'   Default "equal_sens_spec".
 #'
+#' @param con_thr logical. If TRUE, returns continuous suitability values for cells above the threshold, 
+#' with other cells as 0. If False, returns a binary map (1 for above threshold, 0 for below).
+#' Default FALSE.
+#' 
 #' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be
 #' interpreted in m if Coordinate reference system used in "crs" argument has a longitude/latitude, or map units in other
 #' cases. Usage buffer=50000. Default NULL
@@ -115,7 +119,7 @@
 #' @importFrom grDevices chull
 #' @importFrom methods is
 #' @importFrom stats na.exclude
-#' @importFrom terra rast extract vect rasterize crs buffer patches match mask unique as.polygons distance
+#' @importFrom terra rast extract vect rasterize crs buffer patches match mask unique as.polygons distance convHull
 #'
 #' @examples
 #' \dontrun{
@@ -242,205 +246,140 @@ msdm_posteriori <- function(records,
                             cont_suit,
                             method = c("obr", "pres", "lq", "mcp", "bmcp"),
                             thr = "equal_sens_spec",
+                            con_thr = FALSE,
                             buffer = NULL,
                             crs = NULL) {
   . <- thr_value <- patch <- mindis <- NULL
-  if (method == "bmcp" & is.null(buffer)) {
-    stop("If 'bmcp' method is used, it is necessary to fill the 'buffer' argument, see the help of this function")
+  method <- match.arg(method)
+
+  if (method == "bmcp" && is.null(buffer)) {
+    stop("If 'bmcp' method is used, it is necessary to fill the 'buffer' argument")
   }
-  if (method == "bmcp" & is.null(crs)) {
+  if (method == "bmcp" && is.null(crs)) {
     stop("If 'bmcp' method is used, a coordinate reference system is needed in 'crs' agument")
   }
-  if (is.character(thr)) {
-    if (any(
-      thr[1] == c(
-        "lpt",
-        "equal_sens_spec",
-        "max_sens_spec",
-        "max_jaccard",
-        "max_sorensen",
-        "max_fpb",
-        "sensitivity"
-      )
-    ) == FALSE) {
-      stop(
-        "'thr' argument have to be supplied with one of the next values:
-      'lpt', 'equal_sens_spec', 'max_sens_spec',
-      'max_jaccard', 'max_sorensen', 'max_fpb',
-      'sensitivity'"
-      )
-    }
-  }
 
+  if (is.character(thr)) {
+    valid_thr <- c("lpt", "equal_sens_spec", "max_sens_spec", "max_jaccard", "max_sorensen", "max_fpb", "sensitivity")
+    if (!thr[1] %in% valid_thr) stop(paste("'thr' must be one of:", paste(valid_thr, collapse = ", ")))
+  }
 
   #### prepare data sets
   if (!methods::is(cont_suit, "SpatRaster")) {
     cont_suit <- terra::rast(cont_suit)
   }
-  if (!any("tbl_df" %in% class(records))) {}
+  cont_suit <- cont_suit[[1]]
 
-  # creation of a data.frame with presences and absences
-  records <- records %>%
+  # database preparation
+  records <- dplyr::as_tibble(records) %>%
     dplyr::select(dplyr::all_of(pr_ab), dplyr::all_of(x), dplyr::all_of(y)) %>%
-    dplyr::arrange({{ pr_ab }})
-  records <- records[!duplicated(records), ]
+    dplyr::distinct()
   colnames(records) <- c("pr_ab", "x", "y")
-  pr_ab <- "pr_ab"
 
   # Extract values for one species and calculate the threshold
   if (!is.character(thr)) {
-    thr_2 <- thr
+    thr_val <- thr[1]
   } else {
-    suit_point <- terra::extract(cont_suit, records[, c("x", "y")])[, 2]
-    suit_point <-
-      records %>%
-      dplyr::mutate(suit_point)
-
+    suit_point <- terra::extract(cont_suit, records[, c("x", "y")])[[2]]
     if (thr[1] == "sensitivity") {
-      thr_2 <- as.numeric(thr[2])
+      thr_val <- as.numeric(thr[2])
     } else {
-      eval <-
-        sdm_eval(
-          p = suit_point[suit_point$pr_ab == 1, ] %>% dplyr::pull(suit_point),
-          a = suit_point[suit_point$pr_ab == 0, ] %>% dplyr::pull(suit_point),
-          thr = thr
-        )
-      thr_2 <- eval %>% dplyr::pull(thr_value)
+      eval <- sdm_eval(
+        p = suit_point[records$pr_ab == 1],
+        a = suit_point[records$pr_ab == 0],
+        thr = thr
+      )
+      thr_val <- eval$thr_value[1]
     }
   }
 
-
-  records <- records %>%
-    dplyr::filter(.data[[pr_ab]] == 1)
-
+  # Keep only presences
+  pres_records <- records[records$pr_ab == 1, c("x", "y")]
+  pts1 <- terra::vect(as.matrix(pres_records), crs = terra::crs(cont_suit))
 
   # 'mcp' method----
   if (method == "mcp") {
-    data_pl <- data.frame(records[, c("x", "y")])
-    data_pl <- data_pl[grDevices::chull(data_pl), ]
-    data_pl <- data.frame(object = 1, part = 1, data_pl, hole = 0)
-    data_pl <- terra::vect(as.matrix(data_pl), type = "polygons")
-    hull <- terra::rasterize(data_pl, cont_suit)
-    hull[is.na(hull)] <- 0
-    result <- cont_suit * hull
-    rm(hull)
-    result_2 <- result >= thr_2
-    result <- terra::rast(list(result, result_2))
+    hull <- terra::convHull(pts1)
+    result_cont <- terra::mask(cont_suit, hull, updatevalue = 0)
   }
 
   # 'bmcp' method-----
   if (method == "bmcp") {
-    data_pl <- data.frame(records[, c("x", "y")])
-    data_pl <- data_pl[grDevices::chull(data_pl), ]
-    data_pl <- data.frame(object = 1, part = 1, data_pl, hole = 0)
-    data_pl <- terra::vect(as.matrix(data_pl), type = "polygons")
-    terra::crs(data_pl) <- terra::crs(cont_suit)
-    data_pl <- terra::buffer(data_pl, width = buffer)
-    hull <- terra::rasterize(data_pl, cont_suit)
-    hull[is.na(hull)] <- 0
-    result <- cont_suit * hull
-    rm(hull)
-    result_2 <- result >= thr_2
-    result <- terra::rast(list(result, result_2))
+    if (identical(buffer, "species_specific")) {
+      if (nrow(pts1) > 1) {
+        d <- terra::distance(pts1)
+        d <- as.matrix(d)
+        diag(d) <- Inf
+        buffer <- max(apply(d, 1, min))
+      } else {
+        stop("Cannot calculate 'species_specific' buffer with only one presence record")
+      }
+    }
+    hull <- terra::convHull(pts1)
+    hull <- terra::buffer(hull, width = buffer)
+    result_cont <- terra::mask(cont_suit, hull, updatevalue = 0)
   }
 
   if (method %in% c("obr", "lq", "pres")) {
-    # Transform coordinate to SpatVector object
-    pts1 <- records %>%
-      dplyr::filter(.data[[pr_ab]] == 1) %>%
-      dplyr::select(-dplyr::all_of(pr_ab))
-    pts1 <- terra::vect(as.matrix(pts1))
-    terra::crs(pts1) <- terra::crs(cont_suit)
-
     # Raster with areas >= than the threshold
-    adeq_bin <- cont_suit >= thr_2
+    adeq_bin <- cont_suit >= thr_val
     adeq_bin[adeq_bin == 0] <- NA
 
     # Raster with patches
-    adeq_bin <- terra::patches(adeq_bin)
-    names(adeq_bin) <- "patch"
+    patch_rast <- terra::patches(adeq_bin)
+    names(patch_rast) <- "patch"
 
     # Find the patches that contain presences records
-    patch_w_pres <- terra::extract(adeq_bin, pts1)[, 2] %>%
+    patch_w_pres <- terra::extract(patch_rast, pts1)[, 2] %>%
       unique() %>%
-      na.exclude()
-    adeq_w_pres <-
-      terra::match(adeq_bin, patch_w_pres) %>%
-      terra::mask(adeq_bin, .)
-
+      stats::na.exclude()
+    
     # 'pres' methods------
     if (method == "pres") {
-      result <- cont_suit * (!is.na(adeq_w_pres))
-      result_2 <- result >= thr_2
-      result <- terra::rast(list(result, result_2))
-      rm(result_2)
+      result_cont <- terra::mask(cont_suit, patch_rast, maskvalues = patch_w_pres, inverse = TRUE, updatevalue = 0)
     } else {
-      # Create a vector which contain the number (e.i. ID) of the patches
-      # with presences
-      patch_w_pres <- terra::unique(adeq_w_pres)[, 1] %>% stats::na.exclude()
-      patch_wout_pres <- terra::unique(adeq_bin)[, 1] %>% stats::na.exclude()
-      patch_wout_pres <- patch_wout_pres[!patch_wout_pres %in% patch_w_pres]
-      # In this step are created two data.frame one with the patches coordinates
-      # that contain presences and another with patches coordinates without presences
+      all_patches <- terra::unique(patch_rast)[, 1] %>% stats::na.exclude()
+      patch_wout_pres <- setdiff(all_patches, patch_w_pres)
 
-      adeq_wout_np <-
-        terra::match(adeq_bin, patch_wout_pres) %>%
-        terra::mask(adeq_bin, .)
-      poly_presence <- terra::as.polygons(adeq_w_pres)
-      poly_absence <- terra::as.polygons(adeq_wout_np)
+      poly_presence <- terra::as.polygons(patch_rast) %>% terra::subset(.$patch %in% patch_w_pres)
+      poly_absence <- terra::as.polygons(patch_rast) %>% terra::subset(.$patch %in% patch_wout_pres)
 
-      pr_ab_poly_dist <- data.frame(matrix(nrow = nrow(poly_absence), ncol = nrow(poly_presence)))
-      rownames(pr_ab_poly_dist) <- names(poly_absence$patch)
-      colnames(pr_ab_poly_dist) <- as.character(poly_presence$patch)
-      for (i in 1:ncol(pr_ab_poly_dist)) {
-        pr_ab_poly_dist[, i] <- terra::distance(poly_absence, poly_presence[i])
+      if (nrow(poly_presence) > 0 && nrow(poly_absence) > 0) {
+        d_mat <- terra::distance(poly_absence, poly_presence)
+        mindis_vec <- apply(d_mat, 1, min)
+
+        # 'obr' method------
+        if (method == "obr") {
+          if (nrow(pts1) > 1) {
+            d_pres <- terra::distance(pts1)
+            d_pres <- as.matrix(d_pres)
+            diag(d_pres) <- Inf
+            cut <- max(apply(d_pres, 1, min))
+          } else {
+            cut <- 0
+          }
+        } else { # 'lq' method
+          cut <- stats::quantile(mindis_vec, probs = 0.25)
+        }
+
+        selected_patches <- patch_wout_pres[mindis_vec <= cut]
+        result_cont <- terra::mask(cont_suit, patch_rast, maskvalues = c(patch_w_pres, selected_patches), inverse = TRUE, updatevalue = 0)
+      } else {
+        result_cont <- terra::mask(cont_suit, patch_rast, maskvalues = patch_w_pres, inverse = TRUE, updatevalue = 0)
       }
-
-      pr_ab_poly_dist <- pr_ab_poly_dist %>%
-        dplyr::mutate(patch = poly_absence$patch)
-      pr_ab_poly_dist <-
-        pr_ab_poly_dist %>%
-        dplyr::mutate(mindis = pr_ab_poly_dist %>%
-          dplyr::select(-"patch") %>% apply(., 1, min)) %>%
-        dplyr::select(patch, mindis) # check if for 'lq' is used all distance or only the nearest distance
-
-      rm(poly_presence, poly_absence)
-
-      # 'obr' method------
-      if (method == "obr") {
-        # method based on the maximum value of the minimum distance
-        dist <- terra::distance(pts1) %>%
-          as.matrix() %>%
-          data.frame()
-        dist[dist == 0] <- NA
-        distmin <- apply(dist, 1, function(x) {
-          min(x, na.rm = TRUE)
-        }) #
-        cut <- max(distmin)
-      }
-
-      # 'lq' method------
-      if (method == "lq") {
-        # method based the lower quartile distance
-        cut <- summary(pr_ab_poly_dist$mindis)[2]
-      }
-
-      ##### Choose patches
-      selected_patches <- pr_ab_poly_dist %>%
-        dplyr::filter(mindis <= cut) %>%
-        dplyr::pull(patch)
-
-      filt <- terra::match(adeq_bin,
-        table = c(patch_w_pres, selected_patches),
-        nomatch = 0
-      )
-      filt <- (filt != 0)
-      result <- cont_suit * filt
-      result_2 <- result >= thr_2
-      result <- terra::rast(list(result, result_2))
-      rm(result_2, filt)
     }
   }
-  names(result)[2] <- thr[1]
+
+  result_cont <- terra::mask(result_cont, cont_suit)
+
+  result_bin <- result_cont >= thr_val
+  result <- terra::rast(list(result_cont, result_bin))
+  names(result) <- c("msdm_cont", "msdm_bin")
+  names(result)[2] <- if (is.character(thr)) thr[1] else "msdm_bin"
+
+  if(con_thr){
+    result[[2]] <- result[[1]]*result[[2]]
+  }
+
   return(result)
 }
