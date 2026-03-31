@@ -15,6 +15,7 @@ msdm_posteriori(
   cont_suit,
   method = c("obr", "pres", "lq", "mcp", "bmcp"),
   thr = "equal_sens_spec",
+  con_thr = FALSE,
   buffer = NULL,
   crs = NULL
 )
@@ -85,6 +86,12 @@ msdm_posteriori(
 
   Also, it is possible specifying the threshold value using a numeric
   values (thr = 0.623). Default "equal_sens_spec".
+
+- con_thr:
+
+  logical. If TRUE, returns continuous suitability values for cells
+  above the threshold, with other cells as 0. If False, returns a binary
+  map (1 for above threshold, 0 for below). Default FALSE.
 
 - buffer:
 

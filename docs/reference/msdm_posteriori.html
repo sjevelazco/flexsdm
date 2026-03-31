@@ -68,6 +68,7 @@ and predicted suitability</p>
 <span>  <span class="va">cont_suit</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"obr"</span>, <span class="st">"pres"</span>, <span class="st">"lq"</span>, <span class="st">"mcp"</span>, <span class="st">"bmcp"</span><span class="op">)</span>,</span>
 <span>  thr <span class="op">=</span> <span class="st">"equal_sens_spec"</span>,</span>
+<span>  con_thr <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  buffer <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  crs <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -122,6 +123,12 @@ necessary to provide a vector for this argument. The following threshold criteri
   sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9</p></li>
 </ul><p>Also, it is possible specifying the threshold value using a numeric values (thr = 0.623).
   Default "equal_sens_spec".</p></dd>
+
+
+<dt id="arg-con-thr">con_thr<a class="anchor" aria-label="anchor" href="#arg-con-thr"></a></dt>
+<dd><p>logical. If TRUE, returns continuous suitability values for cells above the threshold,
+with other cells as 0. If False, returns a binary map (1 for above threshold, 0 for below).
+Default FALSE.</p></dd>
 
 
 <dt id="arg-buffer">buffer<a class="anchor" aria-label="anchor" href="#arg-buffer"></a></dt>
@@ -328,7 +335,7 @@ Taxa in Madagascar with High-Resolution Planning Tools. Science, 320(5873),
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>
