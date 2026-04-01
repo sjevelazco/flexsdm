@@ -1,4 +1,7 @@
-# flexsdm: Red Fir example
+# 
+
+title: ‘flexsdm: Red Fir example’ output: rmarkdown::html_vignette
+vignette: \> % % % —
 
 ## Example of full modeling process
 
@@ -382,17 +385,19 @@ ens_m <- fit_ensemble(
 )
 #>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
 ens_m$performance
-#> # A tibble: 3 × 25
+#> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 meanw equal_sens_sp…     0.582         216        216    0.787 0.0795    0.808
-#> 2 meanw max_sens_spec      0.470         216        216    0.949 0.0162    0.752
+#> 1 meanw equal_sens_sp…     0.583         216        216    0.794 0.0890    0.794
+#> 2 meanw max_sens_spec      0.514         216        216    0.943 0.0262    0.757
 #> 3 meanw max_sorensen       0.449         216        216    0.963 0.0143    0.738
-#> # ℹ 17 more variables: TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
-#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
-#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, AUC_mean <dbl>,
-#> #   AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>, IMAE_mean <dbl>,
-#> #   IMAE_sd <dbl>
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 ```
 
 The output of *flexsdm* model objects allows you to easily compare
@@ -402,23 +407,25 @@ sdm_summarize() function to merge model performance tables.
 ``` r
 model_perf <- sdm_summarize(list(t_max, f_gau, f_glm, ens_m))
 model_perf
-#> # A tibble: 10 × 28
+#> # A tibble: 10 × 36
 #>    model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd
 #>       <int> <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>
 #>  1        1 max   max_sens_spec     0.364         216        216    0.954 0.0316
 #>  2        2 gau   equal_sens_s…     0.643         216        216    0.784 0.0890
-#>  3        2 gau   max_sens_spec     0.471         216        216    0.952 0.0122
+#>  3        2 gau   max_sens_spec     0.471         216        216    0.945 0.0201
 #>  4        2 gau   max_sorensen      0.471         216        216    0.964 0.0108
-#>  5        3 glm   equal_sens_s…     0.649         216        216    0.800 0.0851
-#>  6        3 glm   max_sens_spec     0.554         216        216    0.954 0.0493
+#>  5        3 glm   equal_sens_s…     0.649         216        216    0.797 0.0830
+#>  6        3 glm   max_sens_spec     0.554         216        216    0.945 0.0297
 #>  7        3 glm   max_sorensen      0.423         216        216    0.977 0.0379
-#>  8        4 meanw equal_sens_s…     0.582         216        216    0.787 0.0795
-#>  9        4 meanw max_sens_spec     0.470         216        216    0.949 0.0162
+#>  8        4 meanw equal_sens_s…     0.583         216        216    0.794 0.0890
+#>  9        4 meanw max_sens_spec     0.514         216        216    0.943 0.0262
 #> 10        4 meanw max_sorensen      0.449         216        216    0.963 0.0143
-#> # ℹ 20 more variables: TNR_mean <dbl>, TNR_sd <dbl>, SORENSEN_mean <dbl>,
-#> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
-#> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
-#> #   AUC_mean <dbl>, AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>,
+#> # ℹ 28 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
+#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
+#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
+#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,
+#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
 #> #   IMAE_mean <dbl>, IMAE_sd <dbl>, regmult <dbl>, classes <fct>
 ```
 
@@ -478,15 +485,12 @@ m_pres <- msdm_posteriori(
   pr_ab = "pr_ab",
   cont_suit = pr_1$meanw[[1]],
   method = c("obr"),
-  thr = c("sensitivity", sens = thr_val),
+  thr = thr_val,
   buffer = NULL
 )
 
-constrained <- m_pres$meanw[[1]]
-names(constrained) <- "constrained"
-
 cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
-plot(constrained, col = cl, legend = FALSE, axes = FALSE)
+plot(m_pres[[1]], col = cl, legend = FALSE, axes = FALSE)
 ```
 
 ![](v04_Red_fir_example_files/figure-html/constrain%20with%20msdm-1.png)

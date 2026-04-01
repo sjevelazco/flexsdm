@@ -10,8 +10,8 @@
   functions](https://sjevelazco.github.io/flexsdm/articles/v02_modeling.md):
 - [flexsdm: Overview of Post-modeling
   functions](https://sjevelazco.github.io/flexsdm/articles/v03_post_modeling.md):
-- [flexsdm: Red Fir
-  example](https://sjevelazco.github.io/flexsdm/articles/v04_Red_fir_example.md):
+- [UNKNOWN
+  TITLE](https://sjevelazco.github.io/flexsdm/articles/v04_Red_fir_example.md):
 - [flexsdm: Modeling a rare
   species](https://sjevelazco.github.io/flexsdm/articles/v05_Rare_species_example.md):
 - [flexsdm: Tools to explore extrapolation in

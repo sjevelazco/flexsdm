@@ -130,7 +130,7 @@ performed by
 [`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md))
 (Roberts et al., 2017; Santini et al., 2021), and are relevant for
 models that are to be used for projections in other regions outside the
-calibration area or for other time periods.
+training area or for other time periods.
 
 This function can interact with
 [`get_block`](https://sjevelazco.github.io/flexsdm/reference/get_block.md),
@@ -138,7 +138,7 @@ This function can interact with
 and
 [`sample_pseudoabs`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
 for sampling background points or pseudo-absences within spatial
-partition broups
+partition groups
 
 ## References
 

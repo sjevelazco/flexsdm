@@ -98,15 +98,15 @@ A list with:
 The part_sblock allows test with different numbers of partitions defined
 in the envirnomental clusters delimited the K-mean cluster algorithm.
 This function explores a range of environmental clusters and
-automatically selects best number of cluster for a given given presence,
+automatically selects the best number of clusters for a given presence,
 presence-absences, or presence-pseudo-absences dataset. Such selection
-of number of clusters is based on an optimization procedure that
+of the number of clusters is based on an optimization procedure that
 explores partition size in three dimensions determined by spatial
 autocorrelation (measured by Moran's I), environmental similarity
 (Euclidean distance), and difference in the amount of data among
 clusters (Standard Deviation - SD; Velazco et al., 2019). This procedure
 will cyclically select those partitions with autocorrelation values less
-than the lowest quartile of Morans I, then those with environmental
+than the lowest quartile of Moran's I, then those with environmental
 similarity values greater than the third quartile of the Euclidean
 distances than those with a difference in the amount of data less than
 the lowest quartile of SD. This selection is repeated until only one
@@ -116,13 +116,13 @@ environmental similarity and special autocorrelation between partitions,
 and iii) controls the partition selection with few data that may be
 problematic for model fitting ("min_occ" argument)..
 
-Partitions geographically structured tend to evaluate model
-transferability more directly than conventional ones (e.g., those
+Partitions environmentally or geographically structured tend to evaluate
+model transferability more directly than conventional ones (e.g., those
 performed by
 [`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md))
 (Roberts et al., 2017; Santini et al., 2021), being relevant for models
 that want to be used for projections in other regions outside the
-calibration area or for other periods.
+training area or for other periods.
 
 This function can interact with
 [`get_block`](https://sjevelazco.github.io/flexsdm/reference/get_block.md),
@@ -130,7 +130,7 @@ This function can interact with
 and
 [`sample_pseudoabs`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
 for sampling background points or pseudo-absences within spatial
-partition broups
+partition groups
 
 ## References
 

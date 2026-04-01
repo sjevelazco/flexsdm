@@ -2,6 +2,9 @@
 
 ## flexsdm 1.4.0 - pre-release
 
+- msdm_posteriori: now car return semi-binary suitability maps, by
+  [@sjevelazco](https://github.com/sjevelazco)
+  [455](https://github.com/sjevelazco/flexsdm/pull/455)
 - part_senv: new argument to use or not presences-absences coordinate to
   perform environmental partition, by
   [@sjevelazco](https://github.com/sjevelazco)

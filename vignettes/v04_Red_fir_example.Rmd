@@ -1,4 +1,3 @@
----
 title: 'flexsdm: Red Fir example'
 output: rmarkdown::html_vignette
 vignette: >
@@ -309,15 +308,12 @@ m_pres <- msdm_posteriori(
   pr_ab = "pr_ab",
   cont_suit = pr_1$meanw[[1]],
   method = c("obr"),
-  thr = c("sensitivity", sens = thr_val),
+  thr = thr_val,
   buffer = NULL
 )
 
-constrained <- m_pres$meanw[[1]]
-names(constrained) <- "constrained"
-
 cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
-plot(constrained, col = cl, legend = FALSE, axes = FALSE)
+plot(m_pres[[1]], col = cl, legend = FALSE, axes = FALSE)
 ```
 #=========#=========#=========#=========#=========#=========#=========#
 
