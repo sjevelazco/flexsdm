@@ -57,7 +57,7 @@
 #'   | IMAE (Inverse Mean Absolute Error)**              | no | 0 - 1 |
 #'   | CRPS (Continuous Ranked Probability Score based on Brier Score, Brier 1950)**        | no  | 0 - 1 |
 #'
-#' \* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the `ecospat` package.
+#' \* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences (or pseudo-absences), which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the `enmSdmX` package.
 #'
 #' \** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
 #' metrics where the higher the value of a given performance metric, the greater the model's.
@@ -83,7 +83,7 @@
 #' - **KAPPA**: \deqn{KAPPA = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}}{KAPPA = (Pr(a) - Pr(e)) / (1 - Pr(e))}, where \deqn{Pr(a) = \frac{tp+tn}{tp+tn+fp+fn}}{Pr(a) = (tp+tn)/(tp+tn+fp+fn)} and \deqn{Pr(e) = \frac{(tp+fp)(tp+fn) + (fn+tn)(fp+tn)}{(tp+tn+fp+fn)^2}}{Pr(e) = ((tp+fp)*(tp+fn) + (fn+tn)*(fp+tn))/(tp+tn+fp+fn)^2}
 #' - **MCC** (Matthews 1975): \deqn{MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}}{MCC = (tp*tn - fp*fn) / sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))}
 #' - **AUC**: Calculated as the Wilcoxon-Mann-Whitney U statistic, which is equivalent to the area under the ROC curve.
-#' - **BOYCE**: The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.
+#' - **BOYCE**: (Hirzel et al. 2006): The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.
 #' - **CRPS** (Brier 1950): For binary outcomes, this is calculated as \deqn{1 - \frac{\sum(predicted - observed)^2}{N}}{1 - (sum(predicted - observed)^2/N)}, which is 1 minus the Brier Score.
 #' - **IMAE**: \deqn{IMAE = 1 - \frac{\sum|predicted - observed|}{N}}{IMAE = 1 - (sum|predicted - observed|/N)}, where N is the total number of records.
 #'
@@ -92,6 +92,7 @@
 #'   \item Brier GW. (1950) Verification of forecasts expressed in terms of probability. Monthly Weather Review 78(1): 1–3. https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
 #'   \item Li, J., Liu, H., & Li, L. (2020). A novel performance metric for imbalanced learning and its application in credit default prediction. Expert Systems with Applications, 152, 113382. https://doi.org/10.1016/j.eswa.2020.113382
 #'   \item Matthews BW. (1975) Comparison of the predicted and observed secondary structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9
+#'   \item Hirzel, A. H., Le Lay, G., Helfer, V., Randin, C., & Guisan, A. (2006). Evaluating the ability of habitat suitability models to predict species presences. Ecological Modelling, 199(2), 142-152. https://doi.org/10.1016/j.ecolmodel.2006.05.017
 #' }
 #'
 #' @return a tibble with next columns
@@ -151,64 +152,76 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
 
   # Boyce Index based
   # This function calculate Boyce index performance metric.
-  # Codes were adapted from ecospat package.
-  # Hirzel, A. H., Le Lay, G., Helfer, V., Randin, C., & Guisan, A. (2006).
-  # Evaluating the ability of habitat suitability models to predict species presences.
-  # Ecological Modelling, 199(2), 142-152.
+  # Codes were adapted from enmSdmX package (https://github.com/adamlilith/enmSdmX/tree/master).
   #
-  boyce_ <- function(pres, contrst,  n_bins = 101, bin_width = 0.1, na.rm = TRUE) {
-    if (all(is.na(pres)) || all(is.na(contrst))) {
-      return(NA)
-    }
+  boyce_ <- function(pres, contrast, n_bins = 101, bin_width = 0.1) {
     
-    fit.all <- c(pres, contrst)
-    lowest <- min(fit.all, na.rm = na.rm)
-    highest <- max(fit.all, na.rm = na.rm)
+    # Define window limits
+    lwst <- min(c(pres, contrast), na.rm = TRUE)
+    hgst <- max(c(pres, contrast), na.rm = TRUE) + .Machine$double.eps
     
-    if (lowest == highest) {
-      return(NA)
-    }
+    # Calculate bin width and create bins
+    w_width <- bin_width * (hgst - lwst)
     
-    w_width <- (highest - lowest) * bin_width
-    
-    # Define bins
-    lows <- seq(lowest, highest - w_width, length.out = n_bins)
-    highs <- seq(lowest + w_width, highest, length.out = n_bins)
+    lows <- seq(lwst, hgst - w_width, length.out = n_bins)
+    highs <- seq(lwst + w_width + .Machine$double.eps, hgst, 
+                 length.out = n_bins)
     
     # Calculate frequencies
-    fit_freq <- numeric(n_bins)
-    contrst_freq <- numeric(n_bins)
-    
-    for (i in 1:n_bins) {
-      fit_freq[i] <- sum(pres >= lows[i] & pres < highs[i], na.rm = na.rm)
-      contrst_freq[i] <- sum(contrst >= lows[i] & contrst < highs[i], na.rm = na.rm)
+    f_pres <- f_ontrast <- rep(NA, n_bins)
+    for (cnt_class in 1:n_bins) {
+        pres_in_bin <- as.numeric(pres >= lows[cnt_class] & pres < highs[cnt_class])
+        f_pres[cnt_class] <- sum(pres_in_bin, na.rm = TRUE)
+        
+        bgInBin <- as.numeric(contrast >= lows[cnt_class] & contrast < highs[cnt_class])
+        f_ontrast[cnt_class] <- sum(bgInBin, na.rm = TRUE)
     }
     
-    if (any(fit_freq > 0 & contrst_freq == 0)) {
-        contrst_freq[fit_freq > 0 & contrst_freq == 0] <- 0.5
-    }
-  
+    # Calculate mean prediction for each bin
     mean_pred <- rowMeans(cbind(lows, highs))
+  
+    # Handle bins with presences but no background points
+    if (any(f_pres > 0 & f_ontrast == 0)) {
+        f_ontrast[f_pres > 0 & f_ontrast == 0] <- 0.5
+    }
+    
+    # Drop bins with zero presences if requested
+    if (any(f_pres == 0)) {
+        filt <- which(f_pres == 0)
+        mean_pred[filt] <- NA
+        f_pres[filt] <- NA
+        f_ontrast[filt] <- NA
+    }
+    
+    # Drop bins with zero background points
+    if (any(0 %in% f_ontrast)) {
+        filt <- which(f_ontrast == 0)
+        mean_pred[filt] <- NA
+        f_pres[filt] <- NA
+        f_ontrast[filt] <- NA
+    }
     
     # Calculate Predicted/Expected ratio
-    P <- fit_freq / sum(fit_freq, na.rm = na.rm)
-    E <- contrst_freq / sum(contrst_freq, na.rm = na.rm)
+    PE <- (f_pres / sum(f_pres, na.rm = TRUE)) / (f_ontrast / sum(f_ontrast, na.rm = TRUE))
     
-    # Add a small value to avoid division by zero
-    E[E == 0] <- 0.00001
+    # Remove NA values for correlation
+    filt <- complete.cases(mean_pred, PE)
+    meanPred_valid <- mean_pred[filt]
+    PE <- PE[filt]
     
-    PE_ratio <- P / E
-    
-    # Remove bins with no presences or absences for correlation calculation
-    to_keep <- which(contrst_freq > 0 & fit_freq > 0)
-    
-    if (length(to_keep) < 2) {
-      return(NA)
+    # Ensure at least 2 valid points for correlation
+    if (length(meanPred_valid) < 2) {
+        return(NA)
     }
     
     # Calculate Spearman correlation
-    cor(mean_pred[to_keep], PE_ratio[to_keep], method = "spearman", use = "complete.obs")
+    cbi <- suppressWarnings(
+      cor(meanPred_valid, PE, method = "spearman", use = "complete.obs")
+    )
+    
+    return(cbi)
 }
+
 
   if (any(
     !(thr[is.na(suppressWarnings(as.numeric(thr)))]) %in% c(
@@ -307,9 +320,9 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   performance <- performance %>% dplyr::mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
 
   if (is.null(bg)) {
-    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(pres = p, contrst = a, n_bins = 101))
+    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(pres = p, contrast = a, n_bins = 101))
   } else {
-    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(pres = p, contrst = bg, n_bins = 101))
+    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(pres = p, contrast = bg, n_bins = 101))
   }
 
   real <- c(rep(1, length(p)), rep(0, length(a)))

@@ -1,4 +1,5 @@
 # flexsdm 1.4.0 - pre-release
+-  sdm_eval: Boyce metric was readapted based on enmSdmX package, by @sjevelazco [457](https://github.com/sjevelazco/flexsdm/pull/457)
 -  msdm_posteriori: now car return semi-binary suitability maps, by @sjevelazco [455](https://github.com/sjevelazco/flexsdm/pull/455)
 -  part_senv: new argument to use or not presences-absences coordinate to perform environmental partition, by @sjevelazco [445](https://github.com/sjevelazco/flexsdm/pull/453)
 

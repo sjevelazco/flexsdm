@@ -77,7 +77,7 @@ It calculates the next performance metric:\tabular{lcr}{
 }
 
 
-\* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences, which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the \code{ecospat} package.
+\* The continuous Boyce index is calculated based on presences and background points. If background points are not provided, it will be calculated using presences and absences (or pseudo-absences), which is not standard and may lead to misleading results. The code for calculating this metric is an adaptation of the \code{enmSdmX} package.
 
 \** IMAE and CRPS are calculated as 1-(Mean Absolute Error) and 1-(CRPS), respectively, in order to be consistent with the other
 metrics where the higher the value of a given performance metric, the greater the model's.
@@ -105,7 +105,7 @@ The formulas are:
 \item \strong{KAPPA}: \deqn{KAPPA = \frac{Pr(a) - Pr(e)}{1 - Pr(e)}}{KAPPA = (Pr(a) - Pr(e)) / (1 - Pr(e))}, where \deqn{Pr(a) = \frac{tp+tn}{tp+tn+fp+fn}}{Pr(a) = (tp+tn)/(tp+tn+fp+fn)} and \deqn{Pr(e) = \frac{(tp+fp)(tp+fn) + (fn+tn)(fp+tn)}{(tp+tn+fp+fn)^2}}{Pr(e) = ((tp+fp)*(tp+fn) + (fn+tn)*(fp+tn))/(tp+tn+fp+fn)^2}
 \item \strong{MCC} (Matthews 1975): \deqn{MCC = \frac{(tp \cdot tn) - (fp \cdot fn)}{\sqrt{(tp+fp)(tp+fn)(tn+fp)(tn+fn)}}}{MCC = (tp*tn - fp*fn) / sqrt((tp+fp)*(tp+fn)*(tn+fp)*(tn+fn))}
 \item \strong{AUC}: Calculated as the Wilcoxon-Mann-Whitney U statistic, which is equivalent to the area under the ROC curve.
-\item \strong{BOYCE}: The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.
+\item \strong{BOYCE}: (Hirzel et al. 2006): The continuous Boyce index, which measures how model predictions differ from a random distribution of observed presences across the prediction gradient.
 \item \strong{CRPS} (Brier 1950): For binary outcomes, this is calculated as \deqn{1 - \frac{\sum(predicted - observed)^2}{N}}{1 - (sum(predicted - observed)^2/N)}, which is 1 minus the Brier Score.
 \item \strong{IMAE}: \deqn{IMAE = 1 - \frac{\sum|predicted - observed|}{N}}{IMAE = 1 - (sum|predicted - observed|/N)}, where N is the total number of records.
 }
@@ -154,5 +154,6 @@ sdm_eval(p, backg, thr = "max_sens_spec")
 \item Brier GW. (1950) Verification of forecasts expressed in terms of probability. Monthly Weather Review 78(1): 1–3. https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
 \item Li, J., Liu, H., & Li, L. (2020). A novel performance metric for imbalanced learning and its application in credit default prediction. Expert Systems with Applications, 152, 113382. https://doi.org/10.1016/j.eswa.2020.113382
 \item Matthews BW. (1975) Comparison of the predicted and observed secondary structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9
+\item Hirzel, A. H., Le Lay, G., Helfer, V., Randin, C., & Guisan, A. (2006). Evaluating the ability of habitat suitability models to predict species presences. Ecological Modelling, 199(2), 142-152. https://doi.org/10.1016/j.ecolmodel.2006.05.017
 }
 }
