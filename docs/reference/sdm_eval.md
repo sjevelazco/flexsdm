@@ -111,9 +111,9 @@ It calculates the next performance metric:
 
 \\ The continuous Boyce index is calculated based on presences and
 background points. If background points are not provided, it will be
-calculated using presences and absences, which is not standard and may
-lead to misleading results. The code for calculating this metric is an
-adaptation of the `ecospat` package.
+calculated using presences and absences (or pseudo-absences), which is
+not standard and may lead to misleading results. The code for
+calculating this metric is an adaptation of the `enmSdmX` package.
 
 \\\* IMAE and CRPS are calculated as 1-(Mean Absolute Error) and
 1-(CRPS), respectively, in order to be consistent with the other metrics
@@ -165,9 +165,9 @@ The formulas are:
 - **AUC**: Calculated as the Wilcoxon-Mann-Whitney U statistic, which is
   equivalent to the area under the ROC curve.
 
-- **BOYCE**: The continuous Boyce index, which measures how model
-  predictions differ from a random distribution of observed presences
-  across the prediction gradient.
+- **BOYCE**: (Hirzel et al. 2006): The continuous Boyce index, which
+  measures how model predictions differ from a random distribution of
+  observed presences across the prediction gradient.
 
 - **CRPS** (Brier 1950): For binary outcomes, this is calculated as
   \$\$1 - \frac{\sum(predicted - observed)^2}{N}\$\$, which is 1 minus
@@ -190,6 +190,11 @@ The formulas are:
 - Matthews BW. (1975) Comparison of the predicted and observed secondary
   structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein
   Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9
+
+- Hirzel, A. H., Le Lay, G., Helfer, V., Randin, C., & Guisan, A.
+  (2006). Evaluating the ability of habitat suitability models to
+  predict species presences. Ecological Modelling, 199(2), 142-152.
+  https://doi.org/10.1016/j.ecolmodel.2006.05.017
 
 ## Examples
 
