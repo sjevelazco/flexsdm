@@ -259,6 +259,9 @@ esm_svm <- function(data,
     thr = thr
   )
 
+  threshold$n_presences <- sum(data[response] == 1)
+  threshold$n_absences <- sum(data[response] == 0)
+  
   # List of models used for prediction
   mod <- lapply(list_esm, function(x) x$mode)
   names(mod) <- D
