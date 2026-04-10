@@ -20,7 +20,7 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default value is 0.9.
 #'   }
 #' If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified
-#' @param k integer. The dimension of the basis used to represent the smooth term. Default 3. Because ESM
+#' @param k integer. The dimension of the basis used to represent the smooth term. Default 2. Because ESM
 #'  was proposed to fit models with little data, we recommend using small values of this parameter.
 #'
 #' @details This method consists of creating bivariate models with all pair-wise combinations
@@ -141,7 +141,7 @@ esm_gam <- function(data,
                     predictors,
                     partition,
                     thr = NULL,
-                    k = 3) {
+                    k = 2) {
   . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
