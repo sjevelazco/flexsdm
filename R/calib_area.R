@@ -124,95 +124,93 @@
 #' }
 calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   . <- NULL
-  if (!method[1] %in% c("buffer", "mcp", "bmcp", "mask")) {
-    stop("argument 'method' was misused, available methods buffer, mcp, bmcp, and mask")
+  m_type <- method[1]
+
+  # Argument validation
+  if (!m_type %in% c("buffer", "mcp", "bmcp", "mask")) {
+    stop("argument 'method' was misused, available methods: buffer, mcp, bmcp, and mask")
   }
 
-  if (method[1] %in% c("bmcp", "buffer")) {
-    if (!"width" %in% names(method)) {
-      stop("provide width value for ", method[1], " method", ", e.g. method = c('bmcp', width = 70000)")
-    }
-
-    if (method[1] %in% c("bmcp", "buffer", "mcp") & is.null(crs)) {
-      stop("A coordinate reference system is needed in 'crs' agument for this method")
-    }
+  if (m_type %in% c("buffer", "mcp", "bmcp") && is.null(crs)) {
+    stop(paste("A coordinate reference system is needed in 'crs' argument for method:", m_type))
   }
 
+  if (m_type %in% c("buffer", "bmcp") && !"width" %in% names(method)) {
+    stop(paste0("provide width value for ", m_type, " method, e.g. method = c('", m_type, "', width = 70000)"))
+  }
 
-  if (method[1] %in% c("mask")) {
-    if (is.na(method[2])) {
-      stop("provide a SpatVector in method argument", ", e.g. method = c('mask', clusters)")
+  if (m_type == "mask") {
+    if (length(method) < 3) {
+      stop("Method 'mask' requires a SpatVector and a column name, e.g. method = c('mask', vector_obj, 'col_name')")
     }
-    if (!inherits(method[[2]], c("SpatVector"))) {
-      stop("provide a SpatVector in method argument", ", e.g. method = c('mask', clusters)")
-    }
-    if (!methods::is(method[[2]], "SpatVector")) {
-      method[[2]] <- terra::vect(method[[2]])
+    if (!inherits(method[[2]], "SpatVector")) {
+      stop("For 'mask' method, the second element of 'method' must be a SpatVector")
     }
   }
 
-  data <- data.frame(data[, c(x, y, groups)])
-  names(data) <- c("x", "y", "groups")[!sapply(list(x, y, groups), is.null)]
+  # Data preparation
+  data_cols <- c(x, y, groups)
+  data <- as.data.frame(data[, data_cols])
+  names(data) <- c("x", "y", "groups")[seq_along(data_cols)]
 
-
-  if (method[1] == "buffer") {
-    data <- data[, c("x", "y")]
-    data_sp <- data
-    data_sp <- terra::vect(data_sp, geom = names(data_sp), crs = crs)
-    result <- terra::buffer(data_sp, width = as.numeric(method["width"])) %>%
-      terra::aggregate()
+  # Execution logic
+  if (m_type == "buffer") {
+    data_sp <- terra::vect(data[, c("x", "y")], geom = c("x", "y"), crs = crs)
+    result <- terra::buffer(data_sp, width = as.numeric(method["width"]))
+    result <- terra::aggregate(result)
   }
 
-  if (method[1] == "mcp") {
+  if (m_type %in% c("mcp", "bmcp")) {
     if (is.null(groups)) {
       data$groups <- 1
     }
-    data <- split(data, data$groups)
-    result <- list()
-    for (i in 1:length(data)) {
-      data_pl <- data.frame(data[[i]][, c("x", "y")])
-      data_pl <- data_pl[grDevices::chull(data_pl), ]
-      data_pl <- data.frame(object = 1, part = 1, data_pl, hole = 0)
-      data_pl <- terra::vect(as.matrix(data_pl), type = "polygons", crs = crs)
-      result[[i]] <- data_pl
-    }
-    if (length(result) > 1) {
-      result <- do.call(terra::union, result)
+
+    group_list <- split(data, data$groups)
+    names(group_list) <- NULL
+    
+    result_list <- lapply(group_list, function(df) {
+      # Minimum Convex Polygon
+      hull_indices <- grDevices::chull(df$x, df$y)
+      hull_pts <- df[hull_indices, c("x", "y")]
+
+      # Format for terra::vect polygons (object, part, x, y, hole)
+      geom_df <- data.frame(
+        object = 1,
+        part = 1,
+        x = hull_pts$x,
+        y = hull_pts$y,
+        hole = 0
+      )
+
+      poly <- terra::vect(as.matrix(geom_df), type = "polygons", crs = crs)
+
+      if (m_type == "bmcp") {
+        poly <- terra::buffer(poly, width = as.numeric(method["width"]))
+      }
+      return(poly)
+    })
+
+    result <- if (length(result_list) > 1) {
+      do.call(terra::union, result_list)
     } else {
-      result <- result[[1]]
+      result_list[[1]]
     }
   }
 
-  if (method[1] == "bmcp") {
-    if (is.null(groups)) {
-      data$groups <- 1
-    }
-    data <- split(data, data$groups)
-    result <- list()
-    for (i in 1:length(data)) {
-      data_pl <- data.frame(data[[i]][, c("x", "y")])
-      data_pl <- data_pl[grDevices::chull(data_pl), ]
-      data_pl <- data.frame(object = 1, part = 1, data_pl, hole = 0)
-      data_pl <- terra::vect(as.matrix(data_pl), type = "polygons", crs = crs)
-      data_pl <- terra::buffer(data_pl, width = as.numeric(method["width"]))
-      result[[i]] <- data_pl
-    }
-    if (length(result) > 1) {
-      result <- do.call(terra::union, result)
-    } else {
-      result <- result[[1]]
-    }
-  }
-
-  if (method[1] == "mask") {
+  if (m_type == "mask") {
     polyc <- method[[2]]
     cname <- method[[3]]
-    data <- data[, c("x", "y")]
-    data_sp <- data
-    data_sp <- terra::vect(data_sp, geom = names(data_sp), crs = terra::crs(polyc))
+    data_sp <- terra::vect(data[, c("x", "y")], geom = c("x", "y"), crs = terra::crs(polyc))
 
-    result <- polyc[terra::is.related(polyc, data_sp, "intersects"), cname]
-    # result <- polyc[polyc[[cname]][, 1] %in% result, ]
+    # Select polygons in polyc that intersect any points in data_sp
+    rel_matrix <- terra::is.related(polyc, data_sp, "intersects")
+    if (is.matrix(rel_matrix)) {
+      intersecting_rows <- rowSums(rel_matrix) > 0
+    } else {
+      intersecting_rows <- rel_matrix
+    }
+    result <- polyc[intersecting_rows, cname]
   }
+
   return(result)
 }
