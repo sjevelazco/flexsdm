@@ -4,7 +4,7 @@
 \alias{esm_gam}
 \title{Fit and validate Generalized Additive Models based on Ensembles of Small Models approach}
 \usage{
-esm_gam(data, response, predictors, partition, thr = NULL, k = 3)
+esm_gam(data, response, predictors, partition, thr = NULL, k = 2)
 }
 \arguments{
 \item{data}{data.frame. Database with the response (0,1) and predictors values.}
@@ -29,7 +29,7 @@ Usage predictors = c("aet", "cwd", "tmin").}
   }
 If the user wants to include more than one threshold type, it is necessary to concatenate threshold types, e.g., thr=c('max_sens_spec', 'max_jaccard'), or thr=c('max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('max_sens_spec', 'sensitivity'). Function will use all thresholds if no threshold is specified}
 
-\item{k}{integer. The dimension of the basis used to represent the smooth term. Default 3. Because ESM
+\item{k}{integer. The dimension of the basis used to represent the smooth term. Default 2. Because ESM
 was proposed to fit models with little data, we recommend using small values of this parameter.}
 }
 \value{
