@@ -2,6 +2,9 @@
 
 ## flexsdm 1.4.0 - pre-release
 
+- sdm_eval: Boyce metric was readapted based on enmSdmX package, by
+  [@sjevelazco](https://github.com/sjevelazco)
+  [457](https://github.com/sjevelazco/flexsdm/pull/457)
 - msdm_posteriori: now car return semi-binary suitability maps, by
   [@sjevelazco](https://github.com/sjevelazco)
   [455](https://github.com/sjevelazco/flexsdm/pull/455)

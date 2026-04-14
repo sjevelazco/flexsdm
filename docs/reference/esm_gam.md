@@ -6,7 +6,7 @@ of Small Models (ESM) approach (Breiner et al., 2015, 2018).
 ## Usage
 
 ``` r
-esm_gam(data, response, predictors, partition, thr = NULL, k = 3)
+esm_gam(data, response, predictors, partition, thr = NULL, k = 2)
 ```
 
 ## Arguments
@@ -66,7 +66,7 @@ esm_gam(data, response, predictors, partition, thr = NULL, k = 3)
 - k:
 
   integer. The dimension of the basis used to represent the smooth term.
-  Default 3. Because ESM was proposed to fit models with little data, we
+  Default 2. Because ESM was proposed to fit models with little data, we
   recommend using small values of this parameter.
 
 ## Value
