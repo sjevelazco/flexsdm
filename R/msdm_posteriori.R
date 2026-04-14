@@ -9,7 +9,9 @@
 #' @param x character. Column name with spatial x coordinates.
 #' @param y character. Column name with spatial y coordinates.
 #' @param pr_ab character. Column name with presence and absence data (i.e. 1 and 0)
-#' @param method character. A character string indicating which constraint method will be used.
+#' @param method character. A character string indicating which constraint method will be used (see in details).
+#' @param pres_as_patch character. For the 'lq' method, assume that cells with presences but below the threshold are patches.
+#' Default FALSE.
 #' @param thr character or numeric. Threshold used to get binary suitability values (i.e. 0,1), needed for
 #' threshold-dependent performance metrics. Only one threshold type can be specified. It is
 #' necessary to provide a vector for this argument. The following threshold criteria are available:
@@ -24,10 +26,12 @@
 #'   \item sensitivity: Threshold based on a specified sensitivity value.
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to
 #'   sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
+#'   \item Also, it is possible to specify the threshold value using a numeric value (thr = 0.623)
+#'   
+#' Default "equal_sens_spec".
+#' 
 #'   }
-#'   Also, it is possible specifying the threshold value using a numeric values (thr = 0.623).
-#'   Default "equal_sens_spec".
-#'
+#' 
 #' @param con_thr logical. If TRUE, returns continuous suitability values for cells above the threshold, 
 #' with other cells as 0. If False, returns a binary map (1 for above threshold, 0 for below).
 #' Default FALSE.
@@ -80,13 +84,15 @@
 #' has been sampled throughout its distribution, or the species is geographically restricted,
 #' justifying a narrow inclusion of k patches (Mendes et al., 2020).
 #'
-#' Method 'pres' (only occurrences based restriction). This is a more restrictive variant of the 'obr' method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).
-#'
 #' Method 'lq' (Lower Quantile). This method is similar to the 'obr' method, except by the
 #' procedure to define a distance threshold to withdrawn k patches, which is the
-#' lower quartile distance between k patches to the closest l patch. Whenever a suitable
+#' lower quartile distance between k patches to the closest l patch (i.e., threshold distance is based on 
+#' patches with and without presences and not in presences points as in 'obr' method) . Whenever a suitable
 #' pixel is within a k patch, i.e., not within this lower quartile, the suitability of the
 #' pixel is reduced to zero. This means that 75\% of k patches were withdrawn from the model (Mendes et al., 2020).
+#'
+#' Method 'pres' (only occurrences based restriction). This is a more restrictive variant of the 'obr' 
+#' method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).
 #'
 #' Method 'mcp' (Minimum Convex Polygon). Compiled and adapted from
 #' Kremen et al. (2008), this method excludes from SDM predictions suitable
@@ -245,6 +251,7 @@ msdm_posteriori <- function(records,
                             pr_ab,
                             cont_suit,
                             method = c("obr", "pres", "lq", "mcp", "bmcp"),
+                            pres_as_patch = FALSE,
                             thr = "equal_sens_spec",
                             con_thr = FALSE,
                             buffer = NULL,
@@ -323,6 +330,14 @@ msdm_posteriori <- function(records,
   if (method %in% c("obr", "lq", "pres")) {
     # Raster with areas >= than the threshold
     adeq_bin <- cont_suit >= thr_val
+    
+    # Rasterize points to include cell without suitability but with presences points
+    if(pres_as_patch && method == "lq"){
+      pts1_r <- terra::rasterize(pts1, adeq_bin, background=0)
+      adeq_bin <- (pts1_r + adeq_bin) > 0
+    } 
+    
+    # Set NA to cells with 0
     adeq_bin[adeq_bin == 0] <- NA
 
     # Raster with patches
@@ -374,12 +389,13 @@ msdm_posteriori <- function(records,
 
   result_bin <- result_cont >= thr_val
   result <- terra::rast(list(result_cont, result_bin))
-  names(result) <- c("msdm_cont", "msdm_bin")
-  names(result)[2] <- if (is.character(thr)) thr[1] else "msdm_bin"
-
+  
   if(con_thr){
     result[[2]] <- result[[1]]*result[[2]]
   }
+
+  names(result) <- c("msdm_cont", "msdm_bin")
+  names(result)[2] <- if (is.character(thr)) thr[1] else "msdm_bin"
 
   return(result)
 }

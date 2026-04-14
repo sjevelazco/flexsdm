@@ -103,7 +103,7 @@ require(flexsdm)
 #> Loading required package: flexsdm
 require(terra)
 #> Loading required package: terra
-#> terra 1.8.60
+#> terra 1.9.11
 #> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
@@ -305,7 +305,7 @@ max_t1$model
 #> 4    0  0.00 18.6000
 #> 5    0  0.00 17.7600
 #> 6    0  0.00 16.9600
-#>  [ reached getOption("max.print") -- omitted 194 rows ]
+#>  [ reached 'max' / getOption("max.print") -- omitted 194 rows ]
 ```
 
 predictors: A tibble with quantitative (c column names) and qualitative
@@ -325,17 +325,19 @@ in the argument. We can see all the selected threshold values.
 
 ``` r
 max_t1$performance
-#> # A tibble: 3 × 25
+#> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
 #> 1 max   equal_sens_sp…     0.573         700        700    0.674 0.0164    0.674
 #> 2 max   max_sens_spec      0.416         700        700    0.909 0.0260    0.52 
-#> 3 max   max_sorensen       0.335         700        700    0.95  0.0101    0.469
-#> # ℹ 17 more variables: TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
-#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
-#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, AUC_mean <dbl>,
-#> #   AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>, IMAE_mean <dbl>,
-#> #   IMAE_sd <dbl>
+#> 3 max   max_sorensen       0.336         700        700    0.95  0.0101    0.47 
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 ```
 
 Predicted suitability for each test partition (row) based on the best
@@ -422,16 +424,16 @@ formula details, a basic summary o fthe model, and for predicting.
 rf_t$model
 #> 
 #> Call:
-#>  randomForest(formula = formula1, data = data, mtry = mtry, ntree = 500,      importance = TRUE, ) 
+#>  randomForest(formula = formula1, data = data, mtry = mtry, ntree = ntree,      importance = TRUE, ) 
 #>                Type of random forest: classification
 #>                      Number of trees: 500
-#> No. of variables tried at each split: 2
+#> No. of variables tried at each split: 3
 #> 
-#>         OOB estimate of  error rate: 10.93%
+#>         OOB estimate of  error rate: 11.29%
 #> Confusion matrix:
 #>     0   1 class.error
-#> 0 606  94  0.13428571
-#> 1  59 641  0.08428571
+#> 0 605  95   0.1357143
+#> 1  63 637   0.0900000
 ```
 
 predictors: A tibble with quantitative (c column names) and qualitative
@@ -451,14 +453,16 @@ in the argument. We can see all the selected threshold values.
 
 ``` r
 rf_t$performance
-#> # A tibble: 1 × 27
+#> # A tibble: 1 × 35
 #>    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
 #>   <dbl> <dbl> <chr> <chr>           <dbl>       <int>      <int>    <dbl>  <dbl>
-#> 1     2   300 raf   max_sens_s…      0.53         700        700    0.913 0.0383
-#> # ℹ 18 more variables: TNR_mean <dbl>, TNR_sd <dbl>, SORENSEN_mean <dbl>,
-#> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
-#> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
-#> #   AUC_mean <dbl>, AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>,
+#> 1     3   700 raf   max_sens_s…     0.606         700        700    0.906 0.0362
+#> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
+#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
+#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
+#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,
+#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
 #> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 ```
 
@@ -470,16 +474,16 @@ rf_t$data_ens
 #> # A tibble: 1,400 × 5
 #>    rnames replicates part  pr_ab  pred
 #>    <chr>  <chr>      <chr> <fct> <dbl>
-#>  1 8      .part      1     0     0.156
-#>  2 11     .part      1     0     0.152
-#>  3 13     .part      1     0     0.01 
-#>  4 20     .part      1     0     0.476
-#>  5 32     .part      1     0     0.126
-#>  6 33     .part      1     0     0.078
-#>  7 48     .part      1     0     0.01 
-#>  8 55     .part      1     0     0.148
-#>  9 65     .part      1     0     0.444
-#> 10 75     .part      1     0     0.086
+#>  1 8      .part      1     0     0.118
+#>  2 11     .part      1     0     0.116
+#>  3 13     .part      1     0     0.006
+#>  4 20     .part      1     0     0.412
+#>  5 32     .part      1     0     0.128
+#>  6 33     .part      1     0     0.032
+#>  7 48     .part      1     0     0.008
+#>  8 55     .part      1     0     0.072
+#>  9 65     .part      1     0     0.366
+#> 10 75     .part      1     0     0.088
 #> # ℹ 1,390 more rows
 ```
 
@@ -517,21 +521,23 @@ an_ensemble$predictors
 #> 1 aet   ppt_jja pH    awc     depth   landform NA    NA    NA   
 #> 2 aet   cwd     tmin  ppt_djf ppt_jja landform pH    awc   depth
 an_ensemble$performance
-#> # A tibble: 7 × 25
-#>   model   threshold   thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean
-#>   <chr>   <chr>           <dbl>       <int>      <int>    <dbl>   <dbl>    <dbl>
-#> 1 meansup equal_sens…     0.58          700        700    0.876 0.0251     0.876
-#> 2 meansup lpt             0.028         700        700    1     0          0.421
-#> 3 meansup max_fpb         0.48          700        700    0.933 0.0310     0.843
-#> 4 meansup max_jaccard     0.48          700        700    0.933 0.0310     0.843
-#> 5 meansup max_sens_s…     0.48          700        700    0.91  0.0345     0.87 
-#> 6 meansup max_sorens…     0.48          700        700    0.933 0.0310     0.843
-#> 7 meansup sensitivity     0.534         700        700    0.897 0.00391    0.857
-#> # ℹ 17 more variables: TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
-#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
-#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, AUC_mean <dbl>,
-#> #   AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>, IMAE_mean <dbl>,
-#> #   IMAE_sd <dbl>
+#> # A tibble: 7 × 33
+#>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 meansup equal_sens_…     0.568         700        700    0.879 0.0267    0.879
+#> 2 meansup lpt              0.022         700        700    1     0         0.407
+#> 3 meansup max_fpb          0.486         700        700    0.923 0.0234    0.859
+#> 4 meansup max_jaccard      0.486         700        700    0.923 0.0234    0.859
+#> 5 meansup max_sens_sp…     0.486         700        700    0.911 0.0314    0.87 
+#> 6 meansup max_sorensen     0.486         700        700    0.923 0.0234    0.859
+#> 7 meansup sensitivity      0.522         700        700    0.9   0         0.869
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 ```
 
 ### 3. Fit and validate models with Ensemble of Small Model approach
@@ -606,17 +612,17 @@ esm_gam_t1 <- esm_gam(
   response = "pr_ab",
   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
   partition = ".part",
-  thr = NULL
+  thr = NULL,
+  k=2
 )
-#> 
-#> Model has more coefficients than data used for training it. Try to reduce k
+#>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%
 ```
 
 This function returns a list object with the following elements:
 
 ``` r
 names(esm_gam_t1)
-#> NULL
+#> [1] "esm_model"        "predictors"       "performance"      "performance_part"
 ```
 
 esm_model: A list with “GAM” class object for each bivariate model. This
@@ -626,14 +632,147 @@ function.
 ``` r
 options(max.print = 10) # If you don't want to see printed all the output
 esm_gam_t1$esm_model
-#> NULL
+#> $`0.398148148148148`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(aet, k = 2) + s(cwd, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1.81 1.73  total = 4.54 
+#> 
+#> UBRE score: 0.2827405     
+#> 
+#> $`1`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(aet, k = 2) + s(tmin, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1 1  total = 3 
+#> 
+#> UBRE score: -0.7     
+#> 
+#> $`0.0925925925925926`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(aet, k = 2) + s(pH, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1 1  total = 3 
+#> 
+#> UBRE score: 0.4818906     
+#> 
+#> $`0.564814814814815`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(aet, k = 2) + s(depth, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1.00 1.12  total = 3.12 
+#> 
+#> UBRE score: 0.08148345     
+#> 
+#> $`1`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(cwd, k = 2) + s(tmin, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1 1  total = 3 
+#> 
+#> UBRE score: -0.7     
+#> 
+#> $`0.314814814814815`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(cwd, k = 2) + s(ppt_djf, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1 1  total = 3 
+#> 
+#> UBRE score: 0.4360771     
+#> 
+#> $`0.875`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(cwd, k = 2) + s(ppt_jja, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1 1  total = 3 
+#> 
+#> UBRE score: 0.107549     
+#> 
+#> $`0.553240740740741`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(cwd, k = 2) + s(depth, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1.00 1.38  total = 3.38 
+#> 
+#> UBRE score: 0.3416266     
+#> 
+#> $`1`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(tmin, k = 2) + s(ppt_djf, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1 1  total = 3 
+#> 
+#> UBRE score: -0.7     
+#> 
+#> $`1`
+#> 
+#> Family: binomial 
+#> Link function: logit 
+#> 
+#> Formula:
+#> pr_ab ~ s(tmin, k = 2) + s(ppt_jja, k = 2)
+#> 
+#> Estimated degrees of freedom:
+#> 1 1  total = 3 
+#> 
+#> UBRE score: -0.7     
+#> 
+#>  [ reached 'max' / getOption("max.print") -- omitted 9 entries ]
 ```
 
 predictors: A tibble with variables use for modeling.
 
 ``` r
 esm_gam_t1$predictors
-#> NULL
+#> # A tibble: 1 × 8
+#>   c1    c2    c3    c4      c5      c6    c7    c8   
+#>   <chr> <chr> <chr> <chr>   <chr>   <chr> <chr> <chr>
+#> 1 aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth
 ```
 
 performance: Performance metric (see sdm_eval). Those threshold
@@ -642,7 +781,23 @@ argument.
 
 ``` r
 esm_gam_t1$performance
-#> NULL
+#> # A tibble: 7 × 33
+#>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 esm_gam equal_sens_…     0.607          10         10        1      0        1
+#> 2 esm_gam lpt              0.607          10         10        1      0        1
+#> 3 esm_gam max_fpb          0.607          10         10        1      0        1
+#> 4 esm_gam max_jaccard      0.607          10         10        1      0        1
+#> 5 esm_gam max_sens_sp…     0.607          10         10        1      0        1
+#> 6 esm_gam max_sorensen     0.607          10         10        1      0        1
+#> 7 esm_gam sensitivity      0.614          10         10        1      0        1
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 ```
 
 Now, we test the rep_kfold partition method. In this method ‘folds’
@@ -696,10 +851,10 @@ esm_gam_t2 <- esm_gam(
   response = "pr_ab",
   predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
   partition = ".part",
-  thr = NULL
+  thr = NULL,
+  k=2
 )
-#> 
-#> Model has more coefficients than data used for training it. Try to reduce k
+#>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%
 ```
 
 Test with random bootstrap partitioning. In method ‘replicate’ refers to
@@ -762,8 +917,7 @@ esm_gam_t3 <- esm_gam(
   partition = ".part",
   thr = NULL
 )
-#> 
-#> Model has more coefficients than data used for training it. Try to reduce k
+#>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%
 ```
 
 \#=========#=========#=========#=========#=========#=========#=========#
