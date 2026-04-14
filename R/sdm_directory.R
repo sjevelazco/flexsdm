@@ -88,111 +88,67 @@ sdm_directory <-
            threshold = FALSE,
            return_vector = TRUE) {
     . <- NULL
-    if (is.null(main_dir)) {
-      main_dir <- file.path(getwd(), "flexsdm_results")
-      dir.create(main_dir)
-    } else {
-      dir.create(main_dir)
+    if (is.null(main_dir)) main_dir <- file.path(getwd(), "flexsdm_results")
+    if (!dir.exists(main_dir)) dir.create(main_dir, recursive = TRUE)
+
+    # Create input directories
+    dir.create(file.path(main_dir, "1_Inputs/1_Occurrences"), recursive = TRUE, showWarnings = FALSE)
+    dir.create(file.path(main_dir, "1_Inputs/2_Predictors/1_Current"), recursive = TRUE, showWarnings = FALSE)
+    if (isTRUE(calibration_area)) {
+      dir.create(file.path(main_dir, "1_Inputs/3_Calibration_area"), recursive = TRUE, showWarnings = FALSE)
     }
 
-    # Create input directory
-    file.path(main_dir, "1_Inputs") %>% dir.create()
-    file.path(main_dir, "1_Inputs/1_Occurrences") %>% dir.create()
-    file.path(main_dir, "1_Inputs/2_Predictors") %>% dir.create()
-    if (!is.null(calibration_area)) {
-      file.path(main_dir, "1_Inputs/3_Calibration_area") %>% dir.create()
-    }
-    file.path(main_dir, "1_Inputs/2_Predictors/1_Current") %>% dir.create()
-
-
-    # Outputs dir
+    # Create output directories
     out_dir <- file.path(main_dir, "2_Outputs")
-    out_dir %>% dir.create()
-    file.path(out_dir, "0_Model_performance") %>% dir.create()
-    file.path(out_dir, "1_Current") %>% dir.create()
+    dir.create(file.path(out_dir, "0_Model_performance"), recursive = TRUE, showWarnings = FALSE)
+    dir.create(file.path(out_dir, "1_Current"), recursive = TRUE, showWarnings = FALSE)
 
-
-    # Create projections folders for Inputs and Outputs
+    # Handle projections
+    out_dir_proj <- NULL
     if (!is.null(projections)) {
-      file.path(main_dir, "1_Inputs/2_Predictors/2_Projection") %>% dir.create()
-      sapply(
-        file.path(
-          main_dir,
-          "1_Inputs/2_Predictors/2_Projection",
-          projections
-        ),
-        dir.create
-      )
-      file.path(out_dir, "2_Projection") %>% dir.create()
-      out_dir_proj <-
-        file.path(out_dir, "2_Projection", projections)
-      sapply(out_dir_proj, dir.create)
+      # Input Projections
+      in_proj_dir <- file.path(main_dir, "1_Inputs/2_Predictors/2_Projection")
+      dir.create(in_proj_dir, recursive = TRUE, showWarnings = FALSE)
+      sapply(file.path(in_proj_dir, projections), dir.create, showWarnings = FALSE)
+
+      # Output Projections
+      out_proj_dir <- file.path(out_dir, "2_Projection")
+      dir.create(out_proj_dir, recursive = TRUE, showWarnings = FALSE)
+      out_dir_proj <- file.path(out_proj_dir, projections)
+      sapply(out_dir_proj, dir.create, showWarnings = FALSE)
     }
 
+    # Process algorithm 'all' keyword
+    if (!is.null(algorithm) && any("all" == algorithm)) {
+      algorithm <- c("gam", "gau", "gbm", "glm", "max", "net", "raf", "svm")
+    }
 
-    # Models
-    if (!is.null(algorithm)) {
-      file.path(out_dir, "1_Current/Algorithm") %>% dir.create()
-      if (any("all" == algorithm)) {
-        algorithm <-
-          c("gam", "gau", "gbm", "glm", "max", "net", "raf", "svm")
-      }
+    # Helper function to create Algorithm/Ensemble structures efficiently
+    create_structure <- function(parent_dirs, type_name, items, threshold_flag) {
+      if (is.null(items)) return()
+      for (pd in parent_dirs) {
+        base_path <- file.path(pd, type_name)
+        dir.create(base_path, showWarnings = FALSE)
+        
+        item_paths <- file.path(base_path, items)
+        sapply(item_paths, dir.create, showWarnings = FALSE)
 
-      file.path(out_dir, "1_Current/Algorithm", algorithm) %>%
-        sapply(., dir.create)
-
-      if (threshold) {
-        d <- file.path(out_dir, "1_Current/Algorithm", algorithm)
-        sapply(c("/1_con", "/2_bin"), function(x) paste0(d, x)) %>% sapply(., dir.create)
-      }
-
-      if (exists("out_dir_proj")) {
-        file.path(out_dir_proj, "Algorithm") %>% sapply(., dir.create)
-        lapply(out_dir_proj, function(x) {
-          sapply(file.path(x, paste0(
-            "Algorithm/", algorithm
-          )), dir.create)
-        })
-
-        if (threshold) {
-          d <- lapply(out_dir_proj, function(x) {
-            file.path(x, paste0("Algorithm/", algorithm))
-          }) %>% unlist()
-          sapply(c("/1_con", "/2_bin"), function(x) paste0(d, x)) %>% sapply(., dir.create)
+        if (threshold_flag) {
+          sapply(file.path(item_paths, "1_con"), dir.create, showWarnings = FALSE)
+          sapply(file.path(item_paths, "2_bin"), dir.create, showWarnings = FALSE)
         }
       }
     }
 
-    # Ensemble
-    if (!is.null(ensemble)) {
-      file.path(out_dir, "1_Current/Ensemble") %>% dir.create()
-      ensemble_folders <-
-        file.path(out_dir, "1_Current/Ensemble", ensemble)
-      sapply(ensemble_folders, dir.create)
+    # Identify all parent directories where model outputs should be stored
+    parents <- file.path(out_dir, "1_Current")
+    if (!is.null(out_dir_proj)) parents <- c(parents, out_dir_proj)
 
-      if (threshold) {
-        d <- file.path(out_dir, "1_Current/Ensemble", ensemble)
-        sapply(c("/1_con", "/2_bin"), function(x) paste0(d, x)) %>% sapply(., dir.create)
-      }
+    # Create Algorithm and Ensemble directories across all contexts
+    create_structure(parents, "Algorithm", algorithm, threshold)
+    create_structure(parents, "Ensemble", ensemble, threshold)
 
-      if (exists("out_dir_proj")) {
-        file.path(out_dir_proj, "Ensemble") %>% sapply(., dir.create)
-        lapply(out_dir_proj, function(x) {
-          sapply(file.path(x, paste0(
-            "Ensemble/", ensemble
-          )), dir.create)
-        })
-
-        if (threshold) {
-          d <- lapply(out_dir_proj, function(x) {
-            file.path(x, paste0("Ensemble/", ensemble))
-          }) %>% unlist()
-          sapply(c("/1_con", "/2_bin"), function(x) paste0(d, x)) %>% sapply(., dir.create)
-        }
-      }
-    }
-
-    message("Directories were be created in:\n", main_dir)
+    message("Directories were created in:\n", main_dir)
 
     if (return_vector) {
       results <- list.dirs(main_dir)
