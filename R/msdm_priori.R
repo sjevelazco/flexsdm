@@ -190,11 +190,11 @@ msdm_priori <- function(data,
     
     # Prepare coordinates for distance-based methods
     spi <- terra::as.data.frame(env_layer, xy = TRUE, na.rm = TRUE) %>%
-      dplyr::select(x, y)
+      dplyr::select(x, y) %>% as.matrix()
 
     cells <- terra::cellFromXY(env_layer, xy = as.matrix(records))
     r_coords <- terra::xyFromCell(object = env_layer, cell = stats::na.omit(cells)) %>%
-      as.data.frame()
+      as.data.frame()  %>% as.matrix()
 
     if (method == "min") {
       distr <- euc_dist(x = spi, y = r_coords)

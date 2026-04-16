@@ -431,7 +431,8 @@ unique list values in pr_ab column are: ",
     Env.P1 <- split(Env.P1[, -1], Env.P1[, 1])
     euq_c <- list()
     for (r in 1:ncol(cmb)) {
-      euq_c[[r]] <- euc_dist(Env.P1[[cmb[1, r]]], Env.P1[[cmb[2, r]]]) %>% mean()
+      euq_c[[r]] <- euc_dist(as.matrix(Env.P1[[cmb[1, r]]]), 
+                             as.matrix(Env.P1[[cmb[2, r]]])) %>% mean()
     }
 
     env_sim[i] <- euq_c %>%
@@ -444,7 +445,7 @@ unique list values in pr_ab column are: ",
   # I moran-----
   spa_auto <- rep(NA, length(grid))
 
-  presences2 <- terra::geom(presences2)[, c("x", "y")] %>% as.data.frame()
+  presences2 <- terra::geom(presences2)[, c("x", "y")] %>% as.data.frame() %>% as.matrix()
   dist <- euc_dist(presences2, presences2)
   dist <- 1 / dist
   diag(dist) <- 0
