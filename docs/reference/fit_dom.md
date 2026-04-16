@@ -86,6 +86,11 @@ fit_dom(
   that the variables used here must be consistent with those used in
   response, predictors, and predictors_f arguments
 
+- n_cores:
+
+  numeric. Number of cores to use for parallel processing when metric is
+  "domain". Default 1 (no parallelization).
+
 ## Value
 
 A list object with:
@@ -187,7 +192,8 @@ mdom <- fit_dom(
   predictors_f = NULL,
   fit_formula = NULL,
   partition = ".part",
-  thr = c("max_sens_spec")
+  thr = c("max_sens_spec"),
+  n_cores = 1
 )
 
 mdom

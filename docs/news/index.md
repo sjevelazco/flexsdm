@@ -2,6 +2,16 @@
 
 ## flexsdm 1.4.0 - pre-release
 
+- fit_dom: c++ function to calculate gower distance was optimized, by
+  [@sjevelazco](https://github.com/sjevelazco)
+  [xxxx](https://github.com/sjevelazco/flexsdm/pull/461)
+- map_env_dist: c++ function to calculate gower distance was optimized,
+  by [@sjevelazco](https://github.com/sjevelazco)
+  [xxxx](https://github.com/sjevelazco/flexsdm/pull/461)
+- msdm_posteriori: a new argument that assumes unsuitable cells with
+  presences as patches. This is only used in the ‘lq’ approach, by
+  [@sjevelazco](https://github.com/sjevelazco)
+  [461](https://github.com/sjevelazco/flexsdm/pull/461)
 - sdm_eval: Boyce metric was readapted based on enmSdmX package, by
   [@sjevelazco](https://github.com/sjevelazco)
   [457](https://github.com/sjevelazco/flexsdm/pull/457)

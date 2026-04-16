@@ -12,6 +12,7 @@
 #'   \item euclidean: Euclidean distance. This metric Z-score standardizes the projection data based on the training data and then standardizes the resulting distance by the maximum pairwise distance within the training data. The result is a similarity value that ranges from 0 to 1.
 #'   \item mahalanobis: Mahalanobis distance. This metric Z-score standardizes the projection data based on the training data and then standardizes the resulting distance by the maximum pairwise distance within the training data. The result is a similarity value that ranges from 0 to 1.
 #'   }
+#' @param n_cores numeric. Number of cores to use for parallel processing when metric is "domain". Default 1 (no parallelization).
 #'
 #' @return
 #' A SpatRaster or tibble object with the nearest environmental distance between presences and projection data.
@@ -122,7 +123,8 @@
 map_env_dist <- function(
   training_data,
   projection_data,
-  metric = "domain"
+  metric = "domain",
+  n_cores = 1
 ) {
   cell <- y <- x <- cluster <- . <- NULL
 
@@ -157,7 +159,7 @@ map_env_dist <- function(
   }
   if (any("SpatRaster" == class(projection_data))) {
     projection_data <- projection_data[[v0]]
-    extraraster <- projection_data[[1]]
+    extraraster <- projection_data[[which(!is.factor(somevar))[1]]]
     extraraster[!is.na(extraraster)] <- 0
   } else {
     projection_data <- projection_data[v0]
@@ -180,9 +182,6 @@ map_env_dist <- function(
   extra <- list()
   for (x in seq_len((length(set) - 1))) {
     rowset <- set[x]:(set[x + 1] - 1)
-    if (metric == "domain") {
-      extra[[x]] <- min_gower_rcpp(data1 = env_calib2[v0], data2 = env_proj2[rowset, v0])
-    }
     if (metric == "euclidean") {
       envdist <-
         euc_dist_stand(env_proj2[rowset, v0], env_calib2[v0])
@@ -203,6 +202,10 @@ map_env_dist <- function(
   # extra <- 1 - extra
   # extra[extra < 0] <- 0
 
+  if (metric == "domain") {
+      extra <- min_gower_rcpp(data1 = env_calib2[v0], data2 = env_proj2[, v0], n_threads = n_cores)
+  }
+  
   if (any("SpatRaster" == class(projection_data))) {
     env_proj2 <- data.frame(distance = extra)
 

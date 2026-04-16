@@ -5,7 +5,7 @@ Calculate environmental distance between presences and projection data
 ## Usage
 
 ``` r
-map_env_dist(training_data, projection_data, metric = "domain")
+map_env_dist(training_data, projection_data, metric = "domain", n_cores = 1)
 ```
 
 ## Arguments
@@ -41,6 +41,11 @@ map_env_dist(training_data, projection_data, metric = "domain")
     the resulting distance by the maximum pairwise distance within the
     training data. The result is a similarity value that ranges from 0
     to 1.
+
+- n_cores:
+
+  numeric. Number of cores to use for parallel processing when metric is
+  "domain". Default 1 (no parallelization).
 
 ## Value
 

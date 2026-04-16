@@ -11,20 +11,35 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // min_gower_rcpp
-NumericVector min_gower_rcpp(DataFrame data1_r, DataFrame data2_r);
-RcppExport SEXP _flexsdm_min_gower_rcpp(SEXP data1_rSEXP, SEXP data2_rSEXP) {
+NumericVector min_gower_rcpp(DataFrame data1_r, DataFrame data2_r, int n_threads);
+RcppExport SEXP _flexsdm_min_gower_rcpp(SEXP data1_rSEXP, SEXP data2_rSEXP, SEXP n_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< DataFrame >::type data1_r(data1_rSEXP);
     Rcpp::traits::input_parameter< DataFrame >::type data2_r(data2_rSEXP);
-    rcpp_result_gen = Rcpp::wrap(min_gower_rcpp(data1_r, data2_r));
+    Rcpp::traits::input_parameter< int >::type n_threads(n_threadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(min_gower_rcpp(data1_r, data2_r, n_threads));
+    return rcpp_result_gen;
+END_RCPP
+}
+// min_gower_parallel
+NumericVector min_gower_parallel(DataFrame data1_r, DataFrame data2_r, int n_threads);
+RcppExport SEXP _flexsdm_min_gower_parallel(SEXP data1_rSEXP, SEXP data2_rSEXP, SEXP n_threadsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type data1_r(data1_rSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type data2_r(data2_rSEXP);
+    Rcpp::traits::input_parameter< int >::type n_threads(n_threadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(min_gower_parallel(data1_r, data2_r, n_threads));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_flexsdm_min_gower_rcpp", (DL_FUNC) &_flexsdm_min_gower_rcpp, 2},
+    {"_flexsdm_min_gower_rcpp", (DL_FUNC) &_flexsdm_min_gower_rcpp, 3},
+    {"_flexsdm_min_gower_parallel", (DL_FUNC) &_flexsdm_min_gower_parallel, 3},
     {NULL, NULL, 0}
 };
 

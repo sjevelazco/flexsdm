@@ -111,6 +111,10 @@ variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 Note that the variables used here must be consistent with those used in
 response, predictors, and predictors_f arguments</p></dd>
 
+
+<dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
+<dd><p>numeric. Number of cores to use for parallel processing when metric is "domain". Default 1 (no parallelization).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -185,7 +189,8 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span>  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
-<span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  n_cores <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mdom</span></span></span>
