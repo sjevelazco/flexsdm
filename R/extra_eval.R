@@ -312,96 +312,26 @@ extra_eval <-
 
     for (i in 1:ncol(env_calib2)) {
       env_calib2[i] <- (env_calib2[i] - s_center[i]) / s_scale[i]
-      # if (metric == "mahalanobis_pres") {
-      #   training_data_pr_ab[i] <-
-      #     (training_data_pr_ab[i] - s_center[i]) / s_scale[i]
-      # }
     }
 
-    # Calculate covariance matrix based on presences for mahalanobis_pres
-    # if (metric == "mahalanobis_pres") {
-    #   s_cov <-  stats::cov(training_data_pr_ab[training_data_pr_ab[pr_ab] == 1, names(env_calib2)])
-    # }
 
     for (i in 1:ncol(env_proj2)) {
       env_proj2[i] <- (env_proj2[i] - s_center[i]) / s_scale[i]
     }
 
-    # Measure extrapolation - Euclidean distance
-    set <- c(seq(1, nrow(env_proj2), 200), nrow(env_proj2) + 1)
+    env_proj2 <- env_proj2 |> as.matrix() # environmental conditions used to predict
+    env_calib2 <- env_calib2 |> as.matrix() # environmental conditions used as references
 
-    if (n_cores == 1) {
-      extra <- lapply(seq_len((length(set) - 1)), function(x) {
-        rowset <- set[x]:(set[x + 1] - 1)
-        if (metric == "euclidean") {
-          envdist <-
-            euc_dist(
-              env_proj2[rowset, v0], # env_proj2 environmental conditions used to predict
-              env_calib2[v0]
-            ) # training_data environmental conditions used as references
-          envdist <- sapply(data.frame(t(envdist)), min)
-        }
-        if (metric == "mahalanobis") {
-          envdist <-
-            mah_dist(
-              x = env_proj2[rowset, v0], # env_proj2 environmental conditions used to predict
-              y = env_calib2[v0], # training_data environmental conditions used as references
-              cov = stats::cov(env_calib2) # covariance matrix based on presences and absences
-            )
-          envdist <- sapply(data.frame(t(envdist)), min)
-        }
-        # if (metric == "mahalanobis_pres") {
-        #   envdist <-
-        #     mah_dist(
-        #       x = env_proj2[rowset, v0], # env_proj2 environmental conditions used to predict
-        #       y = env_calib2[v0], # training_data environmental conditions used as references
-        #       cov = s_cov # covariance matrix based on presences
-        #     )
-        #   envdist <- sapply(data.frame(t(envdist)), min)
-        # }
-        return(envdist)
-      })
-    } else {
-      cl <- parallel::makeCluster(n_cores)
-      doParallel::registerDoParallel(cl)
-
-      extra <- foreach::foreach(x = seq_len((length(
-        set
-      ) - 1)), .export = c("euc_dist"), .combine = "c") %dopar% {
-        rowset <- set[x]:(set[x + 1] - 1)
-        if (metric == "euclidean") {
-          envdist <-
-            euc_dist(
-              env_proj2[rowset, v0], # env_proj2 environmental conditions used to predict
-              env_calib2[v0]
-            ) # training_data environmental conditions used as references
-          envdist <- sapply(data.frame(t(envdist)), min)
-        }
-        if (metric == "mahalanobis") {
-          envdist <-
-            mah_dist(
-              x = env_proj2[rowset, v0], # env_proj2 environmental conditions used to predict
-              y = env_calib2[v0], # training_data environmental conditions used as references
-              cov =  stats::cov(env_calib2) # covariance matrix based on presences and absences
-            )
-          envdist <- sapply(data.frame(t(envdist)), min)
-        }
-        # if (metric == "mahalanobis_pres") {
-        #   envdist <-
-        #     mah_dist(
-        #       x = env_proj2[rowset, v0], # env_proj2 environmental conditions used to predict
-        #       y = env_calib2[v0], # training_data environmental conditions used as references
-        #       cov = s_cov # covariance matrix based on presences
-        #     )
-        #   envdist <- sapply(data.frame(t(envdist)), min)
-        # }
-        envdist
-      }
-      parallel::stopCluster(cl)
+    if (metric == "euclidean") {
+      extra <- euc_dist_min(env_proj2, env_calib2)
     }
+    if (metric == "mahalanobis") {
+      extra <- mah_dist_min(env_proj2, env_calib2, stats::cov(env_calib2))
+    }
+    
+    # # Measure extrapolation - Euclidean distance
+    # set <- c(seq(1, nrow(env_proj2), 200), nrow(env_proj2) + 1)
 
-
-    extra <- unlist(extra)
     if (any("SpatRaster" == class(projection_data))) {
       env_proj2 <-
         data.frame(distance = extra)
@@ -414,21 +344,15 @@ extra_eval <-
 
     # Euclidean distance between points used for calibration and its centroid
     if (metric == "euclidean") {
-      base_stand_distance <- env_calib2 %>%
-        dplyr::summarise_all(., mean) %>%
-        euc_dist(env_calib2, .) %>%
-        mean()
-    }
-    # if (metric == "mahalanobis_pres") {
-    #   base_stand_distance <- env_calib2 %>%
-    #     dplyr::summarise_all(., mean) %>%
-    #     mah_dist(x = env_calib2, y = ., cov = s_cov) %>%
-    #     mean()
-    # }
+      base_stand_distance <- euc_dist(env_calib2, 
+        matrix(apply(env_calib2, 2, mean, na.rm=TRUE), ncol=ncol(env_calib2))) %>%
+          mean()
+      }
+    # Mahalanobis distance between points used for calibration and its centroid
     if (metric == "mahalanobis") {
-      base_stand_distance <- env_calib2 %>%
-        dplyr::summarise_all(., mean) %>%
-        mah_dist(x = env_calib2, y = ., cov = stats::cov(env_calib2)) %>%
+      base_stand_distance <- mah_dist(x = env_calib2, 
+        y = matrix(apply(env_calib2, 2, mean, na.rm=TRUE), ncol=ncol(env_calib2)), 
+        cov = stats::cov(env_calib2)) %>%
         mean()
     }
 
@@ -465,6 +389,7 @@ extra_eval <-
       for (i in 2:length(s_center)) { # process from the 2nd column to skip extrapolation column
         env_proj2[i] <- env_proj2[i] * s_scale[i] + s_center[i]
       }
+
       # Univariate and combinatorial extrapolation
       if (univar_comb) {
         rng <- apply(training_data, 2, range, na.rm = TRUE)
@@ -483,4 +408,4 @@ extra_eval <-
       return(dplyr::as_tibble(env_proj2))
     }
     return(extraraster)
-  }
+}

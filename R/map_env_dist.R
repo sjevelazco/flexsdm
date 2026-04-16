@@ -54,6 +54,8 @@
 #'
 #' # Measure environmental distance between presences and projection data
 #' clrs = c("#000033", "#1400FF", "#C729D6", "#FF9C63", "#FFFF60")
+#' 
+#' 
 #' # Domain
 #' envdist <-
 #'   map_env_dist(
@@ -75,6 +77,8 @@
 #'   color_p = "red",
 #'   color_gradient = clrs
 #' )
+#' 
+#' 
 #' # Euclidean
 #' envdist <-
 #'   map_env_dist(
@@ -176,20 +180,22 @@ map_env_dist <- function(
     ncell <- rownames(env_proj2) %>% as.numeric()
   }
 
-  env_proj2 <- env_proj2 %>% dplyr::as_tibble()
-  set <- c(seq(1, nrow(env_proj2), 100), nrow(env_proj2) + 1)
+  env_proj2 <- env_proj2[v0] %>% as.matrix()
+  env_calib2 <- env_calib2[v0] %>% as.matrix()
+
+  set <- c(seq(1, nrow(env_proj2), 1000), nrow(env_proj2) + 1)
 
   extra <- list()
   for (x in seq_len((length(set) - 1))) {
     rowset <- set[x]:(set[x + 1] - 1)
     if (metric == "euclidean") {
       envdist <-
-        euc_dist_stand(env_proj2[rowset, v0], env_calib2[v0])
+        euc_dist_stand(x = env_proj2[rowset, , drop = FALSE], y = env_calib2)
       extra[[x]] <- sapply(data.frame(t(envdist)), min)
     }
     if (metric == "mahalanobis") {
       envdist <-
-        mah_dist_stand(env_proj2[rowset, v0], env_calib2[v0])
+        mah_dist_stand(env_proj2[rowset, , drop = FALSE], env_calib2)
       extra[[x]] <- sapply(data.frame(t(envdist)), min)
     }
   }
@@ -199,11 +205,9 @@ map_env_dist <- function(
     extra <- 1 - extra
     extra[extra < 0] <- 0
   }
-  # extra <- 1 - extra
-  # extra[extra < 0] <- 0
 
   if (metric == "domain") {
-      extra <- min_gower_rcpp(data1 = env_calib2[v0], data2 = env_proj2[, v0], n_threads = n_cores)
+      extra <- min_gower_rcpp(data1 = env_calib2, data2 = env_proj2, n_threads = n_cores)
   }
   
   if (any("SpatRaster" == class(projection_data))) {

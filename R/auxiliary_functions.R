@@ -354,25 +354,6 @@ n_coefficients <- function(data, predictors, predictors_f = NULL, k = 10) {
   return(n)
 }
 
-#' Euclidean distance for extrapolation
-#'
-#' @noRd
-#'
-euc_dist <- function(x, y) {
-  if (!methods::is(x, "matrix")) {
-    x <- as.matrix(x)
-  }
-  if (!methods::is(y, "matrix")) {
-    y <- as.matrix(y)
-  }
-  result <- matrix(0, nrow = nrow(x), ncol = nrow(y))
-  for (ii in 1:nrow(y)) {
-    result[, ii] <- sqrt(colSums((t(x) - y[ii, ])^2))
-  }
-  rownames(result) <- rownames(x)
-  colnames(result) <- rownames(y)
-  return(result)
-}
 
 #' Moran I, based on ape package
 #'
@@ -415,26 +396,6 @@ morani <- function(x, weight, na.rm = FALSE, scaled = TRUE) {
   return(res)
 }
 
-#' Mahalanobis distance
-#'
-#' @noRd
-#'
-mah_dist <- function(x, y, cov) {
-  if (!methods::is(x, "matrix")) {
-    x <- as.matrix(x)
-  }
-  if (!methods::is(y, "matrix")) {
-    y <- as.matrix(y)
-  }
-  result <- matrix(0, nrow = nrow(x), ncol = nrow(y))
-  for (ii in 1:nrow(y)) {
-    # root square of squared Mahalanobis distance
-    result[, ii] <- sqrt(mahalanobis(x = x, center = y[ii, ], cov = cov))
-  }
-  rownames(result) <- rownames(x)
-  colnames(result) <- rownames(y)
-  return(result)
-}
 
 #' K-means sample
 #'
@@ -480,18 +441,18 @@ euc_dist_stand <- function(x, y) {
   # Standardize y (reference data)
   y_stand <- y
   for (i in 1:ncol(y)) {
-    y_stand[i] <- (y[i] - s_center[i]) / s_scale[i]
+    y_stand[,i] <- (y[,i] - s_center[i]) / s_scale[i]
   }
 
   # Standardize x (projection data) using parameters from y
   x_stand <- x
   for (i in 1:ncol(x)) {
-    x_stand[i] <- (x[i] - s_center[i]) / s_scale[i]
+    x_stand[,i] <- (x[,i] - s_center[i]) / s_scale[i]
   }
 
   # Calculate raw Euclidean distances between x and y
   raw_dist <- euc_dist(x_stand, y_stand)
-
+  
   # Calculate the maximum pairwise Euclidean distance within the reference set y
   max_dist_y <- max(stats::dist(y_stand))
 
@@ -521,13 +482,13 @@ mah_dist_stand <- function(x, y) {
   # Standardize y (reference data)
   y_stand <- y
   for (i in 1:ncol(y)) {
-    y_stand[i] <- (y[i] - s_center[i]) / s_scale[i]
+    y_stand[,i] <- (y[,i] - s_center[i]) / s_scale[i]
   }
 
   # Standardize x (projection data) using parameters from y
   x_stand <- x
   for (i in 1:ncol(x)) {
-    x_stand[i] <- (x[i] - s_center[i]) / s_scale[i]
+    x_stand[,i] <- (x[,i] - s_center[i]) / s_scale[i]
   }
 
   # Calculate raw Mahalanobis distances between standardized x and y

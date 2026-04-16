@@ -10,6 +10,56 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// euc_dist
+NumericMatrix euc_dist(const NumericMatrix& x, const NumericMatrix& y);
+RcppExport SEXP _flexsdm_euc_dist(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(euc_dist(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// euc_dist_min
+NumericVector euc_dist_min(const NumericMatrix& x, const NumericMatrix& y);
+RcppExport SEXP _flexsdm_euc_dist_min(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type y(ySEXP);
+    rcpp_result_gen = Rcpp::wrap(euc_dist_min(x, y));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mah_dist
+NumericMatrix mah_dist(const NumericMatrix& x, const NumericMatrix& y, const NumericMatrix& cov);
+RcppExport SEXP _flexsdm_mah_dist(SEXP xSEXP, SEXP ySEXP, SEXP covSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type cov(covSEXP);
+    rcpp_result_gen = Rcpp::wrap(mah_dist(x, y, cov));
+    return rcpp_result_gen;
+END_RCPP
+}
+// mah_dist_min
+NumericVector mah_dist_min(const NumericMatrix& x, const NumericMatrix& y, const NumericMatrix& cov);
+RcppExport SEXP _flexsdm_mah_dist_min(SEXP xSEXP, SEXP ySEXP, SEXP covSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type y(ySEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type cov(covSEXP);
+    rcpp_result_gen = Rcpp::wrap(mah_dist_min(x, y, cov));
+    return rcpp_result_gen;
+END_RCPP
+}
 // min_gower_rcpp
 NumericVector min_gower_rcpp(DataFrame data1_r, DataFrame data2_r, int n_threads);
 RcppExport SEXP _flexsdm_min_gower_rcpp(SEXP data1_rSEXP, SEXP data2_rSEXP, SEXP n_threadsSEXP) {
@@ -23,23 +73,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// min_gower_parallel
-NumericVector min_gower_parallel(DataFrame data1_r, DataFrame data2_r, int n_threads);
-RcppExport SEXP _flexsdm_min_gower_parallel(SEXP data1_rSEXP, SEXP data2_rSEXP, SEXP n_threadsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< DataFrame >::type data1_r(data1_rSEXP);
-    Rcpp::traits::input_parameter< DataFrame >::type data2_r(data2_rSEXP);
-    Rcpp::traits::input_parameter< int >::type n_threads(n_threadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(min_gower_parallel(data1_r, data2_r, n_threads));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_flexsdm_euc_dist", (DL_FUNC) &_flexsdm_euc_dist, 2},
+    {"_flexsdm_euc_dist_min", (DL_FUNC) &_flexsdm_euc_dist_min, 2},
+    {"_flexsdm_mah_dist", (DL_FUNC) &_flexsdm_mah_dist, 3},
+    {"_flexsdm_mah_dist_min", (DL_FUNC) &_flexsdm_mah_dist_min, 3},
     {"_flexsdm_min_gower_rcpp", (DL_FUNC) &_flexsdm_min_gower_rcpp, 3},
-    {"_flexsdm_min_gower_parallel", (DL_FUNC) &_flexsdm_min_gower_parallel, 3},
     {NULL, NULL, 0}
 };
 

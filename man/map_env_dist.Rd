@@ -61,6 +61,8 @@ sp_pa_2
 
 # Measure environmental distance between presences and projection data
 clrs = c("#000033", "#1400FF", "#C729D6", "#FF9C63", "#FFFF60")
+
+
 # Domain
 envdist <-
   map_env_dist(
@@ -82,6 +84,8 @@ p_extra(
   color_p = "red",
   color_gradient = clrs
 )
+
+
 # Euclidean
 envdist <-
   map_env_dist(
