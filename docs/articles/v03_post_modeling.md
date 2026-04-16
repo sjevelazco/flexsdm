@@ -60,7 +60,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(terra)
-#> terra 1.8.60
+#> terra 1.9.11
 #> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
@@ -277,8 +277,8 @@ ind_p
 #> varnames    : somevar 
 #>               somevar 
 #> names       :          glm, max_fpb 
-#> min values  : 2.220446e-16,    TRUE 
-#> max values  : 1.000000e+00,    TRUE
+#> min values  : 2.220446e-16,       0 
+#> max values  : 1.000000e+00,       1
 
 # Plot to see this layers
 ind_p_rst <- terra::rast(ind_p)
@@ -312,8 +312,8 @@ list_p
 #> varnames    : somevar 
 #>               somevar 
 #> names       :          glm, max_fpb 
-#> min values  : 2.220446e-16,    TRUE 
-#> max values  : 1.000000e+00,    TRUE 
+#> min values  : 2.220446e-16,       0 
+#> max values  : 1.000000e+00,       1 
 #> 
 #> $raf
 #> class       : SpatRaster 
@@ -325,8 +325,8 @@ list_p
 #> varnames    : somevar 
 #>               somevar 
 #> names       : raf, max_fpb 
-#> min values  :   0,   FALSE 
-#> max values  :   1,    TRUE 
+#> min values  :   0,       0 
+#> max values  :   1,       1 
 #> 
 #> $gbm
 #> class       : SpatRaster 
@@ -338,8 +338,8 @@ list_p
 #> varnames    : somevar 
 #>               somevar 
 #> names       :          gbm, max_fpb 
-#> min values  : 0.0002949323,   FALSE 
-#> max values  : 0.9986537352,    TRUE
+#> min values  : 6.896799e-05,       0 
+#> max values  : 9.522343e-01,       1
 
 # Plot to see this layers
 list_p_rst <- terra::rast(list_p)
@@ -373,8 +373,8 @@ ensemble_p
 #> varnames    : somevar 
 #>               somevar 
 #> names       : meansup, max_fpb 
-#> min values  :       0,   FALSE 
-#> max values  :       1,    TRUE
+#> min values  :       0,       0 
+#> max values  :       1,       1
 
 # Plot to see this layers
 ensemble_p_rst <- terra::rast(ensemble_p)
@@ -393,23 +393,21 @@ small_p <- sdm_predict(
   con_thr = FALSE,
   predict_area = NULL
 )
-#> Predicting individual models
+#> Predicting ensemble of small models
 
 # Inspect the object It's a SpatRaster with 2 layers, msmall and max_fpb
 # These are the continuous and binary prediction from the ESM model
 small_p
-#> $<NA>
+#> $esm_gam
 #> class       : SpatRaster 
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
 #> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
 #> source(s)   : memory
-#> varnames    : somevar 
-#>               somevar 
-#> names       :  NA, max_fpb 
-#> min values  : NaN,    TRUE 
-#> max values  : NaN,    TRUE
+#> names       :      esm_gam, max_fpb 
+#> min values  : 2.476531e-05,       0 
+#> max values  : 1.000000e+00,       1
 
 # Plot to see this layers
 small_p_rst <- terra::rast(small_p)
@@ -532,14 +530,16 @@ rf_t1 <-
 #> Partition number: 5/5
 
 rf_t1$performance
-#> # A tibble: 1 × 27
+#> # A tibble: 1 × 35
 #>    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
 #>   <dbl> <dbl> <chr> <chr>           <dbl>       <int>      <int>    <dbl>  <dbl>
-#> 1     3   300 raf   max_sens_s…     0.606         700        700    0.924 0.0356
-#> # ℹ 18 more variables: TNR_mean <dbl>, TNR_sd <dbl>, SORENSEN_mean <dbl>,
-#> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
-#> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
-#> #   AUC_mean <dbl>, AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>,
+#> 1     3   300 raf   max_sens_s…     0.606         700        700    0.919 0.0396
+#> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
+#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
+#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
+#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,
+#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
 #> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 # Note in rf_t1$performance the best model was the one with mtry = 3 and threshold = 'max_sens_spec'
 ```
@@ -550,20 +550,22 @@ Finally, merge the three sdm performance tables.
 merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
 
 merge_df
-#> # A tibble: 7 × 28
+#> # A tibble: 7 × 36
 #>   model_ID model threshold      thr_value n_presences n_absences TPR_mean TPR_sd
 #>      <int> <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>
-#> 1        1 gam   equal_sens_sp…     0.540         700        700    0.737 0.0366
-#> 2        1 gam   max_sens_spec      0.530         700        700    0.751 0.0461
+#> 1        1 gam   equal_sens_sp…     0.540         700        700    0.736 0.0368
+#> 2        1 gam   max_sens_spec      0.530         700        700    0.75  0.0460
 #> 3        1 gam   max_sorensen       0.359         700        700    0.864 0.0580
 #> 4        2 glm   equal_sens_sp…     0.523         700        700    0.663 0.0583
-#> 5        2 glm   max_sens_spec      0.463         700        700    0.803 0.111 
-#> 6        2 glm   max_sorensen       0.356         700        700    0.876 0.0436
-#> 7        3 raf   max_sens_spec      0.606         700        700    0.924 0.0356
-#> # ℹ 20 more variables: TNR_mean <dbl>, TNR_sd <dbl>, SORENSEN_mean <dbl>,
-#> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
-#> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
-#> #   AUC_mean <dbl>, AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>,
+#> 5        2 glm   max_sens_spec      0.463         700        700    0.773 0.103 
+#> 6        2 glm   max_sorensen       0.356         700        700    0.873 0.0359
+#> 7        3 raf   max_sens_spec      0.606         700        700    0.919 0.0396
+#> # ℹ 28 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
+#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
+#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
+#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,
+#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
 #> #   IMAE_mean <dbl>, IMAE_sd <dbl>, mtry <dbl>, ntree <dbl>
 ```
 
@@ -768,8 +770,7 @@ m_xy
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
 #> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
 #> source(s)   : memory
-#> varnames    : somevar 
-#>               somevar 
+#> varname     : somevar 
 #> names       :  msdm_lon,  msdm_lat 
 #> min values  : -370850.8, -601978.3 
 #> max values  :  368139.2,  448861.7

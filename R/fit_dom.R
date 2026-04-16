@@ -26,7 +26,8 @@
 #' variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
 #' Note that the variables used here must be consistent with those used in
 #' response, predictors, and predictors_f arguments
-#'
+#' @param n_cores numeric. Number of cores to use for parallel processing when metric is "domain". Default 1 (no parallelization).
+#' 
 #' @details
 #' This function fits and validates Domain models. The Domain model is a simple model that uses the Gower distance to
 #' calculate environmental similarity between the presence data and test data (Carpenter et al., 1993).
@@ -106,7 +107,8 @@
 #'   predictors_f = NULL,
 #'   fit_formula = NULL,
 #'   partition = ".part",
-#'   thr = c("max_sens_spec")
+#'   thr = c("max_sens_spec"),
+#'   n_cores = 1
 #' )
 #'
 #' mdom

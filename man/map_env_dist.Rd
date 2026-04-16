@@ -4,7 +4,7 @@
 \alias{map_env_dist}
 \title{Calculate environmental distance between presences and projection data}
 \usage{
-map_env_dist(training_data, projection_data, metric = "domain")
+map_env_dist(training_data, projection_data, metric = "domain", n_cores = 1)
 }
 \arguments{
 \item{training_data}{data.frame or tibble with environmental conditions of
@@ -21,6 +21,8 @@ Otherwise, as SpatRaster object.}
   \item euclidean: Euclidean distance. This metric Z-score standardizes the projection data based on the training data and then standardizes the resulting distance by the maximum pairwise distance within the training data. The result is a similarity value that ranges from 0 to 1.
   \item mahalanobis: Mahalanobis distance. This metric Z-score standardizes the projection data based on the training data and then standardizes the resulting distance by the maximum pairwise distance within the training data. The result is a similarity value that ranges from 0 to 1.
   }}
+
+\item{n_cores}{numeric. Number of cores to use for parallel processing when metric is "domain". Default 1 (no parallelization).}
 }
 \value{
 A SpatRaster or tibble object with the nearest environmental distance between presences and projection data.
@@ -59,6 +61,8 @@ sp_pa_2
 
 # Measure environmental distance between presences and projection data
 clrs = c("#000033", "#1400FF", "#C729D6", "#FF9C63", "#FFFF60")
+
+
 # Domain
 envdist <-
   map_env_dist(
@@ -80,6 +84,8 @@ p_extra(
   color_p = "red",
   color_gradient = clrs
 )
+
+
 # Euclidean
 envdist <-
   map_env_dist(
