@@ -319,8 +319,8 @@ extra_eval <-
       env_proj2[i] <- (env_proj2[i] - s_center[i]) / s_scale[i]
     }
 
-    env_proj2 <- env_proj2 |> as.matrix() # environmental conditions used to predict
-    env_calib2 <- env_calib2 |> as.matrix() # environmental conditions used as references
+    env_proj2 <- env_proj2 %>% as.matrix() # environmental conditions used to predict
+    env_calib2 <- env_calib2 %>% as.matrix() # environmental conditions used as references
 
     if (metric == "euclidean") {
       extra <- euc_dist_min(env_proj2, env_calib2)
