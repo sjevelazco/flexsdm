@@ -10,7 +10,6 @@ extra_eval(
   projection_data,
   metric = "mahalanobis",
   univar_comb = FALSE,
-  n_cores = 1,
   aggreg_factor = 1
 )
 }
@@ -37,13 +36,13 @@ between univariate (i.e., projection data outside the range of training conditio
 combinatorial extrapolation (i.e., projection data within the range of training conditions)
 using values 1 and 2, respectively. Default FALSE}
 
-\item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
-
 \item{aggreg_factor}{positive integer. Aggregation factor expressed as number of cells in each
 direction to reduce raster resolution. Use value higher than 1 would be useful when
 measuring extrapolation using a raster with a high number of cells. The resolution of output will be
 the same as raster object used in 'projection_data' argument. Default 1, i.e., by default, no changes
 will be made to the resolution of the environmental variables.}
+
+\item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 }
 \value{
 A SpatRaster or tibble object with extrapolation values measured by Shape metric. Also it
@@ -129,7 +128,6 @@ extr <-
     training_data = sp_pa_2,
     projection_data = somevar,
     pr_ab = "pr_ab",
-    n_cores = 1,
     aggreg_factor = 1,
     metric = "mahalanobis"
   )
@@ -189,7 +187,6 @@ extr_df <-
     training_data = sp_pa_2,
     projection_data = as.data.frame(somevar, xy = TRUE),
     pr_ab = "pr_ab",
-    n_cores = 1,
     aggreg_factor = 1,
     metric = "mahalanobis"
   )
@@ -206,7 +203,6 @@ extr <-
     training_data = sp_pa_2,
     projection_data = somevar,
     pr_ab = "pr_ab",
-    n_cores = 1,
     aggreg_factor = 1,
     metric = "mahalanobis",
     univar_comb = TRUE

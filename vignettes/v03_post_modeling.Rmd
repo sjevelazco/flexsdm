@@ -390,7 +390,6 @@ xp <-
   extra_eval(
     training_data = somevar_ca,
     projection_data = somevar,
-    n_cores = 1,
     aggreg_factor = 3
   )
 

@@ -126,7 +126,6 @@
 #'     training_data = sp_pa_2,
 #'     projection_data = somevar,
 #'     pr_ab = "pr_ab",
-#'     n_cores = 1,
 #'     aggreg_factor = 1,
 #'     metric = "mahalanobis"
 #'   )
@@ -186,7 +185,6 @@
 #'     training_data = sp_pa_2,
 #'     projection_data = as.data.frame(somevar, xy = TRUE),
 #'     pr_ab = "pr_ab",
-#'     n_cores = 1,
 #'     aggreg_factor = 1,
 #'     metric = "mahalanobis"
 #'   )
@@ -203,7 +201,6 @@
 #'     training_data = sp_pa_2,
 #'     projection_data = somevar,
 #'     pr_ab = "pr_ab",
-#'     n_cores = 1,
 #'     aggreg_factor = 1,
 #'     metric = "mahalanobis",
 #'     univar_comb = TRUE
@@ -219,7 +216,6 @@ extra_eval <-
            projection_data,
            metric = "mahalanobis",
            univar_comb = FALSE,
-           n_cores = 1,
            aggreg_factor = 1) {
     Value <- val <- . <- x <- extrapolation <- NULL
 

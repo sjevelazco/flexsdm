@@ -31,7 +31,6 @@ test_that("extra_truncate", {
     extra_eval(
       training_data = somevar_ca,
       projection_data = somevar,
-      n_cores = 2,
       aggreg_factor = 5
     )
   xp2 <- extra_truncate(

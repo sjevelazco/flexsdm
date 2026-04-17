@@ -383,7 +383,6 @@ xp_m <-
     projection_data = somevar,
     metric = "mahalanobis",
     univar_comb = TRUE,
-    n_cores = 1,
     aggreg_factor = 1
   )
 xp_m

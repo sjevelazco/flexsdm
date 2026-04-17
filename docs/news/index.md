@@ -2,10 +2,18 @@
 
 ## flexsdm 1.4.0 - pre-release
 
-- fit_dom: c++ function to calculate gower distance was optimized, by
+- map_env_dist: C++ function to calculate Euclidean and Mahalanobis
+  distance was implemented, by
   [@sjevelazco](https://github.com/sjevelazco)
-  [xxxx](https://github.com/sjevelazco/flexsdm/pull/461)
-- map_env_dist: c++ function to calculate gower distance was optimized,
+  [463](https://github.com/sjevelazco/flexsdm/pull/463)
+- extra_eval: C++ function to calculate Euclidean and Mahalanobis
+  distance was implemented, by
+  [@sjevelazco](https://github.com/sjevelazco)
+  [463](https://github.com/sjevelazco/flexsdm/pull/463)
+- fit_dom: C++ function to calculate gower distance was optimized, by
+  [@sjevelazco](https://github.com/sjevelazco)
+  [463](https://github.com/sjevelazco/flexsdm/pull/463)
+- map_env_dist: C++ function to calculate gower distance was optimized,
   by [@sjevelazco](https://github.com/sjevelazco)
   [xxxx](https://github.com/sjevelazco/flexsdm/pull/461)
 - msdm_posteriori: a new argument that assumes unsuitable cells with

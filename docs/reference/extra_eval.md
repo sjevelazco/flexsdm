@@ -14,7 +14,6 @@ extra_eval(
   projection_data,
   metric = "mahalanobis",
   univar_comb = FALSE,
-  n_cores = 1,
   aggreg_factor = 1
 )
 ```
@@ -59,10 +58,6 @@ extra_eval(
   projection data within the range of training conditions) using values
   1 and 2, respectively. Default FALSE
 
-- n_cores:
-
-  numeric. Number of cores use for parallelization. Default 1
-
 - aggreg_factor:
 
   positive integer. Aggregation factor expressed as number of cells in
@@ -72,6 +67,10 @@ extra_eval(
   raster object used in 'projection_data' argument. Default 1, i.e., by
   default, no changes will be made to the resolution of the
   environmental variables.
+
+- n_cores:
+
+  numeric. Number of cores use for parallelization. Default 1
 
 ## Value
 
@@ -176,7 +175,6 @@ extr <-
     training_data = sp_pa_2,
     projection_data = somevar,
     pr_ab = "pr_ab",
-    n_cores = 1,
     aggreg_factor = 1,
     metric = "mahalanobis"
   )
@@ -236,7 +234,6 @@ extr_df <-
     training_data = sp_pa_2,
     projection_data = as.data.frame(somevar, xy = TRUE),
     pr_ab = "pr_ab",
-    n_cores = 1,
     aggreg_factor = 1,
     metric = "mahalanobis"
   )
@@ -253,7 +250,6 @@ extr <-
     training_data = sp_pa_2,
     projection_data = somevar,
     pr_ab = "pr_ab",
-    n_cores = 1,
     aggreg_factor = 1,
     metric = "mahalanobis",
     univar_comb = TRUE

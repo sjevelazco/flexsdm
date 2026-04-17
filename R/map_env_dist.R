@@ -163,7 +163,7 @@ map_env_dist <- function(
   }
   if (any("SpatRaster" == class(projection_data))) {
     projection_data <- projection_data[[v0]]
-    extraraster <- projection_data[[which(!is.factor(somevar))[1]]]
+    extraraster <- projection_data[[which(!is.factor(projection_data))[1]]]
     extraraster[!is.na(extraraster)] <- 0
   } else {
     projection_data <- projection_data[v0]

@@ -52,7 +52,6 @@ test_that("extra_eval one and two cores", {
       training_data = sp_pa_2,
       projection_data = somevar,
       pr_ab = "pr_ab",
-      n_cores = 1,
       aggreg_factor = 1,
       metric = "mahalanobis"
     )
@@ -64,7 +63,6 @@ test_that("extra_eval one and two cores", {
       training_data = sp_pa_2,
       projection_data = somevar,
       pr_ab = "pr_ab",
-      n_cores = 1,
       aggreg_factor = 1,
       metric = "euclidean"
     )
@@ -78,7 +76,6 @@ test_that("extra_eval with uni_comb argument", {
       training_data = sp_pa_2,
       projection_data = somevar,
       pr_ab = "pr_ab",
-      n_cores = 1,
       aggreg_factor = 1,
       metric = "mahalanobis",
       univar_comb = TRUE
@@ -95,7 +92,6 @@ test_that("extra_eval based on tibble object", {
       training_data = sp_pa_2,
       projection_data = as.data.frame(somevar) %>% as_tibble(),
       pr_ab = "pr_ab",
-      n_cores = 1,
       aggreg_factor = 1,
       metric = "euclidean"
     )
@@ -109,7 +105,6 @@ test_that("extra_eval based on tibble object with uni_comb argument", {
       training_data = sp_pa_2,
       projection_data = as.data.frame(somevar) %>% as_tibble(),
       pr_ab = "pr_ab",
-      n_cores = 1,
       aggreg_factor = 1,
       metric = "euclidean",
       univar_comb = TRUE
@@ -123,7 +118,6 @@ test_that("extra_eval wrong use", {
   expect_error(extra_eval(
     training_data = sp_pa_2,
     projection_data = somevar,
-    n_cores = 1,
     aggreg_factor = 3
   ))
 
@@ -131,7 +125,6 @@ test_that("extra_eval wrong use", {
     training_data = sp_pa_2,
     projection_data = as.data.frame(somevar) %>% as_tibble(),
     pr_ab = "pr_ab",
-    n_cores = 1,
     aggreg_factor = 1,
     metric = "euclidean12321"
   ))
