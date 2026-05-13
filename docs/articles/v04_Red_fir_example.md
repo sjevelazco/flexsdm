@@ -33,6 +33,7 @@ We used a method that the calibration area is delimited by a 100-km
 buffer around presences (shown in the figure below).
 
 ``` r
+
 # devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(terra)
@@ -81,6 +82,7 @@ Next we apply environmental occurrence filtering using 8 bins and
 display the resulting filtered occurrence data
 
 ``` r
+
 abies_p$id <- 1:nrow(abies_p) # adding unique id to each row
 abies_pf <- abies_p %>%
   occfilt_env(
@@ -123,6 +125,7 @@ selected grid. Here we want to divide the data into 4 different
 partitions using the spatial block method.
 
 ``` r
+
 set.seed(10)
 occ_part <- abies_pf %>%
   part_sblock(
@@ -157,6 +160,7 @@ points(abies_pf[, c("x", "y")])
 ``` r
 
 
+
 # Number of presences per block
 abies_pf %>%
   dplyr::group_by(.part) %>%
@@ -185,6 +189,7 @@ use the spatial block partition we just created to generate
 pseudo-absence and background points.
 
 ``` r
+
 # Spatial blocks where species occurs
 # Sample background points throughout study area with random method, allocating 10X the number of presences a background
 set.seed(10)
@@ -230,6 +235,7 @@ points(psa[, c("x", "y")], bg = cl[psa$.part], cex = 0.8, pch = 21) # Pseudo-abs
 
 ``` r
 
+
 # Bind a presences and pseudo-absences
 abies_pa <- bind_rows(abies_pf, psa)
 abies_pa # Presence-Pseudo-absence database
@@ -269,6 +275,7 @@ Extract environmental data for the presence-absence and background data
 background points using the blocks as a reference map.
 
 ``` r
+
 abies_pa <- abies_pa %>%
   sdm_extract(
     data = .,
@@ -306,6 +313,7 @@ performance metric used for selecting the best combination of
 hyper-parameter values in the tuned Maximum Entropy model.
 
 ``` r
+
 t_max <- tune_max(
   data = abies_pa,
   response = "pr_ab",
@@ -376,6 +384,7 @@ threshold values and performance metric that were implemented in the
 individual models.
 
 ``` r
+
 ens_m <- fit_ensemble(
   models = list(t_max, f_gau, f_glm),
   ens_method = "meanw",
@@ -405,6 +414,7 @@ metrics across models, such as AUC or TSS. For example, we can use the
 sdm_summarize() function to merge model performance tables.
 
 ``` r
+
 model_perf <- sdm_summarize(list(t_max, f_gau, f_glm, ens_m))
 model_perf
 #> # A tibble: 10 × 36
@@ -442,6 +452,7 @@ return a SpatRast with continuous suitability values above the threshold
 (con_thr = TRUE).
 
 ``` r
+
 pr_1 <- sdm_predict(
   models = ens_m,
   pred = somevar,
@@ -475,6 +486,7 @@ filtered). All of the methods available in the msdm_posteriori()
 function are based on Mendes et al. (2020).
 
 ``` r
+
 thr_val <- ens_m$performance %>%
   dplyr::filter(threshold == "max_sens_spec") %>%
   pull(thr_value)

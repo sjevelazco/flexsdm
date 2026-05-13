@@ -62,7 +62,7 @@ It calculates the next performance metric:\tabular{lcr}{
    Performance metric \tab Threshold dependent \tab Values ranges \cr
    TPR (True Positive Rate, also called Sensitivity) \tab yes \tab 0 - 1 \cr
    TNR (True Negative Rate, also called Specificity) \tab yes \tab 0 - 1 \cr
-   W_TPR_TNR (Weighted TPR-TNR; Li et al. 2020) \tab yes \tab 0 - 1 \cr
+   W_TPR_TNR (Weighted TPR-TNR; Jadhav 2020) \tab yes \tab 0 - 1 \cr
    SORENSEN \tab yes \tab 0 - 1 \cr
    JACCARD \tab yes \tab 0 - 1 \cr
    FPB (F-measure on presence-background) \tab yes \tab 0 - 2 \cr
@@ -152,7 +152,7 @@ sdm_eval(p, backg, thr = "max_sens_spec")
 \references{
 \itemize{
 \item Brier GW. (1950) Verification of forecasts expressed in terms of probability. Monthly Weather Review 78(1): 1–3. https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
-\item Li, J., Liu, H., & Li, L. (2020). A novel performance metric for imbalanced learning and its application in credit default prediction. Expert Systems with Applications, 152, 113382. https://doi.org/10.1016/j.eswa.2020.113382
+\item Jadhav, AS. (2020). A novel weighted TPR-TNR measure to assess performance of the classifiers. Expert Systems with Applications 152, 113391. https://doi.org/10.1016/j.eswa.2020.113391
 \item Matthews BW. (1975) Comparison of the predicted and observed secondary structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9
 \item Hirzel, A. H., Le Lay, G., Helfer, V., Randin, C., & Guisan, A. (2006). Evaluating the ability of habitat suitability models to predict species presences. Ecological Modelling, 199(2), 142-152. https://doi.org/10.1016/j.ecolmodel.2006.05.017
 }

@@ -48,6 +48,7 @@ occurrence data include 21 geo-referenced observations downloaded from
 the online database Calflora.
 
 ``` r
+
 library(flexsdm)
 library(terra)
 library(dplyr)
@@ -97,6 +98,7 @@ Here, we will use 25-km buffer areas around the presence points to
 select our pseudo-absence locations.
 
 ``` r
+
 ca <- calib_area(
   data = hespero,
   x = "x",
@@ -127,6 +129,7 @@ background point data. Here, we use our calibration area to produce
 pseudo-absence data that can be used in our SDMs.
 
 ``` r
+
 # Sample the same number of species presences
 set.seed(10)
 psa <- sample_pseudoabs(
@@ -159,6 +162,7 @@ points(hespero[, c("x", "y")], col = "yellow", pch = 16, cex = 1.5) # Presences
 ``` r
 
 
+
 # Bind a presences and pseudo-absences
 hespero_pa <- bind_rows(hespero, psa)
 hespero_pa # Presence-Pseudo-absence database
@@ -187,6 +191,7 @@ cross-validation, which is a suitable partition approach for validating
 SDM with few data.
 
 ``` r
+
 set.seed(10)
 
 # Repeated K-fold method
@@ -203,6 +208,7 @@ Next, we extract the values of our four environmental predictors at the
 presence and pseudo-absence locations.
 
 ``` r
+
 hespero_pa3 <-
   sdm_extract(
     data = hespero_pa2,
@@ -221,6 +227,7 @@ use the extent of the CFP as our prediction area so that we can evaluate
 model extrapolation across a broad geographic area.
 
 ``` r
+
 mglm <-
   fit_glm(
     data = hespero_pa3,
@@ -262,6 +269,7 @@ and GBM predict a lot of suitable habitat very far from where the
 species is found!
 
 ``` r
+
 par(mfrow = c(1, 3))
 plot(mpred$glm, main = "GLM")
 # points(hespero$x, hespero$y, pch = 19)
@@ -273,6 +281,7 @@ plot(mpred$svm, main = "SVM")
 ![](v06_Extrapolation_example_files/figure-html/comparison%20maps-1.png)
 
 ``` r
+
 # points(hespero$x, hespero$y, pch = 19)
 ```
 
@@ -301,12 +310,14 @@ hull approach.
 Uni and bivariate partial dependence plots for the GLM:
 
 ``` r
+
 p_pdp(model = mglm$model, training_data = hespero_pa3, projection_data = somevar)
 ```
 
 ![](v06_Extrapolation_example_files/figure-html/glm%20partial%20dependence%20plots-1.png)
 
 ``` r
+
 p_bpdp(model = mglm$model, training_data = hespero_pa3, training_boundaries = "convexh")
 ```
 
@@ -315,12 +326,14 @@ p_bpdp(model = mglm$model, training_data = hespero_pa3, training_boundaries = "c
 Uni and bivariate partial dependence plots for the GBM:
 
 ``` r
+
 p_pdp(model = mgbm$model, training_data = hespero_pa3, projection_data = somevar)
 ```
 
 ![](v06_Extrapolation_example_files/figure-html/gbm%20partial%20dependence%20plots-1.png)
 
 ``` r
+
 p_bpdp(model = mgbm$model, training_data = hespero_pa3, training_boundaries = "convexh", resolution = 100)
 ```
 
@@ -329,12 +342,14 @@ p_bpdp(model = mgbm$model, training_data = hespero_pa3, training_boundaries = "c
 Uni and bivariate partial dependence plots for the SVM:
 
 ``` r
+
 p_pdp(model = msvm$model, training_data = hespero_pa3, projection_data = somevar)
 ```
 
 ![](v06_Extrapolation_example_files/figure-html/svm%20partial%20dependence%20plots-1.png)
 
 ``` r
+
 p_bpdp(model = msvm$model, training_data = hespero_pa3, training_boundaries = "convexh")
 ```
 
@@ -376,6 +391,7 @@ between univariate and combinatorial extrapolation.
 Using Mahalanobis distance:
 
 ``` r
+
 xp_m <-
   extra_eval(
     training_data = hespero_pa3,
@@ -402,6 +418,7 @@ degree of extrapolation across the projection area, as estimated by the
 Shape method.
 
 ``` r
+
 cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
 
 par(mfrow = c(1, 2))
@@ -425,6 +442,7 @@ The higher extrapolation values extrapolation area in the northwestern
 portion of the CFP.
 
 ``` r
+
 p_extra(
   training_data = hespero_pa3,
   x = "x",
@@ -447,6 +465,7 @@ while the combinatorial extrapolation area those projecting data within
 the range of training conditions.
 
 ``` r
+
 p_extra(
   training_data = hespero_pa3,
   x = "x",
@@ -479,6 +498,7 @@ geographical space. Here we will test the values 50, 100, and 500, for
 comparison.
 
 ``` r
+
 p_extra(
   training_data = hespero_pa3,
   x = "x",
@@ -499,6 +519,7 @@ p_extra(
 
 ``` r
 
+
 p_extra(
   training_data = hespero_pa3,
   x = "x",
@@ -518,6 +539,7 @@ p_extra(
 ![](v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-2.png)
 
 ``` r
+
 
 p_extra(
   training_data = hespero_pa3,
@@ -555,6 +577,7 @@ default is 0 but users could also choose another value for which to
 reduce suitability.
 
 ``` r
+
 glm_trunc <- extra_truncate(
   suit = mpred$glm,
   extra = xp_m,
@@ -578,6 +601,7 @@ svm_trunc <- extra_truncate(
 ```
 
 ``` r
+
 par(mfrow = c(3, 3))
 plot(glm_trunc$`50`, main = "GLM; extra threshold = 50", col = cl)
 plot(glm_trunc$`100`, main = "GLM; extra threshold = 100", col = cl)

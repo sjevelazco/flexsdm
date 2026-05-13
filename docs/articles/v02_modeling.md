@@ -98,6 +98,7 @@ First, install the flexsdm package. You can install the released version
 of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
 ``` r
+
 # devtools::install_github('sjevelazco/flexsdm')
 require(flexsdm)
 #> Loading required package: flexsdm
@@ -146,6 +147,7 @@ location columns (x, y) and other environmental data. You can load the
 BACKGROUND DATA, WHILE THE ABIES DATASET CLEARLY HAS ABSENCES…)
 
 ``` r
+
 data("abies")
 data("backg")
 
@@ -191,6 +193,7 @@ partition method the number of folds or replications must be the same
 for presence-absence and for background points datasets.
 
 ``` r
+
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
@@ -222,6 +225,7 @@ a member of. Next, we have to apply the same partition method and number
 of folds to the environmental conditions of the background points.
 
 ``` r
+
 backg2 <- part_random(
   data = backg,
   pr_ab = "pr_ab",
@@ -259,6 +263,7 @@ with exploration of hyper-parameters (flexsdm::tune_raf).
 I. Maximum Entropy models with default hyper-parameter values.
 
 ``` r
+
 max_t1 <- fit_max(
   data = abies2,
   response = "pr_ab",
@@ -285,6 +290,7 @@ max_t1 <- fit_max(
 This function returns a list object with the following elements:
 
 ``` r
+
 names(max_t1)
 #> [1] "model"            "predictors"       "performance"      "performance_part"
 #> [5] "data_ens"
@@ -293,6 +299,7 @@ names(max_t1)
 model: A “MaxEnt” class object. This object can be used for predicting.
 
 ``` r
+
 options(max.print = 20)
 max_t1$model
 #> 
@@ -312,6 +319,7 @@ predictors: A tibble with quantitative (c column names) and qualitative
 (f column names) variables use for modeling.
 
 ``` r
+
 max_t1$predictors
 #> # A tibble: 1 × 6
 #>   c1    c2      c3    c4    c5    f       
@@ -324,6 +332,7 @@ are threshold dependent are calculated based on the threshold specified
 in the argument. We can see all the selected threshold values.
 
 ``` r
+
 max_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
@@ -344,6 +353,7 @@ Predicted suitability for each test partition (row) based on the best
 model. This database is used in fit_ensemble.
 
 ``` r
+
 max_t1$data_ens
 #> # A tibble: 1,400 × 5
 #>    rnames replicates part  pr_ab   pred
@@ -369,6 +379,7 @@ Hyper-parameter needed for tuning is ‘mtry’. The maximum mtry must be
 equal to total number of predictors.
 
 ``` r
+
 tune_grid <-
   expand.grid(
     mtry = seq(1, 7, 1),
@@ -380,6 +391,7 @@ We use the same data object abies2, with the same k-fold partition
 method:
 
 ``` r
+
 rf_t <-
   tune_raf(
     data = abies2,
@@ -412,6 +424,7 @@ Let’s see what the output object contains. This function returns a list
 object with the following elements:
 
 ``` r
+
 names(rf_t)
 #> [1] "model"             "predictors"        "performance"      
 #> [4] "performance_part"  "hyper_performance" "data_ens"
@@ -421,6 +434,7 @@ model: A “randomForest” class object. This object can be used to see the
 formula details, a basic summary o fthe model, and for predicting.
 
 ``` r
+
 rf_t$model
 #> 
 #> Call:
@@ -440,6 +454,7 @@ predictors: A tibble with quantitative (c column names) and qualitative
 (f column names) variables use for modeling.
 
 ``` r
+
 rf_t$predictors
 #> # A tibble: 1 × 9
 #>   c1    c2    c3    c4      c5      c6    c7    c8    f       
@@ -452,6 +467,7 @@ are threshold dependent are calculated based on the threshold specified
 in the argument. We can see all the selected threshold values.
 
 ``` r
+
 rf_t$performance
 #> # A tibble: 1 × 35
 #>    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
@@ -470,6 +486,7 @@ Predicted suitability for each test partition (row) based on the best
 model. This database is used in fit_ensemble.
 
 ``` r
+
 rf_t$data_ens
 #> # A tibble: 1,400 × 5
 #>    rnames replicates part  pr_ab  pred
@@ -495,6 +512,7 @@ In this example we fit and validate and ensemble model using the two
 model objects that were just created.
 
 ``` r
+
 # Fit and validate ensemble model
 an_ensemble <- fit_ensemble(
   models = list(max_t1, rf_t),
@@ -507,6 +525,7 @@ an_ensemble <- fit_ensemble(
 ```
 
 ``` r
+
 # Outputs
 names(an_ensemble)
 #> [1] "models"           "thr_metric"       "predictors"       "performance"     
@@ -551,6 +570,7 @@ types of variables could be problematic when applied to species with few
 occurrences. For more detail see Breiner et al. (2015, 2018)
 
 ``` r
+
 data("abies")
 library(dplyr)
 
@@ -569,6 +589,7 @@ according to our data. See
 for more details.
 
 ``` r
+
 # Using k-fold partition method for model cross validation
 abies2 <- part_random(
   data = abies2,
@@ -606,6 +627,7 @@ This function constructs Generalized Additive Models using the Ensembles
 of Small Models (ESM) approach (Breiner et al., 2015, 2018).
 
 ``` r
+
 # We set the model without threshold specification and with the kfold created above
 esm_gam_t1 <- esm_gam(
   data = abies2,
@@ -621,6 +643,7 @@ esm_gam_t1 <- esm_gam(
 This function returns a list object with the following elements:
 
 ``` r
+
 names(esm_gam_t1)
 #> [1] "esm_model"        "predictors"       "performance"      "performance_part"
 ```
@@ -630,6 +653,7 @@ object can be used for predicting using the ESM approachwith sdm_predict
 function.
 
 ``` r
+
 options(max.print = 10) # If you don't want to see printed all the output
 esm_gam_t1$esm_model
 #> $`0.398148148148148`
@@ -768,6 +792,7 @@ esm_gam_t1$esm_model
 predictors: A tibble with variables use for modeling.
 
 ``` r
+
 esm_gam_t1$predictors
 #> # A tibble: 1 × 8
 #>   c1    c2    c3    c4      c5      c6    c7    c8   
@@ -780,6 +805,7 @@ dependent metrics are calculated based on the threshold specified in the
 argument.
 
 ``` r
+
 esm_gam_t1$performance
 #> # A tibble: 7 × 33
 #>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
@@ -805,6 +831,7 @@ refers to the number of partitions for data partitioning and ‘replicate’
 refers to the number of replicates. Both assume values \>=1.
 
 ``` r
+
 # Remove the previous k-fold partition
 abies2 <- abies2 %>% select(-starts_with("."))
 
@@ -846,6 +873,7 @@ abies2
 We use the new rep_kfold partition in the gam model
 
 ``` r
+
 esm_gam_t2 <- esm_gam(
   data = abies2,
   response = "pr_ab",
@@ -868,6 +896,7 @@ method, the function will return .partX columns with “train” or “test”
 words as the entries.
 
 ``` r
+
 # Remove the previous k-fold partition
 abies2 <- abies2 %>% select(-starts_with("."))
 
@@ -910,6 +939,7 @@ abies2
 Use the new rep_kfold partition in the gam model
 
 ``` r
+
 esm_gam_t3 <- esm_gam(
   data = abies2,
   response = "pr_ab",

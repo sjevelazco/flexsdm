@@ -59,6 +59,7 @@ First, install the flexsdm package. You can install the released version
 of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
 ``` r
+
 # devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(dplyr)
@@ -71,7 +72,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(terra)
-#> terra 1.8.60
+#> terra 1.9.11
 #> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
@@ -96,6 +97,7 @@ Next, specify whether or not you want to include folders for
 projections, calibration areas, algorithms, ensembles, and thresholds.
 
 ``` r
+
 my_project <- file.path(file.path(tempdir(), "flex_sdm_project"))
 dir.create(my_project)
 
@@ -119,6 +121,7 @@ columns (x, y). You can load the “spp” data into your local R
 environment by using the code below:
 
 ``` r
+
 data("spp")
 
 spp
@@ -145,6 +148,7 @@ Our species occurrences are located in the California Floristic Province
 study area in geographic space.
 
 ``` r
+
 regions <- system.file("external/regions.tif", package = "flexsdm")
 regions <- terra::rast(regions)
 ```
@@ -152,6 +156,7 @@ regions <- terra::rast(regions)
 How are the points distributed across our study area?
 
 ``` r
+
 try(plot(regions), silent = TRUE)
 points(spp[, 2:3], pch = 19, cex = 0.5, col = as.factor(spp$species))
 ```
@@ -173,6 +178,7 @@ Nevada, California!
 Let’s use presence locations for one species in this exercise.
 
 ``` r
+
 spp1 <-
   spp %>%
   dplyr::filter(species == "sp1") %>%
@@ -192,6 +198,7 @@ argument. The buffer width value is interpreted in m if the CRS has a
 longitude/latitude, or in map units in other cases.
 
 ``` r
+
 crs(regions, proj = TRUE)
 #> [1] "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs"
 
@@ -214,6 +221,7 @@ points(spp1[, 2:3], pch = 19, cex = 0.5)
 The minimum convex polygon (mcp) method produces a much simpler shape.
 
 ``` r
+
 ca_2 <- calib_area(
   data = spp1,
   x = "x",
@@ -234,6 +242,7 @@ points(spp1[, 2:3], pch = 19, cex = 0.5)
 You can also create a buffer around the minimum convex polygon.
 
 ``` r
+
 ca_3 <- calib_area(
   data = spp1,
   x = "x",
@@ -261,6 +270,7 @@ the left and the polygons that contain points (our “mask” calibration
 area) are on the right.
 
 ``` r
+
 clusters <- system.file("external/clusters.shp", package = "flexsdm")
 clusters <- terra::vect(clusters)
 
@@ -294,6 +304,7 @@ package: actual evapotranspiration (CFP_1), climatic water deficit
 temperature of the coldest month (CFP_4).
 
 ``` r
+
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 
 somevar <- terra::rast(somevar)
@@ -310,6 +321,7 @@ visualized with the pairs() function from the *terra* package. Several
 of our variables are highly correlated (.89 for predictors tmx and tmn).
 
 ``` r
+
 terra::pairs(somevar)
 ```
 
@@ -360,6 +372,7 @@ For references, see:
 #### 2. Woodward, F. I., M. R. Lomas, and C. K. Kelly. 2004. Global climate and the distribution of plant biomes. Philosophical transactions of the Royal Society of London. Series B, Biological sciences 359:1465–1476.
 
 ``` r
+
 pearson_var <- correct_colinvar(somevar, method = c("pearson", th = "0.7"))
 pearson_var$cor_table
 #>           aet       cwd       tmx       tmn
@@ -394,6 +407,7 @@ a list of removed variables, and 3) a correlation matrix of all
 variables.
 
 ``` r
+
 vif_var <- correct_colinvar(somevar, method = c("vif", th = "10"))
 vif_var$env_layer
 #> class       : SpatRaster 
@@ -427,6 +441,7 @@ principal components for predictors, and 3) a tibble with the cumulative
 variance explained in selected principal components.
 
 ``` r
+
 pca_var <- correct_colinvar(somevar, method = c("pca"))
 pca_var$env_layer
 #> class       : SpatRaster 
@@ -464,6 +479,7 @@ to each axis. The outputs for this method are similar to those produced
 by the ‘pca’ method.
 
 ``` r
+
 fa_var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 fa_var$env_layer
 fa_var$number_factors
@@ -510,6 +526,7 @@ Increasing the number of bins increases the number of occurrence points
 retained.
 
 ``` r
+
 spp1$idd <- 1:nrow(spp1)
 
 filt_env5 <- occfilt_env(
@@ -577,6 +594,7 @@ predictors (or a specified coarser resolution); finally, “determined”
 allows users to manually determine the distance threshold.
 
 ``` r
+
 filt_geo1 <- occfilt_geo(
   data = spp1,
   x = "x",
@@ -639,6 +657,7 @@ turning easier the possibility to explore or test several filtering
 values.
 
 ``` r
+
 filt_geo1 <- occfilt_geo(
   data = spp1,
   x = "x",
@@ -685,6 +704,7 @@ bind_rows(filt_geo1, .id = "moran") %>%
 ``` r
 
 
+
 bind_rows(filt_geo2, .id = "cellsize") %>%
   dplyr::mutate(moran = as.numeric(cellsize)) %>%
   ggplot(aes(x, y)) +
@@ -695,6 +715,7 @@ bind_rows(filt_geo2, .id = "cellsize") %>%
 ![](v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-2.png)
 
 ``` r
+
 
 bind_rows(filt_geo2, .id = "determined") %>%
   dplyr::mutate(moran = as.numeric(determined)) %>%
@@ -713,6 +734,7 @@ autocorrelation maximum number of presences (see
 function help)
 
 ``` r
+
 filt_selected <- occfilt_select(
   occ_list = filt_geo2,
   x = "x", y = "y",
@@ -763,6 +785,7 @@ results in 10 folds of occurrence data with 25 observations in each
 fold.
 
 ``` r
+
 spp1$pr_ab <- 1 # Add a column with 1 to denote that this is presences only data
 sp_part1 <- part_random(
   data = spp1,
@@ -793,6 +816,7 @@ tibble with information about the best partition, and 3) a SpatRaster
 showing the selected grid.
 
 ``` r
+
 set.seed(1)
 sp_part2 <- part_sband(
   env_layer = somevar,
@@ -814,6 +838,7 @@ sp_part2 <- part_sband(
 ```
 
 ``` r
+
 plot(sp_part2$grid, col = gray.colors(20))
 points(sp_part2$part[c("x", "y")],
   col = rainbow(8)[sp_part2$part$.part],
@@ -833,6 +858,7 @@ can see the data divided into different “blocks” for training and
 testing.
 
 ``` r
+
 sp_part3 <- part_sblock(
   env_layer = somevar,
   data = spp1,
@@ -870,6 +896,7 @@ useful for generating pseudo-absence or background sample points, which
 we will explore in the next section.
 
 ``` r
+
 terra::res(sp_part3$grid)
 #> [1] 881131 881131
 terra::res(somevar)
@@ -899,6 +926,7 @@ partition. The map below shows partitioning based on these environmental
 and spatial factors.
 
 ``` r
+
 sp_part4 <- part_senv(
   env_layer = somevar,
   data = spp1,
@@ -946,6 +974,7 @@ calibration area will be the buffer area around presence points (see
 section on “Calibration area”).
 
 ``` r
+
 p_data <-
   sp_part3$part # presence data from spatial block partition example
 
@@ -996,6 +1025,7 @@ background and/or pseudo-absence points will vary depending on research
 goals.
 
 ``` r
+
 set.seed(10)
 psa <- lapply(1:2, function(x) {
   sample_pseudoabs(
@@ -1040,6 +1070,7 @@ Let’s do this for our original presence points (spp1) and our background
 locations (bg).
 
 ``` r
+
 all_points <- bind_rows(spp1 %>% dplyr::select(-idd), bg)
 
 ex_spp <- sdm_extract(

@@ -15,7 +15,7 @@
   [463](https://github.com/sjevelazco/flexsdm/pull/463)
 - map_env_dist: C++ function to calculate gower distance was optimized,
   by [@sjevelazco](https://github.com/sjevelazco)
-  [xxxx](https://github.com/sjevelazco/flexsdm/pull/461)
+  [463](https://github.com/sjevelazco/flexsdm/pull/463)
 - msdm_posteriori: a new argument that assumes unsuitable cells with
   presences as patches. This is only used in the ‘lq’ approach, by
   [@sjevelazco](https://github.com/sjevelazco)

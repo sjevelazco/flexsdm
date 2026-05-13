@@ -48,6 +48,7 @@ Install the flexsdm package. You can install the released version of
 *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
 ``` r
+
 # devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(dplyr)
@@ -87,6 +88,7 @@ data. You can load these data into your local R environment by using the
 code below:
 
 ``` r
+
 data("spp")
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(somevar)
@@ -99,6 +101,7 @@ raster with environmental data.
 First, prepare the occurrences, environmental conditions and partitions
 
 ``` r
+
 # Select only one species
 some_sp <- spp %>%
   filter(species == "sp3")
@@ -124,6 +127,7 @@ some_sp <- part_random(
 Next, fit different models
 
 ``` r
+
 # Fit and validate a [generalized linear model](https://sjevelazco.github.io/flexsdm/reference/fit_glm.html)
 mglm <- fit_glm(
   data = some_sp,
@@ -219,6 +223,7 @@ mgbm <- fit_gbm(
 ### 1. Fit and ensemble the models above
 
 ``` r
+
 # Fit and ensemble the models. To choose the arguments that best fit your own data, see all options available in [fit_ensemble](https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.html)
 mensemble <- fit_ensemble(
   models = list(mglm, mraf, mgbm),
@@ -235,6 +240,7 @@ this example, we fit without threshold specification and with k-fold
 cross-validation.
 
 ``` r
+
 msmall <- esm_gam(
   data = some_sp,
   response = "pr_ab",
@@ -253,6 +259,7 @@ tune\_ functions. The output will be a list of SpatRaster with
 continuous and/or binary predictions.
 
 ``` r
+
 # Predict using a single model, which is an mglm model in this example,
 # and a threshold type for binary predictions
 ind_p <- sdm_predict(
@@ -288,6 +295,7 @@ plot(ind_p_rst)
 ![](v03_post_modeling_files/figure-html/sdm_predict-1.png)
 
 ``` r
+
 
 # Predict a list of more than one model, specifying a threshold type
 list_p <- sdm_predict(
@@ -338,8 +346,8 @@ list_p
 #> varnames    : somevar 
 #>               somevar 
 #> names       :          gbm, max_fpb 
-#> min values  : 6.896799e-05,       0 
-#> max values  : 9.522343e-01,       1
+#> min values  : 7.692412e-05,       0 
+#> max values  : 9.530711e-01,       1
 
 # Plot to see this layers
 list_p_rst <- terra::rast(list_p)
@@ -349,6 +357,7 @@ plot(list_p_rst)
 ![](v03_post_modeling_files/figure-html/sdm_predict-2.png)
 
 ``` r
+
 
 # Predict an ensemble model. This is only possible using one fit_ensemble object. It's not possible to include e.g., list(fit_ensemble1, fit_ensemble2) in the model argument.
 ensemble_p <- sdm_predict(
@@ -384,6 +393,7 @@ plot(ensemble_p_rst)
 ![](v03_post_modeling_files/figure-html/sdm_predict-3.png)
 
 ``` r
+
 
 # Predict an ensembles of small models.
 small_p <- sdm_predict(
@@ -424,6 +434,7 @@ tune\_ functions, a fit_ensemble output, or a esm\_ family function
 output.
 
 ``` r
+
 # Load abies data
 data(abies)
 abies
@@ -454,6 +465,7 @@ abies2 <- part_random(
 Build some models to use for the performance table merge
 
 ``` r
+
 # Build a generalized additive model, and a generalized linear model using fit_ family functions
 gam_t1 <- fit_gam(
   data = abies2,
@@ -547,6 +559,7 @@ rf_t1$performance
 Finally, merge the three sdm performance tables.
 
 ``` r
+
 merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
 
 merge_df
@@ -585,6 +598,7 @@ if the user specifies dir_save, the function will save the interpolated
 raster files in a given directory.
 
 ``` r
+
 library(terra)
 library(dplyr)
 
@@ -605,6 +619,7 @@ of 0 would be changed in increments of (1-0)/((2020-2010)-1), and given
 interpolated values of 0.9, 0.8, 0.7…0.1
 
 ``` r
+
 int <- interp(
   r1 = abma[[1]], # set the raster of initial year
   r2 = abma[[2]], # set the raster of final year
@@ -646,6 +661,7 @@ data used for modeling calibration and the area for model projection
 using the approach proposed by Velazco et al., in prep.
 
 ``` r
+
 library(dplyr)
 library(terra)
 
@@ -684,6 +700,7 @@ The accessible area defines calibration area used to extract the
 environmental conditions
 
 ``` r
+
 somevar_ca <- somevar %>%
   crop(., ca) %>%
   mask(., ca)
@@ -695,6 +712,7 @@ plot(somevar_ca)
 ![](v03_post_modeling_files/figure-html/get_env-1.png)
 
 ``` r
+
 
 xp <-
   extra_eval(
@@ -723,6 +741,7 @@ region. Otherwise, ‘cml’, ‘min’, and ‘ker’ create a species-specific
 raster layer.
 
 ``` r
+
 library(dplyr)
 library(terra)
 
@@ -745,6 +764,7 @@ points(occ %>% dplyr::select(x, y))
 Next, use different methods according to your data.
 
 ``` r
+
 # Use xy method
 m_xy <- msdm_priori(
   data = occ,
@@ -761,6 +781,7 @@ plot(m_xy)
 
 ``` r
 
+
 # Explore the object. This method assumes that spatial structure can partially explain species distribution (Bahn & Mcgill, 2007). Therefore, the result are two raster layers containing the latitude and longitude of pixels, respectively. This method could be used for all species set that share the same study area region.
 m_xy
 #> class       : SpatRaster 
@@ -776,6 +797,7 @@ m_xy
 ```
 
 ``` r
+
 m_cml <- msdm_priori(
   data = occ,
   x = "x",
@@ -790,6 +812,7 @@ plot(m_cml)
 ![](v03_post_modeling_files/figure-html/msdm_cml-1.png)
 
 ``` r
+
 
 # Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species.
 m_cml
@@ -815,6 +838,7 @@ predicted suitability.
 First, prepare the data
 
 ``` r
+
 library(dplyr)
 library(terra)
 
@@ -840,6 +864,7 @@ occ <- spp %>%
 Next, we fit and predict a model
 
 ``` r
+
 m_glm <- fit_glm(
   data = occ,
   response = "pr_ab",
@@ -865,6 +890,7 @@ m_glm <- fit_glm(
 Next, let’s predict this model and plot it in a map
 
 ``` r
+
 # Predict this model
 m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
 #> Predicting individual models
@@ -878,6 +904,7 @@ plot(m_pred[[1]])
 Finally, perform correction to avoid models overpredictions.
 
 ``` r
+
 # Using mcp method. The Minimum Convex Polygon (mcp) method excludes from SDMs climate suitable pixels that do not intercept a minimum convex polygon, with interior angles smaller than 180, enclosing all occurrences of a species.
 m_mcp <- msdm_posteriori(
   records = occ,
@@ -896,6 +923,7 @@ plot(m_mcp)
 ![](v03_post_modeling_files/figure-html/msdm_post-1.png)
 
 ``` r
+
 
 # Using bmcp method. The Buffered Minimum Convex Polygon (bmcp) method is similar to the 'mcp' except by the inclusion of a buffer zone surrounding minimum convex polygons.
 m_bmcp <- msdm_posteriori(
@@ -917,6 +945,7 @@ plot(m_bmcp)
 
 ``` r
 
+
 # Using obr method. The Occurrences Based Restriction (obr) method assumes that suitable patches intercepting species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrence.
 m_obr <- msdm_posteriori(
   records = occ,
@@ -936,6 +965,7 @@ plot(m_obr)
 
 ``` r
 
+
 # Using pres method. The only occurrences based restriction (pres) method only retains those pixels in suitability patches intercepting occurrences.
 m_pres <- msdm_posteriori(
   records = occ,
@@ -954,6 +984,7 @@ plot(m_pres)
 ![](v03_post_modeling_files/figure-html/msdm_post-4.png)
 
 ``` r
+
 
 # Using lq method. The Lower Quantile (lq) method works whenever a suitable pixel is within a k patch, i.e., not within this lower quartile, the suitability of the pixel is reduced to zero. This means that 75% of k patches were withdrawn from the model.
 m_lq <- msdm_posteriori(

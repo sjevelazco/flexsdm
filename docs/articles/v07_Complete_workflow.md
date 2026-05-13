@@ -15,6 +15,7 @@ saving.
 First, let’s install and load the required packages:
 
 ``` r
+
 # Install and load required packages
 if (!require(flexsdm)) remotes::install_github("flexsdm")
 if (!require(terra)) install.packages("terra")
@@ -62,6 +63,7 @@ we will not create separate folders for continuous and thresholded map
 outputs – though this is an option.
 
 ``` r
+
 # Future scenarios (we will use the function geodata::cmip6_world() to download future climate data but this will be highly dependent on the source of your future data
 
 # Define scenario components
@@ -125,6 +127,7 @@ We begin by loading the palm species occurrence data and examining its
 structure:
 
 ``` r
+
 # Load palms occurrence data
 data(palms)
 palms
@@ -135,6 +138,7 @@ readr::write_tsv(palms, file.path(points_dir, "0_south_br_palms.txt"))
 ```
 
 ``` r
+
 # Load species data
 species_data <- readr::read_tsv(file.path(points_dir, "0_south_br_palms.txt"))
 
@@ -163,6 +167,7 @@ predictors (1970-2000). The bounding box can be adjusted based on your
 study extent.
 
 ``` r
+
 # Define area of interest (bounding box for South Brazil)
 bbox <- c(-70, -30, -36, -5) # xmin, xmax, ymin, ymax <- define this based on your study extent of all your species
 
@@ -191,6 +196,7 @@ terra::writeRaster(env_data, file.path(env_path, "bio_var.tif"), overwrite = TRU
 ```
 
 ``` r
+
 # Plot the environmental variables
 # ---- Temperature Variables (1–11) ----
 plot(
@@ -231,6 +237,7 @@ Now let’s download the same variables for our future scenarios using
 geodata::cmip6
 
 ``` r
+
 # Download future climate change projecitons of the bioclim variables
 fut_env <- list()
 
@@ -282,6 +289,7 @@ used to extract environmental values and to create pseudo-absences
 later.
 
 ``` r
+
 # A vector with species names that will be modeled
 sp_names <- unique(species_data$species) %>% sort()
 
@@ -321,6 +329,7 @@ list.files(calib_dir, full.names = TRUE)
 ## 5. Evaluate Species-Specific Multicollinearity
 
 ``` r
+
 # Extract environmental values at species occurrence points
 species_env <- flexsdm::sdm_extract(
   data = species_data,
@@ -344,6 +353,7 @@ head(species_data_list)
 ```
 
 ``` r
+
 # Vector with variable names
 var_names <- names(env_data)
 
@@ -402,6 +412,7 @@ environmental layers, for a given training area, or based species points
 (presences+absences or pseudo-absences).
 
 ``` r
+
 # (Optional) Access the help page for the function to learn more about its parameters:
 # ?correct_colinvar
 
@@ -475,6 +486,7 @@ pca_out$coefficients
 ## 7. Process environmental PCA for all species
 
 ``` r
+
 # Lets create a new folder to store variables of each species
 save_dir <- file.path(proj_dir[2], "4_Predictors_by_sp")
 dir.create(save_dir)
@@ -564,6 +576,7 @@ values on the y-axis indicate greater spatial independence among
 records, which is typically preferred for model training.
 
 ``` r
+
 # 'species_data' holds all occurrence records for all species to be modeled.
 species_data # Data frame: species names, coordinates, etc.
 
@@ -665,6 +678,7 @@ points for each species based on the training area defined earlier. We
 will also generate background points for Maxent.
 
 ``` r
+
 # Load the filtered occurrence data from file.
 # This table contains the bias-corrected presence records for all species.
 filtered_occurrences <- readr::read_tsv(file.path(proj_dir[2], "1_Occurrences/0_occurrences_filtered.txt"))
@@ -746,6 +760,7 @@ readr::write_tsv(background, file.path(points_dir, "0_background.txt"))
 ```
 
 ``` r
+
 # This section generates maps visualizing the spatial distribution of:
 #   1) species presence locations,
 #   2) pseudo-absence points, and
@@ -814,6 +829,7 @@ smaller datasets. Here we try spatial blocks and move to bands in case
 that fails.
 
 ``` r
+
 # Initialize lists to store partitioned data for each species.
 # - partitioned_psa: will hold partitioned presence and pseudo-absence records.
 # - partitioned_bg: will hold partitioned background points.
@@ -947,6 +963,7 @@ readr::write_tsv(partitioned_bg, file.path(points_dir, "0_partitioned_background
 ## 11. Configuration of output directories and data used during model fitting
 
 ``` r
+
 # Define the directory where model evaluation metrics and performance summaries will be saved.
 dir_perf <- file.path(temp_dir, "1_SDM/2_Outputs/0_Model_performance")
 
@@ -1013,6 +1030,7 @@ bkgrnd <- readr::read_tsv(file.path(proj_dir[1], "1_Inputs/1_Occurrences/0_parti
 ## 12. Main loop by species for model fitting, evaluation and prediction
 
 ``` r
+
 # Get a unique list of species names to iterate through and process each one.
 sp_names <- unique(psa$species)
 
@@ -1459,6 +1477,7 @@ Iterate through each species to process its maps in isolation. This is
 more memory efficient than loading everything at once.
 
 ``` r
+
 for (s_name in sp_names) {
   message(paste("  - Processing maps for:", s_name))
 
@@ -1526,6 +1545,7 @@ message("\nScript successfully completed!")
 ## 14. Visualize future projections
 
 ``` r
+
 # Base folder with future projections
 dir_future <- proj_dir[grep(paste0("2_Outputs/2_Projection"), proj_dir)][1]
 

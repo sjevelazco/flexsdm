@@ -139,7 +139,7 @@ version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm"
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.8.60</span></span>
+<span><span class="co">#&gt; terra 1.9.11</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'terra'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
@@ -217,7 +217,7 @@ visualize the study area in geographic space.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span>, col <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/is.bool.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">spp</span><span class="op">$</span><span class="va">species</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/map-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/map-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level2">
 <h2 id="calibration-area">Calibration area<a class="anchor" aria-label="anchor" href="#calibration-area"></a>
@@ -262,7 +262,7 @@ longitude/latitude, or in map units in other cases.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Buffer method"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/buffer%20method-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/buffer%20method-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="minimum-convex-polygon">2. Minimum convex polygon<a class="anchor" aria-label="anchor" href="#minimum-convex-polygon"></a>
@@ -281,7 +281,7 @@ shape.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Minimum convex polygon method"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_2</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/mcp%20method-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/mcp%20method-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="buffered-minimum-convex-polygon">3. Buffered minimum convex polygon<a class="anchor" aria-label="anchor" href="#buffered-minimum-convex-polygon"></a>
@@ -299,7 +299,7 @@ shape.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span>, main <span class="op">=</span> <span class="st">"Buffered minimum convex polygon"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_3</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/bmcp%20method-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/bmcp%20method-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="mask">4. Mask<a class="anchor" aria-label="anchor" href="#mask"></a>
@@ -328,7 +328,7 @@ area) are on the right.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">clusters</span>, main <span class="op">=</span> <span class="st">"Original polygons"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_4</span>, main <span class="op">=</span> <span class="st">"Polygons with points (mask)"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp1</span><span class="op">[</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/mask%20method-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/mask%20method-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 </div>
 <div class="section level2">
@@ -352,14 +352,14 @@ and minimum temperature of the coldest month (CFP_4).</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/env%20data-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/env%20data-1.png" class="r-plt" alt="" width="576"></p>
 <p>The relationship between different environmental variables can be
 visualized with the pairs() function from the <em>terra</em> package.
 Several of our variables are highly correlated (.89 for predictors tmx
 and tmn).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/pairs%20plot-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/pairs%20plot-1.png" class="r-plt" alt="" width="576"></p>
 <p>So how can we correct for or reduce this collinearity? The function
 correct_colinvar() has four methods to deal with collinearity: pearson,
 vif, pca, and fa. Each method returns 1) a raster object (SpatRaster)
@@ -609,7 +609,7 @@ retained.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env8</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with 12 bins"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_env12</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/env%20occurrence%20filtering-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/env%20occurrence%20filtering-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="geographical-filtering">Geographical filtering<a class="anchor" aria-label="anchor" href="#geographical-filtering"></a>
@@ -675,7 +675,7 @@ to manually determine the distance threshold.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Filtering with defined distance (30km)"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">filt_geo3</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering-1.png" class="r-plt" alt="" width="576"></p>
 <p>Also, for the three methods, it is possible methods use several
 values, turning easier the possibility to explore or test several
 filtering values.</p>
@@ -719,7 +719,7 @@ filtering values.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">moran</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-1.png" class="r-plt" alt="" width="576"></p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span></span>
@@ -728,7 +728,7 @@ filtering values.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">cellsize</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-2.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-2.png" class="r-plt" alt="" width="576"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">filt_geo2</span>, .id <span class="op">=</span> <span class="st">"determined"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -736,7 +736,7 @@ filtering values.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">determined</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-3.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-3.png" class="r-plt" alt="" width="576"></p>
 <p>When tested filtering occurrence with different values, you can use
 the <code><a href="../reference/occfilt_select.html">occfilt_select()</a></code> function to select the filtered
 dataset that equilibrate spatial autocorrelation maximum number of
@@ -845,7 +845,7 @@ showing the selected grid.</p>
 <span>  cex <span class="op">=</span> <span class="fl">0.9</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">19</span><span class="op">)</span><span class="op">[</span><span class="va">sp_part2</span><span class="op">$</span><span class="va">part</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/plot%20spatial%20band%20partition-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/plot%20spatial%20band%20partition-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="spatial-block-cross-validation-part_sblock">3. Spatial block cross-validation (part_sblock)<a class="anchor" aria-label="anchor" href="#spatial-block-cross-validation-part_sblock"></a>
@@ -880,7 +880,7 @@ and testing.</p>
 <span>  cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">19</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/spatial%20block%20partition-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/spatial%20block%20partition-1.png" class="r-plt" alt="" width="576"></p>
 <p>However, we notice that the grid partition produced by part_sblock
 has a different resolution than the original environmental variables. If
 you want a map layer with the same properties (i.e. resolution, extent,
@@ -903,7 +903,7 @@ which we will explore in the next section.</p>
 <span>  cex <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">19</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/get%20block%20function-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/get%20block%20function-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="environmental-and-spatial-cross-validation-part_senv">4. Environmental and spatial cross-validation (part_senv)<a class="anchor" aria-label="anchor" href="#environmental-and-spatial-cross-validation-part_senv"></a>
@@ -937,7 +937,7 @@ and spatial factors.</p>
 <span>  cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">19</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/environmental%20and%20spatial%20cross-validation-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/environmental%20and%20spatial%20cross-validation-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 </div>
 <div class="section level2">
@@ -991,7 +991,7 @@ section on “Calibration area”).</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Background points"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">bg</span>, cex <span class="op">=</span> <span class="fl">.1</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/sample%20background-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/sample%20background-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="sample-pseudo-absences">2. Sample pseudo-absences<a class="anchor" aria-label="anchor" href="#sample-pseudo-absences"></a>
@@ -1038,7 +1038,7 @@ goals.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span>, main <span class="op">=</span> <span class="st">"Pseudo-absence points"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span>, cex <span class="op">=</span> <span class="fl">.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v01_pre_modeling_files/figure-html/sample%20pseudo-absences-1.png" width="576"></p>
+<p><img src="v01_pre_modeling_files/figure-html/sample%20pseudo-absences-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 </div>
 <div class="section level2">
@@ -1081,7 +1081,7 @@ locations (bg).</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

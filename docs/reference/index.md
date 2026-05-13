@@ -88,6 +88,13 @@
   : Perform geographical filtering on species occurrences
 - [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
   : Select filtered occurrences
+- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
+  : Bivariate partial dependence plot
+- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
+  : Graphical exploration of extrapolation or suitability pattern in the
+  environmental and geographical space
+- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
+  Partial Dependent Plot
 - [`palms`](https://sjevelazco.github.io/flexsdm/reference/palms.md) : A
   data set containing presences of palms species from Southern Brazil
 - [`part_random()`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)
@@ -100,13 +107,6 @@
   : Environmental and spatial cross-validation
 - [`plot_res()`](https://sjevelazco.github.io/flexsdm/reference/plot_res.md)
   : Plot different resolutions to be used in part_sblock
-- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
-  : Bivariate partial dependence plot
-- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
-  : Graphical exploration of extrapolation or suitability pattern in the
-  environmental and geographical space
-- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
-  Partial Dependent Plot
 - [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
   : Sample background points
 - [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)

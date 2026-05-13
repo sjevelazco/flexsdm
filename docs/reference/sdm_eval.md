@@ -96,7 +96,7 @@ It calculates the next performance metric:
 | Performance metric | Threshold dependent | Values ranges |
 | TPR (True Positive Rate, also called Sensitivity) | yes | 0 - 1 |
 | TNR (True Negative Rate, also called Specificity) | yes | 0 - 1 |
-| W_TPR_TNR (Weighted TPR-TNR; Li et al. 2020) | yes | 0 - 1 |
+| W_TPR_TNR (Weighted TPR-TNR; Jadhav 2020) | yes | 0 - 1 |
 | SORENSEN | yes | 0 - 1 |
 | JACCARD | yes | 0 - 1 |
 | FPB (F-measure on presence-background) | yes | 0 - 2 |
@@ -182,10 +182,9 @@ The formulas are:
   probability. Monthly Weather Review 78(1): 1–3.
   https://doi.org/10.1175/1520-0493(1950)078\<0001:VOFEIT\>2.0.CO;2
 
-- Li, J., Liu, H., & Li, L. (2020). A novel performance metric for
-  imbalanced learning and its application in credit default prediction.
-  Expert Systems with Applications, 152, 113382.
-  https://doi.org/10.1016/j.eswa.2020.113382
+- Jadhav, AS. (2020). A novel weighted TPR-TNR measure to assess
+  performance of the classifiers. Expert Systems with Applications
+  152, 113391. https://doi.org/10.1016/j.eswa.2020.113391
 
 - Matthews BW. (1975) Comparison of the predicted and observed secondary
   structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein

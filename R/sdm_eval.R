@@ -44,7 +44,7 @@
 #'   | :------------- |:-------------:| -----:|
 #'   | TPR (True Positive Rate, also called Sensitivity) | yes | 0 - 1 |
 #'   | TNR (True Negative Rate, also called Specificity) | yes | 0 - 1 |
-#'   | W_TPR_TNR (Weighted TPR-TNR; Li et al. 2020)      | yes | 0 - 1 |
+#'   | W_TPR_TNR (Weighted TPR-TNR; Jadhav 2020)      | yes | 0 - 1 |
 #'   | SORENSEN                                          | yes | 0 - 1 |
 #'   | JACCARD                                           | yes | 0 - 1 |
 #'   | FPB (F-measure on presence-background)            | yes | 0 - 2 |
@@ -90,7 +90,7 @@
 #' @references
 #' \itemize{
 #'   \item Brier GW. (1950) Verification of forecasts expressed in terms of probability. Monthly Weather Review 78(1): 1–3. https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
-#'   \item Li, J., Liu, H., & Li, L. (2020). A novel performance metric for imbalanced learning and its application in credit default prediction. Expert Systems with Applications, 152, 113382. https://doi.org/10.1016/j.eswa.2020.113382
+#'   \item Jadhav, AS. (2020). A novel weighted TPR-TNR measure to assess performance of the classifiers. Expert Systems with Applications 152, 113391. https://doi.org/10.1016/j.eswa.2020.113391
 #'   \item Matthews BW. (1975) Comparison of the predicted and observed secondary structure of T4 phage lysozyme. Biochim Biophys Acta (BBA) Protein Struct. 405(2):442–51. https://doi.org/10.1016/0005-2795(75)90109-9
 #'   \item Hirzel, A. H., Le Lay, G., Helfer, V., Randin, C., & Guisan, A. (2006). Evaluating the ability of habitat suitability models to predict species presences. Ecological Modelling, 199(2), 142-152. https://doi.org/10.1016/j.ecolmodel.2006.05.017
 #' }
@@ -155,85 +155,94 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   # Codes were adapted from enmSdmX package (https://github.com/adamlilith/enmSdmX/tree/master).
   #
   boyce_ <- function(pres, contrast, n_bins = 101, bin_width = 0.1) {
-    
     # Define window limits
     lwst <- min(c(pres, contrast), na.rm = TRUE)
     hgst <- max(c(pres, contrast), na.rm = TRUE) + .Machine$double.eps
-    
+
     # Calculate bin width and create bins
     w_width <- bin_width * (hgst - lwst)
-    
+
     lows <- seq(lwst, hgst - w_width, length.out = n_bins)
-    highs <- seq(lwst + w_width + .Machine$double.eps, hgst, 
-                 length.out = n_bins)
-    
+    highs <- seq(
+      lwst + w_width + .Machine$double.eps,
+      hgst,
+      length.out = n_bins
+    )
+
     # Calculate frequencies
     f_pres <- f_ontrast <- rep(NA, n_bins)
     for (cnt_class in 1:n_bins) {
-        pres_in_bin <- as.numeric(pres >= lows[cnt_class] & pres < highs[cnt_class])
-        f_pres[cnt_class] <- sum(pres_in_bin, na.rm = TRUE)
-        
-        bgInBin <- as.numeric(contrast >= lows[cnt_class] & contrast < highs[cnt_class])
-        f_ontrast[cnt_class] <- sum(bgInBin, na.rm = TRUE)
+      pres_in_bin <- as.numeric(
+        pres >= lows[cnt_class] & pres < highs[cnt_class]
+      )
+      f_pres[cnt_class] <- sum(pres_in_bin, na.rm = TRUE)
+
+      bgInBin <- as.numeric(
+        contrast >= lows[cnt_class] & contrast < highs[cnt_class]
+      )
+      f_ontrast[cnt_class] <- sum(bgInBin, na.rm = TRUE)
     }
-    
+
     # Calculate mean prediction for each bin
     mean_pred <- rowMeans(cbind(lows, highs))
-  
+
     # Handle bins with presences but no background points
     if (any(f_pres > 0 & f_ontrast == 0)) {
-        f_ontrast[f_pres > 0 & f_ontrast == 0] <- 0.5
+      f_ontrast[f_pres > 0 & f_ontrast == 0] <- 0.5
     }
-    
+
     # Drop bins with zero presences if requested
     if (any(f_pres == 0)) {
-        filt <- which(f_pres == 0)
-        mean_pred[filt] <- NA
-        f_pres[filt] <- NA
-        f_ontrast[filt] <- NA
+      filt <- which(f_pres == 0)
+      mean_pred[filt] <- NA
+      f_pres[filt] <- NA
+      f_ontrast[filt] <- NA
     }
-    
+
     # Drop bins with zero background points
     if (any(0 %in% f_ontrast)) {
-        filt <- which(f_ontrast == 0)
-        mean_pred[filt] <- NA
-        f_pres[filt] <- NA
-        f_ontrast[filt] <- NA
+      filt <- which(f_ontrast == 0)
+      mean_pred[filt] <- NA
+      f_pres[filt] <- NA
+      f_ontrast[filt] <- NA
     }
-    
+
     # Calculate Predicted/Expected ratio
-    PE <- (f_pres / sum(f_pres, na.rm = TRUE)) / (f_ontrast / sum(f_ontrast, na.rm = TRUE))
-    
+    PE <- (f_pres / sum(f_pres, na.rm = TRUE)) /
+      (f_ontrast / sum(f_ontrast, na.rm = TRUE))
+
     # Remove NA values for correlation
     filt <- complete.cases(mean_pred, PE)
     meanPred_valid <- mean_pred[filt]
     PE <- PE[filt]
-    
+
     # Ensure at least 2 valid points for correlation
     if (length(meanPred_valid) < 2) {
-        return(NA)
+      return(NA)
     }
-    
+
     # Calculate Spearman correlation
     cbi <- suppressWarnings(
       cor(meanPred_valid, PE, method = "spearman", use = "complete.obs")
     )
-    
+
     return(cbi)
-}
+  }
 
-
-  if (any(
-    !(thr[is.na(suppressWarnings(as.numeric(thr)))]) %in% c(
-      "lpt",
-      "max_sens_spec",
-      "equal_sens_spec",
-      "sensitivity",
-      "max_jaccard",
-      "max_sorensen",
-      "max_fpb"
+  if (
+    any(
+      !(thr[is.na(suppressWarnings(as.numeric(thr)))]) %in%
+        c(
+          "lpt",
+          "max_sens_spec",
+          "equal_sens_spec",
+          "sensitivity",
+          "max_jaccard",
+          "max_sorensen",
+          "max_fpb"
+        )
     )
-  )) {
+  ) {
     stop("'thr' Argument is not valid!")
   }
 
@@ -249,8 +258,10 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     )
   }
 
-  if (any(thr %in% "sensitivity") &&
-    !any(names(thr) %in% "sens")) {
+  if (
+    any(thr %in% "sensitivity") &&
+      !any(names(thr) %in% "sens")
+  ) {
     thr <- c(thr, sens = 0.9)
   }
 
@@ -293,7 +304,8 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     TNR = res$tn / (res$tn + res$fp),
     SORENSEN = 2 * res$tp / (res$fn + (2 * res$tp) + res$fp),
     JACCARD = res$tp / (res$fn + res$tp + res$fp),
-    KAPPA = (res$tp + res$tn) / (res$tp + res$tn + res$fp + res$fn) -
+    KAPPA = (res$tp + res$tn) /
+      (res$tp + res$tn + res$fp + res$fn) -
       (res$fp + res$fn) / (res$tp + res$tn + res$fp + res$fn)^2,
     FPB = 2 * JACCARD,
     OR = (1 - TPR),
@@ -309,65 +321,97 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
 
   # Add MCC (Matthews Correlation Coefficient)
   mcc_num <- (res$tp * res$tn) - (res$fp * res$fn)
-  mcc_den <- sqrt(as.numeric(res$tp + res$fp) * as.numeric(res$tp + res$fn) * as.numeric(res$tn + res$fp) * as.numeric(res$tn + res$fn))
+  mcc_den <- sqrt(
+    as.numeric(res$tp + res$fp) *
+      as.numeric(res$tp + res$fn) *
+      as.numeric(res$tn + res$fp) *
+      as.numeric(res$tn + res$fn)
+  )
   mcc <- mcc_num / mcc_den
   mcc[is.na(mcc)] <- 0 # Handle cases where the denominator is 0
 
   performance <- performance %>% dplyr::mutate(MCC = mcc)
 
-
   R <- sum(rank(c(p, a))[1:np]) - (np * (np + 1) / 2)
-  performance <- performance %>% dplyr::mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
+  performance <- performance %>%
+    dplyr::mutate(AUC = R / (as.numeric(na) * as.numeric(np)))
 
   if (is.null(bg)) {
-    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(pres = p, contrast = a, n_bins = 101))
+    performance <- performance %>%
+      dplyr::mutate(BOYCE = boyce_(pres = p, contrast = a, n_bins = 101))
   } else {
-    performance <- performance %>% dplyr::mutate(BOYCE = boyce_(pres = p, contrast = bg, n_bins = 101))
+    performance <- performance %>%
+      dplyr::mutate(BOYCE = boyce_(pres = p, contrast = bg, n_bins = 101))
   }
 
   real <- c(rep(1, length(p)), rep(0, length(a)))
   pred <- c(p, a)
-  performance <- performance %>% dplyr::mutate(IMAE = 1 - (sum(abs(real - pred)) / length(pred)))
+  performance <- performance %>%
+    dplyr::mutate(IMAE = 1 - (sum(abs(real - pred)) / length(pred)))
 
   # Add 1-CRPS (Brier Score for binary outcomes)
   crps_val <- 1 - mean((pred - real)^2)
   performance <- performance %>% dplyr::mutate(CRPS = crps_val)
 
-
   # Thresholds
   thresholds <- list()
 
   thresholds$max_sorensen <-
-    max(performance %>% dplyr::filter(SORENSEN == max(SORENSEN)) %>% dplyr::pull(threshold))
+    max(
+      performance %>%
+        dplyr::filter(SORENSEN == max(SORENSEN)) %>%
+        dplyr::pull(threshold)
+    )
 
   thresholds$max_jaccard <-
-    max(performance %>% dplyr::filter(SORENSEN == max(SORENSEN)) %>% dplyr::pull(threshold))
+    max(
+      performance %>%
+        dplyr::filter(SORENSEN == max(SORENSEN)) %>%
+        dplyr::pull(threshold)
+    )
 
   thresholds$max_fpb <-
-    max(performance %>% dplyr::filter(FPB == max(FPB)) %>% dplyr::pull(threshold))
+    max(
+      performance %>% dplyr::filter(FPB == max(FPB)) %>% dplyr::pull(threshold)
+    )
 
   thresholds$max_sens_spec <-
-    max(performance %>% dplyr::filter(TSS == max(TSS)) %>% dplyr::pull(threshold))
+    max(
+      performance %>% dplyr::filter(TSS == max(TSS)) %>% dplyr::pull(threshold)
+    )
 
   thresholds$equal_sens_spec <-
-    performance$threshold[which(abs(
-      performance$TPR - performance$TNR
-    ) ==
-      min(abs(performance$TPR - performance$TNR)))] %>% max()
+    performance$threshold[which(
+      abs(
+        performance$TPR - performance$TNR
+      ) ==
+        min(abs(performance$TPR - performance$TNR))
+    )] %>%
+    max()
 
-  suppressWarnings(thresholds$lpt <- max(performance$threshold[performance$TPR == 1]))
+  suppressWarnings(
+    thresholds$lpt <- max(performance$threshold[performance$TPR == 1])
+  )
 
   # finding the maximum threshold
   # that results in a sensitivity >= target
   if (any(thr == "sensitivity")) {
-    thresholds$sensitivity <- max(performance$threshold[performance$TPR >=
-      as.numeric(thr["sens"])])
+    thresholds$sensitivity <- max(performance$threshold[
+      performance$TPR >= as.numeric(thr["sens"])
+    ])
   }
 
   thresholds <- dplyr::bind_cols(thresholds)
 
-  thr_table <- dplyr::tibble(threshold = names(thresholds), thr_value = unlist(thresholds))
-  thr_table <- dplyr::left_join(thr_table, performance, by = c("thr_value" = "threshold"))
+  thr_table <- dplyr::tibble(
+    threshold = names(thresholds),
+    thr_value = unlist(thresholds)
+  )
+  thr_table <- dplyr::left_join(
+    thr_table,
+    performance,
+    by = c("thr_value" = "threshold")
+  )
 
   # Return final result
   result <- thr_table
@@ -377,8 +421,24 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   }
 
   result <- result[c(
-    "threshold", "thr_value", "n_presences", "n_absences", "TPR", "TNR", "W_TPR_TNR",
-    "SORENSEN", "JACCARD", "FPB", "OR", "TSS", "KAPPA", "MCC", "AUC", "BOYCE", "CRPS", "IMAE"
+    "threshold",
+    "thr_value",
+    "n_presences",
+    "n_absences",
+    "TPR",
+    "TNR",
+    "W_TPR_TNR",
+    "SORENSEN",
+    "JACCARD",
+    "FPB",
+    "OR",
+    "TSS",
+    "KAPPA",
+    "MCC",
+    "AUC",
+    "BOYCE",
+    "CRPS",
+    "IMAE"
   )]
   return(result)
 }

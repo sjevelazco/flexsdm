@@ -46,6 +46,7 @@ occurrence data include 21 geo-referenced observations downloaded from
 the online database Calflora.
 
 ``` r
+
 # devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(terra)
@@ -95,6 +96,7 @@ Here, we will use 25-km buffer areas around the presence points to
 select our pseudo-absence locations.
 
 ``` r
+
 ca <- calib_area(
   data = hespero,
   x = "x",
@@ -125,6 +127,7 @@ background data. Here, we use our calibration area to produce
 pseudo-absence data that can be used in our SDMs.
 
 ``` r
+
 # Sample the same number of species presences
 set.seed(10)
 psa <- sample_pseudoabs(
@@ -157,6 +160,7 @@ points(hespero[, c("x", "y")], col = "yellow", pch = 16, cex = 1.5) # Presences
 ``` r
 
 
+
 # Bind a presences and pseudo-absences
 hespero_pa <- bind_rows(hespero, psa)
 hespero_pa # Presence-Pseudo-absence database
@@ -185,6 +189,7 @@ cross-validation, which is a suitable partition approach for performing
 ESM.
 
 ``` r
+
 set.seed(10)
 
 # Repeated K-fold method
@@ -201,6 +206,7 @@ Next, we extract the values of our four environmental predictors at the
 presence and pseudo-absence locations.
 
 ``` r
+
 hespero_pa3 <-
   sdm_extract(
     data = hespero_pa2,
@@ -220,6 +226,7 @@ First, let’s use three standard algorithms to model the distribution of
 our calibration area for making our predictions.
 
 ``` r
+
 mglm <-
   fit_glm(
     data = hespero_pa3,
@@ -447,6 +454,7 @@ Now let’s try each of these algorithms with the ESM approach. Note that
 when predicting an ESM, it is possible to only process one at a time.
 
 ``` r
+
 eglm <-
   esm_glm(
     data = hespero_pa3,
@@ -482,7 +490,7 @@ eglm_pred <- sdm_predict(
   con_thr = TRUE,
   predict_area = ca
 )
-#> Predicting individual models
+#> Predicting ensemble of small models
 
 egbm_pred <- sdm_predict(
   models = egbm,
@@ -490,7 +498,7 @@ egbm_pred <- sdm_predict(
   con_thr = TRUE,
   predict_area = ca
 )
-#> Predicting individual models
+#> Predicting ensemble of small models
 
 esvm_pred <- sdm_predict(
   models = esvm,
@@ -498,7 +506,7 @@ esvm_pred <- sdm_predict(
   con_thr = TRUE,
   predict_area = ca
 )
-#> Predicting individual models
+#> Predicting ensemble of small models
 ```
 
 ### Comparing our models
@@ -508,6 +516,7 @@ spatial outputs suggest that the standard models tend to predict broader
 areas with high suitability values that the ESMs.
 
 ``` r
+
 par(mfrow = c(3, 2))
 plot(mpred$glm, main = "Standard GLM")
 # points(hespero$x, hespero$y, pch = 19)
@@ -525,6 +534,7 @@ plot(esvm_pred[[1]], main = "ESM SVM")
 ![](v05_Rare_species_example_files/figure-html/comparison%20maps-1.png)
 
 ``` r
+
 # points(hespero$x, hespero$y, pch = 19)
 ```
 
@@ -537,6 +547,7 @@ and the Inverse Mean Absolute Error are slightly higher for the standard
 models.
 
 ``` r
+
 merge_df <- sdm_summarize(models = list(mglm, mgbm, msvm, eglm, egbm, esvm))
 
 knitr::kable(
@@ -551,14 +562,14 @@ knitr::kable(
 )
 ```
 
-| model   |      AUC |   TSS |   JACCARD |     BOYCE |      IMAE |
-|:--------|---------:|------:|----------:|----------:|----------:|
-| glm     | 0.826575 | 0.570 | 0.6088810 | 0.9953050 | 0.7484773 |
-| gbm     | 0.882200 | 0.760 | 0.7839524 | 0.9966259 | 0.7683093 |
-| svm     | 0.916600 | 0.793 | 0.8113333 | 0.9961037 | 0.7214870 |
-| esm_glm | 0.884000 | 0.764 | 0.7972857 | 0.9888158 | 0.7058935 |
-| esm_gbm | 0.927725 | 0.788 | 0.8086667 | 0.9944513 | 0.7462015 |
-| esm_svm | 0.936300 | 0.828 | 0.8532857 | 0.9923420 | 0.7131791 |
+| model   |      AUC |   TSS |   JACCARD | BOYCE |      IMAE |
+|:--------|---------:|------:|----------:|------:|----------:|
+| glm     | 0.826575 | 0.694 | 0.7539524 |    NA | 0.7484773 |
+| gbm     | 0.865000 | 0.802 | 0.8219524 |    NA | 0.7459401 |
+| svm     | 0.916600 | 0.862 | 0.8756667 |    NA | 0.7214870 |
+| esm_glm | 0.884000 | 0.793 | 0.8219524 |    NA | 0.7058935 |
+| esm_gbm | 0.927725 | 0.846 | 0.8550000 |    NA | 0.7461444 |
+| esm_svm | 0.936300 | 0.876 | 0.8879524 |    NA | 0.7131791 |
 
 ### Conclusions
 

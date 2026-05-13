@@ -216,6 +216,7 @@ You can install the development version of **flexsdm** from
 [github](https://github.com/sjevelazco/flexsdm)
 
 ``` r
+
 # install.packages("remotes")
 
 # For Windows and Mac OS operating systems
