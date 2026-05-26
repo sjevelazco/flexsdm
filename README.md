@@ -90,6 +90,7 @@ Tools related to models’ geographical predictions, evaluation, and correction.
 -   `sdm_predict()` Spatial predictions of individual and ensemble model
 -   `sdm_summarize()` Merge model performance tables
 -   `sdm_uncertainity()` Calculate species distribution model uncertainty using a bootstrap procedure
+-   `sdm_varimp()` Calculate permutation-based variable importance scores for SDMs
 -   `interp()` Raster interpolation between two time periods
 -   `extra_eval()` Measure model extrapolation
 -   `extra_truncate()` Constraint suitability values under a given extrapolation value

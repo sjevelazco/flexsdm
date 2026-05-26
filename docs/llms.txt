@@ -178,6 +178,8 @@ correction.
   Merge model performance tables
 - `sdm_uncertainity()` Calculate species distribution model uncertainty
   using a bootstrap procedure
+- [`sdm_varimp()`](https://sjevelazco.github.io/flexsdm/reference/sdm_varimp.md)
+  Calculate permutation-based variable importance scores for SDMs
 - [`interp()`](https://sjevelazco.github.io/flexsdm/reference/interp.md)
   Raster interpolation between two time periods
 - [`extra_eval()`](https://sjevelazco.github.io/flexsdm/reference/extra_eval.md)
