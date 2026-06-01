@@ -61,7 +61,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(terra)
-#> terra 1.9.11
+#> terra 1.9.27
 #> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
@@ -275,17 +275,17 @@ ind_p <- sdm_predict(
 # These are the continuous and binary prediction from the model
 ind_p
 #> $glm
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> varnames    : somevar 
-#>               somevar 
-#> names       :          glm, max_fpb 
-#> min values  : 2.220446e-16,       0 
-#> max values  : 1.000000e+00,       1
+#> varnames    : somevar
+#>               somevar
+#> names       : glm, max_fpb
+#> min values  :   0,       0
+#> max values  :   1,       1
 
 # Plot to see this layers
 ind_p_rst <- terra::rast(ind_p)
@@ -311,43 +311,51 @@ list_p <- sdm_predict(
 # each of which contains 2 layers, for the continuous and thresholded binary predictions.
 list_p
 #> $glm
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> varnames    : somevar 
-#>               somevar 
-#> names       :          glm, max_fpb 
-#> min values  : 2.220446e-16,       0 
-#> max values  : 1.000000e+00,       1 
+#> varnames    : somevar
+#>               somevar
+#> names       : glm, max_fpb
+#> min values  :   0,       0
+#> max values  :   1,       1
 #> 
 #> $raf
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> varnames    : somevar 
-#>               somevar 
-#> names       : raf, max_fpb 
-#> min values  :   0,       0 
-#> max values  :   1,       1 
+#> varnames    : somevar
+#>               somevar
+#> names       : raf, max_fpb
+#> min values  :   0,       0
+#> max values  :   1,       1
 #> 
 #> $gbm
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
+<<<<<<< HEAD
 #> varnames    : somevar 
 #>               somevar 
 #> names       :          gbm, max_fpb 
 #> min values  : 7.692412e-05,       0 
 #> max values  : 9.530711e-01,       1
+=======
+#> varnames    : somevar
+#>               somevar
+#> names       :      gbm, max_fpb
+#> min values  : 0.000069,       0
+#> max values  : 0.952234,       1
+>>>>>>> 668eb145d48fa77e0dd0fc9696585b056e67e6f7
 
 # Plot to see this layers
 list_p_rst <- terra::rast(list_p)
@@ -373,16 +381,16 @@ ensemble_p <- sdm_predict(
 # These are the continuous and binary prediction from the ensemble model
 ensemble_p
 #> $meansup
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> varnames    : somevar 
-#>               somevar 
-#> names       : meansup, max_fpb 
-#> min values  :       0,       0 
+#> varnames    : somevar
+#>               somevar
+#> names       : meansup, max_fpb
+#> min values  :       0,       0
 #> max values  :       1,       1
 
 # Plot to see this layers
@@ -409,15 +417,15 @@ small_p <- sdm_predict(
 # These are the continuous and binary prediction from the ESM model
 small_p
 #> $esm_gam
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> names       :      esm_gam, max_fpb 
-#> min values  : 2.476531e-05,       0 
-#> max values  : 1.000000e+00,       1
+#> names       :  esm_gam, max_fpb
+#> min values  : 0.000025,       0
+#> max values  :        1,       1
 
 # Plot to see this layers
 small_p_rst <- terra::rast(small_p)
@@ -636,19 +644,21 @@ names(abma)
 
 # Layers in the int SpatRaster
 int
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 11  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> varnames    : suit_time_step 
-#>               suit_time_step 
-#>               suit_time_step 
+#> varnames    : suit_time_step
+#>               suit_time_step
+#>               suit_time_step
+#>               suit_time_step
+#>               suit_time_step
 #>               ...
-#> names       : Abies_2010, Abies_2011, Abies_2012, Abies_2013, Abies_2014, Abies_2015, ... 
-#> min values  :  0.0000000,  0.0000000,  0.0000000,  0.0000000,  0.0000000,  0.0000000, ... 
-#> max values  :  0.9756107,  0.9606077,  0.9504615,  0.9440073,  0.9442941,  0.9463548, ...
+#> names       : Abies_2010, Abies_2011, Abies_2012, Abies_2013, Abies_2014, Abies_2015, ...
+#> min values  :          0,          0,          0,          0,          0,          0, ...
+#> max values  :   0.975611,   0.960608,   0.950461,   0.944007,   0.944294,   0.946355, ...
 plot(int)
 ```
 
@@ -784,16 +794,16 @@ plot(m_xy)
 
 # Explore the object. This method assumes that spatial structure can partially explain species distribution (Bahn & Mcgill, 2007). Therefore, the result are two raster layers containing the latitude and longitude of pixels, respectively. This method could be used for all species set that share the same study area region.
 m_xy
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> varname     : somevar 
-#> names       :  msdm_lon,  msdm_lat 
-#> min values  : -370850.8, -601978.3 
-#> max values  :  368139.2,  448861.7
+#> varname     : somevar
+#> names       :       msdm_lon,       msdm_lat
+#> min values  : -370850.836354, -601978.334189
+#> max values  :  368139.163646,  448861.665811
 ```
 
 ``` r
@@ -816,15 +826,15 @@ plot(m_cml)
 
 # Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species.
 m_cml
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 1  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> varname     : somevar 
-#> name        : msdm_cml 
-#> min value   :        0 
+#> varname     : somevar
+#> name        : msdm_cml
+#> min value   :        0
 #> max value   :        1
 ```
 

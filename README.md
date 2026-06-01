@@ -33,13 +33,14 @@ Set tools that prepare modeling input data (e.g., species occurrences thinning, 
 -   `plot_res()` Plot different resolutions to be used in part_sblock
 -   `get_block()` Transform a spatial partition layer to the same spatial properties of environmental variables
 -   `sample_background()` Sample background points
--   `sample_pseudoabs()` Sampel pseudo-absence
+-   `sample_pseudoabs()` Sample pseudo-absences
 -   `sdm_directory()` Create directories for saving the outputs of the flexsdm
 -   `sdm_extract()` Extract environmental data based on x and y coordinates
 -   `occfilt_env()` Perform environmental filtering on species occurrences
 -   `occfilt_geo()` Perform geographical filtering on species occurrences
 -   `occfilt_select()` Select filtered occurrences when it was tested with different filtering values
 -   `map_env_dist()` Calculate environmental distance between presences and projection data
+-   `homogenize_na()` Homogenize cells with NAs across all layers
 
 ### 2. Modeling functions
 
@@ -89,16 +90,17 @@ Tools related to models’ geographical predictions, evaluation, and correction.
 
 -   `sdm_predict()` Spatial predictions of individual and ensemble model
 -   `sdm_summarize()` Merge model performance tables
--   `sdm_uncertainity()` Calculate species distribution model uncertainty using a bootstrap procedure
+-   `sdm_uncertainty()` Calculate species distribution model uncertainty using a bootstrap procedure
+-   `sdm_varimp()` Calculate permutation-based variable importance scores for SDMs
 -   `interp()` Raster interpolation between two time periods
--   `extra_eval()` Measure model extrapolation
+-   `extra_eval()` Measure model extrapolation based on Shape extrapolation metric
 -   `extra_truncate()` Constraint suitability values under a given extrapolation value
 -   `msdm_priori()` Create spatial predictor variables to reduce overprediction of species distribution models
 -   `msdm_posteriori()` Methods to correct overprediction of species distribution models based on occurrences and suitability patterns.
 
 ### 4. Graphical model exploration
 
-Useful tools to visually explore models’ geographical and environemtal predictions, model extrapolation, and partial depnendece plot.
+Useful tools to visually explore models’ geographical and environmental predictions, model extrapolation, and partial dependence plots.
 
 -   `p_pdp()` Create partial dependence plot(s) to explore the marginal effect of predictors on suitability
 -   `p_bpdp()` Create partial dependence surface plot(s) to explore the bivariate marginal effect of predictors on suitability

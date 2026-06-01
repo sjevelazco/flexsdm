@@ -131,7 +131,7 @@ patterns</p></li>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.9.11</span></span>
+<span><span class="co">#&gt; terra 1.9.27</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'terra'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
@@ -324,17 +324,17 @@ and/or binary predictions.</p>
 <span><span class="co"># These are the continuous and binary prediction from the model</span></span>
 <span><span class="va">ind_p</span></span>
 <span><span class="co">#&gt; $glm</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; varnames    : somevar </span></span>
-<span><span class="co">#&gt;               somevar </span></span>
-<span><span class="co">#&gt; names       :          glm, max_fpb </span></span>
-<span><span class="co">#&gt; min values  : 2.220446e-16,       0 </span></span>
-<span><span class="co">#&gt; max values  : 1.000000e+00,       1</span></span>
+<span><span class="co">#&gt; varnames    : somevar</span></span>
+<span><span class="co">#&gt;               somevar</span></span>
+<span><span class="co">#&gt; names       : glm, max_fpb</span></span>
+<span><span class="co">#&gt; min values  :   0,       0</span></span>
+<span><span class="co">#&gt; max values  :   1,       1</span></span>
 <span></span>
 <span><span class="co"># Plot to see this layers</span></span>
 <span><span class="va">ind_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">ind_p</span><span class="op">)</span></span>
@@ -356,43 +356,51 @@ and/or binary predictions.</p>
 <span><span class="co"># each of which contains 2 layers, for the continuous and thresholded binary predictions.</span></span>
 <span><span class="va">list_p</span></span>
 <span><span class="co">#&gt; $glm</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; varnames    : somevar </span></span>
-<span><span class="co">#&gt;               somevar </span></span>
-<span><span class="co">#&gt; names       :          glm, max_fpb </span></span>
-<span><span class="co">#&gt; min values  : 2.220446e-16,       0 </span></span>
-<span><span class="co">#&gt; max values  : 1.000000e+00,       1 </span></span>
+<span><span class="co">#&gt; varnames    : somevar</span></span>
+<span><span class="co">#&gt;               somevar</span></span>
+<span><span class="co">#&gt; names       : glm, max_fpb</span></span>
+<span><span class="co">#&gt; min values  :   0,       0</span></span>
+<span><span class="co">#&gt; max values  :   1,       1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $raf</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; varnames    : somevar </span></span>
-<span><span class="co">#&gt;               somevar </span></span>
-<span><span class="co">#&gt; names       : raf, max_fpb </span></span>
-<span><span class="co">#&gt; min values  :   0,       0 </span></span>
-<span><span class="co">#&gt; max values  :   1,       1 </span></span>
+<span><span class="co">#&gt; varnames    : somevar</span></span>
+<span><span class="co">#&gt;               somevar</span></span>
+<span><span class="co">#&gt; names       : raf, max_fpb</span></span>
+<span><span class="co">#&gt; min values  :   0,       0</span></span>
+<span><span class="co">#&gt; max values  :   1,       1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $gbm</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
+<<<<<<< HEAD
 <span><span class="co">#&gt; varnames    : somevar </span></span>
 <span><span class="co">#&gt;               somevar </span></span>
 <span><span class="co">#&gt; names       :          gbm, max_fpb </span></span>
 <span><span class="co">#&gt; min values  : 7.692412e-05,       0 </span></span>
 <span><span class="co">#&gt; max values  : 9.530711e-01,       1</span></span>
+=======
+<span><span class="co">#&gt; varnames    : somevar</span></span>
+<span><span class="co">#&gt;               somevar</span></span>
+<span><span class="co">#&gt; names       :      gbm, max_fpb</span></span>
+<span><span class="co">#&gt; min values  : 0.000069,       0</span></span>
+<span><span class="co">#&gt; max values  : 0.952234,       1</span></span>
+>>>>>>> 668eb145d48fa77e0dd0fc9696585b056e67e6f7
 <span></span>
 <span><span class="co"># Plot to see this layers</span></span>
 <span><span class="va">list_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">list_p</span><span class="op">)</span></span>
@@ -414,16 +422,16 @@ and/or binary predictions.</p>
 <span><span class="co"># These are the continuous and binary prediction from the ensemble model</span></span>
 <span><span class="va">ensemble_p</span></span>
 <span><span class="co">#&gt; $meansup</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; varnames    : somevar </span></span>
-<span><span class="co">#&gt;               somevar </span></span>
-<span><span class="co">#&gt; names       : meansup, max_fpb </span></span>
-<span><span class="co">#&gt; min values  :       0,       0 </span></span>
+<span><span class="co">#&gt; varnames    : somevar</span></span>
+<span><span class="co">#&gt;               somevar</span></span>
+<span><span class="co">#&gt; names       : meansup, max_fpb</span></span>
+<span><span class="co">#&gt; min values  :       0,       0</span></span>
 <span><span class="co">#&gt; max values  :       1,       1</span></span>
 <span></span>
 <span><span class="co"># Plot to see this layers</span></span>
@@ -446,15 +454,15 @@ and/or binary predictions.</p>
 <span><span class="co"># These are the continuous and binary prediction from the ESM model</span></span>
 <span><span class="va">small_p</span></span>
 <span><span class="co">#&gt; $esm_gam</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :      esm_gam, max_fpb </span></span>
-<span><span class="co">#&gt; min values  : 2.476531e-05,       0 </span></span>
-<span><span class="co">#&gt; max values  : 1.000000e+00,       1</span></span>
+<span><span class="co">#&gt; names       :  esm_gam, max_fpb</span></span>
+<span><span class="co">#&gt; min values  : 0.000025,       0</span></span>
+<span><span class="co">#&gt; max values  :        1,       1</span></span>
 <span></span>
 <span><span class="co"># Plot to see this layers</span></span>
 <span><span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span></span>
@@ -654,19 +662,21 @@ interpolated values of 0.9, 0.8, 0.7…0.1</p>
 <span></span>
 <span><span class="co"># Layers in the int SpatRaster</span></span>
 <span><span class="va">int</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 11  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; varnames    : suit_time_step </span></span>
-<span><span class="co">#&gt;               suit_time_step </span></span>
-<span><span class="co">#&gt;               suit_time_step </span></span>
+<span><span class="co">#&gt; varnames    : suit_time_step</span></span>
+<span><span class="co">#&gt;               suit_time_step</span></span>
+<span><span class="co">#&gt;               suit_time_step</span></span>
+<span><span class="co">#&gt;               suit_time_step</span></span>
+<span><span class="co">#&gt;               suit_time_step</span></span>
 <span><span class="co">#&gt;               ...</span></span>
-<span><span class="co">#&gt; names       : Abies_2010, Abies_2011, Abies_2012, Abies_2013, Abies_2014, Abies_2015, ... </span></span>
-<span><span class="co">#&gt; min values  :  0.0000000,  0.0000000,  0.0000000,  0.0000000,  0.0000000,  0.0000000, ... </span></span>
-<span><span class="co">#&gt; max values  :  0.9756107,  0.9606077,  0.9504615,  0.9440073,  0.9442941,  0.9463548, ...</span></span>
+<span><span class="co">#&gt; names       : Abies_2010, Abies_2011, Abies_2012, Abies_2013, Abies_2014, Abies_2015, ...</span></span>
+<span><span class="co">#&gt; min values  :          0,          0,          0,          0,          0,          0, ...</span></span>
+<span><span class="co">#&gt; max values  :   0.975611,   0.960608,   0.950461,   0.944007,   0.944294,   0.946355, ...</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">int</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v03_post_modeling_files/figure-html/interp-1.png" class="r-plt" alt="" width="576"></p>
 </div>
@@ -781,16 +791,16 @@ raster layer.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Explore the object. This method assumes that spatial structure can partially explain species distribution (Bahn &amp; Mcgill, 2007). Therefore, the result are two raster layers containing the latitude and longitude of pixels, respectively. This method could be used for all species set that share the same study area region.</span></span>
 <span><span class="va">m_xy</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 2  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; varname     : somevar </span></span>
-<span><span class="co">#&gt; names       :  msdm_lon,  msdm_lat </span></span>
-<span><span class="co">#&gt; min values  : -370850.8, -601978.3 </span></span>
-<span><span class="co">#&gt; max values  :  368139.2,  448861.7</span></span></code></pre></div>
+<span><span class="co">#&gt; varname     : somevar</span></span>
+<span><span class="co">#&gt; names       :       msdm_lon,       msdm_lat</span></span>
+<span><span class="co">#&gt; min values  : -370850.836354, -601978.334189</span></span>
+<span><span class="co">#&gt; max values  :  368139.163646,  448861.665811</span></span></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">m_cml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/msdm_priori.html">msdm_priori</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">occ</span>,</span>
@@ -806,15 +816,15 @@ raster layer.</p>
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species.</span></span>
 <span><span class="va">m_cml</span></span>
-<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; class       : SpatRaster</span></span>
 <span><span class="co">#&gt; size        : 558, 394, 1  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 1890, 1890  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span></span>
-<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs </span></span>
+<span><span class="co">#&gt; coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; varname     : somevar </span></span>
-<span><span class="co">#&gt; name        : msdm_cml </span></span>
-<span><span class="co">#&gt; min value   :        0 </span></span>
+<span><span class="co">#&gt; varname     : somevar</span></span>
+<span><span class="co">#&gt; name        : msdm_cml</span></span>
+<span><span class="co">#&gt; min value   :        0</span></span>
 <span><span class="co">#&gt; max value   :        1</span></span></code></pre></div>
 </div>
 <div class="section level3">

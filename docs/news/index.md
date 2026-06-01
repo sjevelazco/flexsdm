@@ -2,32 +2,32 @@
 
 ## flexsdm 1.4.0 - pre-release
 
-- map_env_dist: C++ function to calculate Euclidean and Mahalanobis
+- `map_env_dist`: C++ function to calculate Euclidean and Mahalanobis
   distance was implemented, by
   [@sjevelazco](https://github.com/sjevelazco)
   [463](https://github.com/sjevelazco/flexsdm/pull/463)
-- extra_eval: C++ function to calculate Euclidean and Mahalanobis
+- `extra_eval`: C++ function to calculate Euclidean and Mahalanobis
   distance was implemented, by
   [@sjevelazco](https://github.com/sjevelazco)
   [463](https://github.com/sjevelazco/flexsdm/pull/463)
-- fit_dom: C++ function to calculate gower distance was optimized, by
+- `fit_dom`: C++ function to calculate gower distance was optimized, by
   [@sjevelazco](https://github.com/sjevelazco)
   [463](https://github.com/sjevelazco/flexsdm/pull/463)
-- map_env_dist: C++ function to calculate gower distance was optimized,
-  by [@sjevelazco](https://github.com/sjevelazco)
+- `map_env_dist`: C++ function to calculate gower distance was
+  optimized, by [@sjevelazco](https://github.com/sjevelazco)
   [463](https://github.com/sjevelazco/flexsdm/pull/463)
-- msdm_posteriori: a new argument that assumes unsuitable cells with
+- `msdm_posteriori`: a new argument that assumes unsuitable cells with
   presences as patches. This is only used in the ‘lq’ approach, by
   [@sjevelazco](https://github.com/sjevelazco)
   [461](https://github.com/sjevelazco/flexsdm/pull/461)
-- sdm_eval: Boyce metric was readapted based on enmSdmX package, by
+- `sdm_eval`: Boyce metric was readapted based on enmSdmX package, by
   [@sjevelazco](https://github.com/sjevelazco)
   [457](https://github.com/sjevelazco/flexsdm/pull/457)
-- msdm_posteriori: now car return semi-binary suitability maps, by
+- `msdm_posteriori`: now car return semi-binary suitability maps, by
   [@sjevelazco](https://github.com/sjevelazco)
   [455](https://github.com/sjevelazco/flexsdm/pull/455)
-- part_senv: new argument to use or not presences-absences coordinate to
-  perform environmental partition, by
+- `part_senv`: new argument to use or not presences-absences coordinate
+  to perform environmental partition, by
   [@sjevelazco](https://github.com/sjevelazco)
   [445](https://github.com/sjevelazco/flexsdm/pull/453)
 

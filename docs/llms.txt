@@ -70,7 +70,7 @@ calibration area).
 - [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
   Sample background points
 - [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
-  Sampel pseudo-absence
+  Sample pseudo-absences
 - [`sdm_directory()`](https://sjevelazco.github.io/flexsdm/reference/sdm_directory.md)
   Create directories for saving the outputs of the flexsdm
 - [`sdm_extract()`](https://sjevelazco.github.io/flexsdm/reference/sdm_extract.md)
@@ -84,6 +84,8 @@ calibration area).
   filtering values
 - [`map_env_dist()`](https://sjevelazco.github.io/flexsdm/reference/map_env_dist.md)
   Calculate environmental distance between presences and projection data
+- [`homogenize_na()`](https://sjevelazco.github.io/flexsdm/reference/homogenize_na.md)
+  Homogenize cells with NAs across all layers
 
 ### 2. Modeling functions
 
@@ -176,12 +178,15 @@ correction.
   Spatial predictions of individual and ensemble model
 - [`sdm_summarize()`](https://sjevelazco.github.io/flexsdm/reference/sdm_summarize.md)
   Merge model performance tables
-- `sdm_uncertainity()` Calculate species distribution model uncertainty
-  using a bootstrap procedure
+- [`sdm_uncertainty()`](https://sjevelazco.github.io/flexsdm/reference/sdm_uncertainty.md)
+  Calculate species distribution model uncertainty using a bootstrap
+  procedure
+- [`sdm_varimp()`](https://sjevelazco.github.io/flexsdm/reference/sdm_varimp.md)
+  Calculate permutation-based variable importance scores for SDMs
 - [`interp()`](https://sjevelazco.github.io/flexsdm/reference/interp.md)
   Raster interpolation between two time periods
 - [`extra_eval()`](https://sjevelazco.github.io/flexsdm/reference/extra_eval.md)
-  Measure model extrapolation
+  Measure model extrapolation based on Shape extrapolation metric
 - [`extra_truncate()`](https://sjevelazco.github.io/flexsdm/reference/extra_truncate.md)
   Constraint suitability values under a given extrapolation value
 - [`msdm_priori()`](https://sjevelazco.github.io/flexsdm/reference/msdm_priori.md)
@@ -193,8 +198,8 @@ correction.
 
 ### 4. Graphical model exploration
 
-Useful tools to visually explore models’ geographical and environemtal
-predictions, model extrapolation, and partial depnendece plot.
+Useful tools to visually explore models’ geographical and environmental
+predictions, model extrapolation, and partial dependence plots.
 
 - [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md)
   Create partial dependence plot(s) to explore the marginal effect of

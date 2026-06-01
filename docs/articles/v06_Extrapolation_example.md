@@ -402,15 +402,17 @@ xp_m <-
     aggreg_factor = 1
   )
 xp_m
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 2  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> names       : extrapolation, uni_comb 
-#> min values  :         0.000,        1 
-#> max values  :      3730.677,        2
+#> varnames    : somevar
+#>               
+#> names       : extrapolation, uni_comb
+#> min values  :             0,        1
+#> max values  :    3730.67743,        2
 ```
 
 The output of the extra_eval function is a SpatRaster, showing the
