@@ -11,8 +11,7 @@ fit_dom(
   predictors,
   predictors_f = NULL,
   partition = NULL,
-  thr = NULL,
-  fit_formula = NULL
+  thr = NULL
 )
 ```
 
@@ -79,17 +78,10 @@ fit_dom(
   'max_sens_spec', 'sensitivity'). Function will use all threshold types
   if none is specified.
 
-- fit_formula:
-
-  formula. A formula object with response and predictor variables (e.g.
-  formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)). Note
-  that the variables used here must be consistent with those used in
-  response, predictors, and predictors_f arguments
-
 - n_cores:
 
-  numeric. Number of cores to use for parallel processing when metric is
-  "domain". Default 1 (no parallelization).
+  numeric. Number of cores to use for parallel processing when metric.
+  Default 1 (no parallelization).
 
 ## Value
 
@@ -190,7 +182,6 @@ mdom <- fit_dom(
   response = "pr_ab",
   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
   predictors_f = NULL,
-  fit_formula = NULL,
   partition = ".part",
   thr = c("max_sens_spec"),
   n_cores = 1

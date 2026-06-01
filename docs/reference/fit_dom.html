@@ -60,8 +60,7 @@
 <span>  <span class="va">predictors</span>,</span>
 <span>  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  partition <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  thr <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -105,15 +104,8 @@ If partition = NULL, the model will be validated with the same data used for fit
 </ul><p>If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold types if none is specified.</p></dd>
 
 
-<dt id="arg-fit-formula">fit_formula<a class="anchor" aria-label="anchor" href="#arg-fit-formula"></a></dt>
-<dd><p>formula. A formula object with response and predictor
-variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
-Note that the variables used here must be consistent with those used in
-response, predictors, and predictors_f arguments</p></dd>
-
-
 <dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
-<dd><p>numeric. Number of cores to use for parallel processing when metric is "domain". Default 1 (no parallelization).</p></dd>
+<dd><p>numeric. Number of cores to use for parallel processing when metric. Default 1 (no parallelization).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -187,7 +179,6 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
 <span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_1"</span>, <span class="st">"CFP_2"</span>, <span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
-<span class="r-in"><span>  fit_formula <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  n_cores <span class="op">=</span> <span class="fl">1</span></span></span>

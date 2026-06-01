@@ -22,12 +22,8 @@
 #'   }
 #' If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold types if none is specified.
 #'
-#' @param fit_formula formula. A formula object with response and predictor
-#' variables (e.g. formula(pr_ab ~ aet + ppt_jja + pH + awc + depth + landform)).
-#' Note that the variables used here must be consistent with those used in
-#' response, predictors, and predictors_f arguments
-#' @param n_cores numeric. Number of cores to use for parallel processing when metric is "domain". Default 1 (no parallelization).
-#' 
+#' @param n_cores numeric. Number of cores to use for parallel processing when metric. Default 1 (no parallelization).
+#'
 #' @details
 #' This function fits and validates Domain models. The Domain model is a simple model that uses the Gower distance to
 #' calculate environmental similarity between the presence data and test data (Carpenter et al., 1993).
@@ -105,7 +101,6 @@
 #'   response = "pr_ab",
 #'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
 #'   predictors_f = NULL,
-#'   fit_formula = NULL,
 #'   partition = ".part",
 #'   thr = c("max_sens_spec"),
 #'   n_cores = 1
@@ -159,24 +154,34 @@
 #'   color_gradient = c("#1400FF", "#C729D6")
 #' )
 #' }
-fit_dom <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    partition = NULL,
-                    thr = NULL,
-                    fit_formula = NULL) {
+fit_dom <- function(
+  data,
+  response,
+  predictors,
+  predictors_f = NULL,
+  partition = NULL,
+  thr = NULL
+) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        dplyr::all_of(predictors_f),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
@@ -186,34 +191,35 @@ fit_dom <- function(data,
   # Remove NAs
   complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
   if (sum(!complete_vec) > 0) {
-    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    message(
+      sum(!complete_vec),
+      " rows were excluded from database because NAs were found"
+    )
     data <- data %>% dplyr::filter(complete_vec)
   }
   rm(complete_vec)
 
-
   # Formula
-  if (is.null(fit_formula)) {
-    formula1 <-
-      paste(c(
+  formula1 <-
+    paste(
+      c(
         paste(predictors, collapse = " + ", sep = ""),
         predictors_f
-      ), collapse = " + ")
-    formula1 <- stats::formula(paste(
-      response, "~", formula1
-    ))
-  } else {
-    formula1 <- fit_formula
-  }
-
-  if (!is.null(partition)) {
-    message(
-      "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
-      "\n"
+      ),
+      collapse = " + "
     )
-  }
+  formula1 <- stats::formula(paste(
+    response,
+    "~",
+    formula1
+  ))
 
+  message(
+    "Formula used for model fitting:\n",
+    Reduce(paste, deparse(formula1)) %>%
+      gsub(paste("  ", "   ", collapse = "|"), " ", .),
+    "\n"
+  )
 
   # Calculate range for each column
   # range_var <- data[, predictors] %>% dplyr::reframe(dplyr::across(dplyr::everything(), range))
@@ -221,7 +227,9 @@ fit_dom <- function(data,
   # Fit models
   if (is.null(partition)) {
     result <- list(
-      model = list(domain = data[data[, response] == 1, c(predictors, predictors_f)])
+      model = list(
+        domain = data[data[, response] == 1, c(predictors, predictors_f)]
+      )
     )
     return(result)
   } else {
@@ -279,7 +287,9 @@ fit_dom <- function(data,
             eval_partial[[i]] <- dplyr::tibble(model = "dom", eval)
           },
           error = function(cond) {
-            message("Sorry, but it was not possible to fit the model with this data")
+            message(
+              "Sorry, but it was not possible to fit the model with this data"
+            )
           }
         )
       }
@@ -297,11 +307,13 @@ fit_dom <- function(data,
 
     eval_final <- eval_partial %>%
       dplyr::group_by(model, threshold) %>%
-      dplyr::summarise(dplyr::across(
-        TPR:IMAE,
-        list(mean = mean, sd = stats::sd)
-      ), .groups = "drop")
-
+      dplyr::summarise(
+        dplyr::across(
+          TPR:IMAE,
+          list(mean = mean, sd = stats::sd)
+        ),
+        .groups = "drop"
+      )
 
     # Bind data for ensemble
     pred_test_ens <-
@@ -311,7 +323,6 @@ fit_dom <- function(data,
       dplyr::bind_rows(., .id = "replicates") %>%
       dplyr::tibble() %>%
       dplyr::relocate(rnames)
-
 
     # Fit final models with best settings
     # mod <- min_gower_rcpp(
@@ -365,17 +376,26 @@ fit_dom <- function(data,
       dplyr::group_by(threshold) %>%
       dplyr::filter(!is.na(n_presences)) %>%
       dplyr::summarise(thr_value = mean(thr_value))
-    threshold <- dplyr::bind_cols(threshold, sdm_eval(
-      p = pred_test$pred[pred_test$pr_ab == 1],
-      a = pred_test$pred[pred_test$pr_ab == 0],
-      thr = thr
-    )[c("n_presences", "n_absences")])
+    threshold <- dplyr::bind_cols(
+      threshold,
+      sdm_eval(
+        p = pred_test$pred[pred_test$pr_ab == 1],
+        a = pred_test$pred[pred_test$pr_ab == 0],
+        thr = thr
+      )[c("n_presences", "n_absences")]
+    )
 
     # create a new object similar than data.frame
     result <- list(
-      model = list(domain = data[data[, response] == 1, c(predictors, predictors_f)]),
+      model = list(
+        domain = data[data[, response] == 1, c(predictors, predictors_f)]
+      ),
       predictors = variables,
-      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+      performance = dplyr::left_join(
+        eval_final,
+        threshold[1:4],
+        by = "threshold"
+      ) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
       performance_part = eval_partial,
       data_ens = pred_test_ens
