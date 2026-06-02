@@ -281,17 +281,19 @@
 #' )
 #' }
 #'
-correct_colinvar <- function(env_layer,
-                             method,
-                             proj = NULL,
-                             save_proj = NULL,
-                             restric_to_region = NULL,
-                             restric_pca_proj = FALSE,
-                             maxcell = NULL,
-                             based_on_points = FALSE,
-                             data = NULL,
-                             x = NULL,
-                             y = NULL) {
+correct_colinvar <- function(
+  env_layer,
+  method,
+  proj = NULL,
+  save_proj = NULL,
+  restric_to_region = NULL,
+  restric_pca_proj = FALSE,
+  maxcell = NULL,
+  based_on_points = FALSE,
+  data = NULL,
+  x = NULL,
+  y = NULL
+) {
   . <- NULL
   if (!any(c("pearson", "vif", "pca", "fa") %in% method)) {
     stop(
@@ -301,7 +303,9 @@ correct_colinvar <- function(env_layer,
 
   if (based_on_points) {
     if (is.null(data) | is.null(x) | is.null(y)) {
-      stop("If based_on_points is TRUE, data, x, and y arguments must be provided")
+      stop(
+        "If based_on_points is TRUE, data, x, and y arguments must be provided"
+      )
     }
     data <- sdm_extract(
       data = data,
@@ -313,7 +317,6 @@ correct_colinvar <- function(env_layer,
     )
     data <- data[names(env_layer)]
   }
-
 
   if (class(env_layer)[1] != "SpatRaster") {
     env_layer <- terra::rast(env_layer)
@@ -405,7 +408,9 @@ correct_colinvar <- function(env_layer,
       v <- rep(NA, ncol(x))
       names(v) <- colnames(x)
       for (i in 1:ncol(x)) {
-        suppressWarnings(v[i] <- 1 / (1 - summary(lm(x[, i] ~ ., data = x[-i]))$r.squared))
+        suppressWarnings(
+          v[i] <- 1 / (1 - summary(lm(x[, i] ~ ., data = x[-i]))$r.squared)
+        )
       }
       if (v[which.max(v)] >= th) {
         ex <- names(v[which.max(v)])
@@ -464,7 +469,6 @@ correct_colinvar <- function(env_layer,
       names(stds) <- names(env_layer)
     }
 
-
     # Standardize raster values
     if (!based_on_points) {
       env_layer <- terra::scale(env_layer, center = means, scale = stds)
@@ -490,20 +494,17 @@ correct_colinvar <- function(env_layer,
       }
     }
 
-
-    p <- stats::prcomp(p0,
-      retx = TRUE,
-      scale. = FALSE,
-      center = FALSE
-    )
+    p <- stats::prcomp(p0, retx = TRUE, scale. = FALSE, center = FALSE)
     cof <- p$rotation
 
     cvar <- summary(p)$importance["Cumulative Proportion", ]
-    naxis <- Position(function(x) {
-      x >= 0.95
-    }, cvar)
+    naxis <- Position(
+      function(x) {
+        x >= 0.95
+      },
+      cvar
+    )
     cvar <- data.frame(cvar)
-
 
     # p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
     p <- stats::prcomp(
@@ -516,14 +517,17 @@ correct_colinvar <- function(env_layer,
 
     # env_layer <- terra::predict(env_layer, p)
     if (restric_pca_proj & is.null(restric_to_region)) {
-      message("No data was provided to 'restric_to_region' argument, so no geographical restriction will be applied to PCA projections")
+      message(
+        "No data was provided to 'restric_to_region' argument, so no geographical restriction will be applied to PCA projections"
+      )
       restric_pca_proj <- FALSE
     }
     if (restric_pca_proj) {
       env_layer <- terra::predict(env_layer, p)
     } else {
       if (!based_on_points) {
-        env_layer_original <- terra::scale(env_layer_original,
+        env_layer_original <- terra::scale(
+          env_layer_original,
           center = means,
           scale = stds
         )
@@ -535,7 +539,8 @@ correct_colinvar <- function(env_layer,
 
     result <- list(
       env_layer = env_layer,
-      coefficients = data.frame(cof) %>% dplyr::tibble(variable = rownames(.), .),
+      coefficients = data.frame(cof) %>%
+        dplyr::tibble(variable = rownames(.), .),
       cumulative_variance = dplyr::tibble(PC = 1:nrow(cvar), cvar)
     )
 
@@ -635,7 +640,13 @@ correct_colinvar <- function(env_layer,
     }
 
     if (is.null(fit)) {
-      message("Factorial analysis could not be performed because ", ns, " factors are too many for ", ncol(p), " variables")
+      message(
+        "Factorial analysis could not be performed because ",
+        ns,
+        " factors are too many for ",
+        ncol(p),
+        " variables"
+      )
       message("It will tested with ", ns - 1, " factors")
       ns <- ns - 1
       for (tt in 1:length(lwr)) {

@@ -190,27 +190,44 @@
 #' }
 #'
 sdm_predict <-
-  function(models,
-           pred,
-           nchunk = 1,
-           thr = NULL,
-           con_thr = FALSE,
-           predict_area = NULL,
-           clamp = TRUE,
-           pred_type = "cloglog") {
+  function(
+    models,
+    pred,
+    nchunk = 1,
+    thr = NULL,
+    con_thr = FALSE,
+    predict_area = NULL,
+    clamp = TRUE,
+    pred_type = "cloglog"
+  ) {
     . <- model <- threshold <- thr_value <- NULL
-
 
     if (is.null(names(models))) {
       message("Predicting list of individual models")
       ensembles <- NULL
       esm <- NULL
-    } else if (all(names(models) %in% c("models", "thr_metric", "predictors", "performance", "performance_part"))) {
+    } else if (
+      all(
+        names(models) %in%
+          c(
+            "models",
+            "thr_metric",
+            "predictors",
+            "performance",
+            "performance_part"
+          )
+      )
+    ) {
       message("Predicting ensembles")
       ensembles <- models
       models <- NULL
       esm <- NULL
-    } else if (all(names(models) %in% c("esm_model", "predictors", "performance", "performance_part"))) {
+    } else if (
+      all(
+        names(models) %in%
+          c("esm_model", "predictors", "performance", "performance_part")
+      )
+    ) {
       message("Predicting ensemble of small models")
       esm <- models
       models <- NULL
@@ -225,7 +242,10 @@ sdm_predict <-
     #### Prepare datasets ####
     # Crop and mask projection area
     if (!is.null(predict_area)) {
-      if (class(predict_area) %in% c("SpatialPolygons", "SpatialPolygonsDataFrame")) {
+      if (
+        class(predict_area) %in%
+          c("SpatialPolygons", "SpatialPolygonsDataFrame")
+      ) {
         predict_area <- terra::vect(predict_area)
       }
       pred <-
@@ -233,7 +253,6 @@ sdm_predict <-
         terra::crop(., predict_area) %>%
         terra::mask(., predict_area)
     }
-
 
     #### Model predictions
     if (!is.null(models)) {
@@ -291,15 +310,14 @@ sdm_predict <-
         gsub(".formula", "", .)
     }
 
-
     # Transform raster to data.frame
 
     # if(chunk){
     cell <- terra::as.data.frame(pred, cells = TRUE, na.rm = TRUE)[, "cell"]
     set <-
       c(
-        seq(1, length(cell), length.out = nchunk) # length.out = nchunk
-        %>% round(),
+        seq(1, length(cell), length.out = nchunk) %>% # length.out = nchunk
+          round(),
         length(cell) + 1
       )
     # } #else {
@@ -317,7 +335,6 @@ sdm_predict <-
       model_c[[i]] <- r
     }
 
-
     # Write here the loop
     for (CH in seq_len((length(set) - 1))) {
       rowset <- set[CH]:(set[CH + 1] - 1)
@@ -325,13 +342,11 @@ sdm_predict <-
       pred_df <- pred[rowset]
       rownames(pred_df) <- rowset
 
-
       ## %######################################################%##
       #                                                          #
       ####          Prediction for different models           ####
       #                                                          #
       ## %######################################################%##
-
 
       #### gam models ####
       wm <- which(clss == "gam")
@@ -368,7 +383,11 @@ sdm_predict <-
           if (sum(vfilter) > 0) {
             v <- rep(0, nrow(pred_df))
             v[!vfilter] <-
-              c(mgcv::predict.gam(m[[i]], pred_df[!vfilter, ], type = "response"))
+              c(mgcv::predict.gam(
+                m[[i]],
+                pred_df[!vfilter, ],
+                type = "response"
+              ))
             r[as.numeric(rownames(pred_df))] <- v
             rm(v)
           } else {
@@ -388,13 +407,15 @@ sdm_predict <-
         for (i in wm) {
           r <- pred[[!terra::is.factor(pred)]][[1]]
           r[!is.na(r)] <- NA
-          suppressWarnings(r[as.numeric(rownames(pred_df))] <-
-            predict.graf(
-              object = m[[i]],
-              newdata = pred_df[, names(m[[i]]$obsx)],
-              type = "response",
-              CI = NULL
-            ))
+          suppressWarnings(
+            r[as.numeric(rownames(pred_df))] <-
+              predict.graf(
+                object = m[[i]],
+                newdata = pred_df[, names(m[[i]]$obsx)],
+                type = "response",
+                CI = NULL
+              )
+          )
           if (length(m[[i]]$facs)) {
             r[(na_mask + is.na(r)) == 1] <- 0
           }
@@ -446,7 +467,6 @@ sdm_predict <-
         }
       }
 
-
       #### gbm models ####
       wm <- which(clss == "gbm")
       if (length(wm) > 0) {
@@ -460,7 +480,6 @@ sdm_predict <-
           model_c[[i]][rowset] <- r[rowset]
         }
       }
-
 
       #### maxnet models ####
       wm <- which(clss == "maxnet")
@@ -533,7 +552,6 @@ sdm_predict <-
         }
       }
 
-
       #### randomforest class ####
       wm <- which(clss == "randomforest")
       if (length(wm) > 0) {
@@ -570,16 +588,17 @@ sdm_predict <-
             vfilter <- 0
           }
 
-
           if (sum(vfilter) > 0) {
             v <- rep(0, nrow(pred_df))
             v[!vfilter] <-
-              stats::predict(m[[i]], pred_df[!vfilter, ] %>%
-                dplyr::mutate(dplyr::across(
-                  .cols = names(f),
-                  .fns = ~ droplevels(.)
-                )),
-              type = "prob"
+              stats::predict(
+                m[[i]],
+                pred_df[!vfilter, ] %>%
+                  dplyr::mutate(dplyr::across(
+                    .cols = names(f),
+                    .fns = ~ droplevels(.)
+                  )),
+                type = "prob"
               )[, 2]
             r[as.numeric(rownames(pred_df))] <- v
             rm(v)
@@ -634,11 +653,15 @@ sdm_predict <-
           if (sum(vfilter) > 0) {
             v <- rep(0, nrow(pred_df))
             v[!vfilter] <-
-              kernlab::predict(m[[i]], pred_df[!vfilter, ] %>%
-                dplyr::mutate(dplyr::across(
-                  .cols = names(f),
-                  .fns = ~ droplevels(.)
-                )), type = "prob")[, 2]
+              kernlab::predict(
+                m[[i]],
+                pred_df[!vfilter, ] %>%
+                  dplyr::mutate(dplyr::across(
+                    .cols = names(f),
+                    .fns = ~ droplevels(.)
+                  )),
+                type = "prob"
+              )[, 2]
             r[as.numeric(rownames(pred_df))] <- v
             rm(v)
           } else {
@@ -657,7 +680,11 @@ sdm_predict <-
           r <- pred[[!terra::is.factor(pred)]][[1]]
           r[!is.na(r)] <- NA
           r[as.numeric(rownames(pred_df))] <-
-            map_env_dist(training_data = m[[i]]$domain, projection_data = pred_df, metric = "domain")
+            map_env_dist(
+              training_data = m[[i]]$domain,
+              projection_data = pred_df,
+              metric = "domain"
+            )
           model_c[[i]][rowset] <- r[rowset]
         }
       }
@@ -682,11 +709,14 @@ sdm_predict <-
 
     names(model_c) <-
       dplyr::left_join(data.frame(alg = clss), df, by = "alg")[, 2]
-    model_c <- mapply(function(x, n) {
-      names(x) <- n
-      x
-    }, model_c, names(model_c))
-
+    model_c <- mapply(
+      function(x, n) {
+        names(x) <- n
+        x
+      },
+      model_c,
+      names(model_c)
+    )
 
     ## %######################################################%##
     #                                                          #
@@ -699,9 +729,11 @@ sdm_predict <-
       ens_method <- ens_perf %>%
         dplyr::pull(model) %>%
         unique() # get ensemble methods
-      single_model_perf <- lapply(ensembles[[1]], function(x) { # Get performance of individual model used for performing ensemble
+      single_model_perf <- lapply(ensembles[[1]], function(x) {
+        # Get performance of individual model used for performing ensemble
         x[["performance"]]
-      }) %>% dplyr::bind_rows()
+      }) %>%
+        dplyr::bind_rows()
 
       # Threshold and metric values for performing some ensembles
       if (any(ens_method %in% c("meanw", "meansup", "meanthr"))) {
@@ -727,8 +759,10 @@ sdm_predict <-
 
       if (any("meansup" == ens_method)) {
         ensemble_c[["meansup"]] <-
-          terra::app(model_c[[which(weight_data[[3]] >= mean(weight_data[[3]]))]],
-            fun = mean, cores = 1
+          terra::app(
+            model_c[[which(weight_data[[3]] >= mean(weight_data[[3]]))]],
+            fun = mean,
+            cores = 1
           )
       }
 
@@ -736,22 +770,35 @@ sdm_predict <-
         mf1 <- function(x, y) {
           terra::lapp(x, function(x) ifelse(x >= y, x, 0))
         }
-        model_c2 <- mapply(mf1, model_c, weight_data[[2]], SIMPLIFY = FALSE) %>% terra::rast()
+        model_c2 <- mapply(mf1, model_c, weight_data[[2]], SIMPLIFY = FALSE) %>%
+          terra::rast()
         ensemble_c[["meanthr"]] <- terra::app(model_c2, fun = mean, cores = 1)
         rm(model_c2)
       }
 
       if (any("median" == ens_method)) {
-        ensemble_c[["median"]] <- terra::app(model_c, fun = stats::median, cores = 1)
+        ensemble_c[["median"]] <- terra::app(
+          model_c,
+          fun = stats::median,
+          cores = 1
+        )
       }
 
-      ensemble_c <- mapply(function(x, y) {
-        names(x) <- y
-        x
-      }, ensemble_c, ens_method, SIMPLIFY = FALSE)
+      ensemble_c <- mapply(
+        function(x, y) {
+          names(x) <- y
+          x
+        },
+        ensemble_c,
+        ens_method,
+        SIMPLIFY = FALSE
+      )
 
       model_c <- ensemble_c
-      models <- split(ensembles[["performance"]], ensembles[["performance"]]$model)
+      models <- split(
+        ensembles[["performance"]],
+        ensembles[["performance"]]$model
+      )
       models <- lapply(models, function(x) {
         x <- list(x)
         names(x) <- "performance"
@@ -785,7 +832,6 @@ sdm_predict <-
       rm(ensemble_c)
     }
 
-
     ## %######################################################%##
     #                                                          #
     ####              Get binary predictions                ####
@@ -812,7 +858,8 @@ sdm_predict <-
         model_b[[i]] <-
           lapply(thr_df[[i]]$thr_value, function(x) {
             as.numeric(model_c[[i]] >= x)
-          }) %>% terra::rast()
+          }) %>%
+          terra::rast()
         # names(model_b[[i]]) <- names(thr_df[[i]]$thr_value)
         names(model_b[[i]]) <- thr_df[[i]]$threshold
       }

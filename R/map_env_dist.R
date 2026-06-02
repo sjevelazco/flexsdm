@@ -54,8 +54,8 @@
 #'
 #' # Measure environmental distance between presences and projection data
 #' clrs = c("#000033", "#1400FF", "#C729D6", "#FF9C63", "#FFFF60")
-#' 
-#' 
+#'
+#'
 #' # Domain
 #' envdist <-
 #'   map_env_dist(
@@ -77,8 +77,8 @@
 #'   color_p = "red",
 #'   color_gradient = clrs
 #' )
-#' 
-#' 
+#'
+#'
 #' # Euclidean
 #' envdist <-
 #'   map_env_dist(
@@ -133,10 +133,14 @@ map_env_dist <- function(
   cell <- y <- x <- cluster <- . <- NULL
 
   if (!metric %in% c("domain", "euclidean", "mahalanobis")) {
-    stop("metric argument must be used with 'domain', 'euclidean' or 'mahalanobis'")
+    stop(
+      "metric argument must be used with 'domain', 'euclidean' or 'mahalanobis'"
+    )
   }
   if (length(metric) > 1) {
-    stop("metric argument must be used with 'domain', 'euclidean' or 'mahalanobis'")
+    stop(
+      "metric argument must be used with 'domain', 'euclidean' or 'mahalanobis'"
+    )
   }
   if (any("data.frame" == class(training_data))) {
     training_data_pr_ab <- training_data[names(projection_data)] %>% na.omit()
@@ -145,15 +149,17 @@ map_env_dist <- function(
   }
   v0 <- unique(c(names(training_data), names(projection_data)))
   v0 <- sort(v0)
-  if (!all(c(
-    all(names(training_data) %in% names(projection_data)),
-    all(names(projection_data) %in% names(training_data))
-  ))) {
+  if (
+    !all(c(
+      all(names(training_data) %in% names(projection_data)),
+      all(names(projection_data) %in% names(training_data))
+    ))
+  ) {
     stop(
       "colnames of dataframes of env_records, training_data, and projection_data\n        do not match each other",
-      "\nraster layers names:", "\n", paste(sort(unique(unlist(v0))),
-        collapse = "\n"
-      )
+      "\nraster layers names:",
+      "\n",
+      paste(sort(unique(unlist(v0))), collapse = "\n")
     )
   }
   if (any("data.frame" %in% class(training_data))) {
@@ -168,14 +174,13 @@ map_env_dist <- function(
   } else {
     projection_data <- projection_data[v0]
   }
-  env_calib2 <- terra::as.data.frame(training_data,
+  env_calib2 <- terra::as.data.frame(
+    training_data,
     xy = FALSE,
     na.rm = TRUE
-  ) %>% dplyr::as_tibble()
-  env_proj2 <- terra::as.data.frame(projection_data,
-    xy = FALSE,
-    na.rm = TRUE
-  )
+  ) %>%
+    dplyr::as_tibble()
+  env_proj2 <- terra::as.data.frame(projection_data, xy = FALSE, na.rm = TRUE)
   if (any("SpatRaster" == class(projection_data))) {
     ncell <- rownames(env_proj2) %>% as.numeric()
   }
@@ -207,9 +212,13 @@ map_env_dist <- function(
   }
 
   if (metric == "domain") {
-      extra <- min_gower_rcpp(data1 = env_calib2, data2 = env_proj2, n_threads = n_cores)
+    extra <- min_gower_rcpp(
+      data1 = env_calib2,
+      data2 = env_proj2,
+      n_threads = n_cores
+    )
   }
-  
+
   if (any("SpatRaster" == class(projection_data))) {
     env_proj2 <- data.frame(distance = extra)
 

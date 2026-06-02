@@ -123,7 +123,7 @@
 #'
 #' plot(m_cml)
 #' points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
-#' 
+#'
 #' ### ker method
 #' m_ker <- msdm_priori(
 #'   data = occ,
@@ -135,7 +135,7 @@
 #'
 #' plot(m_ker)
 #' points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
-#' 
+#'
 #' }
 #'
 #' @seealso \code{\link{msdm_posteriori}}
@@ -146,11 +146,13 @@
 #' @importFrom terra rast as.data.frame cellFromXY xyFromCell
 #'
 #' @export
-msdm_priori <- function(data,
-                        x,
-                        y,
-                        method = c("xy", "min", "cml", "ker"),
-                        env_layer) {
+msdm_priori <- function(
+  data,
+  x,
+  y,
+  method = c("xy", "min", "cml", "ker"),
+  env_layer
+) {
   method <- match.arg(method)
 
   if (is.null(env_layer)) {
@@ -185,16 +187,19 @@ msdm_priori <- function(data,
     lat <- terra::init(env_layer, "y")
     result <- terra::mask(c(lon, lat), env_layer)
     names(result) <- c("msdm_lon", "msdm_lat")
-
   } else {
-    
     # Prepare coordinates for distance-based methods
     spi <- terra::as.data.frame(env_layer, xy = TRUE, na.rm = TRUE) %>%
-      dplyr::select(x, y) %>% as.matrix()
+      dplyr::select(x, y) %>%
+      as.matrix()
 
     cells <- terra::cellFromXY(env_layer, xy = as.matrix(records))
-    r_coords <- terra::xyFromCell(object = env_layer, cell = stats::na.omit(cells)) %>%
-      as.data.frame()  %>% as.matrix()
+    r_coords <- terra::xyFromCell(
+      object = env_layer,
+      cell = stats::na.omit(cells)
+    ) %>%
+      as.data.frame() %>%
+      as.matrix()
 
     if (method == "min") {
       distr <- euc_dist(x = spi, y = r_coords)
@@ -220,14 +225,15 @@ msdm_priori <- function(data,
       sd_graus <- max(apply(distp, 1, min))
 
       distr <- euc_dist(spi, r_coords)
-      ker_mat <- (1 / sqrt(2 * pi * sd_graus) * exp(-1 * (distr / (2 * sd_graus^2))))
+      ker_mat <- (1 /
+        sqrt(2 * pi * sd_graus) *
+        exp(-1 * (distr / (2 * sd_graus^2))))
       dist_vec <- rowSums(ker_mat)
       val <- .min_max(dist_vec)
       result <- env_layer
       result[!is.na(result)] <- val
       names(result) <- "msdm_ker"
     }
-
   }
 
   return(result)

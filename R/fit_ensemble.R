@@ -107,22 +107,25 @@
 #' mensemble
 #' }
 fit_ensemble <-
-  function(models,
-           ens_method = c("mean", "meanw", "meansup", "meanthr", "median"),
-           thr = NULL,
-           thr_model = NULL,
-           metric = NULL) {
+  function(
+    models,
+    ens_method = c("mean", "meanw", "meansup", "meanthr", "median"),
+    thr = NULL,
+    thr_model = NULL,
+    metric = NULL
+  ) {
     . <- thr_value <- pr_ab <- rnames <- replicates <- TPR <- IMAE <- n_absences <- model <- thr_value <- n_presences <- n_absences <- NULL
 
     if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
       if (is.null(thr_model) | is.null(metric)) {
-        stop("for 'meanw', 'meansup', or 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' and 'metric' argument")
+        stop(
+          "for 'meanw', 'meansup', or 'meanthr' ensemble methods it is necessary to provide a threshold type in 'thr_model' and 'metric' argument"
+        )
       }
     }
 
     #### Models names
     nms <- paste0("m_", 1:length(models))
-
 
     if (any(c("meanw", "meansup", "meanthr") %in% ens_method)) {
       #### Performance metric
@@ -156,26 +159,36 @@ fit_ensemble <-
       x["data_ens"]
     })
 
-    data_ens <- mapply(function(x, cn) {
-      colnames(x)[colnames(x) %in% "pred"] <- cn
-      x
-    }, data_ens, nms, SIMPLIFY = FALSE)
+    data_ens <- mapply(
+      function(x, cn) {
+        colnames(x)[colnames(x) %in% "pred"] <- cn
+        x
+      },
+      data_ens,
+      nms,
+      SIMPLIFY = FALSE
+    )
 
     data_ens <- lapply(data_ens, function(x) {
-      x %>% dplyr::mutate(pr_ab = pr_ab %>%
-        as.character() %>%
-        as.double())
+      x %>%
+        dplyr::mutate(
+          pr_ab = pr_ab %>%
+            as.character() %>%
+            as.double()
+        )
     })
 
     data_ens2 <-
-      dplyr::full_join(data_ens[[1]],
+      dplyr::full_join(
+        data_ens[[1]],
         data_ens[[2]],
         by = c("rnames", "replicates", "part", "pr_ab")
       )
     if (length(data_ens) > 2) {
       for (i in 3:length(data_ens)) {
         data_ens2 <-
-          dplyr::full_join(data_ens2,
+          dplyr::full_join(
+            data_ens2,
             data_ens[[i]],
             by = c("rnames", "replicates", "part", "pr_ab")
           )
@@ -200,12 +213,18 @@ fit_ensemble <-
       })
     }
     if (any("meanw" == ens_method)) {
-      v[["meanw"]] <- mapply(function(x, v) {
-        (x * v)
-      }, values, perf, SIMPLIFY = TRUE) %>%
+      v[["meanw"]] <- mapply(
+        function(x, v) {
+          (x * v)
+        },
+        values,
+        perf,
+        SIMPLIFY = TRUE
+      ) %>%
         apply(., 1, function(x) {
           sum(x, na.rm = TRUE)
-        }) / sum(perf)
+        }) /
+        sum(perf)
     }
     if (any("meansup" == ens_method)) {
       v[["meansup"]] <- apply(values[, perf >= mean(perf)], 1, function(x) {
@@ -213,9 +232,14 @@ fit_ensemble <-
       })
     }
     if (any("meanthr" == ens_method)) {
-      v[["meanthr"]] <- mapply(function(x, v) {
-        ifelse(x >= v, x, 0)
-      }, values, thr_v, SIMPLIFY = TRUE) %>%
+      v[["meanthr"]] <- mapply(
+        function(x, v) {
+          ifelse(x >= v, x, 0)
+        },
+        values,
+        thr_v,
+        SIMPLIFY = TRUE
+      ) %>%
         apply(., 1, function(x) {
           mean(x, na.rm = TRUE)
         })
@@ -240,12 +264,15 @@ fit_ensemble <-
     ##### average ensemble prediction for calculating model threshold
     data_ens3 <- data_ens2 %>%
       group_by(rnames, pr_ab) %>%
-      summarise(dplyr::across(
-        {{ ens_method }},
-        list(mean = function(x) {
-          mean(x)
-        })
-      ), .groups = "drop") %>%
+      summarise(
+        dplyr::across(
+          {{ ens_method }},
+          list(mean = function(x) {
+            mean(x)
+          })
+        ),
+        .groups = "drop"
+      ) %>%
       select(-rnames)
     colnames(data_ens3) <- gsub("_mean", "", colnames(data_ens3))
 
@@ -272,12 +299,18 @@ fit_ensemble <-
           # Validation of model
           tryCatch(
             {
-              suppressWarnings(eval <-
-                sdm_eval(
-                  p = pred_test[[i]] %>% dplyr::filter(pr_ab == 1) %>% dplyr::pull({{ g }}),
-                  a = pred_test[[i]] %>% dplyr::filter(pr_ab == 0) %>% dplyr::pull({{ g }}),
-                  thr = thr
-                ))
+              suppressWarnings(
+                eval <-
+                  sdm_eval(
+                    p = pred_test[[i]] %>%
+                      dplyr::filter(pr_ab == 1) %>%
+                      dplyr::pull({{ g }}),
+                    a = pred_test[[i]] %>%
+                      dplyr::filter(pr_ab == 0) %>%
+                      dplyr::pull({{ g }}),
+                    thr = thr
+                  )
+              )
               eval_partial[[i]] <- eval
               rm(eval)
             },
@@ -287,7 +320,9 @@ fit_ensemble <-
         names(eval_partial) <- 1:np2
 
         # Create final database with parameter performance
-        eval_partial <- eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
+        eval_partial <- eval_partial[sapply(eval_partial, function(x) {
+          !is.null(dim(x))
+        })] %>%
           dplyr::bind_rows(., .id = "partition")
         eval_partial_list[[h]] <- eval_partial
       }
@@ -299,10 +334,13 @@ fit_ensemble <-
 
       eval_final <- eval_partial %>%
         dplyr::group_by(threshold) %>%
-        dplyr::summarise(dplyr::across(
-          TPR:IMAE,
-          list(mean = mean, sd = stats::sd)
-        ), .groups = "drop")
+        dplyr::summarise(
+          dplyr::across(
+            TPR:IMAE,
+            list(mean = mean, sd = stats::sd)
+          ),
+          .groups = "drop"
+        )
 
       ensemble[[g]] <- eval_final
 
@@ -316,7 +354,9 @@ fit_ensemble <-
     close(pb)
 
     # Threshold
-    threshold <- lapply(threshold, function(x) x %>% dplyr::select(threshold:n_absences)) %>%
+    threshold <- lapply(threshold, function(x) {
+      x %>% dplyr::select(threshold:n_absences)
+    }) %>%
       dplyr::bind_rows(., .id = "model")
 
     # Bind ensemble performance
@@ -331,7 +371,11 @@ fit_ensemble <-
       models = m,
       thr_metric = c(thr_model, metric),
       predictors = variables,
-      performance = dplyr::left_join(ensemble, threshold, by = c("model", "threshold")) %>%
+      performance = dplyr::left_join(
+        ensemble,
+        threshold,
+        by = c("model", "threshold")
+      ) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
       performance_part = eval_partial_list_2
     )

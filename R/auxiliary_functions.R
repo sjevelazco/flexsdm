@@ -4,7 +4,6 @@
 #                                                          #
 ## %######################################################%##
 
-
 #' pre_tr_te
 #'
 #' @noRd
@@ -12,9 +11,12 @@ pre_tr_te <- function(data, p_names, h) {
   train <- list()
   test <- list()
 
-  if (any(c("train", "train-test", "test")
-  %in%
-    unique(data[, p_names[h]]))) {
+  if (
+    any(
+      c("train", "train-test", "test") %in%
+        unique(data[, p_names[h]])
+    )
+  ) {
     np2 <- 1
 
     filt <- grepl("train", data[, p_names[h]])
@@ -105,7 +107,7 @@ inv_bio <- function(e, p) {
   r <- (r - terra::minmax(r)[1]) /
     (terra::minmax(r)[2] - terra::minmax(r)[1])
   r <- r <= 0.1 # environmental constrain
-  r[which(r[, ] == FALSE)] <- NA
+  r[which(r[,] == FALSE)] <- NA
   return(r)
 }
 
@@ -127,7 +129,13 @@ inv_geo <- function(e, p, d) {
 #' Predict maxnet
 #' @importFrom stats model.matrix
 #' @noRd
-predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "exponential", "cloglog", "logistic"), ...) {
+predict_maxnet <- function(
+  object,
+  newdata,
+  clamp = TRUE,
+  type = c("link", "exponential", "cloglog", "logistic"),
+  ...
+) {
   categoricalval <- function(x, category) {
     ifelse(x == category, 1, 0)
   }
@@ -147,15 +155,18 @@ predict_maxnet <- function(object, newdata, clamp = TRUE, type = c("link", "expo
     }
   }
   terms <- sub(
-    "hinge\\((.*)\\):(.*):(.*)$", "hingeval(\\1,\\2,\\3)",
+    "hinge\\((.*)\\):(.*):(.*)$",
+    "hingeval(\\1,\\2,\\3)",
     names(object$betas)
   )
   terms <- sub(
-    "categorical\\((.*)\\):(.*)$", "categoricalval(\\1,\"\\2\")",
+    "categorical\\((.*)\\):(.*)$",
+    "categoricalval(\\1,\"\\2\")",
     terms
   )
   terms <- sub(
-    "thresholds\\((.*)\\):(.*)$", "thresholdval(\\1,\\2)",
+    "thresholds\\((.*)\\):(.*)$",
+    "thresholdval(\\1,\\2)",
     terms
   )
   f <- formula(paste("~", paste(terms, collapse = " + "), "-1"))
@@ -231,7 +242,10 @@ extract.maxnet.classes <- function(f) {
   # We identify these by finding terms that DO NOT match any of the other patterns.
 
   # Identify all terms that are *not* simple linear terms
-  is_complex_or_categorical <- grepl("^I\\(|^hinge\\(|^thresholds\\(|^categorical\\(|:", formula_terms)
+  is_complex_or_categorical <- grepl(
+    "^I\\(|^hinge\\(|^thresholds\\(|^categorical\\(|:",
+    formula_terms
+  )
 
   # If there are any terms left over, they must be linear terms.
   if (any(!is_complex_or_categorical)) {
@@ -296,12 +310,15 @@ rev_jack <- function(v) {
 #'
 n_training <- function(data, partition) {
   . <- partt <- NULL
-  if (any(c("train", "train-test", "test")
-  %in%
-    (data %>%
-      dplyr::select(dplyr::starts_with({{ partition }})) %>%
-      dplyr::pull() %>%
-      unique()))) {
+  if (
+    any(
+      c("train", "train-test", "test") %in%
+        (data %>%
+          dplyr::select(dplyr::starts_with({{ partition }})) %>%
+          dplyr::pull() %>%
+          unique())
+    )
+  ) {
     nn_part <- data %>%
       dplyr::select(dplyr::starts_with({{ partition }})) %>%
       apply(., 2, table) %>%
@@ -402,9 +419,9 @@ morani <- function(x, weight, na.rm = FALSE, scaled = TRUE) {
 #' @noRd
 #'
 kf <- function(df, n) {
-  suppressWarnings(km <- stats::kmeans(df %>% dplyr::select(-c(cell:y)),
-    centers = n
-  ))
+  suppressWarnings(
+    km <- stats::kmeans(df %>% dplyr::select(-c(cell:y)), centers = n)
+  )
   result <- data.frame(cluster = km$cluster, cell = names(km$cluster)) %>%
     dplyr::as_tibble() %>%
     dplyr::arrange(cluster) %>%
@@ -441,18 +458,18 @@ euc_dist_stand <- function(x, y) {
   # Standardize y (reference data)
   y_stand <- y
   for (i in 1:ncol(y)) {
-    y_stand[,i] <- (y[,i] - s_center[i]) / s_scale[i]
+    y_stand[, i] <- (y[, i] - s_center[i]) / s_scale[i]
   }
 
   # Standardize x (projection data) using parameters from y
   x_stand <- x
   for (i in 1:ncol(x)) {
-    x_stand[,i] <- (x[,i] - s_center[i]) / s_scale[i]
+    x_stand[, i] <- (x[, i] - s_center[i]) / s_scale[i]
   }
 
   # Calculate raw Euclidean distances between x and y
   raw_dist <- euc_dist(x_stand, y_stand)
-  
+
   # Calculate the maximum pairwise Euclidean distance within the reference set y
   max_dist_y <- max(stats::dist(y_stand))
 
@@ -482,13 +499,13 @@ mah_dist_stand <- function(x, y) {
   # Standardize y (reference data)
   y_stand <- y
   for (i in 1:ncol(y)) {
-    y_stand[,i] <- (y[,i] - s_center[i]) / s_scale[i]
+    y_stand[, i] <- (y[, i] - s_center[i]) / s_scale[i]
   }
 
   # Standardize x (projection data) using parameters from y
   x_stand <- x
   for (i in 1:ncol(x)) {
-    x_stand[,i] <- (x[,i] - s_center[i]) / s_scale[i]
+    x_stand[, i] <- (x[, i] - s_center[i]) / s_scale[i]
   }
 
   # Calculate raw Mahalanobis distances between standardized x and y

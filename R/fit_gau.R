@@ -94,36 +94,58 @@
 #' )
 #' gaup_t2
 #' }
-fit_gau <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    background = NULL,
-                    partition = NULL,
-                    thr = NULL) {
+fit_gau <- function(
+  data,
+  response,
+  predictors,
+  predictors_f = NULL,
+  background = NULL,
+  partition = NULL,
+  thr = NULL
+) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)
-  if (!is.null(background)) background <- data.frame(background)
+  if (!is.null(background)) {
+    background <- data.frame(background)
+  }
 
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     if (!is.null(background)) {
       background <- background %>%
-        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
+        dplyr::select(
+          dplyr::all_of(response),
+          dplyr::all_of(predictors),
+          if (!is.null(partition)) dplyr::starts_with(partition)
+        )
     }
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        dplyr::all_of(predictors_f),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
     }
     if (!is.null(background)) {
       background <- background %>%
-        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
+        dplyr::select(
+          dplyr::all_of(response),
+          dplyr::all_of(predictors),
+          dplyr::all_of(predictors_f),
+          if (!is.null(partition)) dplyr::starts_with(partition)
+        )
       for (i in predictors_f) {
         background[, i] <- as.factor(background[, i])
       }
@@ -132,26 +154,36 @@ fit_gau <- function(data,
 
   if (!is.null(background)) {
     if (!all(table(c(names(background), names(data))) == 2)) {
-      stop("Column names of database used in 'data' and 'background' arguments do not match")
+      stop(
+        "Column names of database used in 'data' and 'background' arguments do not match"
+      )
     }
   }
 
   # Remove NAs
   complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
   if (sum(!complete_vec) > 0) {
-    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    message(
+      sum(!complete_vec),
+      " rows were excluded from database because NAs were found"
+    )
     data <- data %>% dplyr::filter(complete_vec)
   }
   rm(complete_vec)
   if (!is.null(background)) {
-    complete_vec <- stats::complete.cases(background[, c(response, unlist(variables))])
+    complete_vec <- stats::complete.cases(background[, c(
+      response,
+      unlist(variables)
+    )])
     if (sum(!complete_vec) > 0) {
-      message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+      message(
+        sum(!complete_vec),
+        " rows were excluded from database because NAs were found"
+      )
       background <- background %>% dplyr::filter(complete_vec)
     }
     rm(complete_vec)
   }
-
 
   # Compare pr_ab and background column names
   if (!is.null(partition)) {
@@ -172,8 +204,16 @@ fit_gau <- function(data,
           stop(
             paste(
               "Partition groups between presences and background do not match:\n",
-              paste("Part. group presences:", paste(Npart_p, collapse = " "), "\n"),
-              paste("Part. group background:", paste(Npart_bg, collapse = " "), "\n")
+              paste(
+                "Part. group presences:",
+                paste(Npart_p, collapse = " "),
+                "\n"
+              ),
+              paste(
+                "Part. group background:",
+                paste(Npart_bg, collapse = " "),
+                "\n"
+              )
             )
           )
         }
@@ -182,16 +222,17 @@ fit_gau <- function(data,
     rm(i)
   }
 
-
   # Fit models
   if (is.null(partition)) {
-    suppressWarnings(mod <-
-      graf(
-        y = data[, response],
-        x = data[, c(predictors, predictors_f)],
-        opt.l = FALSE,
-        method = "Laplace"
-      ))
+    suppressWarnings(
+      mod <-
+        graf(
+          y = data[, response],
+          x = data[, c(predictors, predictors_f)],
+          opt.l = FALSE,
+          method = "Laplace"
+        )
+    )
 
     result <- list(
       model = mod
@@ -230,7 +271,12 @@ fit_gau <- function(data,
       if (!is.null(background)) {
         background2 <- pre_tr_te(background, p_names, h)
         train <- lapply(train, function(x) x[x[, response] == 1, ])
-        train <- mapply(dplyr::bind_rows, train, background2$train, SIMPLIFY = FALSE)
+        train <- mapply(
+          dplyr::bind_rows,
+          train,
+          background2$train,
+          SIMPLIFY = FALSE
+        )
         bgt_test <- background2$test
         rm(background2)
       }
@@ -266,15 +312,14 @@ fit_gau <- function(data,
           # Predict for presences absences data
           pred_test <- data.frame(
             pr_ab = test[[i]][, response],
-            pred =
-              suppressWarnings(
-                predict.graf(
-                  mod[[i]],
-                  newdata = test[[i]][c(predictors, predictors_f)],
-                  type = "response",
-                  CI = NULL
-                )[, 1]
-              )
+            pred = suppressWarnings(
+              predict.graf(
+                mod[[i]],
+                newdata = test[[i]][c(predictors, predictors_f)],
+                type = "response",
+                CI = NULL
+              )[, 1]
+            )
           )
 
           pred_test_ens[[h]][[i]] <- pred_test %>%
@@ -330,10 +375,13 @@ fit_gau <- function(data,
 
     eval_final <- eval_partial %>%
       dplyr::group_by(model, threshold) %>%
-      dplyr::summarise(dplyr::across(
-        TPR:IMAE,
-        list(mean = mean, sd = stats::sd)
-      ), .groups = "drop")
+      dplyr::summarise(
+        dplyr::across(
+          TPR:IMAE,
+          list(mean = mean, sd = stats::sd)
+        ),
+        .groups = "drop"
+      )
 
     # Bind data for ensemble
     pred_test_ens <-
@@ -346,25 +394,29 @@ fit_gau <- function(data,
 
     # Fit final models with best settings
     set.seed(1)
-    suppressMessages(mod <-
-      graf(
-        y = data[, response],
-        x = data[, c(predictors, predictors_f)],
-        opt.l = FALSE,
-        method = "Laplace"
-      ))
+    suppressMessages(
+      mod <-
+        graf(
+          y = data[, response],
+          x = data[, c(predictors, predictors_f)],
+          opt.l = FALSE,
+          method = "Laplace"
+        )
+    )
 
-    suppressWarnings(pred_test <- data.frame(
-      pr_ab = data.frame(data)[, response],
-      pred = suppressMessages(
-        predict.graf(
-          mod,
-          newdata = data[, c(predictors, predictors_f)],
-          type = "response",
-          CI = NULL
-        )[, 1]
+    suppressWarnings(
+      pred_test <- data.frame(
+        pr_ab = data.frame(data)[, response],
+        pred = suppressMessages(
+          predict.graf(
+            mod,
+            newdata = data[, c(predictors, predictors_f)],
+            type = "response",
+            CI = NULL
+          )[, 1]
+        )
       )
-    ))
+    )
 
     if (is.null(background)) {
       threshold <- sdm_eval(
@@ -390,7 +442,11 @@ fit_gau <- function(data,
     result <- list(
       model = mod,
       predictors = variables,
-      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+      performance = dplyr::left_join(
+        eval_final,
+        threshold[1:4],
+        by = "threshold"
+      ) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
       performance_part = eval_partial,
       data_ens = pred_test_ens

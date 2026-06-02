@@ -91,24 +91,30 @@
 #' esm_net_t1$performance
 #' esm_net_t1$performance_part
 #' }
-esm_net <- function(data,
-                    response,
-                    predictors,
-                    partition,
-                    thr = NULL,
-                    size = 2, # TODO find a formula to calculate default value for this argument
-                    decay = 0) {
+esm_net <- function(
+  data,
+  response,
+  predictors,
+  partition,
+  thr = NULL,
+  size = 2, # TODO find a formula to calculate default value for this argument
+  decay = 0
+) {
   . <- part <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- AUC_mean <- pr_ab <- NULL
   variables <- dplyr::bind_rows(c(c = predictors))
 
   # N of predictor requirement
   if (length(predictors) <= 2) {
-    stop("The 'esm_' family function should be used to build models with more than 2 predictors, use the 'fit_' or 'tune_' family functions instead")
+    stop(
+      "The 'esm_' family function should be used to build models with more than 2 predictors, use the 'fit_' or 'tune_' family functions instead"
+    )
   }
 
   # Formula
   formula1 <- utils::combn(variables, 2)
-  nms <- apply(utils::combn(variables, 2), 2, function(x) paste(x, collapse = "_")) %>%
+  nms <- apply(utils::combn(variables, 2), 2, function(x) {
+    paste(x, collapse = "_")
+  }) %>%
     paste0(".", .)
 
   # Fit models
@@ -150,7 +156,9 @@ esm_net <- function(data,
   filt <- D > 0
 
   if (sum(filt) == 0) {
-    message("None bivariate model had Somer's D > 0.5. Try with another esm_* function. NA will be returned")
+    message(
+      "None bivariate model had Somer's D > 0.5. Try with another esm_* function. NA will be returned"
+    )
     return(NA)
   }
 
@@ -164,27 +172,37 @@ esm_net <- function(data,
     x["data_ens"]
   })
 
-  data_ens <- mapply(function(x, cn) {
-    colnames(x)[colnames(x) %in% "pred"] <- cn
-    x
-  }, data_ens, nms, SIMPLIFY = FALSE)
+  data_ens <- mapply(
+    function(x, cn) {
+      colnames(x)[colnames(x) %in% "pred"] <- cn
+      x
+    },
+    data_ens,
+    nms,
+    SIMPLIFY = FALSE
+  )
 
   data_ens <- lapply(data_ens, function(x) {
-    x %>% dplyr::mutate(pr_ab = pr_ab %>%
-      as.character() %>%
-      as.double())
+    x %>%
+      dplyr::mutate(
+        pr_ab = pr_ab %>%
+          as.character() %>%
+          as.double()
+      )
   })
 
   if (length(data_ens) > 1) {
     data_ens2 <-
-      dplyr::inner_join(data_ens[[1]],
+      dplyr::inner_join(
+        data_ens[[1]],
         data_ens[[2]],
         by = c("rnames", "replicates", "part", "pr_ab")
       )
     if (length(data_ens) > 2) {
       for (i in 3:length(data_ens)) {
         data_ens2 <-
-          dplyr::inner_join(data_ens2,
+          dplyr::inner_join(
+            data_ens2,
             data_ens[[i]],
             by = c("rnames", "replicates", "part", "pr_ab")
           )
@@ -202,12 +220,18 @@ esm_net <- function(data,
   #### Remove suitability values from data_ens2
   data_ens2 <- data_ens2 %>% dplyr::select(-dplyr::starts_with("."))
 
-  pred <- mapply(function(x, v) {
-    (x * v)
-  }, values, D, SIMPLIFY = TRUE) %>%
+  pred <- mapply(
+    function(x, v) {
+      (x * v)
+    },
+    values,
+    D,
+    SIMPLIFY = TRUE
+  ) %>%
     apply(., 1, function(x) {
       sum(x, na.rm = TRUE)
-    }) / sum(D)
+    }) /
+    sum(D)
 
   pred_test <- dplyr::bind_cols(data_ens2, pred = pred) # This dataset will be use to calculate
   # esm peformance
@@ -235,13 +259,15 @@ esm_net <- function(data,
 
   eval_esm <- dplyr::bind_rows(replicates, .id = "replicates")
 
-
   eval_final <- eval_esm %>%
     dplyr::group_by(threshold) %>%
-    dplyr::summarise(dplyr::across(
-      TPR:IMAE,
-      list(mean = mean, sd = stats::sd)
-    ), .groups = "drop")
+    dplyr::summarise(
+      dplyr::across(
+        TPR:IMAE,
+        list(mean = mean, sd = stats::sd)
+      ),
+      .groups = "drop"
+    )
 
   # Calculate final threshold
   threshold <- sdm_eval(
@@ -252,7 +278,7 @@ esm_net <- function(data,
 
   threshold$n_presences <- sum(data[response] == 1)
   threshold$n_absences <- sum(data[response] == 0)
-  
+
   # List of models used for prediction
   mod <- lapply(list_esm, function(x) x$mode)
   names(mod) <- D
@@ -260,7 +286,8 @@ esm_net <- function(data,
   result <- list(
     esm_model = mod,
     predictors = variables,
-    performance = dplyr::left_join(tibble(model = "esm_net", eval_final),
+    performance = dplyr::left_join(
+      tibble(model = "esm_net", eval_final),
       threshold[1:4],
       by = "threshold"
     ) %>%

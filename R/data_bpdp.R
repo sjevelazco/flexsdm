@@ -89,13 +89,15 @@
 #' # see p_bpdp to construct partial dependence plot with ggplot2
 #' }
 data_bpdp <-
-  function(model,
-           predictors,
-           resolution = 50,
-           training_data = NULL,
-           training_boundaries = NULL,
-           projection_data = NULL,
-           clamping = FALSE) {
+  function(
+    model,
+    predictors,
+    resolution = 50,
+    training_data = NULL,
+    training_boundaries = NULL,
+    projection_data = NULL,
+    clamping = FALSE
+  ) {
     # Extract training data
     if (class(model)[1] == "gam") {
       x <- model$model[attr(model$terms, "term.labels")]
@@ -107,7 +109,7 @@ data_bpdp <-
     }
 
     if (class(model)[1] == "glm") {
-      flt <- grepl("^I\\(", attr(model$terms, "term.labels")) | 
+      flt <- grepl("^I\\(", attr(model$terms, "term.labels")) |
         grepl(":", attr(model$terms, "term.labels"))
       flt <- attr(model$terms, "term.labels")[!flt]
       flt <- flt[flt %in% names(attr(model$terms, "dataClasses"))]
@@ -115,7 +117,9 @@ data_bpdp <-
     }
 
     if (!is.null(training_boundaries) & is.null(training_data)) {
-      stop("To extract data to delimit training boundaries it is necessary to provide training data in 'training_data' argument")
+      stop(
+        "To extract data to delimit training boundaries it is necessary to provide training data in 'training_data' argument"
+      )
     }
     if (!is.null(training_boundaries)) {
       if (!any(training_boundaries %in% c("convexh", "rectangle"))) {
@@ -128,7 +132,12 @@ data_bpdp <-
       training_boundaries <- 1
     }
 
-    if (any(class(model)[1] == c("nnet.formula", "randomForest.formula", "ksvm", "gbm", "maxnet"))) {
+    if (
+      any(
+        class(model)[1] ==
+          c("nnet.formula", "randomForest.formula", "ksvm", "gbm", "maxnet")
+      )
+    ) {
       if (is.null(training_data)) {
         stop(
           "To estimate partial plot data for Neural Networks, Random Forest, Support Vector Machine it is necessary to provide calibration data in 'training_data' argument"
@@ -167,7 +176,6 @@ data_bpdp <-
       chulld <- NULL
     }
 
-
     # Control average factor level
     fact <- sapply(x, is.factor)
     suit_c <- which(!fact)
@@ -182,7 +190,6 @@ data_bpdp <-
       }
     }
 
-
     if (any(predictors %in% names(fact))) {
       if (is.null(projection_data)) {
         filt <- sapply(x[predictors], is.factor)
@@ -195,7 +202,8 @@ data_bpdp <-
         filt <- is.factor(projection_data[[predictors]])
         rng1 <- terra::minmax(projection_data[[!filt]])
         rng1 <- seq(rng1[1], rng1[2], length.out = resolution)
-        rng2 <- as.data.frame(projection_data[[predictors]][[filt]])[, 1] %>% unique()
+        rng2 <- as.data.frame(projection_data[[predictors]][[filt]])[, 1] %>%
+          unique()
       }
     } else {
       if (is.null(projection_data)) {
@@ -222,18 +230,23 @@ data_bpdp <-
     suit_c <- suit_c %>% dplyr::select(!{{ predictors }})
     suit_c <- data.frame(rng, suit_c)
 
-
     # Predict model
     if (class(model)[1] == "gam") {
       suit_c <-
-        data.frame(suit_c[1:2],
-          Suitability = mgcv::predict.gam(model, newdata = suit_c, type = "response")
+        data.frame(
+          suit_c[1:2],
+          Suitability = mgcv::predict.gam(
+            model,
+            newdata = suit_c,
+            type = "response"
+          )
         )
     }
 
     if (class(model)[1] == "graf") {
       suit_c <-
-        data.frame(suit_c[1:2],
+        data.frame(
+          suit_c[1:2],
           Suitability = predict.graf(
             object = model,
             newdata = suit_c[names(model$peak)],
@@ -245,24 +258,32 @@ data_bpdp <-
 
     if (class(model)[1] == "glm") {
       suit_c <-
-        data.frame(suit_c[1:2],
-          Suitability = stats::predict.glm(model, newdata = suit_c, type = "response")
+        data.frame(
+          suit_c[1:2],
+          Suitability = stats::predict.glm(
+            model,
+            newdata = suit_c,
+            type = "response"
+          )
         )
     }
 
     if (class(model)[1] == "gbm") {
       suit_c <-
-        data.frame(suit_c[1:2],
+        data.frame(
+          suit_c[1:2],
           Suitability = suppressMessages(gbm::predict.gbm(
             model,
-            newdata = suit_c, type = "response"
+            newdata = suit_c,
+            type = "response"
           ))
         )
     }
 
     if (class(model)[1] == "maxnet") {
       suit_c <-
-        data.frame(suit_c[1:2],
+        data.frame(
+          suit_c[1:2],
           Suitability = predict_maxnet(
             object = model,
             newdata = suit_c,
@@ -274,23 +295,35 @@ data_bpdp <-
 
     if (class(model)[1] == "nnet.formula") {
       suit_c <-
-        data.frame(suit_c[1:2],
+        data.frame(
+          suit_c[1:2],
           Suitability = stats::predict(model, newdata = suit_c, type = "raw")
         )
     }
 
     if (class(model)[1] == "randomForest.formula") {
       suit_c <-
-        data.frame(suit_c[1:2], Suitability = stats::predict(model, suit_c, type = "prob")[, 2])
+        data.frame(
+          suit_c[1:2],
+          Suitability = stats::predict(model, suit_c, type = "prob")[, 2]
+        )
     }
 
     if (class(model)[1] == "ksvm") {
       suit_c <-
-        data.frame(suit_c[1:2],
-          Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2]
+        data.frame(
+          suit_c[1:2],
+          Suitability = kernlab::predict(
+            model,
+            suit_c,
+            type = "probabilities"
+          )[, 2]
         )
     }
 
-    result <- list("pspdata" = dplyr::as_tibble(suit_c), "training_boundaries" = chulld)
+    result <- list(
+      "pspdata" = dplyr::as_tibble(suit_c),
+      "training_boundaries" = chulld
+    )
     return(result)
   }

@@ -116,38 +116,51 @@
 #'   inter_order = 2
 #' )
 #' }
-fit_glm <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    select_pred = FALSE,
-                    partition = NULL,
-                    thr = NULL,
-                    fit_formula = NULL,
-                    poly = 2,
-                    inter_order = 0) {
+fit_glm <- function(
+  data,
+  response,
+  predictors,
+  predictors_f = NULL,
+  select_pred = FALSE,
+  partition = NULL,
+  thr = NULL,
+  fit_formula = NULL,
+  poly = 2,
+  inter_order = 0
+) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        dplyr::all_of(predictors_f),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
     }
   }
 
-
   # Remove NAs
   complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
   if (sum(!complete_vec) > 0) {
-    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    message(
+      sum(!complete_vec),
+      " rows were excluded from database because NAs were found"
+    )
     data <- data %>% dplyr::filter(complete_vec)
   }
   rm(complete_vec)
@@ -156,10 +169,9 @@ fit_glm <- function(data,
   if (is.null(fit_formula)) {
     if (poly >= 2) {
       forpoly <- lapply(2:poly, function(x) {
-        paste("I(", predictors, "^", x, ")",
-          sep = "", collapse = " + "
-        )
-      }) %>% paste(collapse = " + ")
+        paste("I(", predictors, "^", x, ")", sep = "", collapse = " + ")
+      }) %>%
+        paste(collapse = " + ")
       formula1 <- paste(c(predictors, predictors_f), collapse = " + ") %>%
         paste(., forpoly, sep = " + ")
     } else {
@@ -170,16 +182,24 @@ fit_glm <- function(data,
     if (inter_order > 0) {
       forinter <- c(predictors, predictors_f)
       if (inter_order > length(forinter)) {
-        stop("value of inter_order is higher than number of predicors ", "(", length(forinter), ")")
+        stop(
+          "value of inter_order is higher than number of predicors ",
+          "(",
+          length(forinter),
+          ")"
+        )
       }
       forinter_l <- list()
 
       for (i in 1:inter_order) {
         forinter_l[[i]] <- do.call(
           "expand.grid",
-          c(lapply(1:(i + 1), function(x) {
-            forinter
-          }), stringsAsFactors = FALSE)
+          c(
+            lapply(1:(i + 1), function(x) {
+              forinter
+            }),
+            stringsAsFactors = FALSE
+          )
         )
         forinter_l[[i]] <- apply(forinter_l[[i]], 1, function(x) {
           x <- unique(sort(x))
@@ -197,11 +217,15 @@ fit_glm <- function(data,
     if (exists("forinter")) {
       formula1 <- paste(formula1, forinter, sep = " + ")
       formula1 <- stats::formula(paste(
-        response, "~", formula1
+        response,
+        "~",
+        formula1
       ))
     } else {
       formula1 <- stats::formula(paste(
-        response, "~", formula1
+        response,
+        "~",
+        formula1
       ))
     }
   } else {
@@ -211,18 +235,28 @@ fit_glm <- function(data,
   if (!is.null(partition)) {
     message(
       "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      Reduce(paste, deparse(formula1)) %>%
+        gsub(paste("  ", "   ", collapse = "|"), " ", .),
       "\n"
     )
   }
-
 
   # Selection predictor
   if (select_pred) {
     message("Selecting predictors")
 
-    var_selected <- suppressWarnings(stats::glm(formula1, data = data, family = "binomial"))
-    suppressWarnings(var_selected <- stats::step(var_selected, direction = "backward", trace = 0))
+    var_selected <- suppressWarnings(stats::glm(
+      formula1,
+      data = data,
+      family = "binomial"
+    ))
+    suppressWarnings(
+      var_selected <- stats::step(
+        var_selected,
+        direction = "backward",
+        trace = 0
+      )
+    )
     formula1 <- formula(var_selected)
 
     var_selected <- as.character(formula1)[3] %>%
@@ -244,21 +278,20 @@ fit_glm <- function(data,
       predictors_f <- NULL
     }
 
-
     message(
       "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      Reduce(paste, deparse(formula1)) %>%
+        gsub(paste("  ", "   ", collapse = "|"), " ", .),
       "\n"
     )
   }
 
   # Fit models
   if (is.null(partition)) {
-    suppressWarnings(mod <-
-      stats::glm(formula1,
-        data = data,
-        family = "binomial"
-      ))
+    suppressWarnings(
+      mod <-
+        stats::glm(formula1, data = data, family = "binomial")
+    )
 
     result <- list(
       model = mod
@@ -294,12 +327,10 @@ fit_glm <- function(data,
       for (i in 1:np2) {
         tryCatch({
           message("Partition number: ", i, "/", np2)
-          suppressWarnings(mod[[i]] <-
-            stats::glm(formula1,
-              data = train[[i]],
-              family = "binomial"
-            ))
-
+          suppressWarnings(
+            mod[[i]] <-
+              stats::glm(formula1, data = train[[i]], family = "binomial")
+          )
 
           # Predict for presences absences data
           ## Eliminate factor levels not used for fitting
@@ -350,10 +381,13 @@ fit_glm <- function(data,
 
     eval_final <- eval_partial %>%
       dplyr::group_by(model, threshold) %>%
-      dplyr::summarise(dplyr::across(
-        TPR:IMAE,
-        list(mean = mean, sd = stats::sd)
-      ), .groups = "drop")
+      dplyr::summarise(
+        dplyr::across(
+          TPR:IMAE,
+          list(mean = mean, sd = stats::sd)
+        ),
+        .groups = "drop"
+      )
 
     # Bind data for ensemble
     pred_test_ens <-
@@ -365,11 +399,10 @@ fit_glm <- function(data,
       dplyr::relocate(rnames)
 
     # Fit final models with best settings
-    suppressWarnings(mod <-
-      stats::glm(formula1,
-        data = data,
-        family = "binomial"
-      ))
+    suppressWarnings(
+      mod <-
+        stats::glm(formula1, data = data, family = "binomial")
+    )
 
     pred_test <- data.frame(
       pr_ab = data.frame(data)[, response],
@@ -389,7 +422,11 @@ fit_glm <- function(data,
     result <- list(
       model = mod,
       predictors = variables,
-      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+      performance = dplyr::left_join(
+        eval_final,
+        threshold[1:4],
+        by = "threshold"
+      ) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
       performance_part = eval_partial,
       data_ens = pred_test_ens

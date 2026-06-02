@@ -90,13 +90,15 @@
 #' # see p_pdp to construct partial dependence plot with ggplot2
 #' }
 data_pdp <-
-  function(model,
-           predictors,
-           resolution = 50,
-           resid = FALSE,
-           training_data = NULL,
-           projection_data = NULL,
-           clamping = FALSE) {
+  function(
+    model,
+    predictors,
+    resolution = 50,
+    resid = FALSE,
+    training_data = NULL,
+    projection_data = NULL,
+    clamping = FALSE
+  ) {
     # Extract training data
     if (class(model)[1] == "gam") {
       x <- model$model[attr(model$terms, "term.labels")]
@@ -108,14 +110,19 @@ data_pdp <-
     }
 
     if (class(model)[1] == "glm") {
-      flt <- grepl("^I\\(", attr(model$terms, "term.labels")) | 
+      flt <- grepl("^I\\(", attr(model$terms, "term.labels")) |
         grepl(":", attr(model$terms, "term.labels"))
       flt <- attr(model$terms, "term.labels")[!flt]
       flt <- flt[flt %in% names(attr(model$terms, "dataClasses"))]
       x <- model$model[flt]
     }
 
-    if (any(class(model)[1] == c("nnet.formula", "randomForest.formula", "ksvm", "gbm", "maxnet"))) {
+    if (
+      any(
+        class(model)[1] ==
+          c("nnet.formula", "randomForest.formula", "ksvm", "gbm", "maxnet")
+      )
+    ) {
       if (is.null(training_data)) {
         stop(
           "For estimating partial plot data for Neural Networks, Random Forest, Support Vector Machine it is necessary to provide calibration data in 'training_data' argument"
@@ -150,7 +157,6 @@ data_pdp <-
       }
     }
 
-
     if (predictors %in% names(fact)) {
       rng <- sort(data.frame(unique(x[names(fact)]))[, predictors])
       suit_c <- suit_c %>% dplyr::select(-{{ predictors }})
@@ -173,12 +179,20 @@ data_pdp <-
     # Predict model
     if (class(model)[1] == "gam") {
       suit_c <-
-        data.frame(suit_c[1],
-          Suitability = mgcv::predict.gam(model, newdata = suit_c, type = "response")
+        data.frame(
+          suit_c[1],
+          Suitability = mgcv::predict.gam(
+            model,
+            newdata = suit_c,
+            type = "response"
+          )
         )
       if (resid) {
         suit_r <-
-          data.frame(x[predictors], Suitability = mgcv::predict.gam(model, type = "response"))
+          data.frame(
+            x[predictors],
+            Suitability = mgcv::predict.gam(model, type = "response")
+          )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
         result <- list("pdpdata" = suit_c, "resid" = NA)
@@ -198,7 +212,8 @@ data_pdp <-
         )
       if (resid) {
         suit_r <-
-          data.frame(x[predictors],
+          data.frame(
+            x[predictors],
             Suitability = predict.graf(
               object = model,
               type = "response",
@@ -213,12 +228,20 @@ data_pdp <-
 
     if (class(model)[1] == "glm") {
       suit_c <-
-        data.frame(suit_c[1],
-          Suitability = stats::predict.glm(model, newdata = suit_c, type = "response")
+        data.frame(
+          suit_c[1],
+          Suitability = stats::predict.glm(
+            model,
+            newdata = suit_c,
+            type = "response"
+          )
         )
       if (resid) {
         suit_r <-
-          data.frame(x[predictors], Suitability = stats::predict.glm(model, type = "response"))
+          data.frame(
+            x[predictors],
+            Suitability = stats::predict.glm(model, type = "response")
+          )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
         result <- list("pdpdata" = suit_c, "resid" = NA)
@@ -227,12 +250,24 @@ data_pdp <-
 
     if (class(model)[1] == "gbm") {
       suit_c <-
-        data.frame(suit_c[1],
-          Suitability = suppressMessages(gbm::predict.gbm(model, newdata = suit_c, type = "response"))
+        data.frame(
+          suit_c[1],
+          Suitability = suppressMessages(gbm::predict.gbm(
+            model,
+            newdata = suit_c,
+            type = "response"
+          ))
         )
       if (resid) {
         suit_r <-
-          data.frame(x[predictors], Suitability = suppressMessages(gbm::predict.gbm(model, newdata = x, type = "response")))
+          data.frame(
+            x[predictors],
+            Suitability = suppressMessages(gbm::predict.gbm(
+              model,
+              newdata = x,
+              type = "response"
+            ))
+          )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
         result <- list("pdpdata" = suit_c, "resid" = NA)
@@ -241,7 +276,8 @@ data_pdp <-
 
     if (class(model)[1] == "maxnet") {
       suit_c <-
-        data.frame(suit_c[1],
+        data.frame(
+          suit_c[1],
           Suitability = predict_maxnet(
             model,
             newdata = suit_c,
@@ -251,12 +287,15 @@ data_pdp <-
         )
       if (resid) {
         suit_r <-
-          data.frame(x[predictors], Suitability = predict_maxnet(
-            object = model,
-            newdata = data.frame(x),
-            type = "cloglog",
-            clamp = clamping
-          ))
+          data.frame(
+            x[predictors],
+            Suitability = predict_maxnet(
+              object = model,
+              newdata = data.frame(x),
+              type = "cloglog",
+              clamp = clamping
+            )
+          )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
         result <- list("pdpdata" = suit_c, "resid" = NA)
@@ -265,10 +304,16 @@ data_pdp <-
 
     if (class(model)[1] == "nnet.formula") {
       suit_c <-
-        data.frame(suit_c[1], Suitability = stats::predict(model, newdata = suit_c, type = "raw"))
+        data.frame(
+          suit_c[1],
+          Suitability = stats::predict(model, newdata = suit_c, type = "raw")
+        )
       if (resid) {
         suit_r <-
-          data.frame(x[predictors], Suitability = stats::predict(model, type = "raw"))
+          data.frame(
+            x[predictors],
+            Suitability = stats::predict(model, type = "raw")
+          )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
         result <- list("pdpdata" = suit_c, "resid" = NA)
@@ -277,10 +322,16 @@ data_pdp <-
 
     if (class(model)[1] == "randomForest.formula") {
       suit_c <-
-        data.frame(suit_c[1], Suitability = stats::predict(model, suit_c, type = "prob")[, 2])
+        data.frame(
+          suit_c[1],
+          Suitability = stats::predict(model, suit_c, type = "prob")[, 2]
+        )
       if (resid) {
         suit_r <-
-          data.frame(x[predictors], Suitability = stats::predict(model, type = "prob")[, 2])
+          data.frame(
+            x[predictors],
+            Suitability = stats::predict(model, type = "prob")[, 2]
+          )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
         result <- list("pdpdata" = suit_c, "resid" = NA)
@@ -289,13 +340,21 @@ data_pdp <-
 
     if (class(model)[1] == "ksvm") {
       suit_c <-
-        data.frame(suit_c[1],
-          Suitability = kernlab::predict(model, suit_c, type = "probabilities")[, 2]
+        data.frame(
+          suit_c[1],
+          Suitability = kernlab::predict(
+            model,
+            suit_c,
+            type = "probabilities"
+          )[, 2]
         )
       if (resid) {
         suit_r <-
-          data.frame(x[predictors],
-            Suitability = kernlab::predict(model, x, type = "probabilities")[, 2]
+          data.frame(
+            x[predictors],
+            Suitability = kernlab::predict(model, x, type = "probabilities")[,
+              2
+            ]
           )
         result <- list("pdpdata" = suit_c, "resid" = suit_r)
       } else {
@@ -307,10 +366,11 @@ data_pdp <-
     if (!is.null(projection_data)) {
       if (!predictors %in% names(fact)) {
         result$pdpdata$Type <-
-          ifelse(suit_c[, 1] >= min(x[, predictors]) &
-            suit_c[, 1] <= max(x[, predictors]),
-          "Training",
-          "Projection"
+          ifelse(
+            suit_c[, 1] >= min(x[, predictors]) &
+              suit_c[, 1] <= max(x[, predictors]),
+            "Training",
+            "Projection"
           )
       }
     }

@@ -10,7 +10,6 @@
 # using Gaussian processes. Methods in Ecology and Evolution, 7, 598–608.
 # https://doi.org/10.1111/2041-210X.12523
 
-
 # density and gradient of the prior over the log hyperparameters
 theta.prior <- function(theta, pars) {
   if (any(is.na(pars))) {
@@ -165,8 +164,10 @@ cov.SE <- function(x1, x2 = NULL, e1 = NULL, e2 = NULL, l) {
   } else {
     dists <- list()
     for (i in 1:n3) {
-      dists[[i]] <- x1[, i]^2 %*% t(rep(1, n2)) +
-        rep(1, n1) %*% t(x2[, i]^2) - 2 * x1[, i] %*% t(x2[, i])
+      dists[[i]] <- x1[, i]^2 %*%
+        t(rep(1, n2)) +
+        rep(1, n1) %*% t(x2[, i]^2) -
+        2 * x1[, i] %*% t(x2[, i])
     }
   }
 
@@ -251,7 +252,9 @@ cov.SE.d1 <- function(x, e = NULL, l) {
 # d0
 d0 <-
   function(z, y) {
-    if (length(y) != length(z)) y <- rep(y, length(z))
+    if (length(y) != length(z)) {
+      y <- rep(y, length(z))
+    }
     pr <- y > 0 & y < 1
     npr <- !pr
     ans <- vector("numeric", length(y))
@@ -412,7 +415,8 @@ optimise.graf <- function(args) {
   low <- -Inf
   up <- Inf
 
-  opt <- stats::optim(theta,
+  opt <- stats::optim(
+    theta,
     fn = objective,
     gr = grad,
     prior.pars = args$theta.prior.pars,
@@ -450,9 +454,20 @@ optimise.graf <- function(args) {
 
 # graf.fit.laplace
 graf.fit.laplace <-
-  function(y, x, mn, l, wt, e = NULL, tol = 10^-6, itmax = 50,
-           verbose = FALSE) {
-    if (is.vector(x)) x <- as.matrix(x)
+  function(
+    y,
+    x,
+    mn,
+    l,
+    wt,
+    e = NULL,
+    tol = 10^-6,
+    itmax = 50,
+    verbose = FALSE
+  ) {
+    if (is.vector(x)) {
+      x <- as.matrix(x)
+    }
     mn <- stats::qnorm(mn)
     n <- length(y)
 
@@ -477,18 +492,26 @@ graf.fit.laplace <-
       rW <- sqrt(W)
       cf <- f - mn
       mat1 <- rW %*% t(rW) * K + eye
-      L <- tryCatch(chol(mat1),
-        error = function(x) {
-          return(NULL)
-        }
-      )
+      L <- tryCatch(chol(mat1), error = function(x) {
+        return(NULL)
+      })
       b <- W * cf + wt * d1(f, y)
       mat2 <- rW * (K %*% b)
       adiff <- b - rW * backsolve(L, forwardsolve(t(L), mat2)) - a
       dim(adiff) <- NULL
 
       # find optimum step size using Brent's method
-      res <- stats::optimise(psiline, c(0, 2), adiff, a, as.matrix(K), y, d0, mn, wt)
+      res <- stats::optimise(
+        psiline,
+        c(0, 2),
+        adiff,
+        a,
+        as.matrix(K),
+        y,
+        d0,
+        mn,
+        wt
+      )
       a <- a + res$minimum * adiff
       f <- K %*% a + mn
       obj <- psi(a, f, mn, y, d0, wt)
@@ -499,11 +522,9 @@ graf.fit.laplace <-
     W <- -(wt * d2(f, y))
     rW <- sqrt(W)
     mat1 <- rW %*% t(rW) * K + eye
-    L <- tryCatch(chol(mat1),
-      error = function(x) {
-        return(NULL)
-      }
-    )
+    L <- tryCatch(chol(mat1), error = function(x) {
+      return(NULL)
+    })
 
     # return marginal negative log-likelihood
     mnll <- (a %*% cf)[1, 1] / 2 + sum(log(diag(L)) - (wt * d0(f, y)))
@@ -532,19 +553,44 @@ graf.fit.laplace <-
       l_grads[i] <- -grad
     }
 
-    if (verbose) cat(paste("  ", it, "Laplace iterations\n"))
-    if (it == itmax) print("timed out, don't trust the inference!")
+    if (verbose) {
+      cat(paste("  ", it, "Laplace iterations\n"))
+    }
+    if (it == itmax) {
+      print("timed out, don't trust the inference!")
+    }
     return(list(
-      y = y, x = x, MAP = f, ls = l, a = a, W = W, L = L, K = K,
-      e = e, obsx = x, obsy = y, mnll = mnll, wt = wt,
+      y = y,
+      x = x,
+      MAP = f,
+      ls = l,
+      a = a,
+      W = W,
+      L = L,
+      K = K,
+      e = e,
+      obsx = x,
+      obsy = y,
+      mnll = mnll,
+      wt = wt,
       l_grads = l_grads
     ))
   }
 
 # graf.fit.ep
 graf.fit.ep <-
-  function(y, x, mn, l, wt, e = NULL, tol = 1e-6, itmax = 50, itmin = 2,
-           verbose = FALSE) {
+  function(
+    y,
+    x,
+    mn,
+    l,
+    wt,
+    e = NULL,
+    tol = 1e-6,
+    itmax = 50,
+    itmin = 2,
+    verbose = FALSE
+  ) {
     # fit a GRaF model using expectation-propagation
     # as implemented in the gpml matlab library
     # If parallel  = TRUE, the EP uses the parallel update
@@ -674,7 +720,9 @@ graf.fit.ep <-
       # split the final equation up into 5 bits...
       mnll.a <- sum(log(diag(L))) - sum(lZ) - t(tnu) %*% Sigma %*% tnu / 2
       mnll.b <- t(nu_n - mn * tau_n)
-      mnll.c <- ((ttau / tau_n * (nu_n - mn * tau_n) - 2 * tnu) / (ttau + tau_n)) / 2
+      mnll.c <- ((ttau / tau_n * (nu_n - mn * tau_n) - 2 * tnu) /
+        (ttau + tau_n)) /
+        2
       mnll.d <- sum(tnu^2 / (tau_n + ttau)) / 2
       mnll.e <- sum(log(1 + ttau / tau_n)) / 2
 
@@ -702,13 +750,18 @@ graf.fit.ep <-
 
     # throw an error if the iterations maxed out before convergence
     if (it >= itmax) {
-      stop(paste0("maximum number of iterations (", itmax, ") reached
-                  without convergence"))
+      stop(paste0(
+        "maximum number of iterations (",
+        itmax,
+        ") reached
+                  without convergence"
+      ))
     }
 
     # calculate posterior parameters
     sW <- sqrt(ttau)
-    alpha <- tnu - sW * backsolve(L, backsolve(L, sW * (K %*% tnu), transpose = TRUE))
+    alpha <- tnu -
+      sW * backsolve(L, backsolve(L, sW * (K %*% tnu), transpose = TRUE))
     f <- crossprod(K, alpha) + mn
 
     # return relevant parameters
@@ -731,9 +784,20 @@ graf.fit.ep <-
   }
 
 graf <-
-  function(y, x, error = NULL, weights = NULL, prior = NULL, l = NULL, opt.l = FALSE,
-           theta.prior.pars = c(log(10), 1), hessian = FALSE, opt.control = list(),
-           verbose = FALSE, method = c("Laplace", "EP")) {
+  function(
+    y,
+    x,
+    error = NULL,
+    weights = NULL,
+    prior = NULL,
+    l = NULL,
+    opt.l = FALSE,
+    theta.prior.pars = c(log(10), 1),
+    hessian = FALSE,
+    opt.control = list(),
+    verbose = FALSE,
+    method = c("Laplace", "EP")
+  ) {
     method <- match.arg(method)
 
     # optionally optimise graf (by recursively calling this function)
@@ -754,11 +818,14 @@ graf <-
       return(fit)
     }
 
-
-    if (!is.data.frame(x)) stop("x must be a dataframe")
+    if (!is.data.frame(x)) {
+      stop("x must be a dataframe")
+    }
 
     # convert any ints to numerics
-    for (i in 1:ncol(x)) if (is.integer(x[, i])) x[, i] <- as.numeric(x[, i])
+    for (i in 1:ncol(x)) {
+      if (is.integer(x[, i])) x[, i] <- as.numeric(x[, i])
+    }
 
     obsx <- x
     k <- ncol(x)
@@ -782,14 +849,18 @@ graf <-
     # find factors and convert them to numerics
     notfacs <- 1:k
     facs <- which(unlist(lapply(x, is.factor)))
-    if (length(facs) > 0) notfacs <- notfacs[-facs]
+    if (length(facs) > 0) {
+      notfacs <- notfacs[-facs]
+    }
     for (fac in facs) {
       x[, fac] <- as.numeric(x[, fac])
     }
     x <- as.matrix(x)
 
     # scale the matrix, retaining scaling
-    scaling <- apply(as.matrix(x[, notfacs]), 2, function(x) c(mean(x), stats::sd(x)))
+    scaling <- apply(as.matrix(x[, notfacs]), 2, function(x) {
+      c(mean(x), stats::sd(x))
+    })
     for (i in 1:length(notfacs)) {
       x[, notfacs[i]] <- (x[, notfacs[i]] - scaling[1, i]) / scaling[2, i]
     }
@@ -815,10 +886,26 @@ graf <-
     # fit model
     if (method == "Laplace") {
       # by Laplace approximation
-      fit <- graf.fit.laplace(y = y, x = as.matrix(x), mn = mn, l = l, wt = weights, e = error, verbose = verbose)
+      fit <- graf.fit.laplace(
+        y = y,
+        x = as.matrix(x),
+        mn = mn,
+        l = l,
+        wt = weights,
+        e = error,
+        verbose = verbose
+      )
     } else {
       # or using the expectation-propagation algorithm
-      fit <- graf.fit.ep(y = y, x = as.matrix(x), mn = mn, l = l, wt = weights, e = error, verbose = FALSE)
+      fit <- graf.fit.ep(
+        y = y,
+        x = as.matrix(x),
+        mn = mn,
+        l = l,
+        wt = weights,
+        e = error,
+        verbose = FALSE
+      )
     }
 
     fit$mnfun <- mnfun
@@ -835,10 +922,7 @@ capture.all <- function() {
   # capture all visible objects in the parent environment and pass to a list
   env <- parent.frame()
   object_names <- objects(env)
-  objects <- lapply(object_names,
-    get,
-    envir = env
-  )
+  objects <- lapply(object_names, get, envir = env)
   names(objects) <- object_names
   return(objects)
 }
@@ -879,10 +963,18 @@ pred <-
 
 # predict.graf
 predict.graf <-
-  function(object, newdata = NULL, type = c("response", "latent"),
-           CI = 0.95, maxn = NULL, ...) {
+  function(
+    object,
+    newdata = NULL,
+    type = c("response", "latent"),
+    CI = 0.95,
+    maxn = NULL,
+    ...
+  ) {
     type <- match.arg(type)
-    if (is.null(maxn)) maxn <- round(nrow(object$x) / 10)
+    if (is.null(maxn)) {
+      maxn <- round(nrow(object$x) / 10)
+    }
     # set up data
     if (is.null(newdata)) {
       # use already set up inference data if not specified
@@ -891,9 +983,14 @@ predict.graf <-
       mn <- object$mnfun(object$obsx)
     } else {
       # convert any ints to numerics
-      for (i in 1:ncol(newdata)) if (is.integer(newdata[, i])) newdata[, i] <- as.numeric(newdata[, i])
+      for (i in 1:ncol(newdata)) {
+        if (is.integer(newdata[, i])) newdata[, i] <- as.numeric(newdata[, i])
+      }
 
-      if (is.data.frame(newdata) & all(sapply(object$obsx, class) == sapply(newdata, class))) {
+      if (
+        is.data.frame(newdata) &
+          all(sapply(object$obsx, class) == sapply(newdata, class))
+      ) {
         # get mean on raw data
         mn <- object$mnfun(newdata)
 
@@ -907,13 +1004,19 @@ predict.graf <-
         # scale, if needed
         if (!is.null(object$scaling)) {
           notfacs <- (1:k)
-          if (length(object$facs) > 0) notfacs <- notfacs[-object$facs]
+          if (length(object$facs) > 0) {
+            notfacs <- notfacs[-object$facs]
+          }
           for (i in 1:length(notfacs)) {
-            newdata[, notfacs[i]] <- (newdata[, notfacs[i]] - object$scaling[1, i]) / object$scaling[2, i]
+            newdata[, notfacs[i]] <- (newdata[, notfacs[i]] -
+              object$scaling[1, i]) /
+              object$scaling[2, i]
           }
         }
       } else {
-        stop("newdata must be either a dataframe with the same elements as used for inference, or NULL")
+        stop(
+          "newdata must be either a dataframe with the same elements as used for inference, or NULL"
+        )
       }
     }
 
@@ -930,9 +1033,16 @@ predict.graf <-
     if (type == "latent") {
       if (is.null(CI)) {
         # if CIs aren't wanted
-        ans <- pred(predx = newdata, fit = object, mn = mn, std = FALSE, maxn = maxn)
+        ans <- pred(
+          predx = newdata,
+          fit = object,
+          mn = mn,
+          std = FALSE,
+          maxn = maxn
+        )
         colnames(ans) <- "posterior mean"
-      } else if (CI == "std") { # if standard deviations are wanted instead
+      } else if (CI == "std") {
+        # if standard deviations are wanted instead
         ans <- pred(newdata, object, mn, std = TRUE, maxn = maxn)
         colnames(ans) <- c("posterior mean", "posterior std")
       } else {
@@ -942,7 +1052,8 @@ predict.graf <-
         lower <- pred[, 1] - err * pred[, 2]
         ans <- cbind(pred[, 1], lower, upper)
         colnames(ans) <- c(
-          "posterior mean", paste("lower ", round(100 * CI), "% CI", sep = ""),
+          "posterior mean",
+          paste("lower ", round(100 * CI), "% CI", sep = ""),
           paste("upper ", round(100 * CI), "% CI", sep = "")
         )
       }
@@ -959,7 +1070,8 @@ predict.graf <-
         lower <- pred[, 1] - err * pred[, 2]
         ans <- stats::pnorm(cbind(pred[, 1], lower, upper))
         colnames(ans) <- c(
-          "posterior mode", paste("lower ", round(100 * CI), "% CI", sep = ""),
+          "posterior mode",
+          paste("lower ", round(100 * CI), "% CI", sep = ""),
           paste("upper ", round(100 * CI), "% CI", sep = "")
         )
       }

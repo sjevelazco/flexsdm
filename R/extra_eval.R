@@ -211,12 +211,14 @@
 #' # depict univariate and combinatorial extrapolation, respectively
 #' }
 extra_eval <-
-  function(training_data,
-           pr_ab,
-           projection_data,
-           metric = "mahalanobis",
-           univar_comb = FALSE,
-           aggreg_factor = 1) {
+  function(
+    training_data,
+    pr_ab,
+    projection_data,
+    metric = "mahalanobis",
+    univar_comb = FALSE,
+    aggreg_factor = 1
+  ) {
     Value <- val <- . <- x <- extrapolation <- NULL
 
     if (!metric %in% c("euclidean", "mahalanobis")) {
@@ -225,7 +227,6 @@ extra_eval <-
     if (length(metric) > 1) {
       stop("metric argument must be used with 'euclidean or 'mahalanobis'")
     }
-
 
     if (any("data.frame" == class(training_data))) {
       training_data_pr_ab <- training_data[c(names(projection_data), pr_ab)] %>%
@@ -239,18 +240,23 @@ extra_eval <-
     v0 <- sort(v0)
 
     # Test rasters variable names
-    if (!all(c(
-      all(names(training_data) %in% names(projection_data)),
-      all(names(projection_data) %in% names(training_data))
-    ))) {
+    if (
+      !all(c(
+        all(names(training_data) %in% names(projection_data)),
+        all(names(projection_data) %in% names(training_data))
+      ))
+    ) {
       stop(
         "colnames of dataframes of env_records, training_data, and projection_data
         do not match each other",
         "\nraster layers names:",
         "\n",
-        paste(sort(unique(unlist(
-          v0
-        ))), collapse = "\n")
+        paste(
+          sort(unique(unlist(
+            v0
+          ))),
+          collapse = "\n"
+        )
       )
     }
 
@@ -274,15 +280,26 @@ extra_eval <-
       if (!is.null(aggreg_factor)) {
         disag <- extraraster
         if (any("SpatRaster" == class(training_data))) {
-          training_data <- terra::aggregate(training_data, fact = aggreg_factor, na.rm = TRUE)
+          training_data <- terra::aggregate(
+            training_data,
+            fact = aggreg_factor,
+            na.rm = TRUE
+          )
         }
-        projection_data <- terra::aggregate(projection_data, fact = aggreg_factor, na.rm = TRUE)
-        extraraster <- terra::aggregate(extraraster, fact = aggreg_factor, na.rm = TRUE)
+        projection_data <- terra::aggregate(
+          projection_data,
+          fact = aggreg_factor,
+          na.rm = TRUE
+        )
+        extraraster <- terra::aggregate(
+          extraraster,
+          fact = aggreg_factor,
+          na.rm = TRUE
+        )
       }
     } else {
       projection_data <- projection_data[v0]
     }
-
 
     # Transform raster to df
     env_calib2 <-
@@ -294,7 +311,6 @@ extra_eval <-
       env_proj2 <- projection_data
       # names(env_proj2) <- names(projection_data)
     }
-
 
     # save coordinates and cell number
     if (any("SpatRaster" == class(projection_data))) {
@@ -310,7 +326,6 @@ extra_eval <-
       env_calib2[i] <- (env_calib2[i] - s_center[i]) / s_scale[i]
     }
 
-
     for (i in 1:ncol(env_proj2)) {
       env_proj2[i] <- (env_proj2[i] - s_center[i]) / s_scale[i]
     }
@@ -324,7 +339,7 @@ extra_eval <-
     if (metric == "mahalanobis") {
       extra <- mah_dist_min(env_proj2, env_calib2, stats::cov(env_calib2))
     }
-    
+
     # # Measure extrapolation - Euclidean distance
     # set <- c(seq(1, nrow(env_proj2), 200), nrow(env_proj2) + 1)
 
@@ -337,24 +352,35 @@ extra_eval <-
     }
     rm(extra)
 
-
     # Euclidean distance between points used for calibration and its centroid
     if (metric == "euclidean") {
-      base_stand_distance <- euc_dist(env_calib2, 
-        matrix(apply(env_calib2, 2, mean, na.rm=TRUE), ncol=ncol(env_calib2))) %>%
-          mean()
-      }
+      base_stand_distance <- euc_dist(
+        env_calib2,
+        matrix(
+          apply(env_calib2, 2, mean, na.rm = TRUE),
+          ncol = ncol(env_calib2)
+        )
+      ) %>%
+        mean()
+    }
     # Mahalanobis distance between points used for calibration and its centroid
     if (metric == "mahalanobis") {
-      base_stand_distance <- mah_dist(x = env_calib2, 
-        y = matrix(apply(env_calib2, 2, mean, na.rm=TRUE), ncol=ncol(env_calib2)), 
-        cov = stats::cov(env_calib2)) %>%
+      base_stand_distance <- mah_dist(
+        x = env_calib2,
+        y = matrix(
+          apply(env_calib2, 2, mean, na.rm = TRUE),
+          ncol = ncol(env_calib2)
+        ),
+        cov = stats::cov(env_calib2)
+      ) %>%
         mean()
     }
 
     # Standardization of projection points
     env_proj2 <-
-      data.frame(extrapolation = env_proj2$distance / base_stand_distance * 100) %>%
+      data.frame(
+        extrapolation = env_proj2$distance / base_stand_distance * 100
+      ) %>%
       cbind(., env_proj2) %>%
       dplyr::select(-distance)
 
@@ -382,7 +408,8 @@ extra_eval <-
         extraraster <- c(extraraster, univar_comb_r)
       }
     } else {
-      for (i in 2:length(s_center)) { # process from the 2nd column to skip extrapolation column
+      for (i in 2:length(s_center)) {
+        # process from the 2nd column to skip extrapolation column
         env_proj2[i] <- env_proj2[i] * s_scale[i] + s_center[i]
       }
 
@@ -404,4 +431,4 @@ extra_eval <-
       return(dplyr::as_tibble(env_proj2))
     }
     return(extraraster)
-}
+  }

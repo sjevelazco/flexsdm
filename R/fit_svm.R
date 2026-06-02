@@ -104,15 +104,17 @@
 #' )
 #' svm_t2
 #' }
-fit_svm <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    fit_formula = NULL,
-                    partition = NULL,
-                    thr = NULL,
-                    sigma = "automatic",
-                    C = 1) {
+fit_svm <- function(
+  data,
+  response,
+  predictors,
+  predictors_f = NULL,
+  fit_formula = NULL,
+  partition = NULL,
+  thr = NULL,
+  sigma = "automatic",
+  C = 1
+) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
@@ -123,11 +125,20 @@ fit_svm <- function(data,
 
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        dplyr::all_of(predictors_f),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
@@ -137,7 +148,10 @@ fit_svm <- function(data,
   # Remove NAs
   complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
   if (sum(!complete_vec) > 0) {
-    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    message(
+      sum(!complete_vec),
+      " rows were excluded from database because NAs were found"
+    )
     data <- data %>% dplyr::filter(complete_vec)
   }
   rm(complete_vec)
@@ -145,10 +159,15 @@ fit_svm <- function(data,
   # Formula
   if (is.null(fit_formula)) {
     formula1 <- stats::formula(paste(
-      response, "~",
-      paste(c(
-        predictors, predictors_f
-      ), collapse = " + ")
+      response,
+      "~",
+      paste(
+        c(
+          predictors,
+          predictors_f
+        ),
+        collapse = " + "
+      )
     ))
   } else {
     formula1 <- fit_formula
@@ -156,11 +175,11 @@ fit_svm <- function(data,
   if (!is.null(partition)) {
     message(
       "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      Reduce(paste, deparse(formula1)) %>%
+        gsub(paste("  ", "   ", collapse = "|"), " ", .),
       "\n"
     )
   }
-
 
   # Fit models
   if (is.null(partition)) {
@@ -170,16 +189,18 @@ fit_svm <- function(data,
       kpar_ <- list(sigma = sigma)
     }
 
-    suppressWarnings(mod <-
-      kernlab::ksvm(
-        formula1,
-        data = data,
-        type = "C-svc",
-        kernel = "rbfdot",
-        kpar = kpar_,
-        C = C,
-        prob.model = TRUE
-      ))
+    suppressWarnings(
+      mod <-
+        kernlab::ksvm(
+          formula1,
+          data = data,
+          type = "C-svc",
+          kernel = "rbfdot",
+          kpar = kpar_,
+          C = C,
+          prob.model = TRUE
+        )
+    )
 
     result <- list(
       model = mod
@@ -274,11 +295,13 @@ fit_svm <- function(data,
 
     eval_final <- eval_partial %>%
       dplyr::group_by(model, threshold) %>%
-      dplyr::summarise(dplyr::across(
-        TPR:IMAE,
-        list(mean = mean, sd = stats::sd)
-      ), .groups = "drop")
-
+      dplyr::summarise(
+        dplyr::across(
+          TPR:IMAE,
+          list(mean = mean, sd = stats::sd)
+        ),
+        .groups = "drop"
+      )
 
     # Bind data for ensemble
     pred_test_ens <-
@@ -334,7 +357,11 @@ fit_svm <- function(data,
     result <- list(
       model = mod,
       predictors = variables,
-      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+      performance = dplyr::left_join(
+        eval_final,
+        threshold[1:4],
+        by = "threshold"
+      ) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
       performance_part = eval_partial,
       data_ens = pred_test_ens

@@ -55,12 +55,12 @@ necessary to provide a vector for this argument. The following threshold criteri
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to
   sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
   \item Also, it is possible to specify the threshold value using a numeric value (thr = 0.623)
-  
+
 Default "equal_sens_spec".
 
   }}
 
-\item{con_thr}{logical. If TRUE, returns continuous suitability values for cells above the threshold, 
+\item{con_thr}{logical. If TRUE, returns continuous suitability values for cells above the threshold,
 with other cells as 0. If False, returns a binary map (1 for above threshold, 0 for below).
 Default FALSE.}
 
@@ -115,12 +115,12 @@ justifying a narrow inclusion of k patches (Mendes et al., 2020).
 
 Method 'lq' (Lower Quantile). This method is similar to the 'obr' method, except by the
 procedure to define a distance threshold to withdrawn k patches, which is the
-lower quartile distance between k patches to the closest l patch (i.e., threshold distance is based on 
+lower quartile distance between k patches to the closest l patch (i.e., threshold distance is based on
 patches with and without presences and not in presences points as in 'obr' method) . Whenever a suitable
 pixel is within a k patch, i.e., not within this lower quartile, the suitability of the
 pixel is reduced to zero. This means that 75\% of k patches were withdrawn from the model (Mendes et al., 2020).
 
-Method 'pres' (only occurrences based restriction). This is a more restrictive variant of the 'obr' 
+Method 'pres' (only occurrences based restriction). This is a more restrictive variant of the 'obr'
 method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).
 
 Method 'mcp' (Minimum Convex Polygon). Compiled and adapted from

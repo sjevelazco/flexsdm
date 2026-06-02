@@ -114,18 +114,20 @@
 #' max_t1$performance_part
 #' max_t1$data_ens
 #' }
-fit_max <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    fit_formula = NULL,
-                    partition = NULL,
-                    background = NULL,
-                    thr = NULL,
-                    clamp = TRUE,
-                    classes = "default",
-                    pred_type = "cloglog",
-                    regmult = 1) {
+fit_max <- function(
+  data,
+  response,
+  predictors,
+  predictors_f = NULL,
+  fit_formula = NULL,
+  partition = NULL,
+  background = NULL,
+  thr = NULL,
+  clamp = TRUE,
+  classes = "default",
+  pred_type = "cloglog",
+  regmult = 1
+) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
@@ -136,25 +138,45 @@ fit_max <- function(data,
   }
 
   data <- data.frame(data)
-  if (!is.null(background)) background <- data.frame(background)
+  if (!is.null(background)) {
+    background <- data.frame(background)
+  }
 
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     if (!is.null(background)) {
       background <- background %>%
-        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
+        dplyr::select(
+          dplyr::all_of(response),
+          dplyr::all_of(predictors),
+          if (!is.null(partition)) dplyr::starts_with(partition)
+        )
     }
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        dplyr::all_of(predictors_f),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
     }
     if (!is.null(background)) {
       background <- background %>%
-        dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
+        dplyr::select(
+          dplyr::all_of(response),
+          dplyr::all_of(predictors),
+          dplyr::all_of(predictors_f),
+          if (!is.null(partition)) dplyr::starts_with(partition)
+        )
       for (i in predictors_f) {
         background[, i] <- as.factor(background[, i])
       }
@@ -164,21 +186,32 @@ fit_max <- function(data,
   if (!is.null(background)) {
     if (!all(table(c(names(background), names(data))) == 2)) {
       print(table(c(names(background), names(data))))
-      stop("Column names of database used in 'data' and 'background' arguments do not match")
+      stop(
+        "Column names of database used in 'data' and 'background' arguments do not match"
+      )
     }
   }
 
   # Remove NAs
   complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
   if (sum(!complete_vec) > 0) {
-    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    message(
+      sum(!complete_vec),
+      " rows were excluded from database because NAs were found"
+    )
     data <- data %>% dplyr::filter(complete_vec)
   }
   rm(complete_vec)
   if (!is.null(background)) {
-    complete_vec <- stats::complete.cases(background[, c(response, unlist(variables))])
+    complete_vec <- stats::complete.cases(background[, c(
+      response,
+      unlist(variables)
+    )])
     if (sum(!complete_vec) > 0) {
-      message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+      message(
+        sum(!complete_vec),
+        " rows were excluded from database because NAs were found"
+      )
       background <- background %>% dplyr::filter(complete_vec)
     }
     rm(complete_vec)
@@ -191,7 +224,8 @@ fit_max <- function(data,
 
   # Formula
   if (is.null(fit_formula)) {
-    formula1 <- maxnet::maxnet.formula(data[response],
+    formula1 <- maxnet::maxnet.formula(
+      data[response],
       data[predictors],
       classes = classes
     )
@@ -201,11 +235,11 @@ fit_max <- function(data,
   if (!is.null(partition)) {
     message(
       "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      Reduce(paste, deparse(formula1)) %>%
+        gsub(paste("  ", "   ", collapse = "|"), " ", .),
       "\n"
     )
   }
-
 
   # Compare pr_ab and background column names
   if (!is.null(partition)) {
@@ -226,8 +260,16 @@ fit_max <- function(data,
           stop(
             paste(
               "Partition groups between presences and background do not match:\n",
-              paste("Part. group presences:", paste(Npart_p, collapse = " "), "\n"),
-              paste("Part. group background:", paste(Npart_bg, collapse = " "), "\n")
+              paste(
+                "Part. group presences:",
+                paste(Npart_p, collapse = " "),
+                "\n"
+              ),
+              paste(
+                "Part. group background:",
+                paste(Npart_bg, collapse = " "),
+                "\n"
+              )
             )
           )
         }
@@ -235,7 +277,6 @@ fit_max <- function(data,
     }
     rm(i)
   }
-
 
   # Fit models
   if (is.null(partition)) {
@@ -247,14 +288,16 @@ fit_max <- function(data,
       )
     }
     # Fit the model
-    suppressWarnings(mod <-
-      maxnet::maxnet(
-        p = data[, response],
-        data = data[predictors],
-        f = formula1,
-        regmult = regmult,
-        addsamplestobackground = TRUE
-      ))
+    suppressWarnings(
+      mod <-
+        maxnet::maxnet(
+          p = data[, response],
+          data = data[predictors],
+          f = formula1,
+          regmult = regmult,
+          addsamplestobackground = TRUE
+        )
+    )
 
     result <- list(
       model = mod
@@ -289,7 +332,12 @@ fit_max <- function(data,
       if (!is.null(background)) {
         background2 <- pre_tr_te(background, p_names, h)
         train <- lapply(train, function(x) x[x[, response] == 1, ])
-        train <- mapply(dplyr::bind_rows, train, background2$train, SIMPLIFY = FALSE)
+        train <- mapply(
+          dplyr::bind_rows,
+          train,
+          background2$train,
+          SIMPLIFY = FALSE
+        )
         bgt_test <- background2$test
         rm(background2)
       }
@@ -298,25 +346,12 @@ fit_max <- function(data,
       pred_test <- list()
       mod <- list()
 
-
       for (i in 1:np2) {
         message("Partition number: ", i, "/", np2)
         tryCatch({
           sampleback <- TRUE
-          try(mod[[i]] <-
-            suppressMessages(
-              maxnet::maxnet(
-                p = train[[i]][, response],
-                data = train[[i]][predictors],
-                f = formula1,
-                regmult = regmult,
-                addsamplestobackground = sampleback
-              )
-            ))
-          if (length(mod) < i) {
-            message("Refit with addsamplestobackground = FALSE")
-            sampleback <- FALSE
-            try(mod[[i]] <-
+          try(
+            mod[[i]] <-
               suppressMessages(
                 maxnet::maxnet(
                   p = train[[i]][, response],
@@ -325,7 +360,23 @@ fit_max <- function(data,
                   regmult = regmult,
                   addsamplestobackground = sampleback
                 )
-              ))
+              )
+          )
+          if (length(mod) < i) {
+            message("Refit with addsamplestobackground = FALSE")
+            sampleback <- FALSE
+            try(
+              mod[[i]] <-
+                suppressMessages(
+                  maxnet::maxnet(
+                    p = train[[i]][, response],
+                    data = train[[i]][predictors],
+                    f = formula1,
+                    regmult = regmult,
+                    addsamplestobackground = sampleback
+                  )
+                )
+            )
           }
 
           # Predict for presences absences data
@@ -364,14 +415,13 @@ fit_max <- function(data,
             bgt <-
               data.frame(
                 pr_ab = bgt_test[[i]][, response],
-                pred =
-                  predict_maxnet(
-                    mod[[i]],
-                    newdata = bgt_test[[i]][c(predictors, predictors_f)],
-                    clamp = clamp,
-                    type = pred_type,
-                    addsamplestobackground = sampleback
-                  )
+                pred = predict_maxnet(
+                  mod[[i]],
+                  newdata = bgt_test[[i]][c(predictors, predictors_f)],
+                  clamp = clamp,
+                  type = pred_type,
+                  addsamplestobackground = sampleback
+                )
               )
           }
 
@@ -411,10 +461,13 @@ fit_max <- function(data,
 
     eval_final <- eval_partial %>%
       dplyr::group_by(model, threshold) %>%
-      dplyr::summarise(dplyr::across(
-        TPR:IMAE,
-        list(mean = mean, sd = stats::sd)
-      ), .groups = "drop")
+      dplyr::summarise(
+        dplyr::across(
+          TPR:IMAE,
+          list(mean = mean, sd = stats::sd)
+        ),
+        .groups = "drop"
+      )
 
     # Bind data for ensemble
     for (e in 1:length(pred_test_ens)) {
@@ -439,31 +492,34 @@ fit_max <- function(data,
       data_2 <- bind_rows(data[data[, response] == 1, ], background)
     }
 
-
     sampleback <- TRUE
     mod <- NULL
-    try(suppressMessages(mod <-
-      maxnet::maxnet(
-        p = data_2[, response],
-        data = data_2[predictors],
-        f = formula1,
-        regmult = regmult,
-        addsamplestobackground = sampleback
-      )))
+    try(suppressMessages(
+      mod <-
+        maxnet::maxnet(
+          p = data_2[, response],
+          data = data_2[predictors],
+          f = formula1,
+          regmult = regmult,
+          addsamplestobackground = sampleback
+        )
+    ))
 
     if (length(mod) < i) {
       message("Refit with addsamplestobackground = FALSE")
       sampleback <- FALSE
-      try(mod <-
-        suppressMessages(
-          maxnet::maxnet(
-            p = data[, response],
-            data = data[predictors],
-            f = formula1,
-            regmult = regmult,
-            addsamplestobackground = sampleback
+      try(
+        mod <-
+          suppressMessages(
+            maxnet::maxnet(
+              p = data[, response],
+              data = data[predictors],
+              f = formula1,
+              regmult = regmult,
+              addsamplestobackground = sampleback
+            )
           )
-        ))
+      )
     }
 
     if (all(data[, response] == 1)) {
@@ -505,7 +561,11 @@ fit_max <- function(data,
     result <- list(
       model = mod,
       predictors = variables,
-      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+      performance = dplyr::left_join(
+        eval_final,
+        threshold[1:4],
+        by = "threshold"
+      ) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
       performance_part = eval_partial,
       data_ens = pred_test_ens

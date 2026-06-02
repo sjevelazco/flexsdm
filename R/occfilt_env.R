@@ -176,7 +176,10 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
 
   filt <- stats::complete.cases(env_layer)
   if (sum(!filt) > 0) {
-    message(sum(!filt), " records were removed because they have NAs for some variables")
+    message(
+      sum(!filt),
+      " records were removed because they have NAs for some variables"
+    )
     da <- da[filt, ]
     coord <- coord[filt, ]
     env_layer <- env_layer[filt, ]
@@ -211,7 +214,10 @@ occfilt_env <- function(data, x, y, id, env_layer, nbins) {
 
     if (any(is.na(real_p$groupID))) {
       nas <- da[is.na(real_p$groupID), c(id, x, y)]
-      no_nas <- da[!duplicated(real_p$groupID) & !is.na(real_p$groupID), c(id, x, y)]
+      no_nas <- da[
+        !duplicated(real_p$groupID) & !is.na(real_p$groupID),
+        c(id, x, y)
+      ]
       coord_filter <- unique(dplyr::bind_rows(no_nas, nas))
     } else {
       coord_filter <- da[!duplicated(real_p$groupID), c(id, x, y)]

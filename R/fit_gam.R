@@ -118,26 +118,37 @@
 #' )
 #' gam_t3
 #' }
-fit_gam <- function(data,
-                    response,
-                    predictors,
-                    predictors_f = NULL,
-                    select_pred = FALSE,
-                    partition = NULL,
-                    thr = NULL,
-                    fit_formula = NULL,
-                    k = -1) {
+fit_gam <- function(
+  data,
+  response,
+  predictors,
+  predictors_f = NULL,
+  select_pred = FALSE,
+  partition = NULL,
+  thr = NULL,
+  fit_formula = NULL,
+  k = -1
+) {
   . <- model <- TPR <- IMAE <- rnames <- thr_value <- n_presences <- n_absences <- NULL
   variables <- dplyr::bind_rows(c(c = predictors, f = predictors_f))
 
   data <- data.frame(data)
   if (is.null(predictors_f)) {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
   } else {
     data <- data %>%
-      dplyr::select(dplyr::all_of(response), dplyr::all_of(predictors), dplyr::all_of(predictors_f), if (!is.null(partition)) dplyr::starts_with(partition))
+      dplyr::select(
+        dplyr::all_of(response),
+        dplyr::all_of(predictors),
+        dplyr::all_of(predictors_f),
+        if (!is.null(partition)) dplyr::starts_with(partition)
+      )
     data <- data.frame(data)
     for (i in predictors_f) {
       data[, i] <- as.factor(data[, i])
@@ -147,21 +158,34 @@ fit_gam <- function(data,
   # Remove NAs
   complete_vec <- stats::complete.cases(data[, c(response, unlist(variables))])
   if (sum(!complete_vec) > 0) {
-    message(sum(!complete_vec), " rows were excluded from database because NAs were found")
+    message(
+      sum(!complete_vec),
+      " rows were excluded from database because NAs were found"
+    )
     data <- data %>% dplyr::filter(complete_vec)
   }
   rm(complete_vec)
 
-
   # Formula
   if (is.null(fit_formula)) {
     formula1 <-
-      paste(c(
-        paste("s(", predictors, paste0(", k = ", k, ")"), collapse = " + ", sep = ""),
-        predictors_f
-      ), collapse = " + ")
+      paste(
+        c(
+          paste(
+            "s(",
+            predictors,
+            paste0(", k = ", k, ")"),
+            collapse = " + ",
+            sep = ""
+          ),
+          predictors_f
+        ),
+        collapse = " + "
+      )
     formula1 <- stats::formula(paste(
-      response, "~", formula1
+      response,
+      "~",
+      formula1
     ))
   } else {
     formula1 <- fit_formula
@@ -170,11 +194,11 @@ fit_gam <- function(data,
   if (!is.null(partition)) {
     message(
       "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      Reduce(paste, deparse(formula1)) %>%
+        gsub(paste("  ", "   ", collapse = "|"), " ", .),
       "\n"
     )
   }
-
 
   # Check amount of data and number of coefficients
   # if (k < 0) {
@@ -190,17 +214,24 @@ fit_gam <- function(data,
 
   if (!is.null(partition)) {
     if (any(n_training(data = data, partition = partition) < ncoef)) {
-      message("\nModel has more coefficients than data used for training it. Try to reduce k")
+      message(
+        "\nModel has more coefficients than data used for training it. Try to reduce k"
+      )
       return(NULL)
     }
   }
-
 
   # Selection predictor
   if (select_pred) {
     message("Selecting predictors")
 
-    var_selected <- mgcv::gam(formula1, data = data, family = "binomial", select = TRUE, method = "REML")
+    var_selected <- mgcv::gam(
+      formula1,
+      data = data,
+      family = "binomial",
+      select = TRUE,
+      method = "REML"
+    )
     var_selected <- summary(var_selected)$s.table %>% as.data.frame()
     names(var_selected) <- c("est", "df", "z_val", "p_val")
     var_selected <- rownames(var_selected)[var_selected$p_val <= 0.05]
@@ -213,29 +244,39 @@ fit_gam <- function(data,
     }
 
     formula1 <-
-      paste(c(
-        paste("s(", predictors, paste0(", k = ", k, ")"), collapse = " + ", sep = ""),
-        predictors_f
-      ), collapse = " + ")
+      paste(
+        c(
+          paste(
+            "s(",
+            predictors,
+            paste0(", k = ", k, ")"),
+            collapse = " + ",
+            sep = ""
+          ),
+          predictors_f
+        ),
+        collapse = " + "
+      )
     formula1 <- stats::formula(paste(
-      response, "~", formula1
+      response,
+      "~",
+      formula1
     ))
 
     message(
       "Formula used for model fitting:\n",
-      Reduce(paste, deparse(formula1)) %>% gsub(paste("  ", "   ", collapse = "|"), " ", .),
+      Reduce(paste, deparse(formula1)) %>%
+        gsub(paste("  ", "   ", collapse = "|"), " ", .),
       "\n"
     )
   }
 
-
   # Fit models
   if (is.null(partition)) {
-    suppressWarnings(mod <-
-      mgcv::gam(formula1,
-        data = data,
-        family = "binomial"
-      ))
+    suppressWarnings(
+      mod <-
+        mgcv::gam(formula1, data = data, family = "binomial")
+    )
 
     result <- list(
       model = mod
@@ -272,16 +313,17 @@ fit_gam <- function(data,
         message("Partition number: ", i, "/", np2)
         tryCatch(
           {
-            suppressWarnings(mod[[i]] <-
-              mgcv::gam(formula1,
-                data = train[[i]],
-                family = "binomial"
-              ))
+            suppressWarnings(
+              mod[[i]] <-
+                mgcv::gam(formula1, data = train[[i]], family = "binomial")
+            )
 
             # Predict for presences absences data
             if (!is.null(predictors_f)) {
               for (fi in 1:length(predictors_f)) {
-                lev <- as.character(unique(mod[[i]]$xlevels[[predictors_f[fi]]]))
+                lev <- as.character(unique(mod[[i]]$xlevels[[predictors_f[
+                  fi
+                ]]]))
                 lev_filt <- test[[i]][, predictors_f[fi]] %in% lev
                 test[[i]] <- test[[i]][lev_filt, ]
               }
@@ -312,7 +354,9 @@ fit_gam <- function(data,
             eval_partial[[i]] <- dplyr::tibble(model = "gam", eval)
           },
           error = function(cond) {
-            message("Sorry, but it was not possible to fit the model with this data")
+            message(
+              "Sorry, but it was not possible to fit the model with this data"
+            )
           }
         )
       }
@@ -337,11 +381,13 @@ fit_gam <- function(data,
 
     eval_final <- eval_partial %>%
       dplyr::group_by(model, threshold) %>%
-      dplyr::summarise(dplyr::across(
-        TPR:IMAE,
-        list(mean = mean, sd = stats::sd)
-      ), .groups = "drop")
-
+      dplyr::summarise(
+        dplyr::across(
+          TPR:IMAE,
+          list(mean = mean, sd = stats::sd)
+        ),
+        .groups = "drop"
+      )
 
     # Bind data for ensemble
     pred_test_ens <-
@@ -352,13 +398,11 @@ fit_gam <- function(data,
       dplyr::tibble() %>%
       dplyr::relocate(rnames)
 
-
     # Fit final models with best settings
-    suppressWarnings(mod <-
-      mgcv::gam(formula1,
-        data = data,
-        family = "binomial"
-      ))
+    suppressWarnings(
+      mod <-
+        mgcv::gam(formula1, data = data, family = "binomial")
+    )
 
     pred_test <- data.frame(
       pr_ab = data.frame(data)[, response],
@@ -378,7 +422,11 @@ fit_gam <- function(data,
     result <- list(
       model = mod,
       predictors = variables,
-      performance = dplyr::left_join(eval_final, threshold[1:4], by = "threshold") %>%
+      performance = dplyr::left_join(
+        eval_final,
+        threshold[1:4],
+        by = "threshold"
+      ) %>%
         dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
       performance_part = eval_partial,
       data_ens = pred_test_ens

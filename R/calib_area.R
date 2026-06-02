@@ -128,23 +128,38 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
 
   # Argument validation
   if (!m_type %in% c("buffer", "mcp", "bmcp", "mask")) {
-    stop("argument 'method' was misused, available methods: buffer, mcp, bmcp, and mask")
+    stop(
+      "argument 'method' was misused, available methods: buffer, mcp, bmcp, and mask"
+    )
   }
 
   if (m_type %in% c("buffer", "mcp", "bmcp") && is.null(crs)) {
-    stop(paste("A coordinate reference system is needed in 'crs' argument for method:", m_type))
+    stop(paste(
+      "A coordinate reference system is needed in 'crs' argument for method:",
+      m_type
+    ))
   }
 
   if (m_type %in% c("buffer", "bmcp") && !"width" %in% names(method)) {
-    stop(paste0("provide width value for ", m_type, " method, e.g. method = c('", m_type, "', width = 70000)"))
+    stop(paste0(
+      "provide width value for ",
+      m_type,
+      " method, e.g. method = c('",
+      m_type,
+      "', width = 70000)"
+    ))
   }
 
   if (m_type == "mask") {
     if (length(method) < 3) {
-      stop("Method 'mask' requires a SpatVector and a column name, e.g. method = c('mask', vector_obj, 'col_name')")
+      stop(
+        "Method 'mask' requires a SpatVector and a column name, e.g. method = c('mask', vector_obj, 'col_name')"
+      )
     }
     if (!inherits(method[[2]], "SpatVector")) {
-      stop("For 'mask' method, the second element of 'method' must be a SpatVector")
+      stop(
+        "For 'mask' method, the second element of 'method' must be a SpatVector"
+      )
     }
   }
 
@@ -167,7 +182,7 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
 
     group_list <- split(data, data$groups)
     names(group_list) <- NULL
-    
+
     result_list <- lapply(group_list, function(df) {
       # Minimum Convex Polygon
       hull_indices <- grDevices::chull(df$x, df$y)
@@ -200,7 +215,11 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   if (m_type == "mask") {
     polyc <- method[[2]]
     cname <- method[[3]]
-    data_sp <- terra::vect(data[, c("x", "y")], geom = c("x", "y"), crs = terra::crs(polyc))
+    data_sp <- terra::vect(
+      data[, c("x", "y")],
+      geom = c("x", "y"),
+      crs = terra::crs(polyc)
+    )
 
     # Select polygons in polyc that intersect any points in data_sp
     rel_matrix <- terra::is.related(polyc, data_sp, "intersects")

@@ -214,11 +214,18 @@
 #'
 #' @seealso \code{\link{occfilt_env}}, \code{\link{occfilt_select}}
 #'
-occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +datum=WGS84", reps = 20) {
+occfilt_geo <- function(
+  data,
+  x,
+  y,
+  env_layer,
+  method,
+  prj = "+proj=longlat +datum=WGS84",
+  reps = 20
+) {
   da <- data0 <- data
   rm(data)
   da <- da[c(x, y)]
-
 
   if (prj != "+proj=longlat +datum=WGS84") {
     da <- terra::vect(da, geom = c(x, y), prj)
@@ -243,7 +250,10 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
 
   filt <- stats::complete.cases(env)
   if (sum(!filt) > 0) {
-    message(sum(!filt), " records were removed because they have NAs for some variables")
+    message(
+      sum(!filt),
+      " records were removed because they have NAs for some variables"
+    )
     da <- da[filt, ]
     data0 <- data0[filt, ]
     coord <- coord[filt, ]
@@ -252,7 +262,6 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
   rm(env)
 
   message("Number of unfiltered records: ", nrow(data0), "\n")
-
 
   occfilt_geo_0 <- function(data, da, x, y, env_layer, method, reps) {
     #### Morans'I ####
@@ -290,7 +299,10 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
         # Select threshold
         d <- min(br)
         mor <- mor[which.min(br)]
-        message("Moran's I threshold closest to the supplied value: ", round(mor[br == d], 3))
+        message(
+          "Moran's I threshold closest to the supplied value: ",
+          round(mor[br == d], 3)
+        )
       } else {
         message("No Moran's I <= than the supplied value were found")
         message("Moran's I threshold used: ", round(min(mor), 2))
@@ -319,11 +331,14 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
       ))
 
       occT <-
-        occT[[which(sapply(occT, function(x) {
-          nrow(x)
-        }) == max(sapply(occT, function(x) {
-          nrow(x)
-        })))[1]]]
+        occT[[which(
+          sapply(occT, function(x) {
+            nrow(x)
+          }) ==
+            max(sapply(occT, function(x) {
+              nrow(x)
+            }))
+        )[1]]]
       colnames(occT) <- c(x, y)
       occT <- as.integer(row.names(occT))
 
@@ -341,7 +356,9 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
       factor <- as.numeric(method["factor"])
       distance <-
         terra::xyFromCell(env_layer[[1]], 1:2)
-      distance <- as.numeric(abs(terra::distance(distance, distance, lonlat = TRUE)[2] / 1000 * factor))
+      distance <- as.numeric(abs(
+        terra::distance(distance, distance, lonlat = TRUE)[2] / 1000 * factor
+      ))
 
       # Thinning
       da$.spp <- "sp"
@@ -361,11 +378,14 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
           )
       ))
       occT <-
-        occT[[which(sapply(occT, function(x) {
-          nrow(x)
-        }) == max(sapply(occT, function(x) {
-          nrow(x)
-        })))[1]]]
+        occT[[which(
+          sapply(occT, function(x) {
+            nrow(x)
+          }) ==
+            max(sapply(occT, function(x) {
+              nrow(x)
+            }))
+        )[1]]]
       occT <- as.integer(row.names(occT))
 
       # Select Thinned Occurrences
@@ -412,7 +432,6 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
     return(dplyr::tibble(coord_filter))
   }
 
-
   ## %######################################################%##
   ####    Approach for testing several filter values      ####
   ## %######################################################%##
@@ -421,12 +440,7 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
     # Perform PCA
     p <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
 
-    p <- stats::prcomp(p,
-      retx = TRUE,
-      scale. = TRUE,
-      center = TRUE,
-      rank. = 1
-    )
+    p <- stats::prcomp(p, retx = TRUE, scale. = TRUE, center = TRUE, rank. = 1)
 
     env_layer <- terra::predict(env_layer, p)
     names(env_layer) <- "PC1"
@@ -455,7 +469,6 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
     names(result) <- val
   }
 
-
   if ("cellsize" %in% method) {
     val <- as.numeric(method[-1])
     result <- list()
@@ -472,7 +485,6 @@ occfilt_geo <- function(data, x, y, env_layer, method, prj = "+proj=longlat +dat
     }
     names(result) <- val
   }
-
 
   if ("defined" %in% method) {
     val <- as.numeric(method[-1])

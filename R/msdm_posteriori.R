@@ -27,15 +27,15 @@
 #'   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to
 #'   sensitivity value. If it is not specified a sensitivity values, function will use by default 0.9
 #'   \item Also, it is possible to specify the threshold value using a numeric value (thr = 0.623)
-#'   
+#'
 #' Default "equal_sens_spec".
-#' 
+#'
 #'   }
-#' 
-#' @param con_thr logical. If TRUE, returns continuous suitability values for cells above the threshold, 
+#'
+#' @param con_thr logical. If TRUE, returns continuous suitability values for cells above the threshold,
 #' with other cells as 0. If False, returns a binary map (1 for above threshold, 0 for below).
 #' Default FALSE.
-#' 
+#'
 #' @param buffer numeric. Buffer width use in 'bmcp' approach. The buffer width will be
 #' interpreted in m if Coordinate reference system used in "crs" argument has a longitude/latitude, or map units in other
 #' cases. Usage buffer=50000. Default NULL
@@ -86,12 +86,12 @@
 #'
 #' Method 'lq' (Lower Quantile). This method is similar to the 'obr' method, except by the
 #' procedure to define a distance threshold to withdrawn k patches, which is the
-#' lower quartile distance between k patches to the closest l patch (i.e., threshold distance is based on 
+#' lower quartile distance between k patches to the closest l patch (i.e., threshold distance is based on
 #' patches with and without presences and not in presences points as in 'obr' method) . Whenever a suitable
 #' pixel is within a k patch, i.e., not within this lower quartile, the suitability of the
 #' pixel is reduced to zero. This means that 75\% of k patches were withdrawn from the model (Mendes et al., 2020).
 #'
-#' Method 'pres' (only occurrences based restriction). This is a more restrictive variant of the 'obr' 
+#' Method 'pres' (only occurrences based restriction). This is a more restrictive variant of the 'obr'
 #' method. It only retains those pixels in suitability patches intercepting occurrences (k) (Mendes et al., 2020).
 #'
 #' Method 'mcp' (Minimum Convex Polygon). Compiled and adapted from
@@ -245,30 +245,46 @@
 #' }
 #'
 #' @seealso \code{\link{msdm_priori}}
-msdm_posteriori <- function(records,
-                            x,
-                            y,
-                            pr_ab,
-                            cont_suit,
-                            method = c("obr", "pres", "lq", "mcp", "bmcp"),
-                            pres_as_patch = FALSE,
-                            thr = "equal_sens_spec",
-                            con_thr = FALSE,
-                            buffer = NULL,
-                            crs = NULL) {
+msdm_posteriori <- function(
+  records,
+  x,
+  y,
+  pr_ab,
+  cont_suit,
+  method = c("obr", "pres", "lq", "mcp", "bmcp"),
+  pres_as_patch = FALSE,
+  thr = "equal_sens_spec",
+  con_thr = FALSE,
+  buffer = NULL,
+  crs = NULL
+) {
   . <- thr_value <- patch <- mindis <- NULL
   method <- match.arg(method)
 
   if (method == "bmcp" && is.null(buffer)) {
-    stop("If 'bmcp' method is used, it is necessary to fill the 'buffer' argument")
+    stop(
+      "If 'bmcp' method is used, it is necessary to fill the 'buffer' argument"
+    )
   }
   if (method == "bmcp" && is.null(crs)) {
-    stop("If 'bmcp' method is used, a coordinate reference system is needed in 'crs' agument")
+    stop(
+      "If 'bmcp' method is used, a coordinate reference system is needed in 'crs' agument"
+    )
   }
 
   if (is.character(thr)) {
-    valid_thr <- c("lpt", "equal_sens_spec", "max_sens_spec", "max_jaccard", "max_sorensen", "max_fpb", "sensitivity")
-    if (!thr[1] %in% valid_thr) stop(paste("'thr' must be one of:", paste(valid_thr, collapse = ", ")))
+    valid_thr <- c(
+      "lpt",
+      "equal_sens_spec",
+      "max_sens_spec",
+      "max_jaccard",
+      "max_sorensen",
+      "max_fpb",
+      "sensitivity"
+    )
+    if (!thr[1] %in% valid_thr) {
+      stop(paste("'thr' must be one of:", paste(valid_thr, collapse = ", ")))
+    }
   }
 
   #### prepare data sets
@@ -319,7 +335,9 @@ msdm_posteriori <- function(records,
         diag(d) <- Inf
         buffer <- max(apply(d, 1, min))
       } else {
-        stop("Cannot calculate 'species_specific' buffer with only one presence record")
+        stop(
+          "Cannot calculate 'species_specific' buffer with only one presence record"
+        )
       }
     }
     hull <- terra::convHull(pts1)
@@ -330,13 +348,13 @@ msdm_posteriori <- function(records,
   if (method %in% c("obr", "lq", "pres")) {
     # Raster with areas >= than the threshold
     adeq_bin <- cont_suit >= thr_val
-    
+
     # Rasterize points to include cell without suitability but with presences points
-    if(pres_as_patch && method == "lq"){
-      pts1_r <- terra::rasterize(pts1, adeq_bin, background=0)
+    if (pres_as_patch && method == "lq") {
+      pts1_r <- terra::rasterize(pts1, adeq_bin, background = 0)
       adeq_bin <- (pts1_r + adeq_bin) > 0
-    } 
-    
+    }
+
     # Set NA to cells with 0
     adeq_bin[adeq_bin == 0] <- NA
 
@@ -348,16 +366,24 @@ msdm_posteriori <- function(records,
     patch_w_pres <- terra::extract(patch_rast, pts1)[, 2] %>%
       unique() %>%
       stats::na.exclude()
-    
+
     # 'pres' methods------
     if (method == "pres") {
-      result_cont <- terra::mask(cont_suit, patch_rast, maskvalues = patch_w_pres, inverse = TRUE, updatevalue = 0)
+      result_cont <- terra::mask(
+        cont_suit,
+        patch_rast,
+        maskvalues = patch_w_pres,
+        inverse = TRUE,
+        updatevalue = 0
+      )
     } else {
       all_patches <- terra::unique(patch_rast)[, 1] %>% stats::na.exclude()
       patch_wout_pres <- setdiff(all_patches, patch_w_pres)
 
-      poly_presence <- terra::as.polygons(patch_rast) %>% terra::subset(.$patch %in% patch_w_pres)
-      poly_absence <- terra::as.polygons(patch_rast) %>% terra::subset(.$patch %in% patch_wout_pres)
+      poly_presence <- terra::as.polygons(patch_rast) %>%
+        terra::subset(.$patch %in% patch_w_pres)
+      poly_absence <- terra::as.polygons(patch_rast) %>%
+        terra::subset(.$patch %in% patch_wout_pres)
 
       if (nrow(poly_presence) > 0 && nrow(poly_absence) > 0) {
         d_mat <- terra::distance(poly_absence, poly_presence)
@@ -373,14 +399,27 @@ msdm_posteriori <- function(records,
           } else {
             cut <- 0
           }
-        } else { # 'lq' method
+        } else {
+          # 'lq' method
           cut <- stats::quantile(mindis_vec, probs = 0.25)
         }
 
         selected_patches <- patch_wout_pres[mindis_vec <= cut]
-        result_cont <- terra::mask(cont_suit, patch_rast, maskvalues = c(patch_w_pres, selected_patches), inverse = TRUE, updatevalue = 0)
+        result_cont <- terra::mask(
+          cont_suit,
+          patch_rast,
+          maskvalues = c(patch_w_pres, selected_patches),
+          inverse = TRUE,
+          updatevalue = 0
+        )
       } else {
-        result_cont <- terra::mask(cont_suit, patch_rast, maskvalues = patch_w_pres, inverse = TRUE, updatevalue = 0)
+        result_cont <- terra::mask(
+          cont_suit,
+          patch_rast,
+          maskvalues = patch_w_pres,
+          inverse = TRUE,
+          updatevalue = 0
+        )
       }
     }
   }
@@ -389,9 +428,9 @@ msdm_posteriori <- function(records,
 
   result_bin <- result_cont >= thr_val
   result <- terra::rast(list(result_cont, result_bin))
-  
-  if(con_thr){
-    result[[2]] <- result[[1]]*result[[2]]
+
+  if (con_thr) {
+    result[[2]] <- result[[1]] * result[[2]]
   }
 
   names(result) <- c("msdm_cont", "msdm_bin")

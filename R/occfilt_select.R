@@ -126,11 +126,25 @@ occfilt_select <- function(occ_list, x, y, env_layer, filter_prop = FALSE) {
     distm <- as.matrix(distm)
     distm <- 1 / distm
     diag(distm) <- 0
-    try(filtpropr[[ii]] <-
-      apply(data, 2, function(x) {
-        abs(morani(x = x, weight = distm, scaled = TRUE))
-      }, simplify = FALSE) %>% as.data.frame())
-    try(filtpropr[[ii]]$mean_autocorr <- apply(data.frame(filtpropr[[ii]]), 1, mean))
+    try(
+      filtpropr[[ii]] <-
+        apply(
+          data,
+          2,
+          function(x) {
+            abs(morani(x = x, weight = distm, scaled = TRUE))
+          },
+          simplify = FALSE
+        ) %>%
+        as.data.frame()
+    )
+    try(
+      filtpropr[[ii]]$mean_autocorr <- apply(
+        data.frame(filtpropr[[ii]]),
+        1,
+        mean
+      )
+    )
     filtpropr[[ii]]$n_records <- nrow(coord)
   }
   names(filtpropr) <- names(occ_list)
@@ -143,14 +157,22 @@ occfilt_select <- function(occ_list, x, y, env_layer, filter_prop = FALSE) {
     pull("filt_value")
   selected_value <- selected_value[1]
 
-  filtpropr$filt_value[filtpropr$filt_value == selected_value] <- paste("*", selected_value)
+  filtpropr$filt_value[filtpropr$filt_value == selected_value] <- paste(
+    "*",
+    selected_value
+  )
 
   message("Dataset with filtered value ", selected_value, " was selected")
 
   if (filter_prop) {
     return(list(
       occ = occ_list[[selected_value]],
-      filter_prop = dplyr::relocate(filtpropr, filt_value, mean_autocorr, n_records)
+      filter_prop = dplyr::relocate(
+        filtpropr,
+        filt_value,
+        mean_autocorr,
+        n_records
+      )
     ))
   } else {
     return(occ_list[[selected_value]])
