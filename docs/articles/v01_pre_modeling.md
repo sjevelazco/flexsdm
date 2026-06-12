@@ -72,7 +72,7 @@ library(dplyr)
 #> 
 #>     intersect, setdiff, setequal, union
 library(terra)
-#> terra 1.9.11
+#> terra 1.9.27
 #> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':
@@ -410,15 +410,15 @@ variables.
 
 vif_var <- correct_colinvar(somevar, method = c("vif", th = "10"))
 vif_var$env_layer
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 4  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
-#> source      : somevar.tif 
-#> names       :      aet,      cwd,       tmx,        tmn 
-#> min values  :    0.000, -9.39489,  22.44685,  0.2591429 
-#> max values  : 1357.865, 14.20047, 614.69125, 64.3747588
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source      : somevar.tif
+#> names       :         aet,       cwd,        tmx,       tmn
+#> min values  :           0,  -9.39489,  22.446851,  0.259143
+#> max values  : 1357.864694, 14.200473, 614.691254, 64.374759
 vif_var$removed_variables
 #> NULL
 vif_var$vif_table
@@ -444,14 +444,14 @@ variance explained in selected principal components.
 
 pca_var <- correct_colinvar(somevar, method = c("pca"))
 pca_var$env_layer
-#> class       : SpatRaster 
+#> class       : SpatRaster
 #> size        : 558, 394, 3  (nrow, ncol, nlyr)
 #> resolution  : 1890, 1890  (x, y)
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs 
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-#> names       :       PC1,       PC2,       PC3 
-#> min values  : -8.453273, -4.260147, -1.525085 
+#> names       :       PC1,       PC2,       PC3
+#> min values  : -8.453273, -4.260147, -1.525085
 #> max values  :  2.827164,  3.337545,  4.342864
 pca_var$coefficients
 #> # A tibble: 4 × 5

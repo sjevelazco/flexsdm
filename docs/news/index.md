@@ -1,6 +1,6 @@
 # Changelog
 
-## flexsdm 1.4.0 - pre-release
+## flexsdm 1.4.0
 
 - `map_env_dist`: C++ function to calculate Euclidean and Mahalanobis
   distance was implemented, by

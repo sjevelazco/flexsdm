@@ -1,4 +1,4 @@
-# flexsdm 1.4.0 - pre-release
+# flexsdm 1.4.0 
 -  `map_env_dist`: C++ function to calculate Euclidean and Mahalanobis distance was implemented, by @sjevelazco [463](https://github.com/sjevelazco/flexsdm/pull/463)
 -  `extra_eval`: C++ function to calculate Euclidean and Mahalanobis distance was implemented, by @sjevelazco [463](https://github.com/sjevelazco/flexsdm/pull/463)
 -  `fit_dom`: C++ function to calculate gower distance was optimized, by @sjevelazco [463](https://github.com/sjevelazco/flexsdm/pull/463)

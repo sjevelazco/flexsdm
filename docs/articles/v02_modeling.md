@@ -104,7 +104,7 @@ require(flexsdm)
 #> Loading required package: flexsdm
 require(terra)
 #> Loading required package: terra
-#> terra 1.9.11
+#> terra 1.9.27
 #> 
 #> Attaching package: 'terra'
 #> The following object is masked from 'package:knitr':

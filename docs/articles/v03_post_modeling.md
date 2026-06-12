@@ -343,19 +343,11 @@ list_p
 #> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
 #> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
-<<<<<<< HEAD
-#> varnames    : somevar 
-#>               somevar 
-#> names       :          gbm, max_fpb 
-#> min values  : 7.692412e-05,       0 
-#> max values  : 9.530711e-01,       1
-=======
 #> varnames    : somevar
 #>               somevar
 #> names       :      gbm, max_fpb
-#> min values  : 0.000069,       0
-#> max values  : 0.952234,       1
->>>>>>> 668eb145d48fa77e0dd0fc9696585b056e67e6f7
+#> min values  : 0.000077,       0
+#> max values  : 0.953071,       1
 
 # Plot to see this layers
 list_p_rst <- terra::rast(list_p)
