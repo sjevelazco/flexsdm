@@ -164,18 +164,18 @@ rasters with the environmental variables.
 
 For example:
 
-C:/Users/my_pc/projections/  
-├── MRIESM_2050_ssp126  
-│ └── var1.tif  
-│ └── var2.tif  
-│ └── var3.tif  
-├── MRIESM_2080_ssp585  
-│ └── var1.tif  
-│ └── var2.tif  
-│ └── var3.tif  
-├── UKESM_2050_ssp370  
-│ └── var1.tif  
-│ └── var2.tif  
+C:/Users/my_pc/projections/\
+├── MRIESM_2050_ssp126\
+│ └── var1.tif\
+│ └── var2.tif\
+│ └── var3.tif\
+├── MRIESM_2080_ssp585\
+│ └── var1.tif\
+│ └── var2.tif\
+│ └── var3.tif\
+├── UKESM_2050_ssp370\
+│ └── var1.tif\
+│ └── var2.tif\
 │ └── var3.tif
 
 If pca method is run with time projections, correct_colinvar function
@@ -183,12 +183,12 @@ will create the Projection_PCA (the exact path is in the path object
 returned by the function) with the same system of sub-folders and
 multiband raster with the principal components (pcs.tif)
 
-C:/Users/my_pc/Projection_PCA/  
-├── MRIESM_2050_ssp126  
-│ └── pcs.tif \# a multiband tif with principal components  
-├── MRIESM_2080_ssp585  
-│ └── pcs.tif  
-├── UKESM_2050_ssp370  
+C:/Users/my_pc/Projection_PCA/\
+├── MRIESM_2050_ssp126\
+│ └── pcs.tif \# a multiband tif with principal components\
+├── MRIESM_2080_ssp585\
+│ └── pcs.tif\
+├── UKESM_2050_ssp370\
 │ └── pcs.tif
 
 Perform collinearity reduction based on points

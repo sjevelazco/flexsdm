@@ -57,147 +57,177 @@ export(tune_raf)
 export(tune_svm)
 importFrom(Rcpp,sourceCpp)
 importFrom(doParallel,registerDoParallel)
-importFrom(dplyr,"%>%")
-importFrom(dplyr,across)
-importFrom(dplyr,all_of)
-importFrom(dplyr,arrange)
-importFrom(dplyr,as_tibble)
-importFrom(dplyr,bind_cols)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,count)
-importFrom(dplyr,desc)
-importFrom(dplyr,distinct)
-importFrom(dplyr,everything)
-importFrom(dplyr,filter)
-importFrom(dplyr,full_join)
-importFrom(dplyr,group_by)
-importFrom(dplyr,group_by_at)
-importFrom(dplyr,inner_join)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
-importFrom(dplyr,n)
-importFrom(dplyr,pull)
-importFrom(dplyr,reframe)
-importFrom(dplyr,relocate)
-importFrom(dplyr,select)
-importFrom(dplyr,slice_sample)
-importFrom(dplyr,starts_with)
-importFrom(dplyr,summarise)
-importFrom(dplyr,summarise_all)
-importFrom(dplyr,tibble)
-importFrom(foreach,"%dopar%")
-importFrom(foreach,foreach)
-importFrom(gbm,gbm)
-importFrom(gbm,predict.gbm)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,coord_cartesian)
-importFrom(ggplot2,coord_equal)
-importFrom(ggplot2,element_blank)
-importFrom(ggplot2,geom_col)
-importFrom(ggplot2,geom_line)
-importFrom(ggplot2,geom_point)
-importFrom(ggplot2,geom_polygon)
-importFrom(ggplot2,geom_raster)
-importFrom(ggplot2,geom_rug)
-importFrom(ggplot2,geom_vline)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,labs)
-importFrom(ggplot2,scale_color_gradientn)
-importFrom(ggplot2,scale_color_manual)
-importFrom(ggplot2,scale_fill_gradientn)
-importFrom(ggplot2,scale_fill_manual)
-importFrom(ggplot2,scale_y_continuous)
-importFrom(ggplot2,theme)
-importFrom(grDevices,boxplot.stats)
-importFrom(grDevices,chull)
-importFrom(kernlab,ksvm)
-importFrom(kernlab,predict)
-importFrom(maxnet,maxnet)
-importFrom(maxnet,maxnet.formula)
-importFrom(methods,as)
-importFrom(methods,is)
-importFrom(mgcv,gam)
-importFrom(mgcv,predict.gam)
-importFrom(mgcv,s)
+importFrom(dplyr,
+  "%>%",
+  across,
+  all_of,
+  arrange,
+  as_tibble,
+  bind_cols,
+  bind_rows,
+  count,
+  desc,
+  distinct,
+  everything,
+  filter,
+  full_join,
+  group_by,
+  group_by_at,
+  inner_join,
+  left_join,
+  mutate,
+  n,
+  pull,
+  reframe,
+  relocate,
+  select,
+  slice_sample,
+  starts_with,
+  summarise,
+  summarise_all,
+  tibble
+)
+importFrom(foreach,
+  "%dopar%",
+  foreach
+)
+importFrom(gbm,
+  gbm,
+  predict.gbm
+)
+importFrom(ggplot2,
+  aes,
+  coord_cartesian,
+  coord_equal,
+  element_blank,
+  geom_col,
+  geom_line,
+  geom_point,
+  geom_polygon,
+  geom_raster,
+  geom_rug,
+  geom_vline,
+  ggplot,
+  labs,
+  scale_color_gradientn,
+  scale_color_manual,
+  scale_fill_gradientn,
+  scale_fill_manual,
+  scale_y_continuous,
+  theme
+)
+importFrom(grDevices,
+  boxplot.stats,
+  chull
+)
+importFrom(kernlab,
+  ksvm,
+  predict
+)
+importFrom(maxnet,
+  maxnet,
+  maxnet.formula
+)
+importFrom(methods,
+  as,
+  is
+)
+importFrom(mgcv,
+  gam,
+  predict.gam,
+  s
+)
 importFrom(nnet,nnet)
-importFrom(parallel,makeCluster)
-importFrom(parallel,stopCluster)
-importFrom(patchwork,plot_layout)
-importFrom(patchwork,wrap_plots)
-importFrom(randomForest,outlier)
-importFrom(randomForest,randomForest)
+importFrom(parallel,
+  makeCluster,
+  stopCluster
+)
+importFrom(patchwork,
+  plot_layout,
+  wrap_plots
+)
+importFrom(randomForest,
+  outlier,
+  randomForest
+)
 importFrom(spThin,thin)
-importFrom(stats,complete.cases)
-importFrom(stats,cor)
-importFrom(stats,cov)
-importFrom(stats,dist)
-importFrom(stats,dnorm)
-importFrom(stats,factanal)
-importFrom(stats,formula)
-importFrom(stats,glm)
-importFrom(stats,kmeans)
-importFrom(stats,lm)
-importFrom(stats,mahalanobis)
-importFrom(stats,median)
-importFrom(stats,model.matrix)
-importFrom(stats,na.exclude)
-importFrom(stats,na.omit)
-importFrom(stats,pnorm)
-importFrom(stats,prcomp)
-importFrom(stats,predict.glm)
-importFrom(stats,qnorm)
-importFrom(stats,quantile)
-importFrom(stats,sd)
-importFrom(stats,step)
-importFrom(terra,aggregate)
-importFrom(terra,app)
-importFrom(terra,as.data.frame)
-importFrom(terra,as.polygons)
-importFrom(terra,buffer)
-importFrom(terra,cellFromXY)
-importFrom(terra,classify)
-importFrom(terra,convHull)
-importFrom(terra,crop)
-importFrom(terra,crs)
-importFrom(terra,distance)
-importFrom(terra,ext)
-importFrom(terra,extend)
-importFrom(terra,extract)
-importFrom(terra,freq)
-importFrom(terra,geom)
-importFrom(terra,global)
-importFrom(terra,is.factor)
-importFrom(terra,is.related)
-importFrom(terra,lapp)
-importFrom(terra,levels)
-importFrom(terra,mask)
-importFrom(terra,match)
-importFrom(terra,minmax)
-importFrom(terra,ncell)
-importFrom(terra,ncol)
-importFrom(terra,nlyr)
-importFrom(terra,nrow)
-importFrom(terra,patches)
-importFrom(terra,plot)
-importFrom(terra,predict)
-importFrom(terra,project)
-importFrom(terra,rast)
-importFrom(terra,rasterize)
-importFrom(terra,res)
-importFrom(terra,resample)
-importFrom(terra,scale)
-importFrom(terra,spatSample)
-importFrom(terra,subset)
-importFrom(terra,tmpFiles)
-importFrom(terra,union)
-importFrom(terra,unique)
-importFrom(terra,values)
-importFrom(terra,vect)
-importFrom(terra,weighted.mean)
-importFrom(terra,writeRaster)
-importFrom(terra,xyFromCell)
-importFrom(utils,capture.output)
-importFrom(utils,combn)
-importFrom(utils,setTxtProgressBar)
-importFrom(utils,txtProgressBar)
+importFrom(stats,
+  complete.cases,
+  cor,
+  cov,
+  dist,
+  dnorm,
+  factanal,
+  formula,
+  glm,
+  kmeans,
+  lm,
+  mahalanobis,
+  median,
+  model.matrix,
+  na.exclude,
+  na.omit,
+  pnorm,
+  prcomp,
+  predict.glm,
+  qnorm,
+  quantile,
+  sd,
+  step
+)
+importFrom(terra,
+  aggregate,
+  app,
+  as.data.frame,
+  as.polygons,
+  buffer,
+  cellFromXY,
+  classify,
+  convHull,
+  crop,
+  crs,
+  distance,
+  ext,
+  extend,
+  extract,
+  freq,
+  geom,
+  global,
+  is.factor,
+  is.related,
+  lapp,
+  levels,
+  mask,
+  match,
+  minmax,
+  ncell,
+  ncol,
+  nlyr,
+  nrow,
+  patches,
+  plot,
+  predict,
+  project,
+  rast,
+  rasterize,
+  res,
+  resample,
+  scale,
+  spatSample,
+  subset,
+  tmpFiles,
+  union,
+  unique,
+  values,
+  vect,
+  weighted.mean,
+  writeRaster,
+  xyFromCell
+)
+importFrom(utils,
+  capture.output,
+  combn,
+  setTxtProgressBar,
+  txtProgressBar
+)
 useDynLib(flexsdm, .registration = TRUE)
