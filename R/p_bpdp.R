@@ -197,7 +197,7 @@ p_bpdp <-
     }
 
     if (class(model)[1] == "glm") {
-      flt <- grepl("^I\\(", attr(model$terms, "term.labels")) | 
+      flt <- grepl("^I\\(", attr(model$terms, "term.labels")) |
         grepl(":", attr(model$terms, "term.labels"))
       flt <- attr(model$terms, "term.labels")[!flt]
       flt <- flt[flt %in% names(attr(model$terms, "dataClasses"))]

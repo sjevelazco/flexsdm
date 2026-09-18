@@ -352,7 +352,8 @@ data_pdp <-
         suit_r <-
           data.frame(
             x[predictors],
-            Suitability = kernlab::predict(model, x, type = "probabilities")[,
+            Suitability = kernlab::predict(model, x, type = "probabilities")[
+              ,
               2
             ]
           )

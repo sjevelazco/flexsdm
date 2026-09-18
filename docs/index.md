@@ -69,6 +69,8 @@ calibration area).
 - [`get_block()`](https://sjevelazco.github.io/flexsdm/reference/get_block.md)
   Transform a spatial partition layer to the same spatial properties of
   environmental variables
+- [`get_absences()`](https://sjevelazco.github.io/flexsdm/reference/get_absences.md)
+  Build a presence-absence database from multi-species occurrence data
 - [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
   Sample background points
 - [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
@@ -84,6 +86,8 @@ calibration area).
 - [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
   Select filtered occurrences when it was tested with different
   filtering values
+- [`occ_reproj()`](https://sjevelazco.github.io/flexsdm/reference/occ_reproj.md)
+  Reproject location coordinates to a new coordinate reference system
 - [`map_env_dist()`](https://sjevelazco.github.io/flexsdm/reference/map_env_dist.md)
   Calculate environmental distance between presences and projection data
 - [`homogenize_na()`](https://sjevelazco.github.io/flexsdm/reference/homogenize_na.md)

@@ -135,7 +135,6 @@
 #'
 #' plot(m_ker)
 #' points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
-#'
 #' }
 #'
 #' @seealso \code{\link{msdm_posteriori}}

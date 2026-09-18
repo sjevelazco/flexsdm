@@ -405,7 +405,17 @@ tune_max <-
         dplyr::bind_rows(., .id = "partition")
       eval_partial_list[[h]] <- eval_partial
     }
-    on.exit({tryCatch({parallel::stopCluster(cl)}, error = function(e){})}, add = T) 
+    on.exit(
+      {
+        tryCatch(
+          {
+            parallel::stopCluster(cl)
+          },
+          error = function(e) {}
+        )
+      },
+      add = T
+    )
 
     # Create final database with parameter performance 2
     eval_partial <- eval_partial_list %>%

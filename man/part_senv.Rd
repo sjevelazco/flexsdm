@@ -68,11 +68,11 @@ environmental similarity, and the number of presence and/or absence records in e
 }
 \details{
 The part_sblock allows test with different numbers of partitions defined in the
-envirnomental clusters delimited the K-mean cluster algorithm. This function explores a range 
-of environmental clusters and automatically selects the best number of clusters for a given 
-presence, presence-absences, or presence-pseudo-absences dataset. Such selection of the number 
-of clusters is based on an optimization procedure that explores partition size in three dimensions 
-determined by spatial autocorrelation (measured by Moran's I), environmental similarity (Euclidean distance), 
+envirnomental clusters delimited the K-mean cluster algorithm. This function explores a range
+of environmental clusters and automatically selects the best number of clusters for a given
+presence, presence-absences, or presence-pseudo-absences dataset. Such selection of the number
+of clusters is based on an optimization procedure that explores partition size in three dimensions
+determined by spatial autocorrelation (measured by Moran's I), environmental similarity (Euclidean distance),
 and difference in the amount of data among clusters
 (Standard Deviation - SD; Velazco et al., 2019). This procedure will cyclically select
 those partitions with autocorrelation values less than the lowest quartile of Moran's I, then

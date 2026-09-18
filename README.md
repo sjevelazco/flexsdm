@@ -32,6 +32,7 @@ Set tools that prepare modeling input data (e.g., species occurrences thinning, 
 -   `part_senv()` Environmental cross-validation
 -   `plot_res()` Plot different resolutions to be used in part_sblock
 -   `get_block()` Transform a spatial partition layer to the same spatial properties of environmental variables
+-   `get_absences()` Build a presence-absence database from multi-species occurrence data
 -   `sample_background()` Sample background points
 -   `sample_pseudoabs()` Sample pseudo-absences
 -   `sdm_directory()` Create directories for saving the outputs of the flexsdm
@@ -39,6 +40,7 @@ Set tools that prepare modeling input data (e.g., species occurrences thinning, 
 -   `occfilt_env()` Perform environmental filtering on species occurrences
 -   `occfilt_geo()` Perform geographical filtering on species occurrences
 -   `occfilt_select()` Select filtered occurrences when it was tested with different filtering values
+-   `occ_reproj()` Reproject location coordinates to a new coordinate reference system
 -   `map_env_dist()` Calculate environmental distance between presences and projection data
 -   `homogenize_na()` Homogenize cells with NAs across all layers
 
