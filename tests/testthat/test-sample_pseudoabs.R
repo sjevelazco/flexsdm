@@ -240,7 +240,7 @@ test_that("function misuse", {
     method = "genv_const",
     rlayer = regions,
     maskval = NULL
-  ))  
+  ))
 
   expect_error(sample_pseudoabs(
     data = single_spp,

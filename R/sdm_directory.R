@@ -125,11 +125,13 @@ sdm_directory <-
 
     # Helper function to create Algorithm/Ensemble structures efficiently
     create_structure <- function(parent_dirs, type_name, items, threshold_flag) {
-      if (is.null(items)) return()
+      if (is.null(items)) {
+        return()
+      }
       for (pd in parent_dirs) {
         base_path <- file.path(pd, type_name)
         dir.create(base_path, showWarnings = FALSE)
-        
+
         item_paths <- file.path(base_path, items)
         sapply(item_paths, dir.create, showWarnings = FALSE)
 

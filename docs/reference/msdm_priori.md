@@ -184,6 +184,5 @@ m_ker <- msdm_priori(
 
 plot(m_ker)
 points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
-
 } # }
 ```

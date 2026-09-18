@@ -107,7 +107,7 @@ inv_bio <- function(e, p) {
   r <- (r - terra::minmax(r)[1]) /
     (terra::minmax(r)[2] - terra::minmax(r)[1])
   r <- r <= 0.1 # environmental constrain
-  r[which(r[,] == FALSE)] <- NA
+  r[which(r[, ] == FALSE)] <- NA
   return(r)
 }
 

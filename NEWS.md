@@ -1,3 +1,7 @@
+# flexsdm 1.4.x 
+-  `get_absences`: Function to build a presence-absence database from multi-species occurrence data
+-  `occ_reproject`: Function to reproject occurrence coordinates to a new coordinate reference system
+
 # flexsdm 1.4.0 
 -  `map_env_dist`: C++ function to calculate Euclidean and Mahalanobis distance was implemented, by @sjevelazco [463](https://github.com/sjevelazco/flexsdm/pull/463)
 -  `extra_eval`: C++ function to calculate Euclidean and Mahalanobis distance was implemented, by @sjevelazco [463](https://github.com/sjevelazco/flexsdm/pull/463)

@@ -69,6 +69,8 @@ calibration area).
 - [`get_block()`](https://sjevelazco.github.io/flexsdm/reference/get_block.md)
   Transform a spatial partition layer to the same spatial properties of
   environmental variables
+- [`get_absences()`](https://sjevelazco.github.io/flexsdm/reference/get_absences.md)
+  Build a presence-absence database from multi-species occurrence data
 - [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
   Sample background points
 - [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
@@ -84,6 +86,8 @@ calibration area).
 - [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
   Select filtered occurrences when it was tested with different
   filtering values
+- [`occ_reproj()`](https://sjevelazco.github.io/flexsdm/reference/occ_reproj.md)
+  Reproject location coordinates to a new coordinate reference system
 - [`map_env_dist()`](https://sjevelazco.github.io/flexsdm/reference/map_env_dist.md)
   Calculate environmental distance between presences and projection data
 - [`homogenize_na()`](https://sjevelazco.github.io/flexsdm/reference/homogenize_na.md)
@@ -323,6 +327,8 @@ Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
   : Fit and validate Random Forests models
 - [`fit_svm()`](https://sjevelazco.github.io/flexsdm/reference/fit_svm.md)
   : Fit and validate Support Vector Machine models
+- [`get_absences()`](https://sjevelazco.github.io/flexsdm/reference/get_absences.md)
+  : Build a presence-absence database from multi-species occurrence data
 - [`get_block()`](https://sjevelazco.github.io/flexsdm/reference/get_block.md)
   : Transform a spatial partition layer to the same spatial properties
   as environmental variables
@@ -348,13 +354,8 @@ Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
   : Perform geographical filtering on species occurrences
 - [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
   : Select filtered occurrences
-- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
-  : Bivariate partial dependence plot
-- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
-  : Graphical exploration of extrapolation or suitability pattern in the
-  environmental and geographical space
-- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
-  Partial Dependent Plot
+- [`occ_reproj()`](https://sjevelazco.github.io/flexsdm/reference/occ_reproj.md)
+  : Reproject location coordinates to a new coordinate reference system
 - [`palms`](https://sjevelazco.github.io/flexsdm/reference/palms.md) : A
   data set containing presences of palms species from Southern Brazil
 - [`part_random()`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)
@@ -367,6 +368,13 @@ Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
   : Environmental and spatial cross-validation
 - [`plot_res()`](https://sjevelazco.github.io/flexsdm/reference/plot_res.md)
   : Plot different resolutions to be used in part_sblock
+- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
+  : Bivariate partial dependence plot
+- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
+  : Graphical exploration of extrapolation or suitability pattern in the
+  environmental and geographical space
+- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
+  Partial Dependent Plot
 - [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
   : Sample background points
 - [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
