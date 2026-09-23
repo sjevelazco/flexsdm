@@ -1,11 +1,11 @@
-# flexsdm [![](reference/figures/flexsdm_logo.svg)](https://sjevelazco.github.io/flexsdm)
+# flexsdm [![](reference/figures/flexsdm_logo.svg)](https://sjevelazco.github.io/flexsdm/)
 
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.md)
 [![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://codecov.io/gh/sjevelazco/flexsdm)
+coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://app.codecov.io/gh/sjevelazco/flexsdm)
 [![DOI](https://zenodo.org/badge/354032642.svg)](https://zenodo.org/badge/latestdoi/354032642)
 [![DOI](https://img.shields.io/badge/DOI-10.1111%2F2041--210X.13874-orange)](https://doi.org/10.1111/2041-210X.13874)
 [![Ask
@@ -42,7 +42,7 @@ tuning, ensemble methods).
 The functions of **flexsdm** package are organized into three major
 modeling steps
 
-[![](https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.svg)](https://sjevelazco.github.io/flexsdm)
+[![](https://raw.githubusercontent.com/sjevelazco/flexsdm/main/man/figures/flexsdm_figure1.svg)](https://sjevelazco.github.io/flexsdm/)
 
 ### 1. Pre-modeling functions
 
@@ -226,16 +226,14 @@ predictions, model extrapolation, and partial dependence plots.
 You can install the development version of **flexsdm** from
 [github](https://github.com/sjevelazco/flexsdm)
 
-``` r
-
-# install.packages("remotes")
-
-# For Windows and Mac OS operating systems
-remotes::install_github("sjevelazco/flexsdm")
-
-# For Linux operating system
-remotes::install_github("sjevelazco/flexsdm@HEAD")
-```
+\
+`# install.packages("remotes")`\
+\
+`# For Windows and Mac OS operating systems`\
+`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"sjevelazco/flexsdm"``)`\
+\
+`# For Linux operating system`\
+`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"sjevelazco/flexsdm@HEAD"``)`
 
 ⚠️ NOTE: If you have the following error
 

@@ -94,7 +94,7 @@
 #' \code{\link{get_block}}, and \code{\link{plot_res}}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #'

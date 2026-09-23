@@ -70,7 +70,7 @@ a plot
 Graphical exploration of extrapolation or suitability pattern in the environmental and geographical space
 }
 \examples{
-\dontrun{
+\donttest{
 
 require(dplyr)
 require(terra)
@@ -94,7 +94,7 @@ ca <- calib_area(sp,
 
 plot(somevar[[1]])
 points(sp)
-plot(ca, add = T)
+plot(ca, add = TRUE)
 
 
 # Sampling pseudo-absences

@@ -76,8 +76,8 @@ ep.moments <- function(y, sigma2, mu) {
   ))
 }
 
-# update.ep
-update.ep <-
+# update_ep
+update_ep <-
   function(i, y, mn, lis) {
     # update at index \code{i} for the EP approximation given \code{y}
     # (on +1, -1 scale), \code{mn} (on the Gaussian scale) and the current
@@ -119,7 +119,7 @@ update.ep <-
     # get column i
     #   si <- Sigma[, i]
     # recompute\Sigma \& \mu
-    lis <- update.sigma.mu(Sigma, ds2, i, tnu)
+    lis <- update_sigma_mu(Sigma, ds2, i, tnu)
 
     # return update list of parameters
     return(list(
@@ -130,8 +130,8 @@ update.ep <-
     ))
   }
 
-# update.sigma.mu
-update.sigma.mu <-
+# update_sigma_mu
+update_sigma_mu <-
   function(Sigma, ds2, i, tnu) {
     # this takes 70% of total time in gpml Matlab code
     # tried re-coding in C++, but all the cost is the matrx algebra,
@@ -677,7 +677,7 @@ graf.fit.ep <-
 
         # cycle through in random order
         for (i in sample(1:n)) {
-          lis <- update.ep(i, y, mn, lis)
+          lis <- update_ep(i, y, mn, lis)
         } # end permuted for loop
 
         Sigma <- lis$Sigma

@@ -121,7 +121,7 @@ If used one these constraining method cite Mendes et al 2020.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(dplyr)
 require(terra)
 
@@ -138,6 +138,7 @@ a_variable <- somevar[[1]]
 plot(a_variable)
 points(occ %>% dplyr::select(x, y))
 
+
 ### xy method
 m_xy <- msdm_priori(
   data = occ,
@@ -148,6 +149,7 @@ m_xy <- msdm_priori(
 )
 
 plot(m_xy)
+
 
 ### min method
 m_min <- msdm_priori(
@@ -161,6 +163,7 @@ m_min <- msdm_priori(
 plot(m_min)
 points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
 
+
 ### cml method
 m_cml <- msdm_priori(
   data = occ,
@@ -173,6 +176,7 @@ m_cml <- msdm_priori(
 plot(m_cml)
 points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
 
+
 ### ker method
 m_ker <- msdm_priori(
   data = occ,
@@ -184,5 +188,6 @@ m_ker <- msdm_priori(
 
 plot(m_ker)
 points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
-} # }
+
+# }
 ```

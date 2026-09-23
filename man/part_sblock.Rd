@@ -100,7 +100,7 @@ and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-abse
 spatial partition groups
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(dplyr)
 

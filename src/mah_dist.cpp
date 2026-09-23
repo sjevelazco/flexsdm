@@ -2,10 +2,6 @@
 #include <cmath>
 #include <algorithm>
 
-#ifdef _OPENMP
-#include <omp.h>
-#endif
-
 using namespace Rcpp;
 
 // [[Rcpp::export]]
@@ -37,9 +33,6 @@ NumericMatrix mah_dist(const NumericMatrix& x, const NumericMatrix& y, const Num
   const double* ptr_inv = inv_cov.begin();
   double* ptr_res = result.begin();
 
-  #ifdef _OPENMP
-  #pragma omp parallel for collapse(2) schedule(static)
-  #endif
   for (int j = 0; j < ny; j++) {
     for (int i = 0; i < nx; i++) {
       double d2 = 0.0;

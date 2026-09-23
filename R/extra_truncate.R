@@ -17,7 +17,7 @@
 #' extrapolation (e.g., MESS-Multivariate Environmental Similarity Surfaces, EO-Environmental
 #' Overlap, MOP-Mobility-Oriented Parity, EXDET-Extrapolation Detection, or AOA-Area of
 #' Applicability). However, we recommend to use Shape approach (see \code{\link{extra_eval}},
-#' and \href{https://doi.org/10.1111/ecog.06992}{Velazco et al., 2023}).
+#' and Velazco et al., 2023; \doi{10.1111/ecog.06992}).
 #'
 #' This function truncates suitability predictions assigning a given value, generally 0 or NA.
 #'  Usage trunc_value = NA. Default 0.
@@ -35,7 +35,7 @@
 #' @importFrom terra rast
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # see examples in extra_eval function
 #' }
 extra_truncate <- function(suit, extra, threshold = 50, trunc_value = 0) {

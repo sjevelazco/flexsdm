@@ -114,7 +114,7 @@
 #' @importFrom terra rast as.data.frame subset predict scale writeRaster global
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #'
@@ -194,7 +194,7 @@
 #' plot(somevar[[1]])
 #' points(abies2[-3])
 #' ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs = crs(somevar))
-#' plot(ca, add = T)
+#' plot(ca, add = TRUE)
 #'
 #' # Full geographical range to perform PCA
 #' pca_fr <- correct_colinvar(

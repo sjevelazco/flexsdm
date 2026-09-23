@@ -88,9 +88,10 @@
 #' @seealso \code{\link{part_random}}, \code{\link{part_sblock}}, and \code{\link{part_sband}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(ggplot2)
+#' require(dplyr)
 #'
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)

@@ -47,7 +47,8 @@
 #' @seealso \code{\link{part_sblock}}, \code{\link{part_senv}}, \code{\link{sample_pseudoabs}}, \code{\link{sample_background}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' require(dplyr)
 #' data("abies")
 #' abies$partition <- NULL
 #' abies <- tibble(abies)

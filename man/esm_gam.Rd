@@ -58,7 +58,7 @@ Breiner et al. (2015, 2018).
 This function fits GAM using mgvc package, with Binomial distribution family and thin plate regression spline as a smoothing basis (see ?mgvc::s).
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 require(dplyr)
 

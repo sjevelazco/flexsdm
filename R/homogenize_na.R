@@ -10,8 +10,8 @@
 #' @importFrom terra mask
 #'
 #' @examples
-#' \dontrun{
-#' #' require(terra)
+#' \donttest{
+#' require(terra)
 #'
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(somevar)

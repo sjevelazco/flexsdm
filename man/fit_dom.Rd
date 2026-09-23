@@ -40,8 +40,6 @@ If partition = NULL, the model will be validated with the same data used for fit
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default used is 0.9.
   }
 If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold types if none is specified.}
-
-\item{n_cores}{numeric. Number of cores to use for parallel processing when metric. Default 1 (no parallelization).}
 }
 \value{
 A list object with:
@@ -68,7 +66,7 @@ This function fit and validate Domain models. The Domain model is a simple model
 the similarity between the presences training and presence-absences test data.
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 require(terra)
 
@@ -108,8 +106,7 @@ mdom <- fit_dom(
   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
   predictors_f = NULL,
   partition = ".part",
-  thr = c("max_sens_spec"),
-  n_cores = 1
+  thr = c("max_sens_spec")
 )
 
 mdom

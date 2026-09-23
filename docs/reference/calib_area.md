@@ -68,8 +68,15 @@ A SpatVector
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(terra)
+#> Loading required package: terra
+#> terra 1.9.46
+#> 
+#> Attaching package: ‘terra’
+#> The following objects are masked from ‘package:testthat’:
+#> 
+#>     compare, describe
 require(dplyr)
 data("spp")
 clusters <- system.file("external/clusters.shp", package = "flexsdm")
@@ -85,7 +92,9 @@ single_spp <-
 
 plot(clusters)
 points(single_spp[-1], col = "red")
+
 crs(clusters, proj = TRUE) # coordinate reference system (CRS) used for this points database
+#> [1] "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs"
 # note that the unit of this CRS is in m, consequently the buffer width
 # will be interpreted in m too
 
@@ -100,6 +109,7 @@ ca_1 <- calib_area(
 plot(ca_1)
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
 
+
 # mcp method
 ca_2 <- calib_area(
   data = single_spp,
@@ -111,12 +121,14 @@ ca_2 <- calib_area(
 plot(ca_2)
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
 
+
 # mcp method for different groups
 single_spp <- single_spp %>% mutate(groups = ifelse(x > 150000, "a", "b"))
 
 plot(single_spp[, 2:3], pch = 19, col = "blue")
 points(single_spp[single_spp$groups == "a", 2:3], col = "red", pch = 19)
 points(single_spp[, 2:3])
+
 
 ca_2.1 <- calib_area(
   data = single_spp,
@@ -129,6 +141,7 @@ ca_2.1 <- calib_area(
 plot(ca_2.1)
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
 
+
 # bmcp method
 ca_3 <- calib_area(
   data = single_spp,
@@ -139,6 +152,7 @@ ca_3 <- calib_area(
 )
 plot(ca_3)
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
+
 
 # bmcp method for different groups
 ca_3.1 <- calib_area(
@@ -152,9 +166,12 @@ ca_3.1 <- calib_area(
 plot(ca_3.1)
 points(single_spp[, 2:3], pch = 19, cex = 0.5)
 
+
 # mask method
 plot(clusters)
+
 names(clusters)
+#> [1] "clusters"
 
 ca_3.1 <- calib_area(
   data = single_spp,
@@ -164,5 +181,6 @@ ca_3.1 <- calib_area(
 )
 plot(ca_3.1)
 points(single_spp[, 2:3], pch = 19, cex = 0.5, col = "red")
-} # }
+
+# }
 ```

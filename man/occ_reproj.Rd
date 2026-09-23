@@ -63,7 +63,7 @@ calculations or to match the CRS of environmental raster layers used
 elsewhere in a species distribution modeling workflow.
 }
 \examples{
-\dontrun{
+\donttest{
 data <- data.frame(
   species = c("sp1", "sp2", "sp3"),
   x = c(-74.1, -73.9, -74.0),

@@ -55,7 +55,8 @@
 #' @importFrom stats complete.cases formula na.exclude sd
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' require(dplyr)
 #' data("abies")
 #'
 #' # Using k-fold partition method

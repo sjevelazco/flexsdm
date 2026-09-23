@@ -70,7 +70,7 @@
 #' @importFrom utils capture.output
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #' require(ggplot2)

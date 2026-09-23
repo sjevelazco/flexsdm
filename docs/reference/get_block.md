@@ -35,7 +35,7 @@ variables
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(dplyr)
 require(terra)
 data(spp)
@@ -57,12 +57,38 @@ part <- part_sblock(
   min_occ = 5,
   n_part = 2
 )
+#> 4 rows were excluded from database because NAs were found
+#> The following grid cell sizes will be tested:
+#> 189000 | 273000 | 357000 | 441000 | 525000 | 609000 | 693000 | 777000 | 861000 | 945000
+#> Creating basic raster mask...
+#> Searching for the optimal grid size...
 
 grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 grid_env
+#> class       : SpatRaster
+#> size        : 558, 394, 1  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> varname     : somevar
+#> name        : .part
+#> min value   :     1
+#> max value   :     2
 part$grid
+#> class       : SpatRaster
+#> size        : 6, 5, 1  (nrow, ncol, nlyr)
+#> resolution  : 273000, 273000  (x, y)
+#> extent      : -646685.8, 718314.2, -877813.3, 760186.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> name        : .part
+#> min value   :     1
+#> max value   :     2
 
 plot(part$grid)
+
 plot(grid_env)
-} # }
+
+# }
 ```

@@ -141,9 +141,24 @@ and
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 data(abies)
 abies
+#> # A tibble: 1,400 × 13
+#>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
+#>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl> <dbl>  <dbl>
+#>  1   715     0  -95417.  314240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
+#>  2  5680     0   98987. -159415.  448.  815.  9.43   130.     6.43  5.60 0.160 
+#>  3  7907     0  121474.  -99463.  182.  271. -4.95   151.    11.2   0    0     
+#>  4  1850     0  -39976.  -17456.  372.  946.  8.78   116.     2.70  6.41 0.0972
+#>  5  1702     0  111372.  -91404.  209.  399. -4.03   165.     9.27  0    0     
+#>  6 10036     0 -255715.  392229.  308.  535.  4.66   166.    16.5   5.70 0.0777
+#>  7 12384     0 -311765.  380213.  568.  352.  4.38   480.    41.2   5.80 0.110 
+#>  8  6513     0  111360. -120229.  327.  633.  4.93   163.     8.91  1.18 0.0116
+#>  9  9884     0 -284326.  442136.  377.  446.  3.99   296.    16.8   5.96 0.0900
+#> 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     
+#> # ℹ 1,390 more rows
+#> # ℹ 2 more variables: depth <dbl>, landform <fct>
 
 # Partitioning the data with the k-fold method
 
@@ -178,13 +193,89 @@ net_t <-
     metric = "TSS",
     n_cores = 1
   )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform
+#> Tuning model...
+#> Replica number: 1/1
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 
 # Outputs
 net_t$model
+#> a 22-8-1 network with 193 weights
+#> inputs: aet cwd tmin ppt_djf ppt_jja pH awc depth landform2 landform3 landform4 landform5 landform6 landform7 landform8 landform9 landform10 landform11 landform12 landform13 landform14 landform15 
+#> output(s): pr_ab 
+#> options were - entropy fitting  decay=1
 net_t$predictors
+#> # A tibble: 1 × 9
+#>   c1    c2    c3    c4      c5      c6    c7    c8    f       
+#>   <chr> <chr> <chr> <chr>   <chr>   <chr> <chr> <chr> <chr>   
+#> 1 aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth landform
 net_t$performance
+#> # A tibble: 1 × 35
+#>    size decay model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
+#>   <dbl> <dbl> <chr> <chr>           <dbl>       <int>      <int>    <dbl>  <dbl>
+#> 1     8     1 net   max_sens_s…     0.457         700        700    0.904 0.0297
+#> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
+#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
+#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
+#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,
+#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 net_t$performance_part
+#> # A tibble: 5 × 21
+#>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
+#>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
+#> 1 1       1         net   max_sens…     0.590         140        140 0.893 0.886
+#> 2 1       2         net   max_sens…     0.385         140        140 0.943 0.864
+#> 3 1       3         net   max_sens…     0.535         140        140 0.929 0.871
+#> 4 1       4         net   max_sens…     0.643         140        140 0.879 0.864
+#> 5 1       5         net   max_sens…     0.645         140        140 0.879 0.807
+#> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
+#> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
+#> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 net_t$hyper_performance
+#> # A tibble: 40 × 32
+#>     size  decay model threshold   TPR_mean TPR_sd TNR_mean TNR_sd W_TPR_TNR_mean
+#>    <dbl>  <dbl> <chr> <chr>          <dbl>  <dbl>    <dbl>  <dbl>          <dbl>
+#>  1     2  0.001 net   max_sens_s…    1     0         0     0               0.5  
+#>  2     2  0.05  net   max_sens_s…    0.881 0.0854    0.779 0.124           0.83 
+#>  3     2  0.1   net   max_sens_s…    0.883 0.0697    0.833 0.0499          0.858
+#>  4     2  1     net   max_sens_s…    0.887 0.0561    0.81  0.0465          0.849
+#>  5     2  3     net   max_sens_s…    0.893 0.0368    0.826 0.0439          0.859
+#>  6     2  4     net   max_sens_s…    0.84  0.0894    0.811 0.0963          0.826
+#>  7     2  5     net   max_sens_s…    0.913 0.0653    0.731 0.112           0.822
+#>  8     2 10     net   max_sens_s…    0.919 0.0383    0.736 0.0991          0.827
+#>  9     4  0.001 net   max_sens_s…    0.804 0.132     0.693 0.236           0.749
+#> 10     4  0.05  net   max_sens_s…    0.883 0.0318    0.834 0.0348          0.859
+#> # ℹ 30 more rows
+#> # ℹ 23 more variables: W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>,
+#> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
+#> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
+#> #   KAPPA_mean <dbl>, KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>,
+#> #   AUC_mean <dbl>, AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>,
+#> #   CRPS_mean <dbl>, CRPS_sd <dbl>, IMAE_mean <dbl>, IMAE_sd <dbl>
 net_t$data_ens
-} # }
+#> # A tibble: 1,400 × 5
+#>    rnames replicates part  pr_ab    pred
+#>    <chr>  <chr>      <chr> <fct>   <dbl>
+#>  1 3      .part      1     0     0.168  
+#>  2 5      .part      1     0     0.393  
+#>  3 7      .part      1     0     0.0542 
+#>  4 20     .part      1     0     0.209  
+#>  5 22     .part      1     0     0.0881 
+#>  6 26     .part      1     0     0.756  
+#>  7 29     .part      1     0     0.00417
+#>  8 30     .part      1     0     0.00420
+#>  9 51     .part      1     0     0.0783 
+#> 10 62     .part      1     0     0.209  
+#> # ℹ 1,390 more rows
+# }
 ```

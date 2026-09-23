@@ -74,7 +74,7 @@ This function constructs 'C-svc' classification type and uses
 Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[kernlab]{ksvm}.
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 
 # Using k-fold partition method

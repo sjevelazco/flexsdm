@@ -69,7 +69,7 @@
 #' @seealso [tune_max], [tune_net], [tune_raf], [tune_svm].
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(abies)
 #' abies
 #'

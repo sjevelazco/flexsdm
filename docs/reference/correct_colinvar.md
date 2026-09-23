@@ -204,7 +204,7 @@ points).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(terra)
 require(dplyr)
 
@@ -214,25 +214,100 @@ somevar <- terra::rast(somevar)
 # Perform pearson collinearity control
 var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"))
 var$cor_table
+#>           CFP_1     CFP_2     CFP_3     CFP_4
+#> CFP_1 0.0000000 0.7689893 0.7924813 0.7845401
+#> CFP_2 0.7689893 0.0000000 0.4168956 0.5881831
+#> CFP_3 0.7924813 0.4168956 0.0000000 0.7323259
+#> CFP_4 0.7845401 0.5881831 0.7323259 0.0000000
 var$cor_variables
+#> $CFP_1
+#> [1] "CFP_2" "CFP_3" "CFP_4"
+#> 
+#> $CFP_2
+#> [1] "CFP_1"
+#> 
+#> $CFP_3
+#> [1] "CFP_1" "CFP_4"
+#> 
+#> $CFP_4
+#> [1] "CFP_1" "CFP_3"
+#> 
 
 # For all correct_colinvar methods it is possible to take a sample or raster to reduce memory
 var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"), maxcell = 10000)
 var$cor_table
+#>           CFP_1     CFP_2     CFP_3     CFP_4
+#> CFP_1 0.0000000 0.7653187 0.7945362 0.7855346
+#> CFP_2 0.7653187 0.0000000 0.4155557 0.5885450
+#> CFP_3 0.7945362 0.4155557 0.0000000 0.7303327
+#> CFP_4 0.7855346 0.5885450 0.7303327 0.0000000
 var$cor_variables
+#> $CFP_1
+#> [1] "CFP_2" "CFP_3" "CFP_4"
+#> 
+#> $CFP_2
+#> [1] "CFP_1"
+#> 
+#> $CFP_3
+#> [1] "CFP_1" "CFP_4"
+#> 
+#> $CFP_4
+#> [1] "CFP_1" "CFP_3"
+#> 
 
 # Perform vif collinearity control
 var <- correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))
 var$env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 4  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source      : somevar.tif
+#> names       :       CFP_1,     CFP_2,      CFP_3,     CFP_4
+#> min values  :           0,  -9.39489,  22.446851,  0.259143
+#> max values  : 1357.864694, 14.200473, 614.691254, 64.374759
 var$removed_variables
+#> NULL
 var$vif_table
+#> # A tibble: 4 × 2
+#>   Variables   VIF
+#>   <chr>     <dbl>
+#> 1 CFP_1      7.62
+#> 2 CFP_2      3.29
+#> 3 CFP_3      3.95
+#> 4 CFP_4      2.89
 
 # Perform pca collinearity control
 var <- correct_colinvar(env_layer = somevar, method = c("pca"))
 plot(var$env_layer)
+
 var$env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 3  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> names       :       PC1,       PC2,       PC3
+#> min values  : -8.453273, -4.260147, -1.525085
+#> max values  :  2.827164,  3.337545,  4.342864
 var$coefficients
+#> # A tibble: 4 × 5
+#>   variable    PC1     PC2    PC3     PC4
+#>   <chr>     <dbl>   <dbl>  <dbl>   <dbl>
+#> 1 CFP_1     0.550 -0.0722  0.296 -0.778 
+#> 2 CFP_2     0.450 -0.777   0.103  0.429 
+#> 3 CFP_3    -0.485 -0.594  -0.450 -0.459 
+#> 4 CFP_4    -0.511 -0.198   0.836 -0.0241
 var$cumulative_variance
+#> # A tibble: 4 × 2
+#>      PC  cvar
+#>   <int> <dbl>
+#> 1     1 0.764
+#> 2     2 0.915
+#> 3     3 0.979
+#> 4     4 1    
 
 
 # Perform pca collinearity control with different projections
@@ -242,6 +317,10 @@ dir_sc <- file.path(tempdir(), "projections")
 dir.create(dir_sc)
 dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
 sapply(dir_sc, dir.create)
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections/scenario_1 
+#>                                                                                TRUE 
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections/scenario_2 
+#>                                                                                TRUE 
 
 somevar <-
   system.file("external/somevar.tif", package = "flexsdm")
@@ -253,20 +332,65 @@ terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite = TRU
 ## Perform pca with projections
 dir_w_proj <- dirname(dir_sc[1])
 dir_w_proj
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections"
 var <- correct_colinvar(env_layer = somevar, method = "pca", proj = dir_w_proj)
 var$env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 3  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> names       :       PC1,       PC2,       PC3
+#> min values  : -8.453273, -4.260147, -1.525085
+#> max values  :  2.827164,  3.337545,  4.342864
 var$coefficients
+#> # A tibble: 4 × 5
+#>   variable    PC1     PC2    PC3     PC4
+#>   <chr>     <dbl>   <dbl>  <dbl>   <dbl>
+#> 1 CFP_1     0.550 -0.0722  0.296 -0.778 
+#> 2 CFP_2     0.450 -0.777   0.103  0.429 
+#> 3 CFP_3    -0.485 -0.594  -0.450 -0.459 
+#> 4 CFP_4    -0.511 -0.198   0.836 -0.0241
 var$cumulative_variance
+#> # A tibble: 4 × 2
+#>      PC  cvar
+#>   <int> <dbl>
+#> 1     1 0.764
+#> 2     2 0.915
+#> 3     3 0.979
+#> 4     4 1    
 var$proj
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/Projection_PCA"
 
 
 # Perform fa colinearity control
 var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 var$env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 1  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source      : somevar.tif
+#> name        :       CFP_1
+#> min value   :           0
+#> max value   : 1357.864694
 var$number_factors
+#> [1] 1
 var$removed_variables
+#> [1] "CFP_2" "CFP_3" "CFP_4"
 var$uniqueness
+#>     CFP_1     CFP_2     CFP_3     CFP_4 
+#> 0.0010000 0.4087429 0.3715653 0.3835564 
 var$loadings
+#> # A tibble: 4 × 2
+#>   Variable Factor_1
+#>   <chr>       <dbl>
+#> 1 CFP_1       1.000
+#> 2 CFP_2       0.769
+#> 3 CFP_3      -0.793
+#> 4 CFP_4      -0.785
 
 ## %######################################################%##
 #                                                          #
@@ -284,7 +408,8 @@ abies2 <- abies %>%
 plot(somevar[[1]])
 points(abies2[-3])
 ca <- calib_area(abies2, x = "x", y = "y", method = c("mcp"), crs = crs(somevar))
-plot(ca, add = T)
+plot(ca, add = TRUE)
+
 
 # Full geographical range to perform PCA
 pca_fr <- correct_colinvar(
@@ -314,8 +439,11 @@ pca_rrp <- correct_colinvar(
 )
 
 plot(pca_fr$env_layer) # PCA with all cells
+
 plot(pca_rr$env_layer) # PCA with calibration area cell but predicted for entire region
+
 plot(pca_rrp$env_layer) # PCA performed and predicted for cells within calibration area (ca)
+
 
 
 ## %######################################################%##
@@ -339,6 +467,28 @@ correct_colinvar(
   x = "x",
   y = "y"
 )
+#> 60 rows were excluded from database because NAs were found
+#> $cor_table
+#>           CFP_1      CFP_2     CFP_3      CFP_4
+#> CFP_1 0.0000000 0.65011233 0.4708649 0.55696032
+#> CFP_2 0.6501123 0.00000000 0.2528434 0.09606692
+#> CFP_3 0.4708649 0.25284342 0.0000000 0.84185543
+#> CFP_4 0.5569603 0.09606692 0.8418554 0.00000000
+#> 
+#> $cor_variables
+#> $cor_variables$CFP_1
+#> [1] "CFP_2"
+#> 
+#> $cor_variables$CFP_2
+#> [1] "CFP_1"
+#> 
+#> $cor_variables$CFP_3
+#> [1] "CFP_4"
+#> 
+#> $cor_variables$CFP_4
+#> [1] "CFP_3"
+#> 
+#> 
 
 # VIF
 correct_colinvar(
@@ -349,6 +499,30 @@ correct_colinvar(
   x = "x",
   y = "y"
 )
+#> 60 rows were excluded from database because NAs were found
+#> $env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 4  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source      : somevar.tif
+#> names       :       CFP_1,     CFP_2,      CFP_3,     CFP_4
+#> min values  :           0,  -9.39489,  22.446851,  0.259143
+#> max values  : 1357.864694, 14.200473, 614.691254, 64.374759
+#> 
+#> $removed_variables
+#> NULL
+#> 
+#> $vif_table
+#> # A tibble: 4 × 2
+#>   Variables   VIF
+#>   <chr>     <dbl>
+#> 1 CFP_1      7.62
+#> 2 CFP_2      5.91
+#> 3 CFP_3      5.54
+#> 4 CFP_4      4.03
+#> 
 
 # PCA
 correct_colinvar(
@@ -359,6 +533,36 @@ correct_colinvar(
   x = "x",
   y = "y"
 )
+#> 60 rows were excluded from database because NAs were found
+#> $env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 3  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> names       :       PC1,       PC2,       PC3
+#> min values  : -5.059408, -3.126523, -2.134568
+#> max values  :  6.396155,  3.776424,  1.788421
+#> 
+#> $coefficients
+#> # A tibble: 4 × 5
+#>   variable    PC1   PC2     PC3     PC4
+#>   <chr>     <dbl> <dbl>   <dbl>   <dbl>
+#> 1 CFP_1    -0.536 0.453 -0.237   0.672 
+#> 2 CFP_2    -0.113 0.792  0.0902 -0.592 
+#> 3 CFP_3     0.576 0.343  0.597   0.440 
+#> 4 CFP_4     0.606 0.222 -0.761   0.0652
+#> 
+#> $cumulative_variance
+#> # A tibble: 4 × 2
+#>      PC  cvar
+#>   <int> <dbl>
+#> 1     1 0.569
+#> 2     2 0.945
+#> 3     3 0.984
+#> 4     4 1    
+#> 
 
 # FA
 correct_colinvar(
@@ -369,5 +573,38 @@ correct_colinvar(
   x = "x",
   y = "y"
 )
-} # }
+#> 60 rows were excluded from database because NAs were found
+#> Factorial analysis could not be performed because 2 factors are too many for 4 variables
+#> It will tested with 1 factors
+#> $env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 1  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source      : somevar.tif
+#> name        :     CFP_4
+#> min value   :  0.259143
+#> max value   : 64.374759
+#> 
+#> $number_factors
+#> [1] 1
+#> 
+#> $removed_variables
+#> [1] "CFP_1" "CFP_2" "CFP_3"
+#> 
+#> $uniqueness
+#>     CFP_1     CFP_2     CFP_3     CFP_4 
+#> 0.6895565 0.9907748 0.2905398 0.0010000 
+#> 
+#> $loadings
+#> # A tibble: 4 × 2
+#>   Variable Factor_1
+#>   <chr>       <dbl>
+#> 1 CFP_1     -0.557 
+#> 2 CFP_2      0.0960
+#> 3 CFP_3      0.842 
+#> 4 CFP_4      0.999 
+#> 
+# }
 ```

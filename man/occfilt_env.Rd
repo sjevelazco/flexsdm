@@ -51,7 +51,7 @@ This function uses an approach adapted from the approach proposed by Varela et a
  of bins was used by Velazco et al. (2020) and it is implemented in \code{\link{occfilt_select}}.
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(dplyr)
 require(ggplot2)

@@ -83,7 +83,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data("abies")
 #' data("backg")
 #' abies # environmental conditions of presence-absence data

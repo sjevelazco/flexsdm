@@ -72,7 +72,7 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'

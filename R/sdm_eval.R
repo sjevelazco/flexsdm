@@ -111,7 +111,7 @@
 #' @importFrom stats quantile
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #'
 #' set.seed(0)
@@ -125,9 +125,9 @@
 #' a[a < 0] <- 0
 #'
 #' set.seed(0)
-#' backg <- rnorm(1000, mean = 0.4, sd = 0.4) %>% abs()
-#' backg[backg > 1] <- 1
-#' backg[backg < 0] <- 0
+#' bg_vals <- rnorm(1000, mean = 0.4, sd = 0.4) %>% abs()
+#' bg_vals[bg_vals > 1] <- 1
+#' bg_vals[bg_vals < 0] <- 0
 #'
 #' # Function use without threshold specification
 #' e <- sdm_eval(p, a)
@@ -141,11 +141,11 @@
 #'
 #' # Use of bg argument (it will only be used for calculating BOYCE index)
 #' sdm_eval(p, a, thr = "max_sens_spec")
-#' sdm_eval(p, a, thr = c("max_sens_spec"), bg = backg)
+#' sdm_eval(p, a, thr = c("max_sens_spec"), bg = bg_vals)
 #'
 #' # If background will be used to calculate all other metrics
 #' # background values can be used in "a" argument
-#' sdm_eval(p, backg, thr = "max_sens_spec")
+#' sdm_eval(p, bg_vals, thr = "max_sens_spec")
 #' }
 sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   TPR <- TNR <- JACCARD <- SORENSEN <- threshold <- FPB <- TSS <- NULL

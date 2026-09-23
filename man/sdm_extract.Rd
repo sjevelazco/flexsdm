@@ -32,7 +32,7 @@ in 'env_layer'
 Extract environmental data values from a spatial raster based on x and y coordinates
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 
 # Load datasets

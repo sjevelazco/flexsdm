@@ -109,7 +109,7 @@ A list of SpatRaster with continuous and/or binary predictions
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(dplyr)
 require(terra)
 
@@ -128,6 +128,7 @@ some_sp <-
     y = "y",
     env_layer = somevar
   )
+#> 4 rows were excluded from database because NAs were found
 
 # Partition
 some_sp <- part_random(
@@ -150,18 +151,84 @@ mglm <- fit_glm(
   partition = ".part",
   poly = 2
 )
+#> Formula used for model fitting:
+#> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4 + I(CFP_1^2) + I(CFP_2^2) + I(CFP_3^2) + I(CFP_4^2)
+#> Replica number: 1/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 2/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 3/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 4/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 mraf <- fit_raf(
   data = some_sp,
   response = "pr_ab",
   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
   partition = ".part",
 )
+#> Formula used for model fitting:
+#> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4
+#> Replica number: 1/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 2/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 3/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 4/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 mgbm <- fit_gbm(
   data = some_sp,
   response = "pr_ab",
   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
   partition = ".part"
 )
+#> Formula used for model fitting:
+#> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4
+#> Replica number: 1/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 2/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 3/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 4/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 # Fit an ensemble model
 mensemble <- fit_ensemble(
@@ -171,6 +238,11 @@ mensemble <- fit_ensemble(
   thr_model = "max_sens_spec",
   metric = "TSS"
 )
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |======================================================================| 100%
 
 # Fit a model with the Ensembles of Small Models approach
 # Without threshold specification and with kfold
@@ -181,6 +253,21 @@ msmall <- esm_gam(
   partition = ".part",
   thr = NULL
 )
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |======================================================================| 100%
 
 
 ## %######################################################%##
@@ -199,6 +286,7 @@ ind_p <- sdm_predict(
   con_thr = FALSE,
   predict_area = NULL
 )
+#> Predicting individual models
 
 # a list of models
 list_p <- sdm_predict(
@@ -208,6 +296,7 @@ list_p <- sdm_predict(
   con_thr = FALSE,
   predict_area = NULL
 )
+#> Predicting list of individual models
 
 # Predict an ensemble model
 # (only is possilbe use one fit_ensemble)
@@ -218,6 +307,7 @@ ensemble_p <- sdm_predict(
   con_thr = FALSE,
   predict_area = NULL
 )
+#> Predicting ensembles
 
 # Predict an ensemble of small models
 # (only is possible to use one ensemble of small models)
@@ -228,6 +318,7 @@ small_p <- sdm_predict(
   con_thr = FALSE,
   predict_area = NULL
 )
+#> Predicting ensemble of small models
 
 ## %######################################################%##
 #                                                          #
@@ -245,5 +336,6 @@ ind_p <- sdm_predict(
   predict_area = NULL,
   nchunk = 4
 )
-} # }
+#> Predicting individual models
+# }
 ```

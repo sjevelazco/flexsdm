@@ -102,7 +102,7 @@ background data. If only presence-absences are used in data argument and without
 function will fit model with the specified data (not recommended).
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 data("backg")
 abies # environmental conditions of presence-absence data

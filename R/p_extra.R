@@ -33,7 +33,7 @@
 #' @importFrom utils combn
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' require(dplyr)
 #' require(terra)
@@ -57,7 +57,7 @@
 #'
 #' plot(somevar[[1]])
 #' points(sp)
-#' plot(ca, add = T)
+#' plot(ca, add = TRUE)
 #'
 #'
 #' # Sampling pseudo-absences

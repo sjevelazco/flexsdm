@@ -2,10 +2,6 @@
 #include <cmath>
 #include <algorithm>
 
-#ifdef _OPENMP
-#include <omp.h>
-#endif
-
 using namespace Rcpp;
 
 // [[Rcpp::export]]
@@ -38,9 +34,6 @@ NumericVector mah_dist_min(const NumericMatrix& x, const NumericMatrix& y, const
   // Result vector: minimum distance for each row in x
   NumericVector min_dist(nx);
 
-  #ifdef _OPENMP
-  #pragma omp parallel for schedule(static)
-  #endif
   for (int i = 0; i < nx; i++) {
     // Check if row i of x has NA
     bool x_has_na = false;

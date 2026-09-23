@@ -76,7 +76,7 @@ use \code{\link{occfilt_select}} function to automatically select a filtered dat
 number of records and spatial autocorrelation.
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(dplyr)
 require(ggplot2)

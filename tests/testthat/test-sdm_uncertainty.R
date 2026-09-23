@@ -58,7 +58,7 @@ test_that("test with GAM", {
     response = "pres_abs",
     projection_data = somevar,
     iteration = 5,
-    n_cores = 3
+    n_cores = 2
   )
 
   expect_equal(class(unc)[[1]], "SpatRaster")
@@ -80,7 +80,7 @@ test_that("test with GLM", {
     response = "pres_abs",
     projection_data = somevar,
     iteration = 5,
-    n_cores = 3
+    n_cores = 2
   )
 
   expect_equal(class(unc)[[1]], "SpatRaster")

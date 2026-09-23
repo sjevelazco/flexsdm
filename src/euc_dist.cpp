@@ -1,8 +1,5 @@
 #include <Rcpp.h>
 #include <cmath>
-#ifdef _OPENMP
-#include <omp.h>
-#endif
 
 using namespace Rcpp;
 
@@ -26,9 +23,6 @@ NumericMatrix euc_dist(const NumericMatrix& x, const NumericMatrix& y) {
   const double* ptr_y = y.begin();
   double* ptr_res = result.begin();
 
-  #ifdef _OPENMP
-  #pragma omp parallel for collapse(2) schedule(static)
-  #endif
   for (int j = 0; j < ny; j++) {
     for (int i = 0; i < nx; i++) {
       double sum_sq = 0.0;

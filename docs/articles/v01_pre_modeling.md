@@ -58,28 +58,26 @@ below for full list).
 First, install the flexsdm package. You can install the released version
 of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
-``` r
-
-# devtools::install_github('sjevelazco/flexsdm')
-library(flexsdm)
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-library(terra)
-#> terra 1.9.27
-#> 
-#> Attaching package: 'terra'
-#> The following object is masked from 'package:knitr':
-#> 
-#>     spin
-library(ggplot2)
-```
+\
+`# devtools::install_github('sjevelazco/flexsdm')`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`flexsdm`](https://sjevelazco.github.io/flexsdm/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
+`#> `\
+`#> Attaching package: 'dplyr'`\
+`#> The following objects are masked from 'package:stats':`\
+`#> `\
+`#>     filter, lag`\
+`#> The following objects are masked from 'package:base':`\
+`#> `\
+`#>     intersect, setdiff, setequal, union`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`terra`](https://rspatial.org/)`)`\
+`#> terra 1.9.46`\
+`#> `\
+`#> Attaching package: 'terra'`\
+`#> The following object is masked from 'package:knitr':`\
+`#> `\
+`#>     spin`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`
 
 ## Project Directory Setup
 
@@ -96,21 +94,19 @@ directory) and then use dir.create() to create that main directory.
 Next, specify whether or not you want to include folders for
 projections, calibration areas, algorithms, ensembles, and thresholds.
 
-``` r
-
-my_project <- file.path(file.path(tempdir(), "flex_sdm_project"))
-dir.create(my_project)
-
-project_directory <- sdm_directory(
-  main_dir = my_project,
-  projections = NULL,
-  calibration_area = TRUE,
-  algorithm = c("fit_max", "tune_raf"),
-  ensemble = c("mean"),
-  threshold = TRUE,
-  return_vector = TRUE
-)
-```
+\
+`my_project`` ``<-`` `[`file.path`](https://rdrr.io/r/base/file.path.html)`(`[`file.path`](https://rdrr.io/r/base/file.path.html)`(`[`tempdir`](https://rdrr.io/r/base/tempfile.html)`(``)``, ``"flex_sdm_project"``)``)`\
+[`dir.create`](https://rdrr.io/r/base/files2.html)`(``my_project``)`\
+\
+`project_directory`` ``<-`` `[`sdm_directory`](https://sjevelazco.github.io/flexsdm/reference/sdm_directory.md)`(`\
+`  main_dir ``=`` ``my_project``,`\
+`  projections ``=`` ``NULL``,`\
+`  calibration_area ``=`` ``TRUE``,`\
+`  algorithm ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"fit_max"``, ``"tune_raf"``)``,`\
+`  ensemble ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"mean"``)``,`\
+`  threshold ``=`` ``TRUE``,`\
+`  return_vector ``=`` ``TRUE`\
+`)`
 
 ## Data, species occurrence and background data
 
@@ -120,26 +116,24 @@ includes pr_ab column (presence = 1, and absence = 0), and location
 columns (x, y). You can load the “spp” data into your local R
 environment by using the code below:
 
-``` r
-
-data("spp")
-
-spp
-#> # A tibble: 1,150 × 4
-#>    species        x        y pr_ab
-#>    <chr>      <dbl>    <dbl> <dbl>
-#>  1 sp1       -5541. -145138.     0
-#>  2 sp1      -51981.   16322.     0
-#>  3 sp1     -269871.   69512.     1
-#>  4 sp1      -96261.  -32008.     0
-#>  5 sp1      269589. -566338.     0
-#>  6 sp1       29829. -328468.     0
-#>  7 sp1     -152691.  393782.     0
-#>  8 sp1     -195081.  253652.     0
-#>  9 sp1        -951. -277978.     0
-#> 10 sp1      145929. -271498.     0
-#> # ℹ 1,140 more rows
-```
+\
+[`data`](https://rdrr.io/r/utils/data.html)`(``"spp"``)`\
+\
+`spp`\
+`#> ``# A tibble: 1,150 × 4`\
+`#>    species        x        y pr_ab`\
+`#>    ``<chr>``      ``<dbl>``    ``<dbl>`` ``<dbl>`\
+`#> `` 1`` sp1       -``5``541.`` -``145``138.``     0`\
+`#> `` 2`` sp1      -``51``981.``   ``16``322.     0`\
+`#> `` 3`` sp1     -``269``871.``   ``69``512.     1`\
+`#> `` 4`` sp1      -``96``261.``  -``32``008.``     0`\
+`#> `` 5`` sp1      ``269``589. -``566``338.``     0`\
+`#> `` 6`` sp1       ``29``829. -``328``468.``     0`\
+`#> `` 7`` sp1     -``152``691.``  ``393``782.     0`\
+`#> `` 8`` sp1     -``195``081.``  ``253``652.     0`\
+`#> `` 9`` sp1        -``951.`` -``277``978.``     0`\
+`#> ``10`` sp1      ``145``929. -``271``498.``     0`\
+`#> ``# ℹ 1,140 more rows`
 
 ## Geographic region
 
@@ -147,19 +141,15 @@ Our species occurrences are located in the California Floristic Province
 (far western USA). The “regions” dataset can be used to visualize the
 study area in geographic space.
 
-``` r
-
-regions <- system.file("external/regions.tif", package = "flexsdm")
-regions <- terra::rast(regions)
-```
+\
+`regions`` ``<-`` `[`system.file`](https://rdrr.io/r/base/system.file.html)`(``"external/regions.tif"``, package ``=`` ``"flexsdm"``)`\
+`regions`` ``<-`` ``terra``::`[`rast`](https://rspatial.github.io/terra/reference/rast.html)`(``regions``)`
 
 How are the points distributed across our study area?
 
-``` r
-
-try(plot(regions), silent = TRUE)
-points(spp[, 2:3], pch = 19, cex = 0.5, col = as.factor(spp$species))
-```
+\
+[`try`](https://rdrr.io/r/base/try.html)`(`[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``regions``)``, silent ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``spp``[``, ``2``:``3``]``, pch ``=`` ``19``, cex ``=`` ``0.5``, col ``=`` `[`as.factor`](https://rspatial.github.io/terra/reference/is.bool.html)`(``spp``$``species``)``)`
 
 ![](v01_pre_modeling_files/figure-html/map-1.png)
 
@@ -177,14 +167,12 @@ Nevada, California!
 
 Let’s use presence locations for one species in this exercise.
 
-``` r
-
-spp1 <-
-  spp %>%
-  dplyr::filter(species == "sp1") %>%
-  dplyr::filter(pr_ab == 1) %>%
-  dplyr::select(-pr_ab)
-```
+\
+`spp1`` ``<-`\
+`  ``spp`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``species`` ``==`` ``"sp1"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``pr_ab`` ``==`` ``1``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-``pr_ab``)`
 
 The calib_area() function offers three methods for defining a
 calibration area: buffer, mcp, bmcp, and mask. We will briefly go over
@@ -197,22 +185,20 @@ points. User’s can specify the distance around points using the “width”
 argument. The buffer width value is interpreted in m if the CRS has a
 longitude/latitude, or in map units in other cases.
 
-``` r
-
-crs(regions, proj = TRUE)
-#> [1] "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs"
-
-ca_1 <- calib_area(
-  data = spp1,
-  x = "x",
-  y = "y",
-  method = c("buffer", width = 40000),
-  crs = crs(regions)
-)
-plot(regions, main = "Buffer method")
-plot(ca_1, add = TRUE)
-points(spp1[, 2:3], pch = 19, cex = 0.5)
-```
+\
+[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``regions``, proj ``=`` ``TRUE``)`\
+`#> [1] "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs"`\
+\
+`ca_1`` ``<-`` `[`calib_area`](https://sjevelazco.github.io/flexsdm/reference/calib_area.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"buffer"``, width ``=`` ``40000``)``,`\
+`  crs ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``regions``)`\
+`)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``regions``, main ``=`` ``"Buffer method"``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca_1``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``spp1``[``, ``2``:``3``]``, pch ``=`` ``19``, cex ``=`` ``0.5``)`
 
 ![](v01_pre_modeling_files/figure-html/buffer%20method-1.png)
 
@@ -220,20 +206,18 @@ points(spp1[, 2:3], pch = 19, cex = 0.5)
 
 The minimum convex polygon (mcp) method produces a much simpler shape.
 
-``` r
-
-ca_2 <- calib_area(
-  data = spp1,
-  x = "x",
-  y = "y",
-  method = c("mcp"),
-  crs = crs(regions)
-)
-
-plot(regions, main = "Minimum convex polygon method")
-plot(ca_2, add = TRUE)
-points(spp1[, 2:3], pch = 19, cex = 0.5)
-```
+\
+`ca_2`` ``<-`` `[`calib_area`](https://sjevelazco.github.io/flexsdm/reference/calib_area.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"mcp"``)``,`\
+`  crs ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``regions``)`\
+`)`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``regions``, main ``=`` ``"Minimum convex polygon method"``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca_2``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``spp1``[``, ``2``:``3``]``, pch ``=`` ``19``, cex ``=`` ``0.5``)`
 
 ![](v01_pre_modeling_files/figure-html/mcp%20method-1.png)
 
@@ -241,20 +225,18 @@ points(spp1[, 2:3], pch = 19, cex = 0.5)
 
 You can also create a buffer around the minimum convex polygon.
 
-``` r
-
-ca_3 <- calib_area(
-  data = spp1,
-  x = "x",
-  y = "y",
-  method = c("bmcp", width = 40000),
-  crs = crs(regions)
-)
-
-plot(regions, main = "Buffered minimum convex polygon")
-plot(ca_3, add = TRUE)
-points(spp1[, 2:3], pch = 19, cex = 0.5)
-```
+\
+`ca_3`` ``<-`` `[`calib_area`](https://sjevelazco.github.io/flexsdm/reference/calib_area.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"bmcp"``, width ``=`` ``40000``)``,`\
+`  crs ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``regions``)`\
+`)`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``regions``, main ``=`` ``"Buffered minimum convex polygon"``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca_3``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``spp1``[``, ``2``:``3``]``, pch ``=`` ``19``, cex ``=`` ``0.5``)`
 
 ![](v01_pre_modeling_files/figure-html/bmcp%20method-1.png)
 
@@ -269,24 +251,22 @@ within political boundaries. We will use a random set of polygons named
 the left and the polygons that contain points (our “mask” calibration
 area) are on the right.
 
-``` r
-
-clusters <- system.file("external/clusters.shp", package = "flexsdm")
-clusters <- terra::vect(clusters)
-
-ca_4 <- calib_area(
-  data = spp1,
-  x = "x",
-  y = "y",
-  method = c("mask", clusters, "clusters"),
-  crs = crs(regions)
-)
-
-par(mfrow = c(1, 2))
-plot(clusters, main = "Original polygons")
-plot(ca_4, main = "Polygons with points (mask)")
-points(spp1[, 2:3], pch = 19, cex = 0.5)
-```
+\
+`clusters`` ``<-`` `[`system.file`](https://rdrr.io/r/base/system.file.html)`(``"external/clusters.shp"``, package ``=`` ``"flexsdm"``)`\
+`clusters`` ``<-`` ``terra``::`[`vect`](https://rspatial.github.io/terra/reference/vect.html)`(``clusters``)`\
+\
+`ca_4`` ``<-`` `[`calib_area`](https://sjevelazco.github.io/flexsdm/reference/calib_area.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"mask"``, ``clusters``, ``"clusters"``)``,`\
+`  crs ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``regions``)`\
+`)`\
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``)``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``clusters``, main ``=`` ``"Original polygons"``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca_4``, main ``=`` ``"Polygons with points (mask)"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``spp1``[``, ``2``:``3``]``, pch ``=`` ``19``, cex ``=`` ``0.5``)`
 
 ![](v01_pre_modeling_files/figure-html/mask%20method-1.png)
 
@@ -303,16 +283,14 @@ package: actual evapotranspiration (CFP_1), climatic water deficit
 (CFP_2), maximum temperature of the warmest month (CFP_3), and minimum
 temperature of the coldest month (CFP_4).
 
-``` r
-
-somevar <- system.file("external/somevar.tif", package = "flexsdm")
-
-somevar <- terra::rast(somevar)
-
-names(somevar) <- c("aet", "cwd", "tmx", "tmn")
-
-plot(somevar)
-```
+\
+`somevar`` ``<-`` `[`system.file`](https://rdrr.io/r/base/system.file.html)`(``"external/somevar.tif"``, package ``=`` ``"flexsdm"``)`\
+\
+`somevar`` ``<-`` ``terra``::`[`rast`](https://rspatial.github.io/terra/reference/rast.html)`(``somevar``)`\
+\
+[`names`](https://rspatial.github.io/terra/reference/names.html)`(``somevar``)`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``somevar``)`
 
 ![](v01_pre_modeling_files/figure-html/env%20data-1.png)
 
@@ -320,10 +298,8 @@ The relationship between different environmental variables can be
 visualized with the pairs() function from the *terra* package. Several
 of our variables are highly correlated (.89 for predictors tmx and tmn).
 
-``` r
-
-terra::pairs(somevar)
-```
+\
+`terra``::`[`pairs`](https://rspatial.github.io/terra/reference/pairs.html)`(``somevar``)`
 
 ![](v01_pre_modeling_files/figure-html/pairs%20plot-1.png)
 
@@ -371,30 +347,28 @@ For references, see:
 
 #### 2. Woodward, F. I., M. R. Lomas, and C. K. Kelly. 2004. Global climate and the distribution of plant biomes. Philosophical transactions of the Royal Society of London. Series B, Biological sciences 359:1465–1476.
 
-``` r
-
-pearson_var <- correct_colinvar(somevar, method = c("pearson", th = "0.7"))
-pearson_var$cor_table
-#>           aet       cwd       tmx       tmn
-#> aet 0.0000000 0.7689893 0.7924813 0.7845401
-#> cwd 0.7689893 0.0000000 0.4168956 0.5881831
-#> tmx 0.7924813 0.4168956 0.0000000 0.7323259
-#> tmn 0.7845401 0.5881831 0.7323259 0.0000000
-pearson_var$cor_variables
-#> $aet
-#> [1] "cwd" "tmx" "tmn"
-#> 
-#> $cwd
-#> [1] "aet"
-#> 
-#> $tmx
-#> [1] "aet" "tmn"
-#> 
-#> $tmn
-#> [1] "aet" "tmx"
-
-chosen_variables <- somevar[[c("cwd", "aet", "tmn")]]
-```
+\
+`pearson_var`` ``<-`` `[`correct_colinvar`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.md)`(``somevar``, method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"pearson"``, th ``=`` ``"0.7"``)``)`\
+`pearson_var``$``cor_table`\
+`#>           aet       cwd       tmx       tmn`\
+`#> aet 0.0000000 0.7689893 0.7924813 0.7845401`\
+`#> cwd 0.7689893 0.0000000 0.4168956 0.5881831`\
+`#> tmx 0.7924813 0.4168956 0.0000000 0.7323259`\
+`#> tmn 0.7845401 0.5881831 0.7323259 0.0000000`\
+`pearson_var``$``cor_variables`\
+`#> $aet`\
+`#> [1] "cwd" "tmx" "tmn"`\
+`#> `\
+`#> $cwd`\
+`#> [1] "aet"`\
+`#> `\
+`#> $tmx`\
+`#> [1] "aet" "tmn"`\
+`#> `\
+`#> $tmn`\
+`#> [1] "aet" "tmx"`\
+\
+`chosen_variables`` ``<-`` ``somevar``[[`[`c`](https://rdrr.io/r/base/c.html)`(``"cwd"``, ``"aet"``, ``"tmn"``)``]``]`
 
 ### 2. Variance inflation factor
 
@@ -406,30 +380,28 @@ by the pearson method: 1) environmental layer of retained variables, 2)
 a list of removed variables, and 3) a correlation matrix of all
 variables.
 
-``` r
-
-vif_var <- correct_colinvar(somevar, method = c("vif", th = "10"))
-vif_var$env_layer
-#> class       : SpatRaster
-#> size        : 558, 394, 4  (nrow, ncol, nlyr)
-#> resolution  : 1890, 1890  (x, y)
-#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
-#> source      : somevar.tif
-#> names       :         aet,       cwd,        tmx,       tmn
-#> min values  :           0,  -9.39489,  22.446851,  0.259143
-#> max values  : 1357.864694, 14.200473, 614.691254, 64.374759
-vif_var$removed_variables
-#> NULL
-vif_var$vif_table
-#> # A tibble: 4 × 2
-#>   Variables   VIF
-#>   <chr>     <dbl>
-#> 1 aet        7.62
-#> 2 cwd        3.29
-#> 3 tmx        3.95
-#> 4 tmn        2.89
-```
+\
+`vif_var`` ``<-`` `[`correct_colinvar`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.md)`(``somevar``, method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"vif"``, th ``=`` ``"10"``)``)`\
+`vif_var``$``env_layer`\
+`#> class       : SpatRaster`\
+`#> size        : 558, 394, 4  (nrow, ncol, nlyr)`\
+`#> resolution  : 1890, 1890  (x, y)`\
+`#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)`\
+`#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs`\
+`#> source      : somevar.tif`\
+`#> names       :         aet,       cwd,        tmx,       tmn`\
+`#> min values  :           0,  -9.39489,  22.446851,  0.259143`\
+`#> max values  : 1357.864694, 14.200473, 614.691254, 64.374759`\
+`vif_var``$``removed_variables`\
+`#> NULL`\
+`vif_var``$``vif_table`\
+`#> ``# A tibble: 4 × 2`\
+`#>   Variables   VIF`\
+`#>   ``<chr>``     ``<dbl>`\
+`#> ``1`` aet        7.62`\
+`#> ``2`` cwd        3.29`\
+`#> ``3`` tmx        3.95`\
+`#> ``4`` tmn        2.89`
 
 ### 3. Principal component analysis
 
@@ -440,36 +412,34 @@ selected environmental variables, 2) a matrix with the coefficients of
 principal components for predictors, and 3) a tibble with the cumulative
 variance explained in selected principal components.
 
-``` r
-
-pca_var <- correct_colinvar(somevar, method = c("pca"))
-pca_var$env_layer
-#> class       : SpatRaster
-#> size        : 558, 394, 3  (nrow, ncol, nlyr)
-#> resolution  : 1890, 1890  (x, y)
-#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
-#> source(s)   : memory
-#> names       :       PC1,       PC2,       PC3
-#> min values  : -8.453273, -4.260147, -1.525085
-#> max values  :  2.827164,  3.337545,  4.342864
-pca_var$coefficients
-#> # A tibble: 4 × 5
-#>   variable    PC1     PC2    PC3     PC4
-#>   <chr>     <dbl>   <dbl>  <dbl>   <dbl>
-#> 1 aet       0.550 -0.0722  0.296 -0.778 
-#> 2 cwd       0.450 -0.777   0.103  0.429 
-#> 3 tmx      -0.485 -0.594  -0.450 -0.459 
-#> 4 tmn      -0.511 -0.198   0.836 -0.0241
-pca_var$cumulative_variance
-#> # A tibble: 4 × 2
-#>      PC  cvar
-#>   <int> <dbl>
-#> 1     1 0.764
-#> 2     2 0.915
-#> 3     3 0.979
-#> 4     4 1
-```
+\
+`pca_var`` ``<-`` `[`correct_colinvar`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.md)`(``somevar``, method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"pca"``)``)`\
+`pca_var``$``env_layer`\
+`#> class       : SpatRaster`\
+`#> size        : 558, 394, 3  (nrow, ncol, nlyr)`\
+`#> resolution  : 1890, 1890  (x, y)`\
+`#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)`\
+`#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs`\
+`#> source(s)   : memory`\
+`#> names       :       PC1,       PC2,       PC3`\
+`#> min values  : -8.453273, -4.260147, -1.525085`\
+`#> max values  :  2.827164,  3.337545,  4.342864`\
+`pca_var``$``coefficients`\
+`#> ``# A tibble: 4 × 5`\
+`#>   variable    PC1     PC2    PC3     PC4`\
+`#>   ``<chr>``     ``<dbl>``   ``<dbl>``  ``<dbl>``   ``<dbl>`\
+`#> ``1`` aet       0.550 -``0.072``2``  0.296 -``0.778`` `\
+`#> ``2`` cwd       0.450 -``0.777``   0.103  0.429 `\
+`#> ``3`` tmx      -``0.485`` -``0.594``  -``0.450`` -``0.459`` `\
+`#> ``4`` tmn      -``0.511`` -``0.198``   0.836 -``0.024``1`\
+`pca_var``$``cumulative_variance`\
+`#> ``# A tibble: 4 × 2`\
+`#>      PC  cvar`\
+`#>   ``<int>`` ``<dbl>`\
+`#> ``1``     1 0.764`\
+`#> ``2``     2 0.915`\
+`#> ``3``     3 0.979`\
+`#> ``4``     4 1`
 
 ### 4. Factorial analysis
 
@@ -478,15 +448,13 @@ dimensionality and selects the predictor(s) with the highest correlation
 to each axis. The outputs for this method are similar to those produced
 by the ‘pca’ method.
 
-``` r
-
-fa_var <- correct_colinvar(env_layer = somevar, method = c("fa"))
-fa_var$env_layer
-fa_var$number_factors
-fa_var$removed_variables
-fa_var$uniqueness
-fa_var$loadings
-```
+\
+`fa_var`` ``<-`` `[`correct_colinvar`](https://sjevelazco.github.io/flexsdm/reference/correct_colinvar.md)`(``env_layer ``=`` ``somevar``, method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"fa"``)``)`\
+`fa_var``$``env_layer`\
+`fa_var``$``number_factors`\
+`fa_var``$``removed_variables`\
+`fa_var``$``uniqueness`\
+`fa_var``$``loadings`
 
 ### 5. Comments
 
@@ -525,60 +493,58 @@ condition. Here we will explore the results using 5, 8, and 12 bins.
 Increasing the number of bins increases the number of occurrence points
 retained.
 
-``` r
-
-spp1$idd <- 1:nrow(spp1)
-
-filt_env5 <- occfilt_env(
-  data = spp1,
-  x = "x",
-  y = "y",
-  id = "idd",
-  env_layer = somevar,
-  nbins = 5
-)
-#> Extracting values from raster ...
-#> 12 records were removed because they have NAs for some variables
-#> Number of unfiltered records: 238
-#> Number of filtered records: 57
-
-filt_env8 <- occfilt_env(
-  data = spp1,
-  x = "x",
-  y = "y",
-  id = "idd",
-  env_layer = somevar,
-  nbins = 8
-)
-#> Extracting values from raster ...
-#> 12 records were removed because they have NAs for some variables
-#> Number of unfiltered records: 238
-#> Number of filtered records: 112
-
-filt_env12 <- occfilt_env(
-  data = spp1,
-  x = "x",
-  y = "y",
-  id = "idd",
-  env_layer = somevar,
-  nbins = 12
-)
-#> Extracting values from raster ...
-#> 12 records were removed because they have NAs for some variables
-#> Number of unfiltered records: 238
-#> Number of filtered records: 173
-
-
-par(mfrow = c(2, 2))
-somevar[[1]] %>% plot(main = "Original occurrence data")
-points(spp1 %>% select(x, y))
-somevar[[1]] %>% plot(main = "Filtering with 5 bins")
-points(filt_env5 %>% select(x, y))
-somevar[[1]] %>% plot(main = "Filtering with 8 bins")
-points(filt_env8 %>% select(x, y))
-somevar[[1]] %>% plot(main = "Filtering with 12 bins")
-points(filt_env12 %>% select(x, y))
-```
+\
+`spp1``$``idd`` ``<-`` ``1``:`[`nrow`](https://rspatial.github.io/terra/reference/dimensions.html)`(``spp1``)`\
+\
+`filt_env5`` ``<-`` `[`occfilt_env`](https://sjevelazco.github.io/flexsdm/reference/occfilt_env.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  id ``=`` ``"idd"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  nbins ``=`` ``5`\
+`)`\
+`#> Extracting values from raster ...`\
+`#> 12 records were removed because they have NAs for some variables`\
+`#> Number of unfiltered records: 238`\
+`#> Number of filtered records: 57`\
+\
+`filt_env8`` ``<-`` `[`occfilt_env`](https://sjevelazco.github.io/flexsdm/reference/occfilt_env.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  id ``=`` ``"idd"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  nbins ``=`` ``8`\
+`)`\
+`#> Extracting values from raster ...`\
+`#> 12 records were removed because they have NAs for some variables`\
+`#> Number of unfiltered records: 238`\
+`#> Number of filtered records: 112`\
+\
+`filt_env12`` ``<-`` `[`occfilt_env`](https://sjevelazco.github.io/flexsdm/reference/occfilt_env.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  id ``=`` ``"idd"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  nbins ``=`` ``12`\
+`)`\
+`#> Extracting values from raster ...`\
+`#> 12 records were removed because they have NAs for some variables`\
+`#> Number of unfiltered records: 238`\
+`#> Number of filtered records: 173`\
+\
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``2``)``)`\
+`somevar``[[``1``]``]`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``main ``=`` ``"Original occurrence data"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``spp1`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``x``, ``y``)``)`\
+`somevar``[[``1``]``]`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``main ``=`` ``"Filtering with 5 bins"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``filt_env5`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``x``, ``y``)``)`\
+`somevar``[[``1``]``]`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``main ``=`` ``"Filtering with 8 bins"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``filt_env8`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``x``, ``y``)``)`\
+`somevar``[[``1``]``]`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``main ``=`` ``"Filtering with 12 bins"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``filt_env12`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``x``, ``y``)``)`
 
 ![](v01_pre_modeling_files/figure-html/env%20occurrence%20filtering-1.png)
 
@@ -593,62 +559,60 @@ data; “cellsize” filters occurrences based on the resolution of the
 predictors (or a specified coarser resolution); finally, “determined”
 allows users to manually determine the distance threshold.
 
-``` r
-
-filt_geo1 <- occfilt_geo(
-  data = spp1,
-  x = "x",
-  y = "y",
-  env_layer = somevar,
-  method = c("moran"),
-  prj = crs(somevar)
-)
-#> Extracting values from raster ...
-#> 16 records were removed because they have NAs for some variables
-#> Number of unfiltered records: 234
-#> Moran's I threshold closest to the supplied value: 0.099
-#> Distance threshold (km) : 334.908
-#> Number of filtered records: 4
-
-filt_geo2 <- occfilt_geo(
-  data = spp1,
-  x = "x",
-  y = "y",
-  env_layer = somevar,
-  method = c("cellsize", factor = "3"), # coarser resolution than the provided raster
-  prj = crs(somevar)
-)
-#> Extracting values from raster ...
-#> 16 records were removed because they have NAs for some variables
-#> Number of unfiltered records: 234
-#> Factor: x3
-#> Distance threshold (km): 4.617
-#> Number of filtered records: 212
-
-filt_geo3 <- occfilt_geo(
-  data = spp1,
-  x = "x",
-  y = "y",
-  env_layer = somevar,
-  method = c("defined", d = "30"),
-  prj = crs(somevar)
-)
-#> Extracting values from raster ...
-#> 16 records were removed because they have NAs for some variables
-#> Number of unfiltered records: 234
-#> Distance threshold (km): 30
-#> Number of filtered records: 78
-
-par(mfrow = c(2, 2))
-somevar[[1]] %>% plot(main = "Original occurrence data")
-points(spp1 %>% select(x, y))
-somevar[[1]] %>% plot(main = "Filtering with Moran's I")
-points(filt_geo1 %>% select(x, y))
-somevar[[1]] %>% plot(main = "Filtering with cell size")
-points(filt_geo2 %>% select(x, y))
-somevar[[1]] %>% plot(main = "Filtering with defined distance (30km)")
-points(filt_geo3 %>% select(x, y))
-```
+\
+`filt_geo1`` ``<-`` `[`occfilt_geo`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"moran"``)``,`\
+`  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
+`)`\
+`#> Extracting values from raster ...`\
+`#> 16 records were removed because they have NAs for some variables`\
+`#> Number of unfiltered records: 234`\
+`#> Moran's I threshold closest to the supplied value: 0.099`\
+`#> Distance threshold (km) : 334.908`\
+`#> Number of filtered records: 4`\
+\
+`filt_geo2`` ``<-`` `[`occfilt_geo`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cellsize"``, factor ``=`` ``"3"``)``, ``# coarser resolution than the provided raster`\
+`  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
+`)`\
+`#> Extracting values from raster ...`\
+`#> 16 records were removed because they have NAs for some variables`\
+`#> Number of unfiltered records: 234`\
+`#> Factor: x3`\
+`#> Distance threshold (km): 4.617`\
+`#> Number of filtered records: 212`\
+\
+`filt_geo3`` ``<-`` `[`occfilt_geo`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"defined"``, d ``=`` ``"30"``)``,`\
+`  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
+`)`\
+`#> Extracting values from raster ...`\
+`#> 16 records were removed because they have NAs for some variables`\
+`#> Number of unfiltered records: 234`\
+`#> Distance threshold (km): 30`\
+`#> Number of filtered records: 78`\
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``2``)``)`\
+`somevar``[[``1``]``]`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``main ``=`` ``"Original occurrence data"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``spp1`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``x``, ``y``)``)`\
+`somevar``[[``1``]``]`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``main ``=`` ``"Filtering with Moran's I"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``filt_geo1`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``x``, ``y``)``)`\
+`somevar``[[``1``]``]`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``main ``=`` ``"Filtering with cell size"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``filt_geo2`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``x``, ``y``)``)`\
+`somevar``[[``1``]``]`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``main ``=`` ``"Filtering with defined distance (30km)"``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``filt_geo3`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``x``, ``y``)``)`
 
 ![](v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering-1.png)
 
@@ -656,73 +620,67 @@ Also, for the three methods, it is possible methods use several values,
 turning easier the possibility to explore or test several filtering
 values.
 
-``` r
-
-filt_geo1 <- occfilt_geo(
-  data = spp1,
-  x = "x",
-  y = "y",
-  env_layer = somevar,
-  method = c("moran", c(0.1, 0.2, 0.3, 0.5)),
-  prj = crs(somevar)
-)
-
-filt_geo2 <- occfilt_geo(
-  data = spp1,
-  x = "x",
-  y = "y",
-  env_layer = somevar,
-  method = c("cellsize", factor = c(1, 5, 8, 12)), # coarser resolution than the provided raster
-  prj = crs(somevar)
-)
-
-filt_geo3 <- occfilt_geo(
-  data = spp1,
-  x = "x",
-  y = "y",
-  env_layer = somevar,
-  method = c("defined", d = c(5, 10, 15, 30)),
-  prj = crs(somevar)
-)
-
-# When several values are used, note the function returns a list with the filtered data
-filt_geo1 %>% class()
-#> [1] "list"
-filt_geo1 %>% names()
-#> [1] "0.1" "0.2" "0.3" "0.5"
-
-# Let's plot the results with ggplot2
-bind_rows(filt_geo1, .id = "moran") %>%
-  dplyr::mutate(moran = as.numeric(moran)) %>%
-  ggplot(aes(x, y)) +
-  geom_point() +
-  facet_wrap(~moran)
-```
+\
+`filt_geo1`` ``<-`` `[`occfilt_geo`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"moran"``, `[`c`](https://rdrr.io/r/base/c.html)`(``0.1``, ``0.2``, ``0.3``, ``0.5``)``)``,`\
+`  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
+`)`\
+\
+`filt_geo2`` ``<-`` `[`occfilt_geo`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cellsize"``, factor ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``5``, ``8``, ``12``)``)``, ``# coarser resolution than the provided raster`\
+`  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
+`)`\
+\
+`filt_geo3`` ``<-`` `[`occfilt_geo`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"defined"``, d ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``5``, ``10``, ``15``, ``30``)``)``,`\
+`  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
+`)`\
+\
+`# When several values are used, note the function returns a list with the filtered data`\
+`filt_geo1`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`class`](https://rdrr.io/r/base/class.html)`(``)`\
+`#> [1] "list"`\
+`filt_geo1`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`names`](https://rspatial.github.io/terra/reference/names.html)`(``)`\
+`#> [1] "0.1" "0.2" "0.3" "0.5"`\
+\
+`# Let's plot the results with ggplot2`\
+[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``filt_geo1``, .id ``=`` ``"moran"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``moran ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``moran``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x``, ``y``)``)`` ``+`\
+`  `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`\
+`  `[`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html)`(``~``moran``)`
 
 ![](v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-1.png)
 
-``` r
-
-
-
-bind_rows(filt_geo2, .id = "cellsize") %>%
-  dplyr::mutate(moran = as.numeric(cellsize)) %>%
-  ggplot(aes(x, y)) +
-  geom_point() +
-  facet_wrap(~cellsize)
-```
+\
+\
+\
+[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``filt_geo2``, .id ``=`` ``"cellsize"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``moran ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``cellsize``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x``, ``y``)``)`` ``+`\
+`  `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`\
+`  `[`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html)`(``~``cellsize``)`
 
 ![](v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-2.png)
 
-``` r
-
-
-bind_rows(filt_geo2, .id = "determined") %>%
-  dplyr::mutate(moran = as.numeric(determined)) %>%
-  ggplot(aes(x, y)) +
-  geom_point() +
-  facet_wrap(~determined)
-```
+\
+\
+[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``filt_geo2``, .id ``=`` ``"determined"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``moran ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``determined``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x``, ``y``)``)`` ``+`\
+`  `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(``)`` ``+`\
+`  `[`facet_wrap`](https://ggplot2.tidyverse.org/reference/facet_wrap.html)`(``~``determined``)`
 
 ![](v01_pre_modeling_files/figure-html/geo%20occurrence%20filtering%20with%20different%20values-3.png)
 
@@ -733,38 +691,38 @@ autocorrelation maximum number of presences (see
 [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
 function help)
 
-``` r
-
-filt_selected <- occfilt_select(
-  occ_list = filt_geo2,
-  x = "x", y = "y",
-  env_layer = somevar, filter_prop = TRUE
-)
-#> Dataset with filtered value 8 was selected
-filt_selected
-#> $occ
-#> # A tibble: 156 × 4
-#>    species        x        y   idd
-#>    <chr>      <dbl>    <dbl> <int>
-#>  1 sp1     -269871.   69512.     1
-#>  2 sp1     -149991.  267962.     2
-#>  3 sp1       91659. -156748.     4
-#>  4 sp1     -210471.  326282.     5
-#>  5 sp1     -140541.  284972.     6
-#>  6 sp1     -217491.   65732.     7
-#>  7 sp1      -92481.  155642.    12
-#>  8 sp1     -367611.  266072.    13
-#>  9 sp1     -184551.  425372.    15
-#> 10 sp1     -260151.   57632.    18
-#> # ℹ 146 more rows
-#> 
-#> $filter_prop
-#>   filt_value mean_autocorr n_records       aet       cwd       tmx       tmn
-#> 1          1     0.3219265       233 0.3534014 0.2017850 0.3352363 0.3972832
-#> 2          5     0.2923551       189 0.3276294 0.1400721 0.3170405 0.3846783
-#> 3        * 8     0.2602486       156 0.3055744 0.1287050 0.2635844 0.3431307
-#> 4         12     0.2291901       118 0.2568785 0.1080880 0.2311247 0.3206691
-```
+\
+`filt_selected`` ``<-`` `[`occfilt_select`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)`(`\
+`  occ_list ``=`` ``filt_geo2``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  env_layer ``=`` ``somevar``,`\
+`  filter_prop ``=`` ``TRUE`\
+`)`\
+`#> Dataset with filtered value 8 was selected`\
+`filt_selected`\
+`#> $occ`\
+`#> ``# A tibble: 156 × 4`\
+`#>    species        x        y   idd`\
+`#>    ``<chr>``      ``<dbl>``    ``<dbl>`` ``<int>`\
+`#> `` 1`` sp1     -``269``871.``   ``69``512.     1`\
+`#> `` 2`` sp1     -``149``991.``  ``267``962.     2`\
+`#> `` 3`` sp1       ``91``659. -``156``748.``     4`\
+`#> `` 4`` sp1     -``210``471.``  ``326``282.     5`\
+`#> `` 5`` sp1     -``140``541.``  ``284``972.     6`\
+`#> `` 6`` sp1     -``217``491.``   ``65``732.     7`\
+`#> `` 7`` sp1      -``92``481.``  ``155``642.    12`\
+`#> `` 8`` sp1     -``367``611.``  ``266``072.    13`\
+`#> `` 9`` sp1     -``184``551.``  ``425``372.    15`\
+`#> ``10`` sp1     -``260``151.``   ``57``632.    18`\
+`#> ``# ℹ 146 more rows`\
+`#> `\
+`#> $filter_prop`\
+`#>   filt_value mean_autocorr n_records       aet       cwd       tmx       tmn`\
+`#> 1          1     0.3219265       233 0.3534014 0.2017850 0.3352363 0.3972832`\
+`#> 2          5     0.2923551       189 0.3276294 0.1400721 0.3170405 0.3846783`\
+`#> 3        * 8     0.2602486       156 0.3055744 0.1287050 0.2635844 0.3431307`\
+`#> 4         12     0.2291901       118 0.2568785 0.1080880 0.2311247 0.3206691`
 
 ## Data partitioning
 
@@ -784,20 +742,18 @@ Here, we use the “kfold” method with 10 folds to divide our data. This
 results in 10 folds of occurrence data with 25 observations in each
 fold.
 
-``` r
-
-spp1$pr_ab <- 1 # Add a column with 1 to denote that this is presences only data
-sp_part1 <- part_random(
-  data = spp1,
-  pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 10)
-)
-
-sp_part1$.part %>% table()
-#> .
-#>  1  2  3  4  5  6  7  8  9 10 
-#> 25 25 25 25 25 25 25 25 25 25
-```
+\
+`spp1``$``pr_ab`` ``<-`` ``1`` ``# Add a column with 1 to denote that this is presences only data`\
+`sp_part1`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
+`  data ``=`` ``spp1``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"kfold"``, folds ``=`` ``10``)`\
+`)`\
+\
+`sp_part1``$``.part`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`table`](https://rdrr.io/r/base/table.html)`(``)`\
+`#> .`\
+`#>  1  2  3  4  5  6  7  8  9 10 `\
+`#> 25 25 25 25 25 25 25 25 25 25`
 
 ### 2. Spatial band cross-validation (part_sband)
 
@@ -815,37 +771,34 @@ presence/absence locations and the assigned partition number, 2) a
 tibble with information about the best partition, and 3) a SpatRaster
 showing the selected grid.
 
-``` r
+\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`\
+`sp_part2`` ``<-`` `[`part_sband`](https://sjevelazco.github.io/flexsdm/reference/part_sband.md)`(`\
+`  env_layer ``=`` ``somevar``,`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  type ``=`` ``"lat"``, ``# specify bands across different degrees of longitude 'lon' or latitude 'lat'.`\
+`  min_bands ``=`` ``2``, ``# minimum number of spatial bands to be tested`\
+`  max_bands ``=`` ``20``, ``# maximum number of spatial bands to be tested`\
+`  n_part ``=`` ``2``,`\
+`  prop ``=`` ``0.5`\
+`)`\
+`#> 12 rows were excluded from database because NAs were found`\
+`#> The following number of bands will be tested:`\
+`#> 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20`\
+`#> Creating basic raster mask...`\
+`#> Searching for the optimal number of bands...`
 
-set.seed(1)
-sp_part2 <- part_sband(
-  env_layer = somevar,
-  data = spp1,
-  x = "x",
-  y = "y",
-  pr_ab = "pr_ab",
-  type = "lat", # specify bands across different degrees of longitude 'lon' or latitude 'lat'.
-  min_bands = 2, # minimum number of spatial bands to be tested
-  max_bands = 20, # maximum number of spatial bands to be tested
-  n_part = 2,
-  prop = 0.5
-)
-#> 12 rows were excluded from database because NAs were found
-#> The following number of bands will be tested:
-#> 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20
-#> Creating basic raster mask...
-#> Searching for the optimal number of bands...
-```
-
-``` r
-
-plot(sp_part2$grid, col = gray.colors(20))
-points(sp_part2$part[c("x", "y")],
-  col = rainbow(8)[sp_part2$part$.part],
-  cex = 0.9,
-  pch = c(1, 19)[sp_part2$part$pr_ab + 1]
-)
-```
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``sp_part2``$``grid``, col ``=`` `[`gray.colors`](https://rdrr.io/r/grDevices/gray.colors.html)`(``20``)``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(`\
+`  ``sp_part2``$``part``[`[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``,`\
+`  col ``=`` `[`rainbow`](https://rdrr.io/r/grDevices/palettes.html)`(``8``)``[``sp_part2``$``part``$``.part``]``,`\
+`  cex ``=`` ``0.9``,`\
+`  pch ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``19``)``[``sp_part2``$``part``$``pr_ab`` ``+`` ``1``]`\
+`)`
 
 ![](v01_pre_modeling_files/figure-html/plot%20spatial%20band%20partition-1.png)
 
@@ -857,33 +810,32 @@ and returns the one that is best suited for the input dataset. Here, we
 can see the data divided into different “blocks” for training and
 testing.
 
-``` r
-
-sp_part3 <- part_sblock(
-  env_layer = somevar,
-  data = spp1,
-  x = "x",
-  y = "y",
-  pr_ab = "pr_ab",
-  min_res_mult = 10, # Minimum value used for multiplying raster resolution and define the finest resolution to be tested
-  max_res_mult = 500, # Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested
-  num_grids = 30, # Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)
-  n_part = 2, # Number of partitions
-  prop = 0.5 # Proportion of points used for testing autocorrelation between groupds (0-1)
-)
-#> 12 rows were excluded from database because NAs were found
-#> The following grid cell sizes will be tested:
-#> 18900 | 50834.48 | 82768.97 | 114703.45 | 146637.93 | 178572.41 | 210506.9 | 242441.38 | 274375.86 | 306310.34 | 338244.83 | 370179.31 | 402113.79 | 434048.28 | 465982.76 | 497917.24 | 529851.72 | 561786.21 | 593720.69 | 625655.17 | 657589.66 | 689524.14 | 721458.62 | 753393.1 | 785327.59 | 817262.07 | 849196.55 | 881131.03 | 913065.52 | 945000
-#> Creating basic raster mask...
-#> Searching for the optimal grid size...
-
-plot(sp_part3$grid)
-points(sp_part3$part[c("x", "y")],
-  col = c("blue", "red")[sp_part3$part$.part],
-  cex = 0.5,
-  pch = 19
-)
-```
+\
+`sp_part3`` ``<-`` `[`part_sblock`](https://sjevelazco.github.io/flexsdm/reference/part_sblock.md)`(`\
+`  env_layer ``=`` ``somevar``,`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  min_res_mult ``=`` ``10``, ``# Minimum value used for multiplying raster resolution and define the finest resolution to be tested`\
+`  max_res_mult ``=`` ``200``, ``# Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested`\
+`  num_grids ``=`` ``30``, ``# Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)`\
+`  n_part ``=`` ``2``, ``# Number of partitions`\
+`  prop ``=`` ``0.5`` ``# Proportion of points used for testing autocorrelation between groupds (0-1)`\
+`)`\
+`#> 12 rows were excluded from database because NAs were found`\
+`#> The following grid cell sizes will be tested:`\
+`#> 18900 | 31282.76 | 43665.52 | 56048.28 | 68431.03 | 80813.79 | 93196.55 | 105579.31 | 117962.07 | 130344.83 | 142727.59 | 155110.34 | 167493.1 | 179875.86 | 192258.62 | 204641.38 | 217024.14 | 229406.9 | 241789.66 | 254172.41 | 266555.17 | 278937.93 | 291320.69 | 303703.45 | 316086.21 | 328468.97 | 340851.72 | 353234.48 | 365617.24 | 378000`\
+`#> Creating basic raster mask...`\
+`#> Searching for the optimal grid size...`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``sp_part3``$``grid``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(`\
+`  ``sp_part3``$``part``[`[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``,`\
+`  col ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"blue"``, ``"red"``)``[``sp_part3``$``part``$``.part``]``,`\
+`  cex ``=`` ``0.5``,`\
+`  pch ``=`` ``19`\
+`)`
 
 ![](v01_pre_modeling_files/figure-html/spatial%20block%20partition-1.png)
 
@@ -895,23 +847,22 @@ to the grid resulting from part_sblock(). This layer can be really
 useful for generating pseudo-absence or background sample points, which
 we will explore in the next section.
 
-``` r
-
-terra::res(sp_part3$grid)
-#> [1] 881131 881131
-terra::res(somevar)
-#> [1] 1890 1890
-
-grid_env <- get_block(env_layer = somevar, best_grid = sp_part3$grid)
-
-plot(grid_env) # this is a block layer with the same layer
-# properties as environmental variables.
-points(sp_part3$part[c("x", "y")],
-  col = c("blue", "red")[sp_part3$part$.part],
-  cex = 0.5,
-  pch = 19
-)
-```
+\
+`terra``::`[`res`](https://rspatial.github.io/terra/reference/dimensions.html)`(``sp_part3``$``grid``)`\
+`#> [1] 278937.9 278937.9`\
+`terra``::`[`res`](https://rspatial.github.io/terra/reference/dimensions.html)`(``somevar``)`\
+`#> [1] 1890 1890`\
+\
+`grid_env`` ``<-`` `[`get_block`](https://sjevelazco.github.io/flexsdm/reference/get_block.md)`(``env_layer ``=`` ``somevar``, best_grid ``=`` ``sp_part3``$``grid``)`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``grid_env``)`` ``# this is a block layer with the same layer`\
+`# properties as environmental variables.`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(`\
+`  ``sp_part3``$``part``[`[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``,`\
+`  col ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"blue"``, ``"red"``)``[``sp_part3``$``part``$``.part``]``,`\
+`  cex ``=`` ``0.5``,`\
+`  pch ``=`` ``19`\
+`)`
 
 ![](v01_pre_modeling_files/figure-html/get%20block%20function-1.png)
 
@@ -925,30 +876,29 @@ similarity, and the number of presence and/or absence records in each
 partition. The map below shows partitioning based on these environmental
 and spatial factors.
 
-``` r
-
-sp_part4 <- part_senv(
-  env_layer = somevar,
-  data = spp1,
-  x = "x",
-  y = "y",
-  pr_ab = "pr_ab",
-  min_n_groups = 2, # Minimum number of groups to be tested
-  max_n_groups = 10, # Maximum number of groups to be tested
-  prop = 0.5 # Proportion of points used for testing autocorrelation between groups (0-1)
-)
-#> 12 rows were excluded from database because NAs were found
-#> The following grid cell sizes will be tested:
-#> 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
-#> Searching best partition...
-
-plot(regions, col = gray.colors(9))
-points(sp_part4$part[c("x", "y")],
-  col = hcl.colors(length(unique(sp_part4$part)))[sp_part4$part$.part],
-  cex = 1,
-  pch = 19
-)
-```
+\
+`sp_part4`` ``<-`` `[`part_senv`](https://sjevelazco.github.io/flexsdm/reference/part_senv.md)`(`\
+`  env_layer ``=`` ``somevar``,`\
+`  data ``=`` ``spp1``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  min_n_groups ``=`` ``2``, ``# Minimum number of groups to be tested`\
+`  max_n_groups ``=`` ``10``, ``# Maximum number of groups to be tested`\
+`  prop ``=`` ``0.5`` ``# Proportion of points used for testing autocorrelation between groups (0-1)`\
+`)`\
+`#> 12 rows were excluded from database because NAs were found`\
+`#> The following grid cell sizes will be tested:`\
+`#> 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10`\
+`#> Searching best partition...`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``regions``, col ``=`` `[`gray.colors`](https://rdrr.io/r/grDevices/gray.colors.html)`(``9``)``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(`\
+`  ``sp_part4``$``part``[`[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``,`\
+`  col ``=`` `[`hcl.colors`](https://rdrr.io/r/grDevices/palettes.html)`(`[`length`](https://rdrr.io/r/base/length.html)`(`[`unique`](https://rspatial.github.io/terra/reference/unique.html)`(``sp_part4``$``part``)``)``)``[``sp_part4``$``part``$``.part``]``,`\
+`  cex ``=`` ``1``,`\
+`  pch ``=`` ``19`\
+`)`
 
 ![](v01_pre_modeling_files/figure-html/environmental%20and%20spatial%20cross-validation-1.png)
 
@@ -973,38 +923,36 @@ of background points as our original occurrences and that our
 calibration area will be the buffer area around presence points (see
 section on “Calibration area”).
 
-``` r
-
-p_data <-
-  sp_part3$part # presence data from spatial block partition example
-
-set.seed(10)
-bg <- lapply(1:2, function(x) {
-  sample_background(
-    data = p_data,
-    x = "x",
-    y = "y",
-    n = sum(p_data == x) * 10,
-    # number of background points to be sampled
-    method = "random",
-    rlayer = grid_env,
-    maskval = x,
-    calibarea = ca_1 # A SpatVector which delimit the calibration area used for a given species
-  )
-}) %>%
-  bind_rows() %>%
-  mutate(pr_ab = 0)
-
-par(mfrow = c(2, 1))
-
-plot(grid_env, main = "Presence points")
-plot(ca_1, add = TRUE)
-points(p_data, cex = .7, pch = 19)
-
-plot(grid_env, main = "Background points")
-plot(ca_1, add = TRUE)
-points(bg, cex = .1, pch = 19)
-```
+\
+`p_data`` ``<-`\
+`  ``sp_part3``$``part`` ``# presence data from spatial block partition example`\
+\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
+`bg`` ``<-`` `[`lapply`](https://rdrr.io/r/base/lapply.html)`(``1``:``2``, ``function``(``x``)`` ``{`\
+`  `[`sample_background`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)`(`\
+`    data ``=`` ``p_data``,`\
+`    x ``=`` ``"x"``,`\
+`    y ``=`` ``"y"``,`\
+`    n ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``p_data`` ``==`` ``x``)`` ``*`` ``10``,`\
+`    ``# number of background points to be sampled`\
+`    method ``=`` ``"random"``,`\
+`    rlayer ``=`` ``grid_env``,`\
+`    maskval ``=`` ``x``,`\
+`    calibarea ``=`` ``ca_1`` ``# A SpatVector which delimit the calibration area used for a given species`\
+`  ``)`\
+`}``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``pr_ab ``=`` ``0``)`\
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``1``)``)`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``grid_env``, main ``=`` ``"Presence points"``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca_1``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``p_data``, cex ``=`` ``.7``, pch ``=`` ``19``, col ``=`` ``"gray"``)`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``grid_env``, main ``=`` ``"Background points"``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca_1``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``bg``, cex ``=`` ``.1``, pch ``=`` ``19``, col ``=`` ``"gray"``)`
 
 ![](v01_pre_modeling_files/figure-html/sample%20background-1.png)
 
@@ -1024,37 +972,35 @@ environmental suitability. The specific method chosen for sampling
 background and/or pseudo-absence points will vary depending on research
 goals.
 
-``` r
-
-set.seed(10)
-psa <- lapply(1:2, function(x) {
-  sample_pseudoabs(
-    data = p_data,
-    x = "x",
-    y = "y",
-    n = sum(p_data == x),
-    # number of pseudo-absence points to be sampled
-    method = c("env_const", env = somevar),
-    rlayer = grid_env,
-    maskval = x,
-    calibarea = ca_1
-  )
-}) %>%
-  bind_rows() %>%
-  mutate(pr_ab = 0)
-#> Extents do not match, raster layers used were croped to minimum extent
-#> Extents do not match, raster layers used were croped to minimum extent
-
-par(mfrow = c(2, 1))
-
-plot(grid_env, main = "Presence points")
-plot(ca_1, add = TRUE)
-points(p_data, cex = .7, pch = 19)
-
-plot(grid_env, main = "Pseudo-absence points")
-plot(ca_1, add = TRUE)
-points(psa, cex = .7, pch = 19)
-```
+\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
+`psa`` ``<-`` `[`lapply`](https://rdrr.io/r/base/lapply.html)`(``1``:``2``, ``function``(``x``)`` ``{`\
+`  `[`sample_pseudoabs`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)`(`\
+`    data ``=`` ``p_data``,`\
+`    x ``=`` ``"x"``,`\
+`    y ``=`` ``"y"``,`\
+`    n ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``p_data`` ``==`` ``x``)``,`\
+`    ``# number of pseudo-absence points to be sampled`\
+`    method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"env_const"``, env ``=`` ``somevar``)``,`\
+`    rlayer ``=`` ``grid_env``,`\
+`    maskval ``=`` ``x``,`\
+`    calibarea ``=`` ``ca_1`\
+`  ``)`\
+`}``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``pr_ab ``=`` ``0``)`\
+`#> Extents do not match, raster layers used were croped to minimum extent`\
+`#> Extents do not match, raster layers used were croped to minimum extent`\
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``1``)``)`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``grid_env``, main ``=`` ``"Presence points"``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca_1``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``p_data``, cex ``=`` ``.7``, pch ``=`` ``19``, col ``=`` ``"gray"``)`\
+\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``grid_env``, main ``=`` ``"Pseudo-absence points"``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca_1``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``psa``, cex ``=`` ``.7``, pch ``=`` ``19``, col ``=`` ``"gray"``)`
 
 ![](v01_pre_modeling_files/figure-html/sample%20pseudo-absences-1.png)
 
@@ -1069,25 +1015,17 @@ columns for the extracted environmental variables at those locations.
 Let’s do this for our original presence points (spp1) and our background
 locations (bg).
 
-``` r
-
-all_points <- bind_rows(spp1 %>% dplyr::select(-idd), bg)
-
-ex_spp <- sdm_extract(
-  data = all_points,
-  x = "x",
-  y = "y",
-  env_layer = somevar, # Raster with environmental variables
-  variables = NULL, # Vector with the variable names of predictor
-  # variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.
-  filter_na = TRUE
-)
-
-ex_spp
-```
-
-\#=========#=========#=========#=========#=========#=========#=========#
-
-**Vignette still under construction and changes**
-
-\#=========#=========#=========#=========#=========#=========#=========#
+\
+`all_points`` ``<-`` `[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``spp1`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-``idd``)``, ``bg``)`\
+\
+`ex_spp`` ``<-`` `[`sdm_extract`](https://sjevelazco.github.io/flexsdm/reference/sdm_extract.md)`(`\
+`  data ``=`` ``all_points``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  env_layer ``=`` ``somevar``, ``# Raster with environmental variables`\
+`  variables ``=`` ``NULL``, ``# Vector with the variable names of predictor`\
+`  ``# variables Usage variables. = c("aet", "cwd", "tmin"). If no variable is specified, function will return data for all layers.`\
+`  filter_na ``=`` ``TRUE`\
+`)`\
+\
+`ex_spp`

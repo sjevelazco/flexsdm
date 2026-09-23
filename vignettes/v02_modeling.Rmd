@@ -106,7 +106,7 @@ require(dplyr)
 
 ## Project directory setup
 
-Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html)
+Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/v01_pre_modeling.html)
 
 
 ## Data, species occurrence and background data
@@ -219,8 +219,14 @@ rf_t <-
     data = abies2,
     response = "pr_ab",
     predictors = c(
-      "aet", "cwd", "tmin", "ppt_djf",
-      "ppt_jja", "pH", "awc", "depth"
+      "aet",
+      "cwd",
+      "tmin",
+      "ppt_djf",
+      "ppt_jja",
+      "pH",
+      "awc",
+      "depth"
     ),
     predictors_f = c("landform"),
     partition = ".part",
@@ -318,7 +324,16 @@ This function constructs Generalized Additive Models using the Ensembles of Smal
 esm_gam_t1 <- esm_gam(
   data = abies2,
   response = "pr_ab",
-  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
+  predictors = c(
+    "aet",
+    "cwd",
+    "tmin",
+    "ppt_djf",
+    "ppt_jja",
+    "pH",
+    "awc",
+    "depth"
+  ),
   partition = ".part",
   thr = NULL,
   k = 2
@@ -367,7 +382,16 @@ We use the new rep_kfold partition in the gam model
 esm_gam_t2 <- esm_gam(
   data = abies2,
   response = "pr_ab",
-  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
+  predictors = c(
+    "aet",
+    "cwd",
+    "tmin",
+    "ppt_djf",
+    "ppt_jja",
+    "pH",
+    "awc",
+    "depth"
+  ),
   partition = ".part",
   thr = NULL,
   k = 2
@@ -396,16 +420,17 @@ Use the new rep_kfold partition in the gam model
 esm_gam_t3 <- esm_gam(
   data = abies2,
   response = "pr_ab",
-  predictors = c("aet", "cwd", "tmin", "ppt_djf", "ppt_jja", "pH", "awc", "depth"),
+  predictors = c(
+    "aet",
+    "cwd",
+    "tmin",
+    "ppt_djf",
+    "ppt_jja",
+    "pH",
+    "awc",
+    "depth"
+  ),
   partition = ".part",
   thr = NULL
 )
 ```
-
-
-
-#=========#=========#=========#=========#=========#=========#=========#
-
-**Vignette still under construction and changes**
-
-#=========#=========#=========#=========#=========#=========#=========#

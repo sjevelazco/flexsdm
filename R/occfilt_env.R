@@ -59,7 +59,7 @@
 #' @importFrom terra extract nlyr levels classify
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #' require(ggplot2)

@@ -51,10 +51,14 @@
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/map_env_dist.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/msdm_posteriori.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/msdm_priori.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/occ_reproj.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_env.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/occfilt_select.html</loc></url>
-<url><loc>https://sjevelazco.github.io/flexsdm/reference/occ_reproj.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_bpdp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_extra.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_pdp.html</loc></url>
+<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_psp.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/palms.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/part_random.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/part_sband.html</loc></url>
@@ -62,10 +66,6 @@
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/part_senv.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/pdp_data.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/plot_res.html</loc></url>
-<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_bpdp.html</loc></url>
-<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_extra.html</loc></url>
-<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_pdp.html</loc></url>
-<url><loc>https://sjevelazco.github.io/flexsdm/reference/p_psp.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/sample_background.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.html</loc></url>
 <url><loc>https://sjevelazco.github.io/flexsdm/reference/sdm_directory.html</loc></url>

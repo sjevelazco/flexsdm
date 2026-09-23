@@ -11,7 +11,7 @@
 #' @importFrom terra res plot as.polygons
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' r <- terra::rast(f)
 #' r <- r$CFP_1

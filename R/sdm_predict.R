@@ -51,7 +51,7 @@
 #' @importFrom terra vect crop mask as.data.frame is.factor rast app weighted.mean lapp crs
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'

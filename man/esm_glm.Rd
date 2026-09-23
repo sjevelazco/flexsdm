@@ -68,7 +68,7 @@ could be problematic when using with few occurrences. For further detail see
 Breiner et al. (2015, 2018).
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 require(dplyr)
 

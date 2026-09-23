@@ -74,13 +74,14 @@ Conlisk et al., 2013; Syphard et al., 2013).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(terra)
 require(dplyr)
 
 f <- system.file("external/suit_time_step.tif", package = "flexsdm")
 abma <- terra::rast(f)
 plot(abma)
+
 
 int <- interp(
   r1 = abma[[1]],
@@ -92,5 +93,20 @@ int <- interp(
 )
 
 int
-} # }
+#> class       : SpatRaster
+#> size        : 558, 394, 11  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> varnames    : suit_time_step
+#>               suit_time_step
+#>               suit_time_step
+#>               suit_time_step
+#>               suit_time_step
+#>               ...
+#> names       : Abies_2010, Abies_2011, Abies_2012, Abies_2013, Abies_2014, Abies_2015, ...
+#> min values  :          0,          0,          0,          0,          0,          0, ...
+#> max values  :   0.975611,   0.960608,   0.950461,   0.944007,   0.944294,   0.946355, ...
+# }
 ```

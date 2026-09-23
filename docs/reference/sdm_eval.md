@@ -198,7 +198,7 @@ The formulas are:
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(dplyr)
 
 set.seed(0)
@@ -212,26 +212,86 @@ a[a > 1] <- 1
 a[a < 0] <- 0
 
 set.seed(0)
-backg <- rnorm(1000, mean = 0.4, sd = 0.4) %>% abs()
-backg[backg > 1] <- 1
-backg[backg < 0] <- 0
+bg_vals <- rnorm(1000, mean = 0.4, sd = 0.4) %>% abs()
+bg_vals[bg_vals > 1] <- 1
+bg_vals[bg_vals < 0] <- 0
 
 # Function use without threshold specification
 e <- sdm_eval(p, a)
 e
+#> # A tibble: 7 × 18
+#>   threshold      thr_value n_presences n_absences   TPR   TNR W_TPR_TNR SORENSEN
+#>   <chr>              <dbl>       <int>      <int> <dbl> <dbl>     <dbl>    <dbl>
+#> 1 max_sorensen       0.564          50         50  0.72  0.94      0.83    0.809
+#> 2 max_jaccard        0.564          50         50  0.72  0.94      0.83    0.809
+#> 3 max_fpb            0.564          50         50  0.72  0.94      0.83    0.809
+#> 4 max_sens_spec      0.570          50         50  0.7   0.96      0.83    0.805
+#> 5 equal_sens_sp…     0.466          50         50  0.78  0.78      0.78    0.78 
+#> 6 lpt                0.231          50         50  1     0.36      0.68    0.758
+#> 7 sensitivity        0.356          50         50  0.9   0.62      0.76    0.789
+#> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
+#> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 
 # Function use with threshold specification
 sdm_eval(p, a, thr = "max_sorensen")
+#> # A tibble: 1 × 18
+#>   threshold    thr_value n_presences n_absences   TPR   TNR W_TPR_TNR SORENSEN
+#>   <chr>            <dbl>       <int>      <int> <dbl> <dbl>     <dbl>    <dbl>
+#> 1 max_sorensen     0.564          50         50  0.72  0.94      0.83    0.809
+#> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
+#> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 sdm_eval(p, a, thr = c("lpt", "max_sens_spec", "max_jaccard"))
+#> # A tibble: 3 × 18
+#>   threshold     thr_value n_presences n_absences   TPR   TNR W_TPR_TNR SORENSEN
+#>   <chr>             <dbl>       <int>      <int> <dbl> <dbl>     <dbl>    <dbl>
+#> 1 max_jaccard       0.564          50         50  0.72  0.94      0.83    0.809
+#> 2 max_sens_spec     0.570          50         50  0.7   0.96      0.83    0.805
+#> 3 lpt               0.231          50         50  1     0.36      0.68    0.758
+#> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
+#> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 sdm_eval(p, a, thr = c("lpt", "max_sens_spec", "sensitivity"))
+#> # A tibble: 3 × 18
+#>   threshold     thr_value n_presences n_absences   TPR   TNR W_TPR_TNR SORENSEN
+#>   <chr>             <dbl>       <int>      <int> <dbl> <dbl>     <dbl>    <dbl>
+#> 1 max_sens_spec     0.570          50         50   0.7  0.96      0.83    0.805
+#> 2 lpt               0.231          50         50   1    0.36      0.68    0.758
+#> 3 sensitivity       0.356          50         50   0.9  0.62      0.76    0.789
+#> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
+#> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 sdm_eval(p, a, thr = c("lpt", "max_sens_spec", "sensitivity", sens = "0.95"))
+#> # A tibble: 3 × 18
+#>   threshold     thr_value n_presences n_absences   TPR   TNR W_TPR_TNR SORENSEN
+#>   <chr>             <dbl>       <int>      <int> <dbl> <dbl>     <dbl>    <dbl>
+#> 1 max_sens_spec     0.570          50         50  0.7   0.96      0.83    0.805
+#> 2 lpt               0.231          50         50  1     0.36      0.68    0.758
+#> 3 sensitivity       0.315          50         50  0.96  0.58      0.77    0.807
+#> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
+#> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 
 # Use of bg argument (it will only be used for calculating BOYCE index)
 sdm_eval(p, a, thr = "max_sens_spec")
-sdm_eval(p, a, thr = c("max_sens_spec"), bg = backg)
+#> # A tibble: 1 × 18
+#>   threshold     thr_value n_presences n_absences   TPR   TNR W_TPR_TNR SORENSEN
+#>   <chr>             <dbl>       <int>      <int> <dbl> <dbl>     <dbl>    <dbl>
+#> 1 max_sens_spec     0.570          50         50   0.7  0.96      0.83    0.805
+#> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
+#> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
+sdm_eval(p, a, thr = c("max_sens_spec"), bg = bg_vals)
+#> # A tibble: 1 × 18
+#>   threshold     thr_value n_presences n_absences   TPR   TNR W_TPR_TNR SORENSEN
+#>   <chr>             <dbl>       <int>      <int> <dbl> <dbl>     <dbl>    <dbl>
+#> 1 max_sens_spec     0.570          50         50   0.7  0.96      0.83    0.805
+#> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
+#> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 
 # If background will be used to calculate all other metrics
 # background values can be used in "a" argument
-sdm_eval(p, backg, thr = "max_sens_spec")
-} # }
+sdm_eval(p, bg_vals, thr = "max_sens_spec")
+#> # A tibble: 1 × 18
+#>   threshold     thr_value n_presences n_absences   TPR   TNR W_TPR_TNR SORENSEN
+#>   <chr>             <dbl>       <int>      <int> <dbl> <dbl>     <dbl>    <dbl>
+#> 1 max_sens_spec     0.421          50       1000  0.86 0.537     0.845    0.155
+#> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
+#> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
+# }
 ```

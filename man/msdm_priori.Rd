@@ -72,7 +72,7 @@ See Mendes et al. (2020) for further methodological and performance details.
 If used one these constraining method cite Mendes et al 2020.
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 require(terra)
 

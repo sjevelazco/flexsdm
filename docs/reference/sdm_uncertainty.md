@@ -80,7 +80,7 @@ predictions.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(terra)
 require(dplyr)
 
@@ -101,6 +101,7 @@ sp_data <- sdm_extract(
   y = "y",
   env_layer = somevar
 )
+#> 4 rows were excluded from database because NAs were found
 
 m <- fit_svm(
   data = sp_data,
@@ -108,6 +109,12 @@ m <- fit_svm(
   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
   partition = ".part"
 )
+#> Formula used for model fitting:
+#> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 unc <- sdm_uncertainty(
   models = m,
@@ -119,5 +126,6 @@ unc <- sdm_uncertainty(
 )
 
 plot(unc)
-} # }
+
+# }
 ```

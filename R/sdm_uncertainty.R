@@ -19,7 +19,7 @@
 #' @seealso \code{\link{sdm_predict}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #'
@@ -71,6 +71,7 @@ sdm_uncertainty <- function(
   clamp = TRUE,
   pred_type = "cloglog"
 ) {
+  . <- .part1 <- NULL
   # Extract model names object
   if ("domain" %in% names(models[[1]])) {
     clss <- "domain"
@@ -150,7 +151,7 @@ sdm_uncertainty <- function(
           suppressWarnings(is_num <- !is.na(as.numeric(nums)))
           terms <- c(terms[!is_num], sapply(strsplit(terms[is_num], ":"), function(x) x[1]) %>% unique()) %>%
             paste(collapse = " + ")
-          terms <- paste("~", terms) %>% as.formula()
+          terms <- paste("~", terms) %>% stats::as.formula()
           terms <- extract.maxnet.classes(terms)
           fit_max(data = db, response = response, predictors = pr_c, predictors_f = pr_f, fit_formula = NULL, partition = NULL, background = background, clamp = clamp, pred_type = pred_type, classes = terms, regmult = 1)$model
         }

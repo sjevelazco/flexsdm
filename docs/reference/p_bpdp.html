@@ -130,6 +130,11 @@ projection. Default NULL</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A ggplot object, or a patchwork of ggplot objects when more than
+two predictors are used, showing bivariate partial dependence surface plot(s).</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This function creates partial dependent surface plots to explore the bivariate marginal
 effect of predictors on suitability. If projection_data is used, function will extract the
@@ -145,7 +150,7 @@ extrapolate outside the environmental conditions used to train the model (convex
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -165,6 +170,7 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 26 rows were excluded from database because NAs were found</span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span><span class="va">abies2</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
@@ -177,26 +183,41 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ aet + cwd + tmx + tmn</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Partial depence surface plot</span></span></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">70</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># With training condition boundaires</span></span></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
 <span class="r-in"><span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
 <span class="r-in"><span>  training_boundaries <span class="op">=</span> <span class="st">"rectangle"</span>, color_training_boundaries <span class="op">=</span> <span class="st">"yellow"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, training_boundaries <span class="op">=</span> <span class="st">"convexh"</span>,</span></span>
 <span class="r-in"><span>  color_training_boundaries <span class="op">=</span> <span class="st">"orange"</span>,</span></span>
 <span class="r-in"><span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00007F"</span>, <span class="st">"#007FFF"</span>, <span class="st">"#7FFF7F"</span>, <span class="st">"#FF7F00"</span>, <span class="st">"#7F0000"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># With projection data</span></span></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, training_boundaries <span class="op">=</span> <span class="st">"rectangle"</span>,</span></span>
@@ -204,14 +225,17 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span>  color_training_boundaries <span class="op">=</span> <span class="st">"white"</span>,</span></span>
 <span class="r-in"><span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#00007F"</span>, <span class="st">"#007FFF"</span>, <span class="st">"#7FFF7F"</span>, <span class="st">"#FF7F00"</span>, <span class="st">"#7F0000"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Bivariate partial dependence plot for training and projection condition</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"Projection area"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
 <span class="r-in"><span>  projection_data <span class="op">=</span> <span class="va">somevar</span>, <span class="co"># a SpatRaster used to predict or project the model</span></span></span>
 <span class="r-in"><span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Bivariate partial dependece plot with categorical variables</span></span></span>
@@ -224,6 +248,7 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span><span class="va">cat</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rasterize.html" class="external-link">rasterize</a></span><span class="op">(</span><span class="va">cat</span>, <span class="va">somevar</span>, field <span class="op">=</span> <span class="st">"clusters"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">somevar</span>, <span class="va">cat</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># set seed</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -237,6 +262,7 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 31 rows were excluded from database because NAs were found</span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span><span class="va">abies2</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
@@ -250,9 +276,18 @@ extrapolate outside the environmental conditions used to train the model (convex
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ aet + cwd + tmx + tmn + clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">p_bpdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, training_boundaries <span class="op">=</span> <span class="st">"convexh"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-plt img"><img src="p_bpdp-12.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -73,7 +73,7 @@ Threshold dependent metric are calculated based on the threshold specified in th
 Fit and validate Generalized Linear Models
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 abies
 

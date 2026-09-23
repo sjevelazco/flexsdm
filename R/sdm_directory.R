@@ -44,7 +44,7 @@
 #' @importFrom dplyr %>% tibble
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' # require(sf)
 #'

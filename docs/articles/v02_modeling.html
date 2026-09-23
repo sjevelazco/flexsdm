@@ -158,11 +158,11 @@ Ensemble of Small Model approach</p></li>
 version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm" class="external-link">github</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm">flexsdm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm/">flexsdm</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: flexsdm</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: terra</span></span>
-<span><span class="co">#&gt; terra 1.9.34</span></span>
+<span><span class="co">#&gt; terra 1.9.46</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'terra'</span></span>
 <span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
@@ -189,7 +189,7 @@ version of <em>flexsdm</em> from <a href="https://github.com/sjevelazco/flexsdm"
 outputs of your project (this will be your main directory). Use an
 existing one or use dir.create() to create your main directory. Then
 specify whether or not to include folders for projections, calibration
-areas, algorithms, ensembles, and thresholds. For more details see <a href="https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html">Vignette
+areas, algorithms, ensembles, and thresholds. For more details see <a href="https://sjevelazco.github.io/flexsdm/articles/v01_pre_modeling.html">Vignette
 01_pre_modeling</a></p>
 </div>
 <div class="section level2">
@@ -414,8 +414,14 @@ method:</p>
 <span>    data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span>    response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
 <span>    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>      <span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>,</span>
-<span>      <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span></span>
+<span>      <span class="st">"aet"</span>,</span>
+<span>      <span class="st">"cwd"</span>,</span>
+<span>      <span class="st">"tmin"</span>,</span>
+<span>      <span class="st">"ppt_djf"</span>,</span>
+<span>      <span class="st">"ppt_jja"</span>,</span>
+<span>      <span class="st">"pH"</span>,</span>
+<span>      <span class="st">"awc"</span>,</span>
+<span>      <span class="st">"depth"</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    predictors_f <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"landform"</span><span class="op">)</span>,</span>
 <span>    partition <span class="op">=</span> <span class="st">".part"</span>,</span>
@@ -616,7 +622,16 @@ Ensembles of Small Models (ESM) approach (Breiner et al., 2015,
 <span><span class="va">esm_gam_t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gam.html">esm_gam</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"aet"</span>,</span>
+<span>    <span class="st">"cwd"</span>,</span>
+<span>    <span class="st">"tmin"</span>,</span>
+<span>    <span class="st">"ppt_djf"</span>,</span>
+<span>    <span class="st">"ppt_jja"</span>,</span>
+<span>    <span class="st">"pH"</span>,</span>
+<span>    <span class="st">"awc"</span>,</span>
+<span>    <span class="st">"depth"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
 <span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">2</span></span>
@@ -837,7 +852,16 @@ refers to the number of replicates. Both assume values &gt;=1.</p>
 <code class="sourceCode R"><span><span class="va">esm_gam_t2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gam.html">esm_gam</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"aet"</span>,</span>
+<span>    <span class="st">"cwd"</span>,</span>
+<span>    <span class="st">"tmin"</span>,</span>
+<span>    <span class="st">"ppt_djf"</span>,</span>
+<span>    <span class="st">"ppt_jja"</span>,</span>
+<span>    <span class="st">"pH"</span>,</span>
+<span>    <span class="st">"awc"</span>,</span>
+<span>    <span class="st">"depth"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
 <span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">2</span></span>
@@ -895,14 +919,20 @@ testing. For this method, the function will return .partX columns with
 <code class="sourceCode R"><span><span class="va">esm_gam_t3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gam.html">esm_gam</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">abies2</span>,</span>
 <span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span>, <span class="st">"ppt_djf"</span>, <span class="st">"ppt_jja"</span>, <span class="st">"pH"</span>, <span class="st">"awc"</span>, <span class="st">"depth"</span><span class="op">)</span>,</span>
+<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"aet"</span>,</span>
+<span>    <span class="st">"cwd"</span>,</span>
+<span>    <span class="st">"tmin"</span>,</span>
+<span>    <span class="st">"ppt_djf"</span>,</span>
+<span>    <span class="st">"ppt_jja"</span>,</span>
+<span>    <span class="st">"pH"</span>,</span>
+<span>    <span class="st">"awc"</span>,</span>
+<span>    <span class="st">"depth"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
 <span>  thr <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%</span></span></code></pre></div>
-<p>#=========#=========#=========#=========#=========#=========#=========#</p>
-<p><strong>Vignette still under construction and changes</strong></p>
-<p>#=========#=========#=========#=========#=========#=========#=========#</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

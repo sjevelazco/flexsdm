@@ -52,6 +52,10 @@ projection. Default NULL}
 
 \item{theme}{ggplot2 theme. Default ggplot2::theme_classic()}
 }
+\value{
+A ggplot object, or a patchwork of ggplot objects when more than
+two predictors are used, showing bivariate partial dependence surface plot(s).
+}
 \description{
 Create bivariate partial dependence plot(s) to explore the bivariate marginal effect
 of predictors on suitability
@@ -64,7 +68,7 @@ Partial dependence surface plot could be used to interpret a model or to explore
 extrapolate outside the environmental conditions used to train the model (convex hull polygon).
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 library(dplyr)
 

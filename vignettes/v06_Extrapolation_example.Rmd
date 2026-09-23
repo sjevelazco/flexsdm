@@ -233,22 +233,47 @@ Extrapolation reflects an issue with how a model handles novel data. Here, we se
 Uni and bivariate partial dependence plots for the GLM:
 
 ```{r glm partial dependence plots}
-p_pdp(model = mglm$model, training_data = hespero_pa3, projection_data = somevar)
-p_bpdp(model = mglm$model, training_data = hespero_pa3, training_boundaries = "convexh")
+p_pdp(
+  model = mglm$model,
+  training_data = hespero_pa3,
+  projection_data = somevar
+)
+p_bpdp(
+  model = mglm$model,
+  training_data = hespero_pa3,
+  training_boundaries = "convexh"
+)
 ```
 
 Uni and bivariate partial dependence plots for the GBM:
 
 ```{r gbm partial dependence plots}
-p_pdp(model = mgbm$model, training_data = hespero_pa3, projection_data = somevar)
-p_bpdp(model = mgbm$model, training_data = hespero_pa3, training_boundaries = "convexh", resolution = 100)
+p_pdp(
+  model = mgbm$model,
+  training_data = hespero_pa3,
+  projection_data = somevar
+)
+p_bpdp(
+  model = mgbm$model,
+  training_data = hespero_pa3,
+  training_boundaries = "convexh",
+  resolution = 100
+)
 ```
 
 Uni and bivariate partial dependence plots for the SVM:
 
 ```{r svm partial dependence plots}
-p_pdp(model = msvm$model, training_data = hespero_pa3, projection_data = somevar)
-p_bpdp(model = msvm$model, training_data = hespero_pa3, training_boundaries = "convexh")
+p_pdp(
+  model = msvm$model,
+  training_data = hespero_pa3,
+  projection_data = somevar
+)
+p_bpdp(
+  model = msvm$model,
+  training_data = hespero_pa3,
+  training_boundaries = "convexh"
+)
 ```
 
 These plots show a really interesting story! Most notably, the GLM and GBM show consistently high habitat suitability for those areas that have much higher actual evapotranspiration than the very narrow range of values that were used to train the model. However, the SVM seems to do the best job of not estimating very high habitat suitability for environmental values that were outside of the training data. Importantly, these models can behave very differently depending on the modeling situation and context.
@@ -277,11 +302,26 @@ xp_m
 The output of the extra_eval function is a SpatRaster, showing the degree of extrapolation across the projection area, as estimated by the Shape method.
 
 ```{r comparison extrapolation outputs}
-cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
+cl <- c(
+  "#FDE725",
+  "#B3DC2B",
+  "#6DCC57",
+  "#36B677",
+  "#1F9D87",
+  "#25818E",
+  "#30678D",
+  "#3D4988",
+  "#462777",
+  "#440154"
+)
 
 par(mfrow = c(1, 2))
 plot(xp_m$extrapolation, main = "Shape metric", col = cl)
-plot(xp_m$uni_comb, main = "Univariate (1) and \n combinatorial (2) extrapolation", col = cl)
+plot(
+  xp_m$uni_comb,
+  main = "Univariate (1) and \n combinatorial (2) extrapolation",
+  col = cl
+)
 ```
 
 We can also explore extrapolation or suitability patterns in environmental and geographic space, using just one function. To do that, we will use the [`p_extra`](https://sjevelazco.github.io/flexsdm/reference/p_extra.html) function. This function plots a ggplot object.
@@ -341,7 +381,10 @@ p_extra(
   prop_points = 0.05,
   color_gradient = c("gray", "#FDE725"),
   alpha_p = 0.5
-) + plot_annotation(subtitle = "Binary extrapolation pattern with using a threshold of 50")
+) +
+  plot_annotation(
+    subtitle = "Binary extrapolation pattern with using a threshold of 50"
+  )
 
 p_extra(
   training_data = hespero_pa3,
@@ -355,7 +398,10 @@ p_extra(
   prop_points = 0.05,
   color_gradient = c("gray", "#FDE725"),
   alpha_p = 0.5
-) + plot_annotation(subtitle = "Binary extrapolation pattern with using a threshold of 100")
+) +
+  plot_annotation(
+    subtitle = "Binary extrapolation pattern with using a threshold of 100"
+  )
 
 p_extra(
   training_data = hespero_pa3,
@@ -369,7 +415,10 @@ p_extra(
   prop_points = 0.05,
   color_gradient = c("gray", "#FDE725"),
   alpha_p = 0.5
-) + plot_annotation(subtitle = "Binary extrapolation pattern with using a threshold of 500")
+) +
+  plot_annotation(
+    subtitle = "Binary extrapolation pattern with using a threshold of 500"
+  )
 ```
 
 Values of 1 (yellow one) depict the environmental and geographical regions will constraint our models suitability (truncate). Note that the lower the threshold, the more restrictive the environmental and geographic regions used to constrain the model.

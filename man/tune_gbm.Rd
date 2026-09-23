@@ -87,7 +87,7 @@ different hyper-parameter combinations to find the one that optimizes model perf
 It is a tune version of [fit_gbm()].
 }
 \examples{
-\dontrun{
+\donttest{
 data(abies)
 abies
 

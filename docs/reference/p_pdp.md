@@ -88,6 +88,11 @@ p_pdp(
 
   ggplot2 theme. Default ggplot2::theme_classic()
 
+## Value
+
+A ggplot object, or a patchwork of ggplot objects when more than one
+predictor is used, showing partial dependence plot(s).
+
 ## Details
 
 This function creates partial dependent plots to explore the marginal
@@ -110,7 +115,7 @@ the environmental conditions used to train the model.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(terra)
 library(dplyr)
 
@@ -130,6 +135,7 @@ abies2 <- sdm_extract(abies2,
   y = "y",
   env_layer = somevar
 )
+#> 31 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
@@ -142,37 +148,57 @@ svm_t1 <- fit_svm(
   partition = ".part",
   thr = c("max_sens_spec")
 )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmx + tmn
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 
 # Partial depence plot
 p_pdp(model = svm_t1$model, training_data = abies2)
+
 p_pdp(model = svm_t1$model, training_data = abies2, predictors = c("aet", "cwd"))
+
 p_pdp(model = svm_t1$model, training_data = abies2, resolution = 5)
+
 p_pdp(model = svm_t1$model, training_data = abies2, resolution = 50)
+
 p_pdp(model = svm_t1$model, training_data = abies2, resid = TRUE)
+
 p_pdp(
   model = svm_t1$model, training_data = abies2, resid = TRUE,
   colorl = "black", colorp = "red", alpha = 0.1
 )
+
 p_pdp(
   model = svm_t1$model, training_data = abies2, resid = TRUE,
   colorl = "black", colorp = "red", alpha = 0.1, rug = TRUE
 )
 
+
 # Partial depence plot for training and projection condition found in a projection area
 plot(somevar[[1]], main = "Projection area")
+
 p_pdp(model = svm_t1$model, training_data = abies2, projection_data = somevar)
+
 p_pdp(
   model = svm_t1$model, training_data = abies2, projection_data = somevar,
   colorl = c("#CC00FF", "#CCFF00")
 )
+
 p_pdp(
   model = svm_t1$model, training_data = abies2, projection_data = somevar,
   colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray"
 )
+
 p_pdp(
   model = svm_t1$model, training_data = abies2, projection_data = somevar,
   colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
   theme = ggplot2::theme_dark()
 )
-} # }
+
+# }
 ```

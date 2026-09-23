@@ -25,7 +25,7 @@
 #' @importFrom terra vect buffer aggregate union crs extract is.related
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #' data("spp")

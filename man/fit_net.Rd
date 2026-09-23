@@ -68,7 +68,7 @@ Threshold dependent metric are calculated based on the threshold specified in th
 Fit and validate Neural Networks models
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 
 # Using k-fold partition method

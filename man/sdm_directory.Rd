@@ -63,7 +63,7 @@ flexibility in saving their modeling outputs, giving them offers users the
 option to save results from any modeling and ensemble technique presented in flexsdm
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 # require(sf)
 

@@ -11,7 +11,7 @@
 #'   ...
 #' }
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' data("spp")
 #' spp
@@ -28,7 +28,7 @@
 #'   ...
 #' }
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' data("backg")
 #' backg
@@ -46,7 +46,7 @@
 #'   ...
 #' }
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' data("abies")
 #' abies
@@ -63,7 +63,7 @@
 #'   ...
 #' }
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' data("hespero")
 #' hespero
@@ -87,7 +87,7 @@
 #' Calambás-Trochez, L.F., Velazco, S.J.E., Hoffmann, P.M., Brum, F.T., Carlucci, M.B., 2021. Climate and land-use changes coupled with low coverage of protected areas threaten palm species in South Brazilian grasslands. Perspectives in Ecology and Conservation 9. https://doi.org/10.1016/j.pecon.2021.03.010
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' data("palms")
 #' }

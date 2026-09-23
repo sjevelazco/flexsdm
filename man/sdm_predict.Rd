@@ -66,7 +66,7 @@ small models approach), or models constructed with fit_ensemble function. It can
 continuous or continuous and binary predictions for one or more thresholds
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 require(terra)
 

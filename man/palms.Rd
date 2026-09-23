@@ -20,7 +20,7 @@ palms
 This data set contains presences of 11 palm species from Southern Brazil sourced by Calambás-Trochez et al. (2021).
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 data("palms")
 }

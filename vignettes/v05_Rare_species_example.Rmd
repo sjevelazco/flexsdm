@@ -295,14 +295,15 @@ Next, we look at some performance metrics for our models, which are based on our
 merge_df <- sdm_summarize(models = list(mglm, mgbm, msvm, eglm, egbm, esvm))
 
 knitr::kable(
-  merge_df %>% dplyr::select(
-    model,
-    AUC = AUC_mean,
-    TSS = TSS_mean,
-    JACCARD = JACCARD_mean,
-    BOYCE = BOYCE_mean,
-    IMAE = IMAE_mean
-  )
+  merge_df %>%
+    dplyr::select(
+      model,
+      AUC = AUC_mean,
+      TSS = TSS_mean,
+      JACCARD = JACCARD_mean,
+      BOYCE = BOYCE_mean,
+      IMAE = IMAE_mean
+    )
 )
 ```
 
@@ -316,6 +317,3 @@ Modeling decisions are context-dependent and must be made on a case-by-case basi
 2. Breiner, F. T., Guisan, A., Bergamini, A., & Nobis, M. P. (2015). Overcoming limitations of modelling rare species by using ensembles of small models. Methods in Ecology and Evolution, 6(10), 1210–1218. https://doi.org/10.1111/2041-210X.12403
 3. Breiner, F. T., Nobis, M. P., Bergamini, A., & Guisan, A. (2018). Optimizing ensembles of small models for predicting the distribution of species with few occurrences. Methods in Ecology and Evolution, 9(4), 802–808. https://doi.org/10.1111/2041-210X.12957
 4. Dubos, N., Montfort, F., Grinand, C., Nourtier, M., Deso, G., Probst, J.-M., Razafimanahaka, J. H., Andriantsimanarilafy, R. R., Rakotondrasoa, E. F., Razafindraibe, P., Jenkins, R., & Crottini, A. (2021). Are narrow-ranging species doomed to extinction? Projected dramatic decline in future climate suitability of two highly threatened species. Perspectives in Ecology and Conservation, S2530064421000894. https://doi.org/10.1016/j.pecon.2021.10.002
-
-
-

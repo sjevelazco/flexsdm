@@ -57,7 +57,7 @@
 #' @importFrom terra extract
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #' require(ggplot2)
@@ -90,7 +90,7 @@
 #' # How many outliers were detected by different methods?
 #' out_pa <- outs_1 %>%
 #'   dplyr::select(starts_with("."), -.out_sum) %>%
-#'   apply(., 2, function(x) sum(x, na.rm = T))
+#'   apply(., 2, function(x) sum(x, na.rm = TRUE))
 #' out_pa
 #'
 #' # How many outliers were detected by the sum of different methods?
@@ -118,7 +118,7 @@
 #' # How many outliers were detected by different methods
 #' out_p <- outs_2 %>%
 #'   dplyr::select(starts_with("."), -.out_sum) %>%
-#'   apply(., 2, function(x) sum(x, na.rm = T))
+#'   apply(., 2, function(x) sum(x, na.rm = TRUE))
 #'
 #' # How many outliers were detected by the sum of different methods?
 #' outs_2 %>%

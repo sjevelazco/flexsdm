@@ -1,5 +1,5 @@
-pandoc: 3.8.3
-pkgdown: 2.2.0
+pandoc: '3.11'
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   pkg_citation: pkg_citation.html
@@ -10,7 +10,7 @@ articles:
   v05_Rare_species_example: v05_Rare_species_example.html
   v06_Extrapolation_example: v06_Extrapolation_example.html
   v07_Complete_workflow: v07_Complete_workflow.html
-last_built: 2026-06-12T18:55Z
+last_built: 2026-09-23T20:55Z
 urls:
   reference: https://sjevelazco.github.io/flexsdm/reference
   article: https://sjevelazco.github.io/flexsdm/articles

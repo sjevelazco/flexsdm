@@ -103,7 +103,7 @@ it is implemented in
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(terra)
 require(dplyr)
 require(ggplot2)
@@ -114,13 +114,29 @@ somevar <- terra::rast(somevar)
 
 plot(somevar)
 
+
 # Species occurrences
 data("spp")
 spp
+#> # A tibble: 1,150 × 4
+#>    species        x        y pr_ab
+#>    <chr>      <dbl>    <dbl> <dbl>
+#>  1 sp1       -5541. -145138.     0
+#>  2 sp1      -51981.   16322.     0
+#>  3 sp1     -269871.   69512.     1
+#>  4 sp1      -96261.  -32008.     0
+#>  5 sp1      269589. -566338.     0
+#>  6 sp1       29829. -328468.     0
+#>  7 sp1     -152691.  393782.     0
+#>  8 sp1     -195081.  253652.     0
+#>  9 sp1        -951. -277978.     0
+#> 10 sp1      145929. -271498.     0
+#> # ℹ 1,140 more rows
 spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 
 somevar[[1]] %>% plot()
 points(spp1 %>% select(x, y))
+
 
 spp1$idd <- 1:nrow(spp1)
 
@@ -134,6 +150,10 @@ filtered_1 <- occfilt_env(
   env_layer = somevar,
   nbins = 5
 )
+#> Extracting values from raster ...
+#> 12 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 238
+#> Number of filtered records: 57
 
 # split into 8 bins
 filtered_2 <- occfilt_env(
@@ -144,6 +164,10 @@ filtered_2 <- occfilt_env(
   env_layer = somevar,
   nbins = 8
 )
+#> Extracting values from raster ...
+#> 12 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 238
+#> Number of filtered records: 112
 
 # split into 12 bins
 filtered_3 <- occfilt_env(
@@ -154,6 +178,10 @@ filtered_3 <- occfilt_env(
   env_layer = somevar,
   nbins = 12
 )
+#> Extracting values from raster ...
+#> 12 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 238
+#> Number of filtered records: 173
 
 
 ## %######################################################%##
@@ -168,9 +196,20 @@ filtered_dif_bins <- occfilt_env(
   env_layer = somevar,
   nbins = c(4, 6, 8, 10, 12, 14)
 )
+#> Extracting values from raster ...
+#> 12 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 238
+#> Number of filtered records: 37
+#> Number of filtered records: 79
+#> Number of filtered records: 112
+#> Number of filtered records: 143
+#> Number of filtered records: 173
+#> Number of filtered records: 188
 
 class(filtered_dif_bins)
+#> [1] "list"
 names(filtered_dif_bins) # each elements of this list has the names of the bins
+#> [1] "4"  "6"  "8"  "10" "12" "14"
 
 filtered_dif_bins %>%
   dplyr::bind_rows(.id = "bins") %>%
@@ -178,6 +217,7 @@ filtered_dif_bins %>%
   ggplot(aes(x = x, y = y)) +
   geom_point() +
   facet_wrap(~bins)
+
 # note that the higher the nbins parameter the more
 # classes must be processed (4 variables, 30 bins = 923521 classes)
 
@@ -194,7 +234,33 @@ occ_selected <- occfilt_select(
   env_layer = somevar,
   filter_prop = TRUE
 )
+#> Dataset with filtered value 8 was selected
 
 occ_selected
-} # }
+#> $occ
+#> # A tibble: 112 × 3
+#>      idd        x        y
+#>    <int>    <dbl>    <dbl>
+#>  1     1 -269871.   69512.
+#>  2     2 -149991.  267962.
+#>  3     3 -126231.  196142.
+#>  4     4   91659. -156748.
+#>  5     5 -210471.  326282.
+#>  6     6 -140541.  284972.
+#>  7     7 -217491.   65732.
+#>  8     8 -201831.   17132.
+#>  9     9  -40101.  150782.
+#> 10    10 -178611.  225032.
+#> # ℹ 102 more rows
+#> 
+#> $filter_prop
+#>   filt_value mean_autocorr n_records     CFP_1     CFP_2     CFP_3     CFP_4
+#> 1          4     0.2767102        37 0.2126868 0.2558501 0.2708933 0.3674108
+#> 2          6     0.3058928        79 0.3183887 0.1746707 0.3175777 0.4129340
+#> 3        * 8     0.2990136       112 0.3008513 0.2226804 0.2987149 0.3738079
+#> 4         10     0.3107502       143 0.3241255 0.2211885 0.3138444 0.3838426
+#> 5         12     0.3148755       173 0.3303609 0.1954697 0.3341799 0.3994914
+#> 6         14     0.3164815       188 0.3356296 0.2041360 0.3261358 0.4000245
+#> 
+# }
 ```

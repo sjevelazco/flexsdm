@@ -64,9 +64,10 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(tidyr)
 #' require(dplyr)
+#' require(ggplot2)
 #'
 #' data(abies)
 #' abies
@@ -129,7 +130,7 @@
 #'   pred_type = "cloglog",
 #'   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
 #'   n_sim = 50,
-#'   n_cores = 5
+#'   n_cores = 2
 #' )
 #'
 #' vip_t

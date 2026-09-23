@@ -176,7 +176,7 @@ test_that("test fit_formula", {
       grid = tune_grid,
       thr = "max_sens_spec",
       metric = "TSS",
-      n_cores = 3
+      n_cores = 2
     )
   expect_equal(length(raf_t), 6)
 })

@@ -149,7 +149,7 @@ and
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 data("abies")
 require(dplyr)
 
@@ -167,6 +167,31 @@ abies2 <- part_random(
   method = c(method = "rep_kfold", folds = 3, replicates = 5)
 )
 abies2
+#> # A tibble: 20 × 18
+#>       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc
+#>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl>  <dbl>   <dbl>   <dbl> <dbl>  <dbl>
+#>  1 12040     0 -308909.  384248.  573.  332.  4.84     521.   48.8   5.63 0.108 
+#>  2 10361     0 -254286.  417158.  260.  469.  2.93     151.   15.1   6.20 0.0950
+#>  3  9402     0 -286979.  386206.  587.  376.  6.45     333.   15.7   5.5  0.160 
+#>  4  9815     0 -291849.  445595.  443.  455.  4.39     332.   19.1   6    0.0700
+#>  5 10524     0 -256658.  184438.  355.  568.  5.87     303.   10.6   5.20 0.0800
+#>  6  8860     0  121343. -164170.  354.  733.  3.97     182.    9.83  0    0     
+#>  7  6431     0  107903. -122968.  461.  578.  4.87     161.    7.66  5.90 0.0900
+#>  8 11730     0 -333903.  431238.  561.  364.  6.73     387.   25.2   5.80 0.130 
+#>  9   808     0 -150163.  357180.  339.  564.  2.64     220.   15.3   6.40 0.100 
+#> 10 11054     0 -293663.  340981.  477.  396.  3.89     332.   26.4   4.60 0.0634
+#> 11  2960     1  -49273.  181752.  512.  275.  0.920    319.   17.3   5.92 0.0900
+#> 12  3065     1  126907. -198892.  322.  544.  0.700    203.   10.6   5.60 0.110 
+#> 13  5527     1  116751. -181089.  261.  537.  0.363    178.    7.43  0    0     
+#> 14  4035     1  -31777.  115940.  394.  440.  2.07     298.   11.2   6.01 0.0769
+#> 15  4081     1   -5158.   90159.  301.  502.  0.703    203.   14.6   6.11 0.0633
+#> 16  3087     1  102151. -143976.  299.  425. -2.08     205.   13.4   3.88 0.110 
+#> 17  3495     1  -19586.   89803.  438.  419.  2.13     189.   15.2   6.19 0.0959
+#> 18  4441     1   49405.  -60502.  362.  582.  2.42     218.    7.84  5.64 0.0786
+#> 19   301     1 -132516.  270845.  367.  196. -2.56     422.   26.3   6.70 0.0300
+#> 20  3162     1   59905.  -53634.  319.  626.  1.99     212.    4.50  4.51 0.0396
+#> # ℹ 7 more variables: depth <dbl>, landform <fct>, .part1 <int>, .part2 <int>,
+#> #   .part3 <int>, .part4 <int>, .part5 <int>
 
 # Without threshold specification and with kfold
 esm_gbm_t1 <- esm_gbm(
@@ -179,10 +204,261 @@ esm_gbm_t1 <- esm_gbm(
   n_minobsinnode = NULL,
   shrinkage = 0.1
 )
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |==                                                                    |   4%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |============================                                          |  39%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |==========================================================            |  82%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |====================================================================  |  96%
+  |                                                                            
+  |======================================================================| 100%
 
 esm_gbm_t1$esm_model # bivariate model
+#> $`0.328240740740741`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.992592592592593`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.287037037037037`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.0240740740740741`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.103240740740741`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.658333333333333`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.985185185185185`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.362037037037037`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.363425925925926`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.600462962962963`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.992592592592593`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`1`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`1`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.992592592592593`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`1`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.0597222222222222`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.0273148148148148`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.19537037037037`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.622222222222222`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.53287037037037`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.548148148148148`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
+#> $`0.593981481481481`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 2 had non-zero influence.
+#> 
 esm_gbm_t1$predictors
+#> # A tibble: 1 × 8
+#>   c1    c2    c3    c4      c5      c6    c7    c8   
+#>   <chr> <chr> <chr> <chr>   <chr>   <chr> <chr> <chr>
+#> 1 aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth
 esm_gbm_t1$performance
+#> # A tibble: 7 × 33
+#>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 esm_gbm equal_sens_…     0.587          10         10    0.944  0.116    0.944
+#> 2 esm_gbm lpt              0.290          10         10    1      0        0.944
+#> 3 esm_gbm max_fpb          0.310          10         10    1      0        0.944
+#> 4 esm_gbm max_jaccard      0.310          10         10    1      0        0.944
+#> 5 esm_gbm max_sens_sp…     0.368          10         10    0.944  0.116    1    
+#> 6 esm_gbm max_sorensen     0.310          10         10    1      0        0.944
+#> 7 esm_gbm sensitivity      0.592          10         10    1      0        0.944
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 esm_gbm_t1$performance_part
-} # }
+#> # A tibble: 105 × 21
+#>    model replicates part  threshold thr_value n_presences n_absences   TPR   TNR
+#>    <chr> <chr>      <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
+#>  1 esm_… .part1     1     max_sore…     0.310           4          4  1    0.75 
+#>  2 esm_… .part1     1     max_jacc…     0.310           4          4  1    0.75 
+#>  3 esm_… .part1     1     max_fpb       0.310           4          4  1    0.75 
+#>  4 esm_… .part1     1     max_sens…     0.622           4          4  0.75 1    
+#>  5 esm_… .part1     1     equal_se…     0.331           4          4  0.75 0.75 
+#>  6 esm_… .part1     1     lpt           0.310           4          4  1    0.75 
+#>  7 esm_… .part1     1     sensitiv…     0.310           4          4  1    0.75 
+#>  8 esm_… .part1     2     max_sore…     0.590           3          3  1    0.667
+#>  9 esm_… .part1     2     max_jacc…     0.590           3          3  1    0.667
+#> 10 esm_… .part1     2     max_fpb       0.590           3          3  1    0.667
+#> # ℹ 95 more rows
+#> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
+#> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
+#> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
+# }
 ```

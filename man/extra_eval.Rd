@@ -41,8 +41,6 @@ direction to reduce raster resolution. Use value higher than 1 would be useful w
 measuring extrapolation using a raster with a high number of cells. The resolution of output will be
 the same as raster object used in 'projection_data' argument. Default 1, i.e., by default, no changes
 will be made to the resolution of the environmental variables.}
-
-\item{n_cores}{numeric. Number of cores use for parallelization. Default 1}
 }
 \value{
 A SpatRaster or tibble object with extrapolation values measured by Shape metric. Also it
@@ -51,11 +49,11 @@ is possible estimate univariate and combinatorial extrapolation metric (see `uni
 \description{
 Measure extrapolation comparing environmental data used for modeling calibration
 and area for model projection. This function use the Shape metric
-proposed by \href{https://doi.org/10.1111/ecog.06992}{Velazco et al., 2023}
+proposed by Velazco et al., 2023 (\doi{10.1111/ecog.06992})
 }
 \details{
 This function measure model extrapolation base on the Shape metric
-(\href{https://doi.org/10.1111/ecog.06992}{Velazco et al., 2023}).
+(Velazco et al., 2023; \doi{10.1111/ecog.06992}).
 Shape is a model-agnostic approach that calculates the extrapolation
 degree for a given projection data point by its multivariate distance to the nearest training
 data point. Such distances are relativized by a factor that reflects the dispersion of the
@@ -69,7 +67,7 @@ See this \href{https://sjevelazco.github.io/flexsdm/articles/v06_Extrapolation_e
 for further details about Shape metric, model truncation, and tools to explore model extrapolation.
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 require(terra)
 
@@ -93,7 +91,7 @@ ca <- calib_area(sp,
 
 plot(somevar[[1]])
 points(sp)
-plot(ca, add = T)
+plot(ca, add = TRUE)
 
 
 # Sampling pseudo-absences
@@ -217,7 +215,7 @@ plot(extr) # In the second layer, values equal to 1 and 2
 \itemize{
 \item Velazco, S.J.E., Brooke, M.R., De Marco Jr., P., Regan, H.M. and Franklin, J. 2023.
 How far can I extrapolate my species distribution model? Exploring Shape, a novel method.
-Ecography: e06992. https://doi.org/10.1111/ecog.06992
+Ecography: e06992. \doi{10.1111/ecog.06992}
 }
 }
 \seealso{

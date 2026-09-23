@@ -87,7 +87,7 @@ modeling workflow.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 data <- data.frame(
   species = c("sp1", "sp2", "sp3"),
   x = c(-74.1, -73.9, -74.0),
@@ -96,6 +96,12 @@ data <- data.frame(
 
 # Append reprojected coordinates as new columns
 occ_reproj(data, x = "x", y = "y", from = "EPSG:4326", to = "EPSG:32618")
+#> # A tibble: 3 × 5
+#>   species     x     y   x_new   y_new
+#>   <chr>   <dbl> <dbl>   <dbl>   <dbl>
+#> 1 sp1     -74.1  4.6  599831. 508512.
+#> 2 sp2     -73.9  4.7  622001. 519599.
+#> 3 sp3     -74    4.65 610917. 514055.
 
 # Replace original coordinate columns with reprojected values
 occ_reproj(
@@ -104,5 +110,9 @@ occ_reproj(
   from = "EPSG:4326", to = "EPSG:32618",
   replace_cols = TRUE
 )
-} # }
+#>   species        x        y
+#> 1     sp1 599831.1 508512.1
+#> 2     sp2 622001.1 519598.9
+#> 3     sp3 610916.7 514054.5
+# }
 ```

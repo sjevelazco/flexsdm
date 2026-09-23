@@ -51,7 +51,7 @@ the highest number occurrences.
 If use occfilt_select cite Velazco et al. (2020) as reference.
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(dplyr)
 

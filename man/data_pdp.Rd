@@ -51,7 +51,7 @@ variable, the second column with predicted suitability, and the third
 Calculate data to construct partial dependence plots for a given predictor
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 library(dplyr)
 

@@ -16,7 +16,7 @@ Combined model performance table for all input models. Models fit with tune will
 Merge model performance tables
 }
 \examples{
-\dontrun{
+\donttest{
 data(abies)
 abies
 

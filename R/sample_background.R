@@ -61,7 +61,7 @@
 #' @importFrom terra mask freq match values ncell xyFromCell
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #' data(spp)
@@ -155,7 +155,7 @@
 #'   crs = crs(somevar)
 #' )
 #' plot(grid_env)
-#' plot(ca_ps1, add = T)
+#' plot(ca_ps1, add = TRUE)
 #' points(spp_pa[-1], col = "blue", cex = 0.7, pch = 19)
 #' sample_background(
 #'   data = spp_p,
@@ -222,7 +222,7 @@
 #' )
 #'
 #' plot(grid_env)
-#' plot(ca_ps1, add = T)
+#' plot(ca_ps1, add = TRUE)
 #' bg %>%
 #'   points(col = "red", cex = 0.3)
 #' points(spp_p[c("x", "y")], pch = 19)
