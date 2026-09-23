@@ -45,46 +45,44 @@ climatic water deficit (cwd), maximum temperature of the warmest month
 occurrence data include 21 geo-referenced observations downloaded from
 the online database Calflora.
 
-``` r
-
-# devtools::install_github('sjevelazco/flexsdm')
-library(flexsdm)
-library(terra)
-library(dplyr)
-
-# environmental data
-somevar <- system.file("external/somevar.tif", package = "flexsdm")
-somevar <- terra::rast(somevar)
-names(somevar) <- c("aet", "cwd", "tmx", "tmn")
-
-# species occurence data (presence-only)
-data(hespero)
-hespero <- hespero %>% dplyr::select(-id)
-
-# California ecoregions
-regions <- system.file("external/regions.tif", package = "flexsdm")
-regions <- terra::rast(regions)
-regions <- as.polygons(regions)
-sp_region <- terra::subset(regions, regions$category == "SCR") # ecoregion where *Hesperocyparis stephensonii* is found
-
-# visualize the species occurrences
-plot(
-  sp_region,
-  col = "gray80",
-  legend = FALSE,
-  axes = FALSE,
-  main = "Hesperocyparis stephensonii occurrences"
-)
-points(hespero[, c("x", "y")], col = "black", pch = 16)
-cols <- rep("gray80", 8)
-cols[regions$category == "SCR"] <- "yellow"
-terra::inset(
-  regions,
-  loc = "bottomleft",
-  scale = .3,
-  col = cols
-)
-```
+\
+`# devtools::install_github('sjevelazco/flexsdm')`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`flexsdm`](https://sjevelazco.github.io/flexsdm/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`terra`](https://rspatial.org/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
+\
+`# environmental data`\
+`somevar`` ``<-`` `[`system.file`](https://rdrr.io/r/base/system.file.html)`(``"external/somevar.tif"``, package ``=`` ``"flexsdm"``)`\
+`somevar`` ``<-`` ``terra``::`[`rast`](https://rspatial.github.io/terra/reference/rast.html)`(``somevar``)`\
+[`names`](https://rspatial.github.io/terra/reference/names.html)`(``somevar``)`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)`\
+\
+`# species occurence data (presence-only)`\
+[`data`](https://rdrr.io/r/utils/data.html)`(``hespero``)`\
+`hespero`` ``<-`` ``hespero`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-``id``)`\
+\
+`# California ecoregions`\
+`regions`` ``<-`` `[`system.file`](https://rdrr.io/r/base/system.file.html)`(``"external/regions.tif"``, package ``=`` ``"flexsdm"``)`\
+`regions`` ``<-`` ``terra``::`[`rast`](https://rspatial.github.io/terra/reference/rast.html)`(``regions``)`\
+`regions`` ``<-`` `[`as.polygons`](https://rspatial.github.io/terra/reference/as.polygons.html)`(``regions``)`\
+`sp_region`` ``<-`` ``terra``::`[`subset`](https://rspatial.github.io/terra/reference/subset.html)`(``regions``, ``regions``$``category`` ``==`` ``"SCR"``)`` ``# ecoregion where *Hesperocyparis stephensonii* is found`\
+\
+`# visualize the species occurrences`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`\
+`  ``sp_region``,`\
+`  col ``=`` ``"gray80"``,`\
+`  legend ``=`` ``FALSE``,`\
+`  axes ``=`` ``FALSE``,`\
+`  main ``=`` ``"Hesperocyparis stephensonii occurrences"`\
+`)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``hespero``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"black"``, pch ``=`` ``16``)`\
+`cols`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``"gray80"``, ``8``)`\
+`cols``[``regions``$``category`` ``==`` ``"SCR"``]`` ``<-`` ``"yellow"`\
+`terra``::`[`inset`](https://rspatial.github.io/terra/reference/inset.html)`(`\
+`  ``regions``,`\
+`  loc ``=`` ``"bottomleft"``,`\
+`  scale ``=`` ``.3``,`\
+`  col ``=`` ``cols`\
+`)`
 
 ![](v05_Rare_species_example_files/figure-html/raw%20data-1.png)
 
@@ -95,27 +93,25 @@ package offers several methods for defining the model calibration area.
 Here, we will use 25-km buffer areas around the presence points to
 select our pseudo-absence locations.
 
-``` r
-
-ca <- calib_area(
-  data = hespero,
-  x = "x",
-  y = "y",
-  method = c("buffer", width = 25000),
-  crs = crs(somevar)
-)
-
-# visualize the species occurrences & calibration area
-plot(
-  sp_region,
-  col = "gray80",
-  legend = FALSE,
-  axes = FALSE,
-  main = "Calibration area and occurrences"
-)
-plot(ca, add = TRUE)
-points(hespero[, c("x", "y")], col = "black", pch = 16)
-```
+\
+`ca`` ``<-`` `[`calib_area`](https://sjevelazco.github.io/flexsdm/reference/calib_area.md)`(`\
+`  data ``=`` ``hespero``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"buffer"``, width ``=`` ``25000``)``,`\
+`  crs ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
+`)`\
+\
+`# visualize the species occurrences & calibration area`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`\
+`  ``sp_region``,`\
+`  col ``=`` ``"gray80"``,`\
+`  legend ``=`` ``FALSE``,`\
+`  axes ``=`` ``FALSE``,`\
+`  main ``=`` ``"Calibration area and occurrences"`\
+`)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``hespero``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"black"``, pch ``=`` ``16``)`
 
 ![](v05_Rare_species_example_files/figure-html/calibration%20area-1.png)
 
@@ -126,59 +122,55 @@ data. However, most SDM methods require either pseudo-absence or
 background data. Here, we use our calibration area to produce
 pseudo-absence data that can be used in our SDMs.
 
-``` r
-
-# Sample the same number of species presences
-set.seed(10)
-psa <- sample_pseudoabs(
-  data = hespero,
-  x = "x",
-  y = "y",
-  n = sum(hespero$pr_ab), # selecting number of pseudo-absence points that is equal to number of presences
-  method = "random",
-  rlayer = somevar,
-  calibarea = ca
-)
-
-# Visualize species presences and pseudo-absences
-plot(
-  sp_region,
-  col = "gray80",
-  legend = FALSE,
-  axes = FALSE,
-  xlim = c(289347, 353284),
-  ylim = c(-598052, -520709),
-  main = "Presence = yellow, Pseudo-absence = black"
-)
-plot(ca, add = TRUE)
-points(psa[, c("x", "y")], cex = 0.8, pch = 16, col = "black") # Pseudo-absences
-points(hespero[, c("x", "y")], col = "yellow", pch = 16, cex = 1.5) # Presences
-```
+\
+`# Sample the same number of species presences`\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
+`psa`` ``<-`` `[`sample_pseudoabs`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)`(`\
+`  data ``=`` ``hespero``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  n ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``hespero``$``pr_ab``)``, ``# selecting number of pseudo-absence points that is equal to number of presences`\
+`  method ``=`` ``"random"``,`\
+`  rlayer ``=`` ``somevar``,`\
+`  calibarea ``=`` ``ca`\
+`)`\
+\
+`# Visualize species presences and pseudo-absences`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`\
+`  ``sp_region``,`\
+`  col ``=`` ``"gray80"``,`\
+`  legend ``=`` ``FALSE``,`\
+`  axes ``=`` ``FALSE``,`\
+`  xlim ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``289347``, ``353284``)``,`\
+`  ylim ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``598052``, ``-``520709``)``,`\
+`  main ``=`` ``"Presence = yellow, Pseudo-absence = black"`\
+`)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``psa``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, cex ``=`` ``0.8``, pch ``=`` ``16``, col ``=`` ``"black"``)`` ``# Pseudo-absences`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``hespero``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"yellow"``, pch ``=`` ``16``, cex ``=`` ``1.5``)`` ``# Presences`
 
 ![](v05_Rare_species_example_files/figure-html/pseudo-absence%20data-1.png)
 
-``` r
-
-
-
-# Bind a presences and pseudo-absences
-hespero_pa <- bind_rows(hespero, psa)
-hespero_pa # Presence-Pseudo-absence database
-#> # A tibble: 42 × 3
-#>          x        y pr_ab
-#>      <dbl>    <dbl> <dbl>
-#>  1 316923. -557843.     1
-#>  2 317155. -559234.     1
-#>  3 316960. -558186.     1
-#>  4 314347. -559648.     1
-#>  5 317348. -557349.     1
-#>  6 316753. -559679.     1
-#>  7 316777. -558644.     1
-#>  8 317050. -559043.     1
-#>  9 316655. -559928.     1
-#> 10 316418. -567439.     1
-#> # ℹ 32 more rows
-```
+\
+\
+\
+`# Bind a presences and pseudo-absences`\
+`hespero_pa`` ``<-`` `[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``hespero``, ``psa``)`\
+`hespero_pa`` ``# Presence-Pseudo-absence database`\
+`#> ``# A tibble: 42 × 3`\
+`#>          x        y pr_ab`\
+`#>      ``<dbl>``    ``<dbl>`` ``<dbl>`\
+`#> `` 1`` ``316``923. -``557``843.``     1`\
+`#> `` 2`` ``317``155. -``559``234.``     1`\
+`#> `` 3`` ``316``960. -``558``186.``     1`\
+`#> `` 4`` ``314``347. -``559``648.``     1`\
+`#> `` 5`` ``317``348. -``557``349.``     1`\
+`#> `` 6`` ``316``753. -``559``679.``     1`\
+`#> `` 7`` ``316``777. -``558``644.``     1`\
+`#> `` 8`` ``317``050. -``559``043.``     1`\
+`#> `` 9`` ``316``655. -``559``928.``     1`\
+`#> ``10`` ``316``418. -``567``439.``     1`\
+`#> ``# ℹ 32 more rows`
 
 ### Partition data for evaluating models
 
@@ -188,34 +180,30 @@ partition methods for evaluating SDMs. Here we will use repeated K-fold
 cross-validation, which is a suitable partition approach for performing
 ESM.
 
-``` r
-
-set.seed(10)
-
-# Repeated K-fold method
-hespero_pa2 <- part_random(
-  data = hespero_pa,
-  pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 5, replicates = 10)
-)
-```
+\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
+\
+`# Repeated K-fold method`\
+`hespero_pa2`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
+`  data ``=`` ``hespero_pa``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"rep_kfold"``, folds ``=`` ``5``, replicates ``=`` ``10``)`\
+`)`
 
 ### Extracting environmental values
 
 Next, we extract the values of our four environmental predictors at the
 presence and pseudo-absence locations.
 
-``` r
-
-hespero_pa3 <-
-  sdm_extract(
-    data = hespero_pa2,
-    x = "x",
-    y = "y",
-    env_layer = somevar,
-    variables = c("aet", "cwd", "tmx", "tmn")
-  )
-```
+\
+`hespero_pa3`` ``<-`\
+`  `[`sdm_extract`](https://sjevelazco.github.io/flexsdm/reference/sdm_extract.md)`(`\
+`    data ``=`` ``hespero_pa2``,`\
+`    x ``=`` ``"x"``,`\
+`    y ``=`` ``"y"``,`\
+`    env_layer ``=`` ``somevar``,`\
+`    variables ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)`\
+`  ``)`
 
 ### Modeling
 
@@ -225,289 +213,285 @@ First, let’s use three standard algorithms to model the distribution of
 *Hesperocyparis stephensonii*: GLM, GBM, and SVM. In this case, we use
 our calibration area for making our predictions.
 
-``` r
-
-mglm <-
-  fit_glm(
-    data = hespero_pa3,
-    response = "pr_ab",
-    predictors = c("aet", "cwd", "tmx", "tmn"),
-    partition = ".part",
-    thr = "max_sens_spec"
-  )
-#> Formula used for model fitting:
-#> pr_ab ~ aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2)
-#> Replica number: 1/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 2/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 3/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 4/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 5/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 6/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 7/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 8/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 9/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 10/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-
-mgbm <- fit_gbm(
-  data = hespero_pa3,
-  response = "pr_ab",
-  predictors = c("aet", "cwd", "tmx", "tmn"),
-  partition = ".part",
-  thr = "max_sens_spec"
-)
-#> Formula used for model fitting:
-#> pr_ab ~ aet + cwd + tmx + tmn
-#> Replica number: 1/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 2/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 3/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 4/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 5/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 6/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 7/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 8/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 9/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 10/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-
-msvm <- fit_svm(
-  data = hespero_pa3,
-  response = "pr_ab",
-  predictors = c("aet", "cwd", "tmx", "tmn"),
-  partition = ".part",
-  thr = "max_sens_spec"
-)
-#> Formula used for model fitting:
-#> pr_ab ~ aet + cwd + tmx + tmn
-#> Replica number: 1/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 2/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 3/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 4/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 5/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 6/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 7/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 8/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 9/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 10/10
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-
-
-mpred <- sdm_predict(
-  models = list(mglm, mgbm, msvm),
-  pred = somevar,
-  con_thr = TRUE,
-  predict_area = ca
-)
-#> Predicting list of individual models
-```
+\
+`mglm`` ``<-`\
+`  `[`fit_glm`](https://sjevelazco.github.io/flexsdm/reference/fit_glm.md)`(`\
+`    data ``=`` ``hespero_pa3``,`\
+`    response ``=`` ``"pr_ab"``,`\
+`    predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)``,`\
+`    partition ``=`` ``".part"``,`\
+`    thr ``=`` ``"max_sens_spec"`\
+`  ``)`\
+`#> Formula used for model fitting:`\
+`#> pr_ab ~ aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2)`\
+`#> Replica number: 1/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 2/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 3/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 4/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 5/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 6/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 7/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 8/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 9/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 10/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+\
+`mgbm`` ``<-`` `[`fit_gbm`](https://sjevelazco.github.io/flexsdm/reference/fit_gbm.md)`(`\
+`  data ``=`` ``hespero_pa3``,`\
+`  response ``=`` ``"pr_ab"``,`\
+`  predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)``,`\
+`  partition ``=`` ``".part"``,`\
+`  thr ``=`` ``"max_sens_spec"`\
+`)`\
+`#> Formula used for model fitting:`\
+`#> pr_ab ~ aet + cwd + tmx + tmn`\
+`#> Replica number: 1/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 2/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 3/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 4/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 5/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 6/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 7/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 8/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 9/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 10/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+\
+`msvm`` ``<-`` `[`fit_svm`](https://sjevelazco.github.io/flexsdm/reference/fit_svm.md)`(`\
+`  data ``=`` ``hespero_pa3``,`\
+`  response ``=`` ``"pr_ab"``,`\
+`  predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)``,`\
+`  partition ``=`` ``".part"``,`\
+`  thr ``=`` ``"max_sens_spec"`\
+`)`\
+`#> Formula used for model fitting:`\
+`#> pr_ab ~ aet + cwd + tmx + tmn`\
+`#> Replica number: 1/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 2/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 3/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 4/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 5/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 6/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 7/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 8/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 9/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+`#> Replica number: 10/10`\
+`#> Partition number: 1/5`\
+`#> Partition number: 2/5`\
+`#> Partition number: 3/5`\
+`#> Partition number: 4/5`\
+`#> Partition number: 5/5`\
+\
+\
+`mpred`` ``<-`` `[`sdm_predict`](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.md)`(`\
+`  models ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``mglm``, ``mgbm``, ``msvm``)``,`\
+`  pred ``=`` ``somevar``,`\
+`  con_thr ``=`` ``TRUE``,`\
+`  predict_area ``=`` ``ca`\
+`)`\
+`#> Predicting list of individual models`
 
 #### Ensemble of small models
 
 Now let’s try each of these algorithms with the ESM approach. Note that
 when predicting an ESM, it is possible to only process one at a time.
 
-``` r
-
-eglm <-
-  esm_glm(
-    data = hespero_pa3,
-    response = "pr_ab",
-    predictors = c("aet", "cwd", "tmx", "tmn"),
-    partition = ".part",
-    thr = "max_sens_spec"
-  )
-#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%
-
-egbm <- esm_gbm(
-  data = hespero_pa3,
-  response = "pr_ab",
-  predictors = c("aet", "cwd", "tmx", "tmn"),
-  partition = ".part",
-  thr = "max_sens_spec"
-)
-#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%
-
-esvm <- esm_svm(
-  data = hespero_pa3,
-  response = "pr_ab",
-  predictors = c("aet", "cwd", "tmx", "tmn"),
-  partition = ".part",
-  thr = "max_sens_spec"
-)
-#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%
-
-
-eglm_pred <- sdm_predict(
-  models = eglm,
-  pred = somevar,
-  con_thr = TRUE,
-  predict_area = ca
-)
-#> Predicting ensemble of small models
-
-egbm_pred <- sdm_predict(
-  models = egbm,
-  pred = somevar,
-  con_thr = TRUE,
-  predict_area = ca
-)
-#> Predicting ensemble of small models
-
-esvm_pred <- sdm_predict(
-  models = esvm,
-  pred = somevar,
-  con_thr = TRUE,
-  predict_area = ca
-)
-#> Predicting ensemble of small models
-```
+\
+`eglm`` ``<-`\
+`  `[`esm_glm`](https://sjevelazco.github.io/flexsdm/reference/esm_glm.md)`(`\
+`    data ``=`` ``hespero_pa3``,`\
+`    response ``=`` ``"pr_ab"``,`\
+`    predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)``,`\
+`    partition ``=`` ``".part"``,`\
+`    thr ``=`` ``"max_sens_spec"`\
+`  ``)`\
+`#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%`\
+\
+`egbm`` ``<-`` `[`esm_gbm`](https://sjevelazco.github.io/flexsdm/reference/esm_gbm.md)`(`\
+`  data ``=`` ``hespero_pa3``,`\
+`  response ``=`` ``"pr_ab"``,`\
+`  predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)``,`\
+`  partition ``=`` ``".part"``,`\
+`  thr ``=`` ``"max_sens_spec"`\
+`)`\
+`#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%`\
+\
+`esvm`` ``<-`` `[`esm_svm`](https://sjevelazco.github.io/flexsdm/reference/esm_svm.md)`(`\
+`  data ``=`` ``hespero_pa3``,`\
+`  response ``=`` ``"pr_ab"``,`\
+`  predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"aet"``, ``"cwd"``, ``"tmx"``, ``"tmn"``)``,`\
+`  partition ``=`` ``".part"``,`\
+`  thr ``=`` ``"max_sens_spec"`\
+`)`\
+`#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%`\
+\
+\
+`eglm_pred`` ``<-`` `[`sdm_predict`](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.md)`(`\
+`  models ``=`` ``eglm``,`\
+`  pred ``=`` ``somevar``,`\
+`  con_thr ``=`` ``TRUE``,`\
+`  predict_area ``=`` ``ca`\
+`)`\
+`#> Predicting ensemble of small models`\
+\
+`egbm_pred`` ``<-`` `[`sdm_predict`](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.md)`(`\
+`  models ``=`` ``egbm``,`\
+`  pred ``=`` ``somevar``,`\
+`  con_thr ``=`` ``TRUE``,`\
+`  predict_area ``=`` ``ca`\
+`)`\
+`#> Predicting ensemble of small models`\
+\
+`esvm_pred`` ``<-`` `[`sdm_predict`](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.md)`(`\
+`  models ``=`` ``esvm``,`\
+`  pred ``=`` ``somevar``,`\
+`  con_thr ``=`` ``TRUE``,`\
+`  predict_area ``=`` ``ca`\
+`)`\
+`#> Predicting ensemble of small models`
 
 ### Comparing our models
 
@@ -515,28 +499,24 @@ First, let’s take a look at the spatial predictions for our models. The
 spatial outputs suggest that the standard models tend to predict broader
 areas with high suitability values that the ESMs.
 
-``` r
-
-par(mfrow = c(3, 2))
-plot(mpred$glm, main = "Standard GLM")
-# points(hespero$x, hespero$y, pch = 19)
-plot(eglm_pred[[1]], main = "ESM GLM")
-# points(hespero$x, hespero$y, pch = 19)
-plot(mpred$gbm, main = "Standard GBM")
-# points(hespero$x, hespero$y, pch = 19)
-plot(egbm_pred[[1]], main = "ESM GBM")
-# points(hespero$x, hespero$y, pch = 19)
-plot(mpred$svm, main = "Standard SVM")
-# points(hespero$x, hespero$y, pch = 19)
-plot(esvm_pred[[1]], main = "ESM SVM")
-```
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``3``, ``2``)``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``mpred``$``glm``, main ``=`` ``"Standard GLM"``)`\
+`# points(hespero$x, hespero$y, pch = 19)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``eglm_pred``[[``1``]``]``, main ``=`` ``"ESM GLM"``)`\
+`# points(hespero$x, hespero$y, pch = 19)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``mpred``$``gbm``, main ``=`` ``"Standard GBM"``)`\
+`# points(hespero$x, hespero$y, pch = 19)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``egbm_pred``[[``1``]``]``, main ``=`` ``"ESM GBM"``)`\
+`# points(hespero$x, hespero$y, pch = 19)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``mpred``$``svm``, main ``=`` ``"Standard SVM"``)`\
+`# points(hespero$x, hespero$y, pch = 19)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``esvm_pred``[[``1``]``]``, main ``=`` ``"ESM SVM"``)`
 
 ![](v05_Rare_species_example_files/figure-html/comparison%20maps-1.png)
 
-``` r
-
-# points(hespero$x, hespero$y, pch = 19)
-```
+\
+`# points(hespero$x, hespero$y, pch = 19)`
 
 Next, we look at some performance metrics for our models, which are
 based on our repeated k-folds cross-validation partition method. This
@@ -546,30 +526,29 @@ ESMs than their corresponding standard model. However, the Boyce index
 and the Inverse Mean Absolute Error are slightly higher for the standard
 models.
 
-``` r
-
-merge_df <- sdm_summarize(models = list(mglm, mgbm, msvm, eglm, egbm, esvm))
-
-knitr::kable(
-  merge_df %>% dplyr::select(
-    model,
-    AUC = AUC_mean,
-    TSS = TSS_mean,
-    JACCARD = JACCARD_mean,
-    BOYCE = BOYCE_mean,
-    IMAE = IMAE_mean
-  )
-)
-```
+\
+`merge_df`` ``<-`` `[`sdm_summarize`](https://sjevelazco.github.io/flexsdm/reference/sdm_summarize.md)`(``models ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``mglm``, ``mgbm``, ``msvm``, ``eglm``, ``egbm``, ``esvm``)``)`\
+\
+`knitr``::`[`kable`](https://rdrr.io/pkg/knitr/man/kable.html)`(`\
+`  ``merge_df`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(`\
+`      ``model``,`\
+`      AUC ``=`` ``AUC_mean``,`\
+`      TSS ``=`` ``TSS_mean``,`\
+`      JACCARD ``=`` ``JACCARD_mean``,`\
+`      BOYCE ``=`` ``BOYCE_mean``,`\
+`      IMAE ``=`` ``IMAE_mean`\
+`    ``)`\
+`)`
 
 | model   |      AUC |   TSS |   JACCARD | BOYCE |      IMAE |
 |:--------|---------:|------:|----------:|------:|----------:|
 | glm     | 0.826575 | 0.694 | 0.7539524 |    NA | 0.7484773 |
 | gbm     | 0.865000 | 0.802 | 0.8219524 |    NA | 0.7459401 |
-| svm     | 0.916600 | 0.862 | 0.8756667 |    NA | 0.7214870 |
+| svm     | 0.916600 | 0.862 | 0.8756667 |    NA | 0.7214851 |
 | esm_glm | 0.884000 | 0.793 | 0.8219524 |    NA | 0.7058935 |
 | esm_gbm | 0.927725 | 0.846 | 0.8550000 |    NA | 0.7461444 |
-| esm_svm | 0.936300 | 0.876 | 0.8879524 |    NA | 0.7131791 |
+| esm_svm | 0.936300 | 0.876 | 0.8879524 |    NA | 0.7131784 |
 
 ### Conclusions
 

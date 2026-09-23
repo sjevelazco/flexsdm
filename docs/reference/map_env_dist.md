@@ -66,9 +66,10 @@ and values close to 0 represent low similarity (high distance).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(dplyr)
 require(terra)
+require(ggplot2)
 data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
@@ -79,6 +80,7 @@ names(somevar) <- c("aet", "cwd")
 
 
 spp$species %>% unique()
+#> [1] "sp1" "sp2" "sp3"
 sp <- spp %>%
   dplyr::filter(species == "sp3", pr_ab == 1) %>%
   dplyr::select(x, y, pr_ab)
@@ -90,7 +92,23 @@ sp_pa_2 <- sdm_extract(
   y = "y",
   env_layer = somevar
 )
+#> 1 rows were excluded from database because NAs were found
 sp_pa_2
+#> # A tibble: 12 × 5
+#>           x        y pr_ab   aet    cwd
+#>       <dbl>    <dbl> <dbl> <dbl>  <dbl>
+#>  1  -26331.  209912.     1  440. -0.958
+#>  2 -134331.  195332.     1  648.  9.70 
+#>  3  131079. -140548.     1  365. -3.62 
+#>  4  -27411.  124322.     1  307.  1.13 
+#>  5  -86811.  259052.     1  582. -0.314
+#>  6  134049. -154588.     1  242. -5.88 
+#>  7 -124881.  263372.     1  410. -0.699
+#>  8  -71151.  213152.     1  580.  1.45 
+#>  9    2289.    9572.     1  505.  1.82 
+#> 10   31989.   37922.     1  157. -5.04 
+#> 11  -49551.  214232.     1  516.  0.567
+#> 12   -4461.  176702.     1  623. -0.161
 
 # Measure environmental distance between presences and projection data
 clrs <- c("#000033", "#1400FF", "#C729D6", "#FF9C63", "#FFFF60")
@@ -104,6 +122,7 @@ envdist <-
     metric = "domain"
   )
 plot(envdist, main = "Domain")
+
 p_extra(
   training_data = sp_pa_2,
   x = "x",
@@ -117,6 +136,8 @@ p_extra(
   color_p = "red",
   color_gradient = clrs
 )
+#> Number of cell used to plot 58242 (80%)
+
 
 
 # Euclidean
@@ -140,6 +161,8 @@ p_extra(
   color_gradient = clrs
 ) +
   labs(title = "Euclidean")
+#> Number of cell used to plot 58242 (80%)
+
 
 
 # Mahalanobis
@@ -163,5 +186,7 @@ p_extra(
   color_gradient = clrs
 ) +
   labs(title = "Mahalanobis")
-} # }
+#> Number of cell used to plot 58242 (80%)
+
+# }
 ```

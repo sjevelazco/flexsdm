@@ -1,8 +1,5 @@
 #include <Rcpp.h>
 #include <cmath>
-#ifdef _OPENMP
-#include <omp.h>
-#endif
 
 using namespace Rcpp;
 
@@ -30,9 +27,6 @@ NumericVector euc_dist_min(const NumericMatrix& x, const NumericMatrix& y) {
   const double* ptr_x = x.begin();
   const double* ptr_y = y.begin();
 
-  #ifdef _OPENMP
-  #pragma omp parallel for schedule(static)
-  #endif
   for (int i = 0; i < nx; i++) {
     double best_sq = R_PosInf;
     

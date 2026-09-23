@@ -83,7 +83,7 @@ of the hyper-parameters.
 Fit and validate Support Vector Machine models with exploration of hyper-parameters that optimize performance
 }
 \examples{
-\dontrun{
+\donttest{
 data(abies)
 abies
 

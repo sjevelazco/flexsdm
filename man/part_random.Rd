@@ -45,7 +45,8 @@ This function provides different conventional (randomized, non-spatial) partitio
 methods based on cross validation folds (kfold, rep_kfold, and loocv), as well as bootstrap (boot)
 }
 \examples{
-\dontrun{
+\donttest{
+require(dplyr)
 data("abies")
 abies$partition <- NULL
 abies <- tibble(abies)

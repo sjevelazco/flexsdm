@@ -457,8 +457,10 @@ When tested filtering occurrence with different values, you can use the `occfilt
 ```{r}
 filt_selected <- occfilt_select(
   occ_list = filt_geo2,
-  x = "x", y = "y",
-  env_layer = somevar, filter_prop = TRUE
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  filter_prop = TRUE
 )
 filt_selected
 ```
@@ -506,7 +508,8 @@ sp_part2 <- part_sband(
 
 ```{r plot spatial band partition}
 plot(sp_part2$grid, col = gray.colors(20))
-points(sp_part2$part[c("x", "y")],
+points(
+  sp_part2$part[c("x", "y")],
   col = rainbow(8)[sp_part2$part$.part],
   cex = 0.9,
   pch = c(1, 19)[sp_part2$part$pr_ab + 1]
@@ -525,14 +528,15 @@ sp_part3 <- part_sblock(
   y = "y",
   pr_ab = "pr_ab",
   min_res_mult = 10, # Minimum value used for multiplying raster resolution and define the finest resolution to be tested
-  max_res_mult = 500, # Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested
+  max_res_mult = 200, # Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested
   num_grids = 30, # Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)
   n_part = 2, # Number of partitions
   prop = 0.5 # Proportion of points used for testing autocorrelation between groupds (0-1)
 )
 
 plot(sp_part3$grid)
-points(sp_part3$part[c("x", "y")],
+points(
+  sp_part3$part[c("x", "y")],
   col = c("blue", "red")[sp_part3$part$.part],
   cex = 0.5,
   pch = 19
@@ -549,7 +553,8 @@ grid_env <- get_block(env_layer = somevar, best_grid = sp_part3$grid)
 
 plot(grid_env) # this is a block layer with the same layer
 # properties as environmental variables.
-points(sp_part3$part[c("x", "y")],
+points(
+  sp_part3$part[c("x", "y")],
   col = c("blue", "red")[sp_part3$part$.part],
   cex = 0.5,
   pch = 19
@@ -573,7 +578,8 @@ sp_part4 <- part_senv(
 )
 
 plot(regions, col = gray.colors(9))
-points(sp_part4$part[c("x", "y")],
+points(
+  sp_part4$part[c("x", "y")],
   col = hcl.colors(length(unique(sp_part4$part)))[sp_part4$part$.part],
   cex = 1,
   pch = 19
@@ -613,11 +619,11 @@ par(mfrow = c(2, 1))
 
 plot(grid_env, main = "Presence points")
 plot(ca_1, add = TRUE)
-points(p_data, cex = .7, pch = 19)
+points(p_data, cex = .7, pch = 19, col = "gray")
 
 plot(grid_env, main = "Background points")
 plot(ca_1, add = TRUE)
-points(bg, cex = .1, pch = 19)
+points(bg, cex = .1, pch = 19, col = "gray")
 ```
 
 ### 2. Sample pseudo-absences
@@ -646,11 +652,11 @@ par(mfrow = c(2, 1))
 
 plot(grid_env, main = "Presence points")
 plot(ca_1, add = TRUE)
-points(p_data, cex = .7, pch = 19)
+points(p_data, cex = .7, pch = 19, col = "gray")
 
 plot(grid_env, main = "Pseudo-absence points")
 plot(ca_1, add = TRUE)
-points(psa, cex = .7, pch = 19)
+points(psa, cex = .7, pch = 19, col = "gray")
 ```
 
 ## Extracting environmental values
@@ -672,9 +678,3 @@ ex_spp <- sdm_extract(
 
 ex_spp
 ```
-
-#=========#=========#=========#=========#=========#=========#=========#
-
-**Vignette still under construction and changes**
-
-#=========#=========#=========#=========#=========#=========#=========#

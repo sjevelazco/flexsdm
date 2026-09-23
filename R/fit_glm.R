@@ -53,7 +53,7 @@
 #' @importFrom stats complete.cases formula glm step na.exclude predict.glm sd
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data("abies")
 #' abies
 #'

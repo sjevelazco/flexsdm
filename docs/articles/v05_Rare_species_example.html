@@ -122,7 +122,7 @@ coldest month (tmn). Our occurrence data include 21 geo-referenced
 observations downloaded from the online database Calflora.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm">flexsdm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm/">flexsdm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -600,14 +600,15 @@ for the standard models.</p>
 <code class="sourceCode R"><span><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mgbm</span>, <span class="va">msvm</span>, <span class="va">eglm</span>, <span class="va">egbm</span>, <span class="va">esvm</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span></span>
-<span>  <span class="va">merge_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>    <span class="va">model</span>,</span>
-<span>    AUC <span class="op">=</span> <span class="va">AUC_mean</span>,</span>
-<span>    TSS <span class="op">=</span> <span class="va">TSS_mean</span>,</span>
-<span>    JACCARD <span class="op">=</span> <span class="va">JACCARD_mean</span>,</span>
-<span>    BOYCE <span class="op">=</span> <span class="va">BOYCE_mean</span>,</span>
-<span>    IMAE <span class="op">=</span> <span class="va">IMAE_mean</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="va">merge_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>      <span class="va">model</span>,</span>
+<span>      AUC <span class="op">=</span> <span class="va">AUC_mean</span>,</span>
+<span>      TSS <span class="op">=</span> <span class="va">TSS_mean</span>,</span>
+<span>      JACCARD <span class="op">=</span> <span class="va">JACCARD_mean</span>,</span>
+<span>      BOYCE <span class="op">=</span> <span class="va">BOYCE_mean</span>,</span>
+<span>      IMAE <span class="op">=</span> <span class="va">IMAE_mean</span></span>
+<span>    <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -641,7 +642,7 @@ for the standard models.</p>
 <td align="right">0.862</td>
 <td align="right">0.8756667</td>
 <td align="right">NA</td>
-<td align="right">0.7214870</td>
+<td align="right">0.7214851</td>
 </tr>
 <tr class="even">
 <td align="left">esm_glm</td>
@@ -665,7 +666,7 @@ for the standard models.</p>
 <td align="right">0.876</td>
 <td align="right">0.8879524</td>
 <td align="right">NA</td>
-<td align="right">0.7131791</td>
+<td align="right">0.7131784</td>
 </tr>
 </tbody>
 </table>
@@ -720,7 +721,7 @@ species. Perspectives in Ecology and Conservation, S2530064421000894. <a href="h
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

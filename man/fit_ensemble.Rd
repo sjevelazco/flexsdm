@@ -56,7 +56,7 @@ Those metrics that are threshold-dependent are calculated based on the threshold
 Ensemble model fitting and validation
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 require(terra)
 

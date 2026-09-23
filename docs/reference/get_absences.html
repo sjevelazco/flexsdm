@@ -141,7 +141,7 @@ in the input will produce duplicate absence coordinates in the output.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sp1"</span>, <span class="st">"sp1"</span>, <span class="st">"sp2"</span>, <span class="st">"sp2"</span>, <span class="st">"sp3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">74.1</span>, <span class="op">-</span><span class="fl">74.2</span>, <span class="op">-</span><span class="fl">73.9</span>, <span class="op">-</span><span class="fl">73.8</span>, <span class="op">-</span><span class="fl">74.0</span><span class="op">)</span>,</span></span>
@@ -149,15 +149,63 @@ in the input will produce duplicate absence coordinates in the output.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Presence-absence database for every species in the data</span></span></span>
-<span class="r-in"><span><span class="fu">get_absences</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, species <span class="op">=</span> <span class="st">"species"</span>, target_species <span class="op">=</span> <span class="cn">NULL</span>, pr_ab_name <span class="op">=</span> <span class="st">"pr_ab"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_absences</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, species <span class="op">=</span> <span class="st">"species"</span>,</span></span>
+<span class="r-in"><span>  target_species <span class="op">=</span> <span class="cn">NULL</span>, pr_ab_name <span class="op">=</span> <span class="st">"pr_ab"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    species     x     y pr_ab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp1     -<span style="color: #BB0000;">74.1</span>  4.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp1     -<span style="color: #BB0000;">74.2</span>  4.65     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp1     -<span style="color: #BB0000;">73.9</span>  4.7      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp1     -<span style="color: #BB0000;">73.8</span>  4.72     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp1     -<span style="color: #BB0000;">74</span>    4.68     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp2     -<span style="color: #BB0000;">73.9</span>  4.7      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp2     -<span style="color: #BB0000;">73.8</span>  4.72     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp2     -<span style="color: #BB0000;">74.1</span>  4.6      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp2     -<span style="color: #BB0000;">74.2</span>  4.65     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp2     -<span style="color: #BB0000;">74</span>    4.68     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> sp3     -<span style="color: #BB0000;">74</span>    4.68     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> sp3     -<span style="color: #BB0000;">74.1</span>  4.6      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> sp3     -<span style="color: #BB0000;">74.2</span>  4.65     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> sp3     -<span style="color: #BB0000;">73.9</span>  4.7      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> sp3     -<span style="color: #BB0000;">73.8</span>  4.72     0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Presence-absence database for a single target species</span></span></span>
-<span class="r-in"><span><span class="fu">get_absences</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, species <span class="op">=</span> <span class="st">"species"</span>, target_species <span class="op">=</span> <span class="st">"sp1"</span>, pr_ab_name <span class="op">=</span> <span class="st">"pr_ab"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_absences</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, species <span class="op">=</span> <span class="st">"species"</span>,</span></span>
+<span class="r-in"><span>  target_species <span class="op">=</span> <span class="st">"sp1"</span>, pr_ab_name <span class="op">=</span> <span class="st">"pr_ab"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   species     x     y pr_ab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> sp1     -<span style="color: #BB0000;">74.1</span>  4.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> sp1     -<span style="color: #BB0000;">74.2</span>  4.65     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> sp1     -<span style="color: #BB0000;">73.9</span>  4.7      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> sp1     -<span style="color: #BB0000;">73.8</span>  4.72     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> sp1     -<span style="color: #BB0000;">74</span>    4.68     0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Presence-absence database for a subset of species, with a custom</span></span></span>
 <span class="r-in"><span><span class="co"># presence-absence column name</span></span></span>
-<span class="r-in"><span><span class="fu">get_absences</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, species <span class="op">=</span> <span class="st">"species"</span>, target_species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sp1"</span>, <span class="st">"sp2"</span><span class="op">)</span>, pr_ab_name <span class="op">=</span> <span class="st">"occ"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu">get_absences</span><span class="op">(</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, species <span class="op">=</span> <span class="st">"species"</span>,</span></span>
+<span class="r-in"><span>  target_species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sp1"</span>, <span class="st">"sp2"</span><span class="op">)</span>, pr_ab_name <span class="op">=</span> <span class="st">"occ"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    species     x     y   occ</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp1     -<span style="color: #BB0000;">74.1</span>  4.6      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp1     -<span style="color: #BB0000;">74.2</span>  4.65     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp1     -<span style="color: #BB0000;">73.9</span>  4.7      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp1     -<span style="color: #BB0000;">73.8</span>  4.72     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp1     -<span style="color: #BB0000;">74</span>    4.68     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp2     -<span style="color: #BB0000;">73.9</span>  4.7      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp2     -<span style="color: #BB0000;">73.8</span>  4.72     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp2     -<span style="color: #BB0000;">74.1</span>  4.6      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp2     -<span style="color: #BB0000;">74.2</span>  4.65     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp2     -<span style="color: #BB0000;">74</span>    4.68     0</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

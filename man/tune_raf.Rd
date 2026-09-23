@@ -85,7 +85,7 @@ database is used in \code{\link{fit_ensemble}}
 Fit and validate Random Forest models with exploration of hyper-parameters that optimize performance
 }
 \examples{
-\dontrun{
+\donttest{
 data(abies)
 abies
 

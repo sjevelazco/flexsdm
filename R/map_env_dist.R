@@ -26,9 +26,10 @@
 #' }
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
+#' require(ggplot2)
 #' data(spp)
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' somevar <- terra::rast(f)
@@ -213,8 +214,8 @@ map_env_dist <- function(
 
   if (metric == "domain") {
     extra <- min_gower_rcpp(
-      data1 = env_calib2,
-      data2 = env_proj2,
+      data1_r = env_calib2,
+      data2_r = env_proj2,
       n_threads = n_cores
     )
   }

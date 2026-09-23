@@ -22,8 +22,6 @@
 #'   }
 #' If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold types if none is specified.
 #'
-#' @param n_cores numeric. Number of cores to use for parallel processing when metric. Default 1 (no parallelization).
-#'
 #' @details
 #' This function fits and validates Domain models. The Domain model is a simple model that uses the Gower distance to
 #' calculate environmental similarity between the presence data and test data (Carpenter et al., 1993).
@@ -62,7 +60,7 @@
 #' @importFrom stats complete.cases formula na.exclude sd
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'
@@ -102,8 +100,7 @@
 #'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
 #'   predictors_f = NULL,
 #'   partition = ".part",
-#'   thr = c("max_sens_spec"),
-#'   n_cores = 1
+#'   thr = c("max_sens_spec")
 #' )
 #'
 #' mdom

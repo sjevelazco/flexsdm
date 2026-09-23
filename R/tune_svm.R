@@ -65,7 +65,7 @@
 #'
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(abies)
 #' abies
 #'

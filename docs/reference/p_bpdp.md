@@ -79,6 +79,12 @@ p_bpdp(
 
   ggplot2 theme. Default ggplot2::theme_classic()
 
+## Value
+
+A ggplot object, or a patchwork of ggplot objects when more than two
+predictors are used, showing bivariate partial dependence surface
+plot(s).
+
 ## Details
 
 This function creates partial dependent surface plots to explore the
@@ -100,7 +106,7 @@ conditions used to train the model (convex hull polygon).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(terra)
 library(dplyr)
 
@@ -120,6 +126,7 @@ abies2 <- sdm_extract(abies2,
   y = "y",
   env_layer = somevar
 )
+#> 26 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
@@ -132,26 +139,41 @@ svm_t1 <- fit_svm(
   partition = ".part",
   thr = c("max_sens_spec")
 )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmx + tmn
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 
 # Partial depence surface plot
 p_bpdp(model = svm_t1$model, training_data = abies2)
+
 p_bpdp(model = svm_t1$model, training_data = abies2, predictors = c("aet", "cwd"))
+
 p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 10)
+
 p_bpdp(model = svm_t1$model, training_data = abies2, resolution = 70)
+
 # With training condition boundaires
 p_bpdp(
   model = svm_t1$model, training_data = abies2,
   training_boundaries = "convexh"
 )
+
 p_bpdp(
   model = svm_t1$model, training_data = abies2,
   training_boundaries = "rectangle", color_training_boundaries = "yellow"
 )
+
 p_bpdp(
   model = svm_t1$model, training_data = abies2, training_boundaries = "convexh",
   color_training_boundaries = "orange",
   color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000")
 )
+
 # With projection data
 p_bpdp(
   model = svm_t1$model, training_data = abies2, training_boundaries = "rectangle",
@@ -160,13 +182,16 @@ p_bpdp(
   color_gradient = c("#00007F", "#007FFF", "#7FFF7F", "#FF7F00", "#7F0000")
 )
 
+
 # Bivariate partial dependence plot for training and projection condition
 plot(somevar[[1]], main = "Projection area")
+
 p_bpdp(
   model = svm_t1$model, training_data = abies2,
   projection_data = somevar, # a SpatRaster used to predict or project the model
   training_boundaries = "convexh"
 )
+
 
 
 # Bivariate partial dependece plot with categorical variables
@@ -180,6 +205,7 @@ cat <- terra::rasterize(cat, somevar, field = "clusters")
 somevar <- c(somevar, cat)
 plot(somevar)
 
+
 # set seed
 abies2 <- abies %>%
   dplyr::select(x, y, pr_ab) %>%
@@ -192,6 +218,7 @@ abies2 <- sdm_extract(
   y = "y",
   env_layer = somevar
 )
+#> 31 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
@@ -205,7 +232,16 @@ svm_t1 <- fit_svm(
   partition = ".part",
   thr = c("max_sens_spec")
 )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmx + tmn + clusters
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 
 p_bpdp(model = svm_t1$model, training_data = abies2, training_boundaries = "convexh")
-} # }
+
+# }
 ```

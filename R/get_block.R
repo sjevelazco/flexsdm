@@ -12,7 +12,7 @@
 #' @importFrom terra as.data.frame extract
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #' data(spp)

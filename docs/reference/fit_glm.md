@@ -141,9 +141,24 @@ and
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 data("abies")
 abies
+#> # A tibble: 1,400 × 13
+#>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
+#>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl> <dbl>  <dbl>
+#>  1   715     0  -95417.  314240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
+#>  2  5680     0   98987. -159415.  448.  815.  9.43   130.     6.43  5.60 0.160 
+#>  3  7907     0  121474.  -99463.  182.  271. -4.95   151.    11.2   0    0     
+#>  4  1850     0  -39976.  -17456.  372.  946.  8.78   116.     2.70  6.41 0.0972
+#>  5  1702     0  111372.  -91404.  209.  399. -4.03   165.     9.27  0    0     
+#>  6 10036     0 -255715.  392229.  308.  535.  4.66   166.    16.5   5.70 0.0777
+#>  7 12384     0 -311765.  380213.  568.  352.  4.38   480.    41.2   5.80 0.110 
+#>  8  6513     0  111360. -120229.  327.  633.  4.93   163.     8.91  1.18 0.0116
+#>  9  9884     0 -284326.  442136.  377.  446.  3.99   296.    16.8   5.96 0.0900
+#> 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     
+#> # ℹ 1,390 more rows
+#> # ℹ 2 more variables: depth <dbl>, landform <fct>
 
 # Using k-fold partition method
 abies2 <- part_random(
@@ -152,6 +167,21 @@ abies2 <- part_random(
   method = c(method = "kfold", folds = 5)
 )
 abies2
+#> # A tibble: 1,400 × 14
+#>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
+#>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl> <dbl>  <dbl>
+#>  1   715     0  -95417.  314240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
+#>  2  5680     0   98987. -159415.  448.  815.  9.43   130.     6.43  5.60 0.160 
+#>  3  7907     0  121474.  -99463.  182.  271. -4.95   151.    11.2   0    0     
+#>  4  1850     0  -39976.  -17456.  372.  946.  8.78   116.     2.70  6.41 0.0972
+#>  5  1702     0  111372.  -91404.  209.  399. -4.03   165.     9.27  0    0     
+#>  6 10036     0 -255715.  392229.  308.  535.  4.66   166.    16.5   5.70 0.0777
+#>  7 12384     0 -311765.  380213.  568.  352.  4.38   480.    41.2   5.80 0.110 
+#>  8  6513     0  111360. -120229.  327.  633.  4.93   163.     8.91  1.18 0.0116
+#>  9  9884     0 -284326.  442136.  377.  446.  3.99   296.    16.8   5.96 0.0900
+#> 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     
+#> # ℹ 1,390 more rows
+#> # ℹ 3 more variables: depth <dbl>, landform <fct>, .part <int>
 
 glm_t1 <- fit_glm(
   data = abies2,
@@ -164,11 +194,87 @@ glm_t1 <- fit_glm(
   poly = 0,
   inter_order = 0
 )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + ppt_jja + pH + awc + depth + landform
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 glm_t1$model
+#> 
+#> Call:  stats::glm(formula = formula1, family = "binomial", data = data)
+#> 
+#> Coefficients:
+#> (Intercept)          aet      ppt_jja           pH          awc        depth  
+#>    2.523511    -0.004761    -0.006524     0.198119   -18.976262     0.006084  
+#>   landform2    landform3    landform4    landform5    landform6    landform7  
+#>   -0.365735    -0.229896    -0.875803    -0.597008    -0.524164    -0.374899  
+#>   landform8    landform9   landform10   landform11   landform12   landform13  
+#>   -1.166158    -1.567580    -1.023916    -0.984516    -1.412969    -2.664963  
+#>  landform14   landform15  
+#>   -1.717651    -2.818648  
+#> 
+#> Degrees of Freedom: 1399 Total (i.e. Null);  1380 Residual
+#> Null Deviance:       1941 
+#> Residual Deviance: 1651  AIC: 1691
 glm_t1$predictors
+#> # A tibble: 1 × 6
+#>   c1    c2      c3    c4    c5    f       
+#>   <chr> <chr>   <chr> <chr> <chr> <chr>   
+#> 1 aet   ppt_jja pH    awc   depth landform
 glm_t1$performance
+#> # A tibble: 3 × 33
+#>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 glm   equal_sens_sp…     0.523         700        700    0.659 0.0317    0.659
+#> 2 glm   max_sens_spec      0.463         700        700    0.744 0.0741    0.629
+#> 3 glm   max_sorensen       0.356         700        700    0.89  0.0605    0.46 
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 glm_t1$performance_part
+#> # A tibble: 15 × 21
+#>    replica partition model threshold      thr_value n_presences n_absences   TPR
+#>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
+#>  1 1       1         glm   max_sorensen       0.340         140        140 0.886
+#>  2 1       1         glm   max_sens_spec      0.430         140        140 0.779
+#>  3 1       1         glm   equal_sens_sp…     0.500         140        140 0.643
+#>  4 1       2         glm   max_sorensen       0.376         140        140 0.9  
+#>  5 1       2         glm   max_sens_spec      0.520         140        140 0.736
+#>  6 1       2         glm   equal_sens_sp…     0.537         140        140 0.664
+#>  7 1       3         glm   max_sorensen       0.249         140        140 0.957
+#>  8 1       3         glm   max_sens_spec      0.397         140        140 0.814
+#>  9 1       3         glm   equal_sens_sp…     0.505         140        140 0.621
+#> 10 1       4         glm   max_sorensen       0.341         140        140 0.914
+#> 11 1       4         glm   max_sens_spec      0.543         140        140 0.621
+#> 12 1       4         glm   equal_sens_sp…     0.521         140        140 0.657
+#> 13 1       5         glm   max_sorensen       0.505         140        140 0.793
+#> 14 1       5         glm   max_sens_spec      0.521         140        140 0.771
+#> 15 1       5         glm   equal_sens_sp…     0.559         140        140 0.707
+#> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
+#> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
+#> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 glm_t1$data_ens
+#> # A tibble: 1,400 × 5
+#>    rnames replicates part  pr_ab  pred
+#>    <chr>  <chr>      <chr> <dbl> <dbl>
+#>  1 1      .part      1         0 0.658
+#>  2 18     .part      1         0 0.385
+#>  3 28     .part      1         0 0.618
+#>  4 35     .part      1         0 0.359
+#>  5 41     .part      1         0 0.263
+#>  6 43     .part      1         0 0.761
+#>  7 51     .part      1         0 0.696
+#>  8 52     .part      1         0 0.635
+#>  9 62     .part      1         0 0.418
+#> 10 63     .part      1         0 0.280
+#> # ℹ 1,390 more rows
 
 # Using second order polynomial terms and first-order interaction terms
 glm_t2 <- fit_glm(
@@ -182,6 +288,14 @@ glm_t2 <- fit_glm(
   poly = 2,
   inter_order = 1
 )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + ppt_jja + pH + awc + depth + landform + I(aet^2) + I(ppt_jja^2) + I(pH^2) + I(awc^2) + I(depth^2) + aet:ppt_jja + aet:pH + aet:awc + aet:depth + aet:landform + pH:ppt_jja + awc:ppt_jja + depth:ppt_jja + landform:ppt_jja + awc:pH + depth:pH + landform:pH + awc:depth + awc:landform + depth:landform
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 
 # Using repeated k-fold partition method
 abies2 <- part_random(
@@ -190,6 +304,22 @@ abies2 <- part_random(
   method = c(method = "rep_kfold", folds = 3, replicates = 5)
 )
 abies2
+#> # A tibble: 1,400 × 18
+#>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
+#>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl> <dbl>  <dbl>
+#>  1   715     0  -95417.  314240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
+#>  2  5680     0   98987. -159415.  448.  815.  9.43   130.     6.43  5.60 0.160 
+#>  3  7907     0  121474.  -99463.  182.  271. -4.95   151.    11.2   0    0     
+#>  4  1850     0  -39976.  -17456.  372.  946.  8.78   116.     2.70  6.41 0.0972
+#>  5  1702     0  111372.  -91404.  209.  399. -4.03   165.     9.27  0    0     
+#>  6 10036     0 -255715.  392229.  308.  535.  4.66   166.    16.5   5.70 0.0777
+#>  7 12384     0 -311765.  380213.  568.  352.  4.38   480.    41.2   5.80 0.110 
+#>  8  6513     0  111360. -120229.  327.  633.  4.93   163.     8.91  1.18 0.0116
+#>  9  9884     0 -284326.  442136.  377.  446.  3.99   296.    16.8   5.96 0.0900
+#> 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     
+#> # ℹ 1,390 more rows
+#> # ℹ 7 more variables: depth <dbl>, landform <fct>, .part1 <int>, .part2 <int>,
+#> #   .part3 <int>, .part4 <int>, .part5 <int>
 
 # Using third order polynomial terms and second-order interaction terms
 glm_t3 <- fit_glm(
@@ -203,5 +333,27 @@ glm_t3 <- fit_glm(
   poly = 3,
   inter_order = 2
 )
-} # }
+#> Formula used for model fitting:
+#> pr_ab ~ ppt_jja + pH + awc + landform + I(ppt_jja^2) + I(pH^2) + I(awc^2) + I(ppt_jja^3) + I(pH^3) + I(awc^3) + pH:ppt_jja + awc:ppt_jja + landform:ppt_jja + awc:pH + landform:pH + awc:landform + awc:pH:ppt_jja + landform:pH:ppt_jja + awc:landform:ppt_jja + awc:landform:pH
+#> Replica number: 1/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 2/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 3/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 4/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+# }
 ```

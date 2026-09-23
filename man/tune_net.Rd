@@ -83,7 +83,7 @@ the hyper-parameters.
 Fit and validate Neural Networks models with exploration of hyper-parameters
 }
 \examples{
-\dontrun{
+\donttest{
 data(abies)
 abies
 

@@ -51,7 +51,7 @@
 #' @importFrom stats formula sd
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data("abies")
 #'
 #' # Using k-fold partition method

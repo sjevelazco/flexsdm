@@ -2,7 +2,7 @@
 #'
 #' @description Measure extrapolation comparing environmental data used for modeling calibration
 #' and area for model projection. This function use the Shape metric
-#' proposed by \href{https://doi.org/10.1111/ecog.06992}{Velazco et al., 2023}
+#' proposed by Velazco et al., 2023 (\doi{10.1111/ecog.06992})
 #'
 #'
 #' @param training_data data.frame or tibble with environmental conditions of
@@ -22,7 +22,6 @@
 #' a larger, encompassing region, a spatially separate region, or a different time period).
 #' If data.frame or tibble is used function will return a tibble object.
 #' Otherwise, as SpatRaster object.
-#' @param n_cores numeric. Number of cores use for parallelization. Default 1
 #' @param aggreg_factor positive integer. Aggregation factor expressed as number of cells in each
 #'  direction to reduce raster resolution. Use value higher than 1 would be useful when
 #'  measuring extrapolation using a raster with a high number of cells. The resolution of output will be
@@ -31,7 +30,7 @@
 #'
 #'
 #' @details This function measure model extrapolation base on the Shape metric
-#' (\href{https://doi.org/10.1111/ecog.06992}{Velazco et al., 2023}).
+#' (Velazco et al., 2023; \doi{10.1111/ecog.06992}).
 #' Shape is a model-agnostic approach that calculates the extrapolation
 #' degree for a given projection data point by its multivariate distance to the nearest training
 #' data point. Such distances are relativized by a factor that reflects the dispersion of the
@@ -48,7 +47,7 @@
 #' \itemize{
 #' \item Velazco, S.J.E., Brooke, M.R., De Marco Jr., P., Regan, H.M. and Franklin, J. 2023.
 #' How far can I extrapolate my species distribution model? Exploring Shape, a novel method.
-#' Ecography: e06992. https://doi.org/10.1111/ecog.06992
+#' Ecography: e06992. \doi{10.1111/ecog.06992}
 #' }
 #'
 #' @return
@@ -67,7 +66,7 @@
 #' @importFrom terra mask aggregate as.data.frame resample
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'
@@ -91,7 +90,7 @@
 #'
 #' plot(somevar[[1]])
 #' points(sp)
-#' plot(ca, add = T)
+#' plot(ca, add = TRUE)
 #'
 #'
 #' # Sampling pseudo-absences

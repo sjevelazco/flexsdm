@@ -65,7 +65,7 @@
 #' @seealso \code{\link{tune_gbm}}, \code{\link{tune_max}}, \code{\link{tune_net}}, and \code{\link{tune_svm}}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(abies)
 #' abies
 #'

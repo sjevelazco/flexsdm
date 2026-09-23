@@ -70,7 +70,7 @@
 #' @importFrom stats sd
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data("abies")
 #' data("backg")
 #' abies # environmental conditions of presence-absence data

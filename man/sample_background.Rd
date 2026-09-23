@@ -70,7 +70,7 @@ Sampling background points with the options of
 using different geographical restrictions and sampling methods.
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(dplyr)
 data(spp)
@@ -164,7 +164,7 @@ ca_ps1 <- calib_area(
   crs = crs(somevar)
 )
 plot(grid_env)
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 points(spp_pa[-1], col = "blue", cex = 0.7, pch = 19)
 sample_background(
   data = spp_p,
@@ -231,7 +231,7 @@ bg <- sample_background(
 )
 
 plot(grid_env)
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 bg \%>\%
   points(col = "red", cex = 0.3)
 points(spp_p[c("x", "y")], pch = 19)

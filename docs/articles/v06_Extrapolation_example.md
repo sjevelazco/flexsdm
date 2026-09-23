@@ -47,46 +47,44 @@ climatic water deficit (cwd), maximum temperature of the warmest month
 occurrence data include 21 geo-referenced observations downloaded from
 the online database Calflora.
 
-``` r
-
-library(flexsdm)
-library(terra)
-library(dplyr)
-library(patchwork)
-
-# environmental data
-somevar <- system.file("external/somevar.tif", package = "flexsdm")
-somevar <- terra::rast(somevar)
-names(somevar) <- c("cwd", "tmn", "aet", "ppt_jja")
-
-# species occurence data (presence-only)
-data(hespero)
-hespero <- hespero %>% dplyr::select(-id)
-
-# California ecoregions
-regions <- system.file("external/regions.tif", package = "flexsdm")
-regions <- terra::rast(regions)
-regions <- terra::as.polygons(regions)
-sp_region <- terra::subset(regions, regions$category == "SCR") # ecoregion where *Hesperocyparis stephensonii* is found
-
-# visualize the species occurrences
-plot(
-  sp_region,
-  col = "gray80",
-  legend = FALSE,
-  axes = FALSE,
-  main = "Hesperocyparis stephensonii occurrences"
-)
-points(hespero[, c("x", "y")], col = "black", pch = 16)
-cols <- rep("gray80", 8)
-cols[regions$category == "SCR"] <- "yellow"
-terra::inset(
-  regions,
-  loc = "bottomleft",
-  scale = .3,
-  col = cols
-)
-```
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`flexsdm`](https://sjevelazco.github.io/flexsdm/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`terra`](https://rspatial.org/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`patchwork`](https://patchwork.data-imaginist.com)`)`\
+\
+`# environmental data`\
+`somevar`` ``<-`` `[`system.file`](https://rdrr.io/r/base/system.file.html)`(``"external/somevar.tif"``, package ``=`` ``"flexsdm"``)`\
+`somevar`` ``<-`` ``terra``::`[`rast`](https://rspatial.github.io/terra/reference/rast.html)`(``somevar``)`\
+[`names`](https://rspatial.github.io/terra/reference/names.html)`(``somevar``)`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cwd"``, ``"tmn"``, ``"aet"``, ``"ppt_jja"``)`\
+\
+`# species occurence data (presence-only)`\
+[`data`](https://rdrr.io/r/utils/data.html)`(``hespero``)`\
+`hespero`` ``<-`` ``hespero`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-``id``)`\
+\
+`# California ecoregions`\
+`regions`` ``<-`` `[`system.file`](https://rdrr.io/r/base/system.file.html)`(``"external/regions.tif"``, package ``=`` ``"flexsdm"``)`\
+`regions`` ``<-`` ``terra``::`[`rast`](https://rspatial.github.io/terra/reference/rast.html)`(``regions``)`\
+`regions`` ``<-`` ``terra``::`[`as.polygons`](https://rspatial.github.io/terra/reference/as.polygons.html)`(``regions``)`\
+`sp_region`` ``<-`` ``terra``::`[`subset`](https://rspatial.github.io/terra/reference/subset.html)`(``regions``, ``regions``$``category`` ``==`` ``"SCR"``)`` ``# ecoregion where *Hesperocyparis stephensonii* is found`\
+\
+`# visualize the species occurrences`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`\
+`  ``sp_region``,`\
+`  col ``=`` ``"gray80"``,`\
+`  legend ``=`` ``FALSE``,`\
+`  axes ``=`` ``FALSE``,`\
+`  main ``=`` ``"Hesperocyparis stephensonii occurrences"`\
+`)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``hespero``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"black"``, pch ``=`` ``16``)`\
+`cols`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``"gray80"``, ``8``)`\
+`cols``[``regions``$``category`` ``==`` ``"SCR"``]`` ``<-`` ``"yellow"`\
+`terra``::`[`inset`](https://rspatial.github.io/terra/reference/inset.html)`(`\
+`  ``regions``,`\
+`  loc ``=`` ``"bottomleft"``,`\
+`  scale ``=`` ``.3``,`\
+`  col ``=`` ``cols`\
+`)`
 
 ![](v06_Extrapolation_example_files/figure-html/raw%20data-1.png)
 
@@ -97,27 +95,25 @@ package offers several methods for defining the model calibration area.
 Here, we will use 25-km buffer areas around the presence points to
 select our pseudo-absence locations.
 
-``` r
-
-ca <- calib_area(
-  data = hespero,
-  x = "x",
-  y = "y",
-  method = c("buffer", width = 25000),
-  crs = crs(somevar)
-)
-
-# visualize the species occurrences & calibration area
-plot(
-  sp_region,
-  col = "gray80",
-  legend = FALSE,
-  axes = FALSE,
-  main = "Calibration area and occurrences"
-)
-plot(ca, add = TRUE)
-points(hespero[, c("x", "y")], col = "black", pch = 16)
-```
+\
+`ca`` ``<-`` `[`calib_area`](https://sjevelazco.github.io/flexsdm/reference/calib_area.md)`(`\
+`  data ``=`` ``hespero``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"buffer"``, width ``=`` ``25000``)``,`\
+`  crs ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
+`)`\
+\
+`# visualize the species occurrences & calibration area`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`\
+`  ``sp_region``,`\
+`  col ``=`` ``"gray80"``,`\
+`  legend ``=`` ``FALSE``,`\
+`  axes ``=`` ``FALSE``,`\
+`  main ``=`` ``"Calibration area and occurrences"`\
+`)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``hespero``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"black"``, pch ``=`` ``16``)`
 
 ![](v06_Extrapolation_example_files/figure-html/calibration%20area-1.png)
 
@@ -128,59 +124,55 @@ data. However, most SDM methods require either pseudo-absence or
 background point data. Here, we use our calibration area to produce
 pseudo-absence data that can be used in our SDMs.
 
-``` r
-
-# Sample the same number of species presences
-set.seed(10)
-psa <- sample_pseudoabs(
-  data = hespero,
-  x = "x",
-  y = "y",
-  n = sum(hespero$pr_ab), # number of pseudo-absence points equal to number of presences
-  method = "random",
-  rlayer = somevar,
-  calibarea = ca
-)
-
-# Visualize species presences and pseudo-absences
-plot(
-  sp_region,
-  col = "gray80",
-  legend = FALSE,
-  axes = FALSE,
-  xlim = c(289347, 353284),
-  ylim = c(-598052, -520709),
-  main = "Presence = yellow, Pseudo-absence = black"
-)
-plot(ca, add = TRUE)
-points(psa[, c("x", "y")], cex = 0.8, pch = 16, col = "black") # Pseudo-absences
-points(hespero[, c("x", "y")], col = "yellow", pch = 16, cex = 1.5) # Presences
-```
+\
+`# Sample the same number of species presences`\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
+`psa`` ``<-`` `[`sample_pseudoabs`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)`(`\
+`  data ``=`` ``hespero``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  n ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``hespero``$``pr_ab``)``, ``# number of pseudo-absence points equal to number of presences`\
+`  method ``=`` ``"random"``,`\
+`  rlayer ``=`` ``somevar``,`\
+`  calibarea ``=`` ``ca`\
+`)`\
+\
+`# Visualize species presences and pseudo-absences`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`\
+`  ``sp_region``,`\
+`  col ``=`` ``"gray80"``,`\
+`  legend ``=`` ``FALSE``,`\
+`  axes ``=`` ``FALSE``,`\
+`  xlim ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``289347``, ``353284``)``,`\
+`  ylim ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``598052``, ``-``520709``)``,`\
+`  main ``=`` ``"Presence = yellow, Pseudo-absence = black"`\
+`)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``ca``, add ``=`` ``TRUE``)`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``psa``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, cex ``=`` ``0.8``, pch ``=`` ``16``, col ``=`` ``"black"``)`` ``# Pseudo-absences`\
+[`points`](https://rspatial.github.io/terra/reference/lines.html)`(``hespero``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"yellow"``, pch ``=`` ``16``, cex ``=`` ``1.5``)`` ``# Presences`
 
 ![](v06_Extrapolation_example_files/figure-html/pseudo-absence%20data-1.png)
 
-``` r
-
-
-
-# Bind a presences and pseudo-absences
-hespero_pa <- bind_rows(hespero, psa)
-hespero_pa # Presence-Pseudo-absence database
-#> # A tibble: 42 × 3
-#>          x        y pr_ab
-#>      <dbl>    <dbl> <dbl>
-#>  1 316923. -557843.     1
-#>  2 317155. -559234.     1
-#>  3 316960. -558186.     1
-#>  4 314347. -559648.     1
-#>  5 317348. -557349.     1
-#>  6 316753. -559679.     1
-#>  7 316777. -558644.     1
-#>  8 317050. -559043.     1
-#>  9 316655. -559928.     1
-#> 10 316418. -567439.     1
-#> # ℹ 32 more rows
-```
+\
+\
+\
+`# Bind a presences and pseudo-absences`\
+`hespero_pa`` ``<-`` `[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``hespero``, ``psa``)`\
+`hespero_pa`` ``# Presence-Pseudo-absence database`\
+`#> ``# A tibble: 42 × 3`\
+`#>          x        y pr_ab`\
+`#>      ``<dbl>``    ``<dbl>`` ``<dbl>`\
+`#> `` 1`` ``316``923. -``557``843.``     1`\
+`#> `` 2`` ``317``155. -``559``234.``     1`\
+`#> `` 3`` ``316``960. -``558``186.``     1`\
+`#> `` 4`` ``314``347. -``559``648.``     1`\
+`#> `` 5`` ``317``348. -``557``349.``     1`\
+`#> `` 6`` ``316``753. -``559``679.``     1`\
+`#> `` 7`` ``316``777. -``558``644.``     1`\
+`#> `` 8`` ``317``050. -``559``043.``     1`\
+`#> `` 9`` ``316``655. -``559``928.``     1`\
+`#> ``10`` ``316``418. -``567``439.``     1`\
+`#> ``# ℹ 32 more rows`
 
 ## Partition data for evaluating models
 
@@ -190,34 +182,30 @@ partition methods for evaluating SDMs. Here we will use repeated K-fold
 cross-validation, which is a suitable partition approach for validating
 SDM with few data.
 
-``` r
-
-set.seed(10)
-
-# Repeated K-fold method
-hespero_pa2 <- part_random(
-  data = hespero_pa,
-  pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 5, replicates = 10)
-)
-```
+\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
+\
+`# Repeated K-fold method`\
+`hespero_pa2`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
+`  data ``=`` ``hespero_pa``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"rep_kfold"``, folds ``=`` ``5``, replicates ``=`` ``10``)`\
+`)`
 
 ## Extracting environmental values
 
 Next, we extract the values of our four environmental predictors at the
 presence and pseudo-absence locations.
 
-``` r
-
-hespero_pa3 <-
-  sdm_extract(
-    data = hespero_pa2,
-    x = "x",
-    y = "y",
-    env_layer = somevar,
-    variables = c("cwd", "tmn", "aet", "ppt_jja")
-  )
-```
+\
+`hespero_pa3`` ``<-`\
+`  `[`sdm_extract`](https://sjevelazco.github.io/flexsdm/reference/sdm_extract.md)`(`\
+`    data ``=`` ``hespero_pa2``,`\
+`    x ``=`` ``"x"``,`\
+`    y ``=`` ``"y"``,`\
+`    env_layer ``=`` ``somevar``,`\
+`    variables ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cwd"``, ``"tmn"``, ``"aet"``, ``"ppt_jja"``)`\
+`  ``)`
 
 ## Modeling
 
@@ -226,41 +214,39 @@ Let’s use three standard algorithms to model the distribution of
 use the extent of the CFP as our prediction area so that we can evaluate
 model extrapolation across a broad geographic area.
 
-``` r
-
-mglm <-
-  fit_glm(
-    data = hespero_pa3,
-    response = "pr_ab",
-    predictors = c("cwd", "tmn", "aet", "ppt_jja"),
-    partition = ".part",
-    thr = "max_sens_spec"
-  )
-
-mgbm <- fit_gbm(
-  data = hespero_pa3,
-  response = "pr_ab",
-  predictors = c("cwd", "tmn", "aet", "ppt_jja"),
-  partition = ".part",
-  thr = "max_sens_spec"
-)
-
-msvm <- fit_svm(
-  data = hespero_pa3,
-  response = "pr_ab",
-  predictors = c("cwd", "tmn", "aet", "ppt_jja"),
-  partition = ".part",
-  thr = "max_sens_spec"
-)
-
-
-mpred <- sdm_predict(
-  models = list(mglm, mgbm, msvm),
-  pred = somevar,
-  con_thr = TRUE,
-  predict_area = NULL
-)
-```
+\
+`mglm`` ``<-`\
+`  `[`fit_glm`](https://sjevelazco.github.io/flexsdm/reference/fit_glm.md)`(`\
+`    data ``=`` ``hespero_pa3``,`\
+`    response ``=`` ``"pr_ab"``,`\
+`    predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cwd"``, ``"tmn"``, ``"aet"``, ``"ppt_jja"``)``,`\
+`    partition ``=`` ``".part"``,`\
+`    thr ``=`` ``"max_sens_spec"`\
+`  ``)`\
+\
+`mgbm`` ``<-`` `[`fit_gbm`](https://sjevelazco.github.io/flexsdm/reference/fit_gbm.md)`(`\
+`  data ``=`` ``hespero_pa3``,`\
+`  response ``=`` ``"pr_ab"``,`\
+`  predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cwd"``, ``"tmn"``, ``"aet"``, ``"ppt_jja"``)``,`\
+`  partition ``=`` ``".part"``,`\
+`  thr ``=`` ``"max_sens_spec"`\
+`)`\
+\
+`msvm`` ``<-`` `[`fit_svm`](https://sjevelazco.github.io/flexsdm/reference/fit_svm.md)`(`\
+`  data ``=`` ``hespero_pa3``,`\
+`  response ``=`` ``"pr_ab"``,`\
+`  predictors ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cwd"``, ``"tmn"``, ``"aet"``, ``"ppt_jja"``)``,`\
+`  partition ``=`` ``".part"``,`\
+`  thr ``=`` ``"max_sens_spec"`\
+`)`\
+\
+\
+`mpred`` ``<-`` `[`sdm_predict`](https://sjevelazco.github.io/flexsdm/reference/sdm_predict.md)`(`\
+`  models ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``mglm``, ``mgbm``, ``msvm``)``,`\
+`  pred ``=`` ``somevar``,`\
+`  con_thr ``=`` ``TRUE``,`\
+`  predict_area ``=`` ``NULL`\
+`)`
 
 ## Comparing our models
 
@@ -268,22 +254,18 @@ First, let’s take a look at the spatial predictions for our models. GLM
 and GBM predict a lot of suitable habitat very far from where the
 species is found!
 
-``` r
-
-par(mfrow = c(1, 3))
-plot(mpred$glm, main = "GLM")
-# points(hespero$x, hespero$y, pch = 19)
-plot(mpred$gbm, main = "GBM")
-# points(hespero$x, hespero$y, pch = 19)
-plot(mpred$svm, main = "SVM")
-```
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``3``)``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``mpred``$``glm``, main ``=`` ``"GLM"``)`\
+`# points(hespero$x, hespero$y, pch = 19)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``mpred``$``gbm``, main ``=`` ``"GBM"``)`\
+`# points(hespero$x, hespero$y, pch = 19)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``mpred``$``svm``, main ``=`` ``"SVM"``)`
 
 ![](v06_Extrapolation_example_files/figure-html/comparison%20maps-1.png)
 
-``` r
-
-# points(hespero$x, hespero$y, pch = 19)
-```
+\
+`# points(hespero$x, hespero$y, pch = 19)`
 
 ## Partial dependence plots to explore the impact of predictor conditions on suitability
 
@@ -309,49 +291,62 @@ hull approach.
 
 Uni and bivariate partial dependence plots for the GLM:
 
-``` r
-
-p_pdp(model = mglm$model, training_data = hespero_pa3, projection_data = somevar)
-```
+\
+[`p_pdp`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md)`(`\
+`  model ``=`` ``mglm``$``model``,`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  projection_data ``=`` ``somevar`\
+`)`
 
 ![](v06_Extrapolation_example_files/figure-html/glm%20partial%20dependence%20plots-1.png)
 
-``` r
-
-p_bpdp(model = mglm$model, training_data = hespero_pa3, training_boundaries = "convexh")
-```
+\
+[`p_bpdp`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)`(`\
+`  model ``=`` ``mglm``$``model``,`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  training_boundaries ``=`` ``"convexh"`\
+`)`
 
 ![](v06_Extrapolation_example_files/figure-html/glm%20partial%20dependence%20plots-2.png)
 
 Uni and bivariate partial dependence plots for the GBM:
 
-``` r
-
-p_pdp(model = mgbm$model, training_data = hespero_pa3, projection_data = somevar)
-```
+\
+[`p_pdp`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md)`(`\
+`  model ``=`` ``mgbm``$``model``,`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  projection_data ``=`` ``somevar`\
+`)`
 
 ![](v06_Extrapolation_example_files/figure-html/gbm%20partial%20dependence%20plots-1.png)
 
-``` r
-
-p_bpdp(model = mgbm$model, training_data = hespero_pa3, training_boundaries = "convexh", resolution = 100)
-```
+\
+[`p_bpdp`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)`(`\
+`  model ``=`` ``mgbm``$``model``,`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  training_boundaries ``=`` ``"convexh"``,`\
+`  resolution ``=`` ``100`\
+`)`
 
 ![](v06_Extrapolation_example_files/figure-html/gbm%20partial%20dependence%20plots-2.png)
 
 Uni and bivariate partial dependence plots for the SVM:
 
-``` r
-
-p_pdp(model = msvm$model, training_data = hespero_pa3, projection_data = somevar)
-```
+\
+[`p_pdp`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md)`(`\
+`  model ``=`` ``msvm``$``model``,`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  projection_data ``=`` ``somevar`\
+`)`
 
 ![](v06_Extrapolation_example_files/figure-html/svm%20partial%20dependence%20plots-1.png)
 
-``` r
-
-p_bpdp(model = msvm$model, training_data = hespero_pa3, training_boundaries = "convexh")
-```
+\
+[`p_bpdp`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)`(`\
+`  model ``=`` ``msvm``$``model``,`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  training_boundaries ``=`` ``"convexh"`\
+`)`
 
 ![](v06_Extrapolation_example_files/figure-html/svm%20partial%20dependence%20plots-2.png)
 
@@ -390,43 +385,54 @@ between univariate and combinatorial extrapolation.
 
 Using Mahalanobis distance:
 
-``` r
-
-xp_m <-
-  extra_eval(
-    training_data = hespero_pa3,
-    pr_ab = "pr_ab",
-    projection_data = somevar,
-    metric = "mahalanobis",
-    univar_comb = TRUE,
-    aggreg_factor = 1
-  )
-xp_m
-#> class       : SpatRaster
-#> size        : 558, 394, 2  (nrow, ncol, nlyr)
-#> resolution  : 1890, 1890  (x, y)
-#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
-#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
-#> source(s)   : memory
-#> varnames    : somevar
-#>               
-#> names       : extrapolation, uni_comb
-#> min values  :             0,        1
-#> max values  :    3730.67743,        2
-```
+\
+`xp_m`` ``<-`\
+`  `[`extra_eval`](https://sjevelazco.github.io/flexsdm/reference/extra_eval.md)`(`\
+`    training_data ``=`` ``hespero_pa3``,`\
+`    pr_ab ``=`` ``"pr_ab"``,`\
+`    projection_data ``=`` ``somevar``,`\
+`    metric ``=`` ``"mahalanobis"``,`\
+`    univar_comb ``=`` ``TRUE``,`\
+`    aggreg_factor ``=`` ``1`\
+`  ``)`\
+`xp_m`\
+`#> class       : SpatRaster`\
+`#> size        : 558, 394, 2  (nrow, ncol, nlyr)`\
+`#> resolution  : 1890, 1890  (x, y)`\
+`#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)`\
+`#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs`\
+`#> source(s)   : memory`\
+`#> varnames    : somevar`\
+`#>               `\
+`#> names       : extrapolation, uni_comb`\
+`#> min values  :             0,        1`\
+`#> max values  :    3730.67743,        2`
 
 The output of the extra_eval function is a SpatRaster, showing the
 degree of extrapolation across the projection area, as estimated by the
 Shape method.
 
-``` r
-
-cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
-
-par(mfrow = c(1, 2))
-plot(xp_m$extrapolation, main = "Shape metric", col = cl)
-plot(xp_m$uni_comb, main = "Univariate (1) and \n combinatorial (2) extrapolation", col = cl)
-```
+\
+`cl`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(`\
+`  ``"#FDE725"``,`\
+`  ``"#B3DC2B"``,`\
+`  ``"#6DCC57"``,`\
+`  ``"#36B677"``,`\
+`  ``"#1F9D87"``,`\
+`  ``"#25818E"``,`\
+`  ``"#30678D"``,`\
+`  ``"#3D4988"``,`\
+`  ``"#462777"``,`\
+`  ``"#440154"`\
+`)`\
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``)``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``xp_m``$``extrapolation``, main ``=`` ``"Shape metric"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`\
+`  ``xp_m``$``uni_comb``,`\
+`  main ``=`` ``"Univariate (1) and \n combinatorial (2) extrapolation"``,`\
+`  col ``=`` ``cl`\
+`)`
 
 ![](v06_Extrapolation_example_files/figure-html/comparison%20extrapolation%20outputs-1.png)
 
@@ -443,21 +449,19 @@ areas with high extrapolation (dark blue) are far from the training data
 The higher extrapolation values extrapolation area in the northwestern
 portion of the CFP.
 
-``` r
-
-p_extra(
-  training_data = hespero_pa3,
-  x = "x",
-  y = "y",
-  pr_ab = "pr_ab",
-  color_p = "black",
-  extra_suit_data = xp_m,
-  projection_data = somevar,
-  geo_space = TRUE,
-  prop_points = 0.05
-)
-#> Number of cell used to plot 3642 (5%)
-```
+\
+[`p_extra`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)`(`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  color_p ``=`` ``"black"``,`\
+`  extra_suit_data ``=`` ``xp_m``,`\
+`  projection_data ``=`` ``somevar``,`\
+`  geo_space ``=`` ``TRUE``,`\
+`  prop_points ``=`` ``0.05`\
+`)`\
+`#> Number of cell used to plot 3642 (5%)`
 
 ![](v06_Extrapolation_example_files/figure-html/graphical%20explore%20-%20Mahalanobis-1.png)
 
@@ -466,23 +470,21 @@ defined as the projecting data outside range of training conditions,
 while the combinatorial extrapolation area those projecting data within
 the range of training conditions.
 
-``` r
-
-p_extra(
-  training_data = hespero_pa3,
-  x = "x",
-  y = "y",
-  pr_ab = "pr_ab",
-  color_p = "black",
-  extra_suit_data = xp_m$uni_comb,
-  projection_data = somevar,
-  geo_space = TRUE,
-  prop_points = 0.05,
-  color_gradient = c("#B3DC2B", "#30678D"),
-  alpha_p = 0.2
-)
-#> Number of cell used to plot 3642 (5%)
-```
+\
+[`p_extra`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)`(`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  color_p ``=`` ``"black"``,`\
+`  extra_suit_data ``=`` ``xp_m``$``uni_comb``,`\
+`  projection_data ``=`` ``somevar``,`\
+`  geo_space ``=`` ``TRUE``,`\
+`  prop_points ``=`` ``0.05``,`\
+`  color_gradient ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"#B3DC2B"``, ``"#30678D"``)``,`\
+`  alpha_p ``=`` ``0.2`\
+`)`\
+`#> Number of cell used to plot 3642 (5%)`
 
 ![](v06_Extrapolation_example_files/figure-html/graphical%20explore%20-%20uni_comb%20extrapolation-1.png)
 
@@ -499,65 +501,68 @@ function to explore binary extrapolation patter in the environmental and
 geographical space. Here we will test the values 50, 100, and 500, for
 comparison.
 
-``` r
-
-p_extra(
-  training_data = hespero_pa3,
-  x = "x",
-  y = "y",
-  pr_ab = "pr_ab",
-  color_p = "black",
-  extra_suit_data = as.numeric(xp_m$extrapolation < 50),
-  projection_data = somevar,
-  geo_space = TRUE,
-  prop_points = 0.05,
-  color_gradient = c("gray", "#FDE725"),
-  alpha_p = 0.5
-) + plot_annotation(subtitle = "Binary extrapolation pattern with using a threshold of 50")
-#> Number of cell used to plot 3642 (5%)
-```
+\
+[`p_extra`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)`(`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  color_p ``=`` ``"black"``,`\
+`  extra_suit_data ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``xp_m``$``extrapolation`` ``<`` ``50``)``,`\
+`  projection_data ``=`` ``somevar``,`\
+`  geo_space ``=`` ``TRUE``,`\
+`  prop_points ``=`` ``0.05``,`\
+`  color_gradient ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"gray"``, ``"#FDE725"``)``,`\
+`  alpha_p ``=`` ``0.5`\
+`)`` ``+`\
+`  `[`plot_annotation`](https://patchwork.data-imaginist.com/reference/plot_annotation.html)`(`\
+`    subtitle ``=`` ``"Binary extrapolation pattern with using a threshold of 50"`\
+`  ``)`\
+`#> Number of cell used to plot 3642 (5%)`
 
 ![](v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-1.png)
 
-``` r
-
-
-p_extra(
-  training_data = hespero_pa3,
-  x = "x",
-  y = "y",
-  pr_ab = "pr_ab",
-  color_p = "black",
-  extra_suit_data = as.numeric(xp_m$extrapolation < 100),
-  projection_data = somevar,
-  geo_space = TRUE,
-  prop_points = 0.05,
-  color_gradient = c("gray", "#FDE725"),
-  alpha_p = 0.5
-) + plot_annotation(subtitle = "Binary extrapolation pattern with using a threshold of 100")
-#> Number of cell used to plot 3642 (5%)
-```
+\
+\
+[`p_extra`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)`(`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  color_p ``=`` ``"black"``,`\
+`  extra_suit_data ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``xp_m``$``extrapolation`` ``<`` ``100``)``,`\
+`  projection_data ``=`` ``somevar``,`\
+`  geo_space ``=`` ``TRUE``,`\
+`  prop_points ``=`` ``0.05``,`\
+`  color_gradient ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"gray"``, ``"#FDE725"``)``,`\
+`  alpha_p ``=`` ``0.5`\
+`)`` ``+`\
+`  `[`plot_annotation`](https://patchwork.data-imaginist.com/reference/plot_annotation.html)`(`\
+`    subtitle ``=`` ``"Binary extrapolation pattern with using a threshold of 100"`\
+`  ``)`\
+`#> Number of cell used to plot 3642 (5%)`
 
 ![](v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-2.png)
 
-``` r
-
-
-p_extra(
-  training_data = hespero_pa3,
-  x = "x",
-  y = "y",
-  pr_ab = "pr_ab",
-  color_p = "black",
-  extra_suit_data = as.numeric(xp_m$extrapolation < 500),
-  projection_data = somevar,
-  geo_space = TRUE,
-  prop_points = 0.05,
-  color_gradient = c("gray", "#FDE725"),
-  alpha_p = 0.5
-) + plot_annotation(subtitle = "Binary extrapolation pattern with using a threshold of 500")
-#> Number of cell used to plot 3642 (5%)
-```
+\
+\
+[`p_extra`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)`(`\
+`  training_data ``=`` ``hespero_pa3``,`\
+`  x ``=`` ``"x"``,`\
+`  y ``=`` ``"y"``,`\
+`  pr_ab ``=`` ``"pr_ab"``,`\
+`  color_p ``=`` ``"black"``,`\
+`  extra_suit_data ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``xp_m``$``extrapolation`` ``<`` ``500``)``,`\
+`  projection_data ``=`` ``somevar``,`\
+`  geo_space ``=`` ``TRUE``,`\
+`  prop_points ``=`` ``0.05``,`\
+`  color_gradient ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"gray"``, ``"#FDE725"``)``,`\
+`  alpha_p ``=`` ``0.5`\
+`)`` ``+`\
+`  `[`plot_annotation`](https://patchwork.data-imaginist.com/reference/plot_annotation.html)`(`\
+`    subtitle ``=`` ``"Binary extrapolation pattern with using a threshold of 500"`\
+`  ``)`\
+`#> Number of cell used to plot 3642 (5%)`
 
 ![](v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-3.png)
 
@@ -578,43 +583,39 @@ the extrapolation threshold (also specified in the function). The
 default is 0 but users could also choose another value for which to
 reduce suitability.
 
-``` r
+\
+`glm_trunc`` ``<-`` `[`extra_truncate`](https://sjevelazco.github.io/flexsdm/reference/extra_truncate.md)`(`\
+`  suit ``=`` ``mpred``$``glm``,`\
+`  extra ``=`` ``xp_m``,`\
+`  threshold ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``50``, ``100``, ``500``)``,`\
+`  trunc_value ``=`` ``0`\
+`)`\
+\
+`gbm_trunc`` ``<-`` `[`extra_truncate`](https://sjevelazco.github.io/flexsdm/reference/extra_truncate.md)`(`\
+`  suit ``=`` ``mpred``$``gbm``,`\
+`  extra ``=`` ``xp_m``,`\
+`  threshold ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``50``, ``100``, ``500``)``,`\
+`  trunc_value ``=`` ``0`\
+`)`\
+\
+`svm_trunc`` ``<-`` `[`extra_truncate`](https://sjevelazco.github.io/flexsdm/reference/extra_truncate.md)`(`\
+`  suit ``=`` ``mpred``$``svm``,`\
+`  extra ``=`` ``xp_m``,`\
+`  threshold ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``50``, ``100``, ``500``)``,`\
+`  trunc_value ``=`` ``0`\
+`)`
 
-glm_trunc <- extra_truncate(
-  suit = mpred$glm,
-  extra = xp_m,
-  threshold = c(50, 100, 500),
-  trunc_value = 0
-)
-
-gbm_trunc <- extra_truncate(
-  suit = mpred$gbm,
-  extra = xp_m,
-  threshold = c(50, 100, 500),
-  trunc_value = 0
-)
-
-svm_trunc <- extra_truncate(
-  suit = mpred$svm,
-  extra = xp_m,
-  threshold = c(50, 100, 500),
-  trunc_value = 0
-)
-```
-
-``` r
-
-par(mfrow = c(3, 3))
-plot(glm_trunc$`50`, main = "GLM; extra threshold = 50", col = cl)
-plot(glm_trunc$`100`, main = "GLM; extra threshold = 100", col = cl)
-plot(glm_trunc$`500`, main = "GLM; extra threshold = 500", col = cl)
-plot(gbm_trunc$`50`, main = "GBM; extra threshold = 50", col = cl)
-plot(gbm_trunc$`100`, main = "GBM; extra threshold = 100", col = cl)
-plot(gbm_trunc$`500`, main = "GBM; extra threshold = 500", col = cl)
-plot(svm_trunc$`50`, main = "SVM; extra threshold = 50", col = cl)
-plot(svm_trunc$`100`, main = "SVM; extra threshold = 100", col = cl)
-plot(svm_trunc$`500`, main = "SVM; extra threshold = 500", col = cl)
-```
+\
+[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``3``, ``3``)``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``glm_trunc``$``` `50` ```, main ``=`` ``"GLM; extra threshold = 50"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``glm_trunc``$``` `100` ```, main ``=`` ``"GLM; extra threshold = 100"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``glm_trunc``$``` `500` ```, main ``=`` ``"GLM; extra threshold = 500"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``gbm_trunc``$``` `50` ```, main ``=`` ``"GBM; extra threshold = 50"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``gbm_trunc``$``` `100` ```, main ``=`` ``"GBM; extra threshold = 100"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``gbm_trunc``$``` `500` ```, main ``=`` ``"GBM; extra threshold = 500"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``svm_trunc``$``` `50` ```, main ``=`` ``"SVM; extra threshold = 50"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``svm_trunc``$``` `100` ```, main ``=`` ``"SVM; extra threshold = 100"``, col ``=`` ``cl``)`\
+[`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``svm_trunc``$``` `500` ```, main ``=`` ``"SVM; extra threshold = 500"``, col ``=`` ``cl``)`
 
 ![](v06_Extrapolation_example_files/figure-html/comparison%20truncated%20outputs-1.png)
 

@@ -111,7 +111,7 @@ We used a method that the calibration area is delimited by a 100-km
 buffer around presences (shown in the figure below).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm">flexsdm</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm/">flexsdm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -511,7 +511,18 @@ return a SpatRast with continuous suitability values above the threshold
 <span><span class="va">unconstrained</span> <span class="op">&lt;-</span> <span class="va">pr_1</span><span class="op">$</span><span class="va">meanw</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">unconstrained</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"unconstrained"</span></span>
 <span></span>
-<span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#FDE725"</span>, <span class="st">"#B3DC2B"</span>, <span class="st">"#6DCC57"</span>, <span class="st">"#36B677"</span>, <span class="st">"#1F9D87"</span>, <span class="st">"#25818E"</span>, <span class="st">"#30678D"</span>, <span class="st">"#3D4988"</span>, <span class="st">"#462777"</span>, <span class="st">"#440154"</span><span class="op">)</span></span>
+<span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"#FDE725"</span>,</span>
+<span>  <span class="st">"#B3DC2B"</span>,</span>
+<span>  <span class="st">"#6DCC57"</span>,</span>
+<span>  <span class="st">"#36B677"</span>,</span>
+<span>  <span class="st">"#1F9D87"</span>,</span>
+<span>  <span class="st">"#25818E"</span>,</span>
+<span>  <span class="st">"#30678D"</span>,</span>
+<span>  <span class="st">"#3D4988"</span>,</span>
+<span>  <span class="st">"#462777"</span>,</span>
+<span>  <span class="st">"#440154"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">unconstrained</span>, col <span class="op">=</span> <span class="va">cl</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v04_Red_fir_example_files/figure-html/predict%20models-1.png" class="r-plt" alt="" width="576"></p>
 </div>
@@ -544,12 +555,20 @@ function are based on Mendes et al. (2020).</p>
 <span>  buffer <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#FDE725"</span>, <span class="st">"#B3DC2B"</span>, <span class="st">"#6DCC57"</span>, <span class="st">"#36B677"</span>, <span class="st">"#1F9D87"</span>, <span class="st">"#25818E"</span>, <span class="st">"#30678D"</span>, <span class="st">"#3D4988"</span>, <span class="st">"#462777"</span>, <span class="st">"#440154"</span><span class="op">)</span></span>
+<span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"#FDE725"</span>,</span>
+<span>  <span class="st">"#B3DC2B"</span>,</span>
+<span>  <span class="st">"#6DCC57"</span>,</span>
+<span>  <span class="st">"#36B677"</span>,</span>
+<span>  <span class="st">"#1F9D87"</span>,</span>
+<span>  <span class="st">"#25818E"</span>,</span>
+<span>  <span class="st">"#30678D"</span>,</span>
+<span>  <span class="st">"#3D4988"</span>,</span>
+<span>  <span class="st">"#462777"</span>,</span>
+<span>  <span class="st">"#440154"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_pres</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, col <span class="op">=</span> <span class="va">cl</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v04_Red_fir_example_files/figure-html/constrain%20with%20msdm-1.png" class="r-plt" alt="" width="576">
-#=========#=========#=========#=========#=========#=========#=========#</p>
-<p><strong>Vignette still under construction and changes</strong></p>
-<p>#=========#=========#=========#=========#=========#=========#=========#</p>
+<p><img src="v04_Red_fir_example_files/figure-html/constrain%20with%20msdm-1.png" class="r-plt" alt="" width="576"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -563,7 +582,7 @@ function are based on Mendes et al. (2020).</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

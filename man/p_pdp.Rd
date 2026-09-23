@@ -55,6 +55,10 @@ Lower values corresponding to more transparent colors. Default 0.2}
 
 \item{theme}{ggplot2 theme. Default ggplot2::theme_classic()}
 }
+\value{
+A ggplot object, or a patchwork of ggplot objects when more than
+one predictor is used, showing partial dependence plot(s).
+}
 \description{
 Create partial dependence plot(s) to explore the marginal effect of
 predictors on suitability
@@ -68,7 +72,7 @@ could be used to interpret a model or to explore how a model may extrapolate out
 used to train the model.
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 library(dplyr)
 

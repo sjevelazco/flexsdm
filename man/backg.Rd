@@ -20,7 +20,7 @@ backg
 A data set containing environmental conditions of background points
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 data("backg")
 backg

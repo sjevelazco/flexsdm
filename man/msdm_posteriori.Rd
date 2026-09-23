@@ -138,7 +138,7 @@ For further methodological and performance information of these methods see Mend
 If using one these constraining methods, cite Mendes et al (2020).
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 require(terra)
 

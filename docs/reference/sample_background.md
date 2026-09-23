@@ -120,7 +120,7 @@ and
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(terra)
 require(dplyr)
 data(spp)
@@ -143,6 +143,11 @@ part <- part_sblock(
   min_occ = 5,
   n_part = 2
 )
+#> 4 rows were excluded from database because NAs were found
+#> The following grid cell sizes will be tested:
+#> 189000 | 215068.97 | 241137.93 | 267206.9 | 293275.86 | 319344.83 | 345413.79 | 371482.76 | 397551.72 | 423620.69 | 449689.66 | 475758.62 | 501827.59 | 527896.55 | 553965.52 | 580034.48 | 606103.45 | 632172.41 | 658241.38 | 684310.34 | 710379.31 | 736448.28 | 762517.24 | 788586.21 | 814655.17 | 840724.14 | 866793.1 | 892862.07 | 918931.03 | 945000
+#> Creating basic raster mask...
+#> Searching for the optimal grid size...
 
 grid_env <- get_block(env_layer = somevar, best_grid = part$grid)
 plot(grid_env)
@@ -168,8 +173,23 @@ bg <-
   )
 
 bg
+#> # A tibble: 1,000 × 4
+#>    sp           x        y pr_ab
+#>    <chr>    <dbl>    <dbl> <dbl>
+#>  1 sp3     80859. -348718.     0
+#>  2 sp3   -119481.  199382.     0
+#>  3 sp3    -68451.   76532.     0
+#>  4 sp3   -351951.  297662.     0
+#>  5 sp3      9039. -327928.     0
+#>  6 sp3   -200751.  278762.     0
+#>  7 sp3   -136491.  312782.     0
+#>  8 sp3    156459. -186178.     0
+#>  9 sp3   -106251. -233428.     0
+#> 10 sp3    237729. -424318.     0
+#> # ℹ 990 more rows
 plot(grid_env)
 points(bg[-1])
+
 
 # Sample random background points constrained to a region with a give set of values
 plot(grid_env)
@@ -183,6 +203,7 @@ sample_background(
   maskval = 1
 ) %>% points()
 
+
 plot(grid_env)
 sample_background(
   data = spp_p,
@@ -193,6 +214,7 @@ sample_background(
   rlayer = grid_env,
   maskval = 2
 ) %>% points()
+
 
 plot(grid_env)
 sample_background(
@@ -205,6 +227,7 @@ sample_background(
   maskval = c(1, 2)
 ) %>% points()
 
+
 # Sample random background within a calibration area and constrained to a region
 ca_ps1 <- calib_area(
   data = spp_pa,
@@ -214,7 +237,7 @@ ca_ps1 <- calib_area(
   crs = crs(somevar)
 )
 plot(grid_env)
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 points(spp_pa[-1], col = "blue", cex = 0.7, pch = 19)
 sample_background(
   data = spp_p,
@@ -229,6 +252,7 @@ sample_background(
   points(col = "red")
 
 
+
 ## %######################################################%##
 #                                                          #
 ####            Thickening background method            ####
@@ -237,7 +261,33 @@ sample_background(
 
 # Thickening background without constraining them
 spp_p # presences database of a species
+#> # A tibble: 13 × 4
+#>    species        x        y pr_ab
+#>    <chr>      <dbl>    <dbl> <dbl>
+#>  1 sp3      -26331.  209912.     1
+#>  2 sp3     -134331.  195332.     1
+#>  3 sp3      131079. -140548.     1
+#>  4 sp3      -27411.  124322.     1
+#>  5 sp3      106509.  -83308.     1
+#>  6 sp3      -86811.  259052.     1
+#>  7 sp3      134049. -154588.     1
+#>  8 sp3     -124881.  263372.     1
+#>  9 sp3      -71151.  213152.     1
+#> 10 sp3        2289.    9572.     1
+#> 11 sp3       31989.   37922.     1
+#> 12 sp3      -49551.  214232.     1
+#> 13 sp3       -4461.  176702.     1
 grid_env # The raster layer used for sampling background
+#> class       : SpatRaster
+#> size        : 558, 394, 1  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> varname     : somevar
+#> name        : .part
+#> min value   :     1
+#> max value   :     2
 bg <- sample_background(
   data = spp_p,
   x = "x",
@@ -252,9 +302,36 @@ bg %>%
   points(col = "red")
 
 
+
 # Thickening background
 spp_p # presences database of a species
+#> # A tibble: 13 × 4
+#>    species        x        y pr_ab
+#>    <chr>      <dbl>    <dbl> <dbl>
+#>  1 sp3      -26331.  209912.     1
+#>  2 sp3     -134331.  195332.     1
+#>  3 sp3      131079. -140548.     1
+#>  4 sp3      -27411.  124322.     1
+#>  5 sp3      106509.  -83308.     1
+#>  6 sp3      -86811.  259052.     1
+#>  7 sp3      134049. -154588.     1
+#>  8 sp3     -124881.  263372.     1
+#>  9 sp3      -71151.  213152.     1
+#> 10 sp3        2289.    9572.     1
+#> 11 sp3       31989.   37922.     1
+#> 12 sp3      -49551.  214232.     1
+#> 13 sp3       -4461.  176702.     1
 grid_env # The raster layer used for sampling background
+#> class       : SpatRaster
+#> size        : 558, 394, 1  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> varname     : somevar
+#> name        : .part
+#> min value   :     1
+#> max value   :     2
 bg <- sample_background(
   data = spp_p,
   x = "x",
@@ -267,6 +344,7 @@ bg <- sample_background(
 plot(grid_env)
 bg %>%
   points(col = "red")
+
 
 # Sample thickening background within a calibration area and constrained to a region
 bg <- sample_background(
@@ -281,10 +359,11 @@ bg <- sample_background(
 )
 
 plot(grid_env)
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 bg %>%
   points(col = "red", cex = 0.3)
 points(spp_p[c("x", "y")], pch = 19)
+
 
 ## %######################################################%##
 #                                                          #
@@ -304,6 +383,7 @@ occ_density <- terra::rast(occ_density)
 plot(occ_density)
 points(spp_p %>% dplyr::select(x, y), cex = 0.5)
 
+
 # A layer with region used to contrain background sampling area
 regions <- system.file("external/regions.tif", package = "flexsdm")
 regions <- terra::rast(regions)
@@ -311,8 +391,23 @@ plot(regions)
 points(spp_p %>% dplyr::select(x, y), cex = 0.5)
 
 
+
 # Biased background points
 spp_p # presences database of a species
+#> # A tibble: 250 × 4
+#>    species        x        y pr_ab
+#>    <chr>      <dbl>    <dbl> <dbl>
+#>  1 sp1     -269871.   69512.     1
+#>  2 sp1     -149991.  267962.     1
+#>  3 sp1     -126231.  196142.     1
+#>  4 sp1       91659. -156748.     1
+#>  5 sp1     -210471.  326282.     1
+#>  6 sp1     -140541.  284972.     1
+#>  7 sp1     -217491.   65732.     1
+#>  8 sp1     -201831.   17132.     1
+#>  9 sp1      -40101.  150782.     1
+#> 10 sp1     -178611.  225032.     1
+#> # ℹ 240 more rows
 bg <- sample_background(
   data = spp_p,
   x = "x",
@@ -331,10 +426,13 @@ spp_p %>%
   points(., col = "black", pch = 19, cex = 0.5)
 
 
+
 # Biased background points constrained to a region
 # It will be selected region 6
 plot(regions)
+
 plot(regions %in% c(1, 6))
+
 
 bg <- sample_background(
   data = spp_p,
@@ -346,6 +444,7 @@ bg <- sample_background(
   rbias = occ_density,
   maskval = c(1, 2)
 )
+#> Number of background-points exceeds number of cell will be returned 0 background-points
 
 plot(occ_density)
 bg %>%
@@ -353,5 +452,6 @@ bg %>%
 spp_p %>%
   dplyr::select(x, y) %>%
   points(., col = "black", pch = 19, cex = 0.5)
-} # }
+
+# }
 ```

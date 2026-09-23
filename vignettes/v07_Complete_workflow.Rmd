@@ -39,24 +39,61 @@ First, let's install and load the required packages:
 
 ```{r packages, eval = FALSE}
 # Install and load required packages
-if (!require(flexsdm)) remotes::install_github("flexsdm")
-if (!require(terra)) install.packages("terra")
-if (!require(geodata)) install.packages("geodata")
-if (!require(tidyterra)) install.packages("tidyterra")
-if (!require(ggspatial)) install.packages("ggspatial")
-if (!require(ggplot2)) install.packages("ggplot2")
-if (!require(dplyr)) install.packages("dplyr")
-if (!require(tidyr)) install.packages("tidyr")
-if (!require(readr)) install.packages("readr")
-if (!require(sf)) install.packages("sf")
-if (!require(reshape2)) install.packages("reshape2")
-if (!require(stringr)) install.packages("stringr")
-if (!require(purrr)) install.packages("purrr")
+if (!require(flexsdm)) {
+  remotes::install_github("flexsdm")
+}
+if (!require(terra)) {
+  install.packages("terra")
+}
+if (!require(geodata)) {
+  install.packages("geodata")
+}
+if (!require(tidyterra)) {
+  install.packages("tidyterra")
+}
+if (!require(ggspatial)) {
+  install.packages("ggspatial")
+}
+if (!require(ggplot2)) {
+  install.packages("ggplot2")
+}
+if (!require(dplyr)) {
+  install.packages("dplyr")
+}
+if (!require(tidyr)) {
+  install.packages("tidyr")
+}
+if (!require(readr)) {
+  install.packages("readr")
+}
+if (!require(sf)) {
+  install.packages("sf")
+}
+if (!require(reshape2)) {
+  install.packages("reshape2")
+}
+if (!require(stringr)) {
+  install.packages("stringr")
+}
+if (!require(purrr)) {
+  install.packages("purrr")
+}
 
 sapply(
   c(
-    "flexsdm", "terra", "geodata", "tidyterra", "ggplot2", "dplyr", "tidyr",
-    "readr", "sf", "ggspatial", "reshape2", "stringr", "purrr"
+    "flexsdm",
+    "terra",
+    "geodata",
+    "tidyterra",
+    "ggplot2",
+    "dplyr",
+    "tidyr",
+    "readr",
+    "sf",
+    "ggspatial",
+    "reshape2",
+    "stringr",
+    "purrr"
   ),
   require,
   character.only = TRUE
@@ -80,15 +117,19 @@ models <- c("CNRM-CM6-1", "MIROC6") # two climate models
 
 # Expand into all combinations
 scenarios <- expand.grid(
-  model = models, ssp = ssps, time = time,
+  model = models,
+  ssp = ssps,
+  time = time,
   stringsAsFactors = FALSE
 )
 
 # Create identifiers for each scenario combination
 scenarios$filename <- apply(scenarios, 1, function(x) {
   paste0(
-    tolower(gsub("-", "", x["model"])), "_",
-    x["ssp"], "_",
+    tolower(gsub("-", "", x["model"])),
+    "_",
+    x["ssp"],
+    "_",
     gsub("-", "_", x["time"])
   )
 })
@@ -102,7 +143,18 @@ dir.create(proj_dir)
 proj_dir <- flexsdm::sdm_directory(
   main_dir = proj_dir,
   projections = scenarios$filename,
-  algorithm = c("gam", "gau", "glm", "gbm", "max", "net", "raf", "svm", "mean", "median"),
+  algorithm = c(
+    "gam",
+    "gau",
+    "glm",
+    "gbm",
+    "max",
+    "net",
+    "raf",
+    "svm",
+    "mean",
+    "median"
+  ),
   threshold = FALSE,
   return_vector = TRUE
 )
@@ -189,7 +241,11 @@ env_path <- proj_dir[grep(
   paste0("1_Inputs/2_Predictors/1_Current"),
   proj_dir
 )]
-terra::writeRaster(env_data, file.path(env_path, "bio_var.tif"), overwrite = TRUE)
+terra::writeRaster(
+  env_data,
+  file.path(env_path, "bio_var.tif"),
+  overwrite = TRUE
+)
 ```
 
 ```{r plot_variables, eval = FALSE}
@@ -251,10 +307,18 @@ for (i in 1:nrow(scenarios)) {
 
   names(fut_env[[i]]) <- paste0("bio_", 1:nlyr(fut_env[[i]]))
 
-  path <- file.path(temp_dir, "1_SDM/1_Inputs/2_Predictors/2_Projection", scenarios$filename[i])
+  path <- file.path(
+    temp_dir,
+    "1_SDM/1_Inputs/2_Predictors/2_Projection",
+    scenarios$filename[i]
+  )
 
   # Save raster for future scenario
-  terra::writeRaster(fut_env[[i]], file.path(path, paste0(scenarios$filename[i], "_bio_var.tif")), overwrite = TRUE)
+  terra::writeRaster(
+    fut_env[[i]],
+    file.path(path, paste0(scenarios$filename[i], "_bio_var.tif")),
+    overwrite = TRUE
+  )
 }
 
 names(fut_env) <- scenarios$filename
@@ -268,10 +332,7 @@ par(mfrow = c(2, 2))
 
 # Plot with consistent zlim
 for (i in seq_along(fut_env)) {
-  plot(fut_env[[i]][["bio_1"]],
-    main = scenarios$filename[i],
-    zlim = bio1_range
-  )
+  plot(fut_env[[i]][["bio_1"]], main = scenarios$filename[i], zlim = bio1_range)
 }
 ```
 
@@ -285,7 +346,8 @@ sp_names <- unique(species_data$species) %>% sort()
 
 # Directory to save training areas to shapefiles
 calib_dir <- proj_dir[grep(
-  paste0("1_Inputs/3_Calibration_area"), proj_dir
+  paste0("1_Inputs/3_Calibration_area"),
+  proj_dir
 )]
 calib_dir
 
@@ -293,7 +355,6 @@ calib_dir
 # Create training areas for each species
 for (i in 1:length(sp_names)) {
   message("Creating training area for species: ", sp_names[i])
-
 
   # Define training area for the i-th species
   ca <- calib_area(
@@ -357,7 +418,12 @@ for (i in 1:length(sp_names)) {
 
   ggplot(cor_data, aes(x = Var1, y = Var2, fill = value)) +
     geom_tile() +
-    scale_fill_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0) +
+    scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red",
+      midpoint = 0
+    ) +
     geom_text(aes(label = sprintf("%.2f", value)), size = 4) +
     theme_bw() +
     labs(
@@ -371,8 +437,12 @@ for (i in 1:length(sp_names)) {
 
   # save each heatmap (adjust file path as needed)
   ggsave(
-    filename = file.path(dir_fig, paste0(sp_names[i], "_correlation_heatmap.png")),
-    width = 8, height = 6
+    filename = file.path(
+      dir_fig,
+      paste0(sp_names[i], "_correlation_heatmap.png")
+    ),
+    width = 8,
+    height = 6
   )
 }
 ```
@@ -397,7 +467,6 @@ names(calib_a) <- basename(calib_a) %>% gsub(".gpkg", "", .)
 calib_a
 
 # --- Demonstrate the process for all species ----
-
 
 # -----------------------------------------------------------
 # Example: Running PCA-based collinearity correction
@@ -462,20 +531,25 @@ save_dir
 
 # path with future scenarios
 scenario_path <- proj_dir[grep(
-  paste0("1_Inputs/2_Predictors/2_Projection"), proj_dir
+  paste0("1_Inputs/2_Predictors/2_Projection"),
+  proj_dir
 )][1]
 
 # Separate directories for current and future
 folders <- c("1_Current", "2_Projection")
 
 # Create subfolders inside the base folder
-folder_paths <- sapply(folders, function(f) {
-  dir_path <- file.path(save_dir, f)
-  if (!dir.exists(dir_path)) {
-    dir.create(dir_path, recursive = TRUE)
-  }
-  dir_path # return the created path
-}, USE.NAMES = TRUE)
+folder_paths <- sapply(
+  folders,
+  function(f) {
+    dir_path <- file.path(save_dir, f)
+    if (!dir.exists(dir_path)) {
+      dir.create(dir_path, recursive = TRUE)
+    }
+    dir_path # return the created path
+  },
+  USE.NAMES = TRUE
+)
 
 env_new <- list()
 
@@ -490,7 +564,6 @@ for (i in 1:length(sp_names)) {
   fut_folder <- file.path(folder_paths[2], sp_names[i])
   dir.create(fut_folder)
 
-
   # Run PCA collinearity correction
   env_new[[i]] <- flexsdm::correct_colinvar(
     env_layer = env_data,
@@ -504,12 +577,24 @@ for (i in 1:length(sp_names)) {
 
   # Save tables
 
-  env_new[[i]]$cumulative_variance %>% readr::write_tsv(file.path(folder_paths[1], paste0(sp_names[i], "-cum_var.txt")))
+  env_new[[i]]$cumulative_variance %>%
+    readr::write_tsv(file.path(
+      folder_paths[1],
+      paste0(sp_names[i], "-cum_var.txt")
+    ))
 
-  env_new[[i]]$coefficients %>% readr::write_tsv(file.path(folder_paths[1], paste0(sp_names[i], "-coefficients.txt")))
+  env_new[[i]]$coefficients %>%
+    readr::write_tsv(file.path(
+      folder_paths[1],
+      paste0(sp_names[i], "-coefficients.txt")
+    ))
 
   # Saver raster for current conditions
-  terra::writeRaster(env_new[[i]]$env_layer, file.path(folder_paths[1], paste0(sp_names[i], ".tif")), overwrite = TRUE)
+  terra::writeRaster(
+    env_new[[i]]$env_layer,
+    file.path(folder_paths[1], paste0(sp_names[i], ".tif")),
+    overwrite = TRUE
+  )
 }
 ```
 
@@ -535,7 +620,11 @@ save_dir # Path to directory with species-specific predictors
 file.path(save_dir, folders)
 
 # List all .tif files in folders (one per species, each containing PCA environmental layers for the baseline time).
-sp_pc <- list.files(file.path(save_dir, folders[1]), full.names = TRUE, pattern = ".tif")
+sp_pc <- list.files(
+  file.path(save_dir, folders[1]),
+  full.names = TRUE,
+  pattern = ".tif"
+)
 
 # Assign species names to each file in 'sp_pc' by removing the '.tif' extension from the filename.
 names(sp_pc) <- basename(sp_pc) %>% gsub(".tif", "", .) # Now names(sp_pc) matches sp_names
@@ -603,8 +692,14 @@ bins_results <- dplyr::bind_rows(bins_results, .id = "species")
 bins_results
 
 # Save bin selection results and filtered occurrences to tab-separated files for reproducibility and downstream use.
-readr::write_tsv(bins_results, file.path(points_dir, "0_filt_prop_selected.txt"))
-readr::write_tsv(filtered_occurrences, file.path(points_dir, "0_occurrences_filtered.txt"))
+readr::write_tsv(
+  bins_results,
+  file.path(points_dir, "0_filt_prop_selected.txt")
+)
+readr::write_tsv(
+  filtered_occurrences,
+  file.path(points_dir, "0_occurrences_filtered.txt")
+)
 
 # Compare the number of original (unfiltered) and filtered occurrence records per species.
 # This helps assess how much data was removed by the filtering process.
@@ -622,7 +717,10 @@ In SDM, we often need to generate pseudo-absence points to be able use some algo
 ```{r pres_pabsences, eval = FALSE}
 # Load the filtered occurrence data from file.
 # This table contains the bias-corrected presence records for all species.
-filtered_occurrences <- readr::read_tsv(file.path(proj_dir[2], "1_Occurrences/0_occurrences_filtered.txt"))
+filtered_occurrences <- readr::read_tsv(file.path(
+  proj_dir[2],
+  "1_Occurrences/0_occurrences_filtered.txt"
+))
 
 # Add a column indicating presences (pr_ab = 1), as all records here are presences.
 filtered_occurrences$pr_ab <- 1
@@ -696,7 +794,10 @@ pres_pabsences <- dplyr::bind_rows(pres_pabsences)
 background <- dplyr::bind_rows(background)
 
 # Save the combined presence + pseudo-absence data and background data to disk as .txt files.
-readr::write_tsv(pres_pabsences, file.path(points_dir, "0_occurrences_psabsences.txt"))
+readr::write_tsv(
+  pres_pabsences,
+  file.path(points_dir, "0_occurrences_psabsences.txt")
+)
 readr::write_tsv(background, file.path(points_dir, "0_background.txt"))
 ```
 
@@ -726,8 +827,19 @@ for (i in 1:length(sp_names)) {
 
   # Plot
   p <- ggplot() +
-    geom_spatvector(data = ca, fill = NA, color = "black", linetype = "dashed") +
-    geom_point(data = bg_data, aes(x = x, y = y), color = "gray60", size = 0.7, alpha = 0.5) +
+    geom_spatvector(
+      data = ca,
+      fill = NA,
+      color = "black",
+      linetype = "dashed"
+    ) +
+    geom_point(
+      data = bg_data,
+      aes(x = x, y = y),
+      color = "gray60",
+      size = 0.7,
+      alpha = 0.5
+    ) +
     geom_point(data = pa_data, aes(x = x, y = y, color = as.factor(pr_ab))) +
     scale_color_manual(
       values = c("1" = "blue", "0" = "red"),
@@ -737,7 +849,8 @@ for (i in 1:length(sp_names)) {
     labs(
       title = paste("Species:", sp_names),
       subtitle = "Blue = Presence | Red = Pseudo-Absence | Gray = Background",
-      x = "Longitude", y = "Latitude"
+      x = "Longitude",
+      y = "Latitude"
     ) +
     annotation_scale(location = "br", width_hint = 0.3) +
     annotation_north_arrow(
@@ -755,7 +868,9 @@ for (i in 1:length(sp_names)) {
   ggsave(
     filename = file.path(dir_fig, paste0(sp_names[i], "_pr-ab-bg_map.png")),
     plot = p,
-    width = 8, height = 6, dpi = 300
+    width = 8,
+    height = 6,
+    dpi = 300
   )
 }
 ```
@@ -891,8 +1006,14 @@ partitioned_psa <- dplyr::bind_rows(partitioned_psa)
 partitioned_bg <- dplyr::bind_rows(partitioned_bg)
 
 # Save the final partitioned datasets to disk for model training and evaluation.
-readr::write_tsv(partitioned_psa, file.path(points_dir, "0_partitioned_occurrences_psabsences.txt"))
-readr::write_tsv(partitioned_bg, file.path(points_dir, "0_partitioned_background.txt"))
+readr::write_tsv(
+  partitioned_psa,
+  file.path(points_dir, "0_partitioned_occurrences_psabsences.txt")
+)
+readr::write_tsv(
+  partitioned_bg,
+  file.path(points_dir, "0_partitioned_background.txt")
+)
 ```
 
 # 11. Configuration of output directories and data used during model fitting
@@ -954,11 +1075,17 @@ names(sp_pc) <- basename(sp_pc) %>% gsub(".tif", "", .)
 
 # Load the partitioned presence and pseudo-absence dataset from file.
 # Each row corresponds to an occurrence or pseudo-absence, along with partition/fold assignments for cross-validation.
-psa <- readr::read_tsv(file.path(proj_dir[1], "1_Inputs/1_Occurrences/0_partitioned_occurrences_psabsences.txt"))
+psa <- readr::read_tsv(file.path(
+  proj_dir[1],
+  "1_Inputs/1_Occurrences/0_partitioned_occurrences_psabsences.txt"
+))
 
 # Load the partitioned background points dataset from file.
 # Background points are used in algorithms like Maxent and should also have partition assignments.
-bkgrnd <- readr::read_tsv(file.path(proj_dir[1], "1_Inputs/1_Occurrences/0_partitioned_background.txt"))
+bkgrnd <- readr::read_tsv(file.path(
+  proj_dir[1],
+  "1_Inputs/1_Occurrences/0_partitioned_background.txt"
+))
 ```
 
 # 12. Main loop by species for model fitting, evaluation and prediction
@@ -989,10 +1116,21 @@ for (i in 1:length(sp_names)) {
   sp_bg <- bkgrnd %>% dplyr::filter(species == s_name)
 
   # Extract environmental data for presence-absence points, removing any points with NA values.
-  sp_pa <- sdm_extract(sp_pa, x = "x", y = "y", env_layer = env_r, filter_na = TRUE)
+  sp_pa <- sdm_extract(
+    sp_pa,
+    x = "x",
+    y = "y",
+    env_layer = env_r,
+    filter_na = TRUE
+  )
   # Extract environmental data for background points.
-  sp_bg <- sdm_extract(sp_bg, x = "x", y = "y", env_layer = env_r, filter_na = TRUE)
-
+  sp_bg <- sdm_extract(
+    sp_bg,
+    x = "x",
+    y = "y",
+    env_layer = env_r,
+    filter_na = TRUE
+  )
 
   ## %######################################################%##
   ####                   2. Fit Models                     ####
@@ -1006,7 +1144,8 @@ for (i in 1:length(sp_names)) {
     response = "pr_ab", # The column with presence/absence (1/0)
     predictors = var_names, # Names of environmental variables
     partition = ".part", # Column for data partitioning (training/testing)
-    grid = expand.grid( # Define the grid of hyperparameters to test
+    grid = expand.grid(
+      # Define the grid of hyperparameters to test
       mtry = seq(1, length(var_names), 1), # Number of variables to sample at each split
       ntree = c(400, 600, 800, 1000) # Number of trees to grow
     ),
@@ -1023,7 +1162,8 @@ for (i in 1:length(sp_names)) {
     predictors = var_names,
     background = sp_bg, # Background data is required for Maxent
     partition = ".part",
-    grid = expand.grid( # Define the grid of hyperparameters to test
+    grid = expand.grid(
+      # Define the grid of hyperparameters to test
       regmult = seq(0.1, 2, 0.5), # Regularization multiplier to prevent overfitting
       classes = c("lq", "lqh", "lqhp", "lqhpt") # Feature classes (l=linear, q=quadratic, etc.)
     ),
@@ -1039,7 +1179,8 @@ for (i in 1:length(sp_names)) {
     response = "pr_ab",
     predictors = var_names,
     partition = ".part",
-    grid = expand.grid( # Define the grid of hyperparameters to test
+    grid = expand.grid(
+      # Define the grid of hyperparameters to test
       n.trees = seq(150, 200, 10), # Number of trees
       shrinkage = seq(1, 1.5, 0.2), # Learning rate
       n.minobsinnode = seq(1, 15, 2) # Minimum number of observations in a terminal node
@@ -1055,11 +1196,16 @@ for (i in 1:length(sp_names)) {
   # Set a starting number for basis functions (k).
   candidate_k <- 20
   # Reduce 'k' until it's smaller than the number of training samples to avoid errors.
-  while (any(n_t < flexsdm:::n_coefficients(
-    data = sp_pa,
-    predictors = var_names,
-    k = candidate_k
-  ))) {
+  while (
+    any(
+      n_t <
+        flexsdm:::n_coefficients(
+          data = sp_pa,
+          predictors = var_names,
+          k = candidate_k
+        )
+    )
+  ) {
     candidate_k <- candidate_k - 3
   }
   # Fit a GAM model with the adjusted 'k'.
@@ -1100,7 +1246,8 @@ for (i in 1:length(sp_names)) {
     response = "pr_ab",
     predictors = var_names,
     partition = ".part",
-    grid = expand.grid( # Define the grid of hyperparameters to test
+    grid = expand.grid(
+      # Define the grid of hyperparameters to test
       size = 2:length(var_names), # Number of units in the hidden layer
       decay = c(seq(0.01, 1, 0.05), 1, 3, 4, 5, 6) # Weight decay for regularization
     ),
@@ -1130,7 +1277,6 @@ for (i in 1:length(sp_names)) {
   # Clean up the names in the list (e.g., "m_raf" becomes "raf").
   names(model_obj_list) <- gsub("m_", "", names(model_obj_list))
 
-
   ## %######################################################%##
   ####    3. Partial Dependence & Variable Importance     ####
   ## %######################################################%##
@@ -1153,7 +1299,10 @@ for (i in 1:length(sp_names)) {
     if (!is.null(p)) {
       ggsave(
         plot = p,
-        filename = file.path(dir_fig, paste0(s_name, "_", mod_name, "_pdp.png")),
+        filename = file.path(
+          dir_fig,
+          paste0(s_name, "_", mod_name, "_pdp.png")
+        ),
         width = 8,
         height = 6,
         dpi = 300
@@ -1203,14 +1352,20 @@ for (i in 1:length(sp_names)) {
   ggsave(
     filename = file.path(dir_fig, paste0(s_name, "_varImp.png")),
     plot = p_vi,
-    width = 12, height = 14, dpi = 300, unit = "cm", scale = 1.5
+    width = 12,
+    height = 14,
+    dpi = 300,
+    unit = "cm",
+    scale = 1.5
   )
 
   # Summarize performance metrics (e.g., SORENSEN, TSS) for all individual models.
   model_perf <- flexsdm::sdm_summarize(model_obj_list)
   # Save the performance summary to a text file.
-  readr::write_tsv(model_perf, file.path(dir_perf, paste0(s_name, "_models_performance.txt")))
-
+  readr::write_tsv(
+    model_perf,
+    file.path(dir_perf, paste0(s_name, "_models_performance.txt"))
+  )
 
   ## %######################################################%##
   ####        4. Filter Models for Ensemble              ####
@@ -1228,7 +1383,6 @@ for (i in 1:length(sp_names)) {
 
   # Create a new list containing only the selected "good" models.
   good_models <- model_obj_list[good_models_names]
-
 
   ## %######################################################%##
   ####                   5. Ensemble Modeling              ####
@@ -1271,7 +1425,6 @@ for (i in 1:length(sp_names)) {
       file.path(dir_perf, paste0(s_name, "_models_performance.txt"))
     )
   }
-
 
   ## %######################################################%##
   ####                  6. Spatial Predictions             ####
@@ -1318,7 +1471,11 @@ for (i in 1:length(sp_names)) {
       # Save prediction as a GeoTIFF.
       writeRaster(
         ens_prd[[1]],
-        filename = file.path(dir_current, names(ensemble_list[i]), paste0(s_name, ".tif")),
+        filename = file.path(
+          dir_current,
+          names(ensemble_list[i]),
+          paste0(s_name, ".tif")
+        ),
         overwrite = TRUE,
         filetype = "GTiff"
       )
@@ -1355,7 +1512,13 @@ for (i in 1:length(sp_names)) {
       for (alg in names(prd_list)) {
         terra::writeRaster(
           prd_list[[alg]],
-          file.path(dir_future, sc_name, paste0("Algorithm"), alg, paste0(s_name, ".tif")),
+          file.path(
+            dir_future,
+            sc_name,
+            paste0("Algorithm"),
+            alg,
+            paste0(s_name, ".tif")
+          ),
           overwrite = TRUE,
           filetype = "GTiff"
         )
@@ -1391,14 +1554,15 @@ for (i in 1:length(sp_names)) {
     }
   }
 
-
   ## %######################################################%##
   ####                 8. Clean Up for Next Iteration      ####
   ## %######################################################%##
   # Remove all model objects (starting with "m_") to free up memory.
   rm(list = grep("^m_", ls(), value = TRUE))
   # Remove another temporary object if it exists.
-  if (exists("alg_prd_cont")) rm(alg_prd_cont)
+  if (exists("alg_prd_cont")) {
+    rm(alg_prd_cont)
+  }
   # Trigger garbage collection to release memory explicitly.
   gc()
 } # End of the main species loop.
@@ -1424,7 +1588,11 @@ for (s_name in sp_names) {
 
   # If no prediction files are found for this species, output a message and skip to the next species.
   if (length(species_files) == 0) {
-    message(paste("    - No prediction files were found for", s_name, ". Skipping."))
+    message(paste(
+      "    - No prediction files were found for",
+      s_name,
+      ". Skipping."
+    ))
     next
   }
 
@@ -1454,17 +1622,20 @@ for (s_name in sp_names) {
     scale_fill_princess_c(palette = "america") +
     theme_bw()
 
-
   # 5. Save the generated map as a PNG file in the figures directory, one file per species.
   ggsave(
     filename = file.path(dir_fig, paste0(s_name, "_cont_map", ".png")),
     plot = p_map_cont,
-    width = 12, height = 10, dpi = 300
+    width = 12,
+    height = 10,
+    dpi = 300
   )
   ggsave(
     filename = file.path(dir_fig, paste0(s_name, "_semibin_map", ".png")),
     plot = p_map_semibin,
-    width = 12, height = 10, dpi = 300
+    width = 12,
+    height = 10,
+    dpi = 300
   )
   message(paste(" - Map saved for:", s_name))
 }
@@ -1489,7 +1660,11 @@ for (s_name in sp_names) {
     sc_name <- basename(sc_folder)
 
     # List algorithm folders
-    alg_folders <- list.dirs(file.path(sc_folder, "Algorithm"), recursive = FALSE, full.names = TRUE)
+    alg_folders <- list.dirs(
+      file.path(sc_folder, "Algorithm"),
+      recursive = FALSE,
+      full.names = TRUE
+    )
 
     r_cont_list <- list()
     r_semibin_list <- list()
@@ -1497,8 +1672,14 @@ for (s_name in sp_names) {
 
     for (alg_folder in alg_folders) {
       alg_name <- basename(alg_folder)
-      r_file <- list.files(alg_folder, pattern = paste0(s_name, ".tif$"), full.names = TRUE)
-      if (length(r_file) == 0) next
+      r_file <- list.files(
+        alg_folder,
+        pattern = paste0(s_name, ".tif$"),
+        full.names = TRUE
+      )
+      if (length(r_file) == 0) {
+        next
+      }
 
       r_stack <- terra::rast(r_file)
       r_cont_list[[alg_name]] <- r_stack[[1]]
@@ -1508,7 +1689,13 @@ for (s_name in sp_names) {
 
     # Skip if no raster files found
     if (length(r_cont_list) == 0) {
-      message("  - No raster files found for species ", s_name, " in scenario ", sc_name, ". Skipping.")
+      message(
+        "  - No raster files found for species ",
+        s_name,
+        " in scenario ",
+        sc_name,
+        ". Skipping."
+      )
       next
     }
 
@@ -1533,8 +1720,12 @@ for (s_name in sp_names) {
       theme_bw() +
       ggtitle(paste(s_name, sc_name, "Continuous"))
 
-    ggsave(file.path(dir_fig, paste0(s_name, "_", sc_name, "_cont.png")),
-      plot = p_cont, width = 12, height = 10, dpi = 300
+    ggsave(
+      file.path(dir_fig, paste0(s_name, "_", sc_name, "_cont.png")),
+      plot = p_cont,
+      width = 12,
+      height = 10,
+      dpi = 300
     )
 
     # Semibinary map
@@ -1545,8 +1736,12 @@ for (s_name in sp_names) {
       theme_bw() +
       ggtitle(paste(s_name, sc_name, "Semibinary"))
 
-    ggsave(file.path(dir_fig, paste0(s_name, "_", sc_name, "_semibin.png")),
-      plot = p_semibin, width = 12, height = 10, dpi = 300
+    ggsave(
+      file.path(dir_fig, paste0(s_name, "_", sc_name, "_semibin.png")),
+      plot = p_semibin,
+      width = 12,
+      height = 10,
+      dpi = 300
     )
 
     message("  - Faceted maps saved for scenario ", sc_name)

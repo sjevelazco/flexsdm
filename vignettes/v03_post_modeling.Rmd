@@ -65,7 +65,7 @@ library(terra)
 
 ## Project directory setup
 
-Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/01_pre_modeling.html)
+Decide where on your computer you would like to store the inputs and outputs of your project (this will be your main directory). Use an existing one or use dir.create() to create your main directory. Then specify whether or not to include folders for projections, calibration areas, algorithms, ensembles, and thresholds. For more details see [Vignette 01_pre_modeling](https://sjevelazco.github.io/flexsdm/articles/v01_pre_modeling.html)
 
 
 ## Species occurrence, presence/absense and environmental data
@@ -282,8 +282,14 @@ rf_t1 <-
     data = abies2,
     response = "pr_ab",
     predictors = c(
-      "aet", "cwd", "tmin", "ppt_djf",
-      "ppt_jja", "pH", "awc", "depth"
+      "aet",
+      "cwd",
+      "tmin",
+      "ppt_djf",
+      "ppt_jja",
+      "pH",
+      "awc",
+      "depth"
     ),
     predictors_f = c("landform"),
     partition = ".part",
@@ -473,13 +479,13 @@ set.seed(10)
 occ <- spp %>%
   dplyr::filter(species == "sp2") %>% # filter using only sp2
   sdm_extract(
-    data = ., x = "x", y = "y",
-    env_layer = somevar, filter_na = TRUE
+    data = .,
+    x = "x",
+    y = "y",
+    env_layer = somevar,
+    filter_na = TRUE
   ) %>% # extract variables values from the raster layer
-  part_random(.,
-    pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 10)
-  ) # add columns with partition
+  part_random(., pr_ab = "pr_ab", method = c(method = "kfold", folds = 10)) # add columns with partition
 ```
 
 Next, we fit and predict a model
@@ -496,7 +502,12 @@ m_glm <- fit_glm(
 Next, let's predict this model and plot it in a map
 ```{r msdm_post_predict}
 # Predict this model
-m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
+m_pred <- sdm_predict(
+  models = m_glm,
+  pred = somevar,
+  thr = NULL,
+  con_thr = FALSE
+)
 
 # Predicting individual models
 plot(m_pred[[1]])
@@ -576,11 +587,3 @@ m_lq <- msdm_posteriori(
 
 plot(m_lq)
 ```
-
-
-
-#=========#=========#=========#=========#=========#=========#=========#
-
-**Vignette still under construction and changes**
-
-#=========#=========#=========#=========#=========#=========#=========#

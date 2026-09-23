@@ -157,7 +157,7 @@ https://doi.org/10.1111/ecog.04503</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spp</span><span class="op">)</span></span></span>
@@ -180,6 +180,11 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span>  min_occ <span class="op">=</span> <span class="fl">5</span>,</span></span>
 <span class="r-in"><span>  n_part <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 rows were excluded from database because NAs were found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following grid cell sizes will be tested:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 189000 | 215068.97 | 241137.93 | 267206.9 | 293275.86 | 319344.83 | 345413.79 | 371482.76 | 397551.72 | 423620.69 | 449689.66 | 475758.62 | 501827.59 | 527896.55 | 553965.52 | 580034.48 | 606103.45 | 632172.41 | 658241.38 | 684310.34 | 710379.31 | 736448.28 | 762517.24 | 788586.21 | 814655.17 | 840724.14 | 866793.1 | 892862.07 | 918931.03 | 945000</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Creating basic raster mask...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Searching for the optimal grid size...</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">grid_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="get_block.html">get_block</a></span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, best_grid <span class="op">=</span> <span class="va">part</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
@@ -205,8 +210,23 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bg</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,000 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    sp           x        y pr_ab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp3     <span style="text-decoration: underline;">80</span>859. -<span style="color: #BB0000; text-decoration: underline;">348</span><span style="color: #BB0000;">718.</span>     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp3   -<span style="color: #BB0000; text-decoration: underline;">119</span><span style="color: #BB0000;">481.</span>  <span style="text-decoration: underline;">199</span>382.     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp3    -<span style="color: #BB0000; text-decoration: underline;">68</span><span style="color: #BB0000;">451.</span>   <span style="text-decoration: underline;">76</span>532.     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp3   -<span style="color: #BB0000; text-decoration: underline;">351</span><span style="color: #BB0000;">951.</span>  <span style="text-decoration: underline;">297</span>662.     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp3      <span style="text-decoration: underline;">9</span>039. -<span style="color: #BB0000; text-decoration: underline;">327</span><span style="color: #BB0000;">928.</span>     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp3   -<span style="color: #BB0000; text-decoration: underline;">200</span><span style="color: #BB0000;">751.</span>  <span style="text-decoration: underline;">278</span>762.     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp3   -<span style="color: #BB0000; text-decoration: underline;">136</span><span style="color: #BB0000;">491.</span>  <span style="text-decoration: underline;">312</span>782.     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp3    <span style="text-decoration: underline;">156</span>459. -<span style="color: #BB0000; text-decoration: underline;">186</span><span style="color: #BB0000;">178.</span>     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp3   -<span style="color: #BB0000; text-decoration: underline;">106</span><span style="color: #BB0000;">251.</span> -<span style="color: #BB0000; text-decoration: underline;">233</span><span style="color: #BB0000;">428.</span>     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp3    <span style="text-decoration: underline;">237</span>729. -<span style="color: #BB0000; text-decoration: underline;">424</span><span style="color: #BB0000;">318.</span>     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 990 more rows</span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">bg</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sample random background points constrained to a region with a give set of values</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
@@ -219,6 +239,7 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span>  rlayer <span class="op">=</span> <span class="va">grid_env</span>,</span></span>
 <span class="r-in"><span>  maskval <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sample_background</span><span class="op">(</span></span></span>
@@ -230,6 +251,7 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span>  rlayer <span class="op">=</span> <span class="va">grid_env</span>,</span></span>
 <span class="r-in"><span>  maskval <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sample_background</span><span class="op">(</span></span></span>
@@ -241,6 +263,7 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span>  rlayer <span class="op">=</span> <span class="va">grid_env</span>,</span></span>
 <span class="r-in"><span>  maskval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sample random background within a calibration area and constrained to a region</span></span></span>
 <span class="r-in"><span><span class="va">ca_ps1</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span></span></span>
@@ -251,7 +274,7 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span>  crs <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp_pa</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"blue"</span>, cex <span class="op">=</span> <span class="fl">0.7</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sample_background</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp_p</span>,</span></span>
@@ -264,6 +287,7 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span>  calibarea <span class="op">=</span> <span class="va">ca_ps1</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
@@ -274,7 +298,33 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Thickening background without constraining them</span></span></span>
 <span class="r-in"><span><span class="va">spp_p</span> <span class="co"># presences database of a species</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    species        x        y pr_ab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">26</span><span style="color: #BB0000;">331.</span>  <span style="text-decoration: underline;">209</span>912.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp3     -<span style="color: #BB0000; text-decoration: underline;">134</span><span style="color: #BB0000;">331.</span>  <span style="text-decoration: underline;">195</span>332.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp3      <span style="text-decoration: underline;">131</span>079. -<span style="color: #BB0000; text-decoration: underline;">140</span><span style="color: #BB0000;">548.</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">27</span><span style="color: #BB0000;">411.</span>  <span style="text-decoration: underline;">124</span>322.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp3      <span style="text-decoration: underline;">106</span>509.  -<span style="color: #BB0000; text-decoration: underline;">83</span><span style="color: #BB0000;">308.</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">86</span><span style="color: #BB0000;">811.</span>  <span style="text-decoration: underline;">259</span>052.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp3      <span style="text-decoration: underline;">134</span>049. -<span style="color: #BB0000; text-decoration: underline;">154</span><span style="color: #BB0000;">588.</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp3     -<span style="color: #BB0000; text-decoration: underline;">124</span><span style="color: #BB0000;">881.</span>  <span style="text-decoration: underline;">263</span>372.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">71</span><span style="color: #BB0000;">151.</span>  <span style="text-decoration: underline;">213</span>152.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp3        <span style="text-decoration: underline;">2</span>289.    <span style="text-decoration: underline;">9</span>572.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> sp3       <span style="text-decoration: underline;">31</span>989.   <span style="text-decoration: underline;">37</span>922.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">49</span><span style="color: #BB0000;">551.</span>  <span style="text-decoration: underline;">214</span>232.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> sp3       -<span style="color: #BB0000; text-decoration: underline;">4</span><span style="color: #BB0000;">461.</span>  <span style="text-decoration: underline;">176</span>702.     1</span>
 <span class="r-in"><span><span class="va">grid_env</span> <span class="co"># The raster layer used for sampling background</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 1  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> varname     : somevar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> name        : .part</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min value   :     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max value   :     2</span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu">sample_background</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp_p</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
@@ -287,11 +337,38 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Thickening background</span></span></span>
 <span class="r-in"><span><span class="va">spp_p</span> <span class="co"># presences database of a species</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    species        x        y pr_ab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">26</span><span style="color: #BB0000;">331.</span>  <span style="text-decoration: underline;">209</span>912.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp3     -<span style="color: #BB0000; text-decoration: underline;">134</span><span style="color: #BB0000;">331.</span>  <span style="text-decoration: underline;">195</span>332.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp3      <span style="text-decoration: underline;">131</span>079. -<span style="color: #BB0000; text-decoration: underline;">140</span><span style="color: #BB0000;">548.</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">27</span><span style="color: #BB0000;">411.</span>  <span style="text-decoration: underline;">124</span>322.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp3      <span style="text-decoration: underline;">106</span>509.  -<span style="color: #BB0000; text-decoration: underline;">83</span><span style="color: #BB0000;">308.</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">86</span><span style="color: #BB0000;">811.</span>  <span style="text-decoration: underline;">259</span>052.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp3      <span style="text-decoration: underline;">134</span>049. -<span style="color: #BB0000; text-decoration: underline;">154</span><span style="color: #BB0000;">588.</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp3     -<span style="color: #BB0000; text-decoration: underline;">124</span><span style="color: #BB0000;">881.</span>  <span style="text-decoration: underline;">263</span>372.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">71</span><span style="color: #BB0000;">151.</span>  <span style="text-decoration: underline;">213</span>152.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp3        <span style="text-decoration: underline;">2</span>289.    <span style="text-decoration: underline;">9</span>572.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> sp3       <span style="text-decoration: underline;">31</span>989.   <span style="text-decoration: underline;">37</span>922.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> sp3      -<span style="color: #BB0000; text-decoration: underline;">49</span><span style="color: #BB0000;">551.</span>  <span style="text-decoration: underline;">214</span>232.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> sp3       -<span style="color: #BB0000; text-decoration: underline;">4</span><span style="color: #BB0000;">461.</span>  <span style="text-decoration: underline;">176</span>702.     1</span>
 <span class="r-in"><span><span class="va">grid_env</span> <span class="co"># The raster layer used for sampling background</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 1  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> varname     : somevar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> name        : .part</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min value   :     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max value   :     2</span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu">sample_background</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp_p</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
@@ -304,6 +381,7 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sample thickening background within a calibration area and constrained to a region</span></span></span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu">sample_background</span><span class="op">(</span></span></span>
@@ -318,10 +396,11 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">grid_env</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca_ps1</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"red"</span>, cex <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp_p</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
@@ -340,16 +419,32 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span><span class="va">occ_density</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">occ_density</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">occ_density</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp_p</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A layer with region used to contrain background sampling area</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/regions.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">spp_p</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Biased background points</span></span></span>
 <span class="r-in"><span><span class="va">spp_p</span> <span class="co"># presences database of a species</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 250 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    species        x        y pr_ab</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">269</span><span style="color: #BB0000;">871.</span>   <span style="text-decoration: underline;">69</span>512.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">149</span><span style="color: #BB0000;">991.</span>  <span style="text-decoration: underline;">267</span>962.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">126</span><span style="color: #BB0000;">231.</span>  <span style="text-decoration: underline;">196</span>142.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> sp1       <span style="text-decoration: underline;">91</span>659. -<span style="color: #BB0000; text-decoration: underline;">156</span><span style="color: #BB0000;">748.</span>     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">210</span><span style="color: #BB0000;">471.</span>  <span style="text-decoration: underline;">326</span>282.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">140</span><span style="color: #BB0000;">541.</span>  <span style="text-decoration: underline;">284</span>972.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">217</span><span style="color: #BB0000;">491.</span>   <span style="text-decoration: underline;">65</span>732.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">201</span><span style="color: #BB0000;">831.</span>   <span style="text-decoration: underline;">17</span>132.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> sp1      -<span style="color: #BB0000; text-decoration: underline;">40</span><span style="color: #BB0000;">101.</span>  <span style="text-decoration: underline;">150</span>782.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> sp1     -<span style="color: #BB0000; text-decoration: underline;">178</span><span style="color: #BB0000;">611.</span>  <span style="text-decoration: underline;">225</span>032.     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 240 more rows</span></span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu">sample_background</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp_p</span>,</span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
@@ -366,12 +461,15 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span><span class="va">spp_p</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">.</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Biased background points constrained to a region</span></span></span>
 <span class="r-in"><span><span class="co"># It will be selected region 6</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-12.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">regions</span> <span class="op"><a href="https://rspatial.github.io/terra/reference/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="sample_background-13.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu">sample_background</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">spp_p</span>,</span></span>
@@ -383,6 +481,7 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span>  rbias <span class="op">=</span> <span class="va">occ_density</span>,</span></span>
 <span class="r-in"><span>  maskval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of background-points exceeds number of cell will be returned 0 background-points</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">occ_density</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -390,7 +489,8 @@ https://doi.org/10.1111/ecog.04503</p></li>
 <span class="r-in"><span><span class="va">spp_p</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">.</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-plt img"><img src="sample_background-14.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

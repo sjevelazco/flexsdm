@@ -37,13 +37,16 @@
 #' @seealso \code{\link{data_pdp}}, \code{\link{data_bpdp}}, \code{\link{p_bpdp}},
 #' \code{\link{extra_eval}}, \code{\link{extra_truncate}}
 #'
+#' @return A ggplot object, or a patchwork of ggplot objects when more than
+#' one predictor is used, showing partial dependence plot(s).
+#'
 #' @importFrom ggplot2 ggplot aes labs scale_y_continuous geom_point geom_line geom_rug geom_col scale_color_manual geom_vline theme element_blank
 #' @importFrom patchwork wrap_plots plot_layout
 #'
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #' library(dplyr)
 #'

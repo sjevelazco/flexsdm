@@ -68,7 +68,7 @@ Breiner et al. (2015, 2018). This function constructs 'C-svc' classification typ
 Radial Basis kernel "Gaussian" function (rbfdot). See details in \link[kernlab]{ksvm}
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 require(dplyr)
 

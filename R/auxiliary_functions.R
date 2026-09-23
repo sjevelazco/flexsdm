@@ -208,7 +208,7 @@ extract.maxnet.classes <- function(f) {
   }
 
   # labels(terms(f)) is the canonical way to get the RHS terms
-  formula_terms <- labels(terms(f))
+  formula_terms <- labels(stats::terms(f))
 
   # Initialize a vector to store the classes we find
   detected_classes <- character(0)
@@ -419,6 +419,7 @@ morani <- function(x, weight, na.rm = FALSE, scaled = TRUE) {
 #' @noRd
 #'
 kf <- function(df, n) {
+  cell <- cluster <- x <- y <- NULL
   suppressWarnings(
     km <- stats::kmeans(df %>% dplyr::select(-c(cell:y)), centers = n)
   )

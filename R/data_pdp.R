@@ -39,7 +39,7 @@
 #' @importFrom terra minmax
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #' library(dplyr)
 #'

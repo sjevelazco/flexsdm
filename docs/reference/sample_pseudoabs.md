@@ -128,7 +128,7 @@ and
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(terra)
 require(dplyr)
 data("spp")
@@ -140,6 +140,7 @@ regions <- system.file("external/regions.tif", package = "flexsdm")
 regions <- terra::rast(regions)
 
 plot(regions)
+
 
 
 single_spp <-
@@ -166,6 +167,7 @@ points(single_spp[-1], col = "blue", cex = 0.7, pch = 19) # presences
 points(ps1[-1], col = "red", cex = 0.7, pch = 19) # absences
 
 
+
 # Pseudo-absences randomly sampled within a regions where a species occurs
 ## Regions where this species occurrs
 samp_here <- terra::extract(regions, single_spp[2:3])[, 2] %>%
@@ -187,6 +189,7 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
+
 # Pseudo-absences sampled with K-means approach
 set.seed(123)
 ps1 <-
@@ -195,13 +198,14 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = c(method = "kmns", env = somevar),
+    method = c(method = "kmeans", env = somevar),
     rlayer = regions
   )
 
 plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
+
 
 # Pseudo-absences sampled with geographical constraint
 ps1 <-
@@ -218,6 +222,7 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
+
 # Pseudo-absences sampled with environmental constraint
 ps1 <-
   sample_pseudoabs(
@@ -232,6 +237,7 @@ ps1 <-
 plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
+
 
 # Pseudo-absences sampled with environmental and geographical constraint
 ps1 <-
@@ -248,6 +254,7 @@ plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 
+
 # Pseudo-absences sampled with environmental and geographical constraint and with k-mean clustering
 ps1 <-
   sample_pseudoabs(
@@ -255,13 +262,14 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = c("geoenv_const_kmns", width = "50000", env = somevar),
+    method = c("geoenv_const_kmeans", width = "50000", env = somevar),
     rlayer = regions,
     maskval = samp_here
   )
 plot(regions, col = gray.colors(9))
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 points(ps1, col = "red", cex = 0.7, pch = 19)
+
 
 # Sampling pseudo-absence using a calibration area
 ca_ps1 <- calib_area(
@@ -272,8 +280,9 @@ ca_ps1 <- calib_area(
   crs = crs(somevar)
 )
 plot(regions, col = gray.colors(9))
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+
 
 ps1 <-
   sample_pseudoabs(
@@ -287,9 +296,10 @@ ps1 <-
     calibarea = ca_ps1
   )
 plot(regions, col = gray.colors(9))
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
+
 
 
 ps1 <-
@@ -304,8 +314,9 @@ ps1 <-
     calibarea = ca_ps1
   )
 plot(regions, col = gray.colors(9))
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
-} # }
+
+# }
 ```

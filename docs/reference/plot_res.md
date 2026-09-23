@@ -30,11 +30,13 @@ used
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 f <- system.file("external/somevar.tif", package = "flexsdm")
 r <- terra::rast(f)
 r <- r$CFP_1
 plot_res(r, res_mult = 100)
+
 plot_res(r, res_mult = 200)
-} # }
+
+# }
 ```

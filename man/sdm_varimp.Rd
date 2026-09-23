@@ -76,9 +76,10 @@ This function calculates variable importance scores for species distribution mod
 Thus, the function calculates the model performance using the original data and the permuted data. The difference between the two performances is the variable importance score.
 }
 \examples{
-\dontrun{
+\donttest{
 require(tidyr)
 require(dplyr)
+require(ggplot2)
 
 data(abies)
 abies
@@ -141,7 +142,7 @@ vip_t <- sdm_varimp(
   pred_type = "cloglog",
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   n_sim = 50,
-  n_cores = 5
+  n_cores = 2
 )
 
 vip_t

@@ -143,7 +143,7 @@ Default "cloglog".</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -162,6 +162,7 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>    env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 rows were excluded from database because NAs were found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Partition</span></span></span>
 <span class="r-in"><span><span class="va">some_sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
@@ -184,18 +185,84 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  poly <span class="op">=</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4 + I(CFP_1^2) + I(CFP_2^2) + I(CFP_3^2) + I(CFP_4^2)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
 <span class="r-in"><span><span class="va">mraf</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_raf.html">fit_raf</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">some_sp</span>,</span></span>
 <span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
 <span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_1"</span>, <span class="st">"CFP_2"</span>, <span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
 <span class="r-in"><span><span class="va">mgbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_gbm.html">fit_gbm</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">some_sp</span>,</span></span>
 <span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
 <span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_1"</span>, <span class="st">"CFP_2"</span>, <span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Fit an ensemble model</span></span></span>
 <span class="r-in"><span><span class="va">mensemble</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_ensemble.html">fit_ensemble</a></span><span class="op">(</span></span></span>
@@ -205,6 +272,11 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>  thr_model <span class="op">=</span> <span class="st">"max_sens_spec"</span>,</span></span>
 <span class="r-in"><span>  metric <span class="op">=</span> <span class="st">"TSS"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |======================================================================| 100%</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Fit a model with the Ensembles of Small Models approach</span></span></span>
 <span class="r-in"><span><span class="co"># Without threshold specification and with kfold</span></span></span>
@@ -215,6 +287,21 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |======================================================================| 100%</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
@@ -233,6 +320,7 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>  con_thr <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  predict_area <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Predicting individual models</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># a list of models</span></span></span>
 <span class="r-in"><span><span class="va">list_p</span> <span class="op">&lt;-</span> <span class="fu">sdm_predict</span><span class="op">(</span></span></span>
@@ -242,6 +330,7 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>  con_thr <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  predict_area <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Predicting list of individual models</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Predict an ensemble model</span></span></span>
 <span class="r-in"><span><span class="co"># (only is possilbe use one fit_ensemble)</span></span></span>
@@ -252,6 +341,7 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>  con_thr <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  predict_area <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Predicting ensembles</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Predict an ensemble of small models</span></span></span>
 <span class="r-in"><span><span class="co"># (only is possible to use one ensemble of small models)</span></span></span>
@@ -262,6 +352,7 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>  con_thr <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  predict_area <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Predicting ensemble of small models</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
@@ -279,7 +370,8 @@ Default "cloglog".</p></dd>
 <span class="r-in"><span>  predict_area <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  nchunk <span class="op">=</span> <span class="fl">4</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Predicting individual models</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

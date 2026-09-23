@@ -93,24 +93,61 @@ and output saving.</p>
 <p>First, let’s install and load the required packages:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install and load required packages</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm">flexsdm</a></span><span class="op">)</span><span class="op">)</span> <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"flexsdm"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"terra"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.github.io/geodata/" class="external-link">geodata</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geodata"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/" class="external-link">tidyterra</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyterra"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://paleolimbot.github.io/ggspatial/" class="external-link">ggspatial</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggspatial"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyr"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"readr"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"sf"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape" class="external-link">reshape2</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reshape2"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"stringr"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"purrr"</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm/">flexsdm</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"flexsdm"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"terra"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.github.io/geodata/" class="external-link">geodata</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geodata"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/" class="external-link">tidyterra</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyterra"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://paleolimbot.github.io/ggspatial/" class="external-link">ggspatial</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggspatial"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tidyr"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"readr"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"sf"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape" class="external-link">reshape2</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reshape2"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"stringr"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"purrr"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"flexsdm"</span>, <span class="st">"terra"</span>, <span class="st">"geodata"</span>, <span class="st">"tidyterra"</span>, <span class="st">"ggplot2"</span>, <span class="st">"dplyr"</span>, <span class="st">"tidyr"</span>,</span>
-<span>    <span class="st">"readr"</span>, <span class="st">"sf"</span>, <span class="st">"ggspatial"</span>, <span class="st">"reshape2"</span>, <span class="st">"stringr"</span>, <span class="st">"purrr"</span></span>
+<span>    <span class="st">"flexsdm"</span>,</span>
+<span>    <span class="st">"terra"</span>,</span>
+<span>    <span class="st">"geodata"</span>,</span>
+<span>    <span class="st">"tidyterra"</span>,</span>
+<span>    <span class="st">"ggplot2"</span>,</span>
+<span>    <span class="st">"dplyr"</span>,</span>
+<span>    <span class="st">"tidyr"</span>,</span>
+<span>    <span class="st">"readr"</span>,</span>
+<span>    <span class="st">"sf"</span>,</span>
+<span>    <span class="st">"ggspatial"</span>,</span>
+<span>    <span class="st">"reshape2"</span>,</span>
+<span>    <span class="st">"stringr"</span>,</span>
+<span>    <span class="st">"purrr"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  <span class="va">require</span>,</span>
 <span>  character.only <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -149,15 +186,19 @@ thresholded map outputs – though this is an option.</p>
 <span></span>
 <span><span class="co"># Expand into all combinations</span></span>
 <span><span class="va">scenarios</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
-<span>  model <span class="op">=</span> <span class="va">models</span>, ssp <span class="op">=</span> <span class="va">ssps</span>, time <span class="op">=</span> <span class="va">time</span>,</span>
+<span>  model <span class="op">=</span> <span class="va">models</span>,</span>
+<span>  ssp <span class="op">=</span> <span class="va">ssps</span>,</span>
+<span>  time <span class="op">=</span> <span class="va">time</span>,</span>
 <span>  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create identifiers for each scenario combination</span></span>
 <span><span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">scenarios</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">""</span>, <span class="va">x</span><span class="op">[</span><span class="st">"model"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="st">"_"</span>,</span>
-<span>    <span class="va">x</span><span class="op">[</span><span class="st">"ssp"</span><span class="op">]</span>, <span class="st">"_"</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">""</span>, <span class="va">x</span><span class="op">[</span><span class="st">"model"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="st">"_"</span>,</span>
+<span>    <span class="va">x</span><span class="op">[</span><span class="st">"ssp"</span><span class="op">]</span>,</span>
+<span>    <span class="st">"_"</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">"_"</span>, <span class="va">x</span><span class="op">[</span><span class="st">"time"</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
@@ -171,7 +212,18 @@ thresholded map outputs – though this is an option.</p>
 <span><span class="va">proj_dir</span> <span class="op">&lt;-</span> <span class="fu">flexsdm</span><span class="fu">::</span><span class="fu"><a href="../reference/sdm_directory.html">sdm_directory</a></span><span class="op">(</span></span>
 <span>  main_dir <span class="op">=</span> <span class="va">proj_dir</span>,</span>
 <span>  projections <span class="op">=</span> <span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span>,</span>
-<span>  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gam"</span>, <span class="st">"gau"</span>, <span class="st">"glm"</span>, <span class="st">"gbm"</span>, <span class="st">"max"</span>, <span class="st">"net"</span>, <span class="st">"raf"</span>, <span class="st">"svm"</span>, <span class="st">"mean"</span>, <span class="st">"median"</span><span class="op">)</span>,</span>
+<span>  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"gam"</span>,</span>
+<span>    <span class="st">"gau"</span>,</span>
+<span>    <span class="st">"glm"</span>,</span>
+<span>    <span class="st">"gbm"</span>,</span>
+<span>    <span class="st">"max"</span>,</span>
+<span>    <span class="st">"net"</span>,</span>
+<span>    <span class="st">"raf"</span>,</span>
+<span>    <span class="st">"svm"</span>,</span>
+<span>    <span class="st">"mean"</span>,</span>
+<span>    <span class="st">"median"</span></span>
+<span>  <span class="op">)</span>,</span>
 <span>  threshold <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  return_vector <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
@@ -258,7 +310,11 @@ study extent.</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"1_Inputs/2_Predictors/1_Current"</span><span class="op">)</span>,</span>
 <span>  <span class="va">proj_dir</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">env_data</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">env_path</span>, <span class="st">"bio_var.tif"</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span></span>
+<span>  <span class="va">env_data</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">env_path</span>, <span class="st">"bio_var.tif"</span><span class="op">)</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot the environmental variables</span></span>
 <span><span class="co"># ---- Temperature Variables (1–11) ----</span></span>
@@ -316,10 +372,18 @@ geodata::cmip6</p>
 <span></span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fut_env</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"bio_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nlyr</a></span><span class="op">(</span><span class="va">fut_env</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">temp_dir</span>, <span class="st">"1_SDM/1_Inputs/2_Predictors/2_Projection"</span>, <span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>    <span class="va">temp_dir</span>,</span>
+<span>    <span class="st">"1_SDM/1_Inputs/2_Predictors/2_Projection"</span>,</span>
+<span>    <span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Save raster for future scenario</span></span>
-<span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">fut_env</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_bio_var.tif"</span><span class="op">)</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span></span>
+<span>    <span class="va">fut_env</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_bio_var.tif"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fut_env</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span></span>
@@ -333,10 +397,7 @@ geodata::cmip6</p>
 <span></span>
 <span><span class="co"># Plot with consistent zlim</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fut_env</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fut_env</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"bio_1"</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>    main <span class="op">=</span> <span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
-<span>    zlim <span class="op">=</span> <span class="va">bio1_range</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fut_env</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"bio_1"</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="va">scenarios</span><span class="op">$</span><span class="va">filename</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, zlim <span class="op">=</span> <span class="va">bio1_range</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -352,7 +413,8 @@ later.</p>
 <span></span>
 <span><span class="co"># Directory to save training areas to shapefiles</span></span>
 <span><span class="va">calib_dir</span> <span class="op">&lt;-</span> <span class="va">proj_dir</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"1_Inputs/3_Calibration_area"</span><span class="op">)</span>, <span class="va">proj_dir</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"1_Inputs/3_Calibration_area"</span><span class="op">)</span>,</span>
+<span>  <span class="va">proj_dir</span></span>
 <span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">calib_dir</span></span>
 <span></span>
@@ -360,7 +422,6 @@ later.</p>
 <span><span class="co"># Create training areas for each species</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Creating training area for species: "</span>, <span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
-<span></span>
 <span></span>
 <span>  <span class="co"># Define training area for the i-th species</span></span>
 <span>  <span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calib_area.html">calib_area</a></span><span class="op">(</span></span>
@@ -422,7 +483,12 @@ later.</p>
 <span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">cor_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Var1</span>, y <span class="op">=</span> <span class="va">Var2</span>, fill <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradient2</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"blue"</span>, mid <span class="op">=</span> <span class="st">"white"</span>, high <span class="op">=</span> <span class="st">"red"</span>, midpoint <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html" class="external-link">scale_fill_gradient2</a></span><span class="op">(</span></span>
+<span>      low <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>      mid <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>      high <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>      midpoint <span class="op">=</span> <span class="fl">0</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%.2f"</span>, <span class="va">value</span><span class="op">)</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
@@ -436,8 +502,12 @@ later.</p>
 <span></span>
 <span>  <span class="co"># save each heatmap (adjust file path as needed)</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
-<span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_correlation_heatmap.png"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">6</span></span>
+<span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>      <span class="va">dir_fig</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_correlation_heatmap.png"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    width <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>    height <span class="op">=</span> <span class="fl">6</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
@@ -479,7 +549,6 @@ environmental layers, for a given training area, or based species points
 <span><span class="va">calib_a</span></span>
 <span></span>
 <span><span class="co"># --- Demonstrate the process for all species ----</span></span>
-<span></span>
 <span></span>
 <span><span class="co"># -----------------------------------------------------------</span></span>
 <span><span class="co"># Example: Running PCA-based collinearity correction</span></span>
@@ -544,20 +613,25 @@ environmental layers, for a given training area, or based species points
 <span></span>
 <span><span class="co"># path with future scenarios</span></span>
 <span><span class="va">scenario_path</span> <span class="op">&lt;-</span> <span class="va">proj_dir</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"1_Inputs/2_Predictors/2_Projection"</span><span class="op">)</span>, <span class="va">proj_dir</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"1_Inputs/2_Predictors/2_Projection"</span><span class="op">)</span>,</span>
+<span>  <span class="va">proj_dir</span></span>
 <span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Separate directories for current and future</span></span>
 <span><span class="va">folders</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1_Current"</span>, <span class="st">"2_Projection"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create subfolders inside the base folder</span></span>
-<span><span class="va">folder_paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">folders</span>, <span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">dir_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">save_dir</span>, <span class="va">f</span><span class="op">)</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="va">dir_path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dir_path</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  <span class="va">dir_path</span> <span class="co"># return the created path</span></span>
-<span><span class="op">}</span>, USE.NAMES <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">folder_paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span></span>
+<span>  <span class="va">folders</span>,</span>
+<span>  <span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">dir_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">save_dir</span>, <span class="va">f</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="va">dir_path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dir_path</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="va">dir_path</span> <span class="co"># return the created path</span></span>
+<span>  <span class="op">}</span>,</span>
+<span>  USE.NAMES <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">env_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -572,7 +646,6 @@ environmental layers, for a given training area, or based species points
 <span>  <span class="va">fut_folder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">folder_paths</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">fut_folder</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span>  <span class="co"># Run PCA collinearity correction</span></span>
 <span>  <span class="va">env_new</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">flexsdm</span><span class="fu">::</span><span class="fu"><a href="../reference/correct_colinvar.html">correct_colinvar</a></span><span class="op">(</span></span>
 <span>    env_layer <span class="op">=</span> <span class="va">env_data</span>,</span>
@@ -586,12 +659,24 @@ environmental layers, for a given training area, or based species points
 <span></span>
 <span>  <span class="co"># Save tables</span></span>
 <span></span>
-<span>  <span class="va">env_new</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">cumulative_variance</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">folder_paths</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"-cum_var.txt"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">env_new</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">cumulative_variance</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>      <span class="va">folder_paths</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"-cum_var.txt"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span>  <span class="va">env_new</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">coefficients</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">folder_paths</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"-coefficients.txt"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">env_new</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">coefficients</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>      <span class="va">folder_paths</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"-coefficients.txt"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Saver raster for current conditions</span></span>
-<span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">env_new</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">env_layer</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">folder_paths</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".tif"</span><span class="op">)</span><span class="op">)</span>, overwrite <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span></span>
+<span>    <span class="va">env_new</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">env_layer</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">folder_paths</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".tif"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>These principal components will be used as uncorrelated predictors in
 SDMs. To interpret ecological meaning of each PC, explore the loading
@@ -636,7 +721,11 @@ records, which is typically preferred for model training.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">save_dir</span>, <span class="va">folders</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># List all .tif files in folders (one per species, each containing PCA environmental layers for the baseline time).</span></span>
-<span><span class="va">sp_pc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">save_dir</span>, <span class="va">folders</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span>, pattern <span class="op">=</span> <span class="st">".tif"</span><span class="op">)</span></span>
+<span><span class="va">sp_pc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">save_dir</span>, <span class="va">folders</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>  full.names <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  pattern <span class="op">=</span> <span class="st">".tif"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Assign species names to each file in 'sp_pc' by removing the '.tif' extension from the filename.</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp_pc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">sp_pc</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">".tif"</span>, <span class="st">""</span>, <span class="va">.</span><span class="op">)</span> <span class="co"># Now names(sp_pc) matches sp_names</span></span>
@@ -704,8 +793,14 @@ records, which is typically preferred for model training.</p>
 <span><span class="va">bins_results</span></span>
 <span></span>
 <span><span class="co"># Save bin selection results and filtered occurrences to tab-separated files for reproducibility and downstream use.</span></span>
-<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="va">bins_results</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_filt_prop_selected.txt"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="va">filtered_occurrences</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_occurrences_filtered.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span></span>
+<span>  <span class="va">bins_results</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_filt_prop_selected.txt"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span></span>
+<span>  <span class="va">filtered_occurrences</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_occurrences_filtered.txt"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Compare the number of original (unfiltered) and filtered occurrence records per species.</span></span>
 <span><span class="co"># This helps assess how much data was removed by the filtering process.</span></span>
@@ -725,7 +820,10 @@ will also generate background points for Maxent.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load the filtered occurrence data from file.</span></span>
 <span><span class="co"># This table contains the bias-corrected presence records for all species.</span></span>
-<span><span class="va">filtered_occurrences</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">proj_dir</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="st">"1_Occurrences/0_occurrences_filtered.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">filtered_occurrences</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>  <span class="va">proj_dir</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>  <span class="st">"1_Occurrences/0_occurrences_filtered.txt"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Add a column indicating presences (pr_ab = 1), as all records here are presences.</span></span>
 <span><span class="va">filtered_occurrences</span><span class="op">$</span><span class="va">pr_ab</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
@@ -799,7 +897,10 @@ will also generate background points for Maxent.</p>
 <span><span class="va">background</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">background</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Save the combined presence + pseudo-absence data and background data to disk as .txt files.</span></span>
-<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="va">pres_pabsences</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_occurrences_psabsences.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span></span>
+<span>  <span class="va">pres_pabsences</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_occurrences_psabsences.txt"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="va">background</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_background.txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This section generates maps visualizing the spatial distribution of:</span></span>
@@ -827,8 +928,19 @@ will also generate background points for Maxent.</p>
 <span></span>
 <span>  <span class="co"># Plot</span></span>
 <span>  <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/ggspatvector.html" class="external-link">geom_spatvector</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">ca</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="st">"black"</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bg_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"gray60"</span>, size <span class="op">=</span> <span class="fl">0.7</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">geom_spatvector</span><span class="op">(</span></span>
+<span>      data <span class="op">=</span> <span class="va">ca</span>,</span>
+<span>      fill <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>      color <span class="op">=</span> <span class="st">"black"</span>,</span>
+<span>      linetype <span class="op">=</span> <span class="st">"dashed"</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>      data <span class="op">=</span> <span class="va">bg_data</span>,</span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>,</span>
+<span>      color <span class="op">=</span> <span class="st">"gray60"</span>,</span>
+<span>      size <span class="op">=</span> <span class="fl">0.7</span>,</span>
+<span>      alpha <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pa_data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>, color <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/is.bool.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="va">pr_ab</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span></span>
 <span>      values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span> <span class="op">=</span> <span class="st">"blue"</span>, <span class="st">"0"</span> <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>,</span>
@@ -838,7 +950,8 @@ will also generate background points for Maxent.</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>      title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Species:"</span>, <span class="va">sp_names</span><span class="op">)</span>,</span>
 <span>      subtitle <span class="op">=</span> <span class="st">"Blue = Presence | Red = Pseudo-Absence | Gray = Background"</span>,</span>
-<span>      x <span class="op">=</span> <span class="st">"Longitude"</span>, y <span class="op">=</span> <span class="st">"Latitude"</span></span>
+<span>      x <span class="op">=</span> <span class="st">"Longitude"</span>,</span>
+<span>      y <span class="op">=</span> <span class="st">"Latitude"</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">annotation_scale</span><span class="op">(</span>location <span class="op">=</span> <span class="st">"br"</span>, width_hint <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu">annotation_north_arrow</span><span class="op">(</span></span>
@@ -856,7 +969,9 @@ will also generate background points for Maxent.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">sp_names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"_pr-ab-bg_map.png"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    plot <span class="op">=</span> <span class="va">p</span>,</span>
-<span>    width <span class="op">=</span> <span class="fl">8</span>, height <span class="op">=</span> <span class="fl">6</span>, dpi <span class="op">=</span> <span class="fl">300</span></span>
+<span>    width <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>    height <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>    dpi <span class="op">=</span> <span class="fl">300</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 </div>
@@ -995,8 +1110,14 @@ bands in case that fails.</p>
 <span><span class="va">partitioned_bg</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">partitioned_bg</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Save the final partitioned datasets to disk for model training and evaluation.</span></span>
-<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="va">partitioned_psa</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_partitioned_occurrences_psabsences.txt"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="va">partitioned_bg</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_partitioned_background.txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span></span>
+<span>  <span class="va">partitioned_psa</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_partitioned_occurrences_psabsences.txt"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span></span>
+<span>  <span class="va">partitioned_bg</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">points_dir</span>, <span class="st">"0_partitioned_background.txt"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="configuration-of-output-directories-and-data-used-during-model-fitting">11. Configuration of output directories and data used during model
@@ -1059,11 +1180,17 @@ fitting<a class="anchor" aria-label="anchor" href="#configuration-of-output-dire
 <span></span>
 <span><span class="co"># Load the partitioned presence and pseudo-absence dataset from file.</span></span>
 <span><span class="co"># Each row corresponds to an occurrence or pseudo-absence, along with partition/fold assignments for cross-validation.</span></span>
-<span><span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">proj_dir</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"1_Inputs/1_Occurrences/0_partitioned_occurrences_psabsences.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">psa</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>  <span class="va">proj_dir</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  <span class="st">"1_Inputs/1_Occurrences/0_partitioned_occurrences_psabsences.txt"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load the partitioned background points dataset from file.</span></span>
 <span><span class="co"># Background points are used in algorithms like Maxent and should also have partition assignments.</span></span>
-<span><span class="va">bkgrnd</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">proj_dir</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"1_Inputs/1_Occurrences/0_partitioned_background.txt"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">bkgrnd</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_tsv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>  <span class="va">proj_dir</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  <span class="st">"1_Inputs/1_Occurrences/0_partitioned_background.txt"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="main-loop-by-species-for-model-fitting-evaluation-and-prediction">12. Main loop by species for model fitting, evaluation and
@@ -1095,10 +1222,21 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>  <span class="va">sp_bg</span> <span class="op">&lt;-</span> <span class="va">bkgrnd</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="va">s_name</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Extract environmental data for presence-absence points, removing any points with NA values.</span></span>
-<span>  <span class="va">sp_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span><span class="va">sp_pa</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">env_r</span>, filter_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">sp_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span></span>
+<span>    <span class="va">sp_pa</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>    env_layer <span class="op">=</span> <span class="va">env_r</span>,</span>
+<span>    filter_na <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
 <span>  <span class="co"># Extract environmental data for background points.</span></span>
-<span>  <span class="va">sp_bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span><span class="va">sp_bg</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">env_r</span>, filter_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
+<span>  <span class="va">sp_bg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_extract.html">sdm_extract</a></span><span class="op">(</span></span>
+<span>    <span class="va">sp_bg</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"x"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"y"</span>,</span>
+<span>    env_layer <span class="op">=</span> <span class="va">env_r</span>,</span>
+<span>    filter_na <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## %######################################################%##</span></span>
 <span>  <span class="co">####                   2. Fit Models                     ####</span></span>
@@ -1112,7 +1250,8 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>    response <span class="op">=</span> <span class="st">"pr_ab"</span>, <span class="co"># The column with presence/absence (1/0)</span></span>
 <span>    predictors <span class="op">=</span> <span class="va">var_names</span>, <span class="co"># Names of environmental variables</span></span>
 <span>    partition <span class="op">=</span> <span class="st">".part"</span>, <span class="co"># Column for data partitioning (training/testing)</span></span>
-<span>    grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span> <span class="co"># Define the grid of hyperparameters to test</span></span>
+<span>    grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
+<span>      <span class="co"># Define the grid of hyperparameters to test</span></span>
 <span>      mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">var_names</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>, <span class="co"># Number of variables to sample at each split</span></span>
 <span>      ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">600</span>, <span class="fl">800</span>, <span class="fl">1000</span><span class="op">)</span> <span class="co"># Number of trees to grow</span></span>
 <span>    <span class="op">)</span>,</span>
@@ -1129,7 +1268,8 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>    predictors <span class="op">=</span> <span class="va">var_names</span>,</span>
 <span>    background <span class="op">=</span> <span class="va">sp_bg</span>, <span class="co"># Background data is required for Maxent</span></span>
 <span>    partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span>    grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span> <span class="co"># Define the grid of hyperparameters to test</span></span>
+<span>    grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
+<span>      <span class="co"># Define the grid of hyperparameters to test</span></span>
 <span>      regmult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">2</span>, <span class="fl">0.5</span><span class="op">)</span>, <span class="co"># Regularization multiplier to prevent overfitting</span></span>
 <span>      classes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lq"</span>, <span class="st">"lqh"</span>, <span class="st">"lqhp"</span>, <span class="st">"lqhpt"</span><span class="op">)</span> <span class="co"># Feature classes (l=linear, q=quadratic, etc.)</span></span>
 <span>    <span class="op">)</span>,</span>
@@ -1145,7 +1285,8 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>    response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
 <span>    predictors <span class="op">=</span> <span class="va">var_names</span>,</span>
 <span>    partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span>    grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span> <span class="co"># Define the grid of hyperparameters to test</span></span>
+<span>    grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
+<span>      <span class="co"># Define the grid of hyperparameters to test</span></span>
 <span>      n.trees <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">200</span>, <span class="fl">10</span><span class="op">)</span>, <span class="co"># Number of trees</span></span>
 <span>      shrinkage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.5</span>, <span class="fl">0.2</span><span class="op">)</span>, <span class="co"># Learning rate</span></span>
 <span>      n.minobsinnode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">15</span>, <span class="fl">2</span><span class="op">)</span> <span class="co"># Minimum number of observations in a terminal node</span></span>
@@ -1161,11 +1302,16 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>  <span class="co"># Set a starting number for basis functions (k).</span></span>
 <span>  <span class="va">candidate_k</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
 <span>  <span class="co"># Reduce 'k' until it's smaller than the number of training samples to avoid errors.</span></span>
-<span>  <span class="kw">while</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="va">n_t</span> <span class="op">&lt;</span> <span class="fu">flexsdm</span><span class="fu">:::</span><span class="fu">n_coefficients</span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">sp_pa</span>,</span>
-<span>    predictors <span class="op">=</span> <span class="va">var_names</span>,</span>
-<span>    k <span class="op">=</span> <span class="va">candidate_k</span></span>
-<span>  <span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">while</span> <span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span></span>
+<span>      <span class="va">n_t</span> <span class="op">&lt;</span></span>
+<span>        <span class="fu">flexsdm</span><span class="fu">:::</span><span class="fu">n_coefficients</span><span class="op">(</span></span>
+<span>          data <span class="op">=</span> <span class="va">sp_pa</span>,</span>
+<span>          predictors <span class="op">=</span> <span class="va">var_names</span>,</span>
+<span>          k <span class="op">=</span> <span class="va">candidate_k</span></span>
+<span>        <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">candidate_k</span> <span class="op">&lt;-</span> <span class="va">candidate_k</span> <span class="op">-</span> <span class="fl">3</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="co"># Fit a GAM model with the adjusted 'k'.</span></span>
@@ -1206,7 +1352,8 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>    response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
 <span>    predictors <span class="op">=</span> <span class="va">var_names</span>,</span>
 <span>    partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span>    grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span> <span class="co"># Define the grid of hyperparameters to test</span></span>
+<span>    grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
+<span>      <span class="co"># Define the grid of hyperparameters to test</span></span>
 <span>      size <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">var_names</span><span class="op">)</span>, <span class="co"># Number of units in the hidden layer</span></span>
 <span>      decay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">1</span>, <span class="fl">0.05</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span> <span class="co"># Weight decay for regularization</span></span>
 <span>    <span class="op">)</span>,</span>
@@ -1236,7 +1383,6 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>  <span class="co"># Clean up the names in the list (e.g., "m_raf" becomes "raf").</span></span>
 <span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">model_obj_list</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"m_"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">model_obj_list</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span>  <span class="co">## %######################################################%##</span></span>
 <span>  <span class="co">####    3. Partial Dependence &amp; Variable Importance     ####</span></span>
 <span>  <span class="co">## %######################################################%##</span></span>
@@ -1259,7 +1405,10 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
 <span>        plot <span class="op">=</span> <span class="va">p</span>,</span>
-<span>        filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_"</span>, <span class="va">mod_name</span>, <span class="st">"_pdp.png"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>        filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>          <span class="va">dir_fig</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_"</span>, <span class="va">mod_name</span>, <span class="st">"_pdp.png"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
 <span>        width <span class="op">=</span> <span class="fl">8</span>,</span>
 <span>        height <span class="op">=</span> <span class="fl">6</span>,</span>
 <span>        dpi <span class="op">=</span> <span class="fl">300</span></span>
@@ -1309,14 +1458,20 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_varImp.png"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    plot <span class="op">=</span> <span class="va">p_vi</span>,</span>
-<span>    width <span class="op">=</span> <span class="fl">12</span>, height <span class="op">=</span> <span class="fl">14</span>, dpi <span class="op">=</span> <span class="fl">300</span>, unit <span class="op">=</span> <span class="st">"cm"</span>, scale <span class="op">=</span> <span class="fl">1.5</span></span>
+<span>    width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>    height <span class="op">=</span> <span class="fl">14</span>,</span>
+<span>    dpi <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>    unit <span class="op">=</span> <span class="st">"cm"</span>,</span>
+<span>    scale <span class="op">=</span> <span class="fl">1.5</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Summarize performance metrics (e.g., SORENSEN, TSS) for all individual models.</span></span>
 <span>  <span class="va">model_perf</span> <span class="op">&lt;-</span> <span class="fu">flexsdm</span><span class="fu">::</span><span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span><span class="va">model_obj_list</span><span class="op">)</span></span>
 <span>  <span class="co"># Save the performance summary to a text file.</span></span>
-<span>  <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span><span class="va">model_perf</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_perf</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_models_performance.txt"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
+<span>  <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_tsv</a></span><span class="op">(</span></span>
+<span>    <span class="va">model_perf</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_perf</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_models_performance.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span>  <span class="co">## %######################################################%##</span></span>
 <span>  <span class="co">####        4. Filter Models for Ensemble              ####</span></span>
@@ -1334,7 +1489,6 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span></span>
 <span>  <span class="co"># Create a new list containing only the selected "good" models.</span></span>
 <span>  <span class="va">good_models</span> <span class="op">&lt;-</span> <span class="va">model_obj_list</span><span class="op">[</span><span class="va">good_models_names</span><span class="op">]</span></span>
-<span></span>
 <span></span>
 <span>  <span class="co">## %######################################################%##</span></span>
 <span>  <span class="co">####                   5. Ensemble Modeling              ####</span></span>
@@ -1377,7 +1531,6 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_perf</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_models_performance.txt"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span></span>
 <span></span>
 <span>  <span class="co">## %######################################################%##</span></span>
 <span>  <span class="co">####                  6. Spatial Predictions             ####</span></span>
@@ -1424,7 +1577,11 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>      <span class="co"># Save prediction as a GeoTIFF.</span></span>
 <span>      <span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span></span>
 <span>        <span class="va">ens_prd</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>        filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_current</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ensemble_list</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">".tif"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>        filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>          <span class="va">dir_current</span>,</span>
+<span>          <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ensemble_list</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">".tif"</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
 <span>        overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>        filetype <span class="op">=</span> <span class="st">"GTiff"</span></span>
 <span>      <span class="op">)</span></span>
@@ -1461,7 +1618,13 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>      <span class="kw">for</span> <span class="op">(</span><span class="va">alg</span> <span class="kw">in</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">prd_list</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>        <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span></span>
 <span>          <span class="va">prd_list</span><span class="op">[[</span><span class="va">alg</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>          <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_future</span>, <span class="va">sc_name</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Algorithm"</span><span class="op">)</span>, <span class="va">alg</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">".tif"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span></span>
+<span>            <span class="va">dir_future</span>,</span>
+<span>            <span class="va">sc_name</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Algorithm"</span><span class="op">)</span>,</span>
+<span>            <span class="va">alg</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">".tif"</span><span class="op">)</span></span>
+<span>          <span class="op">)</span>,</span>
 <span>          overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>          filetype <span class="op">=</span> <span class="st">"GTiff"</span></span>
 <span>        <span class="op">)</span></span>
@@ -1497,14 +1660,15 @@ prediction<a class="anchor" aria-label="anchor" href="#main-loop-by-species-for-
 <span>    <span class="op">}</span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
-<span></span>
 <span>  <span class="co">## %######################################################%##</span></span>
 <span>  <span class="co">####                 8. Clean Up for Next Iteration      ####</span></span>
 <span>  <span class="co">## %######################################################%##</span></span>
 <span>  <span class="co"># Remove all model objects (starting with "m_") to free up memory.</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"^m_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/ls.html" class="external-link">ls</a></span><span class="op">(</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="co"># Remove another temporary object if it exists.</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/exists.html" class="external-link">exists</a></span><span class="op">(</span><span class="st">"alg_prd_cont"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">alg_prd_cont</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/exists.html" class="external-link">exists</a></span><span class="op">(</span><span class="st">"alg_prd_cont"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">alg_prd_cont</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
 <span>  <span class="co"># Trigger garbage collection to release memory explicitly.</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span> <span class="co"># End of the main species loop.</span></span></code></pre></div>
@@ -1530,7 +1694,11 @@ is more memory efficient than loading everything at once.</p>
 <span></span>
 <span>  <span class="co"># If no prediction files are found for this species, output a message and skip to the next species.</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">species_files</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"    - No prediction files were found for"</span>, <span class="va">s_name</span>, <span class="st">". Skipping."</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span></span>
+<span>      <span class="st">"    - No prediction files were found for"</span>,</span>
+<span>      <span class="va">s_name</span>,</span>
+<span>      <span class="st">". Skipping."</span></span>
+<span>    <span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="kw">next</span></span>
 <span>  <span class="op">}</span></span>
 <span></span>
@@ -1548,29 +1716,32 @@ is more memory efficient than loading everything at once.</p>
 <span></span>
 <span>  <span class="co"># 3. Plot the continuous habitat suitability maps for this species, with one facet per model.</span></span>
 <span>  <span class="va">p_map_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">r_cont</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu">geom_spatraster</span><span class="op">(</span>data <span class="op">=</span> <span class="va">r_cont</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">lyr</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_princess.html" class="external-link">scale_fill_princess_c</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">scale_fill_princess_c</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># 4. Plot the semibinary habitat suitability maps for this species, with one facet per model.</span></span>
 <span>  <span class="va">p_map_semibin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">r_semibin</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu">geom_spatraster</span><span class="op">(</span>data <span class="op">=</span> <span class="va">r_semibin</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">lyr</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_princess.html" class="external-link">scale_fill_princess_c</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">scale_fill_princess_c</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
 <span></span>
 <span>  <span class="co"># 5. Save the generated map as a PNG file in the figures directory, one file per species.</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_cont_map"</span>, <span class="st">".png"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    plot <span class="op">=</span> <span class="va">p_map_cont</span>,</span>
-<span>    width <span class="op">=</span> <span class="fl">12</span>, height <span class="op">=</span> <span class="fl">10</span>, dpi <span class="op">=</span> <span class="fl">300</span></span>
+<span>    width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>    height <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>    dpi <span class="op">=</span> <span class="fl">300</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
 <span>    filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_semibin_map"</span>, <span class="st">".png"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    plot <span class="op">=</span> <span class="va">p_map_semibin</span>,</span>
-<span>    width <span class="op">=</span> <span class="fl">12</span>, height <span class="op">=</span> <span class="fl">10</span>, dpi <span class="op">=</span> <span class="fl">300</span></span>
+<span>    width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>    height <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>    dpi <span class="op">=</span> <span class="fl">300</span></span>
 <span>  <span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">" - Map saved for:"</span>, <span class="va">s_name</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -1595,7 +1766,11 @@ is more memory efficient than loading everything at once.</p>
 <span>    <span class="va">sc_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">sc_folder</span><span class="op">)</span></span>
 <span></span>
 <span>    <span class="co"># List algorithm folders</span></span>
-<span>    <span class="va">alg_folders</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.dirs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">sc_folder</span>, <span class="st">"Algorithm"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="va">alg_folders</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.dirs</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">sc_folder</span>, <span class="st">"Algorithm"</span><span class="op">)</span>,</span>
+<span>      recursive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>      full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span>
 <span></span>
 <span>    <span class="va">r_cont_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>    <span class="va">r_semibin_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -1603,8 +1778,14 @@ is more memory efficient than loading everything at once.</p>
 <span></span>
 <span>    <span class="kw">for</span> <span class="op">(</span><span class="va">alg_folder</span> <span class="kw">in</span> <span class="va">alg_folders</span><span class="op">)</span> <span class="op">{</span></span>
 <span>      <span class="va">alg_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">alg_folder</span><span class="op">)</span></span>
-<span>      <span class="va">r_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">alg_folder</span>, pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">".tif$"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">r_file</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="kw">next</span></span>
+<span>      <span class="va">r_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span></span>
+<span>        <span class="va">alg_folder</span>,</span>
+<span>        pattern <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">".tif$"</span><span class="op">)</span>,</span>
+<span>        full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>      <span class="op">)</span></span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">r_file</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="kw">next</span></span>
+<span>      <span class="op">}</span></span>
 <span></span>
 <span>      <span class="va">r_stack</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">r_file</span><span class="op">)</span></span>
 <span>      <span class="va">r_cont_list</span><span class="op">[[</span><span class="va">alg_name</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">r_stack</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
@@ -1614,7 +1795,13 @@ is more memory efficient than loading everything at once.</p>
 <span></span>
 <span>    <span class="co"># Skip if no raster files found</span></span>
 <span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">r_cont_list</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"  - No raster files found for species "</span>, <span class="va">s_name</span>, <span class="st">" in scenario "</span>, <span class="va">sc_name</span>, <span class="st">". Skipping."</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span></span>
+<span>        <span class="st">"  - No raster files found for species "</span>,</span>
+<span>        <span class="va">s_name</span>,</span>
+<span>        <span class="st">" in scenario "</span>,</span>
+<span>        <span class="va">sc_name</span>,</span>
+<span>        <span class="st">". Skipping."</span></span>
+<span>      <span class="op">)</span></span>
 <span>      <span class="kw">next</span></span>
 <span>    <span class="op">}</span></span>
 <span></span>
@@ -1633,26 +1820,34 @@ is more memory efficient than loading everything at once.</p>
 <span></span>
 <span>    <span class="co"># Continuous map</span></span>
 <span>    <span class="va">p_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">r_cont</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu">geom_spatraster</span><span class="op">(</span>data <span class="op">=</span> <span class="va">r_cont</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">lyr</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_princess.html" class="external-link">scale_fill_princess_c</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">scale_fill_princess_c</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="va">sc_name</span>, <span class="st">"Continuous"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_"</span>, <span class="va">sc_name</span>, <span class="st">"_cont.png"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      plot <span class="op">=</span> <span class="va">p_cont</span>, width <span class="op">=</span> <span class="fl">12</span>, height <span class="op">=</span> <span class="fl">10</span>, dpi <span class="op">=</span> <span class="fl">300</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_"</span>, <span class="va">sc_name</span>, <span class="st">"_cont.png"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      plot <span class="op">=</span> <span class="va">p_cont</span>,</span>
+<span>      width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>      height <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>      dpi <span class="op">=</span> <span class="fl">300</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
 <span>    <span class="co"># Semibinary map</span></span>
 <span>    <span class="va">p_semibin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/geom_spatraster.html" class="external-link">geom_spatraster</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">r_semibin</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">tidyterra</span><span class="fu">::</span><span class="fu">geom_spatraster</span><span class="op">(</span>data <span class="op">=</span> <span class="va">r_semibin</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">lyr</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://dieghernan.github.io/tidyterra/reference/scale_princess.html" class="external-link">scale_fill_princess_c</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">scale_fill_princess_c</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"america"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ggtitle</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="va">sc_name</span>, <span class="st">"Semibinary"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_"</span>, <span class="va">sc_name</span>, <span class="st">"_semibin.png"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      plot <span class="op">=</span> <span class="va">p_semibin</span>, width <span class="op">=</span> <span class="fl">12</span>, height <span class="op">=</span> <span class="fl">10</span>, dpi <span class="op">=</span> <span class="fl">300</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_fig</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">s_name</span>, <span class="st">"_"</span>, <span class="va">sc_name</span>, <span class="st">"_semibin.png"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      plot <span class="op">=</span> <span class="va">p_semibin</span>,</span>
+<span>      width <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>      height <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>      dpi <span class="op">=</span> <span class="fl">300</span></span>
 <span>    <span class="op">)</span></span>
 <span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"  - Faceted maps saved for scenario "</span>, <span class="va">sc_name</span><span class="op">)</span></span>
@@ -1819,7 +2014,7 @@ repository</a>.</li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

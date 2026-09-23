@@ -45,7 +45,7 @@
 #' @importFrom stats sd dist dnorm pnorm qnorm
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data("abies")
 #'
 #' # Using k-fold partition method

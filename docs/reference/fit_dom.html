@@ -103,10 +103,6 @@ If partition = NULL, the model will be validated with the same data used for fit
   Usage thr = c('sensitivity', sens='0.6') or thr = c('sensitivity'). 'sens' refers to sensitivity value. If a sensitivity value is not specified, the default used is 0.9.</p></li>
 </ul><p>If more than one threshold type is used they must be concatenated, e.g., thr=c('lpt', 'max_sens_spec', 'max_jaccard'), or thr=c('lpt', 'max_sens_spec', 'sensitivity', sens='0.8'), or thr=c('lpt', 'max_sens_spec', 'sensitivity'). Function will use all threshold types if none is specified.</p></dd>
 
-
-<dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
-<dd><p>numeric. Number of cores to use for parallel processing when metric. Default 1 (no parallelization).</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -140,7 +136,7 @@ the similarity between the presences training and presence-absences test data.</
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -159,6 +155,7 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span>    y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>    env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 6 rows were excluded from database because NAs were found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Partition</span></span></span>
 <span class="r-in"><span><span class="va">some_sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
@@ -180,11 +177,120 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_1"</span>, <span class="st">"CFP_2"</span>, <span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  predictors_f <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
-<span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  n_cores <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">mdom</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $model$domain</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        CFP_1     CFP_2     CFP_3     CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   812.9330  9.018502 128.17863 1.1593102</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   745.2519  9.333002 100.67301 4.5176325</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18  877.6121  9.639521  93.81507 2.2244918</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 1167.3136  9.896931  45.48384 1.1969734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22  971.5621  5.149318  90.83746 0.6982510</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 1023.3878  9.692108  62.63717 1.5342857</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27  867.4425  9.158304  85.79652 2.5819225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28  895.3558  9.455721 101.43431 4.2094736</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30  993.0160  9.127216 104.16163 2.6635654</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37 1043.0856  9.437616  66.71684 1.5069715</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 1033.5835  7.068839  56.15467 0.4848571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51 1111.4476 11.828300  98.92643 2.5997550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53  858.0374  9.520479 110.19350 4.9036937</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58  819.3171  9.645110  95.04754 2.2312715</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63  832.5042  9.894765  98.65343 2.7246571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65 1042.8835  9.423063  56.54671 1.1241204</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74 1054.3391  9.325984  56.79437 1.1663285</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77  877.5456  9.819598 101.98602 4.5454674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78 1238.8981 10.029047  31.16336 0.5582449</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81 1212.7097  9.808502  37.32944 0.7953286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83 1278.4004 10.030069  32.29358 0.9610143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86 1114.4452 11.065110  70.57339 1.4220755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89  857.5580  9.927006 127.88165 6.2335329</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90  899.3600  9.582108 109.59014 2.5626795</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91  751.3935  9.330402 102.32713 4.7009835</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $predictors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   c1    c2    c3    c4   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_1 CFP_2 CFP_3 CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $performance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 33</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> dom   max_sens_spec     0.973          25         69    0.926  0.103    0.843</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;, KAPPA_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $performance_part</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 21</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    replica partition model threshold     thr_value n_presences n_absences   TPR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       1         dom   max_sens_spec     0.767           9         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       2         dom   max_sens_spec     0.837           8         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       3         dom   max_sens_spec     0.935           8         23 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2       1         dom   max_sens_spec     0.920           9         23 0.889</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2       2         dom   max_sens_spec     0.751           8         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2       3         dom   max_sens_spec     0.862           8         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 3       1         dom   max_sens_spec     0.861           9         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 3       2         dom   max_sens_spec     0.826           8         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 3       3         dom   max_sens_spec     0.931           8         23 0.75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 4       1         dom   max_sens_spec     0.841           9         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 4       2         dom   max_sens_spec     0.926           8         23 0.875</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 4       3         dom   max_sens_spec     0.748           8         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 5       1         dom   max_sens_spec     0.838           9         23 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 5       2         dom   max_sens_spec     0.914           8         23 0.75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 5       3         dom   max_sens_spec     0.934           8         23 0.75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13 more variables: TNR &lt;dbl&gt;, W_TPR_TNR &lt;dbl&gt;, SORENSEN &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD &lt;dbl&gt;, FPB &lt;dbl&gt;, OR &lt;dbl&gt;, TSS &lt;dbl&gt;, KAPPA &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   AUC &lt;dbl&gt;, BOYCE &lt;dbl&gt;, CRPS &lt;dbl&gt;, IMAE &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data_ens</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 470 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    rnames replicates part  pr_ab   pred</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 6      .part1     1         1 0.898 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 8      .part1     1         0 0.910 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 10     .part1     1         0 0.920 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 15     .part1     1         0 0.011<span style="text-decoration: underline;">5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 21     .part1     1         0 0.890 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 22     .part1     1         1 0.767 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 23     .part1     1         0 0.611 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 25     .part1     1         0 0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 40     .part1     1         0 0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 42     .part1     1         0 0.769 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 460 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Predict model</span></span></span>
 <span class="r-in"><span><span class="va">ind_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_predict.html">sdm_predict</a></span><span class="op">(</span></span></span>
@@ -194,7 +300,9 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span>  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  predict_area <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Predicting individual models</span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ind_p</span><span class="op">$</span><span class="va">dom</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="fit_dom-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
@@ -216,6 +324,8 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span>  color_p <span class="op">=</span> <span class="st">"black"</span>,</span></span>
 <span class="r-in"><span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000033"</span>, <span class="st">"#1400FF"</span>, <span class="st">"#C729D6"</span>, <span class="st">"#FF9C63"</span>, <span class="st">"#FFFF60"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 21842 (30%)</span>
+<span class="r-plt img"><img src="fit_dom-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="p_extra.html">p_extra</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">some_sp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pr_ab</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span>, <span class="co"># select only presences</span></span></span>
@@ -231,7 +341,9 @@ the similarity between the presences training and presence-absences test data.</
 <span class="r-in"><span>  color_p <span class="op">=</span> <span class="st">"black"</span>,</span></span>
 <span class="r-in"><span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#1400FF"</span>, <span class="st">"#C729D6"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 29122 (40%)</span>
+<span class="r-plt img"><img src="fit_dom-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

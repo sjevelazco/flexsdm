@@ -142,9 +142,24 @@ and
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 data(abies)
 abies
+#> # A tibble: 1,400 × 13
+#>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
+#>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl> <dbl>  <dbl>
+#>  1   715     0  -95417.  314240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
+#>  2  5680     0   98987. -159415.  448.  815.  9.43   130.     6.43  5.60 0.160 
+#>  3  7907     0  121474.  -99463.  182.  271. -4.95   151.    11.2   0    0     
+#>  4  1850     0  -39976.  -17456.  372.  946.  8.78   116.     2.70  6.41 0.0972
+#>  5  1702     0  111372.  -91404.  209.  399. -4.03   165.     9.27  0    0     
+#>  6 10036     0 -255715.  392229.  308.  535.  4.66   166.    16.5   5.70 0.0777
+#>  7 12384     0 -311765.  380213.  568.  352.  4.38   480.    41.2   5.80 0.110 
+#>  8  6513     0  111360. -120229.  327.  633.  4.93   163.     8.91  1.18 0.0116
+#>  9  9884     0 -284326.  442136.  377.  446.  3.99   296.    16.8   5.96 0.0900
+#> 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     
+#> # ℹ 1,390 more rows
+#> # ℹ 2 more variables: depth <dbl>, landform <fct>
 
 # Partition the data with the k-fold method
 
@@ -179,13 +194,98 @@ svm_t <-
     metric = "TSS",
     n_cores = 1
   )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform
+#> Tuning model...
+#> Replica number: 1/1
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 
 # Outputs
 svm_t$model
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 4 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.2 
+#> 
+#> Number of Support Vectors : 537 
+#> 
+#> Objective Function Value : -1271.551 
+#> Training error : 0.072857 
+#> Probability model included. 
 svm_t$predictors
+#> # A tibble: 1 × 9
+#>   c1    c2    c3    c4      c5      c6    c7    c8    f       
+#>   <chr> <chr> <chr> <chr>   <chr>   <chr> <chr> <chr> <chr>   
+#> 1 aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth landform
 svm_t$performance
+#> # A tibble: 1 × 35
+#>       C sigma model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
+#>   <dbl> <dbl> <chr> <chr>           <dbl>       <int>      <int>    <dbl>  <dbl>
+#> 1     4   0.2 svm   max_sens_s…     0.549         700        700    0.899 0.0396
+#> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
+#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
+#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
+#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,
+#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 svm_t$performance_part
+#> # A tibble: 5 × 21
+#>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
+#>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
+#> 1 1       5         svm   max_sens…     0.368         140        140 0.907 0.829
+#> 2 1       2         svm   max_sens…     0.678         140        140 0.836 0.921
+#> 3 1       3         svm   max_sens…     0.336         140        140 0.914 0.864
+#> 4 1       4         svm   max_sens…     0.525         140        140 0.893 0.893
+#> 5 1       5         svm   max_sens…     0.519         140        140 0.943 0.893
+#> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
+#> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
+#> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 svm_t$hyper_performance
+#> # A tibble: 25 × 32
+#>        C sigma model threshold    TPR_mean TPR_sd TNR_mean TNR_sd W_TPR_TNR_mean
+#>    <dbl> <dbl> <chr> <chr>           <dbl>  <dbl>    <dbl>  <dbl>          <dbl>
+#>  1     2  0.01 svm   max_sens_sp…    0.854 0.0736    0.849 0.0321          0.851
+#>  2     2  0.1  svm   max_sens_sp…    0.919 0.0536    0.851 0.0402          0.885
+#>  3     2  0.2  svm   max_sens_sp…    0.9   0.0258    0.867 0.0235          0.884
+#>  4     2  0.3  svm   max_sens_sp…    0.884 0.0408    0.889 0.0370          0.886
+#>  5     2  0.4  svm   max_sens_sp…    0.879 0.0513    0.897 0.0206          0.888
+#>  6     4  0.01 svm   max_sens_sp…    0.869 0.0475    0.853 0.0229          0.861
+#>  7     4  0.1  svm   max_sens_sp…    0.914 0.0449    0.854 0.0306          0.884
+#>  8     4  0.2  svm   max_sens_sp…    0.899 0.0396    0.88  0.0351          0.889
+#>  9     4  0.3  svm   max_sens_sp…    0.876 0.0582    0.894 0.0264          0.885
+#> 10     4  0.4  svm   max_sens_sp…    0.876 0.0664    0.894 0.0325          0.885
+#> # ℹ 15 more rows
+#> # ℹ 23 more variables: W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>,
+#> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
+#> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
+#> #   KAPPA_mean <dbl>, KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>,
+#> #   AUC_mean <dbl>, AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>,
+#> #   CRPS_mean <dbl>, CRPS_sd <dbl>, IMAE_mean <dbl>, IMAE_sd <dbl>
 svm_t$data_ens
-} # }
+#> # A tibble: 1,400 × 5
+#>    rnames replicates part  pr_ab     pred
+#>    <chr>  <chr>      <chr> <fct>    <dbl>
+#>  1 7      .part      1     0     0.0778  
+#>  2 12     .part      1     0     0.241   
+#>  3 17     .part      1     0     0.0121  
+#>  4 22     .part      1     0     0.0202  
+#>  5 23     .part      1     0     0.0154  
+#>  6 25     .part      1     0     0.000473
+#>  7 29     .part      1     0     0.0263  
+#>  8 33     .part      1     0     0.0301  
+#>  9 35     .part      1     0     0.00873 
+#> 10 44     .part      1     0     0.924   
+#> # ℹ 1,390 more rows
+# }
 ```

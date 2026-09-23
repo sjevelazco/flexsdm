@@ -51,7 +51,7 @@ For further information about these methods, see Chapman (2005), Liu et al. (201
 et al. (2022).
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 require(terra)
 require(ggplot2)
@@ -84,7 +84,7 @@ outs_1 <- env_outliers(
 # How many outliers were detected by different methods?
 out_pa <- outs_1 \%>\%
   dplyr::select(starts_with("."), -.out_sum) \%>\%
-  apply(., 2, function(x) sum(x, na.rm = T))
+  apply(., 2, function(x) sum(x, na.rm = TRUE))
 out_pa
 
 # How many outliers were detected by the sum of different methods?
@@ -112,7 +112,7 @@ outs_2 <- env_outliers(
 # How many outliers were detected by different methods
 out_p <- outs_2 \%>\%
   dplyr::select(starts_with("."), -.out_sum) \%>\%
-  apply(., 2, function(x) sum(x, na.rm = T))
+  apply(., 2, function(x) sum(x, na.rm = TRUE))
 
 # How many outliers were detected by the sum of different methods?
 outs_2 \%>\%

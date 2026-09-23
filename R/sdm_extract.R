@@ -24,7 +24,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #'
 #' # Load datasets

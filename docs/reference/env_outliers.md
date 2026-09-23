@@ -95,10 +95,11 @@ and Velazco et al. (2022).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(dplyr)
 require(terra)
 require(ggplot2)
+#> Loading required package: ggplot2
 
 # Environmental variables
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
@@ -107,11 +108,26 @@ somevar <- terra::rast(somevar)
 # Species occurrences
 data("spp")
 spp
+#> # A tibble: 1,150 × 4
+#>    species        x        y pr_ab
+#>    <chr>      <dbl>    <dbl> <dbl>
+#>  1 sp1       -5541. -145138.     0
+#>  2 sp1      -51981.   16322.     0
+#>  3 sp1     -269871.   69512.     1
+#>  4 sp1      -96261.  -32008.     0
+#>  5 sp1      269589. -566338.     0
+#>  6 sp1       29829. -328468.     0
+#>  7 sp1     -152691.  393782.     0
+#>  8 sp1     -195081.  253652.     0
+#>  9 sp1        -951. -277978.     0
+#> 10 sp1      145929. -271498.     0
+#> # ℹ 1,140 more rows
 spp1 <- spp %>% dplyr::filter(species == "sp1")
 
 somevar[[1]] %>% plot()
 points(spp1 %>% filter(pr_ab == 1) %>% select(x, y), col = "blue", pch = 19)
 points(spp1 %>% filter(pr_ab == 0) %>% select(x, y), col = "red", cex = 0.5)
+
 
 spp1 <- spp1 %>% mutate(idd = 1:nrow(spp1))
 
@@ -124,17 +140,29 @@ outs_1 <- env_outliers(
   id = "idd",
   env_layer = somevar
 )
+#> 55 rows were excluded from database because NAs were found
 
 # How many outliers were detected by different methods?
 out_pa <- outs_1 %>%
   dplyr::select(starts_with("."), -.out_sum) %>%
-  apply(., 2, function(x) sum(x, na.rm = T))
+  apply(., 2, function(x) sum(x, na.rm = TRUE))
 out_pa
+#>  .out_bxpt  .out_jack   .out_svm    .out_rf .out_rfout 
+#>         19          0         12         12         12 
 
 # How many outliers were detected by the sum of different methods?
 outs_1 %>%
   dplyr::group_by(.out_sum) %>%
   dplyr::count()
+#> # A tibble: 5 × 2
+#> # Groups:   .out_sum [5]
+#>   .out_sum     n
+#>      <dbl> <int>
+#> 1        0   900
+#> 2        1    37
+#> 3        2     6
+#> 4        3     2
+#> 5       NA    55
 
 # Let explor where are locate records highlighted as outliers
 outs_1 %>%
@@ -142,6 +170,7 @@ outs_1 %>%
   ggplot(aes(x, y)) +
   geom_point(aes(col = factor(.out_sum))) +
   facet_wrap(. ~ factor(.out_sum))
+
 
 # Detect outliers only with presences
 outs_2 <- env_outliers(
@@ -152,16 +181,25 @@ outs_2 <- env_outliers(
   id = "idd",
   env_layer = somevar
 )
+#> 12 rows were excluded from database because NAs were found
 
 # How many outliers were detected by different methods
 out_p <- outs_2 %>%
   dplyr::select(starts_with("."), -.out_sum) %>%
-  apply(., 2, function(x) sum(x, na.rm = T))
+  apply(., 2, function(x) sum(x, na.rm = TRUE))
 
 # How many outliers were detected by the sum of different methods?
 outs_2 %>%
   dplyr::group_by(.out_sum) %>%
   dplyr::count()
+#> # A tibble: 4 × 2
+#> # Groups:   .out_sum [4]
+#>   .out_sum     n
+#>      <dbl> <int>
+#> 1        0   208
+#> 2        1    29
+#> 3        2     1
+#> 4       NA    12
 
 # Let explor where are locate records highlighted as outliers
 outs_2 %>%
@@ -171,12 +209,18 @@ outs_2 %>%
   facet_wrap(. ~ factor(.out_sum))
 
 
+
 # Comparison of function outputs when using it with
 # presences-absences or only presences data.
 
 bind_rows(out_p, out_pa)
+#> # A tibble: 2 × 5
+#>   .out_bxpt .out_jack .out_svm .out_rf .out_rfout
+#>       <dbl>     <dbl>    <dbl>   <dbl>      <dbl>
+#> 1        19         0        0       0         12
+#> 2        19         0       12      12         12
 # Because the second case only were used presences, outliers methods
 # based in Random Forest (.out_rf) and Support Vector Machines (.out_svm)
 # were not performed.
-} # }
+# }
 ```

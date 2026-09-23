@@ -128,7 +128,7 @@
 #' @importFrom terra rast extract vect rasterize crs buffer patches match mask unique as.polygons distance convHull
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'

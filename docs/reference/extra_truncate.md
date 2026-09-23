@@ -43,7 +43,8 @@ Similarity Surfaces, EO-Environmental Overlap, MOP-Mobility-Oriented
 Parity, EXDET-Extrapolation Detection, or AOA-Area of Applicability).
 However, we recommend to use Shape approach (see
 [`extra_eval`](https://sjevelazco.github.io/flexsdm/reference/extra_eval.md),
-and [Velazco et al., 2023](https://doi.org/10.1111/ecog.06992)).
+and Velazco et al., 2023;
+[doi:10.1111/ecog.06992](https://doi.org/10.1111/ecog.06992) ).
 
 This function truncates suitability predictions assigning a given value,
 generally 0 or NA. Usage trunc_value = NA. Default 0.
@@ -66,7 +67,7 @@ explore model extrapolation.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 # see examples in extra_eval function
-} # }
+# }
 ```

@@ -21,7 +21,7 @@ spp
 A data set containing presences and absences of three virtual species
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 data("spp")
 spp

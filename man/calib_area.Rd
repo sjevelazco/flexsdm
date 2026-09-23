@@ -33,7 +33,7 @@ A SpatVector
 This function offers different methods to define the calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(dplyr)
 data("spp")

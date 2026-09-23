@@ -94,9 +94,10 @@ and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-abse
 spatial partition groups
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(ggplot2)
+require(dplyr)
 
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)

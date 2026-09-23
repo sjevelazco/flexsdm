@@ -156,9 +156,24 @@ and <code><a href="tune_raf.html">tune_raf</a></code>.</p></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abies</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,400 × 13</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   715     0  -<span style="color: #BB0000; text-decoration: underline;">95</span><span style="color: #BB0000;">417.</span>  <span style="text-decoration: underline;">314</span>240.  323.  546.  1.24    62.7   17.8   5.77 0.108 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">5</span>680     0   <span style="text-decoration: underline;">98</span>987. -<span style="color: #BB0000; text-decoration: underline;">159</span><span style="color: #BB0000;">415.</span>  448.  815.  9.43   130.     6.43  5.60 0.160 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">7</span>907     0  <span style="text-decoration: underline;">121</span>474.  -<span style="color: #BB0000; text-decoration: underline;">99</span><span style="color: #BB0000;">463.</span>  182.  271. -<span style="color: #BB0000;">4.95</span>   151.    11.2   0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">1</span>850     0  -<span style="color: #BB0000; text-decoration: underline;">39</span><span style="color: #BB0000;">976.</span>  -<span style="color: #BB0000; text-decoration: underline;">17</span><span style="color: #BB0000;">456.</span>  372.  946.  8.78   116.     2.70  6.41 0.097<span style="text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">1</span>702     0  <span style="text-decoration: underline;">111</span>372.  -<span style="color: #BB0000; text-decoration: underline;">91</span><span style="color: #BB0000;">404.</span>  209.  399. -<span style="color: #BB0000;">4.03</span>   165.     9.27  0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">10</span>036     0 -<span style="color: #BB0000; text-decoration: underline;">255</span><span style="color: #BB0000;">715.</span>  <span style="text-decoration: underline;">392</span>229.  308.  535.  4.66   166.    16.5   5.70 0.077<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">12</span>384     0 -<span style="color: #BB0000; text-decoration: underline;">311</span><span style="color: #BB0000;">765.</span>  <span style="text-decoration: underline;">380</span>213.  568.  352.  4.38   480.    41.2   5.80 0.110 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">6</span>513     0  <span style="text-decoration: underline;">111</span>360. -<span style="color: #BB0000; text-decoration: underline;">120</span><span style="color: #BB0000;">229.</span>  327.  633.  4.93   163.     8.91  1.18 0.011<span style="text-decoration: underline;">6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">9</span>884     0 -<span style="color: #BB0000; text-decoration: underline;">284</span><span style="color: #BB0000;">326.</span>  <span style="text-decoration: underline;">442</span>136.  377.  446.  3.99   296.    16.8   5.96 0.090<span style="text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>651     0  <span style="text-decoration: underline;">137</span>640. -<span style="color: #BB0000; text-decoration: underline;">110</span><span style="color: #BB0000;">538.</span>  215.  265. -<span style="color: #BB0000;">4.62</span>   180.     9.57  0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,390 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Partition the data with the k-fold method</span></span></span>
 <span class="r-in"><span></span></span>
@@ -193,15 +208,100 @@ and <code><a href="tune_raf.html">tune_raf</a></code>.</p></div>
 <span class="r-in"><span>    metric <span class="op">=</span> <span class="st">"TSS"</span>,</span></span>
 <span class="r-in"><span>    n_cores <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Tuning model...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Outputs</span></span></span>
 <span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">model</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Support Vector Machine object of class "ksvm" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> SV type: C-svc  (classification) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  parameter : cost C = 4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Gaussian Radial Basis kernel function. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hyperparameter : sigma =  0.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Support Vectors : 537 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Objective Function Value : -1271.551 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Training error : 0.072857 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Probability model included. </span>
 <span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">predictors</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   c1    c2    c3    c4      c5      c6    c7    c8    f       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth landform</span>
 <span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 35</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       C sigma model threshold   thr_value n_presences n_absences TPR_mean TPR_sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     4   0.2 svm   max_sens_s…     0.549         700        700    0.899 0.039<span style="text-decoration: underline;">6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 26 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   KAPPA_sd &lt;dbl&gt;, MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">performance_part</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 21</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 1       5         svm   max_sens…     0.368         140        140 0.907 0.829</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 1       2         svm   max_sens…     0.678         140        140 0.836 0.921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 1       3         svm   max_sens…     0.336         140        140 0.914 0.864</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 1       4         svm   max_sens…     0.525         140        140 0.893 0.893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 1       5         svm   max_sens…     0.519         140        140 0.943 0.893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more variables: W_TPR_TNR &lt;dbl&gt;, SORENSEN &lt;dbl&gt;, JACCARD &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FPB &lt;dbl&gt;, OR &lt;dbl&gt;, TSS &lt;dbl&gt;, KAPPA &lt;dbl&gt;, MCC &lt;dbl&gt;, AUC &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE &lt;dbl&gt;, CRPS &lt;dbl&gt;, IMAE &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">hyper_performance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 25 × 32</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        C sigma model threshold    TPR_mean TPR_sd TNR_mean TNR_sd W_TPR_TNR_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     2  0.01 svm   max_sens_sp…    0.854 0.073<span style="text-decoration: underline;">6</span>    0.849 0.032<span style="text-decoration: underline;">1</span>          0.851</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2  0.1  svm   max_sens_sp…    0.919 0.053<span style="text-decoration: underline;">6</span>    0.851 0.040<span style="text-decoration: underline;">2</span>          0.885</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     2  0.2  svm   max_sens_sp…    0.9   0.025<span style="text-decoration: underline;">8</span>    0.867 0.023<span style="text-decoration: underline;">5</span>          0.884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     2  0.3  svm   max_sens_sp…    0.884 0.040<span style="text-decoration: underline;">8</span>    0.889 0.037<span style="text-decoration: underline;">0</span>          0.886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     2  0.4  svm   max_sens_sp…    0.879 0.051<span style="text-decoration: underline;">3</span>    0.897 0.020<span style="text-decoration: underline;">6</span>          0.888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     4  0.01 svm   max_sens_sp…    0.869 0.047<span style="text-decoration: underline;">5</span>    0.853 0.022<span style="text-decoration: underline;">9</span>          0.861</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     4  0.1  svm   max_sens_sp…    0.914 0.044<span style="text-decoration: underline;">9</span>    0.854 0.030<span style="text-decoration: underline;">6</span>          0.884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     4  0.2  svm   max_sens_sp…    0.899 0.039<span style="text-decoration: underline;">6</span>    0.88  0.035<span style="text-decoration: underline;">1</span>          0.889</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     4  0.3  svm   max_sens_sp…    0.876 0.058<span style="text-decoration: underline;">2</span>    0.894 0.026<span style="text-decoration: underline;">4</span>          0.885</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     4  0.4  svm   max_sens_sp…    0.876 0.066<span style="text-decoration: underline;">4</span>    0.894 0.032<span style="text-decoration: underline;">5</span>          0.885</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 23 more variables: W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   KAPPA_mean &lt;dbl&gt;, KAPPA_sd &lt;dbl&gt;, MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">svm_t</span><span class="op">$</span><span class="va">data_ens</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,400 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    rnames replicates part  pr_ab     pred</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7      .part      1     0     0.077<span style="text-decoration: underline;">8</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 12     .part      1     0     0.241   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 17     .part      1     0     0.012<span style="text-decoration: underline;">1</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 22     .part      1     0     0.020<span style="text-decoration: underline;">2</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 23     .part      1     0     0.015<span style="text-decoration: underline;">4</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 25     .part      1     0     0.000<span style="text-decoration: underline;">473</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 29     .part      1     0     0.026<span style="text-decoration: underline;">3</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 33     .part      1     0     0.030<span style="text-decoration: underline;">1</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 35     .part      1     0     0.008<span style="text-decoration: underline;">73</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 44     .part      1     0     0.924   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,390 more rows</span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -195,7 +195,7 @@ recommended to use all the point data used for modeling
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -205,25 +205,100 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span><span class="co"># Perform pearson collinearity control</span></span></span>
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th <span class="op">=</span> <span class="st">"0.7"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cor_table</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           CFP_1     CFP_2     CFP_3     CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_1 0.0000000 0.7689893 0.7924813 0.7845401</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_2 0.7689893 0.0000000 0.4168956 0.5881831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_3 0.7924813 0.4168956 0.0000000 0.7323259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_4 0.7845401 0.5881831 0.7323259 0.0000000</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cor_variables</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_2" "CFP_3" "CFP_4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1" "CFP_4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1" "CFP_3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For all correct_colinvar methods it is possible to take a sample or raster to reduce memory</span></span></span>
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th <span class="op">=</span> <span class="st">"0.7"</span><span class="op">)</span>, maxcell <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cor_table</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           CFP_1     CFP_2     CFP_3     CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_1 0.0000000 0.7653187 0.7945362 0.7855346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_2 0.7653187 0.0000000 0.4155557 0.5885450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_3 0.7945362 0.4155557 0.0000000 0.7303327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_4 0.7855346 0.5885450 0.7303327 0.0000000</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cor_variables</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_2" "CFP_3" "CFP_4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1" "CFP_4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1" "CFP_3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Perform vif collinearity control</span></span></span>
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vif"</span>, th <span class="op">=</span> <span class="st">"8"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">env_layer</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 4  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source      : somevar.tif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :       CFP_1,     CFP_2,      CFP_3,     CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  :           0,  -9.39489,  22.446851,  0.259143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 1357.864694, 14.200473, 614.691254, 64.374759</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">removed_variables</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">vif_table</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variables   VIF</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_1      7.62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CFP_2      3.29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CFP_3      3.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CFP_4      2.89</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Perform pca collinearity control</span></span></span>
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pca"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">var</span><span class="op">$</span><span class="va">env_layer</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="correct_colinvar-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">env_layer</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 3  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :       PC1,       PC2,       PC3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : -8.453273, -4.260147, -1.525085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  :  2.827164,  3.337545,  4.342864</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">coefficients</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable    PC1     PC2    PC3     PC4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_1     0.550 -<span style="color: #BB0000;">0.072</span><span style="color: #BB0000; text-decoration: underline;">2</span>  0.296 -<span style="color: #BB0000;">0.778</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CFP_2     0.450 -<span style="color: #BB0000;">0.777</span>   0.103  0.429 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CFP_3    -<span style="color: #BB0000;">0.485</span> -<span style="color: #BB0000;">0.594</span>  -<span style="color: #BB0000;">0.450</span> -<span style="color: #BB0000;">0.459</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CFP_4    -<span style="color: #BB0000;">0.511</span> -<span style="color: #BB0000;">0.198</span>   0.836 -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">1</span></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cumulative_variance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      PC  cvar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 0.764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 0.915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 0.979</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 1    </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Perform pca collinearity control with different projections</span></span></span>
@@ -233,6 +308,10 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dir_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_sc</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"scenario_1"</span>, <span class="st">"scenario_2"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">dir_sc</span>, <span class="va">dir.create</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections/scenario_1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections/scenario_2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                TRUE </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
@@ -244,20 +323,65 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span><span class="co">## Perform pca with projections</span></span></span>
 <span class="r-in"><span><span class="va">dir_w_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dir_w_proj</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections"</span>
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="st">"pca"</span>, proj <span class="op">=</span> <span class="va">dir_w_proj</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">env_layer</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 3  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :       PC1,       PC2,       PC3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : -8.453273, -4.260147, -1.525085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  :  2.827164,  3.337545,  4.342864</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">coefficients</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable    PC1     PC2    PC3     PC4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_1     0.550 -<span style="color: #BB0000;">0.072</span><span style="color: #BB0000; text-decoration: underline;">2</span>  0.296 -<span style="color: #BB0000;">0.778</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CFP_2     0.450 -<span style="color: #BB0000;">0.777</span>   0.103  0.429 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CFP_3    -<span style="color: #BB0000;">0.485</span> -<span style="color: #BB0000;">0.594</span>  -<span style="color: #BB0000;">0.450</span> -<span style="color: #BB0000;">0.459</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CFP_4    -<span style="color: #BB0000;">0.511</span> -<span style="color: #BB0000;">0.198</span>   0.836 -<span style="color: #BB0000;">0.024</span><span style="color: #BB0000; text-decoration: underline;">1</span></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cumulative_variance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      PC  cvar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 0.764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 0.915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 0.979</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 1    </span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">proj</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/Projection_PCA"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Perform fa colinearity control</span></span></span>
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fa"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">env_layer</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 1  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source      : somevar.tif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> name        :       CFP_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min value   :           0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max value   : 1357.864694</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">number_factors</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">removed_variables</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_2" "CFP_3" "CFP_4"</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">uniqueness</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     CFP_1     CFP_2     CFP_3     CFP_4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.0010000 0.4087429 0.3715653 0.3835564 </span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">loadings</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable Factor_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_1       1.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CFP_2       0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CFP_3      -<span style="color: #BB0000;">0.793</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CFP_4      -<span style="color: #BB0000;">0.785</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">#                                                          #</span></span></span>
@@ -275,7 +399,8 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">abies2</span><span class="op">[</span><span class="op">-</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ca</span> <span class="op">&lt;-</span> <span class="fu"><a href="calib_area.html">calib_area</a></span><span class="op">(</span><span class="va">abies2</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mcp"</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="correct_colinvar-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Full geographical range to perform PCA</span></span></span>
 <span class="r-in"><span><span class="va">pca_fr</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span></span></span>
@@ -305,8 +430,11 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pca_fr</span><span class="op">$</span><span class="va">env_layer</span><span class="op">)</span> <span class="co"># PCA with all cells</span></span></span>
+<span class="r-plt img"><img src="correct_colinvar-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pca_rr</span><span class="op">$</span><span class="va">env_layer</span><span class="op">)</span> <span class="co"># PCA with calibration area cell but predicted for entire region</span></span></span>
+<span class="r-plt img"><img src="correct_colinvar-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pca_rrp</span><span class="op">$</span><span class="va">env_layer</span><span class="op">)</span> <span class="co"># PCA performed and predicted for cells within calibration area (ca)</span></span></span>
+<span class="r-plt img"><img src="correct_colinvar-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
@@ -330,6 +458,28 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 60 rows were excluded from database because NAs were found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cor_table</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           CFP_1      CFP_2     CFP_3      CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_1 0.0000000 0.65011233 0.4708649 0.55696032</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_2 0.6501123 0.00000000 0.2528434 0.09606692</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_3 0.4708649 0.25284342 0.0000000 0.84185543</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_4 0.5569603 0.09606692 0.8418554 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cor_variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cor_variables$CFP_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_2"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cor_variables$CFP_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cor_variables$CFP_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cor_variables$CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># VIF</span></span></span>
 <span class="r-in"><span><span class="fu">correct_colinvar</span><span class="op">(</span></span></span>
@@ -340,6 +490,30 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 60 rows were excluded from database because NAs were found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $env_layer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 4  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source      : somevar.tif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :       CFP_1,     CFP_2,      CFP_3,     CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  :           0,  -9.39489,  22.446851,  0.259143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 1357.864694, 14.200473, 614.691254, 64.374759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $removed_variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $vif_table</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variables   VIF</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_1      7.62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CFP_2      5.91</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CFP_3      5.54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CFP_4      4.03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># PCA</span></span></span>
 <span class="r-in"><span><span class="fu">correct_colinvar</span><span class="op">(</span></span></span>
@@ -350,6 +524,36 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 60 rows were excluded from database because NAs were found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $env_layer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 3  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :       PC1,       PC2,       PC3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : -5.059408, -3.126523, -2.134568</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  :  6.396155,  3.776424,  1.788421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $coefficients</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable    PC1   PC2     PC3     PC4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_1    -<span style="color: #BB0000;">0.536</span> 0.453 -<span style="color: #BB0000;">0.237</span>   0.672 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CFP_2    -<span style="color: #BB0000;">0.113</span> 0.792  0.090<span style="text-decoration: underline;">2</span> -<span style="color: #BB0000;">0.592</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CFP_3     0.576 0.343  0.597   0.440 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CFP_4     0.606 0.222 -<span style="color: #BB0000;">0.761</span>   0.065<span style="text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cumulative_variance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      PC  cvar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 0.569</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 0.945</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 0.984</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># FA</span></span></span>
 <span class="r-in"><span><span class="fu">correct_colinvar</span><span class="op">(</span></span></span>
@@ -360,7 +564,40 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 60 rows were excluded from database because NAs were found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Factorial analysis could not be performed because 2 factors are too many for 4 variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> It will tested with 1 factors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $env_layer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 1  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1890, 1890  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source      : somevar.tif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> name        :     CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min value   :  0.259143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max value   : 64.374759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $number_factors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $removed_variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1" "CFP_2" "CFP_3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $uniqueness</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     CFP_1     CFP_2     CFP_3     CFP_4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6895565 0.9907748 0.2905398 0.0010000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $loadings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable Factor_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_1     -<span style="color: #BB0000;">0.557</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CFP_2      0.096<span style="text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CFP_3      0.842 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> CFP_4      0.999 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

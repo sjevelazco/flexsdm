@@ -66,7 +66,7 @@ This function provide several methods for sampling pseudo-absences, for instance
 totally random sampling method, with the options of using different environmental and or geographical constraints.
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(dplyr)
 data("spp")
@@ -133,7 +133,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = c(method = "kmns", env = somevar),
+    method = c(method = "kmeans", env = somevar),
     rlayer = regions
   )
 
@@ -193,7 +193,7 @@ ps1 <-
     x = "x",
     y = "y",
     n = nrow(single_spp) * 10,
-    method = c("geoenv_const_kmns", width = "50000", env = somevar),
+    method = c("geoenv_const_kmeans", width = "50000", env = somevar),
     rlayer = regions,
     maskval = samp_here
   )
@@ -210,7 +210,7 @@ ca_ps1 <- calib_area(
   crs = crs(somevar)
 )
 plot(regions, col = gray.colors(9))
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 
 ps1 <-
@@ -225,7 +225,7 @@ ps1 <-
     calibarea = ca_ps1
   )
 plot(regions, col = gray.colors(9))
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 
@@ -242,7 +242,7 @@ ps1 <-
     calibarea = ca_ps1
   )
 plot(regions, col = gray.colors(9))
-plot(ca_ps1, add = T)
+plot(ca_ps1, add = TRUE)
 points(ps1, col = "red", cex = 0.7, pch = 19)
 points(single_spp[-1], col = "blue", cex = 0.7, pch = 19)
 }

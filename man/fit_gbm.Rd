@@ -79,7 +79,7 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 Fit and validate Generalized Boosted Regression models
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 
 # Using k-fold partition method

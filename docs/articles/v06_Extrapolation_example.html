@@ -122,7 +122,7 @@ temperature of the warmest month (tmx), and minimum temperature of the
 coldest month (tmn). Our occurrence data include 21 geo-referenced
 observations downloaded from the online database Calflora.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm">flexsdm</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm/">flexsdm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
@@ -358,24 +358,49 @@ either a rectangle or convex hull approach. Here we will use the convex
 hull approach.</p>
 <p>Uni and bivariate partial dependence plots for the GLM:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_pdp.html">p_pdp</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mglm</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">hespero_pa3</span>, projection_data <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_pdp.html">p_pdp</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="va">mglm</span><span class="op">$</span><span class="va">model</span>,</span>
+<span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>  projection_data <span class="op">=</span> <span class="va">somevar</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/glm%20partial%20dependence%20plots-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mglm</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">hespero_pa3</span>, training_boundaries <span class="op">=</span> <span class="st">"convexh"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="va">mglm</span><span class="op">$</span><span class="va">model</span>,</span>
+<span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/glm%20partial%20dependence%20plots-2.png" class="r-plt" alt="" width="672"></p>
 <p>Uni and bivariate partial dependence plots for the GBM:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_pdp.html">p_pdp</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mgbm</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">hespero_pa3</span>, projection_data <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_pdp.html">p_pdp</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="va">mgbm</span><span class="op">$</span><span class="va">model</span>,</span>
+<span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>  projection_data <span class="op">=</span> <span class="va">somevar</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/gbm%20partial%20dependence%20plots-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">mgbm</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">hespero_pa3</span>, training_boundaries <span class="op">=</span> <span class="st">"convexh"</span>, resolution <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="va">mgbm</span><span class="op">$</span><span class="va">model</span>,</span>
+<span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="fl">100</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/gbm%20partial%20dependence%20plots-2.png" class="r-plt" alt="" width="672"></p>
 <p>Uni and bivariate partial dependence plots for the SVM:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_pdp.html">p_pdp</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">msvm</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">hespero_pa3</span>, projection_data <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_pdp.html">p_pdp</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="va">msvm</span><span class="op">$</span><span class="va">model</span>,</span>
+<span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>  projection_data <span class="op">=</span> <span class="va">somevar</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/svm%20partial%20dependence%20plots-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">msvm</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">hespero_pa3</span>, training_boundaries <span class="op">=</span> <span class="st">"convexh"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="va">msvm</span><span class="op">$</span><span class="va">model</span>,</span>
+<span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
+<span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/svm%20partial%20dependence%20plots-2.png" class="r-plt" alt="" width="672"></p>
 <p>These plots show a really interesting story! Most notably, the GLM
 and GBM show consistently high habitat suitability for those areas that
@@ -436,11 +461,26 @@ distinguish between univariate and combinatorial extrapolation.</p>
 degree of extrapolation across the projection area, as estimated by the
 Shape method.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#FDE725"</span>, <span class="st">"#B3DC2B"</span>, <span class="st">"#6DCC57"</span>, <span class="st">"#36B677"</span>, <span class="st">"#1F9D87"</span>, <span class="st">"#25818E"</span>, <span class="st">"#30678D"</span>, <span class="st">"#3D4988"</span>, <span class="st">"#462777"</span>, <span class="st">"#440154"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"#FDE725"</span>,</span>
+<span>  <span class="st">"#B3DC2B"</span>,</span>
+<span>  <span class="st">"#6DCC57"</span>,</span>
+<span>  <span class="st">"#36B677"</span>,</span>
+<span>  <span class="st">"#1F9D87"</span>,</span>
+<span>  <span class="st">"#25818E"</span>,</span>
+<span>  <span class="st">"#30678D"</span>,</span>
+<span>  <span class="st">"#3D4988"</span>,</span>
+<span>  <span class="st">"#462777"</span>,</span>
+<span>  <span class="st">"#440154"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xp_m</span><span class="op">$</span><span class="va">extrapolation</span>, main <span class="op">=</span> <span class="st">"Shape metric"</span>, col <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xp_m</span><span class="op">$</span><span class="va">uni_comb</span>, main <span class="op">=</span> <span class="st">"Univariate (1) and \n combinatorial (2) extrapolation"</span>, col <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span></span>
+<span>  <span class="va">xp_m</span><span class="op">$</span><span class="va">uni_comb</span>,</span>
+<span>  main <span class="op">=</span> <span class="st">"Univariate (1) and \n combinatorial (2) extrapolation"</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">cl</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/comparison%20extrapolation%20outputs-1.png" class="r-plt" alt="" width="672"></p>
 <p>We can also explore extrapolation or suitability patterns in
 environmental and geographic space, using just one function. To do that,
@@ -510,7 +550,10 @@ comparison.</p>
 <span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gray"</span>, <span class="st">"#FDE725"</span><span class="op">)</span>,</span>
 <span>  alpha_p <span class="op">=</span> <span class="fl">0.5</span></span>
-<span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 50"</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span></span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 50"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Number of cell used to plot 3642 (5%)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -527,7 +570,10 @@ comparison.</p>
 <span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gray"</span>, <span class="st">"#FDE725"</span><span class="op">)</span>,</span>
 <span>  alpha_p <span class="op">=</span> <span class="fl">0.5</span></span>
-<span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 100"</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span></span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 100"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Number of cell used to plot 3642 (5%)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-2.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
@@ -544,7 +590,10 @@ comparison.</p>
 <span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gray"</span>, <span class="st">"#FDE725"</span><span class="op">)</span>,</span>
 <span>  alpha_p <span class="op">=</span> <span class="fl">0.5</span></span>
-<span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span>subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 500"</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://patchwork.data-imaginist.com/reference/plot_annotation.html" class="external-link">plot_annotation</a></span><span class="op">(</span></span>
+<span>    subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 500"</span></span>
+<span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Number of cell used to plot 3642 (5%)</span></span></code></pre></div>
 <p><img src="v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-3.png" class="r-plt" alt="" width="672"></p>
 <p>Values of 1 (yellow one) depict the environmental and geographical
@@ -615,7 +664,7 @@ distribution model? Exploring Shape, a novel method. <em>Ecography</em>,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

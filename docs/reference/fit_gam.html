@@ -144,7 +144,8 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using k-fold partition method</span></span></span>
@@ -154,6 +155,21 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,400 × 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   715     0  -<span style="color: #BB0000; text-decoration: underline;">95</span><span style="color: #BB0000;">417.</span>  <span style="text-decoration: underline;">314</span>240.  323.  546.  1.24    62.7   17.8   5.77 0.108 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">5</span>680     0   <span style="text-decoration: underline;">98</span>987. -<span style="color: #BB0000; text-decoration: underline;">159</span><span style="color: #BB0000;">415.</span>  448.  815.  9.43   130.     6.43  5.60 0.160 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">7</span>907     0  <span style="text-decoration: underline;">121</span>474.  -<span style="color: #BB0000; text-decoration: underline;">99</span><span style="color: #BB0000;">463.</span>  182.  271. -<span style="color: #BB0000;">4.95</span>   151.    11.2   0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">1</span>850     0  -<span style="color: #BB0000; text-decoration: underline;">39</span><span style="color: #BB0000;">976.</span>  -<span style="color: #BB0000; text-decoration: underline;">17</span><span style="color: #BB0000;">456.</span>  372.  946.  8.78   116.     2.70  6.41 0.097<span style="text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">1</span>702     0  <span style="text-decoration: underline;">111</span>372.  -<span style="color: #BB0000; text-decoration: underline;">91</span><span style="color: #BB0000;">404.</span>  209.  399. -<span style="color: #BB0000;">4.03</span>   165.     9.27  0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">10</span>036     0 -<span style="color: #BB0000; text-decoration: underline;">255</span><span style="color: #BB0000;">715.</span>  <span style="text-decoration: underline;">392</span>229.  308.  535.  4.66   166.    16.5   5.70 0.077<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">12</span>384     0 -<span style="color: #BB0000; text-decoration: underline;">311</span><span style="color: #BB0000;">765.</span>  <span style="text-decoration: underline;">380</span>213.  568.  352.  4.38   480.    41.2   5.80 0.110 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">6</span>513     0  <span style="text-decoration: underline;">111</span>360. -<span style="color: #BB0000; text-decoration: underline;">120</span><span style="color: #BB0000;">229.</span>  327.  633.  4.93   163.     8.91  1.18 0.011<span style="text-decoration: underline;">6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">9</span>884     0 -<span style="color: #BB0000; text-decoration: underline;">284</span><span style="color: #BB0000;">326.</span>  <span style="text-decoration: underline;">442</span>136.  377.  446.  3.99   296.    16.8   5.96 0.090<span style="text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>651     0  <span style="text-decoration: underline;">137</span>640. -<span style="color: #BB0000; text-decoration: underline;">110</span><span style="color: #BB0000;">538.</span>  215.  265. -<span style="color: #BB0000;">4.62</span>   180.     9.57  0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,390 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">gam_t1</span> <span class="op">&lt;-</span> <span class="fu">fit_gam</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
@@ -164,13 +180,77 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ s(aet, k = -1) + s(ppt_jja, k = -1) + s(pH, k = -1) + s(awc, k = -1) + s(depth, k = -1) + landform</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 6/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 7/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 8/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 9/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 10/10</span>
 <span class="r-in"><span><span class="va">gam_t1</span><span class="op">$</span><span class="va">model</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Family: binomial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Link function: logit </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pr_ab ~ s(aet, k = -1) + s(ppt_jja, k = -1) + s(pH, k = -1) + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     s(awc, k = -1) + s(depth, k = -1) + landform</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated degrees of freedom:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.06 6.65 7.88 1.00 1.68  total = 36.27 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> UBRE score: 0.02901258     </span>
 <span class="r-in"><span><span class="va">gam_t1</span><span class="op">$</span><span class="va">predictors</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   c1    c2      c3    c4    c5    f       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> aet   ppt_jja pH    awc   depth landform</span>
 <span class="r-in"><span><span class="va">gam_t1</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 33</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> gam   max_sens_spec     0.530         700        700    0.753  0.114     0.76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;, KAPPA_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">gam_t1</span><span class="op">$</span><span class="va">performance_part</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 21</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    replica partition model threshold     thr_value n_presences n_absences   TPR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       1         gam   max_sens_spec     0.507          70         70 0.771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       2         gam   max_sens_spec     0.702          70         70 0.729</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       3         gam   max_sens_spec     0.584          70         70 0.6  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1       4         gam   max_sens_spec     0.507          70         70 0.814</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1       5         gam   max_sens_spec     0.537          70         70 0.729</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1       6         gam   max_sens_spec     0.383          70         70 0.943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1       7         gam   max_sens_spec     0.658          70         70 0.557</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1       8         gam   max_sens_spec     0.577          70         70 0.757</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 1       9         gam   max_sens_spec     0.555          70         70 0.757</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 1       10        gam   max_sens_spec     0.512          70         70 0.871</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13 more variables: TNR &lt;dbl&gt;, W_TPR_TNR &lt;dbl&gt;, SORENSEN &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD &lt;dbl&gt;, FPB &lt;dbl&gt;, OR &lt;dbl&gt;, TSS &lt;dbl&gt;, KAPPA &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   AUC &lt;dbl&gt;, BOYCE &lt;dbl&gt;, CRPS &lt;dbl&gt;, IMAE &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Specifying the formula explicitly</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va">mgcv</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: mgcv</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: nlme</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘nlme’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:dplyr’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     collapse</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> This is mgcv 1.9-4. For overview type '?mgcv'.</span>
 <span class="r-in"><span><span class="va">gam_t2</span> <span class="op">&lt;-</span> <span class="fu">fit_gam</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
 <span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
@@ -183,10 +263,44 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">ppt_jja</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">pH</span><span class="op">)</span> <span class="op">+</span> <span class="va">landform</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ s(aet) + s(ppt_jja) + s(pH) + landform</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 6/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 7/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 8/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 9/10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 10/10</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">gam_t2</span><span class="op">$</span><span class="va">model</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Family: binomial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Link function: logit </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pr_ab ~ s(aet) + s(ppt_jja) + s(pH) + landform</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated degrees of freedom:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.33 6.70 4.89  total = 30.92 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> UBRE score: 0.08202445     </span>
 <span class="r-in"><span><span class="va">gam_t2</span><span class="op">$</span><span class="va">predictors</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   c1    c2      c3    c4    c5    f       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> aet   ppt_jja pH    awc   depth landform</span>
 <span class="r-in"><span><span class="va">gam_t2</span><span class="op">$</span><span class="va">performance</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">ends_with</a></span><span class="op">(</span><span class="st">"_mean"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   TPR_mean TNR_mean W_TPR_TNR_mean SORENSEN_mean JACCARD_mean FPB_mean OR_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>    0.783    0.703          0.743         0.750        0.602     1.20   0.217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: TSS_mean &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;, MCC_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   AUC_mean &lt;dbl&gt;, BOYCE_mean &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, IMAE_mean &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using repeated k-fold partition method</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
@@ -195,6 +309,22 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,400 × 18</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>   715     0  -<span style="color: #BB0000; text-decoration: underline;">95</span><span style="color: #BB0000;">417.</span>  <span style="text-decoration: underline;">314</span>240.  323.  546.  1.24    62.7   17.8   5.77 0.108 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">5</span>680     0   <span style="text-decoration: underline;">98</span>987. -<span style="color: #BB0000; text-decoration: underline;">159</span><span style="color: #BB0000;">415.</span>  448.  815.  9.43   130.     6.43  5.60 0.160 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">7</span>907     0  <span style="text-decoration: underline;">121</span>474.  -<span style="color: #BB0000; text-decoration: underline;">99</span><span style="color: #BB0000;">463.</span>  182.  271. -<span style="color: #BB0000;">4.95</span>   151.    11.2   0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">1</span>850     0  -<span style="color: #BB0000; text-decoration: underline;">39</span><span style="color: #BB0000;">976.</span>  -<span style="color: #BB0000; text-decoration: underline;">17</span><span style="color: #BB0000;">456.</span>  372.  946.  8.78   116.     2.70  6.41 0.097<span style="text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">1</span>702     0  <span style="text-decoration: underline;">111</span>372.  -<span style="color: #BB0000; text-decoration: underline;">91</span><span style="color: #BB0000;">404.</span>  209.  399. -<span style="color: #BB0000;">4.03</span>   165.     9.27  0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">10</span>036     0 -<span style="color: #BB0000; text-decoration: underline;">255</span><span style="color: #BB0000;">715.</span>  <span style="text-decoration: underline;">392</span>229.  308.  535.  4.66   166.    16.5   5.70 0.077<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">12</span>384     0 -<span style="color: #BB0000; text-decoration: underline;">311</span><span style="color: #BB0000;">765.</span>  <span style="text-decoration: underline;">380</span>213.  568.  352.  4.38   480.    41.2   5.80 0.110 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">6</span>513     0  <span style="text-decoration: underline;">111</span>360. -<span style="color: #BB0000; text-decoration: underline;">120</span><span style="color: #BB0000;">229.</span>  327.  633.  4.93   163.     8.91  1.18 0.011<span style="text-decoration: underline;">6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">9</span>884     0 -<span style="color: #BB0000; text-decoration: underline;">284</span><span style="color: #BB0000;">326.</span>  <span style="text-decoration: underline;">442</span>136.  377.  446.  3.99   296.    16.8   5.96 0.090<span style="text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>651     0  <span style="text-decoration: underline;">137</span>640. -<span style="color: #BB0000; text-decoration: underline;">110</span><span style="color: #BB0000;">538.</span>  215.  265. -<span style="color: #BB0000;">4.62</span>   180.     9.57  0    0     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,390 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part1 &lt;int&gt;, .part2 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   .part3 &lt;int&gt;, .part4 &lt;int&gt;, .part5 &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">gam_t3</span> <span class="op">&lt;-</span> <span class="fu">fit_gam</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
@@ -205,8 +335,108 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ s(ppt_jja, k = -1) + s(pH, k = -1) + s(awc, k = -1) + landform</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 5/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 4/5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 5/5</span>
 <span class="r-in"><span><span class="va">gam_t3</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Family: binomial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Link function: logit </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Formula:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> pr_ab ~ s(ppt_jja, k = -1) + s(pH, k = -1) + s(awc, k = -1) + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     landform</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated degrees of freedom:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6.65 4.04 5.84  total = 31.53 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> UBRE score: 0.06214506     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $predictors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   c1      c2    c3    f       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ppt_jja pH    awc   landform</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $performance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 33</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> gam   max_sens_spec     0.554         700        700    0.750 0.092<span style="text-decoration: underline;">7</span>    0.721</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;, KAPPA_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $performance_part</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 25 × 21</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    replica partition model threshold     thr_value n_presences n_absences   TPR</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       1         gam   max_sens_spec     0.653         140        140 0.586</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       2         gam   max_sens_spec     0.583         140        140 0.657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       3         gam   max_sens_spec     0.321         140        140 0.957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1       4         gam   max_sens_spec     0.595         140        140 0.721</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1       5         gam   max_sens_spec     0.468         140        140 0.779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2       1         gam   max_sens_spec     0.579         140        140 0.743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2       2         gam   max_sens_spec     0.554         140        140 0.679</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2       3         gam   max_sens_spec     0.437         140        140 0.857</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2       4         gam   max_sens_spec     0.588         140        140 0.664</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2       5         gam   max_sens_spec     0.535         140        140 0.779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13 more variables: TNR &lt;dbl&gt;, W_TPR_TNR &lt;dbl&gt;, SORENSEN &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD &lt;dbl&gt;, FPB &lt;dbl&gt;, OR &lt;dbl&gt;, TSS &lt;dbl&gt;, KAPPA &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   AUC &lt;dbl&gt;, BOYCE &lt;dbl&gt;, CRPS &lt;dbl&gt;, IMAE &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $data_ens</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6,996 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    rnames replicates part  pr_ab     pred</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 7      .part1     1         0 0.000<span style="text-decoration: underline;">597</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 10     .part1     1         0 0.511   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 13     .part1     1         0 0.058<span style="text-decoration: underline;">5</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 15     .part1     1         0 0.585   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 22     .part1     1         0 0.130   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 33     .part1     1         0 0.078<span style="text-decoration: underline;">4</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 35     .part1     1         0 0.493   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 39     .part1     1         0 0.750   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 43     .part1     1         0 0.795   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 44     .part1     1         0 0.705   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6,986 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

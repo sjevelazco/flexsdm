@@ -142,9 +142,24 @@ and
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 data(abies)
 abies
+#> # A tibble: 1,400 × 13
+#>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
+#>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl> <dbl>  <dbl>
+#>  1   715     0  -95417.  314240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
+#>  2  5680     0   98987. -159415.  448.  815.  9.43   130.     6.43  5.60 0.160 
+#>  3  7907     0  121474.  -99463.  182.  271. -4.95   151.    11.2   0    0     
+#>  4  1850     0  -39976.  -17456.  372.  946.  8.78   116.     2.70  6.41 0.0972
+#>  5  1702     0  111372.  -91404.  209.  399. -4.03   165.     9.27  0    0     
+#>  6 10036     0 -255715.  392229.  308.  535.  4.66   166.    16.5   5.70 0.0777
+#>  7 12384     0 -311765.  380213.  568.  352.  4.38   480.    41.2   5.80 0.110 
+#>  8  6513     0  111360. -120229.  327.  633.  4.93   163.     8.91  1.18 0.0116
+#>  9  9884     0 -284326.  442136.  377.  446.  3.99   296.    16.8   5.96 0.0900
+#> 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     
+#> # ℹ 1,390 more rows
+#> # ℹ 2 more variables: depth <dbl>, landform <fct>
 
 # Partition the data with the k-fold method
 
@@ -160,6 +175,28 @@ tune_grid <- expand.grid(
 )
 
 tune_grid
+#>    mtry ntree
+#> 1     1   400
+#> 2     2   400
+#> 3     3   400
+#> 4     4   400
+#> 5     5   400
+#> 6     6   400
+#> 7     7   400
+#> 8     1   600
+#> 9     2   600
+#> 10    3   600
+#> 11    4   600
+#> 12    5   600
+#> 13    6   600
+#> 14    7   600
+#> 15    1   800
+#> 16    2   800
+#> 17    3   800
+#> 18    4   800
+#> 19    5   800
+#> 20    6   800
+#> 21    7   800
 
 rf_t <-
   tune_raf(
@@ -176,12 +213,85 @@ rf_t <-
     metric = "TSS",
     n_cores = 1
   )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform
+#> Tuning model...
+#> Replica number: 1/1
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 
 # Outputs
 rf_t$model
+#> 
+#> Call:
+#>  randomForest(formula = formula1, data = data, mtry = mtry, ntree = ntree,      importance = TRUE, ) 
+#>                Type of random forest: classification
+#>                      Number of trees: 500
+#> No. of variables tried at each split: 2
+#> 
+#>         OOB estimate of  error rate: 10.93%
+#> Confusion matrix:
+#>     0   1 class.error
+#> 0 606  94  0.13428571
+#> 1  59 641  0.08428571
 rf_t$predictors
+#> # A tibble: 1 × 9
+#>   c1    c2    c3    c4      c5      c6    c7    c8    f       
+#>   <chr> <chr> <chr> <chr>   <chr>   <chr> <chr> <chr> <chr>   
+#> 1 aet   cwd   tmin  ppt_djf ppt_jja pH    awc   depth landform
 rf_t$performance_part
+#> # A tibble: 5 × 21
+#>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
+#>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
+#> 1 1       1         raf   max_sens…     0.532         140        140 0.907 0.9  
+#> 2 1       2         raf   max_sens…     0.542         140        140 0.907 0.907
+#> 3 1       3         raf   max_sens…     0.558         140        140 0.907 0.907
+#> 4 1       4         raf   max_sens…     0.51          140        140 0.936 0.879
+#> 5 1       5         raf   max_sens…     0.602         140        140 0.879 0.857
+#> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
+#> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
+#> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 rf_t$hyper_performance
+#> # A tibble: 21 × 32
+#>     mtry ntree model threshold    TPR_mean TPR_sd TNR_mean TNR_sd W_TPR_TNR_mean
+#>    <dbl> <dbl> <chr> <chr>           <dbl>  <dbl>    <dbl>  <dbl>          <dbl>
+#>  1     1   400 raf   max_sens_sp…    0.9   0.0214    0.886 0.0286          0.893
+#>  2     1   600 raf   max_sens_sp…    0.889 0.0310    0.896 0.0345          0.892
+#>  3     1   800 raf   max_sens_sp…    0.896 0.0240    0.891 0.0292          0.894
+#>  4     2   400 raf   max_sens_sp…    0.901 0.0244    0.894 0.0255          0.898
+#>  5     2   600 raf   max_sens_sp…    0.904 0.0212    0.891 0.0278          0.898
+#>  6     2   800 raf   max_sens_sp…    0.906 0.0217    0.887 0.0234          0.896
+#>  7     3   400 raf   max_sens_sp…    0.924 0.0193    0.863 0.0561          0.894
+#>  8     3   600 raf   max_sens_sp…    0.923 0.0278    0.867 0.0545          0.895
+#>  9     3   800 raf   max_sens_sp…    0.924 0.0330    0.864 0.0569          0.894
+#> 10     4   400 raf   max_sens_sp…    0.913 0.0309    0.874 0.0562          0.894
+#> # ℹ 11 more rows
+#> # ℹ 23 more variables: W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>,
+#> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
+#> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
+#> #   KAPPA_mean <dbl>, KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>,
+#> #   AUC_mean <dbl>, AUC_sd <dbl>, BOYCE_mean <dbl>, BOYCE_sd <dbl>,
+#> #   CRPS_mean <dbl>, CRPS_sd <dbl>, IMAE_mean <dbl>, IMAE_sd <dbl>
 rf_t$data_ens
-} # }
+#> # A tibble: 1,400 × 5
+#>    rnames replicates part  pr_ab  pred
+#>    <chr>  <chr>      <chr> <fct> <dbl>
+#>  1 1      .part      1     0     0.32 
+#>  2 18     .part      1     0     0.004
+#>  3 28     .part      1     0     0.018
+#>  4 30     .part      1     0     0.014
+#>  5 31     .part      1     0     0.11 
+#>  6 35     .part      1     0     0.088
+#>  7 39     .part      1     0     0.502
+#>  8 45     .part      1     0     0.04 
+#>  9 49     .part      1     0     0.016
+#> 10 52     .part      1     0     0.196
+#> # ℹ 1,390 more rows
+# }
 ```

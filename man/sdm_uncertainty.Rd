@@ -44,7 +44,7 @@ It refits the model multiple times on resampled data and then calculates the sta
 all iterations.
 }
 \examples{
-\dontrun{
+\donttest{
 require(terra)
 require(dplyr)
 

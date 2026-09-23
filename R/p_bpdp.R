@@ -36,6 +36,9 @@
 #' @seealso \code{\link{data_pdp}}, \code{\link{data_bpdp}}, \code{\link{p_pdp}},
 #' \code{\link{extra_eval}}, \code{\link{extra_truncate}}
 #'
+#' @return A ggplot object, or a patchwork of ggplot objects when more than
+#' two predictors are used, showing bivariate partial dependence surface plot(s).
+#'
 #' @importFrom ggplot2 ggplot aes geom_raster scale_fill_gradientn coord_cartesian geom_polygon theme
 #' @importFrom patchwork wrap_plots plot_layout
 #' @importFrom utils combn
@@ -43,7 +46,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #' library(dplyr)
 #'

@@ -11,7 +11,7 @@
 #' @importFrom dplyr bind_rows relocate tibble
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data(abies)
 #' abies
 #'

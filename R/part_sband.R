@@ -96,7 +96,7 @@
 #' and \code{\link{get_block}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #'

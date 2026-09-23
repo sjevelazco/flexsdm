@@ -68,7 +68,7 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 Fit and validate Random Forests models
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 
 # Using k-fold partition method

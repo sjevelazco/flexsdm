@@ -287,7 +287,18 @@ pr_1 <- sdm_predict(
 unconstrained <- pr_1$meanw[[1]]
 names(unconstrained) <- "unconstrained"
 
-cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
+cl <- c(
+  "#FDE725",
+  "#B3DC2B",
+  "#6DCC57",
+  "#36B677",
+  "#1F9D87",
+  "#25818E",
+  "#30678D",
+  "#3D4988",
+  "#462777",
+  "#440154"
+)
 plot(unconstrained, col = cl, legend = FALSE, axes = FALSE)
 ```
 
@@ -312,11 +323,17 @@ m_pres <- msdm_posteriori(
   buffer = NULL
 )
 
-cl <- c("#FDE725", "#B3DC2B", "#6DCC57", "#36B677", "#1F9D87", "#25818E", "#30678D", "#3D4988", "#462777", "#440154")
+cl <- c(
+  "#FDE725",
+  "#B3DC2B",
+  "#6DCC57",
+  "#36B677",
+  "#1F9D87",
+  "#25818E",
+  "#30678D",
+  "#3D4988",
+  "#462777",
+  "#440154"
+)
 plot(m_pres[[1]], col = cl, legend = FALSE, axes = FALSE)
 ```
-#=========#=========#=========#=========#=========#=========#=========#
-
-**Vignette still under construction and changes**
-
-#=========#=========#=========#=========#=========#=========#=========#

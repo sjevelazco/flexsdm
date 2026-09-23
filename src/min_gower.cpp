@@ -1,9 +1,6 @@
 #include <Rcpp.h>
 #include <unordered_map>
 #include <string>
-#ifdef _OPENMP
-#include <omp.h>
-#endif
 
 using namespace Rcpp;
 
@@ -18,14 +15,11 @@ double range_calc(const NumericVector& vec) {
 
 // [[Rcpp::export]]
 NumericVector min_gower_rcpp(DataFrame data1_r, DataFrame data2_r, int n_threads = 0) {
+  (void)n_threads; // kept for call-signature compatibility; computation is single-threaded
   int n1 = data1_r.nrows();
   int n2 = data2_r.nrows();
   int p = data1_r.size();
-  
-#ifdef _OPENMP
-  if (n_threads > 0) omp_set_num_threads(n_threads);
-#endif
-  
+
   // Separate numeric and categorical columns
   std::vector<NumericVector> num_cols1, num_cols2;
   std::vector<double> num_ranges;
@@ -112,10 +106,7 @@ NumericVector min_gower_rcpp(DataFrame data1_r, DataFrame data2_r, int n_threads
   int n_cat = cat_cols1.size();
   
   NumericVector min_distances(n2);
-  
-#ifdef _OPENMP
-  #pragma omp parallel for schedule(dynamic)
-#endif
+
   for (int j = 0; j < n2; ++j) {
     double best_similarity = -1.0;
     

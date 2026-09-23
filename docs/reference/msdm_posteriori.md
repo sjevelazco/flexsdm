@@ -205,7 +205,7 @@ If using one these constraining methods, cite Mendes et al (2020).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 require(dplyr)
 require(terra)
 
@@ -226,6 +226,7 @@ occ <- spp %>%
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 10)
   ) # add columns with partition
+#> 6 rows were excluded from database because NAs were found
 
 # Fit a model
 m_glm <- fit_glm(
@@ -235,11 +236,26 @@ m_glm <- fit_glm(
   partition = ".part",
   thr = "equal_sens_spec",
 )
+#> Formula used for model fitting:
+#> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4 + I(CFP_1^2) + I(CFP_2^2) + I(CFP_3^2) + I(CFP_4^2)
+#> Replica number: 1/1
+#> Partition number: 1/10
+#> Partition number: 2/10
+#> Partition number: 3/10
+#> Partition number: 4/10
+#> Partition number: 5/10
+#> Partition number: 6/10
+#> Partition number: 7/10
+#> Partition number: 8/10
+#> Partition number: 9/10
+#> Partition number: 10/10
 
 
 # Lets predict this model
 m_pred <- sdm_predict(models = m_glm, pred = somevar, thr = NULL, con_thr = FALSE)
+#> Predicting individual models
 plot(m_pred[[1]])
+
 m_pred[[1]] %>% plot()
 
 # Lets extract the raster from this list
@@ -261,6 +277,7 @@ m_bmcp <- msdm_posteriori(
 plot(m_bmcp)
 
 
+
 ### mcp method
 m_mcp <- msdm_posteriori(
   records = occ,
@@ -274,6 +291,7 @@ m_mcp <- msdm_posteriori(
 )
 
 plot(m_mcp)
+
 
 
 ### pres method
@@ -291,6 +309,7 @@ m_pres <- msdm_posteriori(
 plot(m_pres)
 
 
+
 ### lq method
 m_lq <- msdm_posteriori(
   records = occ,
@@ -306,6 +325,7 @@ m_lq <- msdm_posteriori(
 plot(m_lq)
 
 
+
 ### obr method
 m_obr <- msdm_posteriori(
   records = occ,
@@ -319,5 +339,6 @@ m_obr <- msdm_posteriori(
 )
 
 plot(m_obr)
-} # }
+
+# }
 ```

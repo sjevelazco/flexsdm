@@ -49,7 +49,7 @@
 #' @seealso \code{\link{occfilt_env}}, \code{\link{occfilt_geo}}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #'

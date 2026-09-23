@@ -78,7 +78,7 @@ the input will produce duplicate absence coordinates in the output.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 data <- data.frame(
   species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
   x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -86,13 +86,61 @@ data <- data.frame(
 )
 
 # Presence-absence database for every species in the data
-get_absences(data, x = "x", y = "y", species = "species", target_species = NULL, pr_ab_name = "pr_ab")
+get_absences(data,
+  x = "x", y = "y", species = "species",
+  target_species = NULL, pr_ab_name = "pr_ab"
+)
+#> # A tibble: 15 × 4
+#>    species     x     y pr_ab
+#>    <chr>   <dbl> <dbl> <dbl>
+#>  1 sp1     -74.1  4.6      1
+#>  2 sp1     -74.2  4.65     1
+#>  3 sp1     -73.9  4.7      0
+#>  4 sp1     -73.8  4.72     0
+#>  5 sp1     -74    4.68     0
+#>  6 sp2     -73.9  4.7      1
+#>  7 sp2     -73.8  4.72     1
+#>  8 sp2     -74.1  4.6      0
+#>  9 sp2     -74.2  4.65     0
+#> 10 sp2     -74    4.68     0
+#> 11 sp3     -74    4.68     1
+#> 12 sp3     -74.1  4.6      0
+#> 13 sp3     -74.2  4.65     0
+#> 14 sp3     -73.9  4.7      0
+#> 15 sp3     -73.8  4.72     0
 
 # Presence-absence database for a single target species
-get_absences(data, x = "x", y = "y", species = "species", target_species = "sp1", pr_ab_name = "pr_ab")
+get_absences(data,
+  x = "x", y = "y", species = "species",
+  target_species = "sp1", pr_ab_name = "pr_ab"
+)
+#> # A tibble: 5 × 4
+#>   species     x     y pr_ab
+#>   <chr>   <dbl> <dbl> <dbl>
+#> 1 sp1     -74.1  4.6      1
+#> 2 sp1     -74.2  4.65     1
+#> 3 sp1     -73.9  4.7      0
+#> 4 sp1     -73.8  4.72     0
+#> 5 sp1     -74    4.68     0
 
 # Presence-absence database for a subset of species, with a custom
 # presence-absence column name
-get_absences(data, x = "x", y = "y", species = "species", target_species = c("sp1", "sp2"), pr_ab_name = "occ")
-} # }
+get_absences(data,
+  x = "x", y = "y", species = "species",
+  target_species = c("sp1", "sp2"), pr_ab_name = "occ"
+)
+#> # A tibble: 10 × 4
+#>    species     x     y   occ
+#>    <chr>   <dbl> <dbl> <dbl>
+#>  1 sp1     -74.1  4.6      1
+#>  2 sp1     -74.2  4.65     1
+#>  3 sp1     -73.9  4.7      0
+#>  4 sp1     -73.8  4.72     0
+#>  5 sp1     -74    4.68     0
+#>  6 sp2     -73.9  4.7      1
+#>  7 sp2     -73.8  4.72     1
+#>  8 sp2     -74.1  4.6      0
+#>  9 sp2     -74.2  4.65     0
+#> 10 sp2     -74    4.68     0
+# }
 ```

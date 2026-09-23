@@ -18,7 +18,7 @@ A plot with the original raster overlapped by a grid with the resolution used
 This function is useful to display the maximum and minimum resolution that you want to test with the block_partition function. Note that if the resolution to be tested is very fine, the plot display may take a long time.
 }
 \examples{
-\dontrun{
+\donttest{
 f <- system.file("external/somevar.tif", package = "flexsdm")
 r <- terra::rast(f)
 r <- r$CFP_1

@@ -33,9 +33,10 @@ For Euclidean and Mahalanobis distances, the result is a similarity value rangin
 Calculate environmental distance between presences and projection data
 }
 \examples{
-\dontrun{
+\donttest{
 require(dplyr)
 require(terra)
+require(ggplot2)
 data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)

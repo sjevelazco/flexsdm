@@ -60,7 +60,7 @@ Threshold dependent metrics are calculated based on the threshold criteria speci
 Fit and validate Gaussian Process models
 }
 \examples{
-\dontrun{
+\donttest{
 data("abies")
 
 # Using k-fold partition method

@@ -67,7 +67,7 @@
 #' @importFrom utils combn txtProgressBar setTxtProgressBar
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' data("abies")
 #' require(dplyr)
 #'

@@ -77,7 +77,7 @@ A list with two tibbles "pdpdata" and "resid".
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(terra)
 library(dplyr)
 
@@ -94,6 +94,7 @@ abies2 <- sdm_extract(abies2,
   y = "y",
   env_layer = somevar
 )
+#> 60 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
@@ -106,6 +107,14 @@ m <- fit_svm(
   partition = ".part",
   thr = c("max_sens_spec")
 )
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmx + tmn
+#> Replica number: 1/1
+#> Partition number: 1/5
+#> Partition number: 2/5
+#> Partition number: 3/5
+#> Partition number: 4/5
+#> Partition number: 5/5
 
 df <- data_bpdp(
   model = m$model,
@@ -118,10 +127,57 @@ df <- data_bpdp(
 )
 
 df
+#> $pspdata
+#> # A tibble: 2,500 × 3
+#>      aet   cwd Suitability
+#>    <dbl> <dbl>       <dbl>
+#>  1   0   -9.39      0.160 
+#>  2  27.7 -9.39      0.152 
+#>  3  55.4 -9.39      0.139 
+#>  4  83.1 -9.39      0.121 
+#>  5 111.  -9.39      0.100 
+#>  6 139.  -9.39      0.0791
+#>  7 166.  -9.39      0.0605
+#>  8 194.  -9.39      0.0457
+#>  9 222.  -9.39      0.0352
+#> 10 249.  -9.39      0.0285
+#> # ℹ 2,490 more rows
+#> 
+#> $training_boundaries
+#> # A tibble: 4 × 2
+#>     aet   cwd
+#>   <dbl> <dbl>
+#> 1  117. -6.59
+#> 2 1201. -6.59
+#> 3  117. 10.5 
+#> 4 1201. 10.5 
+#> 
 names(df)
+#> [1] "pspdata"             "training_boundaries"
 df$pspdata
+#> # A tibble: 2,500 × 3
+#>      aet   cwd Suitability
+#>    <dbl> <dbl>       <dbl>
+#>  1   0   -9.39      0.160 
+#>  2  27.7 -9.39      0.152 
+#>  3  55.4 -9.39      0.139 
+#>  4  83.1 -9.39      0.121 
+#>  5 111.  -9.39      0.100 
+#>  6 139.  -9.39      0.0791
+#>  7 166.  -9.39      0.0605
+#>  8 194.  -9.39      0.0457
+#>  9 222.  -9.39      0.0352
+#> 10 249.  -9.39      0.0285
+#> # ℹ 2,490 more rows
 df$training_boundaries
+#> # A tibble: 4 × 2
+#>     aet   cwd
+#>   <dbl> <dbl>
+#> 1  117. -6.59
+#> 2 1201. -6.59
+#> 3  117. 10.5 
+#> 4 1201. 10.5 
 
 # see p_bpdp to construct partial dependence plot with ggplot2
-} # }
+# }
 ```
