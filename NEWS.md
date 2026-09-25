@@ -2,6 +2,8 @@
 -  `get_absences`: Function to build a presence-absence database from multi-species occurrence data, by @sjevelazco
 -  `occ_reproject`: Function to reproject occurrence coordinates to a new coordinate reference system, by @sjevelazco
 -  minor warnings and package formality were fixed, by @sjevelazco [467](https://github.com/sjevelazco/flexsdm/pull/467)
+-  `correct_colinvar`: Unicode box-drawing characters in the documentation's example directory tree were replaced with plain ASCII, fixing a LaTeX error that caused the PDF manual build to fail on CRAN, by @sjevelazco
+-  Vignette `v07_Complete_workflow`: two dataset links were missing the `https://` scheme (`www.doi.org/...`), which CRAN flagged as invalid URIs; fixed to `https://doi.org/...`, by @sjevelazco
 
 # flexsdm 1.4.0 
 -  `map_env_dist`: C++ function to calculate Euclidean and Mahalanobis distance was implemented, by @sjevelazco [463](https://github.com/sjevelazco/flexsdm/pull/463)

@@ -1831,9 +1831,9 @@ If you are interested in learning more about constructing SDM for different spec
 
 1- Rey Pullido, K.G., & Velazco, S.J.E. (**2025**). [On protected areas and other effective area-based conservation measures to conserve biodiversity. Exploring their contribution to Colombian snakes](https://www.sciencedirect.com/science/article/pii/S2530064425000173?via%3Dihub). *Perspective in Ecology and Conservation*, 23(2), pp.110-120.
 
--   Occurrences record datasets are available [here](www.doi.org/10.6084/m9.figshare.28344461)
+-   Occurrences record datasets are available [here](https://doi.org/10.6084/m9.figshare.28344461)
 
--   Codes used to create species distribution models, perform spatial conservation prioritization, and perform analyses are available [here](www.doi.org/10.6084/m9.figshare.28746371).
+-   Codes used to create species distribution models, perform spatial conservation prioritization, and perform analyses are available [here](https://doi.org/10.6084/m9.figshare.28746371).
 
 2- Rose, M. B., Elías Velazco, S. J., Regan, H. M., & Franklin, J. (**2023**). R[arity, geography, and plant exposure to global change in the California Floristic Province](https://doi.org/10.1111/geb.13618). *Global Ecology and Biogeography*, 32(2), 218-232.
 
