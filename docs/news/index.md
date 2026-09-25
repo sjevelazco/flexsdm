@@ -1,11 +1,16 @@
 # Changelog
 
-## flexsdm 1.4.x
+## flexsdm 1.4.1
 
 - `get_absences`: Function to build a presence-absence database from
-  multi-species occurrence data
+  multi-species occurrence data, by
+  [@sjevelazco](https://github.com/sjevelazco)
 - `occ_reproject`: Function to reproject occurrence coordinates to a new
-  coordinate reference system
+  coordinate reference system, by
+  [@sjevelazco](https://github.com/sjevelazco)
+- minor warnings and package formality were fixed, by
+  [@sjevelazco](https://github.com/sjevelazco)
+  [467](https://github.com/sjevelazco/flexsdm/pull/467)
 
 ## flexsdm 1.4.0
 

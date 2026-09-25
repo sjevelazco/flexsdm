@@ -1,7 +1,7 @@
 Package: flexsdm
 Type: Package
 Title: Tools for Species Distribution Modeling
-Version: 1.4.0
+Version: 1.4.1
 Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
            email = "sjevelazco@gmail.com",
            comment = c(ORCID = "0000-0002-7527-0967")),

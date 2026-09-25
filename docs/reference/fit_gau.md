@@ -46674,8 +46674,8 @@ gaup_t1$model
 #> 
 #> $mnfun
 #> function(x) rep(exp.prev, nrow(x))
-#> <bytecode: 0x970c1d4d0>
-#> <environment: 0x98617f818>
+#> <bytecode: 0xc175910e0>
+#> <environment: 0xc0c2da7e8>
 #> 
 #> $facs
 #> landform 
@@ -91897,8 +91897,8 @@ gaup_t2
 #> 
 #> $mnfun
 #> function(x) rep(exp.prev, nrow(x))
-#> <bytecode: 0x970c1d4d0>
-#> <environment: 0x980c41e70>
+#> <bytecode: 0xc175910e0>
+#> <environment: 0xc0c49ab68>
 #> 
 #> $facs
 #> landform 

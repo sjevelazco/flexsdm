@@ -317,9 +317,9 @@ dir_sc <- file.path(tempdir(), "projections")
 dir.create(dir_sc)
 dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
 sapply(dir_sc, dir.create)
-#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections/scenario_1 
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKeEw59/projections/scenario_1 
 #>                                                                                TRUE 
-#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections/scenario_2 
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKeEw59/projections/scenario_2 
 #>                                                                                TRUE 
 
 somevar <-
@@ -332,7 +332,7 @@ terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite = TRU
 ## Perform pca with projections
 dir_w_proj <- dirname(dir_sc[1])
 dir_w_proj
-#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/projections"
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKeEw59/projections"
 var <- correct_colinvar(env_layer = somevar, method = "pca", proj = dir_w_proj)
 var$env_layer
 #> class       : SpatRaster
@@ -361,7 +361,7 @@ var$cumulative_variance
 #> 3     3 0.979
 #> 4     4 1    
 var$proj
-#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKUld6X/Projection_PCA"
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKeEw59/Projection_PCA"
 
 
 # Perform fa colinearity control
