@@ -76,7 +76,7 @@ environmental space. This function is unique to *flexsdm*, and in
 contrast with other packages is able to use any number of environmental
 dimensions and does not perform a PCA before filtering.
 
-Next we apply environmental occurrence filtering using 8 bins and
+Next we apply environmental occurrence filtering using 5 bins and
 display the resulting filtered occurrence data
 
 \
@@ -87,14 +87,14 @@ display the resulting filtered occurrence data
 `    x ``=`` ``"x"``,`\
 `    y ``=`` ``"y"``,`\
 `    id ``=`` ``"id"``,`\
-`    nbins ``=`` ``8``,`\
+`    nbins ``=`` ``5``,`\
 `    env_layer ``=`` ``somevar`\
 `  ``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
 `  `[`left_join`](https://dplyr.tidyverse.org/reference/mutate-joins.html)`(``abies_p``, by ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"id"``, ``"x"``, ``"y"``)``)`\
 `#> Extracting values from raster ...`\
 `#> 27 records were removed because they have NAs for some variables`\
 `#> Number of unfiltered records: 673`\
-`#> Number of filtered records: 216`\
+`#> Number of filtered records: 94`\
 \
 [`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``layer1``, col ``=`` ``"gray80"``, legend ``=`` ``FALSE``, axes ``=`` ``FALSE``)`\
 [`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`[`crop`](https://rspatial.github.io/terra/reference/crop.html)`(``ca``, ``layer1``)``, add ``=`` ``TRUE``)`\
@@ -132,11 +132,11 @@ partitions using the spatial block method.
 `    n_part ``=`` ``4``,`\
 `    min_res_mult ``=`` ``3``,`\
 `    max_res_mult ``=`` ``200``,`\
-`    num_grids ``=`` ``30``,`\
+`    num_grids ``=`` ``10``,`\
 `    prop ``=`` ``1`\
 `  ``)`\
 `#> The following grid cell sizes will be tested:`\
-`#> 5670 | 18508.97 | 31347.93 | 44186.9 | 57025.86 | 69864.83 | 82703.79 | 95542.76 | 108381.72 | 121220.69 | 134059.66 | 146898.62 | 159737.59 | 172576.55 | 185415.52 | 198254.48 | 211093.45 | 223932.41 | 236771.38 | 249610.34 | 262449.31 | 275288.28 | 288127.24 | 300966.21 | 313805.17 | 326644.14 | 339483.1 | 352322.07 | 365161.03 | 378000`\
+`#> 5670 | 47040 | 88410 | 129780 | 171150 | 212520 | 253890 | 295260 | 336630 | 378000`\
 `#> Creating basic raster mask...`\
 `#> Searching for the optimal grid size...`\
 `abies_pf`` ``<-`` ``occ_part``$``part`\
@@ -162,16 +162,16 @@ partitions using the spatial block method.
 `#> ``# Groups:   .part [4]`\
 `#>   .part     n`\
 `#>   ``<int>`` ``<int>`\
-`#> ``1``     1    38`\
-`#> ``2``     2    59`\
-`#> ``3``     3    33`\
-`#> ``4``     4    86`\
+`#> ``1``     1    32`\
+`#> ``2``     2    13`\
+`#> ``3``     3    35`\
+`#> ``4``     4    14`\
 `# Additional information of the best block`\
 `occ_part``$``best_part_info`\
 `#> ``# A tibble: 1 × 5`\
 `#>   n_grid cell_size spa_auto env_sim  sd_p`\
 `#>    ``<int>``     ``<dbl>``    ``<dbl>``   ``<dbl>`` ``<dbl>`\
-`#> ``1``     14   ``172``577.      0.5    173.  24.1`
+`#> ``1``      7    ``295``260    0.409    188.  11.6`
 
 ### Pseudo-absence/background points (using partition previously created as a mask)
 
@@ -228,35 +228,35 @@ pseudo-absence and background points.
 `# Bind a presences and pseudo-absences`\
 `abies_pa`` ``<-`` `[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``abies_pf``, ``psa``)`\
 `abies_pa`` ``# Presence-Pseudo-absence database`\
-`#> ``# A tibble: 432 × 4`\
+`#> ``# A tibble: 188 × 4`\
+`#>           x        y pr_ab .part`\
+`#>       ``<dbl>``    ``<dbl>`` ``<dbl>`` ``<dbl>`\
+`#> `` 1``  -``12``558.``   ``68``530.     1     3`\
+`#> `` 2``  ``115``217. -``145``937.``     1     1`\
+`#> `` 3``    ``3``634.   ``22``501.     1     3`\
+`#> `` 4``   ``44``972.  -``60``781.``     1     1`\
+`#> `` 5``  -``34``463.``  ``160``313.     1     3`\
+`#> `` 6``   ``83``108.  -``27``300.``     1     1`\
+`#> `` 7``  ``118``707. -``179``991.``     1     1`\
+`#> `` 8``  -``49``722.``  ``141``124.     1     3`\
+`#> `` 9``   ``46``612.  -``59``242.``     1     1`\
+`#> ``10`` -``119``068.``  ``279``241.     1     2`\
+`#> ``# ℹ 178 more rows`\
+`bg`` ``# Background points`\
+`#> ``# A tibble: 940 × 4`\
 `#>          x        y pr_ab .part`\
 `#>      ``<dbl>``    ``<dbl>`` ``<dbl>`` ``<dbl>`\
-`#> `` 1`` -``12``558.``   ``68``530.     1     2`\
-`#> `` 2`` ``115``217. -``145``937.``     1     4`\
-`#> `` 3``   ``3``634.   ``22``501.     1     2`\
-`#> `` 4``  ``44``972.  -``60``781.``     1     2`\
-`#> `` 5`` -``34``463.``  ``160``313.     1     3`\
-`#> `` 6``  ``83``108.  -``27``300.``     1     2`\
-`#> `` 7`` ``124``877. -``176``319.``     1     4`\
-`#> `` 8`` ``118``707. -``179``991.``     1     4`\
-`#> `` 9`` ``126``141. -``176``302.``     1     4`\
-`#> ``10`` -``49``722.``  ``141``124.     1     3`\
-`#> ``# ℹ 422 more rows`\
-`bg`` ``# Background points`\
-`#> ``# A tibble: 2,160 × 4`\
-`#>           x       y pr_ab .part`\
-`#>       ``<dbl>``   ``<dbl>`` ``<dbl>`` ``<dbl>`\
-`#> `` 1`` -``153``501.`` ``392``162.     0     1`\
-`#> `` 2``  -``89``241.`` ``263``642.     0     1`\
-`#> `` 3``  -``89``241.``  ``27``392.     0     1`\
-`#> `` 4`` -``130``821.`` ``331``682.     0     1`\
-`#> `` 5`` -``132``711.`` ``339``242.     0     1`\
-`#> `` 6``  -``51``441.`` -``63``328.``     0     1`\
-`#> `` 7``  -``59``001.``  ``67``082.     0     1`\
-`#> `` 8``  -``32``541.`` -``51``988.``     0     1`\
-`#> `` 9``  -``96``801.``    932.     0     1`\
-`#> ``10``  -``47``661.`` -``31``198.``     0     1`\
-`#> ``# ℹ 2,150 more rows`
+`#> `` 1``  ``46``839.  -``23``638.``     0     1`\
+`#> `` 2`` -``34``431.``  -``89``788.``     0     1`\
+`#> `` 3``  ``92``199. -``256``108.``     0     1`\
+`#> `` 4`` ``118``659. -``282``568.``     0     1`\
+`#> `` 5`` ``122``439. -``123``808.``     0     1`\
+`#> `` 6`` -``60``891.``  -``50``098.``     0     1`\
+`#> `` 7``  ``20``379.  -``46``318.``     0     1`\
+`#> `` 8`` ``158``349. -``165``388.``     0     1`\
+`#> `` 9`` ``133``779. -``259``888.``     0     1`\
+`#> ``10``  ``50``619. -``218``308.``     0     1`\
+`#> ``# ℹ 930 more rows`
 
 Extract environmental data for the presence-absence and background data
 . View the distributions of present points, pseudo-absence points, and
@@ -306,8 +306,8 @@ hyper-parameter values in the tuned Maximum Entropy model.
 `  background ``=`` ``bg``,`\
 `  partition ``=`` ``".part"``,`\
 `  grid ``=`` `[`expand.grid`](https://rdrr.io/r/base/expand.grid.html)`(`\
-`    regmult ``=`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``0.1``, ``3``, ``0.5``)``,`\
-`    classes ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"l"``, ``"lq"``, ``"lqhpt"``)`\
+`    regmult ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.5``, ``1.5``, ``2.5``)``,`\
+`    classes ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"l"``, ``"lq"``)`\
 `  ``)``,`\
 `  thr ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"max_sens_spec"``, ``"equal_sens_spec"``, ``"max_sorensen"``)``,`\
 `  metric ``=`` ``"TSS"``,`\
@@ -322,7 +322,7 @@ hyper-parameter values in the tuned Maximum Entropy model.
 `#> Partition number: 4/4`\
 `#> Fitting best model`\
 `#> Formula used for model fitting:`\
-`#> ~aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2) + hinge(aet) + hinge(cwd) + hinge(tmx) + hinge(tmn) + thresholds(aet) + thresholds(cwd) + thresholds(tmx) + thresholds(tmn) + cwd:aet + tmx:aet + tmn:aet + tmx:cwd + tmn:cwd + tmn:tmx - 1`\
+`#> ~aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2) - 1`\
 `#> Replica number: 1/1`\
 `#> Partition number: 1/4`\
 `#> Partition number: 2/4`\
@@ -380,9 +380,9 @@ individual models.
 `#> ``# A tibble: 3 × 33`\
 `#>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean`\
 `#>   ``<chr>`` ``<chr>``              ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>``    ``<dbl>`\
-`#> ``1`` meanw equal_sens_sp…     0.583         216        216    0.794 0.089``0``    0.794`\
-`#> ``2`` meanw max_sens_spec      0.514         216        216    0.943 0.026``2``    0.757`\
-`#> ``3`` meanw max_sorensen       0.449         216        216    0.963 0.014``3``    0.738`\
+`#> ``1`` meanw equal_sens_sp…     0.483          94         94    0.777 0.113     0.777`\
+`#> ``2`` meanw max_sens_spec      0.204          94         94    0.848 0.069``9``    0.764`\
+`#> ``3`` meanw max_sorensen       0.204          94         94    0.977 0.029``7``    0.594`\
 `#> ``# ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,`\
 `#> ``#   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,`\
 `#> ``#   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,`\
@@ -401,16 +401,16 @@ sdm_summarize() function to merge model performance tables.
 `#> ``# A tibble: 10 × 36`\
 `#>    model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd`\
 `#>       ``<int>`` ``<chr>`` ``<chr>``             ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>`\
-`#> `` 1``        1 max   max_sens_spec     0.364         216        216    0.954 0.031``6`\
-`#> `` 2``        2 gau   equal_sens_s…     0.643         216        216    0.784 0.089``0`\
-`#> `` 3``        2 gau   max_sens_spec     0.471         216        216    0.945 0.020``1`\
-`#> `` 4``        2 gau   max_sorensen      0.471         216        216    0.964 0.010``8`\
-`#> `` 5``        3 glm   equal_sens_s…     0.649         216        216    0.797 0.083``0`\
-`#> `` 6``        3 glm   max_sens_spec     0.554         216        216    0.945 0.029``7`\
-`#> `` 7``        3 glm   max_sorensen      0.423         216        216    0.977 0.037``9`\
-`#> `` 8``        4 meanw equal_sens_s…     0.583         216        216    0.794 0.089``0`\
-`#> `` 9``        4 meanw max_sens_spec     0.514         216        216    0.943 0.026``2`\
-`#> ``10``        4 meanw max_sorensen      0.449         216        216    0.963 0.014``3`\
+`#> `` 1``        1 max   max_sens_spec     0.408          94         94    0.884 0.104 `\
+`#> `` 2``        2 gau   equal_sens_s…     0.589          94         94    0.754 0.092``8`\
+`#> `` 3``        2 gau   max_sens_spec     0.553          94         94    0.848 0.069``9`\
+`#> `` 4``        2 gau   max_sorensen      0.553          94         94    0.906 0.077``9`\
+`#> `` 5``        3 glm   equal_sens_s…     0.595          94         94    0.724 0.103 `\
+`#> `` 6``        3 glm   max_sens_spec     0.578          94         94    0.818 0.159 `\
+`#> `` 7``        3 glm   max_sorensen      0.334          94         94    0.975 0.033``8`\
+`#> `` 8``        4 meanw equal_sens_s…     0.483          94         94    0.777 0.113 `\
+`#> `` 9``        4 meanw max_sens_spec     0.204          94         94    0.848 0.069``9`\
+`#> ``10``        4 meanw max_sorensen      0.204          94         94    0.977 0.029``7`\
 `#> ``# ℹ 28 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,`\
 `#> ``#   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,`\
 `#> ``#   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,`\

@@ -252,18 +252,18 @@ vip_t <- sdm_varimp(
 
 vip_t
 #> # A tibble: 54 × 17
-#>    model threshold   predictors     TPR    TNR W_TPR_TNR SORENSEN JACCARD    FPB
-#>    <chr> <chr>       <chr>        <dbl>  <dbl>     <dbl>    <dbl>   <dbl>  <dbl>
-#>  1 max   equal_sens… aet        0.0434  0.0434    0.0434   0.0434  0.0484 0.0968
-#>  2 max   max_sens_s… aet        0.0718  0.0385    0.0552   0.0523  0.0644 0.129 
-#>  3 max   max_sorens… aet        0       0.144     0.0712   0.0415  0.0523 0.105 
-#>  4 max   equal_sens… ppt_jja    0.0200  0.0200    0.0200   0.0200  0.0226 0.0453
-#>  5 max   max_sens_s… ppt_jja    0.137   0         0.0386   0.0596  0.0730 0.146 
-#>  6 max   max_sorens… ppt_jja    0.0834  0.0225    0.0530   0.0504  0.0631 0.126 
-#>  7 max   equal_sens… pH         0.0444  0.0444    0.0444   0.0444  0.0495 0.0990
-#>  8 max   max_sens_s… pH         0.0201  0.0597    0.0399   0.0298  0.0373 0.0747
-#>  9 max   max_sorens… pH         0.00400 0.0887    0.0464   0.0286  0.0365 0.0729
-#> 10 max   equal_sens… awc        0.0694  0.0694    0.0694   0.0694  0.0760 0.152 
+#>    model threshold  predictors     TPR     TNR W_TPR_TNR SORENSEN JACCARD    FPB
+#>    <chr> <chr>      <chr>        <dbl>   <dbl>     <dbl>    <dbl>   <dbl>  <dbl>
+#>  1 max   equal_sen… aet        4.15e-2 0.0415     0.0415   0.0415  0.0464 0.0927
+#>  2 max   max_sens_… aet        6.64e-2 0.0402     0.0533   0.0495  0.0611 0.122 
+#>  3 max   max_soren… aet        0       0.155      0.0720   0.0399  0.0503 0.101 
+#>  4 max   equal_sen… ppt_jja    1.85e-2 0.0185     0.0185   0.0185  0.0210 0.0419
+#>  5 max   max_sens_… ppt_jja    1.35e-1 0          0.0371   0.0581  0.0712 0.142 
+#>  6 max   max_soren… ppt_jja    8.89e-2 0.01000    0.0495   0.0497  0.0623 0.125 
+#>  7 max   equal_sen… pH         4.31e-2 0.0431     0.0431   0.0431  0.0481 0.0962
+#>  8 max   max_sens_… pH         2.50e-2 0.0546     0.0398   0.0308  0.0386 0.0773
+#>  9 max   max_soren… pH         3.14e-4 0.0936     0.0470   0.0282  0.0359 0.0718
+#> 10 max   equal_sen… awc        7.41e-2 0.0741     0.0741   0.0741  0.0808 0.162 
 #> # ℹ 44 more rows
 #> # ℹ 8 more variables: OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>

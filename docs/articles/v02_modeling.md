@@ -147,39 +147,47 @@ BACKGROUND DATA, WHILE THE ABIES DATASET CLEARLY HAS ABSENCES…)
 \
 [`data`](https://rdrr.io/r/utils/data.html)`(``"abies"``)`\
 [`data`](https://rdrr.io/r/utils/data.html)`(``"backg"``)`\
+`# Use a subset of the data to keep this tutorial fast to run;`\
+`# in a real analysis you may want to use the full dataset`\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
+`abies`` ``<-`` ``abies`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)`(``pr_ab``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`slice_sample`](https://dplyr.tidyverse.org/reference/slice.html)`(``prop ``=`` ``0.3``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`ungroup`](https://dplyr.tidyverse.org/reference/group_by.html)`(``)`\
+`backg`` ``<-`` ``backg`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` ``dplyr``::`[`slice_sample`](https://dplyr.tidyverse.org/reference/slice.html)`(``n ``=`` ``1000``)`\
 \
 `dplyr``::`[`glimpse`](https://pillar.r-lib.org/reference/glimpse.html)`(``abies``)`\
-`#> Rows: 1,400`\
+`#> Rows: 420`\
 `#> Columns: 13`\
-`#> $ id       ``<int>`` 715``, ``5680``, ``7907``, ``1850``, ``1702``, ``10036``, ``12384``, ``6513``, ``9884``, ``8651``, ``…`\
+`#> $ id       ``<int>`` 12040``, ``10361``, ``9402``, ``9815``, ``10524``, ``8860``, ``6431``, ``11730``, ``808``, ``1105…`\
 `#> $ pr_ab    ``<dbl>`` 0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0…`\
-`#> $ x        ``<dbl>`` -95417.134``, ``98986.536``, ``121474.257``, ``-39976.221``, ``111372.261``, ``-2…`\
-`#> $ y        ``<dbl>`` 314240.13``, ``-159415.18``, ``-99463.44``, ``-17456.11``, ``-91404.05``, ``39222…`\
-`#> $ aet      ``<dbl>`` 323.1133``, ``447.5567``, ``182.2833``, ``372.3867``, ``209.4567``, ``308.3000``, ``5…`\
-`#> $ cwd      ``<dbl>`` 546.1400``, ``815.4033``, ``271.1800``, ``946.2933``, ``398.5500``, ``534.9533``, ``3…`\
-`#> $ tmin     ``<dbl>`` 1.2433``, ``9.4267``, ``-4.9500``, ``8.7767``, ``-4.0333``, ``4.6600``, ``4.3800``, ``4.9…`\
-`#> $ ppt_djf  ``<dbl>`` 62.7257``, ``129.6406``, ``150.7003``, ``116.0236``, ``164.9327``, ``166.2220``, ``48…`\
-`#> $ ppt_jja  ``<dbl>`` 17.7941``, ``6.4317``, ``11.2294``, ``2.7020``, ``9.2686``, ``16.5310``, ``41.2494``, ``8…`\
-`#> $ pH       ``<dbl>`` 5.773341``, ``5.600000``, ``0.000000``, ``6.411796``, ``0.000000``, ``5.700000``, ``5…`\
-`#> $ awc      ``<dbl>`` 0.10837019``, ``0.16000000``, ``0.00000000``, ``0.09719457``, ``0.00000000``, ``0…`\
-`#> $ depth    ``<dbl>`` 152.000000``, ``201.000000``, ``0.000000``, ``59.759930``, ``0.000000``, ``112.99…`\
-`#> $ landform ``<fct>`` 7``, ``11``, ``15``, ``14``, ``15``, ``15``, ``7``, ``15``, ``4``, ``10``, ``6``, ``10``, ``10``, ``15``, ``10``, ``11``, ``1…`\
+`#> $ x        ``<dbl>`` -308908.77``, ``-254286.44``, ``-286978.67``, ``-291848.83``, ``-256658.45``, ``1…`\
+`#> $ y        ``<dbl>`` 384247.811``, ``417157.885``, ``386206.009``, ``445594.587``, ``184437.725``, ``-…`\
+`#> $ aet      ``<dbl>`` 572.9367``, ``259.6567``, ``587.2900``, ``443.1700``, ``355.3867``, ``354.0600``, ``4…`\
+`#> $ cwd      ``<dbl>`` 332.0133``, ``469.4567``, ``375.9467``, ``454.9833``, ``567.6433``, ``733.3933``, ``5…`\
+`#> $ tmin     ``<dbl>`` 4.8400``, ``2.9333``, ``6.4533``, ``4.3933``, ``5.8667``, ``3.9733``, ``4.8733``, ``6.726…`\
+`#> $ ppt_djf  ``<dbl>`` 521.4311``, ``151.2758``, ``332.6133``, ``331.5974``, ``303.1179``, ``181.9209``, ``1…`\
+`#> $ ppt_jja  ``<dbl>`` 48.7567``, ``15.0839``, ``15.6589``, ``19.0647``, ``10.5549``, ``9.8277``, ``7.6569``, ``…`\
+`#> $ pH       ``<dbl>`` 5.631732``, ``6.202818``, ``5.500000``, ``6.000000``, ``5.200000``, ``0.000000``, ``5…`\
+`#> $ awc      ``<dbl>`` 0.10841342``, ``0.09496477``, ``0.16000000``, ``0.07000000``, ``0.08000000``, ``0…`\
+`#> $ depth    ``<dbl>`` 63.69832``, ``68.67968``, ``178.00000``, ``107.00000``, ``61.00000``, ``0.00000``, ``…`\
+`#> $ landform ``<fct>`` 6``, ``4``, ``7``, ``11``, ``6``, ``10``, ``14``, ``12``, ``7``, ``7``, ``14``, ``10``, ``7``, ``11``, ``14``, ``10``, ``10``, ``…`\
 `dplyr``::`[`glimpse`](https://pillar.r-lib.org/reference/glimpse.html)`(``backg``)`\
-`#> Rows: 5,000`\
+`#> Rows: 1,000`\
 `#> Columns: 13`\
 `#> $ pr_ab        ``<dbl>`` 0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``…`\
-`#> $ x            ``<dbl>`` 160779.16``, ``36849.16``, ``-240170.84``, ``-152420.84``, ``-193190.84``, ``…`\
-`#> $ y            ``<dbl>`` -449968.33``, ``24151.67``, ``90031.67``, ``-143518.33``, ``24151.67``, ``223…`\
-`#> $ aet          ``<dbl>`` 280.4567``, ``259.7800``, ``400.1767``, ``367.4833``, ``397.3667``, ``385.263…`\
-`#> $ cwd          ``<dbl>`` 1137.2433``, ``381.5367``, ``699.6500``, ``843.4467``, ``842.3833``, ``637.35…`\
-`#> $ tmin         ``<dbl>`` 13.5100``, ``-3.1733``, ``8.6800``, ``9.0133``, ``8.9700``, ``4.9333``, ``6.2933``,``…`\
-`#> $ ppt_djf      ``<dbl>`` 71.2741``, ``171.4537``, ``285.0893``, ``72.0309``, ``125.2467``, ``226.1534``,``…`\
-`#> $ ppt_jja      ``<dbl>`` 1.1920``, ``17.5193``, ``5.0158``, ``1.2047``, ``1.9778``, ``8.1554``, ``18.4182``,``…`\
-`#> $ pH           ``<dbl>`` 0.0000000``, ``0.2122687``, ``5.7222223``, ``7.5350823``, ``6.1963525``, ``5.…`\
-`#> $ awc          ``<dbl>`` 0.000000000``, ``0.003473487``, ``0.080370426``, ``0.170000002``, ``0.131…`\
-`#> $ depth        ``<dbl>`` 0.00000``, ``201.00000``, ``50.07409``, ``154.39426``, ``122.39575``, ``56.17…`\
-`#> $ percent_clay ``<dbl>`` 0.0000000``, ``0.4438345``, ``18.4111176``, ``46.9751244``, ``37.1873169``,``…`\
-`#> $ landform     ``<fct>`` 13``, ``10``, ``6``, ``6``, ``10``, ``14``, ``8``, ``14``, ``6``, ``7``, ``11``, ``14``, ``14``, ``10``, ``6``, ``6``, ``…`
+`#> $ x            ``<dbl>`` 322239.164``, ``18219.164``, ``138909.164``, ``-52520.836``, ``-265550.83…`\
+`#> $ y            ``<dbl>`` -554188.334``, ``-319558.334``, ``-407038.334``, ``71941.666``, ``234481.…`\
+`#> $ aet          ``<dbl>`` 594.6933``, ``196.3567``, ``349.2067``, ``504.1167``, ``511.7433``, ``450.810…`\
+`#> $ cwd          ``<dbl>`` 564.1600``, ``1172.8033``, ``1030.2833``, ``698.0667``, ``330.4567``, ``479.9…`\
+`#> $ tmin         ``<dbl>`` 4.7500``, ``7.1067``, ``11.1400``, ``6.9300``, ``3.5200``, ``3.9767``, ``9.7767``, ``…`\
+`#> $ ppt_djf      ``<dbl>`` 129.3690``, ``36.1234``, ``104.8891``, ``187.1644``, ``312.0807``, ``86.2167``,``…`\
+`#> $ ppt_jja      ``<dbl>`` 12.7164``, ``1.0201``, ``2.1754``, ``6.2898``, ``11.0941``, ``22.0211``, ``1.1523…`\
+`#> $ pH           ``<dbl>`` 5.8000002``, ``7.8000002``, ``6.1700625``, ``5.6999998``, ``3.0788457``, ``5.…`\
+`#> $ awc          ``<dbl>`` 0.13000000``, ``0.18000001``, ``0.17149687``, ``0.12000000``, ``0.0479597…`\
+`#> $ depth        ``<dbl>`` 77.00000``, ``201.00000``, ``50.92476``, ``152.00000``, ``119.32758``, ``182.…`\
+`#> $ percent_clay ``<dbl>`` 17.100000``, ``25.400000``, ``22.295300``, ``21.000000``, ``13.046448``, ``41…`\
+`#> $ landform     ``<fct>`` 6``, ``13``, ``7``, ``14``, ``7``, ``7``, ``10``, ``13``, ``6``, ``11``, ``10``, ``10``, ``6``, ``10``, ``13``, ``11``,``…`
 
 If you want to replace the abies dataset with your own data, make sure
 that your dataset contains the environmental conditions related to
@@ -192,59 +200,59 @@ for presence-absence and for background points datasets.
 `abies2`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
 `  data ``=`` ``abies``,`\
 `  pr_ab ``=`` ``"pr_ab"``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"kfold"``, folds ``=`` ``5``)`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"kfold"``, folds ``=`` ``3``)`\
 `)`\
 \
 `dplyr``::`[`glimpse`](https://pillar.r-lib.org/reference/glimpse.html)`(``abies2``)`\
-`#> Rows: 1,400`\
+`#> Rows: 420`\
 `#> Columns: 14`\
-`#> $ id       ``<int>`` 715``, ``5680``, ``7907``, ``1850``, ``1702``, ``10036``, ``12384``, ``6513``, ``9884``, ``8651``, ``…`\
+`#> $ id       ``<int>`` 12040``, ``10361``, ``9402``, ``9815``, ``10524``, ``8860``, ``6431``, ``11730``, ``808``, ``1105…`\
 `#> $ pr_ab    ``<dbl>`` 0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0…`\
-`#> $ x        ``<dbl>`` -95417.134``, ``98986.536``, ``121474.257``, ``-39976.221``, ``111372.261``, ``-2…`\
-`#> $ y        ``<dbl>`` 314240.13``, ``-159415.18``, ``-99463.44``, ``-17456.11``, ``-91404.05``, ``39222…`\
-`#> $ aet      ``<dbl>`` 323.1133``, ``447.5567``, ``182.2833``, ``372.3867``, ``209.4567``, ``308.3000``, ``5…`\
-`#> $ cwd      ``<dbl>`` 546.1400``, ``815.4033``, ``271.1800``, ``946.2933``, ``398.5500``, ``534.9533``, ``3…`\
-`#> $ tmin     ``<dbl>`` 1.2433``, ``9.4267``, ``-4.9500``, ``8.7767``, ``-4.0333``, ``4.6600``, ``4.3800``, ``4.9…`\
-`#> $ ppt_djf  ``<dbl>`` 62.7257``, ``129.6406``, ``150.7003``, ``116.0236``, ``164.9327``, ``166.2220``, ``48…`\
-`#> $ ppt_jja  ``<dbl>`` 17.7941``, ``6.4317``, ``11.2294``, ``2.7020``, ``9.2686``, ``16.5310``, ``41.2494``, ``8…`\
-`#> $ pH       ``<dbl>`` 5.773341``, ``5.600000``, ``0.000000``, ``6.411796``, ``0.000000``, ``5.700000``, ``5…`\
-`#> $ awc      ``<dbl>`` 0.10837019``, ``0.16000000``, ``0.00000000``, ``0.09719457``, ``0.00000000``, ``0…`\
-`#> $ depth    ``<dbl>`` 152.000000``, ``201.000000``, ``0.000000``, ``59.759930``, ``0.000000``, ``112.99…`\
-`#> $ landform ``<fct>`` 7``, ``11``, ``15``, ``14``, ``15``, ``15``, ``7``, ``15``, ``4``, ``10``, ``6``, ``10``, ``10``, ``15``, ``10``, ``11``, ``1…`\
-`#> $ .part    ``<int>`` 3``, ``2``, ``5``, ``3``, ``5``, ``4``, ``2``, ``1``, ``2``, ``2``, ``1``, ``2``, ``1``, ``2``, ``2``, ``2``, ``5``, ``4``, ``5``, ``1``, ``5…`
+`#> $ x        ``<dbl>`` -308908.77``, ``-254286.44``, ``-286978.67``, ``-291848.83``, ``-256658.45``, ``1…`\
+`#> $ y        ``<dbl>`` 384247.811``, ``417157.885``, ``386206.009``, ``445594.587``, ``184437.725``, ``-…`\
+`#> $ aet      ``<dbl>`` 572.9367``, ``259.6567``, ``587.2900``, ``443.1700``, ``355.3867``, ``354.0600``, ``4…`\
+`#> $ cwd      ``<dbl>`` 332.0133``, ``469.4567``, ``375.9467``, ``454.9833``, ``567.6433``, ``733.3933``, ``5…`\
+`#> $ tmin     ``<dbl>`` 4.8400``, ``2.9333``, ``6.4533``, ``4.3933``, ``5.8667``, ``3.9733``, ``4.8733``, ``6.726…`\
+`#> $ ppt_djf  ``<dbl>`` 521.4311``, ``151.2758``, ``332.6133``, ``331.5974``, ``303.1179``, ``181.9209``, ``1…`\
+`#> $ ppt_jja  ``<dbl>`` 48.7567``, ``15.0839``, ``15.6589``, ``19.0647``, ``10.5549``, ``9.8277``, ``7.6569``, ``…`\
+`#> $ pH       ``<dbl>`` 5.631732``, ``6.202818``, ``5.500000``, ``6.000000``, ``5.200000``, ``0.000000``, ``5…`\
+`#> $ awc      ``<dbl>`` 0.10841342``, ``0.09496477``, ``0.16000000``, ``0.07000000``, ``0.08000000``, ``0…`\
+`#> $ depth    ``<dbl>`` 63.69832``, ``68.67968``, ``178.00000``, ``107.00000``, ``61.00000``, ``0.00000``, ``…`\
+`#> $ landform ``<fct>`` 6``, ``4``, ``7``, ``11``, ``6``, ``10``, ``14``, ``12``, ``7``, ``7``, ``14``, ``10``, ``7``, ``11``, ``14``, ``10``, ``10``, ``…`\
+`#> $ .part    ``<int>`` 3``, ``1``, ``3``, ``2``, ``2``, ``2``, ``1``, ``1``, ``2``, ``2``, ``1``, ``3``, ``3``, ``3``, ``3``, ``2``, ``2``, ``3``, ``2``, ``2``, ``2…`
 
-Now, in the abies2 object we have a new column called “.part” with the 5
-k-folds (1, 2, 3, 4, 5), indicating which partition each record (row) is
-a member of. Next, we have to apply the same partition method and number
+Now, in the abies2 object we have a new column called “.part” with the 3
+k-folds (1, 2, 3), indicating which partition each record (row) is a
+member of. Next, we have to apply the same partition method and number
 of folds to the environmental conditions of the background points.
 
 \
 `backg2`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
 `  data ``=`` ``backg``,`\
 `  pr_ab ``=`` ``"pr_ab"``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"kfold"``, folds ``=`` ``5``)`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"kfold"``, folds ``=`` ``3``)`\
 `)`\
 \
 `dplyr``::`[`glimpse`](https://pillar.r-lib.org/reference/glimpse.html)`(``backg2``)`\
-`#> Rows: 5,000`\
+`#> Rows: 1,000`\
 `#> Columns: 14`\
 `#> $ pr_ab        ``<dbl>`` 0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``0``, ``…`\
-`#> $ x            ``<dbl>`` 160779.16``, ``36849.16``, ``-240170.84``, ``-152420.84``, ``-193190.84``, ``…`\
-`#> $ y            ``<dbl>`` -449968.33``, ``24151.67``, ``90031.67``, ``-143518.33``, ``24151.67``, ``223…`\
-`#> $ aet          ``<dbl>`` 280.4567``, ``259.7800``, ``400.1767``, ``367.4833``, ``397.3667``, ``385.263…`\
-`#> $ cwd          ``<dbl>`` 1137.2433``, ``381.5367``, ``699.6500``, ``843.4467``, ``842.3833``, ``637.35…`\
-`#> $ tmin         ``<dbl>`` 13.5100``, ``-3.1733``, ``8.6800``, ``9.0133``, ``8.9700``, ``4.9333``, ``6.2933``,``…`\
-`#> $ ppt_djf      ``<dbl>`` 71.2741``, ``171.4537``, ``285.0893``, ``72.0309``, ``125.2467``, ``226.1534``,``…`\
-`#> $ ppt_jja      ``<dbl>`` 1.1920``, ``17.5193``, ``5.0158``, ``1.2047``, ``1.9778``, ``8.1554``, ``18.4182``,``…`\
-`#> $ pH           ``<dbl>`` 0.0000000``, ``0.2122687``, ``5.7222223``, ``7.5350823``, ``6.1963525``, ``5.…`\
-`#> $ awc          ``<dbl>`` 0.000000000``, ``0.003473487``, ``0.080370426``, ``0.170000002``, ``0.131…`\
-`#> $ depth        ``<dbl>`` 0.00000``, ``201.00000``, ``50.07409``, ``154.39426``, ``122.39575``, ``56.17…`\
-`#> $ percent_clay ``<dbl>`` 0.0000000``, ``0.4438345``, ``18.4111176``, ``46.9751244``, ``37.1873169``,``…`\
-`#> $ landform     ``<fct>`` 13``, ``10``, ``6``, ``6``, ``10``, ``14``, ``8``, ``14``, ``6``, ``7``, ``11``, ``14``, ``14``, ``10``, ``6``, ``6``, ``…`\
-`#> $ .part        ``<int>`` 4``, ``4``, ``1``, ``5``, ``5``, ``2``, ``5``, ``3``, ``2``, ``5``, ``4``, ``1``, ``4``, ``1``, ``5``, ``1``, ``1``, ``5``, ``4``, ``…`
+`#> $ x            ``<dbl>`` 322239.164``, ``18219.164``, ``138909.164``, ``-52520.836``, ``-265550.83…`\
+`#> $ y            ``<dbl>`` -554188.334``, ``-319558.334``, ``-407038.334``, ``71941.666``, ``234481.…`\
+`#> $ aet          ``<dbl>`` 594.6933``, ``196.3567``, ``349.2067``, ``504.1167``, ``511.7433``, ``450.810…`\
+`#> $ cwd          ``<dbl>`` 564.1600``, ``1172.8033``, ``1030.2833``, ``698.0667``, ``330.4567``, ``479.9…`\
+`#> $ tmin         ``<dbl>`` 4.7500``, ``7.1067``, ``11.1400``, ``6.9300``, ``3.5200``, ``3.9767``, ``9.7767``, ``…`\
+`#> $ ppt_djf      ``<dbl>`` 129.3690``, ``36.1234``, ``104.8891``, ``187.1644``, ``312.0807``, ``86.2167``,``…`\
+`#> $ ppt_jja      ``<dbl>`` 12.7164``, ``1.0201``, ``2.1754``, ``6.2898``, ``11.0941``, ``22.0211``, ``1.1523…`\
+`#> $ pH           ``<dbl>`` 5.8000002``, ``7.8000002``, ``6.1700625``, ``5.6999998``, ``3.0788457``, ``5.…`\
+`#> $ awc          ``<dbl>`` 0.13000000``, ``0.18000001``, ``0.17149687``, ``0.12000000``, ``0.0479597…`\
+`#> $ depth        ``<dbl>`` 77.00000``, ``201.00000``, ``50.92476``, ``152.00000``, ``119.32758``, ``182.…`\
+`#> $ percent_clay ``<dbl>`` 17.100000``, ``25.400000``, ``22.295300``, ``21.000000``, ``13.046448``, ``41…`\
+`#> $ landform     ``<fct>`` 6``, ``13``, ``7``, ``14``, ``7``, ``7``, ``10``, ``13``, ``6``, ``11``, ``10``, ``10``, ``6``, ``10``, ``13``, ``11``,``…`\
+`#> $ .part        ``<int>`` 2``, ``2``, ``3``, ``1``, ``2``, ``3``, ``2``, ``2``, ``1``, ``3``, ``1``, ``1``, ``3``, ``1``, ``1``, ``3``, ``2``, ``2``, ``2``, ``…`
 
-In backg2 object we have a new column called “.part” with the 5 k-folds
-(1, 2, 3, 4, 5).
+In backg2 object we have a new column called “.part” with the 3 k-folds
+(1, 2, 3).
 
 ### 1. Fit and validate models
 
@@ -271,11 +279,9 @@ I. Maximum Entropy models with default hyper-parameter values.
 `#> Formula used for model fitting:`\
 `#> ~aet + ppt_jja + pH + awc + depth + I(aet^2) + I(ppt_jja^2) + I(pH^2) + I(awc^2) + I(depth^2) + hinge(aet) + hinge(ppt_jja) + hinge(pH) + hinge(awc) + hinge(depth) + ppt_jja:aet + pH:aet + awc:aet + depth:aet + pH:ppt_jja + awc:ppt_jja + depth:ppt_jja + awc:pH + depth:pH + depth:awc + categorical(landform) - 1`\
 `#> Replica number: 1/1`\
-`#> Partition number: 1/5`\
-`#> Partition number: 2/5`\
-`#> Partition number: 3/5`\
-`#> Partition number: 4/5`\
-`#> Partition number: 5/5`
+`#> Partition number: 1/3`\
+`#> Partition number: 2/3`\
+`#> Partition number: 3/3`
 
 This function returns a list object with the following elements:
 
@@ -293,12 +299,12 @@ model: A “MaxEnt” class object. This object can be used for predicting.
 `#> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) `\
 `#> `\
 `#>     Df  %Dev  Lambda`\
-`#> 1    0  0.00 21.3700`\
-`#> 2    0  0.00 20.4100`\
-`#> 3    0  0.00 19.4800`\
-`#> 4    0  0.00 18.6000`\
-`#> 5    0  0.00 17.7600`\
-`#> 6    0  0.00 16.9600`\
+`#> 1    0  0.00 22.3600`\
+`#> 2    0  0.00 21.3500`\
+`#> 3    0  0.00 20.3800`\
+`#> 4    0  0.00 19.4600`\
+`#> 5    0  0.00 18.5800`\
+`#> 6    0  0.00 17.7400`\
 `#>  [ reached 'max' / getOption("max.print") -- omitted 194 rows ]`
 
 predictors: A tibble with quantitative (c column names) and qualitative
@@ -318,11 +324,11 @@ in the argument. We can see all the selected threshold values.
 \
 `max_t1``$``performance`\
 `#> ``# A tibble: 3 × 33`\
-`#>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean`\
-`#>   ``<chr>`` ``<chr>``              ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>``    ``<dbl>`\
-`#> ``1`` max   equal_sens_sp…     0.573         700        700    0.674 0.016``4``    0.674`\
-`#> ``2`` max   max_sens_spec      0.416         700        700    0.909 0.026``0``    0.52 `\
-`#> ``3`` max   max_sorensen       0.336         700        700    0.95  0.010``1``    0.47 `\
+`#>   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean`\
+`#>   ``<chr>`` ``<chr>``             ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``   ``<dbl>``    ``<dbl>`\
+`#> ``1`` max   equal_sens_s…     0.581         210        210    0.652 0.008``25``    0.652`\
+`#> ``2`` max   max_sens_spec     0.491         210        210    0.767 0.083``7``     0.586`\
+`#> ``3`` max   max_sorensen      0.468         210        210    0.943 0.037``8``     0.319`\
 `#> ``# ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,`\
 `#> ``#   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,`\
 `#> ``#   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,`\
@@ -336,20 +342,20 @@ model. This database is used in fit_ensemble.
 
 \
 `max_t1``$``data_ens`\
-`#> ``# A tibble: 1,400 × 5`\
+`#> ``# A tibble: 420 × 5`\
 `#>    rnames replicates part  pr_ab   pred`\
 `#>    ``<chr>``  ``<chr>``      ``<chr>`` ``<dbl>``  ``<dbl>`\
-`#> `` 1`` 8      .part      1         0 0.600 `\
-`#> `` 2`` 11     .part      1         0 0.237 `\
-`#> `` 3`` 13     .part      1         0 0.048``3`\
-`#> `` 4`` 20     .part      1         0 0.115 `\
-`#> `` 5`` 32     .part      1         0 0.716 `\
-`#> `` 6`` 33     .part      1         0 0.043``0`\
-`#> `` 7`` 48     .part      1         0 0.143 `\
-`#> `` 8`` 55     .part      1         0 0.726 `\
-`#> `` 9`` 65     .part      1         0 0.850 `\
-`#> ``10`` 75     .part      1         0 0.308 `\
-`#> ``# ℹ 1,390 more rows`
+`#> `` 1`` 2      .part      1         0 0.498 `\
+`#> `` 2`` 7      .part      1         0 0.297 `\
+`#> `` 3`` 8      .part      1         0 0.413 `\
+`#> `` 4`` 11     .part      1         0 0.552 `\
+`#> `` 5`` 22     .part      1         0 0.269 `\
+`#> `` 6`` 24     .part      1         0 0.149 `\
+`#> `` 7`` 29     .part      1         0 0.033``9`\
+`#> `` 8`` 35     .part      1         0 0.143 `\
+`#> `` 9`` 36     .part      1         0 0.371 `\
+`#> ``10`` 37     .part      1         0 0.506 `\
+`#> ``# ℹ 410 more rows`
 
 II- Random forest models with exploration of hyper-parameters.
 
@@ -361,8 +367,8 @@ equal to total number of predictors.
 \
 `tune_grid`` ``<-`\
 `  `[`expand.grid`](https://rdrr.io/r/base/expand.grid.html)`(`\
-`    mtry ``=`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``1``, ``7``, ``1``)``,`\
-`    ntree ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``300``, ``500``, ``700``, ``900``)`\
+`    mtry ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``4``, ``6``)``,`\
+`    ntree ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``500``, ``800``)`\
 `  ``)`
 
 We use the same data object abies2, with the same k-fold partition
@@ -396,11 +402,9 @@ method:
 `#> Formula used for model fitting:`\
 `#> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform`\
 `#> Replica number: 1/1`\
-`#> Partition number: 1/5`\
-`#> Partition number: 2/5`\
-`#> Partition number: 3/5`\
-`#> Partition number: 4/5`\
-`#> Partition number: 5/5`
+`#> Partition number: 1/3`\
+`#> Partition number: 2/3`\
+`#> Partition number: 3/3`
 
 Let’s see what the output object contains. This function returns a list
 object with the following elements:
@@ -420,13 +424,13 @@ formula details, a basic summary o fthe model, and for predicting.
 `#>  randomForest(formula = formula1, data = data, mtry = mtry, ntree = ntree,      importance = TRUE, ) `\
 `#>                Type of random forest: classification`\
 `#>                      Number of trees: 500`\
-`#> No. of variables tried at each split: 3`\
+`#> No. of variables tried at each split: 2`\
 `#> `\
-`#>         OOB estimate of  error rate: 11.29%`\
+`#>         OOB estimate of  error rate: 14.05%`\
 `#> Confusion matrix:`\
 `#>     0   1 class.error`\
-`#> 0 605  95   0.1357143`\
-`#> 1  63 637   0.0900000`
+`#> 0 176  34   0.1619048`\
+`#> 1  25 185   0.1190476`
 
 predictors: A tibble with quantitative (c column names) and qualitative
 (f column names) variables use for modeling.
@@ -447,7 +451,7 @@ in the argument. We can see all the selected threshold values.
 `#> ``# A tibble: 1 × 35`\
 `#>    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd`\
 `#>   ``<dbl>`` ``<dbl>`` ``<chr>`` ``<chr>``           ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>`\
-`#> ``1``     3   700 raf   max_sens_s…     0.606         700        700    0.906 0.036``2`\
+`#> ``1``     2   500 raf   max_sens_s…     0.592         210        210    0.876 0.059``5`\
 `#> ``# ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,`\
 `#> ``#   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,`\
 `#> ``#   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,`\
@@ -461,20 +465,20 @@ model. This database is used in fit_ensemble.
 
 \
 `rf_t``$``data_ens`\
-`#> ``# A tibble: 1,400 × 5`\
+`#> ``# A tibble: 420 × 5`\
 `#>    rnames replicates part  pr_ab  pred`\
 `#>    ``<chr>``  ``<chr>``      ``<chr>`` ``<fct>`` ``<dbl>`\
-`#> `` 1`` 8      .part      1     0     0.118`\
-`#> `` 2`` 11     .part      1     0     0.116`\
-`#> `` 3`` 13     .part      1     0     0.006`\
-`#> `` 4`` 20     .part      1     0     0.412`\
-`#> `` 5`` 32     .part      1     0     0.128`\
-`#> `` 6`` 33     .part      1     0     0.032`\
-`#> `` 7`` 48     .part      1     0     0.008`\
-`#> `` 8`` 55     .part      1     0     0.072`\
-`#> `` 9`` 65     .part      1     0     0.366`\
-`#> ``10`` 75     .part      1     0     0.088`\
-`#> ``# ℹ 1,390 more rows`
+`#> `` 1`` 2      .part      1     0     0.734`\
+`#> `` 2`` 7      .part      1     0     0.172`\
+`#> `` 3`` 8      .part      1     0     0.1  `\
+`#> `` 4`` 11     .part      1     0     0.642`\
+`#> `` 5`` 22     .part      1     0     0.028`\
+`#> `` 6`` 24     .part      1     0     0.516`\
+`#> `` 7`` 29     .part      1     0     0.03 `\
+`#> `` 8`` 35     .part      1     0     0.516`\
+`#> `` 9`` 36     .part      1     0     0.1  `\
+`#> ``10`` 37     .part      1     0     0.352`\
+`#> ``# ℹ 410 more rows`
 
 These model objects can be used in flexsdm::fit_ensemble().
 
@@ -510,15 +514,15 @@ model objects that were just created.
 `#> ``2`` aet   cwd     tmin  ppt_djf ppt_jja landform pH    awc   depth`\
 `an_ensemble``$``performance`\
 `#> ``# A tibble: 7 × 33`\
-`#>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean`\
-`#>   ``<chr>``   ``<chr>``            ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>``    ``<dbl>`\
-`#> ``1`` meansup equal_sens_…     0.568         700        700    0.879 0.026``7``    0.879`\
-`#> ``2`` meansup lpt              0.022         700        700    1     0         0.407`\
-`#> ``3`` meansup max_fpb          0.486         700        700    0.923 0.023``4``    0.859`\
-`#> ``4`` meansup max_jaccard      0.486         700        700    0.923 0.023``4``    0.859`\
-`#> ``5`` meansup max_sens_sp…     0.486         700        700    0.911 0.031``4``    0.87 `\
-`#> ``6`` meansup max_sorensen     0.486         700        700    0.923 0.023``4``    0.859`\
-`#> ``7`` meansup sensitivity      0.522         700        700    0.9   0         0.869`\
+`#>   model   threshold   thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean`\
+`#>   ``<chr>``   ``<chr>``           ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``   ``<dbl>``    ``<dbl>`\
+`#> ``1`` meansup equal_sens…     0.538         210        210    0.852 0.008``25``    0.852`\
+`#> ``2`` meansup lpt             0.124         210        210    1     0          0.519`\
+`#> ``3`` meansup max_fpb         0.548         210        210    0.890 0.064``4``     0.838`\
+`#> ``4`` meansup max_jaccard     0.548         210        210    0.890 0.064``4``     0.838`\
+`#> ``5`` meansup max_sens_s…     0.56          210        210    0.876 0.059``5``     0.852`\
+`#> ``6`` meansup max_sorens…     0.548         210        210    0.890 0.064``4``     0.838`\
+`#> ``7`` meansup sensitivity     0.466         210        210    0.905 0.008``25``    0.771`\
 `#> ``# ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,`\
 `#> ``#   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,`\
 `#> ``#   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,`\
@@ -797,15 +801,15 @@ refers to the number of replicates. Both assume values \>=1.
 `# Remove the previous k-fold partition`\
 `abies2`` ``<-`` ``abies2`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-`[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"."``)``)`\
 \
-`# Test with rep_kfold partition using 3 folds and 5 replicates`\
+`# Test with rep_kfold partition using 3 folds and 2 replicates`\
 [`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
 `abies2`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
 `  data ``=`` ``abies2``,`\
 `  pr_ab ``=`` ``"pr_ab"``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"rep_kfold"``, folds ``=`` ``3``, replicates ``=`` ``5``)`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"rep_kfold"``, folds ``=`` ``3``, replicates ``=`` ``2``)`\
 `)`\
 `abies2`\
-`#> ``# A tibble: 20 × 18`\
+`#> ``# A tibble: 20 × 15`\
 `#>       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc`\
 `#>    ``<int>`` ``<dbl>``    ``<dbl>``    ``<dbl>`` ``<dbl>`` ``<dbl>``  ``<dbl>``   ``<dbl>``   ``<dbl>`` ``<dbl>``  ``<dbl>`\
 `#> `` 1`` ``12``040     0 -``308``909.``  ``384``248.  573.  332.  4.84     521.   48.8   5.63 0.108 `\
@@ -828,8 +832,7 @@ refers to the number of replicates. Both assume values \>=1.
 `#> ``18``  ``4``441     1   ``49``405.  -``60``502.``  362.  582.  2.42     218.    7.84  5.64 0.078``6`\
 `#> ``19``   301     1 -``132``516.``  ``270``845.  367.  196. -``2.56``     422.   26.3   6.70 0.030``0`\
 `#> ``20``  ``3``162     1   ``59``905.  -``53``634.``  319.  626.  1.99     212.    4.50  4.51 0.039``6`\
-`#> ``# ℹ 7 more variables: depth <dbl>, landform <fct>, .part1 <int>, .part2 <int>,`\
-`#> ``#   .part3 <int>, .part4 <int>, .part5 <int>`
+`#> ``# ℹ 4 more variables: depth <dbl>, landform <fct>, .part1 <int>, .part2 <int>`
 
 We use the new rep_kfold partition in the gam model
 
@@ -841,17 +844,13 @@ We use the new rep_kfold partition in the gam model
 `    ``"aet"``,`\
 `    ``"cwd"``,`\
 `    ``"tmin"``,`\
-`    ``"ppt_djf"``,`\
-`    ``"ppt_jja"``,`\
-`    ``"pH"``,`\
-`    ``"awc"``,`\
-`    ``"depth"`\
+`    ``"ppt_djf"`\
 `  ``)``,`\
 `  partition ``=`` ``".part"``,`\
 `  thr ``=`` ``NULL``,`\
 `  k ``=`` ``2`\
 `)`\
-`#>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%`
+`#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%`
 
 Test with random bootstrap partitioning. In method ‘replicate’ refers to
 the number of replicates (assumes a value \>=1), ‘proportion’ refers to
@@ -867,15 +866,15 @@ words as the entries.
 `# Remove the previous k-fold partition`\
 `abies2`` ``<-`` ``abies2`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-`[`starts_with`](https://tidyselect.r-lib.org/reference/starts_with.html)`(``"."``)``)`\
 \
-`# Test with bootstrap partition using 10 replicates`\
+`# Test with bootstrap partition using 3 replicates`\
 [`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
 `abies2`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
 `  data ``=`` ``abies2``,`\
 `  pr_ab ``=`` ``"pr_ab"``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"boot"``, replicates ``=`` ``10``, proportion ``=`` ``0.7``)`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"boot"``, replicates ``=`` ``3``, proportion ``=`` ``0.7``)`\
 `)`\
 `abies2`\
-`#> ``# A tibble: 20 × 23`\
+`#> ``# A tibble: 20 × 16`\
 `#>       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc`\
 `#>    ``<int>`` ``<dbl>``    ``<dbl>``    ``<dbl>`` ``<dbl>`` ``<dbl>``  ``<dbl>``   ``<dbl>``   ``<dbl>`` ``<dbl>``  ``<dbl>`\
 `#> `` 1`` ``12``040     0 -``308``909.``  ``384``248.  573.  332.  4.84     521.   48.8   5.63 0.108 `\
@@ -898,9 +897,8 @@ words as the entries.
 `#> ``18``  ``4``441     1   ``49``405.  -``60``502.``  362.  582.  2.42     218.    7.84  5.64 0.078``6`\
 `#> ``19``   301     1 -``132``516.``  ``270``845.  367.  196. -``2.56``     422.   26.3   6.70 0.030``0`\
 `#> ``20``  ``3``162     1   ``59``905.  -``53``634.``  319.  626.  1.99     212.    4.50  4.51 0.039``6`\
-`#> ``# ℹ 12 more variables: depth <dbl>, landform <fct>, .part1 <chr>, .part2 <chr>,`\
-`#> ``#   .part3 <chr>, .part4 <chr>, .part5 <chr>, .part6 <chr>, .part7 <chr>,`\
-`#> ``#   .part8 <chr>, .part9 <chr>, .part10 <chr>`
+`#> ``# ℹ 5 more variables: depth <dbl>, landform <fct>, .part1 <chr>, .part2 <chr>,`\
+`#> ``#   .part3 <chr>`
 
 Use the new rep_kfold partition in the gam model
 
@@ -912,13 +910,9 @@ Use the new rep_kfold partition in the gam model
 `    ``"aet"``,`\
 `    ``"cwd"``,`\
 `    ``"tmin"``,`\
-`    ``"ppt_djf"``,`\
-`    ``"ppt_jja"``,`\
-`    ``"pH"``,`\
-`    ``"awc"``,`\
-`    ``"depth"`\
+`    ``"ppt_djf"`\
 `  ``)``,`\
 `  partition ``=`` ``".part"``,`\
 `  thr ``=`` ``NULL`\
 `)`\
-`#>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%`
+`#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%`

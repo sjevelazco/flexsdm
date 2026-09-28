@@ -152,7 +152,7 @@ function occfilt_env() to thin the red fir occurrences based on
 environmental space. This function is unique to <em>flexsdm</em>, and in
 contrast with other packages is able to use any number of environmental
 dimensions and does not perform a PCA before filtering.</p>
-<p>Next we apply environmental occurrence filtering using 8 bins and
+<p>Next we apply environmental occurrence filtering using 5 bins and
 display the resulting filtered occurrence data</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">abies_p</span><span class="op">$</span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">abies_p</span><span class="op">)</span> <span class="co"># adding unique id to each row</span></span>
@@ -162,14 +162,14 @@ display the resulting filtered occurrence data</p>
 <span>    x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>    id <span class="op">=</span> <span class="st">"id"</span>,</span>
-<span>    nbins <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>    nbins <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>    env_layer <span class="op">=</span> <span class="va">somevar</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">abies_p</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Extracting values from raster ...</span></span>
 <span><span class="co">#&gt; 27 records were removed because they have NAs for some variables</span></span>
 <span><span class="co">#&gt; Number of unfiltered records: 673</span></span>
-<span><span class="co">#&gt; Number of filtered records: 216</span></span>
+<span><span class="co">#&gt; Number of filtered records: 94</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">layer1</span>, col <span class="op">=</span> <span class="st">"gray80"</span>, legend <span class="op">=</span> <span class="cn">FALSE</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crop.html" class="external-link">crop</a></span><span class="op">(</span><span class="va">ca</span>, <span class="va">layer1</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -206,11 +206,11 @@ into 4 different partitions using the spatial block method.</p>
 <span>    n_part <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>    min_res_mult <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>    max_res_mult <span class="op">=</span> <span class="fl">200</span>,</span>
-<span>    num_grids <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>    num_grids <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>    prop <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; The following grid cell sizes will be tested:</span></span>
-<span><span class="co">#&gt; 5670 | 18508.97 | 31347.93 | 44186.9 | 57025.86 | 69864.83 | 82703.79 | 95542.76 | 108381.72 | 121220.69 | 134059.66 | 146898.62 | 159737.59 | 172576.55 | 185415.52 | 198254.48 | 211093.45 | 223932.41 | 236771.38 | 249610.34 | 262449.31 | 275288.28 | 288127.24 | 300966.21 | 313805.17 | 326644.14 | 339483.1 | 352322.07 | 365161.03 | 378000</span></span>
+<span><span class="co">#&gt; 5670 | 47040 | 88410 | 129780 | 171150 | 212520 | 253890 | 295260 | 336630 | 378000</span></span>
 <span><span class="co">#&gt; Creating basic raster mask...</span></span>
 <span><span class="co">#&gt; Searching for the optimal grid size...</span></span>
 <span><span class="va">abies_pf</span> <span class="op">&lt;-</span> <span class="va">occ_part</span><span class="op">$</span><span class="va">part</span></span>
@@ -234,16 +234,16 @@ into 4 different partitions using the spatial block method.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   .part [4]</span></span></span>
 <span><span class="co">#&gt;   .part     n</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1    38</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2    59</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3    33</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4    86</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1    32</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2    13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3    35</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4    14</span></span>
 <span><span class="co"># Additional information of the best block</span></span>
 <span><span class="va">occ_part</span><span class="op">$</span><span class="va">best_part_info</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
 <span><span class="co">#&gt;   n_grid cell_size spa_auto env_sim  sd_p</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     14   <span style="text-decoration: underline;">172</span>577.      0.5    173.  24.1</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>      7    <span style="text-decoration: underline;">295</span>260    0.409    188.  11.6</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="pseudo-absencebackground-points-using-partition-previously-created-as-a-mask">Pseudo-absence/background points (using partition previously created
@@ -299,35 +299,35 @@ pseudo-absence and background points.</p>
 <span><span class="co"># Bind a presences and pseudo-absences</span></span>
 <span><span class="va">abies_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">abies_pf</span>, <span class="va">psa</span><span class="op">)</span></span>
 <span><span class="va">abies_pa</span> <span class="co"># Presence-Pseudo-absence database</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 432 × 4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 188 × 4</span></span></span>
+<span><span class="co">#&gt;           x        y pr_ab .part</span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  -<span style="color: #BB0000; text-decoration: underline;">12</span><span style="color: #BB0000;">558.</span>   <span style="text-decoration: underline;">68</span>530.     1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">115</span>217. -<span style="color: #BB0000; text-decoration: underline;">145</span><span style="color: #BB0000;">937.</span>     1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>    <span style="text-decoration: underline;">3</span>634.   <span style="text-decoration: underline;">22</span>501.     1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>   <span style="text-decoration: underline;">44</span>972.  -<span style="color: #BB0000; text-decoration: underline;">60</span><span style="color: #BB0000;">781.</span>     1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  -<span style="color: #BB0000; text-decoration: underline;">34</span><span style="color: #BB0000;">463.</span>  <span style="text-decoration: underline;">160</span>313.     1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>   <span style="text-decoration: underline;">83</span>108.  -<span style="color: #BB0000; text-decoration: underline;">27</span><span style="color: #BB0000;">300.</span>     1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">118</span>707. -<span style="color: #BB0000; text-decoration: underline;">179</span><span style="color: #BB0000;">991.</span>     1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  -<span style="color: #BB0000; text-decoration: underline;">49</span><span style="color: #BB0000;">722.</span>  <span style="text-decoration: underline;">141</span>124.     1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>   <span style="text-decoration: underline;">46</span>612.  -<span style="color: #BB0000; text-decoration: underline;">59</span><span style="color: #BB0000;">242.</span>     1     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> -<span style="color: #BB0000; text-decoration: underline;">119</span><span style="color: #BB0000;">068.</span>  <span style="text-decoration: underline;">279</span>241.     1     2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 178 more rows</span></span></span>
+<span><span class="va">bg</span> <span class="co"># Background points</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 940 × 4</span></span></span>
 <span><span class="co">#&gt;          x        y pr_ab .part</span></span>
 <span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> -<span style="color: #BB0000; text-decoration: underline;">12</span><span style="color: #BB0000;">558.</span>   <span style="text-decoration: underline;">68</span>530.     1     2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">115</span>217. -<span style="color: #BB0000; text-decoration: underline;">145</span><span style="color: #BB0000;">937.</span>     1     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>   <span style="text-decoration: underline;">3</span>634.   <span style="text-decoration: underline;">22</span>501.     1     2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">44</span>972.  -<span style="color: #BB0000; text-decoration: underline;">60</span><span style="color: #BB0000;">781.</span>     1     2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> -<span style="color: #BB0000; text-decoration: underline;">34</span><span style="color: #BB0000;">463.</span>  <span style="text-decoration: underline;">160</span>313.     1     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">83</span>108.  -<span style="color: #BB0000; text-decoration: underline;">27</span><span style="color: #BB0000;">300.</span>     1     2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">124</span>877. -<span style="color: #BB0000; text-decoration: underline;">176</span><span style="color: #BB0000;">319.</span>     1     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">118</span>707. -<span style="color: #BB0000; text-decoration: underline;">179</span><span style="color: #BB0000;">991.</span>     1     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">126</span>141. -<span style="color: #BB0000; text-decoration: underline;">176</span><span style="color: #BB0000;">302.</span>     1     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> -<span style="color: #BB0000; text-decoration: underline;">49</span><span style="color: #BB0000;">722.</span>  <span style="text-decoration: underline;">141</span>124.     1     3</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 422 more rows</span></span></span>
-<span><span class="va">bg</span> <span class="co"># Background points</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,160 × 4</span></span></span>
-<span><span class="co">#&gt;           x       y pr_ab .part</span></span>
-<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> -<span style="color: #BB0000; text-decoration: underline;">153</span><span style="color: #BB0000;">501.</span> <span style="text-decoration: underline;">392</span>162.     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  -<span style="color: #BB0000; text-decoration: underline;">89</span><span style="color: #BB0000;">241.</span> <span style="text-decoration: underline;">263</span>642.     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  -<span style="color: #BB0000; text-decoration: underline;">89</span><span style="color: #BB0000;">241.</span>  <span style="text-decoration: underline;">27</span>392.     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> -<span style="color: #BB0000; text-decoration: underline;">130</span><span style="color: #BB0000;">821.</span> <span style="text-decoration: underline;">331</span>682.     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> -<span style="color: #BB0000; text-decoration: underline;">132</span><span style="color: #BB0000;">711.</span> <span style="text-decoration: underline;">339</span>242.     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  -<span style="color: #BB0000; text-decoration: underline;">51</span><span style="color: #BB0000;">441.</span> -<span style="color: #BB0000; text-decoration: underline;">63</span><span style="color: #BB0000;">328.</span>     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  -<span style="color: #BB0000; text-decoration: underline;">59</span><span style="color: #BB0000;">001.</span>  <span style="text-decoration: underline;">67</span>082.     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  -<span style="color: #BB0000; text-decoration: underline;">32</span><span style="color: #BB0000;">541.</span> -<span style="color: #BB0000; text-decoration: underline;">51</span><span style="color: #BB0000;">988.</span>     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  -<span style="color: #BB0000; text-decoration: underline;">96</span><span style="color: #BB0000;">801.</span>    932.     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  -<span style="color: #BB0000; text-decoration: underline;">47</span><span style="color: #BB0000;">661.</span> -<span style="color: #BB0000; text-decoration: underline;">31</span><span style="color: #BB0000;">198.</span>     0     1</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2,150 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">46</span>839.  -<span style="color: #BB0000; text-decoration: underline;">23</span><span style="color: #BB0000;">638.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> -<span style="color: #BB0000; text-decoration: underline;">34</span><span style="color: #BB0000;">431.</span>  -<span style="color: #BB0000; text-decoration: underline;">89</span><span style="color: #BB0000;">788.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">92</span>199. -<span style="color: #BB0000; text-decoration: underline;">256</span><span style="color: #BB0000;">108.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">118</span>659. -<span style="color: #BB0000; text-decoration: underline;">282</span><span style="color: #BB0000;">568.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">122</span>439. -<span style="color: #BB0000; text-decoration: underline;">123</span><span style="color: #BB0000;">808.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> -<span style="color: #BB0000; text-decoration: underline;">60</span><span style="color: #BB0000;">891.</span>  -<span style="color: #BB0000; text-decoration: underline;">50</span><span style="color: #BB0000;">098.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">20</span>379.  -<span style="color: #BB0000; text-decoration: underline;">46</span><span style="color: #BB0000;">318.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">158</span>349. -<span style="color: #BB0000; text-decoration: underline;">165</span><span style="color: #BB0000;">388.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">133</span>779. -<span style="color: #BB0000; text-decoration: underline;">259</span><span style="color: #BB0000;">888.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">50</span>619. -<span style="color: #BB0000; text-decoration: underline;">218</span><span style="color: #BB0000;">308.</span>     0     1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 930 more rows</span></span></span></code></pre></div>
 <p>Extract environmental data for the presence-absence and background
 data . View the distributions of present points, pseudo-absence points,
 and background points using the blocks as a reference map.</p>
@@ -375,8 +375,8 @@ hyper-parameter values in the tuned Maximum Entropy model.</p>
 <span>  background <span class="op">=</span> <span class="va">bg</span>,</span>
 <span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
 <span>  grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
-<span>    regmult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">3</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>    classes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"l"</span>, <span class="st">"lq"</span>, <span class="st">"lqhpt"</span><span class="op">)</span></span>
+<span>    regmult <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1.5</span>, <span class="fl">2.5</span><span class="op">)</span>,</span>
+<span>    classes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"l"</span>, <span class="st">"lq"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  thr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"max_sens_spec"</span>, <span class="st">"equal_sens_spec"</span>, <span class="st">"max_sorensen"</span><span class="op">)</span>,</span>
 <span>  metric <span class="op">=</span> <span class="st">"TSS"</span>,</span>
@@ -391,7 +391,7 @@ hyper-parameter values in the tuned Maximum Entropy model.</p>
 <span><span class="co">#&gt; Partition number: 4/4</span></span>
 <span><span class="co">#&gt; Fitting best model</span></span>
 <span><span class="co">#&gt; Formula used for model fitting:</span></span>
-<span><span class="co">#&gt; ~aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2) + hinge(aet) + hinge(cwd) + hinge(tmx) + hinge(tmn) + thresholds(aet) + thresholds(cwd) + thresholds(tmx) + thresholds(tmn) + cwd:aet + tmx:aet + tmn:aet + tmx:cwd + tmn:cwd + tmn:tmx - 1</span></span>
+<span><span class="co">#&gt; ~aet + cwd + tmx + tmn + I(aet^2) + I(cwd^2) + I(tmx^2) + I(tmn^2) - 1</span></span>
 <span><span class="co">#&gt; Replica number: 1/1</span></span>
 <span><span class="co">#&gt; Partition number: 1/4</span></span>
 <span><span class="co">#&gt; Partition number: 2/4</span></span>
@@ -449,9 +449,9 @@ individual models.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 33</span></span></span>
 <span><span class="co">#&gt;   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> meanw equal_sens_sp…     0.583         216        216    0.794 0.089<span style="text-decoration: underline;">0</span>    0.794</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> meanw max_sens_spec      0.514         216        216    0.943 0.026<span style="text-decoration: underline;">2</span>    0.757</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> meanw max_sorensen       0.449         216        216    0.963 0.014<span style="text-decoration: underline;">3</span>    0.738</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> meanw equal_sens_sp…     0.483          94         94    0.777 0.113     0.777</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> meanw max_sens_spec      0.204          94         94    0.848 0.069<span style="text-decoration: underline;">9</span>    0.764</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> meanw max_sorensen       0.204          94         94    0.977 0.029<span style="text-decoration: underline;">7</span>    0.594</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span></span>
@@ -468,16 +468,16 @@ use the sdm_summarize() function to merge model performance tables.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 36</span></span></span>
 <span><span class="co">#&gt;    model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        1 max   max_sens_spec     0.364         216        216    0.954 0.031<span style="text-decoration: underline;">6</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        2 gau   equal_sens_s…     0.643         216        216    0.784 0.089<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        2 gau   max_sens_spec     0.471         216        216    0.945 0.020<span style="text-decoration: underline;">1</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>        2 gau   max_sorensen      0.471         216        216    0.964 0.010<span style="text-decoration: underline;">8</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        3 glm   equal_sens_s…     0.649         216        216    0.797 0.083<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        3 glm   max_sens_spec     0.554         216        216    0.945 0.029<span style="text-decoration: underline;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        3 glm   max_sorensen      0.423         216        216    0.977 0.037<span style="text-decoration: underline;">9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        4 meanw equal_sens_s…     0.583         216        216    0.794 0.089<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>        4 meanw max_sens_spec     0.514         216        216    0.943 0.026<span style="text-decoration: underline;">2</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>        4 meanw max_sorensen      0.449         216        216    0.963 0.014<span style="text-decoration: underline;">3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        1 max   max_sens_spec     0.408          94         94    0.884 0.104 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>        2 gau   equal_sens_s…     0.589          94         94    0.754 0.092<span style="text-decoration: underline;">8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>        2 gau   max_sens_spec     0.553          94         94    0.848 0.069<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>        2 gau   max_sorensen      0.553          94         94    0.906 0.077<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>        3 glm   equal_sens_s…     0.595          94         94    0.724 0.103 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>        3 glm   max_sens_spec     0.578          94         94    0.818 0.159 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>        3 glm   max_sorensen      0.334          94         94    0.975 0.033<span style="text-decoration: underline;">8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>        4 meanw equal_sens_s…     0.483          94         94    0.777 0.113 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>        4 meanw max_sens_spec     0.204          94         94    0.848 0.069<span style="text-decoration: underline;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>        4 meanw max_sorensen      0.204          94         94    0.977 0.029<span style="text-decoration: underline;">7</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 28 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span></span>

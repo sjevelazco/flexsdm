@@ -433,11 +433,18 @@ output.
 `#> ``# ℹ 1,390 more rows`\
 `#> ``# ℹ 2 more variables: depth <dbl>, landform <fct>`\
 \
+`# Use a subset of the data to keep this tutorial fast to run`\
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``10``)`\
+`abies`` ``<-`` ``abies`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)`(``pr_ab``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`slice_sample`](https://dplyr.tidyverse.org/reference/slice.html)`(``prop ``=`` ``0.3``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`ungroup`](https://dplyr.tidyverse.org/reference/group_by.html)`(``)`\
+\
 `# We will partition the data with the k-fold method`\
 `abies2`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
 `  data ``=`` ``abies``,`\
 `  pr_ab ``=`` ``"pr_ab"``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"kfold"``, folds ``=`` ``5``)`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"kfold"``, folds ``=`` ``3``)`\
 `)`
 
 Build some models to use for the performance table merge
@@ -455,11 +462,9 @@ Build some models to use for the performance table merge
 `#> Formula used for model fitting:`\
 `#> pr_ab ~ s(aet, k = -1) + s(ppt_jja, k = -1) + s(pH, k = -1) + s(awc, k = -1) + s(depth, k = -1) + landform`\
 `#> Replica number: 1/1`\
-`#> Partition number: 1/5`\
-`#> Partition number: 2/5`\
-`#> Partition number: 3/5`\
-`#> Partition number: 4/5`\
-`#> Partition number: 5/5`\
+`#> Partition number: 1/3`\
+`#> Partition number: 2/3`\
+`#> Partition number: 3/3`\
 \
 \
 `glm_t1`` ``<-`` `[`fit_glm`](https://sjevelazco.github.io/flexsdm/reference/fit_glm.md)`(`\
@@ -475,19 +480,17 @@ Build some models to use for the performance table merge
 `#> Formula used for model fitting:`\
 `#> pr_ab ~ aet + ppt_jja + pH + awc + depth + landform`\
 `#> Replica number: 1/1`\
-`#> Partition number: 1/5`\
-`#> Partition number: 2/5`\
-`#> Partition number: 3/5`\
-`#> Partition number: 4/5`\
-`#> Partition number: 5/5`\
+`#> Partition number: 1/3`\
+`#> Partition number: 2/3`\
+`#> Partition number: 3/3`\
 \
 `# Build a tuned model using tune_ family functions`\
 \
 `# Prepare the grid object to use in grid argument`\
 `tune_grid`` ``<-`\
 `  `[`expand.grid`](https://rdrr.io/r/base/expand.grid.html)`(`\
-`    mtry ``=`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``1``, ``7``, ``1``)``,`\
-`    ntree ``=`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``300``, ``1500``, ``200``)`\
+`    mtry ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``2``, ``4``, ``6``)``,`\
+`    ntree ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``500``, ``1000``)`\
 `  ``)`\
 \
 `# Build a tuned random forest model`\
@@ -518,17 +521,15 @@ Build some models to use for the performance table merge
 `#> Formula used for model fitting:`\
 `#> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform`\
 `#> Replica number: 1/1`\
-`#> Partition number: 1/5`\
-`#> Partition number: 2/5`\
-`#> Partition number: 3/5`\
-`#> Partition number: 4/5`\
-`#> Partition number: 5/5`\
+`#> Partition number: 1/3`\
+`#> Partition number: 2/3`\
+`#> Partition number: 3/3`\
 \
 `rf_t1``$``performance`\
 `#> ``# A tibble: 1 × 35`\
 `#>    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd`\
 `#>   ``<dbl>`` ``<dbl>`` ``<chr>`` ``<chr>``           ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>`\
-`#> ``1``     3   300 raf   max_sens_s…     0.606         700        700    0.919 0.039``6`\
+`#> ``1``     2   500 raf   max_sens_s…     0.592         210        210    0.857 0.051``5`\
 `#> ``# ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,`\
 `#> ``#   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,`\
 `#> ``#   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,`\
@@ -545,15 +546,15 @@ Finally, merge the three sdm performance tables.
 \
 `merge_df`\
 `#> ``# A tibble: 7 × 36`\
-`#>   model_ID model threshold      thr_value n_presences n_absences TPR_mean TPR_sd`\
-`#>      ``<int>`` ``<chr>`` ``<chr>``              ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>`\
-`#> ``1``        1 gam   equal_sens_sp…     0.540         700        700    0.736 0.036``8`\
-`#> ``2``        1 gam   max_sens_spec      0.530         700        700    0.75  0.046``0`\
-`#> ``3``        1 gam   max_sorensen       0.359         700        700    0.864 0.058``0`\
-`#> ``4``        2 glm   equal_sens_sp…     0.523         700        700    0.663 0.058``3`\
-`#> ``5``        2 glm   max_sens_spec      0.463         700        700    0.773 0.103 `\
-`#> ``6``        2 glm   max_sorensen       0.356         700        700    0.873 0.035``9`\
-`#> ``7``        3 raf   max_sens_spec      0.606         700        700    0.919 0.039``6`\
+`#>   model_ID model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd`\
+`#>      ``<int>`` ``<chr>`` ``<chr>``             ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``   ``<dbl>`\
+`#> ``1``        1 gam   equal_sens_s…     0.518         210        210    0.702 0.003``40`\
+`#> ``2``        1 gam   max_sens_spec     0.601         210        210    0.682 0.105  `\
+`#> ``3``        1 gam   max_sorensen      0.351         210        210    0.836 0.046``3`` `\
+`#> ``4``        2 glm   equal_sens_s…     0.519         210        210    0.630 0.048``7`` `\
+`#> ``5``        2 glm   max_sens_spec     0.485         210        210    0.633 0.216  `\
+`#> ``6``        2 glm   max_sorensen      0.299         210        210    0.908 0.031``1`` `\
+`#> ``7``        3 raf   max_sens_spec     0.592         210        210    0.857 0.051``5`` `\
 `#> ``# ℹ 28 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,`\
 `#> ``#   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,`\
 `#> ``#   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,`\

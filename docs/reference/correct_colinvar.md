@@ -165,18 +165,18 @@ rasters with the environmental variables.
 For example:
 
 C:/Users/my_pc/projections/\
-├── MRIESM_2050_ssp126\
-│ └── var1.tif\
-│ └── var2.tif\
-│ └── var3.tif\
-├── MRIESM_2080_ssp585\
-│ └── var1.tif\
-│ └── var2.tif\
-│ └── var3.tif\
-├── UKESM_2050_ssp370\
-│ └── var1.tif\
-│ └── var2.tif\
-│ └── var3.tif
+\|– MRIESM_2050_ssp126\
+\| \|– var1.tif\
+\| \|– var2.tif\
+\| \`– var3.tif\
+\|– MRIESM_2080_ssp585\
+\| \|– var1.tif\
+\| \|– var2.tif\
+\| \`– var3.tif\
+\`– UKESM_2050_ssp370\
+\|– var1.tif\
+\|– var2.tif\
+\`– var3.tif
 
 If pca method is run with time projections, correct_colinvar function
 will create the Projection_PCA (the exact path is in the path object
@@ -184,12 +184,12 @@ returned by the function) with the same system of sub-folders and
 multiband raster with the principal components (pcs.tif)
 
 C:/Users/my_pc/Projection_PCA/\
-├── MRIESM_2050_ssp126\
-│ └── pcs.tif \# a multiband tif with principal components\
-├── MRIESM_2080_ssp585\
-│ └── pcs.tif\
-├── UKESM_2050_ssp370\
-│ └── pcs.tif
+\|– MRIESM_2050_ssp126\
+\| \`– pcs.tif \# a multiband tif with principal components\
+\|– MRIESM_2080_ssp585\
+\| \`– pcs.tif\
+\`– UKESM_2050_ssp370\
+\`– pcs.tif
 
 Perform collinearity reduction based on points
 
@@ -317,9 +317,9 @@ dir_sc <- file.path(tempdir(), "projections")
 dir.create(dir_sc)
 dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
 sapply(dir_sc, dir.create)
-#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKeEw59/projections/scenario_1 
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV3tbfo/projections/scenario_1 
 #>                                                                                TRUE 
-#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKeEw59/projections/scenario_2 
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV3tbfo/projections/scenario_2 
 #>                                                                                TRUE 
 
 somevar <-
@@ -332,7 +332,7 @@ terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite = TRU
 ## Perform pca with projections
 dir_w_proj <- dirname(dir_sc[1])
 dir_w_proj
-#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKeEw59/projections"
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV3tbfo/projections"
 var <- correct_colinvar(env_layer = somevar, method = "pca", proj = dir_w_proj)
 var$env_layer
 #> class       : SpatRaster
@@ -361,7 +361,7 @@ var$cumulative_variance
 #> 3     3 0.979
 #> 4     4 1    
 var$proj
-#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpKeEw59/Projection_PCA"
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV3tbfo/Projection_PCA"
 
 
 # Perform fa colinearity control

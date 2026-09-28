@@ -189,7 +189,7 @@ SDM with few data.
 `hespero_pa2`` ``<-`` `[`part_random`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)`(`\
 `  data ``=`` ``hespero_pa``,`\
 `  pr_ab ``=`` ``"pr_ab"``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"rep_kfold"``, folds ``=`` ``5``, replicates ``=`` ``10``)`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``method ``=`` ``"rep_kfold"``, folds ``=`` ``5``, replicates ``=`` ``3``)`\
 `)`
 
 ## Extracting environmental values

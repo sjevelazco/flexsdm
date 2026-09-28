@@ -488,11 +488,18 @@ output.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,390 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;</span></span></span>
 <span></span>
+<span><span class="co"># Use a subset of the data to keep this tutorial fast to run</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">abies</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">pr_ab</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># We will partition the data with the k-fold method</span></span>
 <span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/part_random.html">part_random</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">abies</span>,</span>
 <span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Build some models to use for the performance table merge</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -508,11 +515,9 @@ output.</p>
 <span><span class="co">#&gt; Formula used for model fitting:</span></span>
 <span><span class="co">#&gt; pr_ab ~ s(aet, k = -1) + s(ppt_jja, k = -1) + s(pH, k = -1) + s(awc, k = -1) + s(depth, k = -1) + landform</span></span>
 <span><span class="co">#&gt; Replica number: 1/1</span></span>
-<span><span class="co">#&gt; Partition number: 1/5</span></span>
-<span><span class="co">#&gt; Partition number: 2/5</span></span>
-<span><span class="co">#&gt; Partition number: 3/5</span></span>
-<span><span class="co">#&gt; Partition number: 4/5</span></span>
-<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Partition number: 1/3</span></span>
+<span><span class="co">#&gt; Partition number: 2/3</span></span>
+<span><span class="co">#&gt; Partition number: 3/3</span></span>
 <span></span>
 <span></span>
 <span><span class="va">glm_t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_glm.html">fit_glm</a></span><span class="op">(</span></span>
@@ -528,19 +533,17 @@ output.</p>
 <span><span class="co">#&gt; Formula used for model fitting:</span></span>
 <span><span class="co">#&gt; pr_ab ~ aet + ppt_jja + pH + awc + depth + landform</span></span>
 <span><span class="co">#&gt; Replica number: 1/1</span></span>
-<span><span class="co">#&gt; Partition number: 1/5</span></span>
-<span><span class="co">#&gt; Partition number: 2/5</span></span>
-<span><span class="co">#&gt; Partition number: 3/5</span></span>
-<span><span class="co">#&gt; Partition number: 4/5</span></span>
-<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Partition number: 1/3</span></span>
+<span><span class="co">#&gt; Partition number: 2/3</span></span>
+<span><span class="co">#&gt; Partition number: 3/3</span></span>
 <span></span>
 <span><span class="co"># Build a tuned model using tune_ family functions</span></span>
 <span></span>
 <span><span class="co"># Prepare the grid object to use in grid argument</span></span>
 <span><span class="va">tune_grid</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span></span>
-<span>    mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">300</span>, <span class="fl">1500</span>, <span class="fl">200</span><span class="op">)</span></span>
+<span>    mtry <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span>,</span>
+<span>    ntree <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">1000</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Build a tuned random forest model</span></span>
@@ -571,17 +574,15 @@ output.</p>
 <span><span class="co">#&gt; Formula used for model fitting:</span></span>
 <span><span class="co">#&gt; pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform</span></span>
 <span><span class="co">#&gt; Replica number: 1/1</span></span>
-<span><span class="co">#&gt; Partition number: 1/5</span></span>
-<span><span class="co">#&gt; Partition number: 2/5</span></span>
-<span><span class="co">#&gt; Partition number: 3/5</span></span>
-<span><span class="co">#&gt; Partition number: 4/5</span></span>
-<span><span class="co">#&gt; Partition number: 5/5</span></span>
+<span><span class="co">#&gt; Partition number: 1/3</span></span>
+<span><span class="co">#&gt; Partition number: 2/3</span></span>
+<span><span class="co">#&gt; Partition number: 3/3</span></span>
 <span></span>
 <span><span class="va">rf_t1</span><span class="op">$</span><span class="va">performance</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 35</span></span></span>
 <span><span class="co">#&gt;    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3   300 raf   max_sens_s…     0.606         700        700    0.919 0.039<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     2   500 raf   max_sens_s…     0.592         210        210    0.857 0.051<span style="text-decoration: underline;">5</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 26 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span></span>
@@ -596,15 +597,15 @@ output.</p>
 <span></span>
 <span><span class="va">merge_df</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 36</span></span></span>
-<span><span class="co">#&gt;   model_ID model threshold      thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
-<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        1 gam   equal_sens_sp…     0.540         700        700    0.736 0.036<span style="text-decoration: underline;">8</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        1 gam   max_sens_spec      0.530         700        700    0.75  0.046<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        1 gam   max_sorensen       0.359         700        700    0.864 0.058<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        2 glm   equal_sens_sp…     0.523         700        700    0.663 0.058<span style="text-decoration: underline;">3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        2 glm   max_sens_spec      0.463         700        700    0.773 0.103 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        2 glm   max_sorensen       0.356         700        700    0.873 0.035<span style="text-decoration: underline;">9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>        3 raf   max_sens_spec      0.606         700        700    0.919 0.039<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">#&gt;   model_ID model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd</span></span>
+<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        1 gam   equal_sens_s…     0.518         210        210    0.702 0.003<span style="text-decoration: underline;">40</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        1 gam   max_sens_spec     0.601         210        210    0.682 0.105  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        1 gam   max_sorensen      0.351         210        210    0.836 0.046<span style="text-decoration: underline;">3</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        2 glm   equal_sens_s…     0.519         210        210    0.630 0.048<span style="text-decoration: underline;">7</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        2 glm   max_sens_spec     0.485         210        210    0.633 0.216  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        2 glm   max_sorensen      0.299         210        210    0.908 0.031<span style="text-decoration: underline;">1</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>        3 raf   max_sens_spec     0.592         210        210    0.857 0.051<span style="text-decoration: underline;">5</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 28 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span></span>

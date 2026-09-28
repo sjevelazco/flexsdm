@@ -685,7 +685,7 @@ filtering values.</p>
 <span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"moran"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"moran"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  prj <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -694,7 +694,7 @@ filtering values.</p>
 <span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cellsize"</span>, factor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">8</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span>, <span class="co"># coarser resolution than the provided raster</span></span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cellsize"</span>, factor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span>, <span class="co"># coarser resolution than the provided raster</span></span>
 <span>  prj <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -703,7 +703,7 @@ filtering values.</p>
 <span>  x <span class="op">=</span> <span class="st">"x"</span>,</span>
 <span>  y <span class="op">=</span> <span class="st">"y"</span>,</span>
 <span>  env_layer <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"defined"</span>, d <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"defined"</span>, d <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  prj <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -711,7 +711,7 @@ filtering values.</p>
 <span><span class="va">filt_geo1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "list"</span></span>
 <span><span class="va">filt_geo1</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "0.1" "0.2" "0.3" "0.5"</span></span>
+<span><span class="co">#&gt; [1] "0.2" "0.5"</span></span>
 <span></span>
 <span><span class="co"># Let's plot the results with ggplot2</span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">filt_geo1</span>, .id <span class="op">=</span> <span class="st">"moran"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -768,11 +768,9 @@ presences (see <code><a href="../reference/occfilt_select.html">occfilt_select()
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 146 more rows</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $filter_prop</span></span>
-<span><span class="co">#&gt;   filt_value mean_autocorr n_records       aet       cwd       tmx       tmn</span></span>
-<span><span class="co">#&gt; 1          1     0.3219265       233 0.3534014 0.2017850 0.3352363 0.3972832</span></span>
-<span><span class="co">#&gt; 2          5     0.2923551       189 0.3276294 0.1400721 0.3170405 0.3846783</span></span>
-<span><span class="co">#&gt; 3        * 8     0.2602486       156 0.3055744 0.1287050 0.2635844 0.3431307</span></span>
-<span><span class="co">#&gt; 4         12     0.2291901       118 0.2568785 0.1080880 0.2311247 0.3206691</span></span></code></pre></div>
+<span><span class="co">#&gt;   filt_value mean_autocorr n_records       aet      cwd       tmx       tmn</span></span>
+<span><span class="co">#&gt; 1          1     0.3219265       233 0.3534014 0.201785 0.3352363 0.3972832</span></span>
+<span><span class="co">#&gt; 2        * 8     0.2602486       156 0.3055744 0.128705 0.2635844 0.3431307</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -831,13 +829,13 @@ showing the selected grid.</p>
 <span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"lat"</span>, <span class="co"># specify bands across different degrees of longitude 'lon' or latitude 'lat'.</span></span>
 <span>  min_bands <span class="op">=</span> <span class="fl">2</span>, <span class="co"># minimum number of spatial bands to be tested</span></span>
-<span>  max_bands <span class="op">=</span> <span class="fl">20</span>, <span class="co"># maximum number of spatial bands to be tested</span></span>
+<span>  max_bands <span class="op">=</span> <span class="fl">10</span>, <span class="co"># maximum number of spatial bands to be tested</span></span>
 <span>  n_part <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  prop <span class="op">=</span> <span class="fl">0.5</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; 12 rows were excluded from database because NAs were found</span></span>
 <span><span class="co">#&gt; The following number of bands will be tested:</span></span>
-<span><span class="co">#&gt; 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20</span></span>
+<span><span class="co">#&gt; 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10</span></span>
 <span><span class="co">#&gt; Creating basic raster mask...</span></span>
 <span><span class="co">#&gt; Searching for the optimal number of bands...</span></span></code></pre></div>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -867,13 +865,13 @@ and testing.</p>
 <span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
 <span>  min_res_mult <span class="op">=</span> <span class="fl">10</span>, <span class="co"># Minimum value used for multiplying raster resolution and define the finest resolution to be tested</span></span>
 <span>  max_res_mult <span class="op">=</span> <span class="fl">200</span>, <span class="co"># Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested</span></span>
-<span>  num_grids <span class="op">=</span> <span class="fl">30</span>, <span class="co"># Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)</span></span>
+<span>  num_grids <span class="op">=</span> <span class="fl">10</span>, <span class="co"># Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)</span></span>
 <span>  n_part <span class="op">=</span> <span class="fl">2</span>, <span class="co"># Number of partitions</span></span>
 <span>  prop <span class="op">=</span> <span class="fl">0.5</span> <span class="co"># Proportion of points used for testing autocorrelation between groupds (0-1)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; 12 rows were excluded from database because NAs were found</span></span>
 <span><span class="co">#&gt; The following grid cell sizes will be tested:</span></span>
-<span><span class="co">#&gt; 18900 | 31282.76 | 43665.52 | 56048.28 | 68431.03 | 80813.79 | 93196.55 | 105579.31 | 117962.07 | 130344.83 | 142727.59 | 155110.34 | 167493.1 | 179875.86 | 192258.62 | 204641.38 | 217024.14 | 229406.9 | 241789.66 | 254172.41 | 266555.17 | 278937.93 | 291320.69 | 303703.45 | 316086.21 | 328468.97 | 340851.72 | 353234.48 | 365617.24 | 378000</span></span>
+<span><span class="co">#&gt; 18900 | 58800 | 98700 | 138600 | 178500 | 218400 | 258300 | 298200 | 338100 | 378000</span></span>
 <span><span class="co">#&gt; Creating basic raster mask...</span></span>
 <span><span class="co">#&gt; Searching for the optimal grid size...</span></span>
 <span></span>
@@ -894,7 +892,7 @@ really useful for generating pseudo-absence or background sample points,
 which we will explore in the next section.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="va">sp_part3</span><span class="op">$</span><span class="va">grid</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 278937.9 278937.9</span></span>
+<span><span class="co">#&gt; [1] 378000 378000</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1890 1890</span></span>
 <span></span>

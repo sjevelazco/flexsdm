@@ -1874,11 +1874,11 @@ snakes](https://www.sciencedirect.com/science/article/pii/S2530064425000173?via%
 *Perspective in Ecology and Conservation*, 23(2), pp.110-120.
 
 - Occurrences record datasets are available
-  [here](https://sjevelazco.github.io/flexsdm/articles/www.doi.org/10.6084/m9.figshare.28344461)
+  [here](https://doi.org/10.6084/m9.figshare.28344461)
 
 - Codes used to create species distribution models, perform spatial
   conservation prioritization, and perform analyses are available
-  [here](https://sjevelazco.github.io/flexsdm/articles/www.doi.org/10.6084/m9.figshare.28746371).
+  [here](https://doi.org/10.6084/m9.figshare.28746371).
 
 2- Rose, M. B., Elías Velazco, S. J., Regan, H. M., & Franklin, J.
 (**2023**). R[arity, geography, and plant exposure to global change in

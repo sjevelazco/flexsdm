@@ -55,6 +55,13 @@
 <code>occ_reproject</code>: Function to reproject occurrence coordinates to a new coordinate reference system, by <a href="https://github.com/sjevelazco" class="external-link">@sjevelazco</a></li>
 <li>minor warnings and package formality were fixed, by <a href="https://github.com/sjevelazco" class="external-link">@sjevelazco</a> <a href="https://github.com/sjevelazco/flexsdm/pull/467" class="external-link">467</a>
 </li>
+<li>
+<code>correct_colinvar</code>: Unicode box-drawing characters in the documentation’s example directory tree were replaced with plain ASCII, fixing a LaTeX error that caused the PDF manual build to fail on CRAN, by <a href="https://github.com/sjevelazco" class="external-link">@sjevelazco</a></li>
+<li>Vignette <code>v07_Complete_workflow</code>: two dataset links were missing the <code>https://</code> scheme (<code>www.doi.org/...</code>), which CRAN flagged as invalid URIs; fixed to <code>https://doi.org/...</code>, by <a href="https://github.com/sjevelazco" class="external-link">@sjevelazco</a></li>
+<li>
+<code>tune_max</code>: fixed a bug where the default hyperparameter grid (used when <code>grid = NULL</code>) tested a <code>regmult</code> step of 0.05 instead of the documented 0.5, producing ~10x more combinations than intended, by <a href="https://github.com/sjevelazco" class="external-link">@sjevelazco</a></li>
+<li>Test suite and vignette runtimes were substantially reduced in response to CRAN’s request (test suite ~17 min -&gt; ~3 min; vignette rebuilding ~14 min -&gt; ~2 min, as measured locally) by shrinking hyperparameter grids, dataset sizes, and replicate/fold counts in tests and vignettes, and by gating the most expensive/redundant test cases behind <code>skip_on_cran()</code>, by <a href="https://github.com/sjevelazco" class="external-link">@sjevelazco</a></li>
+<li>Further reduced test and vignette runtimes after win-builder’s automated “Overall checktime &gt; 10 min” rejection, by gating most secondary/edge-case assertions in the <code>tune_*</code> and <code>sdm_uncertainty</code> test files behind <code>skip_on_cran()</code> (kept a representative case running on CRAN for each), and by shrinking dataset sizes and search-grid sizes (<code>part_sband</code>, <code>part_sblock</code>, <code>occfilt_env</code>, <code>occfilt_geo</code>) further in the vignettes, by <a href="https://github.com/sjevelazco" class="external-link">@sjevelazco</a></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.0" id="flexsdm-140">flexsdm 1.4.0<a class="anchor" aria-label="anchor" href="#flexsdm-140"></a></h2>

@@ -626,7 +626,7 @@ values.
 `  x ``=`` ``"x"``,`\
 `  y ``=`` ``"y"``,`\
 `  env_layer ``=`` ``somevar``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"moran"``, `[`c`](https://rdrr.io/r/base/c.html)`(``0.1``, ``0.2``, ``0.3``, ``0.5``)``)``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"moran"``, `[`c`](https://rdrr.io/r/base/c.html)`(``0.2``, ``0.5``)``)``,`\
 `  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
 `)`\
 \
@@ -635,7 +635,7 @@ values.
 `  x ``=`` ``"x"``,`\
 `  y ``=`` ``"y"``,`\
 `  env_layer ``=`` ``somevar``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cellsize"``, factor ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``5``, ``8``, ``12``)``)``, ``# coarser resolution than the provided raster`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cellsize"``, factor ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``8``)``)``, ``# coarser resolution than the provided raster`\
 `  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
 `)`\
 \
@@ -644,7 +644,7 @@ values.
 `  x ``=`` ``"x"``,`\
 `  y ``=`` ``"y"``,`\
 `  env_layer ``=`` ``somevar``,`\
-`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"defined"``, d ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``5``, ``10``, ``15``, ``30``)``)``,`\
+`  method ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"defined"``, d ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``5``, ``30``)``)``,`\
 `  prj ``=`` `[`crs`](https://rspatial.github.io/terra/reference/crs.html)`(``somevar``)`\
 `)`\
 \
@@ -652,7 +652,7 @@ values.
 `filt_geo1`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`class`](https://rdrr.io/r/base/class.html)`(``)`\
 `#> [1] "list"`\
 `filt_geo1`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `[`names`](https://rspatial.github.io/terra/reference/names.html)`(``)`\
-`#> [1] "0.1" "0.2" "0.3" "0.5"`\
+`#> [1] "0.2" "0.5"`\
 \
 `# Let's plot the results with ggplot2`\
 [`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``filt_geo1``, .id ``=`` ``"moran"``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
@@ -718,11 +718,9 @@ function help)
 `#> ``# ℹ 146 more rows`\
 `#> `\
 `#> $filter_prop`\
-`#>   filt_value mean_autocorr n_records       aet       cwd       tmx       tmn`\
-`#> 1          1     0.3219265       233 0.3534014 0.2017850 0.3352363 0.3972832`\
-`#> 2          5     0.2923551       189 0.3276294 0.1400721 0.3170405 0.3846783`\
-`#> 3        * 8     0.2602486       156 0.3055744 0.1287050 0.2635844 0.3431307`\
-`#> 4         12     0.2291901       118 0.2568785 0.1080880 0.2311247 0.3206691`
+`#>   filt_value mean_autocorr n_records       aet      cwd       tmx       tmn`\
+`#> 1          1     0.3219265       233 0.3534014 0.201785 0.3352363 0.3972832`\
+`#> 2        * 8     0.2602486       156 0.3055744 0.128705 0.2635844 0.3431307`
 
 ## Data partitioning
 
@@ -781,13 +779,13 @@ showing the selected grid.
 `  pr_ab ``=`` ``"pr_ab"``,`\
 `  type ``=`` ``"lat"``, ``# specify bands across different degrees of longitude 'lon' or latitude 'lat'.`\
 `  min_bands ``=`` ``2``, ``# minimum number of spatial bands to be tested`\
-`  max_bands ``=`` ``20``, ``# maximum number of spatial bands to be tested`\
+`  max_bands ``=`` ``10``, ``# maximum number of spatial bands to be tested`\
 `  n_part ``=`` ``2``,`\
 `  prop ``=`` ``0.5`\
 `)`\
 `#> 12 rows were excluded from database because NAs were found`\
 `#> The following number of bands will be tested:`\
-`#> 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20`\
+`#> 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10`\
 `#> Creating basic raster mask...`\
 `#> Searching for the optimal number of bands...`
 
@@ -819,13 +817,13 @@ testing.
 `  pr_ab ``=`` ``"pr_ab"``,`\
 `  min_res_mult ``=`` ``10``, ``# Minimum value used for multiplying raster resolution and define the finest resolution to be tested`\
 `  max_res_mult ``=`` ``200``, ``# Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested`\
-`  num_grids ``=`` ``30``, ``# Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)`\
+`  num_grids ``=`` ``10``, ``# Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)`\
 `  n_part ``=`` ``2``, ``# Number of partitions`\
 `  prop ``=`` ``0.5`` ``# Proportion of points used for testing autocorrelation between groupds (0-1)`\
 `)`\
 `#> 12 rows were excluded from database because NAs were found`\
 `#> The following grid cell sizes will be tested:`\
-`#> 18900 | 31282.76 | 43665.52 | 56048.28 | 68431.03 | 80813.79 | 93196.55 | 105579.31 | 117962.07 | 130344.83 | 142727.59 | 155110.34 | 167493.1 | 179875.86 | 192258.62 | 204641.38 | 217024.14 | 229406.9 | 241789.66 | 254172.41 | 266555.17 | 278937.93 | 291320.69 | 303703.45 | 316086.21 | 328468.97 | 340851.72 | 353234.48 | 365617.24 | 378000`\
+`#> 18900 | 58800 | 98700 | 138600 | 178500 | 218400 | 258300 | 298200 | 338100 | 378000`\
 `#> Creating basic raster mask...`\
 `#> Searching for the optimal grid size...`\
 \
@@ -849,7 +847,7 @@ we will explore in the next section.
 
 \
 `terra``::`[`res`](https://rspatial.github.io/terra/reference/dimensions.html)`(``sp_part3``$``grid``)`\
-`#> [1] 278937.9 278937.9`\
+`#> [1] 378000 378000`\
 `terra``::`[`res`](https://rspatial.github.io/terra/reference/dimensions.html)`(``somevar``)`\
 `#> [1] 1890 1890`\
 \
