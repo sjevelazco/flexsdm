@@ -129,25 +129,25 @@ If you want to replace the abies dataset with your own data, make sure that your
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 dplyr::glimpse(abies2)
 ```
 
-Now, in the abies2 object we have a new column called ".part" with the 5 k-folds (1, 2, 3, 4, 5), indicating which partition each record (row) is a member of. Next, we have to apply the same partition method and number of folds to the environmental conditions of the background points.
+Now, in the abies2 object we have a new column called ".part" with the 3 k-folds (1, 2, 3), indicating which partition each record (row) is a member of. Next, we have to apply the same partition method and number of folds to the environmental conditions of the background points.
 
 ```{r background_points}
 backg2 <- part_random(
   data = backg,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 dplyr::glimpse(backg2)
 ```
 
-In backg2 object we have a new column called ".part" with the 5 k-folds (1, 2, 3, 4, 5).
+In backg2 object we have a new column called ".part" with the 3 k-folds (1, 2, 3).
 
 ### 1. Fit and validate models
 
@@ -206,8 +206,8 @@ First, we create a	data.frame that provides hyper-parameters values to be tested
 ```{r tune_grid}
 tune_grid <-
   expand.grid(
-    mtry = seq(1, 7, 1),
-    ntree = c(300, 500, 700, 900)
+    mtry = c(2, 4, 6),
+    ntree = c(500, 800)
   )
 ```
 
@@ -367,12 +367,12 @@ Now, we test the rep_kfold partition method. In this method 'folds' refers to th
 # Remove the previous k-fold partition
 abies2 <- abies2 %>% select(-starts_with("."))
 
-# Test with rep_kfold partition using 3 folds and 5 replicates
+# Test with rep_kfold partition using 3 folds and 2 replicates
 set.seed(10)
 abies2 <- part_random(
   data = abies2,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 3, replicates = 5)
+  method = c(method = "rep_kfold", folds = 3, replicates = 2)
 )
 abies2
 ```
@@ -386,11 +386,7 @@ esm_gam_t2 <- esm_gam(
     "aet",
     "cwd",
     "tmin",
-    "ppt_djf",
-    "ppt_jja",
-    "pH",
-    "awc",
-    "depth"
+    "ppt_djf"
   ),
   partition = ".part",
   thr = NULL,
@@ -404,12 +400,12 @@ Test with random bootstrap partitioning. In method 'replicate' refers to the num
 # Remove the previous k-fold partition
 abies2 <- abies2 %>% select(-starts_with("."))
 
-# Test with bootstrap partition using 10 replicates
+# Test with bootstrap partition using 3 replicates
 set.seed(10)
 abies2 <- part_random(
   data = abies2,
   pr_ab = "pr_ab",
-  method = c(method = "boot", replicates = 10, proportion = 0.7)
+  method = c(method = "boot", replicates = 3, proportion = 0.7)
 )
 abies2
 ```
@@ -424,11 +420,7 @@ esm_gam_t3 <- esm_gam(
     "aet",
     "cwd",
     "tmin",
-    "ppt_djf",
-    "ppt_jja",
-    "pH",
-    "awc",
-    "depth"
+    "ppt_djf"
   ),
   partition = ".part",
   thr = NULL

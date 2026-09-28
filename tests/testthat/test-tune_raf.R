@@ -8,7 +8,7 @@ data(abies)
 # We will partition the data with the k-fold method
 abies2 <- part_random(
   data = abies %>% dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2),
+    dplyr::slice_sample(prop = .1),
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 2)
 )
@@ -18,8 +18,8 @@ test_that("tuen", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      mtry = seq(1, 4, 1),
-      ntree = c(200, 400, 600, 800)
+      mtry = c(1, 3),
+      ntree = c(200, 400)
     )
 
   raf_t <-
@@ -42,7 +42,7 @@ test_that("tuen", {
 test_that("tuen without ntree hyperparamenter", {
   # Hyper-parameter values for tuning
   tune_grid <-
-    expand.grid(mtry = seq(1, 4, 1))
+    expand.grid(mtry = c(1, 3))
 
   raf_t <-
     tune_raf(
@@ -65,8 +65,8 @@ test_that("test of 0-1 response argument", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      mtry = seq(1, 4, 1),
-      ntree = c(400, 600)
+      mtry = c(1, 3),
+      ntree = c(200, 400)
     )
 
   expect_error(
@@ -88,8 +88,8 @@ test_that("test of 0-1 response argument", {
 test_that("test NULL in predictors_f", {
   tune_grid <-
     expand.grid(
-      mtry = seq(1, 4, 1),
-      ntree = c(400, 600)
+      mtry = c(1, 3),
+      ntree = c(200, 400)
     )
 
   raf_t <-
@@ -122,8 +122,8 @@ test_that("test if remove NAs rows works", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      mtry = seq(1, 4, 1),
-      ntree = c(400, 600)
+      mtry = c(1, 3),
+      ntree = c(200, 400)
     )
 
   # Insert NAs in rows 3 and 4 for response column.
@@ -161,8 +161,8 @@ test_that("test fit_formula", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      mtry = seq(1, 4, 1),
-      ntree = c(400, 600)
+      mtry = c(1, 3),
+      ntree = c(200, 400)
     )
 
   raf_t <-
@@ -182,10 +182,11 @@ test_that("test fit_formula", {
 })
 
 test_that("grid = NULL ", {
+  skip_on_cran()
   tune_grid <-
     expand.grid(
-      mtry = seq(1, 4, 1),
-      ntree = c(400, 600)
+      mtry = c(1, 3),
+      ntree = c(200, 400)
     )
   expect_message(
     raf_t <-

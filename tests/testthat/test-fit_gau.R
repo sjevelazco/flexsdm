@@ -4,7 +4,7 @@ test_that("test Gaussian Process model", {
   set.seed(10)
   abies <- abies %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = 0.5)
+    dplyr::slice_sample(prop = 0.15)
 
   # Using k-fold partition method
   abies2 <- part_random(
@@ -35,7 +35,7 @@ test_that("test Gaussian Process model", {
   abies2 <- part_random(
     data = abies,
     pr_ab = "pr_ab",
-    method = c(method = "boot", replicates = 5, proportion = 0.7)
+    method = c(method = "boot", replicates = 2, proportion = 0.7)
   )
 
   gaup_t2 <- fit_gau(
@@ -74,9 +74,10 @@ test_that("test Gaussian Process model", {
 test_that("test gau with NA, no factor variable and using formula", {
   data("abies")
   require(dplyr)
-  abies %>%
+  abies <- abies %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = 0.5)
+    dplyr::slice_sample(prop = 0.15) %>%
+    dplyr::ungroup()
 
   # Using k-fold partition method
   abies2 <- part_random(

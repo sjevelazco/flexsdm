@@ -211,7 +211,7 @@ tune_max <-
     # Prepare grid when grid=default or NULL
     if (is.null(grid)) {
       grid <- expand.grid(
-        regmult = seq(0.1, 3, 0.05),
+        regmult = seq(0.1, 3, 0.5),
         classes = c("l", "lq", "lqh", "lqhp", "lqhpt")
       )
       message("Hyper-parameter values were not provided, default values will be used")

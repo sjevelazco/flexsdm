@@ -4,6 +4,8 @@
 -  minor warnings and package formality were fixed, by @sjevelazco [467](https://github.com/sjevelazco/flexsdm/pull/467)
 -  `correct_colinvar`: Unicode box-drawing characters in the documentation's example directory tree were replaced with plain ASCII, fixing a LaTeX error that caused the PDF manual build to fail on CRAN, by @sjevelazco
 -  Vignette `v07_Complete_workflow`: two dataset links were missing the `https://` scheme (`www.doi.org/...`), which CRAN flagged as invalid URIs; fixed to `https://doi.org/...`, by @sjevelazco
+-  `tune_max`: fixed a bug where the default hyperparameter grid (used when `grid = NULL`) tested a `regmult` step of 0.05 instead of the documented 0.5, producing ~10x more combinations than intended, by @sjevelazco
+-  Test suite and vignette runtimes were substantially reduced in response to CRAN's request (test suite ~17 min -> ~3 min; vignette rebuilding ~14 min -> ~2 min, as measured locally) by shrinking hyperparameter grids, dataset sizes, and replicate/fold counts in tests and vignettes, and by gating the most expensive/redundant test cases behind `skip_on_cran()`, by @sjevelazco
 
 # flexsdm 1.4.0 
 -  `map_env_dist`: C++ function to calculate Euclidean and Mahalanobis distance was implemented, by @sjevelazco [463](https://github.com/sjevelazco/flexsdm/pull/463)

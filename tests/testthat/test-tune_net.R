@@ -11,7 +11,7 @@ test_that("class and lenght of net_t object", {
 
   abies2 <- part_random(
     data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
+      dplyr::slice_sample(prop = .1),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 2)
   )
@@ -19,8 +19,8 @@ test_that("class and lenght of net_t object", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      size = c(4, 6, 8, 10),
-      decay = c(0.05, 0.1, 1, 3, 10)
+      size = c(2, 4),
+      decay = c(0.1, 1)
     )
 
   net_t <-
@@ -45,7 +45,7 @@ test_that("test of 0-1 response argument", {
   # We will partition the data with the k-fold method
   abies2 <- part_random(
     data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
+      dplyr::slice_sample(prop = .1),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 2)
   )
@@ -53,8 +53,8 @@ test_that("test of 0-1 response argument", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      size = c(4, 6, 8, 10),
-      decay = c(0.05, 0.1, 1, 3, 10)
+      size = c(2, 4),
+      decay = c(0.1, 1)
     )
 
   expect_error(
@@ -78,15 +78,15 @@ test_that("test NULL in predictors_f", {
 
   abies2 <- part_random(
     data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
+      dplyr::slice_sample(prop = .1),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 2)
   )
 
   tune_grid <-
     expand.grid(
-      size = c(4, 6, 8, 10),
-      decay = c(0.05, 0.1, 1, 3, 10)
+      size = c(2, 4),
+      decay = c(0.1, 1)
     )
 
   net_t <-
@@ -121,7 +121,7 @@ test_that("test if remove NAs rows works", {
   # We will partition the data with the k-fold method
   abies2 <- part_random(
     data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
+      dplyr::slice_sample(prop = .1),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 2)
   )
@@ -129,8 +129,8 @@ test_that("test if remove NAs rows works", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      size = c(4, 6, 8, 10),
-      decay = c(0.05, 0.1, 1, 3, 10)
+      size = c(2, 4),
+      decay = c(0.1, 1)
     )
 
   # Insert NAs in rows 3 and 4 for response column.
@@ -169,7 +169,7 @@ test_that("test fit_formula", {
 
   abies2 <- part_random(
     data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
+      dplyr::slice_sample(prop = .1),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 2)
   )
@@ -177,8 +177,8 @@ test_that("test fit_formula", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      size = c(4, 6, 8, 10),
-      decay = c(0.05, 0.1, 1, 3, 10)
+      size = c(2, 4),
+      decay = c(0.1, 1)
     )
 
   expect_message(
@@ -198,11 +198,12 @@ test_that("test fit_formula", {
 })
 
 test_that("grid = NULL ", {
+  skip_on_cran()
   data(abies)
 
   abies2 <- part_random(
     data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
+      dplyr::slice_sample(prop = .1),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 2)
   )
@@ -228,7 +229,7 @@ test_that("missuse of grid ", {
 
   abies2 <- part_random(
     data = abies %>% dplyr::group_by(pr_ab) %>%
-      dplyr::slice_sample(prop = .2),
+      dplyr::slice_sample(prop = .1),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 2)
   )
@@ -236,8 +237,8 @@ test_that("missuse of grid ", {
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
-      size = c(4, 6, 8, 10),
-      decay = c(0.05, 0.1, 1, 3, 10)
+      size = c(2, 4),
+      decay = c(0.1, 1)
     )
 
   expect_error(

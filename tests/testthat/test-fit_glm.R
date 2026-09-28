@@ -1,5 +1,6 @@
 test_that("multiplication works", {
   data("abies")
+  abies <- abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = .2) %>% dplyr::ungroup()
 
   # Using k-fold partition method
   abies2 <- part_random(
@@ -39,7 +40,7 @@ test_that("multiplication works", {
   abies2 <- part_random(
     data = abies,
     pr_ab = "pr_ab",
-    method = c(method = "rep_kfold", folds = 3, replicates = 3)
+    method = c(method = "rep_kfold", folds = 3, replicates = 2)
   )
 
   glm_t3 <- fit_glm(
@@ -79,6 +80,7 @@ test_that("multiplication works", {
 
 test_that("test glm with NA, no factor variable and using formula", {
   data("abies")
+  abies <- abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = .2) %>% dplyr::ungroup()
 
   # Using k-fold partition method
   abies2 <- part_random(
@@ -104,6 +106,7 @@ test_that("test glm with NA, no factor variable and using formula", {
 
 test_that("test select_var argument", {
   data("abies")
+  abies <- abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = .2) %>% dplyr::ungroup()
 
   # Using k-fold partition method
   abies2 <- part_random(

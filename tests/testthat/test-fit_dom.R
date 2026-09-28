@@ -1,8 +1,19 @@
-test_that("fit_dom works with k-fold partition and continuous + categorical predictors", {
+# fit_dom's internal threshold search runs up to nnn = min(nrow(presences), 50)
+# iterations of a full Gower-distance computation over the whole dataset. With
+# the full abies dataset (700 presences) every call below would trigger the
+# expensive 50-iteration branch. Using a small toy subsample keeps the
+# threshold search near-instant while still exercising the same code path.
+small_abies <- function() {
   data("abies")
+  abies %>%
+    dplyr::group_by(pr_ab) %>%
+    dplyr::slice_sample(n = 30) %>%
+    dplyr::ungroup()
+}
 
+test_that("fit_dom works with k-fold partition and continuous + categorical predictors", {
   abies2 <- part_random(
-    data = abies,
+    data = small_abies(),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
   )
@@ -45,10 +56,8 @@ test_that("fit_dom works with k-fold partition and continuous + categorical pred
 
 
 test_that("fit_dom works without predictors_f (continuous predictors only)", {
-  data("abies")
-
   abies2 <- part_random(
-    data = abies,
+    data = small_abies(),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
   )
@@ -69,10 +78,9 @@ test_that("fit_dom works without predictors_f (continuous predictors only)", {
 
 
 test_that("fit_dom works with repeated k-fold partitioning", {
-  data("abies")
-
+  skip_on_cran()
   abies2 <- part_random(
-    data = abies,
+    data = small_abies(),
     pr_ab = "pr_ab",
     method = c(method = "rep_kfold", folds = 3, replicates = 3)
   )
@@ -94,10 +102,9 @@ test_that("fit_dom works with repeated k-fold partitioning", {
 
 
 test_that("fit_dom works with multiple threshold types, including sensitivity", {
-  data("abies")
-
+  skip_on_cran()
   abies2 <- part_random(
-    data = abies,
+    data = small_abies(),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
   )
@@ -118,10 +125,9 @@ test_that("fit_dom works with multiple threshold types, including sensitivity", 
 
 
 test_that("fit_dom uses all default thresholds when thr = NULL", {
-  data("abies")
-
+  skip_on_cran()
   abies2 <- part_random(
-    data = abies,
+    data = small_abies(),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
   )
@@ -141,10 +147,10 @@ test_that("fit_dom uses all default thresholds when thr = NULL", {
 
 
 test_that("fit_dom with partition = NULL returns only the stored presence model", {
-  data("abies")
+  abies_small <- small_abies()
 
   dom_t6 <- fit_dom(
-    data = abies,
+    data = abies_small,
     response = "pr_ab",
     predictors = c("aet", "ppt_jja", "pH", "awc", "depth"),
     predictors_f = c("landform"),
@@ -154,19 +160,17 @@ test_that("fit_dom with partition = NULL returns only the stored presence model"
 
   expect_equal(class(dom_t6), "list")
   expect_named(dom_t6, "model")
-  expect_true(all(abies$pr_ab[rownames(dom_t6$model$domain) %>% as.numeric()] == 1))
+  expect_true(all(abies_small$pr_ab[rownames(dom_t6$model$domain) %>% as.numeric()] == 1))
 })
 
 
 test_that("fit_dom removes rows with NAs in predictors and reports it", {
-  data("abies")
-
   abies2 <- part_random(
-    data = abies,
+    data = small_abies(),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
   )
-  abies2$aet[1:10] <- NA
+  abies2$aet[1:5] <- NA
 
   expect_message(
     dom_t7 <- fit_dom(
@@ -185,10 +189,8 @@ test_that("fit_dom removes rows with NAs in predictors and reports it", {
 
 
 test_that("fit_dom errors when no predictors are provided", {
-  data("abies")
-
   abies2 <- part_random(
-    data = abies,
+    data = small_abies(),
     pr_ab = "pr_ab",
     method = c(method = "kfold", folds = 3)
   )
@@ -207,15 +209,11 @@ test_that("fit_dom errors when no predictors are provided", {
 
 test_that("fit_dom model object can be used by sdm_predict", {
   skip_if_not_installed("terra")
-  data("abies")
   somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
   names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 
-  abies2 <- abies %>%
-    dplyr::select(x, y, pr_ab) %>%
-    dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = 0.5) %>%
-    dplyr::ungroup()
+  abies2 <- small_abies() %>%
+    dplyr::select(x, y, pr_ab)
   abies2 <- sdm_extract(abies2, x = "x", y = "y", env_layer = somevar)
   abies2 <- part_random(
     data = abies2,

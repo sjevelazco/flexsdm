@@ -1,5 +1,6 @@
 test_that("test different function setting ", {
   data("abies")
+  abies <- abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = .2) %>% dplyr::ungroup()
 
   # Using k-fold partition method
   abies2 <- part_random(
@@ -29,7 +30,7 @@ test_that("test different function setting ", {
   abies2 <- part_random(
     data = abies,
     pr_ab = "pr_ab",
-    method = c(method = "boot", replicates = 5, proportion = 0.7)
+    method = c(method = "boot", replicates = 2, proportion = 0.7)
   )
 
   # generating background data
@@ -73,6 +74,7 @@ test_that("test different function setting ", {
 
 test_that("fit model only with presences and background points", {
   data("abies")
+  abies <- abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = .2) %>% dplyr::ungroup()
 
   # Only presences
   abies2 <- abies %>% dplyr::filter(pr_ab == 1)
@@ -113,13 +115,14 @@ test_that("fit model only with presences and background points", {
 
 test_that("test max with NA, no factor variable and using formula", {
   data("abies")
+  abies <- abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = .2) %>% dplyr::ungroup()
 
   # Using k-fold partition method
   # Using bootstrap partition method
   abies2 <- part_random(
     data = abies,
     pr_ab = "pr_ab",
-    method = c(method = "boot", replicates = 5, proportion = 0.7)
+    method = c(method = "boot", replicates = 2, proportion = 0.7)
   )
 
   # generating background data

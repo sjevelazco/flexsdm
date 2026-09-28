@@ -4,9 +4,10 @@ test_that("sdm summarize", {
   # We will partition the data with the k-fold method
 
   abies2 <- part_random(
-    data = abies,
+    data = abies %>% dplyr::group_by(pr_ab) %>%
+      dplyr::slice_sample(prop = .3),
     pr_ab = "pr_ab",
-    method = c(method = "kfold", folds = 5)
+    method = c(method = "kfold", folds = 3)
   )
 
   # Build a generalized additive model using fit_gam
@@ -36,15 +37,14 @@ test_that("sdm summarize", {
   # Build a tuned random forest model using tune_raf
 
   tune_grid <-
-    expand.grid(mtry = seq(1, 5, 1), ntree = c(800, 1000))
+    expand.grid(mtry = c(1, 3), ntree = c(200, 400))
 
   rf_t1 <-
     tune_raf(
       data = abies2,
       response = "pr_ab",
       predictors = c(
-        "aet", "cwd", "tmin", "ppt_djf",
-        "ppt_jja", "pH", "awc", "depth"
+        "aet", "cwd", "ppt_jja", "pH", "awc", "depth"
       ),
       predictors_f = c("landform"),
       partition = ".part",

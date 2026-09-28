@@ -13,11 +13,11 @@ test_that("test example tune_max", {
   set.seed(0)
   abies <- abies %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2)
+    dplyr::slice_sample(prop = .08)
   set.seed(0)
   backg <- backg %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2)
+    dplyr::slice_sample(prop = .04)
 
   abies2 <- part_random(
     data = abies,
@@ -34,7 +34,7 @@ test_that("test example tune_max", {
   # Hyper-parameter values for tuning
   gridtest <-
     expand.grid(
-      regmult = seq(0.1, 3, 0.5),
+      regmult = seq(0.1, 1.1, 0.5),
       classes = c("l", "lq")
     )
 
@@ -65,11 +65,11 @@ test_that("test NULL predictors_f and NULL grid", {
   set.seed(0)
   abies <- abies %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2)
+    dplyr::slice_sample(prop = .08)
   set.seed(0)
   backg <- backg %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2)
+    dplyr::slice_sample(prop = .04)
 
   # We will partition the data and background with the k-fold method
 
@@ -90,7 +90,7 @@ test_that("test NULL predictors_f and NULL grid", {
   # Hyper-parameter values for tuning
   gridtest <-
     expand.grid(
-      regmult = seq(0.1, 3, 1),
+      regmult = seq(0.1, 1.1, 1),
       classes = c("l", "lq")
     )
 
@@ -136,11 +136,11 @@ test_that("test data with NA and without background", {
   set.seed(0)
   abies <- abies %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2)
+    dplyr::slice_sample(prop = .08)
   set.seed(0)
   backg <- backg %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2)
+    dplyr::slice_sample(prop = .04)
 
   abies[c(1, 50, 100), 2:ncol(abies)] <- NA
   backg[c(1, 50, 100), 2:ncol(backg)] <- NA
@@ -164,7 +164,7 @@ test_that("test data with NA and without background", {
   # Hyper-parameter values for tuning
   gridtest <-
     expand.grid(
-      regmult = seq(0.1, 3, 1),
+      regmult = seq(0.1, 1.1, 1),
       classes = c("l", "lq")
     )
 
@@ -210,11 +210,11 @@ test_that("test fit only with presences and background", {
   set.seed(0)
   abies <- abies %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2)
+    dplyr::slice_sample(prop = .08)
   set.seed(0)
   backg <- backg %>%
     dplyr::group_by(pr_ab) %>%
-    dplyr::slice_sample(prop = .2)
+    dplyr::slice_sample(prop = .04)
 
   # We will partition the data and background with the k-fold method
 
@@ -236,7 +236,7 @@ test_that("test fit only with presences and background", {
   # Hyper-parameter values for tuning
   gridtest <-
     expand.grid(
-      regmult = seq(0.1, 3, 1),
+      regmult = seq(0.1, 1.1, 1),
       classes = c("l", "lq")
     )
 
@@ -263,10 +263,14 @@ test_that("test background argument names not match
   require(dplyr)
 
   data(abies)
-  abies
+  abies <- abies %>%
+    dplyr::group_by(pr_ab) %>%
+    dplyr::slice_sample(prop = .08)
 
   data(backg)
-  backg
+  backg <- backg %>%
+    dplyr::group_by(pr_ab) %>%
+    dplyr::slice_sample(prop = .04)
 
   # We will partition the data and background with the k-fold method
 
@@ -291,7 +295,7 @@ test_that("test background argument names not match
   # Hyper-parameter values for tuning
   gridtest <-
     expand.grid(
-      regmult = seq(0.1, 31),
+      regmult = seq(0.1, 1, 0.5),
       classes = c("l", "lq")
     )
 
@@ -312,7 +316,7 @@ test_that("test background argument names not match
 
   gridtest <-
     expand.grid(
-      regmult = seq(0.1, 31),
+      regmult = seq(0.1, 1, 0.5),
       classes = c("l", "lq")
     )
 

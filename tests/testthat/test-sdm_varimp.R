@@ -60,7 +60,7 @@ test_that("sdm_varimp", {
       clamp = TRUE,
       pred_type = "cloglog",
       thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
-      n_sim = 10,
+      n_sim = 3,
       n_cores = 1
     )
   expect_length(v_ip, 17)
@@ -83,7 +83,7 @@ test_that("ensemble", {
     clamp = TRUE,
     pred_type = "cloglog",
     thr = "max_sens_spec",
-    n_sim = 10,
+    n_sim = 3,
     n_cores = 1
   )
 
@@ -106,7 +106,7 @@ test_that("sdm_varimp for esm", {
   abies2 <- part_random(
     data = abies2,
     pr_ab = "pr_ab",
-    method = c(method = "rep_kfold", folds = 3, replicates = 5)
+    method = c(method = "rep_kfold", folds = 3, replicates = 2)
   )
   abies2
 
@@ -131,7 +131,7 @@ test_that("sdm_varimp for esm", {
       clamp = TRUE,
       pred_type = "cloglog",
       thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
-      n_sim = 10,
+      n_sim = 3,
       n_cores = 1
     )
   expect_true(all(grepl("esm", v_ip$model)))

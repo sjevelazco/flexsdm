@@ -57,7 +57,7 @@ test_that("test with GAM", {
     training_data = some_sp,
     response = "pres_abs",
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
 
@@ -79,7 +79,7 @@ test_that("test with GLM", {
     training_data = some_sp,
     response = "pres_abs",
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
 
@@ -94,9 +94,9 @@ test_that("test with GBM", {
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
     grid = expand.grid(
-      n.trees = c(50, 100),
-      shrinkage = c(1),
-      n.minobsinnode = c(5, 9)
+      n.trees = 50,
+      shrinkage = 1,
+      n.minobsinnode = 5
     ),
     thr = "max_sens_spec",
     metric = "TSS",
@@ -107,7 +107,7 @@ test_that("test with GBM", {
     training_data = some_sp,
     response = "pres_abs",
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
   expect_equal(class(unc)[[1]], "SpatRaster")
@@ -128,7 +128,7 @@ test_that("test with GAU", {
     response = "pres_abs",
     background = NULL,
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
   expect_equal(class(unc)[[1]], "SpatRaster")
@@ -136,14 +136,15 @@ test_that("test with GAU", {
 })
 
 test_that("test with NET", {
+  skip_on_cran()
   m <- tune_net(
     data = some_sp,
     response = "pres_abs",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
     grid = expand.grid(
-      size = c(2:3),
-      decay = c(1, 3)
+      size = 2,
+      decay = 1
     ),
     n_cores = 2,
     thr = "equal_sens_spec"
@@ -154,7 +155,7 @@ test_that("test with NET", {
     response = "pres_abs",
     background = NULL,
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
   expect_equal(class(unc)[[1]], "SpatRaster")
@@ -162,14 +163,15 @@ test_that("test with NET", {
 })
 
 test_that("test with RAF", {
+  skip_on_cran()
   m <- tune_raf(
     data = some_sp,
     response = "pres_abs",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
     grid = expand.grid(
-      mtry = seq(1, 7, 1),
-      ntree = c(400, 600, 800)
+      mtry = 2,
+      ntree = 400
     ),
     n_cores = 2,
     thr = "equal_sens_spec"
@@ -180,7 +182,7 @@ test_that("test with RAF", {
     response = "pres_abs",
     background = NULL,
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
   expect_equal(class(unc)[[1]], "SpatRaster")
@@ -188,14 +190,15 @@ test_that("test with RAF", {
 })
 
 test_that("test with SVM", {
+  skip_on_cran()
   m <- tune_svm(
     data = some_sp,
     response = "pres_abs",
     predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
     partition = ".part",
     grid = expand.grid(
-      C = c(2, 8, 20),
-      sigma = c(0.01, 0.1, 0.4)
+      C = 2,
+      sigma = 0.1
     ),
     n_cores = 2,
     thr = "equal_sens_spec"
@@ -206,7 +209,7 @@ test_that("test with SVM", {
     response = "pres_abs",
     background = NULL,
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
   expect_equal(class(unc)[[1]], "SpatRaster")
@@ -214,6 +217,7 @@ test_that("test with SVM", {
 })
 
 test_that("test with MAX", {
+  skip_on_cran()
   m <- tune_max(
     data = some_sp,
     response = "pres_abs",
@@ -221,7 +225,7 @@ test_that("test with MAX", {
     partition = ".part",
     background = backg,
     grid = expand.grid(
-      regmult = seq(0.1, 3, 0.5),
+      regmult = 1,
       classes = c("lqpht")
     ),
     n_cores = 2,
@@ -234,7 +238,7 @@ test_that("test with MAX", {
     response = "pres_abs",
     background = backg,
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
   expect_equal(class(unc)[[1]], "SpatRaster")
@@ -242,6 +246,7 @@ test_that("test with MAX", {
 })
 
 test_that("test with DOM", {
+  skip_on_cran()
   m <- fit_dom(
     data = some_sp,
     response = "pres_abs",
@@ -254,7 +259,7 @@ test_that("test with DOM", {
     training_data = some_sp,
     response = "pres_abs",
     projection_data = somevar,
-    iteration = 5,
+    iteration = 2,
     n_cores = 2
   )
   expect_equal(class(unc)[[1]], "SpatRaster")

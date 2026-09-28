@@ -239,7 +239,7 @@ abies
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 ```
 
@@ -272,8 +272,8 @@ glm_t1 <- fit_glm(
 # Prepare the grid object to use in grid argument
 tune_grid <-
   expand.grid(
-    mtry = seq(1, 7, 1),
-    ntree = seq(300, 1500, 200)
+    mtry = c(2, 4, 6),
+    ntree = c(500, 1000)
   )
 
 # Build a tuned random forest model

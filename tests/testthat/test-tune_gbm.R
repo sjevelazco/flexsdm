@@ -189,6 +189,7 @@ test_that("test fit_formula", {
 })
 
 test_that("grid = NULL ", {
+  skip_on_cran()
   data(abies)
 
   abies2 <- part_random(

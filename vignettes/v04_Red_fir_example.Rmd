@@ -222,8 +222,8 @@ t_max <- tune_max(
   background = bg,
   partition = ".part",
   grid = expand.grid(
-    regmult = seq(0.1, 3, 0.5),
-    classes = c("l", "lq", "lqhpt")
+    regmult = c(0.5, 1.5, 2.5),
+    classes = c("l", "lq")
   ),
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
   metric = "TSS",
