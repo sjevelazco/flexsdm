@@ -46,6 +46,7 @@ backg <- part_random(
 somevar <- terra::aggregate(somevar, 6)
 
 test_that("test with GAM", {
+  skip_on_cran()
   m <- fit_gam(
     data = some_sp,
     response = "pres_abs",
@@ -88,6 +89,7 @@ test_that("test with GLM", {
 })
 
 test_that("test with GBM", {
+  skip_on_cran()
   m <- tune_gbm(
     data = some_sp,
     response = "pres_abs",
@@ -115,6 +117,7 @@ test_that("test with GBM", {
 })
 
 test_that("test with GAU", {
+  skip_on_cran()
   m <- fit_gau(
     data = some_sp,
     response = "pres_abs",

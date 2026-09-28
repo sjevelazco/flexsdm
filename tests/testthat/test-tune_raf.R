@@ -40,6 +40,7 @@ test_that("tuen", {
 
 
 test_that("tuen without ntree hyperparamenter", {
+  skip_on_cran()
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(mtry = c(1, 3))
@@ -86,6 +87,7 @@ test_that("test of 0-1 response argument", {
 
 
 test_that("test NULL in predictors_f", {
+  skip_on_cran()
   tune_grid <-
     expand.grid(
       mtry = c(1, 3),
@@ -119,6 +121,7 @@ test_that("test NULL in predictors_f", {
 })
 
 test_that("test if remove NAs rows works", {
+  skip_on_cran()
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
@@ -158,6 +161,7 @@ test_that("test if remove NAs rows works", {
 })
 
 test_that("test fit_formula", {
+  skip_on_cran()
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(

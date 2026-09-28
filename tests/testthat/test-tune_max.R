@@ -57,6 +57,7 @@ test_that("test example tune_max", {
 
 
 test_that("test NULL predictors_f and NULL grid", {
+  skip_on_cran()
   require(maxnet)
   require(dplyr)
 
@@ -128,6 +129,7 @@ test_that("test NULL predictors_f and NULL grid", {
 })
 
 test_that("test data with NA and without background", {
+  skip_on_cran()
   require(maxnet)
   require(dplyr)
 
@@ -202,6 +204,7 @@ test_that("test data with NA and without background", {
 })
 
 test_that("test fit only with presences and background", {
+  skip_on_cran()
   require(maxnet)
   require(dplyr)
 

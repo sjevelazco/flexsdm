@@ -6,6 +6,7 @@
 -  Vignette `v07_Complete_workflow`: two dataset links were missing the `https://` scheme (`www.doi.org/...`), which CRAN flagged as invalid URIs; fixed to `https://doi.org/...`, by @sjevelazco
 -  `tune_max`: fixed a bug where the default hyperparameter grid (used when `grid = NULL`) tested a `regmult` step of 0.05 instead of the documented 0.5, producing ~10x more combinations than intended, by @sjevelazco
 -  Test suite and vignette runtimes were substantially reduced in response to CRAN's request (test suite ~17 min -> ~3 min; vignette rebuilding ~14 min -> ~2 min, as measured locally) by shrinking hyperparameter grids, dataset sizes, and replicate/fold counts in tests and vignettes, and by gating the most expensive/redundant test cases behind `skip_on_cran()`, by @sjevelazco
+-  Further reduced test and vignette runtimes after win-builder's automated "Overall checktime > 10 min" rejection, by gating most secondary/edge-case assertions in the `tune_*` and `sdm_uncertainty` test files behind `skip_on_cran()` (kept a representative case running on CRAN for each), and by shrinking dataset sizes and search-grid sizes (`part_sband`, `part_sblock`, `occfilt_env`, `occfilt_geo`) further in the vignettes, by @sjevelazco
 
 # flexsdm 1.4.0 
 -  `map_env_dist`: C++ function to calculate Euclidean and Mahalanobis distance was implemented, by @sjevelazco [463](https://github.com/sjevelazco/flexsdm/pull/463)

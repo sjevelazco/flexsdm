@@ -77,7 +77,7 @@ points(abies_p[, c("x", "y")], col = "#00000480")
 
 Sample bias in species occurrence data has long been a recognized issue in SDM. However, environmental filtering of observation data can improve model predictions by reducing redundancy in environmental (e.g. climatic) hyper-space (Varela et al. 2014). Here we will use the function occfilt_env() to thin the red fir occurrences based on environmental space. This function is unique to *flexsdm*, and in contrast with other packages is able to use any number of environmental dimensions and does not perform a PCA before filtering.
 
-Next we apply environmental occurrence filtering using 8 bins and display the resulting filtered occurrence data
+Next we apply environmental occurrence filtering using 5 bins and display the resulting filtered occurrence data
 
 ```{r occurrence filtering}
 abies_p$id <- 1:nrow(abies_p) # adding unique id to each row
@@ -87,7 +87,7 @@ abies_pf <- abies_p %>%
     x = "x",
     y = "y",
     id = "id",
-    nbins = 8,
+    nbins = 5,
     env_layer = somevar
   ) %>%
   left_join(abies_p, by = c("id", "x", "y"))
@@ -115,7 +115,7 @@ occ_part <- abies_pf %>%
     n_part = 4,
     min_res_mult = 3,
     max_res_mult = 200,
-    num_grids = 30,
+    num_grids = 10,
     prop = 1
   )
 abies_pf <- occ_part$part

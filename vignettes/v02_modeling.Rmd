@@ -118,6 +118,14 @@ In this tutorial, we will be using species occurrences and environmental data th
 ```{r occ data}
 data("abies")
 data("backg")
+# Use a subset of the data to keep this tutorial fast to run;
+# in a real analysis you may want to use the full dataset
+set.seed(10)
+abies <- abies %>%
+  dplyr::group_by(pr_ab) %>%
+  dplyr::slice_sample(prop = 0.3) %>%
+  dplyr::ungroup()
+backg <- backg %>% dplyr::slice_sample(n = 1000)
 
 dplyr::glimpse(abies)
 dplyr::glimpse(backg)

@@ -235,6 +235,13 @@ This function combines model performance tables for all input models. This funct
 data(abies)
 abies
 
+# Use a subset of the data to keep this tutorial fast to run
+set.seed(10)
+abies <- abies %>%
+  dplyr::group_by(pr_ab) %>%
+  dplyr::slice_sample(prop = 0.3) %>%
+  dplyr::ungroup()
+
 # We will partition the data with the k-fold method
 abies2 <- part_random(
   data = abies,
