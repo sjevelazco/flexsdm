@@ -74,6 +74,7 @@ test_that("test of 0-1 response argument", {
 
 
 test_that("test NULL in predictors_f", {
+  skip_on_cran()
   data(abies)
 
   abies2 <- part_random(
@@ -116,6 +117,7 @@ test_that("test NULL in predictors_f", {
 })
 
 test_that("test if remove NAs rows works", {
+  skip_on_cran()
   data(abies)
 
   # We will partition the data with the k-fold method
@@ -165,6 +167,7 @@ test_that("test if remove NAs rows works", {
 })
 
 test_that("test fit_formula", {
+  skip_on_cran()
   data(abies)
 
   abies2 <- part_random(

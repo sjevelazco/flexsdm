@@ -405,7 +405,7 @@ filt_geo1 <- occfilt_geo(
   x = "x",
   y = "y",
   env_layer = somevar,
-  method = c("moran", c(0.1, 0.2, 0.3, 0.5)),
+  method = c("moran", c(0.2, 0.5)),
   prj = crs(somevar)
 )
 
@@ -414,7 +414,7 @@ filt_geo2 <- occfilt_geo(
   x = "x",
   y = "y",
   env_layer = somevar,
-  method = c("cellsize", factor = c(1, 5, 8, 12)), # coarser resolution than the provided raster
+  method = c("cellsize", factor = c(1, 8)), # coarser resolution than the provided raster
   prj = crs(somevar)
 )
 
@@ -423,7 +423,7 @@ filt_geo3 <- occfilt_geo(
   x = "x",
   y = "y",
   env_layer = somevar,
-  method = c("defined", d = c(5, 10, 15, 30)),
+  method = c("defined", d = c(5, 30)),
   prj = crs(somevar)
 )
 
@@ -500,7 +500,7 @@ sp_part2 <- part_sband(
   pr_ab = "pr_ab",
   type = "lat", # specify bands across different degrees of longitude 'lon' or latitude 'lat'.
   min_bands = 2, # minimum number of spatial bands to be tested
-  max_bands = 20, # maximum number of spatial bands to be tested
+  max_bands = 10, # maximum number of spatial bands to be tested
   n_part = 2,
   prop = 0.5
 )
@@ -529,7 +529,7 @@ sp_part3 <- part_sblock(
   pr_ab = "pr_ab",
   min_res_mult = 10, # Minimum value used for multiplying raster resolution and define the finest resolution to be tested
   max_res_mult = 200, # Maximum value used for multiplying raster resolution and define the coarsest resolution to be tested
-  num_grids = 30, # Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)
+  num_grids = 10, # Number of grid to be tested between min_res_mult X (raster resolution) and max_res_mult X (raster resolution)
   n_part = 2, # Number of partitions
   prop = 0.5 # Proportion of points used for testing autocorrelation between groupds (0-1)
 )

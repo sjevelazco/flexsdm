@@ -92,6 +92,7 @@ test_that("ensemble", {
 
 
 test_that("sdm_varimp for esm", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
 
