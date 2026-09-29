@@ -370,7 +370,7 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   thresholds$max_jaccard <-
     max(
       performance %>%
-        dplyr::filter(SORENSEN == max(SORENSEN)) %>%
+        dplyr::filter(JACCARD == max(JACCARD)) %>%
         dplyr::pull(threshold)
     )
 
