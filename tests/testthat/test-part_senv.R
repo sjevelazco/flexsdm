@@ -59,3 +59,46 @@ test_that("misuse of arguments", {
     prop = 0.2
   ))
 })
+
+test_that("include_coords = FALSE is independent of user column names", {
+  require(terra)
+
+  f <- system.file("external/somevar.tif", package = "flexsdm")
+  somevar <- terra::rast(f)
+
+  spp1 <- spp %>% dplyr::filter(species == "sp1")
+
+  # Columns are renamed to literal "pr_ab"/"x"/"y" on entry, so the
+  # include_coords = FALSE exclusion must use those literal names. Excluding
+  # by the user's argument values kept pr_ab and the coordinates in the
+  # k-means input whenever the input columns were not already named
+  # pr_ab/x/y, changing the partition.
+  set.seed(1)
+  part_default <- part_senv(
+    env_layer = somevar,
+    data = spp1,
+    x = "x",
+    y = "y",
+    pr_ab = "pr_ab",
+    min_n_groups = 2,
+    max_n_groups = 10,
+    prop = 0.2,
+    include_coords = FALSE
+  )
+
+  spp2 <- spp1 %>% dplyr::rename(occ = pr_ab, lon = x, lat = y)
+  set.seed(1)
+  part_renamed <- part_senv(
+    env_layer = somevar,
+    data = spp2,
+    x = "lon",
+    y = "lat",
+    pr_ab = "occ",
+    min_n_groups = 2,
+    max_n_groups = 10,
+    prop = 0.2,
+    include_coords = FALSE
+  )
+
+  expect_identical(part_default$part$.part, part_renamed$part$.part)
+})

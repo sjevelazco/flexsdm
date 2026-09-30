@@ -108,7 +108,8 @@
 #'   min_n_groups = 2,
 #'   max_n_groups = 10,
 #'   min_occ = 10,
-#'   prop = 0.2
+#'   prop = 0.2,
+#'   include_coords = TRUE
 #' )
 #'
 #' part1
@@ -124,16 +125,18 @@
 #'   geom_point(aes(shape = factor(pr_ab))) +
 #'   facet_wrap(. ~ pr_ab)
 #' }
-part_senv <- function(env_layer,
-                      data,
-                      x,
-                      y,
-                      pr_ab,
-                      min_n_groups = 2,
-                      max_n_groups = 10,
-                      min_occ = 10,
-                      prop = 0.5,
-                      include_coords = TRUE) {
+part_senv <- function(
+  env_layer,
+  data,
+  x,
+  y,
+  pr_ab,
+  min_n_groups = 2,
+  max_n_groups = 10,
+  min_occ = 10,
+  prop = 0.5,
+  include_coords = TRUE
+) {
   group <- NULL
   # Select columns
   data <- data.frame(data)
@@ -153,7 +156,10 @@ unique list values in pr_ab column are: ",
   filt <- stats::complete.cases(data)
   if (sum(!filt) > 0) {
     data <- data[filt, ]
-    message(sum(!filt), " rows were excluded from database because NAs were found")
+    message(
+      sum(!filt),
+      " rows were excluded from database because NAs were found"
+    )
   }
   rm(filt)
 
@@ -177,9 +183,15 @@ unique list values in pr_ab column are: ",
   part <- list()
   for (i in 1:length(cell_size)) {
     if (include_coords) {
-      part[[i]] <- stats::kmeans(scale(data[, -1]), centers = cell_size[i])$cluster
+      part[[i]] <- stats::kmeans(
+        scale(data[, -1]),
+        centers = cell_size[i]
+      )$cluster
     } else {
-      part[[i]] <- stats::kmeans(scale(data[, !names(data) %in% c(pr_ab, x, y)]), centers = cell_size[i])$cluster
+      part[[i]] <- stats::kmeans(
+        scale(data[, !names(data) %in% c("pr_ab", "x", "y")]),
+        centers = cell_size[i]
+      )$cluster
     }
   }
 
@@ -187,7 +199,6 @@ unique list values in pr_ab column are: ",
 
   # Bind groups
   part <- dplyr::bind_cols(part)
-
 
   ### Remove problematic partition
   n_records <- apply(part, 2, function(x) {
@@ -200,7 +211,9 @@ unique list values in pr_ab column are: ",
   filt <- sapply(n_records, function(x) any(x %>% dplyr::pull("filt")))
 
   if (sum(!filt) == 0) {
-    message("It was not possible to find a good partition. Try to change values in 'min_n_groups' and 'max_n_groups'")
+    message(
+      "It was not possible to find a good partition. Try to change values in 'min_n_groups' and 'max_n_groups'"
+    )
     return(NA)
   }
 
@@ -232,20 +245,20 @@ unique list values in pr_ab column are: ",
 
     Env.P1 <- cbind(part[i], Env.P)
     Env.P1 <- Env.P1[stats::complete.cases(Env.P1), ]
-    Env.P1 <- stats::complete.cases(Env.P1[, -1], Env.P1[, 1])
+    Env.P1 <- split(Env.P1[, -1], Env.P1[, 1])
     euq_c <- list()
     for (r in 1:ncol(cmb)) {
       euq_c[[r]] <- euc_dist(
         as.matrix(Env.P1[[cmb[1, r]]]),
         as.matrix(Env.P1[[cmb[2, r]]])
-      ) %>% mean()
+      ) %>%
+        mean()
     }
 
     env_sim[i] <- euq_c %>%
       unlist() %>%
       mean()
   }
-
 
   # # I moran-----
   spa_auto <- rep(NA, ncol(part))
@@ -261,7 +274,11 @@ unique list values in pr_ab column are: ",
   for (p in 1:ncol(part)) {
     cmb <- unique(part[, p][[1]]) %>% utils::combn(2)
     imoran_grid_c <- rep(NA, ncol(cmb))
-    dff <- dplyr::tibble(nrow = 1:nrow(part), data["pr_ab"], group = part[p][[1]])
+    dff <- dplyr::tibble(
+      nrow = 1:nrow(part),
+      data["pr_ab"],
+      group = part[p][[1]]
+    )
 
     for (c in 1:ncol(cmb)) {
       filt <- dff %>%
@@ -290,11 +307,7 @@ unique list values in pr_ab column are: ",
         im <- sapply(
           data[filt, names(env_layer)],
           function(x) {
-            morani(x,
-              dist2,
-              na.rm = TRUE,
-              scaled = TRUE
-            )
+            morani(x, dist2, na.rm = TRUE, scaled = TRUE)
           }
         )
         imoran_grid_c[c] <- mean(abs(im))
@@ -315,12 +328,17 @@ unique list values in pr_ab column are: ",
         )
       )
     } else {
-      data.frame(n_groups = gsub(".g", "", colnames(part)), round(
-        data.frame(
-          sd_p, spa_auto, env_sim
-        ),
-        3
-      ))
+      data.frame(
+        n_groups = gsub(".g", "", colnames(part)),
+        round(
+          data.frame(
+            sd_p,
+            spa_auto,
+            env_sim
+          ),
+          3
+        )
+      )
     }
 
   Opt2 <- Opt
@@ -356,13 +374,14 @@ unique list values in pr_ab column are: ",
       break
     }
 
-    if ((length(unique(Opt2$spa_auto)) == 1) &&
-      (length(unique(Opt2$env_sim)) == 1) &&
-      (length(unique(Opt2$sd_p)) == 1)) {
+    if (
+      (length(unique(Opt2$spa_auto)) == 1) &&
+        (length(unique(Opt2$env_sim)) == 1) &&
+        (length(unique(Opt2$sd_p)) == 1)
+    ) {
       Opt2 <- Opt2[nrow(Opt2), ]
     }
   }
-
 
   # Final data.frame result----
   result <- data.frame(data, .part = c(part[, rownames(Opt2)])[[1]])

@@ -114,7 +114,8 @@ part1 <- part_senv(
   min_n_groups = 2,
   max_n_groups = 10,
   min_occ = 10,
-  prop = 0.2
+  prop = 0.2,
+  include_coords = TRUE
 )
 
 part1

@@ -50,7 +50,7 @@
 #'   | FPB (F-measure on presence-background)            | yes | 0 - 2 |
 #'   | OR (Omission Rate)                                | yes | 0 - 1 |
 #'   | TSS (True Skill Statistic)                        | yes | -1 - 1 |
-#'   | KAPPA                                             | yes | 0 - 1 |
+#'   | KAPPA                                             | yes | -1 - 1 |
 #'   | MCC (Matthews Correlation Coefficient; Matthews 1975)            | yes | -1 - 1 (1 is best)         |
 #'   | AUC (Area Under Curve)                            | no | 0 - 1 |
 #'   | BOYCE  (continuous Boyce index)*                  | no | -1 - 1 |
@@ -304,9 +304,13 @@ sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
     TNR = res$tn / (res$tn + res$fp),
     SORENSEN = 2 * res$tp / (res$fn + (2 * res$tp) + res$fp),
     JACCARD = res$tp / (res$fn + res$tp + res$fp),
-    KAPPA = (res$tp + res$tn) /
-      (res$tp + res$tn + res$fp + res$fn) -
-      (res$fp + res$fn) / (res$tp + res$tn + res$fp + res$fn)^2,
+    KAPPA = {
+      n_total <- res$tp + res$tn + res$fp + res$fn
+      pr_a <- (res$tp + res$tn) / n_total
+      pr_e <- ((res$tp + res$fp) * (res$tp + res$fn) +
+        (res$fn + res$tn) * (res$fp + res$tn)) / n_total^2
+      (pr_a - pr_e) / (1 - pr_e)
+    },
     FPB = 2 * JACCARD,
     OR = (1 - TPR),
     TSS = (TPR + TNR) - 1
