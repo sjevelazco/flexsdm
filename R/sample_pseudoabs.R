@@ -287,7 +287,7 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
       filt <- terra::match(rlayer, maskval)
       rlayer <- terra::mask(rlayer, filt)
       rm(filt)
-      env <- terra::mask(rlayer, env)
+      env <- terra::mask(env, rlayer)
     }
 
     # K-mean procedure

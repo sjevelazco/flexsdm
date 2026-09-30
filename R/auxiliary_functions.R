@@ -423,7 +423,7 @@ kf <- function(df, n) {
   suppressWarnings(
     km <- stats::kmeans(df %>% dplyr::select(-c(cell:y)), centers = n)
   )
-  result <- data.frame(cluster = km$cluster, cell = names(km$cluster)) %>%
+  result <- data.frame(cluster = km$cluster, cell = df$cell) %>%
     dplyr::as_tibble() %>%
     dplyr::arrange(cluster) %>%
     dplyr::group_by(cluster) %>%
