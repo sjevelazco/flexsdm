@@ -68,7 +68,7 @@ It calculates the next performance metric:\tabular{lcr}{
    FPB (F-measure on presence-background) \tab yes \tab 0 - 2 \cr
    OR (Omission Rate) \tab yes \tab 0 - 1 \cr
    TSS (True Skill Statistic) \tab yes \tab -1 - 1 \cr
-   KAPPA \tab yes \tab 0 - 1 \cr
+   KAPPA \tab yes \tab -1 - 1 \cr
    MCC (Matthews Correlation Coefficient; Matthews 1975) \tab yes \tab -1 - 1 (1 is best) \cr
    AUC (Area Under Curve) \tab no \tab 0 - 1 \cr
    BOYCE  (continuous Boyce index)* \tab no \tab -1 - 1 \cr
