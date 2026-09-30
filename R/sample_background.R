@@ -341,8 +341,8 @@ sample_background <-
     # Mask to maksvalue
     if (!is.null(maskval)) {
       if (is.factor(rlayer)) {
-        maskval <-
-          which(levels(rlayer)[[1]][, 2] %in% as.character(maskval))
+        lv <- levels(rlayer)[[1]]
+        maskval <- lv[, 1][lv[, 2] %in% as.character(maskval)]
         rlayer <- rlayer * 1
       }
       filt <- terra::match(rlayer, maskval)

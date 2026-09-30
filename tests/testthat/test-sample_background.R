@@ -274,3 +274,38 @@ test_that("sample_background misuse of argument", {
     )
   )
 })
+
+
+test_that("sample_background random method respects maskval on categorical rasters", {
+  # Regression test for issue #472: maskval on a factor raster was translated
+  # to its ROW POSITION in the levels table instead of its actual category ID.
+  # Use non-sequential, 0-based IDs (as real landcover rasters commonly have)
+  # so the bug can't coincidentally pass by row position matching ID.
+  set.seed(1)
+  rlayer <- terra::rast(
+    nrows = 30, ncols = 30,
+    xmin = 0, xmax = 30, ymin = 0, ymax = 30
+  )
+  terra::values(rlayer) <- rep(c(0, 10, 20), each = 300)
+  levels(rlayer) <- data.frame(
+    ID = c(0, 10, 20),
+    category = c("water", "forest", "urban")
+  )
+
+  pts <- data.frame(x = runif(5, 0, 30), y = runif(5, 0, 30))
+
+  bg <- sample_background(
+    data = pts,
+    x = "x",
+    y = "y",
+    n = 20,
+    method = "random",
+    rlayer = rlayer,
+    maskval = "forest"
+  )
+
+  expect_equal(class(bg)[1], "tbl_df")
+  expect_true(nrow(bg) > 0)
+  sampled_category <- terra::extract(rlayer, bg[, c("x", "y")])$category
+  expect_true(all(sampled_category == "forest"))
+})
