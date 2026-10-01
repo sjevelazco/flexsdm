@@ -42,6 +42,7 @@ test_that("test occfilt_select filter_prop = FALSE", {
 
 
 test_that("test occfilt_select with filter_prop = TRUE", {
+  skip_on_cran()
   occ_selected <- occfilt_select(
     occ_list = filtered_occ,
     x = "x",
@@ -57,6 +58,7 @@ test_that("test occfilt_select with filter_prop = TRUE", {
 })
 
 test_that("expect error", {
+  skip_on_cran()
   expect_error(occfilt_select(
     occ_list = filtered_occ[[1]],
     x = "x",

@@ -58,6 +58,7 @@ test_that("test p_bpdp with continuous predictors and gam", {
 })
 
 test_that("test p_bpdp with continuous predictors and gau", {
+  skip_on_cran()
   m_ <- fit_gau(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     partition = ".part", thr = c("max_sens_spec")
@@ -86,6 +87,7 @@ test_that("test p_bpdp with continuous predictors and gau", {
 })
 
 test_that("test p_bpdp with continuous predictors and glm", {
+  skip_on_cran()
   m_ <- fit_glm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     partition = ".part", thr = c("max_sens_spec")
@@ -114,6 +116,7 @@ test_that("test p_bpdp with continuous predictors and glm", {
 })
 
 test_that("test p_bpdp with continuous predictors and gbm", {
+  skip_on_cran()
   m_ <- fit_gbm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     partition = ".part", thr = c("max_sens_spec")
@@ -142,6 +145,7 @@ test_that("test p_bpdp with continuous predictors and gbm", {
 })
 
 test_that("test p_bpdp with continuous predictors and max", {
+  skip_on_cran()
   m_ <- fit_max(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     partition = ".part", thr = c("max_sens_spec")
@@ -170,6 +174,7 @@ test_that("test p_bpdp with continuous predictors and max", {
 })
 
 test_that("test p_bpdp with continuous predictors and net", {
+  skip_on_cran()
   m_ <- fit_net(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     partition = ".part", thr = c("max_sens_spec")
@@ -198,6 +203,7 @@ test_that("test p_bpdp with continuous predictors and net", {
 })
 
 test_that("test p_bpdp with continuous predictors and raf", {
+  skip_on_cran()
   m_ <- fit_raf(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     partition = ".part", thr = c("max_sens_spec")
@@ -226,6 +232,7 @@ test_that("test p_bpdp with continuous predictors and raf", {
 })
 
 test_that("test p_bpdp with continuous predictors and svm", {
+  skip_on_cran()
   m_ <- fit_svm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     partition = ".part", thr = c("max_sens_spec")
@@ -255,6 +262,7 @@ test_that("test p_bpdp with continuous predictors and svm", {
 
 
 test_that("test p_bpdp with continuous and factor predictors and svm", {
+  skip_on_cran()
   m_ <- fit_svm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     predictors_f = "clusters",
@@ -273,6 +281,7 @@ test_that("test p_bpdp with continuous and factor predictors and svm", {
 
 
 test_that("training_boundaries = convexh and rectangle", {
+  skip_on_cran()
   m_ <- fit_svm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"),
     predictors_f = "clusters",

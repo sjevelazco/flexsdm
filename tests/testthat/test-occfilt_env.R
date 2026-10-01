@@ -39,6 +39,7 @@ test_that("test occfilt_env", {
 })
 
 test_that("test occfilt_env with different values", {
+  skip_on_cran()
   filtered_1 <- occfilt_env(
     data = spp1,
     x = "x",
@@ -54,6 +55,7 @@ test_that("test occfilt_env with different values", {
 })
 
 test_that("test occfilt_env with factor as variables", {
+  skip_on_cran()
   somevar <- system.file("external/somevar.tif", package = "flexsdm") %>% terra::rast()
   somevarf <- system.file("external/regions.tif", package = "flexsdm") %>% terra::rast()
   somevar <- c(somevar, somevarf)

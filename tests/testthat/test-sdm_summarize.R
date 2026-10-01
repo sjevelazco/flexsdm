@@ -1,4 +1,5 @@
 test_that("sdm summarize", {
+  skip_on_cran()
   data(abies)
 
   # We will partition the data with the k-fold method

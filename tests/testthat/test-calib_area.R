@@ -26,6 +26,7 @@ test_that("buffer method", {
 })
 
 test_that("mcp method", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
   data("spp")
@@ -53,6 +54,7 @@ test_that("mcp method", {
 
 
 test_that("mcp method with group", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
   data("spp")
@@ -81,6 +83,7 @@ test_that("mcp method with group", {
 })
 
 test_that("bmcp method", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
   data("spp")
@@ -106,6 +109,7 @@ test_that("bmcp method", {
 })
 
 test_that("bmcp method with groups", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
   data("spp")
@@ -136,6 +140,7 @@ test_that("bmcp method with groups", {
 
 
 test_that("mask method", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
   data("spp")
@@ -167,6 +172,7 @@ test_that("mask method", {
 ## %######################################################%##
 
 test_that("missuse method argument", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
   data("spp")

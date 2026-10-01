@@ -7,25 +7,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  # fig.path = "man/figures/README-",
-  # out.width = "100%",
-  fig.width = 7,
-  fig.height = 4,
-  # dpi = 200,
-  echo = TRUE,
-  warning = FALSE,
-  eval = TRUE
-)
-```
 
-```{r dependencies, include = FALSE}
-# devtools::install_github('sjevelazco/flexsdm')
-library(knitr)
-```
+
+
 
 ## Introduction
 
@@ -41,7 +25,8 @@ Note: this tutorial follows generally the same workflow as the vignette for mode
 
 For our models, we will use four environmental variables that influence plant distributions in California: available evapotranspiration (aet), climatic water deficit (cwd), maximum temperature of the warmest month (tmx), and minimum temperature of the coldest month (tmn). Our occurrence data include 21 geo-referenced observations downloaded from the online database Calflora.
 
-```{r raw data, message=FALSE}
+
+``` r
 library(flexsdm)
 library(terra)
 library(dplyr)
@@ -81,11 +66,14 @@ terra::inset(
 )
 ```
 
+![plot of chunk raw data](figures/v06-raw_data-1.png)
+
 ## Delimit calibration area
 
 First, we must define our model's calibration area. The *flexsdm* package offers several methods for defining the model calibration area. Here, we will use 25-km buffer areas around the presence points to select our pseudo-absence locations.
 
-```{r calibration area}
+
+``` r
 ca <- calib_area(
   data = hespero,
   x = "x",
@@ -106,11 +94,14 @@ plot(ca, add = TRUE)
 points(hespero[, c("x", "y")], col = "black", pch = 16)
 ```
 
+![plot of chunk calibration area](figures/v06-calibration_area-1.png)
+
 ## Create pseudo-absence data
 
 As is often the case with rare species, we only have species presence data. However, most SDM methods require either pseudo-absence or background point data. Here, we use our calibration area to produce pseudo-absence data that can be used in our SDMs.
 
-```{r pseudo-absence data}
+
+``` r
 # Sample the same number of species presences
 set.seed(10)
 psa <- sample_pseudoabs(
@@ -136,18 +127,38 @@ plot(
 plot(ca, add = TRUE)
 points(psa[, c("x", "y")], cex = 0.8, pch = 16, col = "black") # Pseudo-absences
 points(hespero[, c("x", "y")], col = "yellow", pch = 16, cex = 1.5) # Presences
+```
+
+![plot of chunk pseudo-absence data](figures/v06-pseudo-absence_data-1.png)
+
+``` r
 
 
 # Bind a presences and pseudo-absences
 hespero_pa <- bind_rows(hespero, psa)
 hespero_pa # Presence-Pseudo-absence database
+#> # A tibble: 42 × 3
+#>          x        y pr_ab
+#>      <dbl>    <dbl> <dbl>
+#>  1 316923. -557843.     1
+#>  2 317155. -559234.     1
+#>  3 316960. -558186.     1
+#>  4 314347. -559648.     1
+#>  5 317348. -557349.     1
+#>  6 316753. -559679.     1
+#>  7 316777. -558644.     1
+#>  8 317050. -559043.     1
+#>  9 316655. -559928.     1
+#> 10 316418. -567439.     1
+#> # ℹ 32 more rows
 ```
 
 ## Partition data for evaluating models
 
 To evaluate model performance, we need to specify data for testing and training. *flexsdm* offers a range of random and spatial and random data partition methods for evaluating SDMs. Here we will use repeated K-fold cross-validation, which is a suitable partition approach for validating SDM with few data.
 
-```{r rep kfolds partion}
+
+``` r
 set.seed(10)
 
 # Repeated K-fold method
@@ -162,7 +173,8 @@ hespero_pa2 <- part_random(
 
 Next, we extract the values of our four environmental predictors at the presence and pseudo-absence locations.
 
-```{r sdm extract}
+
+``` r
 hespero_pa3 <-
   sdm_extract(
     data = hespero_pa2,
@@ -177,7 +189,8 @@ hespero_pa3 <-
 
 Let's use three standard algorithms to model the distribution of *Hesperocyparis stephensonii*: GLM, GBM, and SVM. In this case, we will use the extent of the CFP as our prediction area so that we can evaluate model extrapolation across a broad geographic area.
 
-```{r models, message=FALSE}
+
+``` r
 mglm <-
   fit_glm(
     data = hespero_pa3,
@@ -216,13 +229,19 @@ mpred <- sdm_predict(
 
 First, let's take a look at the spatial predictions for our models. GLM and GBM predict a lot of suitable habitat very far from where the species is found!
 
-```{r comparison maps}
+
+``` r
 par(mfrow = c(1, 3))
 plot(mpred$glm, main = "GLM")
 # points(hespero$x, hespero$y, pch = 19)
 plot(mpred$gbm, main = "GBM")
 # points(hespero$x, hespero$y, pch = 19)
 plot(mpred$svm, main = "SVM")
+```
+
+![plot of chunk comparison maps](figures/v06-comparison_maps-1.png)
+
+``` r
 # points(hespero$x, hespero$y, pch = 19)
 ```
 
@@ -232,12 +251,18 @@ Extrapolation reflects an issue with how a model handles novel data. Here, we se
 
 Uni and bivariate partial dependence plots for the GLM:
 
-```{r glm partial dependence plots}
+
+``` r
 p_pdp(
   model = mglm$model,
   training_data = hespero_pa3,
   projection_data = somevar
 )
+```
+
+![plot of chunk glm partial dependence plots](figures/v06-glm_partial_dependence_plots-1.png)
+
+``` r
 p_bpdp(
   model = mglm$model,
   training_data = hespero_pa3,
@@ -245,14 +270,22 @@ p_bpdp(
 )
 ```
 
+![plot of chunk glm partial dependence plots](figures/v06-glm_partial_dependence_plots-2.png)
+
 Uni and bivariate partial dependence plots for the GBM:
 
-```{r gbm partial dependence plots}
+
+``` r
 p_pdp(
   model = mgbm$model,
   training_data = hespero_pa3,
   projection_data = somevar
 )
+```
+
+![plot of chunk gbm partial dependence plots](figures/v06-gbm_partial_dependence_plots-1.png)
+
+``` r
 p_bpdp(
   model = mgbm$model,
   training_data = hespero_pa3,
@@ -261,20 +294,30 @@ p_bpdp(
 )
 ```
 
+![plot of chunk gbm partial dependence plots](figures/v06-gbm_partial_dependence_plots-2.png)
+
 Uni and bivariate partial dependence plots for the SVM:
 
-```{r svm partial dependence plots}
+
+``` r
 p_pdp(
   model = msvm$model,
   training_data = hespero_pa3,
   projection_data = somevar
 )
+```
+
+![plot of chunk svm partial dependence plots](figures/v06-svm_partial_dependence_plots-1.png)
+
+``` r
 p_bpdp(
   model = msvm$model,
   training_data = hespero_pa3,
   training_boundaries = "convexh"
 )
 ```
+
+![plot of chunk svm partial dependence plots](figures/v06-svm_partial_dependence_plots-2.png)
 
 These plots show a really interesting story! Most notably, the GLM and GBM show consistently high habitat suitability for those areas that have much higher actual evapotranspiration than the very narrow range of values that were used to train the model. However, the SVM seems to do the best job of not estimating very high habitat suitability for environmental values that were outside of the training data. Importantly, these models can behave very differently depending on the modeling situation and context.
 
@@ -286,7 +329,8 @@ First we look at the degree of extrapolation in geographic space using the Shape
 
 Using Mahalanobis distance:
 
-```{r extra eval - Mahalanobis}
+
+``` r
 xp_m <-
   extra_eval(
     training_data = hespero_pa3,
@@ -297,11 +341,23 @@ xp_m <-
     aggreg_factor = 1
   )
 xp_m
+#> class       : SpatRaster
+#> size        : 558, 394, 2  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> varnames    : somevar
+#>               
+#> names       : extrapolation, uni_comb
+#> min values  :             0,        1
+#> max values  :    3730.67743,        2
 ```
 
 The output of the extra_eval function is a SpatRaster, showing the degree of extrapolation across the projection area, as estimated by the Shape method.
 
-```{r comparison extrapolation outputs}
+
+``` r
 cl <- c(
   "#FDE725",
   "#B3DC2B",
@@ -324,13 +380,16 @@ plot(
 )
 ```
 
+![plot of chunk comparison extrapolation outputs](figures/v06-comparison_extrapolation_outputs-1.png)
+
 We can also explore extrapolation or suitability patterns in environmental and geographic space, using just one function. To do that, we will use the [`p_extra`](https://sjevelazco.github.io/flexsdm/reference/p_extra.html) function. This function plots a ggplot object.
 
 Let's start with our extrapolation evaluation. These plots show that areas with high extrapolation (dark blue) are far from the training data (shown in black) in both environmental and geographic space.
 
 The higher extrapolation values extrapolation area in the northwestern portion of the CFP.
 
-```{r graphical explore - Mahalanobis}
+
+``` r
 p_extra(
   training_data = hespero_pa3,
   x = "x",
@@ -342,11 +401,15 @@ p_extra(
   geo_space = TRUE,
   prop_points = 0.05
 )
+#> Number of cell used to plot 3642 (5%)
 ```
+
+![plot of chunk graphical explore - Mahalanobis](figures/v06-graphical_explore_-_Mahalanobis-1.png)
 
 Let's explore univariate and combinatorial extrapolation. The former is defined as the projecting data outside range of training conditions, while the combinatorial extrapolation area those projecting data within the range of training conditions.
 
-```{r graphical explore - uni_comb extrapolation}
+
+``` r
 p_extra(
   training_data = hespero_pa3,
   x = "x",
@@ -360,7 +423,10 @@ p_extra(
   color_gradient = c("#B3DC2B", "#30678D"),
   alpha_p = 0.2
 )
+#> Number of cell used to plot 3642 (5%)
 ```
+
+![plot of chunk graphical explore - uni_comb extrapolation](figures/v06-graphical_explore_-_uni_comb_extrapolation-1.png)
 
 ## Truncating SDMs predictions based on extrapolation thresholds
 
@@ -368,7 +434,8 @@ Depending on the user's end goal, you may want to exclude suitability values tha
 
 Before truncating our models we can use the [`p_extra`](https://sjevelazco.github.io/flexsdm/reference/p_extra.html) function to explore binary extrapolation patter in the environmental and geographical space. Here we will test the values 50, 100, and 500, for comparison.
 
-```{r explore extrapolation thresholds, fig.height = 7}
+
+``` r
 p_extra(
   training_data = hespero_pa3,
   x = "x",
@@ -385,6 +452,12 @@ p_extra(
   plot_annotation(
     subtitle = "Binary extrapolation pattern with using a threshold of 50"
   )
+#> Number of cell used to plot 3642 (5%)
+```
+
+![plot of chunk explore extrapolation thresholds](figures/v06-explore_extrapolation_thresholds-1.png)
+
+``` r
 
 p_extra(
   training_data = hespero_pa3,
@@ -402,6 +475,12 @@ p_extra(
   plot_annotation(
     subtitle = "Binary extrapolation pattern with using a threshold of 100"
   )
+#> Number of cell used to plot 3642 (5%)
+```
+
+![plot of chunk explore extrapolation thresholds](figures/v06-explore_extrapolation_thresholds-2.png)
+
+``` r
 
 p_extra(
   training_data = hespero_pa3,
@@ -419,13 +498,17 @@ p_extra(
   plot_annotation(
     subtitle = "Binary extrapolation pattern with using a threshold of 500"
   )
+#> Number of cell used to plot 3642 (5%)
 ```
+
+![plot of chunk explore extrapolation thresholds](figures/v06-explore_extrapolation_thresholds-3.png)
 
 Values of 1 (yellow one) depict the environmental and geographical regions will constraint our models suitability (truncate). Note that the lower the threshold, the more restrictive the environmental and geographic regions used to constrain the model.
 
 Now we will use the function [`extra_truncate`](https://sjevelazco.github.io/flexsdm/reference/extra_truncate.html) to truncate the suitability predictions made by GLM, GBM, and SVM based on extrapolation thresholds explored previously. As a note, threshold selection will be very user-dependent, but this function allows you to select multiple thresholds at one time to compare outputs. Users can also select a "trunc_value" within the extra_truncate function, that specifies the value that should be assigned to those cells that exceed the extrapolation threshold (also specified in the function). The default is 0 but users could also choose another value for which to reduce suitability.
 
-```{r extra_truncate - extrapolation thresholds}
+
+``` r
 glm_trunc <- extra_truncate(
   suit = mpred$glm,
   extra = xp_m,
@@ -448,7 +531,8 @@ svm_trunc <- extra_truncate(
 )
 ```
 
-```{r comparison truncated outputs, fig.width = 8, fig.height = 7}
+
+``` r
 par(mfrow = c(3, 3))
 plot(glm_trunc$`50`, main = "GLM; extra threshold = 50", col = cl)
 plot(glm_trunc$`100`, main = "GLM; extra threshold = 100", col = cl)
@@ -460,6 +544,8 @@ plot(svm_trunc$`50`, main = "SVM; extra threshold = 50", col = cl)
 plot(svm_trunc$`100`, main = "SVM; extra threshold = 100", col = cl)
 plot(svm_trunc$`500`, main = "SVM; extra threshold = 500", col = cl)
 ```
+
+![plot of chunk comparison truncated outputs](figures/v06-comparison_truncated_outputs-1.png)
 
 Based on these maps, you can see that the lower the extrapolation threshold, the more restricted the habitat suitability patterns, while higher values retain a greater amount of suitable habitat. Selecting the best threshold will depend on modeling goals and objectives, and .
 

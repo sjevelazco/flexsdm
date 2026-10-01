@@ -63,6 +63,7 @@ test_that("tuen without ntree hyperparamenter", {
 
 
 test_that("test of 0-1 response argument", {
+  skip_on_cran()
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(
@@ -209,6 +210,7 @@ test_that("grid = NULL ", {
 
 
 test_that("missuse of grid ", {
+  skip_on_cran()
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(

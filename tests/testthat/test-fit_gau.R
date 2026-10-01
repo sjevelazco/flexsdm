@@ -72,6 +72,7 @@ test_that("test Gaussian Process model", {
 
 
 test_that("test gau with NA, no factor variable and using formula", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
   abies <- abies %>%

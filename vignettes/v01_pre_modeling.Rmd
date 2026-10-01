@@ -7,25 +7,9 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  # fig.path = "man/figures/README-",
-  # out.width = "100%",
-  fig.width = 6,
-  fig.height = 6,
-  # dpi = 60,
-  echo = TRUE,
-  warning = FALSE,
-  eval = TRUE
-)
-```
 
-```{r dependencies, include = FALSE}
-# devtools::install_github('sjevelazco/flexsdm')
-library(knitr)
-```
+
+
 
 ## Introduction
 
@@ -71,11 +55,26 @@ In this vignette, users will learn about the first set of functions in the *flex
 
 First, install the flexsdm package. You can install the released version of *flexsdm* from [github](https://github.com/sjevelazco/flexsdm) with:
 
-```{r download package}
+
+``` r
 # devtools::install_github('sjevelazco/flexsdm')
 library(flexsdm)
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(terra)
+#> terra 1.9.34
+#> 
+#> Attaching package: 'terra'
+#> The following object is masked from 'package:knitr':
+#> 
+#>     spin
 library(ggplot2)
 ```
 
@@ -83,7 +82,8 @@ library(ggplot2)
 
 When building SDM's, organizing folders (directories) for a project will save time and confusion. The project directory is the main project folder where you will store all of the relevant data and results for your current project. Now, let's create a project directory where your initial data and the model results will be stored. The function sdm_directory() can do this for you, based on the types of model algorithms you want to use and/or the types of projections you would like to make. First decide where on your computer you would like to store the inputs and outputs of the project (this will be the main directory) and then use dir.create() to create that main directory. Next, specify whether or not you want to include folders for projections, calibration areas, algorithms, ensembles, and thresholds.
 
-```{r sdm_directory, eval = FALSE, warning=FALSE}
+
+``` r
 my_project <- file.path(file.path(tempdir(), "flex_sdm_project"))
 dir.create(my_project)
 
@@ -102,27 +102,46 @@ project_directory <- sdm_directory(
 
 In this tutorial, we will be using species occurrences that are available through the *flexsdm* package. The "spp" example dataset includes pr_ab column (presence = 1, and absence = 0), and location columns (x, y). You can load the "spp" data into your local R environment by using the code below:
 
-```{r occ data}
+
+``` r
 data("spp")
 
 spp
+#> # A tibble: 1,150 × 4
+#>    species        x        y pr_ab
+#>    <chr>      <dbl>    <dbl> <dbl>
+#>  1 sp1       -5541. -145138.     0
+#>  2 sp1      -51981.   16322.     0
+#>  3 sp1     -269871.   69512.     1
+#>  4 sp1      -96261.  -32008.     0
+#>  5 sp1      269589. -566338.     0
+#>  6 sp1       29829. -328468.     0
+#>  7 sp1     -152691.  393782.     0
+#>  8 sp1     -195081.  253652.     0
+#>  9 sp1        -951. -277978.     0
+#> 10 sp1      145929. -271498.     0
+#> # ℹ 1,140 more rows
 ```
 
 ## Geographic region
 
 Our species occurrences are located in the California Floristic Province (far western USA). The "regions" dataset can be used to visualize the study area in geographic space.
 
-```{r region data}
+
+``` r
 regions <- system.file("external/regions.tif", package = "flexsdm")
 regions <- terra::rast(regions)
 ```
 
 How are the points distributed across our study area?
 
-```{r map}
+
+``` r
 try(plot(regions), silent = TRUE)
 points(spp[, 2:3], pch = 19, cex = 0.5, col = as.factor(spp$species))
 ```
+
+![plot of chunk map](figures/v01-map-1.png)
 
 ## Calibration area
 
@@ -130,7 +149,8 @@ An important decision in SDM is how to delimit your model's calibration area, or
 
 Let's use presence locations for one species in this exercise.
 
-```{r spp1}
+
+``` r
 spp1 <-
   spp %>%
   dplyr::filter(species == "sp1") %>%
@@ -144,8 +164,10 @@ The calib_area() function offers three methods for defining a calibration area: 
 
 Here the calibration area is defined using buffers around presence points. User's can specify the distance around points using the "width" argument. The buffer width value is interpreted in m if the CRS has a longitude/latitude, or in map units in other cases.
 
-```{r buffer method}
+
+``` r
 crs(regions, proj = TRUE)
+#> [1] "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs"
 
 ca_1 <- calib_area(
   data = spp1,
@@ -159,11 +181,14 @@ plot(ca_1, add = TRUE)
 points(spp1[, 2:3], pch = 19, cex = 0.5)
 ```
 
+![plot of chunk buffer method](figures/v01-buffer_method-1.png)
+
 ### 2. Minimum convex polygon
 
 The minimum convex polygon (mcp) method produces a much simpler shape.
 
-```{r mcp method}
+
+``` r
 ca_2 <- calib_area(
   data = spp1,
   x = "x",
@@ -177,11 +202,14 @@ plot(ca_2, add = TRUE)
 points(spp1[, 2:3], pch = 19, cex = 0.5)
 ```
 
+![plot of chunk mcp method](figures/v01-mcp_method-1.png)
+
 ### 3. Buffered minimum convex polygon
 
 You can also create a buffer around the minimum convex polygon.
 
-```{r bmcp method}
+
+``` r
 ca_3 <- calib_area(
   data = spp1,
   x = "x",
@@ -195,11 +223,14 @@ plot(ca_3, add = TRUE)
 points(spp1[, 2:3], pch = 19, cex = 0.5)
 ```
 
+![plot of chunk bmcp method](figures/v01-bmcp_method-1.png)
+
 ### 4. Mask
 
 The mask method allows polygons to be selected that intersect with your species locations to delineate the calibration area. This is useful if you expect species distributions to be associated with ecologically significant (and mapped) ecoregions, or are interested in distributions within political boundaries. We will use a random set of polygons named "clusters" to illustrate the mask method. The original polygons are on the left and the polygons that contain points (our "mask" calibration area) are on the right.
 
-```{r mask method}
+
+``` r
 clusters <- system.file("external/clusters.shp", package = "flexsdm")
 clusters <- terra::vect(clusters)
 
@@ -217,6 +248,8 @@ plot(ca_4, main = "Polygons with points (mask)")
 points(spp1[, 2:3], pch = 19, cex = 0.5)
 ```
 
+![plot of chunk mask method](figures/v01-mask_method-1.png)
+
 ## Reducing collinearity among the predictors
 
 Predictor collinearity is a common issue for SDMs, which can lead to model overfitting and inaccurate tests of significance for predictors (De Marco & Nóbrega, 2018; Dormann et al., 2013).
@@ -225,7 +258,8 @@ Predictor collinearity is a common issue for SDMs, which can lead to model overf
 
 Here we will use four climatic variables available in the *flexsdm* package: actual evapotranspiration (CFP_1), climatic water deficit (CFP_2), maximum temperature of the warmest month (CFP_3), and minimum temperature of the coldest month (CFP_4).
 
-```{r env data}
+
+``` r
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
 
 somevar <- terra::rast(somevar)
@@ -235,11 +269,16 @@ names(somevar) <- c("aet", "cwd", "tmx", "tmn")
 plot(somevar)
 ```
 
+![plot of chunk env data](figures/v01-env_data-1.png)
+
 The relationship between different environmental variables can be visualized with the pairs() function from the *terra* package. Several of our variables are highly correlated (.89 for predictors tmx and tmn).
 
-```{r pairs plot}
+
+``` r
 terra::pairs(somevar)
 ```
+
+![plot of chunk pairs plot](figures/v01-pairs_plot-1.png)
 
 So how can we correct for or reduce this collinearity? The function correct_colinvar() has four methods to deal with collinearity: pearson, vif, pca, and fa. Each method returns 1) a raster object (SpatRaster) with the selected predictors and 2) other useful outputs relevant to each method. These functions should be used as supplementary tools, as predictor selection in SDMs is complicated and ultimately should be based on the relationship between the environment and species' biology. With that being said, these functions offer options for exploring the relationships between predictor variables that can aid in the predictor selection process.
 
@@ -257,10 +296,27 @@ For references, see:
 
 #### 2. Woodward, F. I., M. R. Lomas, and C. K. Kelly. 2004. Global climate and the distribution of plant biomes. Philosophical transactions of the Royal Society of London. Series B, Biological sciences 359:1465–1476.
 
-```{r pearson collinearity reduction}
+
+``` r
 pearson_var <- correct_colinvar(somevar, method = c("pearson", th = "0.7"))
 pearson_var$cor_table
+#>           aet       cwd       tmx       tmn
+#> aet 0.0000000 0.7689893 0.7924813 0.7845401
+#> cwd 0.7689893 0.0000000 0.4168956 0.5881831
+#> tmx 0.7924813 0.4168956 0.0000000 0.7323259
+#> tmn 0.7845401 0.5881831 0.7323259 0.0000000
 pearson_var$cor_variables
+#> $aet
+#> [1] "cwd" "tmx" "tmn"
+#> 
+#> $cwd
+#> [1] "aet"
+#> 
+#> $tmx
+#> [1] "aet" "tmn"
+#> 
+#> $tmn
+#> [1] "aet" "tmx"
 
 chosen_variables <- somevar[[c("cwd", "aet", "tmn")]]
 ```
@@ -269,29 +325,72 @@ chosen_variables <- somevar[[c("cwd", "aet", "tmn")]]
 
 This method removes the predictors with a variance inflation factor higher than the chosen threshold. Again, users can specify a threshold (the default is 10). This method retains the predictors aet, tmx, and tmn and removes cwd. The output for this method matches what is produced by the pearson method: 1) environmental layer of retained variables, 2) a list of removed variables, and 3) a correlation matrix of all variables.
 
-```{r vif collinearity reduction}
+
+``` r
 vif_var <- correct_colinvar(somevar, method = c("vif", th = "10"))
 vif_var$env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 4  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source      : somevar.tif
+#> names       :         aet,       cwd,        tmx,       tmn
+#> min values  :           0,  -9.39489,  22.446851,  0.259143
+#> max values  : 1357.864694, 14.200473, 614.691254, 64.374759
 vif_var$removed_variables
+#> NULL
 vif_var$vif_table
+#> # A tibble: 4 × 2
+#>   Variables   VIF
+#>   <chr>     <dbl>
+#> 1 aet        7.62
+#> 2 cwd        3.29
+#> 3 tmx        3.95
+#> 4 tmn        2.89
 ```
 
 ### 3. Principal component analysis
 
 Finally, the “pca” method performs a principal components analysis on the predictors and returns the axis that accounts for 95% of the total variance in the system. This method returns 1) a SpatRaster object with selected environmental variables, 2) a matrix with the coefficients of principal components for predictors, and 3) a tibble with the cumulative variance explained in selected principal components.
 
-```{r pca collinearity reduction}
+
+``` r
 pca_var <- correct_colinvar(somevar, method = c("pca"))
 pca_var$env_layer
+#> class       : SpatRaster
+#> size        : 558, 394, 3  (nrow, ncol, nlyr)
+#> resolution  : 1890, 1890  (x, y)
+#> extent      : -373685.8, 370974.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> names       :       PC1,       PC2,       PC3
+#> min values  : -8.453273, -4.260147, -1.525085
+#> max values  :  2.827164,  3.337545,  4.342864
 pca_var$coefficients
+#> # A tibble: 4 × 5
+#>   variable    PC1     PC2    PC3     PC4
+#>   <chr>     <dbl>   <dbl>  <dbl>   <dbl>
+#> 1 aet       0.550 -0.0722  0.296 -0.778 
+#> 2 cwd       0.450 -0.777   0.103  0.429 
+#> 3 tmx      -0.485 -0.594  -0.450 -0.459 
+#> 4 tmn      -0.511 -0.198   0.836 -0.0241
 pca_var$cumulative_variance
+#> # A tibble: 4 × 2
+#>      PC  cvar
+#>   <int> <dbl>
+#> 1     1 0.764
+#> 2     2 0.915
+#> 3     3 0.979
+#> 4     4 1
 ```
 
 ### 4. Factorial analysis
 
 Selecting the "fa" method performs a factorial analysis to reduce dimensionality and selects the predictor(s) with the highest correlation to each axis. The outputs for this method are similar to those produced by the 'pca' method.
 
-```{r fa collinearity reduction, eval = FALSE}
+
+``` r
 fa_var <- correct_colinvar(env_layer = somevar, method = c("fa"))
 fa_var$env_layer
 fa_var$number_factors
@@ -312,7 +411,8 @@ Sample bias in species occurrence data is a common issue in ecological studies a
 
 The function `occfilt_env()`, which performs environmental filtering on species occurrence data. This method basically reduces environmental redundancy in your data and is based on methods outlined in Valera et al. (2014). However, this function is unique to *flexsdm*, as it is able to use any number of environmental dimensions and does not perform a PCA before filtering. In this example, we will use our original environmental data (somevar) and occurrence data for a single species (spp1). For filtering occurrences, it is important that each row in the species data has its own unique code (example: idd). This function also gives the user the option of specifying the number classes used to split each environmental condition. Here we will explore the results using 5, 8, and 12 bins. Increasing the number of bins increases the number of occurrence points retained.
 
-```{r env occurrence filtering}
+
+``` r
 spp1$idd <- 1:nrow(spp1)
 
 filt_env5 <- occfilt_env(
@@ -323,6 +423,10 @@ filt_env5 <- occfilt_env(
   env_layer = somevar,
   nbins = 5
 )
+#> Extracting values from raster ...
+#> 12 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 238
+#> Number of filtered records: 57
 
 filt_env8 <- occfilt_env(
   data = spp1,
@@ -332,6 +436,10 @@ filt_env8 <- occfilt_env(
   env_layer = somevar,
   nbins = 8
 )
+#> Extracting values from raster ...
+#> 12 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 238
+#> Number of filtered records: 112
 
 filt_env12 <- occfilt_env(
   data = spp1,
@@ -341,6 +449,10 @@ filt_env12 <- occfilt_env(
   env_layer = somevar,
   nbins = 12
 )
+#> Extracting values from raster ...
+#> 12 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 238
+#> Number of filtered records: 173
 
 
 par(mfrow = c(2, 2))
@@ -354,11 +466,14 @@ somevar[[1]] %>% plot(main = "Filtering with 12 bins")
 points(filt_env12 %>% select(x, y))
 ```
 
+![plot of chunk env occurrence filtering](figures/v01-env_occurrence_filtering-1.png)
+
 ### Geographical filtering
 
 Next, we will look at `occfilt_geo()`, which has three alternatives to determine the distance threshold between a pair of points: “moran” determines the threshold as the distance between points that minimizes the spatial autocorrelation in occurrence data; “cellsize” filters occurrences based on the resolution of the predictors (or a specified coarser resolution); finally, “determined” allows users to manually determine the distance threshold.
 
-```{r geo occurrence filtering}
+
+``` r
 filt_geo1 <- occfilt_geo(
   data = spp1,
   x = "x",
@@ -367,6 +482,12 @@ filt_geo1 <- occfilt_geo(
   method = c("moran"),
   prj = crs(somevar)
 )
+#> Extracting values from raster ...
+#> 16 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 234
+#> Moran's I threshold closest to the supplied value: 0.099
+#> Distance threshold (km) : 334.908
+#> Number of filtered records: 4
 
 filt_geo2 <- occfilt_geo(
   data = spp1,
@@ -376,6 +497,12 @@ filt_geo2 <- occfilt_geo(
   method = c("cellsize", factor = "3"), # coarser resolution than the provided raster
   prj = crs(somevar)
 )
+#> Extracting values from raster ...
+#> 16 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 234
+#> Factor: x3
+#> Distance threshold (km): 4.617
+#> Number of filtered records: 212
 
 filt_geo3 <- occfilt_geo(
   data = spp1,
@@ -385,6 +512,11 @@ filt_geo3 <- occfilt_geo(
   method = c("defined", d = "30"),
   prj = crs(somevar)
 )
+#> Extracting values from raster ...
+#> 16 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 234
+#> Distance threshold (km): 30
+#> Number of filtered records: 78
 
 par(mfrow = c(2, 2))
 somevar[[1]] %>% plot(main = "Original occurrence data")
@@ -397,9 +529,12 @@ somevar[[1]] %>% plot(main = "Filtering with defined distance (30km)")
 points(filt_geo3 %>% select(x, y))
 ```
 
+![plot of chunk geo occurrence filtering](figures/v01-geo_occurrence_filtering-1.png)
+
 Also, for the three methods, it is possible methods use several values, turning easier the possibility to explore or test several filtering values.
 
-```{r geo occurrence filtering with different values, message=FALSE}
+
+``` r
 filt_geo1 <- occfilt_geo(
   data = spp1,
   x = "x",
@@ -429,7 +564,9 @@ filt_geo3 <- occfilt_geo(
 
 # When several values are used, note the function returns a list with the filtered data
 filt_geo1 %>% class()
+#> [1] "list"
 filt_geo1 %>% names()
+#> [1] "0.2" "0.5"
 
 # Let's plot the results with ggplot2
 bind_rows(filt_geo1, .id = "moran") %>%
@@ -437,6 +574,11 @@ bind_rows(filt_geo1, .id = "moran") %>%
   ggplot(aes(x, y)) +
   geom_point() +
   facet_wrap(~moran)
+```
+
+![plot of chunk geo occurrence filtering with different values](figures/v01-geo_occurrence_filtering_with_different_values-1.png)
+
+``` r
 
 
 bind_rows(filt_geo2, .id = "cellsize") %>%
@@ -444,6 +586,11 @@ bind_rows(filt_geo2, .id = "cellsize") %>%
   ggplot(aes(x, y)) +
   geom_point() +
   facet_wrap(~cellsize)
+```
+
+![plot of chunk geo occurrence filtering with different values](figures/v01-geo_occurrence_filtering_with_different_values-2.png)
+
+``` r
 
 bind_rows(filt_geo2, .id = "determined") %>%
   dplyr::mutate(moran = as.numeric(determined)) %>%
@@ -452,9 +599,12 @@ bind_rows(filt_geo2, .id = "determined") %>%
   facet_wrap(~determined)
 ```
 
+![plot of chunk geo occurrence filtering with different values](figures/v01-geo_occurrence_filtering_with_different_values-3.png)
+
 When tested filtering occurrence with different values, you can use the `occfilt_select()` function to select the filtered dataset that equilibrate spatial autocorrelation maximum number of presences (see `occfilt_select()` function help)
 
-```{r}
+
+``` r
 filt_selected <- occfilt_select(
   occ_list = filt_geo2,
   x = "x",
@@ -462,7 +612,28 @@ filt_selected <- occfilt_select(
   env_layer = somevar,
   filter_prop = TRUE
 )
+#> Dataset with filtered value 8 was selected
 filt_selected
+#> $occ
+#> # A tibble: 156 × 4
+#>    species        x        y   idd
+#>    <chr>      <dbl>    <dbl> <int>
+#>  1 sp1     -269871.   69512.     1
+#>  2 sp1     -149991.  267962.     2
+#>  3 sp1       91659. -156748.     4
+#>  4 sp1     -210471.  326282.     5
+#>  5 sp1     -140541.  284972.     6
+#>  6 sp1     -217491.   65732.     7
+#>  7 sp1      -92481.  155642.    12
+#>  8 sp1     -367611.  266072.    13
+#>  9 sp1     -184551.  425372.    15
+#> 10 sp1     -260151.   57632.    18
+#> # ℹ 146 more rows
+#> 
+#> $filter_prop
+#>   filt_value mean_autocorr n_records       aet      cwd       tmx       tmn
+#> 1          1     0.3219265       233 0.3534014 0.201785 0.3352363 0.3972832
+#> 2        * 8     0.2602486       156 0.3055744 0.128705 0.2635844 0.3431307
 ```
 
 ## Data partitioning
@@ -475,7 +646,8 @@ The part_random() function provides users the ability to divide species occurren
 
 Here, we use the "kfold" method with 10 folds to divide our data. This results in 10 folds of occurrence data with 25 observations in each fold.
 
-```{r random partitioning kfolds}
+
+``` r
 spp1$pr_ab <- 1 # Add a column with 1 to denote that this is presences only data
 sp_part1 <- part_random(
   data = spp1,
@@ -484,13 +656,17 @@ sp_part1 <- part_random(
 )
 
 sp_part1$.part %>% table()
+#> .
+#>  1  2  3  4  5  6  7  8  9 10 
+#> 25 25 25 25 25 25 25 25 25 25
 ```
 
 ### 2. Spatial band cross-validation (part_sband)
 
 Both part_sband() and part_sblock() partition data based on their position in geographic space. Geographically structured data partitioning methods are especially useful if users want to evaluate model transferability to different regions or time periods. The function part_sband tests for different numbers of spatial partitions using latitudinal or longitudinal bands and selects the best number of bands for a given presence, presence-absence, or presence-background dataset. This procedure is based on spatial autocorrelation, environmental similarity, and the number of presence/absence records in each band partition. The function's output includes 1) a tibble with presence/absence locations and the assigned partition number, 2) a tibble with information about the best partition, and 3) a SpatRaster showing the selected grid.
 
-```{r spatial band partition}
+
+``` r
 set.seed(1)
 sp_part2 <- part_sband(
   env_layer = somevar,
@@ -504,9 +680,15 @@ sp_part2 <- part_sband(
   n_part = 2,
   prop = 0.5
 )
+#> 12 rows were excluded from database because NAs were found
+#> The following number of bands will be tested:
+#> 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+#> Creating basic raster mask...
+#> Searching for the optimal number of bands...
 ```
 
-```{r plot spatial band partition}
+
+``` r
 plot(sp_part2$grid, col = gray.colors(20))
 points(
   sp_part2$part[c("x", "y")],
@@ -516,11 +698,14 @@ points(
 )
 ```
 
+![plot of chunk plot spatial band partition](figures/v01-plot_spatial_band_partition-1.png)
+
 ### 3. Spatial block cross-validation (part_sblock)
 
 The part_sblock() function is very similar to part_sband() but instead of bands it explores spatial blocks with different raster cells sizes and returns the one that is best suited for the input dataset. Here, we can see the data divided into different "blocks" for training and testing.
 
-```{r spatial block partition}
+
+``` r
 sp_part3 <- part_sblock(
   env_layer = somevar,
   data = spp1,
@@ -533,6 +718,11 @@ sp_part3 <- part_sblock(
   n_part = 2, # Number of partitions
   prop = 0.5 # Proportion of points used for testing autocorrelation between groupds (0-1)
 )
+#> 12 rows were excluded from database because NAs were found
+#> The following grid cell sizes will be tested:
+#> 18900 | 58800 | 98700 | 138600 | 178500 | 218400 | 258300 | 298200 | 338100 | 378000
+#> Creating basic raster mask...
+#> Searching for the optimal grid size...
 
 plot(sp_part3$grid)
 points(
@@ -543,11 +733,16 @@ points(
 )
 ```
 
+![plot of chunk spatial block partition](figures/v01-spatial_block_partition-1.png)
+
 However, we notice that the grid partition produced by part_sblock has a different resolution than the original environmental variables. If you want a map layer with the same properties (i.e. resolution, extent, NAs) as your original environmental variables, apply the get_block() function to the grid resulting from part_sblock(). This layer can be really useful for generating pseudo-absence or background sample points, which we will explore in the next section.
 
-```{r get block function}
+
+``` r
 terra::res(sp_part3$grid)
+#> [1] 378000 378000
 terra::res(somevar)
+#> [1] 1890 1890
 
 grid_env <- get_block(env_layer = somevar, best_grid = sp_part3$grid)
 
@@ -561,11 +756,14 @@ points(
 )
 ```
 
+![plot of chunk get block function](figures/v01-get_block_function-1.png)
+
 ### 4. Environmental and spatial cross-validation (part_senv)
 
 The final partitioning function in *flexsdm* is part_senv(), which explores different numbers of environmental partitions based on the K-means clustering algorithm and returns the one best-suited for a particular dataset, considering spatial autocorrelation, environmental similarity, and the number of presence and/or absence records in each partition. The map below shows partitioning based on these environmental and spatial factors.
 
-```{r environmental and spatial cross-validation}
+
+``` r
 sp_part4 <- part_senv(
   env_layer = somevar,
   data = spp1,
@@ -576,6 +774,10 @@ sp_part4 <- part_senv(
   max_n_groups = 10, # Maximum number of groups to be tested
   prop = 0.5 # Proportion of points used for testing autocorrelation between groups (0-1)
 )
+#> 12 rows were excluded from database because NAs were found
+#> The following grid cell sizes will be tested:
+#> 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+#> Searching best partition...
 
 plot(regions, col = gray.colors(9))
 points(
@@ -586,6 +788,8 @@ points(
 )
 ```
 
+![plot of chunk environmental and spatial cross-validation](figures/v01-environmental_and_spatial_cross-validation-1.png)
+
 ## Background and pseudo-absence sampling
 
 Presence-only occurrence data are quite common in ecology and researchers may not have adequate "absence" data for their species of interest. Sometimes in building species distribution models, we need to be able to generate background or pseudo-absence points for the modeling goals. The *flexsdm* package allows users to do this using sample_background() and sample_pseudoabs().
@@ -594,7 +798,8 @@ Presence-only occurrence data are quite common in ecology and researchers may no
 
 The function sample_background() allows slection of background sample points based on different geographic restrictions and sampling methods. Here, we sample a set of background points based on our earlier spatial block partitioning using the "random" method. Using lapply() in this case ensures that we generate background points in each of our spatial blocks (n = 2). We are also specifying that we want ten times the amount of background points as our original occurrences and that our calibration area will be the buffer area around presence points (see section on "Calibration area").
 
-```{r sample background}
+
+``` r
 p_data <-
   sp_part3$part # presence data from spatial block partition example
 
@@ -626,11 +831,14 @@ plot(ca_1, add = TRUE)
 points(bg, cex = .1, pch = 19, col = "gray")
 ```
 
+![plot of chunk sample background](figures/v01-sample_background-1.png)
+
 ### 2. Sample pseudo-absences
 
 Similarly, the function sample_pseudoabs allows random pseudo-absence sampling or based on environmental and/or geographical constraints. For example, specifying method = "env_const" selects pseudo-absences that are environmentally constrained to regions with lower suitability values as predicted by a Bioclim model. Additionally, this function allows users to specify a calibration area from which to generate pseudo-absence points. Here, we will use the buffer area around presence points (ca_1) to show what this might look like. As you can see, we have generated pseudo-absence points that are in the general vicinity of our presence points, but are concentrated in areas that have lower environmental suitability. The specific method chosen for sampling background and/or pseudo-absence points will vary depending on research goals.
 
-```{r sample pseudo-absences}
+
+``` r
 set.seed(10)
 psa <- lapply(1:2, function(x) {
   sample_pseudoabs(
@@ -647,6 +855,8 @@ psa <- lapply(1:2, function(x) {
 }) %>%
   bind_rows() %>%
   mutate(pr_ab = 0)
+#> Extents do not match, raster layers used were croped to minimum extent
+#> Extents do not match, raster layers used were croped to minimum extent
 
 par(mfrow = c(2, 1))
 
@@ -659,11 +869,14 @@ plot(ca_1, add = TRUE)
 points(psa, cex = .7, pch = 19, col = "gray")
 ```
 
+![plot of chunk sample pseudo-absences](figures/v01-sample_pseudo-absences-1.png)
+
 ## Extracting environmental values
 
 Finally, before modeling species geographic distributions, we must extract environmental data at the presences + absences/pseudo-absences/background point locations. The function sdm_extract() extracts environmental data values based on x and y coordinates and returns a tibble with the original data + additional columns for the extracted environmental variables at those locations. Let's do this for our original presence points (spp1) and our background locations (bg).
 
-```{r sdm extract, eval = FALSE}
+
+``` r
 all_points <- bind_rows(spp1 %>% dplyr::select(-idd), bg)
 
 ex_spp <- sdm_extract(

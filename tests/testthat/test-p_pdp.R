@@ -76,6 +76,7 @@ test_that("test p_pdp with continuous and factor and gam", {
 })
 
 test_that("test p_pdp with continuous and factor and gau", {
+  skip_on_cran()
   m_ <- fit_gau(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), predictors_f = "clusters", partition = ".part", thr = c("max_sens_spec")
   )
@@ -119,6 +120,7 @@ test_that("test p_pdp with continuous and factor and gau", {
 })
 
 test_that("test p_pdp with continuous and factor and glm", {
+  skip_on_cran()
   m_ <- fit_glm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), predictors_f = "clusters", partition = ".part", thr = c("max_sens_spec")
   )
@@ -163,6 +165,7 @@ test_that("test p_pdp with continuous and factor and glm", {
 })
 
 test_that("test p_pdp with continuous and factor and gbm", {
+  skip_on_cran()
   m_ <- fit_gbm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), predictors_f = "clusters", partition = ".part", thr = c("max_sens_spec")
   )
@@ -207,6 +210,7 @@ test_that("test p_pdp with continuous and factor and gbm", {
 })
 
 test_that("test p_pdp with continuous and factor and max", {
+  skip_on_cran()
   m_ <- fit_max(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), predictors_f = "clusters", partition = ".part", thr = c("max_sens_spec")
   )
@@ -251,6 +255,7 @@ test_that("test p_pdp with continuous and factor and max", {
 })
 
 test_that("test p_pdp with continuous and factor and net", {
+  skip_on_cran()
   m_ <- fit_net(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), predictors_f = "clusters", partition = ".part", thr = c("max_sens_spec")
   )
@@ -295,6 +300,7 @@ test_that("test p_pdp with continuous and factor and net", {
 })
 
 test_that("test p_pdp with continuous and factor and raf", {
+  skip_on_cran()
   m_ <- fit_raf(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), predictors_f = "clusters", partition = ".part", thr = c("max_sens_spec")
   )
@@ -339,6 +345,7 @@ test_that("test p_pdp with continuous and factor and raf", {
 })
 
 test_that("test p_pdp with continuous and factor and svm", {
+  skip_on_cran()
   m_ <- fit_svm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), predictors_f = "clusters", partition = ".part", thr = c("max_sens_spec")
   )

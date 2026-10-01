@@ -1,4 +1,5 @@
 test_that("test p_extra", {
+  skip_on_cran()
   require(dplyr)
   require(terra)
   require(ggplot2)

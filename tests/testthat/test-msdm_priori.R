@@ -68,6 +68,7 @@ test_that("msdm_priori", {
 
 
 test_that("function misuse", {
+  skip_on_cran()
   require(dplyr)
   require(terra)
 

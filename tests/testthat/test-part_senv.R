@@ -39,6 +39,7 @@ test_that("part_senv", {
 
 
 test_that("misuse of arguments", {
+  skip_on_cran()
   require(terra)
 
   f <- system.file("external/somevar.tif", package = "flexsdm")
@@ -61,6 +62,7 @@ test_that("misuse of arguments", {
 })
 
 test_that("include_coords = FALSE is independent of user column names", {
+  skip_on_cran()
   require(terra)
 
   f <- system.file("external/somevar.tif", package = "flexsdm")

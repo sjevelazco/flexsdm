@@ -40,6 +40,7 @@ test_that("class and lenght of net_t object", {
 })
 
 test_that("test of 0-1 response argument", {
+  skip_on_cran()
   data(abies)
 
   # We will partition the data with the k-fold method
@@ -228,6 +229,7 @@ test_that("grid = NULL ", {
 
 
 test_that("missuse of grid ", {
+  skip_on_cran()
   data(abies)
 
   abies2 <- part_random(
