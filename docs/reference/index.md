@@ -84,21 +84,14 @@
 - [`msdm_priori()`](https://sjevelazco.github.io/flexsdm/reference/msdm_priori.md)
   : Create spatial predictor variables to reduce overprediction of
   species distribution models
-- [`occ_reproj()`](https://sjevelazco.github.io/flexsdm/reference/occ_reproj.md)
-  : Reproject location coordinates to a new coordinate reference system
 - [`occfilt_env()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_env.md)
   : Perform environmental filtering on species occurrences
 - [`occfilt_geo()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)
   : Perform geographical filtering on species occurrences
 - [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
   : Select filtered occurrences
-- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
-  : Bivariate partial dependence plot
-- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
-  : Graphical exploration of extrapolation or suitability pattern in the
-  environmental and geographical space
-- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
-  Partial Dependent Plot
+- [`occ_reproj()`](https://sjevelazco.github.io/flexsdm/reference/occ_reproj.md)
+  : Reproject location coordinates to a new coordinate reference system
 - [`palms`](https://sjevelazco.github.io/flexsdm/reference/palms.md) : A
   data set containing presences of palms species from Southern Brazil
 - [`part_random()`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)
@@ -111,6 +104,13 @@
   : Environmental and spatial cross-validation
 - [`plot_res()`](https://sjevelazco.github.io/flexsdm/reference/plot_res.md)
   : Plot different resolutions to be used in part_sblock
+- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
+  : Bivariate partial dependence plot
+- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
+  : Graphical exploration of extrapolation or suitability pattern in the
+  environmental and geographical space
+- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
+  Partial Dependent Plot
 - [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
   : Sample background points
 - [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)

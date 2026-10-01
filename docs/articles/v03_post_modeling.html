@@ -122,21 +122,7 @@ patterns</p></li>
 <code class="sourceCode R"><span><span class="co"># devtools::install_github('sjevelazco/flexsdm')</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjevelazco.github.io/flexsdm/">flexsdm</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.9.46</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'terra'</span></span>
-<span><span class="co">#&gt; The following object is masked from 'package:knitr':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     spin</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="project-directory-setup">Project directory setup<a class="anchor" aria-label="anchor" href="#project-directory-setup"></a>
@@ -281,28 +267,44 @@ partitions</p>
 <div class="section level3">
 <h3 id="fit-and-ensemble-the-models-above">1. Fit and ensemble the models above<a class="anchor" aria-label="anchor" href="#fit-and-ensemble-the-models-above"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Fit and ensemble the models. To choose the arguments that best fit your own data, see all options available in [fit_ensemble](https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.html)</span></span>
-<span><span class="va">mensemble</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_ensemble.html">fit_ensemble</a></span><span class="op">(</span></span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mglm</span>, <span class="va">mraf</span>, <span class="va">mgbm</span><span class="op">)</span>,</span>
-<span>  ens_method <span class="op">=</span> <span class="st">"meansup"</span>,</span>
-<span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  thr_model <span class="op">=</span> <span class="st">"max_sens_spec"</span>,</span>
-<span>  metric <span class="op">=</span> <span class="st">"TSS"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Fit and ensemble the models. To choose the arguments that best fit your own data, see all options available in [fit_ensemble](https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.html)</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>mensemble <span class="ot">&lt;-</span> <span class="fu">fit_ensemble</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(mglm, mraf, mgbm),</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">ens_method =</span> <span class="st">"meansup"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">thr =</span> <span class="cn">NULL</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="at">thr_model =</span> <span class="st">"max_sens_spec"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="at">metric =</span> <span class="st">"TSS"</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
 <p>You can also fit a model using an Ensembles of Small Models approach.
 In this example, we fit without threshold specification and with k-fold
 cross-validation.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">msmall</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gam.html">esm_gam</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">some_sp</span>,</span>
-<span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CFP_1"</span>, <span class="st">"CFP_2"</span>, <span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span><span class="op">)</span>,</span>
-<span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span>  thr <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>msmall <span class="ot">&lt;-</span> <span class="fu">esm_gam</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">data =</span> some_sp,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">"CFP_1"</span>, <span class="st">"CFP_2"</span>, <span class="st">"CFP_3"</span>, <span class="st">"CFP_4"</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">".part"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">thr =</span> <span class="cn">NULL</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span></code></pre></div>
 <p>Finally, we can predict different kinds of models from the same data
 (some_sp). <a href="https://sjevelazco.github.io/flexsdm/reference/sdm_predict.html">sdm_predict</a>
 can be used for predicting one or more models fitted with fit_ or tune_
@@ -339,7 +341,9 @@ and/or binary predictions.</p>
 <span><span class="co"># Plot to see this layers</span></span>
 <span><span class="va">ind_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">ind_p</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ind_p_rst</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/sdm_predict-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-sdm_predict-1.png" alt="plot of chunk sdm_predict"><div class="figcaption">plot of chunk sdm_predict</div>
+</div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Predict a list of more than one model, specifying a threshold type</span></span>
@@ -391,13 +395,15 @@ and/or binary predictions.</p>
 <span><span class="co">#&gt; varnames    : somevar</span></span>
 <span><span class="co">#&gt;               somevar</span></span>
 <span><span class="co">#&gt; names       :      gbm, max_fpb</span></span>
-<span><span class="co">#&gt; min values  : 0.000077,       0</span></span>
-<span><span class="co">#&gt; max values  : 0.953071,       1</span></span>
+<span><span class="co">#&gt; min values  : 0.000069,       0</span></span>
+<span><span class="co">#&gt; max values  : 0.952234,       1</span></span>
 <span></span>
 <span><span class="co"># Plot to see this layers</span></span>
 <span><span class="va">list_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">list_p</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">list_p_rst</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/sdm_predict-2.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-sdm_predict-2.png" alt="plot of chunk sdm_predict"><div class="figcaption">plot of chunk sdm_predict</div>
+</div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Predict an ensemble model. This is only possible using one fit_ensemble object. It's not possible to include e.g., list(fit_ensemble1, fit_ensemble2) in the model argument.</span></span>
@@ -429,7 +435,9 @@ and/or binary predictions.</p>
 <span><span class="co"># Plot to see this layers</span></span>
 <span><span class="va">ensemble_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">ensemble_p</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ensemble_p_rst</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/sdm_predict-3.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-sdm_predict-3.png" alt="plot of chunk sdm_predict"><div class="figcaption">plot of chunk sdm_predict</div>
+</div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Predict an ensembles of small models.</span></span>
@@ -459,7 +467,9 @@ and/or binary predictions.</p>
 <span><span class="co"># Plot to see this layers</span></span>
 <span><span class="va">small_p_rst</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">small_p</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">small_p_rst</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/sdm_predict-4.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-sdm_predict-4.png" alt="plot of chunk sdm_predict"><div class="figcaption">plot of chunk sdm_predict</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="merge-model-performance-tables">2. Merge model performance tables<a class="anchor" aria-label="anchor" href="#merge-model-performance-tables"></a>
@@ -472,21 +482,21 @@ output.</p>
 <code class="sourceCode R"><span><span class="co"># Load abies data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">abies</span><span class="op">)</span></span>
 <span><span class="va">abies</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,400 × 13</span></span></span>
+<span><span class="co">#&gt; # A tibble: 1,400 × 13</span></span>
 <span><span class="co">#&gt;       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>   715     0  -<span style="color: #BB0000; text-decoration: underline;">95</span><span style="color: #BB0000;">417.</span>  <span style="text-decoration: underline;">314</span>240.  323.  546.  1.24    62.7   17.8   5.77 0.108 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">5</span>680     0   <span style="text-decoration: underline;">98</span>987. -<span style="color: #BB0000; text-decoration: underline;">159</span><span style="color: #BB0000;">415.</span>  448.  815.  9.43   130.     6.43  5.60 0.160 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">7</span>907     0  <span style="text-decoration: underline;">121</span>474.  -<span style="color: #BB0000; text-decoration: underline;">99</span><span style="color: #BB0000;">463.</span>  182.  271. -<span style="color: #BB0000;">4.95</span>   151.    11.2   0    0     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">1</span>850     0  -<span style="color: #BB0000; text-decoration: underline;">39</span><span style="color: #BB0000;">976.</span>  -<span style="color: #BB0000; text-decoration: underline;">17</span><span style="color: #BB0000;">456.</span>  372.  946.  8.78   116.     2.70  6.41 0.097<span style="text-decoration: underline;">2</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">1</span>702     0  <span style="text-decoration: underline;">111</span>372.  -<span style="color: #BB0000; text-decoration: underline;">91</span><span style="color: #BB0000;">404.</span>  209.  399. -<span style="color: #BB0000;">4.03</span>   165.     9.27  0    0     </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">10</span>036     0 -<span style="color: #BB0000; text-decoration: underline;">255</span><span style="color: #BB0000;">715.</span>  <span style="text-decoration: underline;">392</span>229.  308.  535.  4.66   166.    16.5   5.70 0.077<span style="text-decoration: underline;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">12</span>384     0 -<span style="color: #BB0000; text-decoration: underline;">311</span><span style="color: #BB0000;">765.</span>  <span style="text-decoration: underline;">380</span>213.  568.  352.  4.38   480.    41.2   5.80 0.110 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">6</span>513     0  <span style="text-decoration: underline;">111</span>360. -<span style="color: #BB0000; text-decoration: underline;">120</span><span style="color: #BB0000;">229.</span>  327.  633.  4.93   163.     8.91  1.18 0.011<span style="text-decoration: underline;">6</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">9</span>884     0 -<span style="color: #BB0000; text-decoration: underline;">284</span><span style="color: #BB0000;">326.</span>  <span style="text-decoration: underline;">442</span>136.  377.  446.  3.99   296.    16.8   5.96 0.090<span style="text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">8</span>651     0  <span style="text-decoration: underline;">137</span>640. -<span style="color: #BB0000; text-decoration: underline;">110</span><span style="color: #BB0000;">538.</span>  215.  265. -<span style="color: #BB0000;">4.62</span>   180.     9.57  0    0     </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1,390 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt;    &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1   715     0  -95417.  314240.  323.  546.  1.24    62.7   17.8   5.77 0.108 </span></span>
+<span><span class="co">#&gt;  2  5680     0   98987. -159415.  448.  815.  9.43   130.     6.43  5.60 0.160 </span></span>
+<span><span class="co">#&gt;  3  7907     0  121474.  -99463.  182.  271. -4.95   151.    11.2   0    0     </span></span>
+<span><span class="co">#&gt;  4  1850     0  -39976.  -17456.  372.  946.  8.78   116.     2.70  6.41 0.0972</span></span>
+<span><span class="co">#&gt;  5  1702     0  111372.  -91404.  209.  399. -4.03   165.     9.27  0    0     </span></span>
+<span><span class="co">#&gt;  6 10036     0 -255715.  392229.  308.  535.  4.66   166.    16.5   5.70 0.0777</span></span>
+<span><span class="co">#&gt;  7 12384     0 -311765.  380213.  568.  352.  4.38   480.    41.2   5.80 0.110 </span></span>
+<span><span class="co">#&gt;  8  6513     0  111360. -120229.  327.  633.  4.93   163.     8.91  1.18 0.0116</span></span>
+<span><span class="co">#&gt;  9  9884     0 -284326.  442136.  377.  446.  3.99   296.    16.8   5.96 0.0900</span></span>
+<span><span class="co">#&gt; 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     </span></span>
+<span><span class="co">#&gt; # ℹ 1,390 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 2 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;</span></span>
 <span></span>
 <span><span class="co"># Use a subset of the data to keep this tutorial fast to run</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
@@ -579,40 +589,40 @@ output.</p>
 <span><span class="co">#&gt; Partition number: 3/3</span></span>
 <span></span>
 <span><span class="va">rf_t1</span><span class="op">$</span><span class="va">performance</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 35</span></span></span>
+<span><span class="co">#&gt; # A tibble: 1 × 35</span></span>
 <span><span class="co">#&gt;    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     2   500 raf   max_sens_s…     0.592         210        210    0.857 0.051<span style="text-decoration: underline;">5</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 26 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   KAPPA_sd &lt;dbl&gt;, MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;           &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     2   500 raf   max_sens_s…     0.592         210        210    0.857 0.0515</span></span>
+<span><span class="co">#&gt; # ℹ 26 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   KAPPA_sd &lt;dbl&gt;, MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
 <span><span class="co"># Note in rf_t1$performance the best model was the one with mtry = 3 and threshold = 'max_sens_spec'</span></span></code></pre></div>
 <p>Finally, merge the three sdm performance tables.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">merge_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_summarize.html">sdm_summarize</a></span><span class="op">(</span>models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">gam_t1</span>, <span class="va">glm_t1</span>, <span class="va">rf_t1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">merge_df</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 36</span></span></span>
+<span><span class="co">#&gt; # A tibble: 7 × 36</span></span>
 <span><span class="co">#&gt;   model_ID model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd</span></span>
-<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>        1 gam   equal_sens_s…     0.518         210        210    0.702 0.003<span style="text-decoration: underline;">40</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>        1 gam   max_sens_spec     0.601         210        210    0.682 0.105  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>        1 gam   max_sorensen      0.351         210        210    0.836 0.046<span style="text-decoration: underline;">3</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>        2 glm   equal_sens_s…     0.519         210        210    0.630 0.048<span style="text-decoration: underline;">7</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>        2 glm   max_sens_spec     0.485         210        210    0.633 0.216  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>        2 glm   max_sorensen      0.299         210        210    0.908 0.031<span style="text-decoration: underline;">1</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>        3 raf   max_sens_spec     0.592         210        210    0.857 0.051<span style="text-decoration: underline;">5</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 28 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   KAPPA_sd &lt;dbl&gt;, MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;, mtry &lt;dbl&gt;, ntree &lt;dbl&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt;      &lt;int&gt; &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;       &lt;int&gt;      &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1        1 gam   equal_sens_s…     0.518         210        210    0.702 0.00340</span></span>
+<span><span class="co">#&gt; 2        1 gam   max_sens_spec     0.601         210        210    0.682 0.105  </span></span>
+<span><span class="co">#&gt; 3        1 gam   max_sorensen      0.351         210        210    0.836 0.0463 </span></span>
+<span><span class="co">#&gt; 4        2 glm   equal_sens_s…     0.519         210        210    0.630 0.0487 </span></span>
+<span><span class="co">#&gt; 5        2 glm   max_sens_spec     0.485         210        210    0.633 0.216  </span></span>
+<span><span class="co">#&gt; 6        2 glm   max_sorensen      0.299         210        210    0.908 0.0311 </span></span>
+<span><span class="co">#&gt; 7        3 raf   max_sens_spec     0.592         210        210    0.857 0.0515 </span></span>
+<span><span class="co">#&gt; # ℹ 28 more variables: TNR_mean &lt;dbl&gt;, TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   W_TPR_TNR_sd &lt;dbl&gt;, SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   JACCARD_mean &lt;dbl&gt;, JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;, TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   KAPPA_sd &lt;dbl&gt;, MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;, mtry &lt;dbl&gt;, ntree &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="raster-interpolation-between-two-time-periods">3. Raster interpolation between two time periods<a class="anchor" aria-label="anchor" href="#raster-interpolation-between-two-time-periods"></a>
@@ -635,7 +645,9 @@ interpolated raster files in a given directory.</p>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/suit_time_step.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span>
 <span><span class="va">abma</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">abma</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/interp_data-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-interp_data-1.png" alt="plot of chunk interp_data"><div class="figcaption">plot of chunk interp_data</div>
+</div>
 <p>This function will create an object of interpolated values with n
 annual layers ranging from the initial to final year. The resolution and
 dimensions of the result object will remain the same as the initial and
@@ -677,7 +689,9 @@ interpolated values of 0.9, 0.8, 0.7…0.1</p>
 <span><span class="co">#&gt; min values  :          0,          0,          0,          0,          0,          0, ...</span></span>
 <span><span class="co">#&gt; max values  :   0.975611,   0.960608,   0.950461,   0.944007,   0.944294,   0.946355, ...</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">int</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/interp-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-interp-1.png" alt="plot of chunk interp"><div class="figcaption">plot of chunk interp</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="measure-model-extrapolation">4. Measure model extrapolation<a class="anchor" aria-label="anchor" href="#measure-model-extrapolation"></a>
@@ -716,7 +730,9 @@ using the approach proposed by Velazco et al., in prep.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">$</span><span class="va">CFP_1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/measure_extrap-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-measure_extrap-1.png" alt="plot of chunk measure_extrap"><div class="figcaption">plot of chunk measure_extrap</div>
+</div>
 <p>The accessible area defines calibration area used to extract the
 environmental conditions</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -726,7 +742,9 @@ environmental conditions</p>
 <span></span>
 <span><span class="co"># Plot environmental conditions of the calibration area</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar_ca</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/get_env-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-get_env-1.png" alt="plot of chunk get_env"><div class="figcaption">plot of chunk get_env</div>
+</div>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">xp</span> <span class="op">&lt;-</span></span>
@@ -738,7 +756,9 @@ environmental conditions</p>
 <span></span>
 <span><span class="co"># Plot the SpatRaster object with the extrapolation values measured in percentage</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">xp</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/get_env-2.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-get_env-2.png" alt="plot of chunk get_env"><div class="figcaption">plot of chunk get_env</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="correction-of-suitability-based-on-extrapolation">5. Correction of suitability based on extrapolation<a class="anchor" aria-label="anchor" href="#correction-of-suitability-based-on-extrapolation"></a>
@@ -772,7 +792,9 @@ raster layer.</p>
 <span><span class="va">a_variable</span> <span class="op">&lt;-</span> <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">a_variable</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">occ</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_priori-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_priori-1.png" alt="plot of chunk msdm_priori"><div class="figcaption">plot of chunk msdm_priori</div>
+</div>
 <p>Next, use different methods according to your data.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Use xy method</span></span>
@@ -785,7 +807,9 @@ raster layer.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_xy</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_xy-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_xy-1.png" alt="plot of chunk msdm_xy"><div class="figcaption">plot of chunk msdm_xy</div>
+</div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Explore the object. This method assumes that spatial structure can partially explain species distribution (Bahn &amp; Mcgill, 2007). Therefore, the result are two raster layers containing the latitude and longitude of pixels, respectively. This method could be used for all species set that share the same study area region.</span></span>
@@ -810,7 +834,9 @@ raster layer.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_cml</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_cml-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_cml-1.png" alt="plot of chunk msdm_cml"><div class="figcaption">plot of chunk msdm_cml</div>
+</div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Explore the object. This method assumes that pixels closer to presences are likely included in species distributions. The results is a raster layer containing the sum of euclidean geographic distances from each pixel to all occurrences of a species.</span></span>
@@ -891,7 +917,9 @@ predicted suitability.</p>
 <span></span>
 <span><span class="co"># Predicting individual models</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_post_predict-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_post_predict-1.png" alt="plot of chunk msdm_post_predict"><div class="figcaption">plot of chunk msdm_post_predict</div>
+</div>
 <p>Finally, perform correction to avoid models overpredictions.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Using mcp method. The Minimum Convex Polygon (mcp) method excludes from SDMs climate suitable pixels that do not intercept a minimum convex polygon, with interior angles smaller than 180, enclosing all occurrences of a species.</span></span>
@@ -907,7 +935,9 @@ predicted suitability.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_mcp</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_post-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_post-1.png" alt="plot of chunk msdm_post"><div class="figcaption">plot of chunk msdm_post</div>
+</div>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Using bmcp method. The Buffered Minimum Convex Polygon (bmcp) method is similar to the 'mcp' except by the inclusion of a buffer zone surrounding minimum convex polygons.</span></span>
@@ -924,7 +954,9 @@ predicted suitability.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_bmcp</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_post-2.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_post-2.png" alt="plot of chunk msdm_post"><div class="figcaption">plot of chunk msdm_post</div>
+</div>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Using obr method. The Occurrences Based Restriction (obr) method assumes that suitable patches intercepting species occurrences are more likely a part of species distributions than suitable patches that do not intercept any occurrence.</span></span>
@@ -940,7 +972,9 @@ predicted suitability.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_obr</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_post-3.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_post-3.png" alt="plot of chunk msdm_post"><div class="figcaption">plot of chunk msdm_post</div>
+</div>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Using pres method. The only occurrences based restriction (pres) method only retains those pixels in suitability patches intercepting occurrences.</span></span>
@@ -956,7 +990,9 @@ predicted suitability.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_pres</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_post-4.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_post-4.png" alt="plot of chunk msdm_post"><div class="figcaption">plot of chunk msdm_post</div>
+</div>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Using lq method. The Lower Quantile (lq) method works whenever a suitable pixel is within a k patch, i.e., not within this lower quartile, the suitability of the pixel is reduced to zero. This means that 75% of k patches were withdrawn from the model.</span></span>
@@ -972,7 +1008,9 @@ predicted suitability.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_lq</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v03_post_modeling_files/figure-html/msdm_post-5.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v03-msdm_post-5.png" alt="plot of chunk msdm_post"><div class="figcaption">plot of chunk msdm_post</div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

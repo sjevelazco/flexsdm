@@ -99,25 +99,25 @@ dirs_1 <- sdm_directory(
   return_vector = TRUE
 )
 #> Directories were created in:
-#> /Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results
+#> C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results
 dirs_1
-#>  [1] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results"                                       
-#>  [2] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs"                              
-#>  [3] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/1_Occurrences"                
-#>  [4] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/2_Predictors"                 
-#>  [5] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/2_Predictors/1_Current"       
-#>  [6] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/3_Calibration_area"           
-#>  [7] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs"                             
-#>  [8] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/0_Model_performance"         
-#>  [9] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current"                   
-#> [10] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm"         
-#> [11] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm/gam"     
-#> [12] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm/tune_max"
-#> [13] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble"          
-#> [14] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble/mean"     
-#> [15] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble/meanthr"  
+#>  [1] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results"                                       
+#>  [2] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs"                              
+#>  [3] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/1_Occurrences"                
+#>  [4] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/2_Predictors"                 
+#>  [5] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/2_Predictors/1_Current"       
+#>  [6] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/3_Calibration_area"           
+#>  [7] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs"                             
+#>  [8] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/0_Model_performance"         
+#>  [9] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current"                   
+#> [10] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm"         
+#> [11] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm/gam"     
+#> [12] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm/tune_max"
+#> [13] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble"          
+#> [14] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble/mean"     
+#> [15] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble/meanthr"  
 dirs_1[1] %>% fs::dir_tree(., recurse = TRUE)
-#> /Users/sjevelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results
+#> C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results
 #> ├── 1_Inputs
 #> │   ├── 1_Occurrences
 #> │   ├── 2_Predictors
@@ -137,7 +137,7 @@ unlink(dirs_1[1], recursive = TRUE) # this directory and sub-folder will be remo
 
 # Implement sdm_directory with specific path and project name
 getwd() %>% dirname()
-#> [1] "/Users/sjevelazco/Documents/GitHub/flexsdm/docs"
+#> [1] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs"
 
 dirs_2 <- sdm_directory(
   main_dir = getwd() %>% dirname() %>% file.path(., "my_project_name"),
@@ -151,9 +151,9 @@ dirs_2 <- sdm_directory(
   threshold = TRUE
 )
 #> Directories were created in:
-#> /Users/sjevelazco/Documents/GitHub/flexsdm/docs/my_project_name
+#> C:/Users/svelazco/Documents/GitHub/flexsdm/docs/my_project_name
 dirs_2[1] %>% fs::dir_tree(., recurse = TRUE)
-#> /Users/sjevelazco/Documents/GitHub/flexsdm/docs/my_project_name
+#> C:/Users/svelazco/Documents/GitHub/flexsdm/docs/my_project_name
 #> ├── 1_Inputs
 #> │   ├── 1_Occurrences
 #> │   ├── 2_Predictors

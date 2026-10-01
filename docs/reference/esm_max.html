@@ -188,10 +188,10 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies2</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span>, replicates <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 18</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 20 × 15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> <span style="text-decoration: underline;">12</span>040     0 -<span style="color: #BB0000; text-decoration: underline;">308</span><span style="color: #BB0000;">909.</span>  <span style="text-decoration: underline;">384</span>248.  573.  332.  4.84     521.   48.8   5.63 0.108 </span>
@@ -214,8 +214,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">18</span>  <span style="text-decoration: underline;">4</span>441     1   <span style="text-decoration: underline;">49</span>405.  -<span style="color: #BB0000; text-decoration: underline;">60</span><span style="color: #BB0000;">502.</span>  362.  582.  2.42     218.    7.84  5.64 0.078<span style="text-decoration: underline;">6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">19</span>   301     1 -<span style="color: #BB0000; text-decoration: underline;">132</span><span style="color: #BB0000;">516.</span>  <span style="text-decoration: underline;">270</span>845.  367.  196. -<span style="color: #BB0000;">2.56</span>     422.   26.3   6.70 0.030<span style="text-decoration: underline;">0</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">20</span>  <span style="text-decoration: underline;">3</span>162     1   <span style="text-decoration: underline;">59</span>905.  -<span style="color: #BB0000; text-decoration: underline;">53</span><span style="color: #BB0000;">634.</span>  319.  626.  1.99     212.    4.50  4.51 0.039<span style="text-decoration: underline;">6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part1 &lt;int&gt;, .part2 &lt;int&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   .part3 &lt;int&gt;, .part4 &lt;int&gt;, .part5 &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: depth &lt;dbl&gt;, landform &lt;fct&gt;, .part1 &lt;int&gt;, .part2 &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">backg2</span> <span class="op">&lt;-</span> <span class="va">backg</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -227,10 +226,10 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-in"><span><span class="va">backg2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">backg2</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span>, replicates <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"rep_kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span>, replicates <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">backg2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 18</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja     pH      awc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     0  -<span style="color: #BB0000; text-decoration: underline;">23</span><span style="color: #BB0000;">361.</span>  <span style="text-decoration: underline;">129</span>722.  448.  257.  0.683   285.   19.6   0.023<span style="text-decoration: underline;">0</span> 0.000<span style="text-decoration: underline;">356</span></span>
@@ -244,8 +243,8 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     0  <span style="text-decoration: underline;">311</span>709. -<span style="color: #BB0000; text-decoration: underline;">456</span><span style="color: #BB0000;">718.</span>  271.  877.  6.34     83.0   8.45  0      0       </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     0 -<span style="color: #BB0000; text-decoration: underline;">211</span><span style="color: #BB0000;">821.</span>  <span style="text-decoration: underline;">419</span>972.  369.  633.  3.36     73.2  16.6   6.12   0.158   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 90 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: depth &lt;dbl&gt;, percent_clay &lt;dbl&gt;, landform &lt;fct&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   .part1 &lt;int&gt;, .part2 &lt;int&gt;, .part3 &lt;int&gt;, .part4 &lt;int&gt;, .part5 &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 5 more variables: depth &lt;dbl&gt;, percent_clay &lt;dbl&gt;, landform &lt;fct&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   .part1 &lt;int&gt;, .part2 &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Without threshold specification and with kfold</span></span></span>
 <span class="r-in"><span><span class="va">esm_max_t1</span> <span class="op">&lt;-</span> <span class="fu">esm_max</span><span class="op">(</span></span></span>
@@ -260,67 +259,411 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-in"><span>  pred_type <span class="op">=</span> <span class="st">"cloglog"</span>,</span></span>
 <span class="r-in"><span>  regmult <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |==                                                                    |   4%
-  |                                                                            
-  |=====                                                                 |   7%
-  |                                                                            
-  |========                                                              |  11%
-  |                                                                            
-  |==========                                                            |  14%
-  |                                                                            
-  |============                                                          |  18%
-  |                                                                            
-  |===============                                                       |  21%
-  |                                                                            
-  |==================                                                    |  25%
-  |                                                                            
-  |====================                                                  |  29%
-  |                                                                            
-  |======================                                                |  32%
-  |                                                                            
-  |=========================                                             |  36%
-  |                                                                            
-  |============================                                          |  39%
-  |                                                                            
-  |==============================                                        |  43%
-  |                                                                            
-  |================================                                      |  46%
-  |                                                                            
-  |===================================                                   |  50%
-  |                                                                            
-  |======================================                                |  54%
-  |                                                                            
-  |========================================                              |  57%
-  |                                                                            
-  |==========================================                            |  61%
-  |                                                                            
-  |=============================================                         |  64%
-  |                                                                            
-  |================================================                      |  68%
-  |                                                                            
-  |==================================================                    |  71%
-  |                                                                            
-  |====================================================                  |  75%
-  |                                                                            
-  |=======================================================               |  79%
-  |                                                                            
-  |==========================================================            |  82%
-  |                                                                            
-  |============================================================          |  86%
-  |                                                                            
-  |==============================================================        |  89%
-  |                                                                            
-  |=================================================================     |  93%
-  |                                                                            
-  |====================================================================  |  96%
-  |                                                                            
-  |======================================================================| 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |==                                                                    |   4%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |=====                                                                 |   7%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |========                                                              |  11%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |==========                                                            |  14%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |============                                                          |  18%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |===============                                                       |  21%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |==================                                                    |  25%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |====================                                                  |  29%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |======================                                                |  32%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |=========================                                             |  36%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |============================                                          |  39%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |==============================                                        |  43%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |================================                                      |  46%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |===================================                                   |  50%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |======================================                                |  54%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |========================================                              |  57%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |==========================================                            |  61%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |=============================================                         |  64%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |================================================                      |  68%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |==================================================                    |  71%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |====================================================                  |  75%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |=======================================================               |  79%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |==========================================================            |  82%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |============================================================          |  86%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |==============================================================        |  89%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |=================================================================     |  93%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |====================================================================  |  96%</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one multinomial or binomial class has fewer than 8  observations; dangerous ground</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |======================================================================| 100%</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">esm_max_t1</span><span class="op">$</span><span class="va">esm_model</span> <span class="co"># bivariate model</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.141203703703704`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  %Dev Lambda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0  0.00  97880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0  0.00  93460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0  0.00  89230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0  0.00  85190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0  0.00  81340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    0  0.00  77660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0  0.00  74150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0  0.00  70790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    0  0.00  67590</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   0  0.00  64540</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0  0.00  61620</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   0  0.00  58830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   0  0.00  56170</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   0  0.00  53630</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   0  0.00  51200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   0  0.00  48890</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   0  0.00  46680</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   0  0.00  44570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   0  0.00  42550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   0  0.00  40630</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   0  0.00  38790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   0  0.00  37030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   0  0.00  35360</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   0  0.00  33760</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   0  0.00  32230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   0  0.00  30770</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   0  0.00  29380</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   0  0.00  28050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   0  0.00  26780</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   0  0.00  25570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   0  0.00  24420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   0  0.00  23310</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   0  0.00  22260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   0  0.00  21250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   0  0.00  20290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   0  0.00  19370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   0  0.00  18500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   0  0.00  17660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   0  0.00  16860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   0  0.00  16100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   0  0.00  15370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   0  0.00  14680</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   0  0.00  14010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   0  0.00  13380</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   0  0.00  12770</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   0  0.00  12200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   0  0.00  11640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   0  0.00  11120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   0  0.00  10610</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   0  0.00  10130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   0  0.00   9676</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   0  0.00   9238</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   0  0.00   8820</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   0  0.00   8421</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   0  0.00   8040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   0  0.00   7677</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   0  0.00   7330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   0  0.00   6998</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   0  0.00   6682</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   0  0.00   6379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   0  0.00   6091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   0  0.00   5815</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   0  0.00   5552</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   0  0.00   5301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   0  0.00   5061</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   0  0.00   4833</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   0  0.00   4614</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   0  0.00   4405</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   0  0.00   4206</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   0  0.00   4016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   0  0.00   3834</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   0  0.00   3661</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   0  0.00   3495</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   0  0.00   3337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   0  0.00   3186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   0  0.00   3042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77   0  0.00   2904</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   0  0.00   2773</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   0  0.00   2648</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   0  0.00   2528</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   0  0.00   2414</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82   0  0.00   2304</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83   0  0.00   2200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84   0  0.00   2101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85   0  0.00   2006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86   0  0.00   1915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87   0  0.00   1828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88   0  0.00   1746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89   0  0.00   1667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90   0  0.00   1591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   0  0.00   1519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   0  0.00   1451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   0  0.00   1385</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94   0  0.00   1322</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95   0  0.00   1263</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   0  0.00   1205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97   0  0.00   1151</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98   0  0.00   1099</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99   0  0.00   1049</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  0  0.00   1002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101  0  0.00    956</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  0  0.00    913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  0  0.00    872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  0  0.00    832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105  0  0.00    795</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  0  0.00    759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  0  0.00    724</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  0  0.00    692</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  0  0.00    660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110  0  0.00    631</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111  0  0.00    602</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112  0  0.00    575</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113  0  0.00    549</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114  0  0.00    524</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115  0  0.00    500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116  0  0.00    478</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117  0  0.00    456</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118  0  0.00    436</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119  0  0.00    416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120  0  0.00    397</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121  0  0.00    379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  0  0.00    362</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123  0  0.00    346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124  0  0.00    330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125  0  0.00    315</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126  0  0.00    301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127  0  0.00    287</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128  0  0.00    274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129  0  0.00    262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130  0  0.00    250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131  0  0.00    239</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132  0  0.00    228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133  0  0.00    218</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134  0  0.00    208</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135  0  0.00    198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136  0  0.00    189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137  0  0.00    181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138  0  0.00    173</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139  0  0.00    165</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140  1  0.10    157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141  1  0.77    150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142  1  1.39    143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143  1  1.97    137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144  1  2.52    131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145  1  3.03    125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146  1  3.51    119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147  1  3.97    114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148  1  4.39    109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149  1  4.80    104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150  1  5.18     99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151  1  5.54     95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152  1  5.87     90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153  1  6.20     86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154  1  6.50     82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155  1  6.79     79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156  1  7.06     75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157  1  7.32     72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158  1  7.56     68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159  1  7.79     65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160  1  8.01     62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161  1  8.21     60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162  1  8.41     57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163  1  8.59     54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164  1  8.77     52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165  1  8.93     49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 166  1  9.09     47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167  1  9.24     45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 168  1  9.38     43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 169  1  9.51     41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 170  1  9.64     39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 171  1  9.75     37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 172  1  9.86     36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 173  1  9.97     34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 174  1 10.06     33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 175  1 10.16     31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 176  1 10.24     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 177  1 10.33     28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 178  1 10.40     27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 179  1 10.47     26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 180  1 10.54     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 181  1 10.61     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 182  1 10.66     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 183  1 10.72     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 184  1 10.77     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 185  1 10.82     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 186  1 10.86     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 187  1 10.91     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 188  1 10.95     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 189  1 10.98     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 190  1 11.02     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 191  1 11.05     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 192  2 11.11     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 193  2 11.18     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 194  2 11.24     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 195  2 11.29     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196  2 11.34     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197  2 11.39     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198  2 11.43     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199  2 11.47     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200  2 11.51     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
@@ -527,7 +870,213 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  2 17.57      4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  2 17.61      3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.27`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0694444444444444`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df %Dev Lambda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0 0.00  33490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0 0.00  31980</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0 0.00  30530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0 0.00  29150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0 0.00  27830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    0 0.00  26570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0 0.00  25370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0 0.00  24220</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    0 0.00  23130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   0 0.00  22080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0 0.00  21080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   0 0.00  20130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   0 0.00  19220</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   0 0.00  18350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   0 0.00  17520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   0 0.00  16730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   0 0.00  15970</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   0 0.00  15250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   0 0.00  14560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   0 0.00  13900</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   0 0.00  13270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   0 0.00  12670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   0 0.00  12100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   0 0.00  11550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   0 0.00  11030</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   0 0.00  10530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   0 0.00  10050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   0 0.00   9598</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   0 0.00   9164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   0 0.00   8750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   0 0.00   8354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   0 0.00   7976</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   0 0.00   7616</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   0 0.00   7271</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   0 0.00   6942</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   0 0.00   6628</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   0 0.00   6328</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   0 0.00   6042</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   0 0.00   5769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   0 0.00   5508</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   0 0.00   5259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   0 0.00   5021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   0 0.00   4794</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   0 0.00   4577</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   0 0.00   4370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   0 0.00   4172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   0 0.00   3984</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   0 0.00   3804</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   0 0.00   3632</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   0 0.00   3467</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   0 0.00   3310</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   0 0.00   3161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   0 0.00   3018</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   0 0.00   2881</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   0 0.00   2751</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   0 0.00   2627</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   0 0.00   2508</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   0 0.00   2394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   0 0.00   2286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   0 0.00   2183</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   0 0.00   2084</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   0 0.00   1990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   0 0.00   1900</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   0 0.00   1814</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   0 0.00   1732</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   0 0.00   1653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   0 0.00   1579</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   0 0.00   1507</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   0 0.00   1439</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   0 0.00   1374</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   0 0.00   1312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   0 0.00   1253</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   0 0.00   1196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   0 0.00   1142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   0 0.00   1090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   0 0.00   1041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77   0 0.00    994</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   0 0.00    949</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   0 0.00    906</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   0 0.00    865</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   0 0.00    826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82   0 0.00    788</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83   0 0.00    753</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84   0 0.00    719</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85   0 0.00    686</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86   0 0.00    655</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87   0 0.00    626</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88   0 0.00    597</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89   0 0.00    570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90   0 0.00    544</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   0 0.00    520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   0 0.00    496</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   0 0.00    474</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94   0 0.00    452</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95   0 0.00    432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   0 0.00    412</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97   0 0.00    394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98   0 0.00    376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99   0 0.00    359</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  0 0.00    343</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101  0 0.00    327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  0 0.00    312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  0 0.00    298</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  0 0.00    285</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105  0 0.00    272</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  0 0.00    260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  0 0.00    248</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  0 0.00    237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  0 0.00    226</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110  0 0.00    216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111  0 0.00    206</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112  0 0.00    197</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113  0 0.00    188</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114  0 0.00    179</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115  0 0.00    171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116  0 0.00    163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117  0 0.00    156</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118  0 0.00    149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119  0 0.00    142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120  0 0.00    136</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121  0 0.00    130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  0 0.00    124</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123  0 0.00    118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124  0 0.00    113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125  0 0.00    108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126  0 0.00    103</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127  0 0.00     98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128  0 0.00     94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129  0 0.00     90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130  0 0.00     86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131  0 0.00     82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132  0 0.00     78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133  0 0.00     74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134  0 0.00     71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135  0 0.00     68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136  0 0.00     65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137  0 0.00     62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138  0 0.00     59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139  0 0.00     56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140  0 0.00     54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141  0 0.00     51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142  0 0.00     49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143  0 0.00     47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144  0 0.00     45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145  0 0.00     43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146  0 0.00     41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147  0 0.00     39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148  0 0.00     37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149  0 0.00     35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150  0 0.00     34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151  0 0.00     32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152  0 0.00     31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153  0 0.00     29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154  0 0.00     28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155  0 0.00     27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156  0 0.00     26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157  0 0.00     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158  0 0.00     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159  0 0.00     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160  0 0.00     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161  0 0.00     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162  0 0.00     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163  0 0.00     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164  0 0.00     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165  0 0.00     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 166  0 0.00     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167  0 0.00     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 168  0 0.00     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 169  0 0.00     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 170  0 0.00     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 171  0 0.00     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 172  0 0.00     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 173  0 0.00     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 174  0 0.00     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 175  0 0.00     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 176  0 0.00     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 177  1 0.09     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 178  1 0.27      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 179  1 0.43      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 180  1 0.57      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 181  1 0.70      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 182  1 0.82      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 183  1 0.92      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 184  1 1.02      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 185  1 1.10      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 186  1 1.18      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 187  1 1.25      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 188  1 1.31      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 189  1 1.37      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 190  1 1.42      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 191  1 1.47      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 192  1 1.51      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 193  1 1.55      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 194  1 1.59      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 195  1 1.62      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196  1 1.65      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197  1 1.67      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198  1 1.70      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 1.72      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 1.74      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.251157407407407`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -733,7 +1282,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 3.72      4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 3.74      3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.62`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.497685185185185`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -939,7 +1488,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 1.38      4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 1.41      4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.96`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1145,7 +1694,625 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  2 16.51      7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  2 16.53      6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.1`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0578703703703702`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  %Dev Lambda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0  0.00  90880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0  0.00  86770</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0  0.00  82840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0  0.00  79100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0  0.00  75520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    0  0.00  72100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0  0.00  68840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0  0.00  65730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    0  0.00  62760</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   0  0.00  59920</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0  0.00  57210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   0  0.00  54620</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   0  0.00  52150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   0  0.00  49790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   0  0.00  47540</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   0  0.00  45390</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   0  0.00  43340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   0  0.00  41380</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   0  0.00  39500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   0  0.00  37720</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   0  0.00  36010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   0  0.00  34380</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   0  0.00  32830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   0  0.00  31340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   0  0.00  29930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   0  0.00  28570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   0  0.00  27280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   0  0.00  26050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   0  0.00  24870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   0  0.00  23740</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   0  0.00  22670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   0  0.00  21640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   0  0.00  20670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   0  0.00  19730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   0  0.00  18840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   0  0.00  17990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   0  0.00  17170</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   0  0.00  16400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   0  0.00  15650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   0  0.00  14950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   0  0.00  14270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   0  0.00  13620</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   0  0.00  13010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   0  0.00  12420</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   0  0.00  11860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   0  0.00  11320</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   0  0.00  10810</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   0  0.00  10320</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   0  0.00   9854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   0  0.00   9409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   0  0.00   8983</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   0  0.00   8577</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   0  0.00   8189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   0  0.00   7819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   0  0.00   7465</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   0  0.00   7127</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   0  0.00   6805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   0  0.00   6497</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   0  0.00   6203</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   0  0.00   5923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   0  0.00   5655</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   0  0.00   5399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   0  0.00   5155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   0  0.00   4922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   0  0.00   4699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   0  0.00   4487</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   0  0.00   4284</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   0  0.00   4090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   0  0.00   3905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   0  0.00   3728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   0  0.00   3560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   0  0.00   3399</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   0  0.00   3245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   0  0.00   3098</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   0  0.00   2958</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   0  0.00   2824</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77   0  0.00   2697</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   0  0.00   2575</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   0  0.00   2458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   0  0.00   2347</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   0  0.00   2241</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82   0  0.00   2140</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83   0  0.00   2043</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84   0  0.00   1950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85   0  0.00   1862</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86   0  0.00   1778</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87   0  0.00   1698</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88   0  0.00   1621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89   0  0.00   1547</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90   0  0.00   1477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   0  0.00   1411</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   0  0.00   1347</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   0  0.00   1286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94   0  0.00   1228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95   0  0.00   1172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   0  0.00   1119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97   0  0.00   1069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98   0  0.00   1020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99   0  0.00    974</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  0  0.00    930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101  0  0.00    888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  0  0.00    848</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  0  0.00    810</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  0  0.00    773</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105  0  0.00    738</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  0  0.00    704</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  0  0.00    673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  0  0.00    642</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  0  0.00    613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110  0  0.00    586</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111  0  0.00    559</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112  0  0.00    534</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113  0  0.00    510</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114  0  0.00    486</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115  0  0.00    464</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116  0  0.00    444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117  0  0.00    423</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118  0  0.00    404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119  0  0.00    386</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120  0  0.00    368</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121  0  0.00    352</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  0  0.00    336</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123  0  0.00    321</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124  0  0.00    306</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125  0  0.00    292</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126  0  0.00    279</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127  0  0.00    267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128  0  0.00    254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129  0  0.00    243</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130  0  0.00    232</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131  0  0.00    222</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132  0  0.00    212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133  0  0.00    202</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134  0  0.00    193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135  0  0.00    184</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136  0  0.00    176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137  0  0.00    168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138  0  0.00    160</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139  0  0.00    153</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140  1  0.10    146</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141  1  0.77    139</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142  1  1.39    133</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143  1  1.97    127</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144  1  2.52    121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145  1  3.03    116</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146  1  3.51    111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147  1  3.97    106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148  1  4.39    101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149  1  4.80     96</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150  1  5.18     92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151  1  5.54     88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152  1  5.87     84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153  1  6.20     80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154  1  6.50     76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155  1  6.79     73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156  1  7.06     70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157  1  7.32     66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158  1  7.56     63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159  1  7.79     61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160  1  8.01     58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161  1  8.21     55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162  1  8.41     53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163  1  8.59     50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164  1  8.77     48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165  1  8.93     46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 166  1  9.09     44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167  1  9.24     42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 168  1  9.38     40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 169  1  9.51     38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 170  1  9.64     36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 171  1  9.75     35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 172  1  9.86     33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 173  1  9.97     32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 174  1 10.06     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 175  1 10.16     29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 176  1 10.24     28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 177  1 10.33     26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 178  1 10.40     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 179  1 10.47     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 180  1 10.54     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 181  1 10.61     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 182  1 10.66     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 183  1 10.72     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 184  1 10.77     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 185  1 10.82     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 186  1 10.86     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 187  1 10.91     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 188  1 10.95     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 189  1 10.98     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 190  1 11.02     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 191  1 11.05     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 192  1 11.08     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 193  1 11.10     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 194  1 11.13     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 195  1 11.15     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196  1 11.17     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197  1 11.19     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198  1 11.21     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 11.23     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 11.25      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0578703703703702`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  %Dev Lambda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0  0.00  64520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0  0.00  61600</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0  0.00  58810</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0  0.00  56150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0  0.00  53610</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    0  0.00  51190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0  0.00  48870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0  0.00  46660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    0  0.00  44550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   0  0.00  42540</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0  0.00  40610</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   0  0.00  38780</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   0  0.00  37020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   0  0.00  35350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   0  0.00  33750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   0  0.00  32220</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   0  0.00  30770</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   0  0.00  29370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   0  0.00  28050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   0  0.00  26780</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   0  0.00  25570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   0  0.00  24410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   0  0.00  23310</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   0  0.00  22250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   0  0.00  21250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   0  0.00  20280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   0  0.00  19370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   0  0.00  18490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   0  0.00  17650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   0  0.00  16860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   0  0.00  16090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   0  0.00  15370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   0  0.00  14670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   0  0.00  14010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   0  0.00  13370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   0  0.00  12770</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   0  0.00  12190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   0  0.00  11640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   0  0.00  11110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   0  0.00  10610</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   0  0.00  10130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   0  0.00   9673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   0  0.00   9235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   0  0.00   8818</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   0  0.00   8419</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   0  0.00   8038</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   0  0.00   7674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   0  0.00   7327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   0  0.00   6996</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   0  0.00   6680</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   0  0.00   6377</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   0  0.00   6089</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   0  0.00   5814</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   0  0.00   5551</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   0  0.00   5300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   0  0.00   5060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   0  0.00   4831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   0  0.00   4613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   0  0.00   4404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   0  0.00   4205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   0  0.00   4015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   0  0.00   3833</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   0  0.00   3660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   0  0.00   3494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   0  0.00   3336</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   0  0.00   3185</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   0  0.00   3041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   0  0.00   2904</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   0  0.00   2772</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   0  0.00   2647</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   0  0.00   2527</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   0  0.00   2413</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   0  0.00   2304</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   0  0.00   2200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   0  0.00   2100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   0  0.00   2005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77   0  0.00   1914</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   0  0.00   1828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   0  0.00   1745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   0  0.00   1666</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   0  0.00   1591</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82   0  0.00   1519</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83   0  0.00   1450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84   0  0.00   1385</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85   0  0.00   1322</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86   0  0.00   1262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87   0  0.00   1205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88   0  0.00   1151</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89   0  0.00   1099</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90   0  0.00   1049</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   0  0.00   1001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   0  0.00    956</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   0  0.00    913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94   0  0.00    872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95   0  0.00    832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   0  0.00    795</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97   0  0.00    759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98   0  0.00    724</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99   0  0.00    692</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  0  0.00    660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101  0  0.00    630</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  0  0.00    602</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  0  0.00    575</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  0  0.00    549</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105  0  0.00    524</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  0  0.00    500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  0  0.00    478</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  0  0.00    456</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  0  0.00    435</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110  0  0.00    416</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111  0  0.00    397</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112  0  0.00    379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113  0  0.00    362</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114  0  0.00    345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115  0  0.00    330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116  0  0.00    315</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117  0  0.00    301</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118  0  0.00    287</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119  0  0.00    274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120  0  0.00    262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121  0  0.00    250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  0  0.00    238</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123  0  0.00    228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124  0  0.00    217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125  0  0.00    208</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126  0  0.00    198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127  0  0.00    189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128  0  0.00    181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129  0  0.00    172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130  0  0.00    165</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131  0  0.00    157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132  0  0.00    150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133  0  0.00    143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134  0  0.00    137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135  0  0.00    131</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136  0  0.00    125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137  0  0.00    119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138  0  0.00    114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139  0  0.00    109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140  1  0.10    104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141  1  0.77     99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142  1  1.39     95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143  1  1.97     90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144  1  2.52     86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145  1  3.03     82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146  1  3.51     79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147  1  3.97     75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148  1  4.39     72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149  1  4.80     68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150  1  5.18     65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151  1  5.54     62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152  1  5.87     60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153  1  6.20     57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154  1  6.50     54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155  1  6.79     52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156  1  7.06     49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157  1  7.32     47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158  1  7.56     45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159  1  7.79     43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160  1  8.01     41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161  1  8.21     39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162  1  8.41     37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163  1  8.59     36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164  1  8.77     34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165  1  8.93     33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 166  1  9.09     31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167  1  9.24     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 168  1  9.38     28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 169  1  9.51     27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 170  1  9.64     26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 171  1  9.75     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 172  1  9.86     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 173  1  9.97     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 174  1 10.06     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 175  1 10.16     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 176  1 10.24     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 177  1 10.33     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 178  1 10.40     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 179  1 10.47     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 180  1 10.54     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 181  1 10.61     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 182  1 10.66     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 183  1 10.72     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 184  1 10.77     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 185  1 10.82     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 186  1 10.86     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 187  1 10.91     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 188  1 10.95     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 189  1 10.98     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 190  1 11.02     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 191  1 11.05     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 192  1 11.08      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 193  1 11.10      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 194  1 11.13      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 195  1 11.15      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196  1 11.17      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197  1 11.19      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198  1 11.21      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 11.23      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 11.25      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0208333333333333`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  %Dev Lambda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0  0.00  64410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0  0.00  61500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0  0.00  58720</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0  0.00  56060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0  0.00  53520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    0  0.00  51100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0  0.00  48790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0  0.00  46590</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    0  0.00  44480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   0  0.00  42470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0  0.00  40550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   0  0.00  38710</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   0  0.00  36960</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   0  0.00  35290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   0  0.00  33690</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   0  0.00  32170</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   0  0.00  30710</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   0  0.00  29330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   0  0.00  28000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   0  0.00  26730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   0  0.00  25520</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   0  0.00  24370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   0  0.00  23270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   0  0.00  22210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   0  0.00  21210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   0  0.00  20250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   0  0.00  19330</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   0  0.00  18460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   0  0.00  17630</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   0  0.00  16830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   0  0.00  16070</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   0  0.00  15340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   0  0.00  14650</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   0  0.00  13980</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   0  0.00  13350</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   0  0.00  12750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   0  0.00  12170</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   0  0.00  11620</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   0  0.00  11100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   0  0.00  10590</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   0  0.00  10110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   0  0.00   9657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   0  0.00   9220</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   0  0.00   8803</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   0  0.00   8405</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   0  0.00   8025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   0  0.00   7662</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   0  0.00   7315</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   0  0.00   6984</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   0  0.00   6669</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   0  0.00   6367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   0  0.00   6079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   0  0.00   5804</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   0  0.00   5542</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   0  0.00   5291</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   0  0.00   5052</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   0  0.00   4823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   0  0.00   4605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   0  0.00   4397</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   0  0.00   4198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   0  0.00   4008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   0  0.00   3827</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   0  0.00   3654</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   0  0.00   3488</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   0  0.00   3331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   0  0.00   3180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   0  0.00   3036</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   0  0.00   2899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   0  0.00   2768</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   0  0.00   2643</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   0  0.00   2523</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   0  0.00   2409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   0  0.00   2300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   0  0.00   2196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   0  0.00   2097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   0  0.00   2002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77   0  0.00   1911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   0  0.00   1825</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   0  0.00   1742</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   0  0.00   1663</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   0  0.00   1588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82   0  0.00   1516</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83   0  0.00   1448</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84   0  0.00   1382</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85   0  0.00   1320</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86   0  0.00   1260</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87   0  0.00   1203</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88   0  0.00   1149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89   0  0.00   1097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90   0  0.00   1047</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   0  0.00   1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   0  0.00    955</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   0  0.00    911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94   0  0.00    870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95   0  0.00    831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   0  0.00    793</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97   0  0.00    757</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98   0  0.00    723</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99   0  0.00    690</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  0  0.00    659</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101  0  0.00    629</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  0  0.00    601</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  0  0.00    574</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  0  0.00    548</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105  0  0.00    523</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  0  0.00    499</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  0  0.00    477</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  0  0.00    455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  0  0.00    435</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110  0  0.00    415</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111  0  0.00    396</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112  0  0.00    378</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113  0  0.00    361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114  0  0.00    345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115  0  0.00    329</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116  0  0.00    314</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117  0  0.00    300</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118  0  0.00    286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119  0  0.00    274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120  0  0.00    261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121  0  0.00    249</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  0  0.00    238</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123  0  0.00    227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124  0  0.00    217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125  0  0.00    207</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126  0  0.00    198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127  0  0.00    189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128  0  0.00    180</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129  0  0.00    172</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130  0  0.00    164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131  0  0.00    157</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132  0  0.00    150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133  0  0.00    143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134  0  0.00    137</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135  0  0.00    130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136  0  0.00    125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137  0  0.00    119</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138  0  0.00    114</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139  0  0.00    108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140  1  0.10    104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141  1  0.77     99</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142  1  1.39     94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143  1  1.97     90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144  1  2.52     86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145  1  3.03     82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146  1  3.51     78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147  1  3.97     75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148  1  4.39     71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149  1  4.80     68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150  1  5.18     65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151  1  5.54     62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152  1  5.87     59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153  1  6.20     57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154  1  6.50     54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155  1  6.79     52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156  1  7.06     49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157  1  7.32     47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158  1  7.56     45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159  1  7.79     43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160  1  8.01     41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161  1  8.21     39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162  1  8.41     37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163  1  8.59     36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164  1  8.77     34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165  1  8.93     33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 166  1  9.09     31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167  1  9.24     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 168  1  9.38     28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 169  1  9.51     27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 170  1  9.64     26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 171  1  9.75     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 172  1  9.86     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 173  1  9.97     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 174  1 10.06     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 175  1 10.16     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 176  1 10.24     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 177  1 10.33     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 178  1 10.40     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 179  1 10.47     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 180  1 10.54     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 181  1 10.61     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 182  1 10.66     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 183  1 10.72     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 184  1 10.77     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 185  1 10.82     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 186  1 10.86     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 187  1 10.91     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 188  1 10.95     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 189  1 10.98     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 190  1 11.02     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 191  1 11.05     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 192  1 11.08      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 193  1 11.10      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 194  1 11.13      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 195  1 11.15      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196  1 11.17      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197  1 11.19      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198  1 11.21      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 11.23      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 11.25      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.141203703703704`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1350,6 +2517,212 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 198  2 11.52      7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  2 11.54      7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  2 11.57      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.141203703703704`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  %Dev Lambda</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0  0.00  73100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    0  0.00  69790</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    0  0.00  66640</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    0  0.00  63620</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0  0.00  60740</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    0  0.00  58000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0  0.00  55370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0  0.00  52870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    0  0.00  50480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10   0  0.00  48190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0  0.00  46020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12   0  0.00  43930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13   0  0.00  41950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14   0  0.00  40050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15   0  0.00  38240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16   0  0.00  36510</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17   0  0.00  34860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   0  0.00  33280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19   0  0.00  31780</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20   0  0.00  30340</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21   0  0.00  28970</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22   0  0.00  27660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23   0  0.00  26410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24   0  0.00  25210</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25   0  0.00  24070</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26   0  0.00  22980</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27   0  0.00  21940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28   0  0.00  20950</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29   0  0.00  20000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30   0  0.00  19100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31   0  0.00  18230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32   0  0.00  17410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33   0  0.00  16620</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34   0  0.00  15870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35   0  0.00  15150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36   0  0.00  14470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37   0  0.00  13810</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38   0  0.00  13190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39   0  0.00  12590</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40   0  0.00  12020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41   0  0.00  11480</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42   0  0.00  10960</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43   0  0.00  10460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44   0  0.00   9990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45   0  0.00   9539</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46   0  0.00   9107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47   0  0.00   8695</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48   0  0.00   8302</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49   0  0.00   7926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50   0  0.00   7568</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51   0  0.00   7226</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52   0  0.00   6899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53   0  0.00   6587</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54   0  0.00   6289</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55   0  0.00   6005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56   0  0.00   5733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57   0  0.00   5474</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58   0  0.00   5226</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59   0  0.00   4990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60   0  0.00   4764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61   0  0.00   4549</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62   0  0.00   4343</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63   0  0.00   4146</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64   0  0.00   3959</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65   0  0.00   3780</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66   0  0.00   3609</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67   0  0.00   3446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68   0  0.00   3290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69   0  0.00   3141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70   0  0.00   2999</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71   0  0.00   2863</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72   0  0.00   2734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73   0  0.00   2610</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74   0  0.00   2492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75   0  0.00   2379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76   0  0.00   2272</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77   0  0.00   2169</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78   0  0.00   2071</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79   0  0.00   1977</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80   0  0.00   1888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81   0  0.00   1802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82   0  0.00   1721</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83   0  0.00   1643</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84   0  0.00   1569</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85   0  0.00   1498</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86   0  0.00   1430</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87   0  0.00   1365</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88   0  0.00   1304</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89   0  0.00   1245</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90   0  0.00   1188</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91   0  0.00   1135</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92   0  0.00   1083</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93   0  0.00   1034</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94   0  0.00    988</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95   0  0.00    943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96   0  0.00    900</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97   0  0.00    860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98   0  0.00    821</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99   0  0.00    784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100  0  0.00    748</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101  0  0.00    714</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102  0  0.00    682</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  0  0.00    651</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  0  0.00    622</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105  0  0.00    594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106  0  0.00    567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107  0  0.00    541</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108  0  0.00    517</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109  0  0.00    493</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110  0  0.00    471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111  0  0.00    450</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112  0  0.00    429</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113  0  0.00    410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114  0  0.00    391</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115  0  0.00    374</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116  0  0.00    357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117  0  0.00    341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118  0  0.00    325</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119  0  0.00    310</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120  0  0.00    296</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121  0  0.00    283</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122  0  0.00    270</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123  0  0.00    258</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 124  0  0.00    246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 125  0  0.00    235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 126  0  0.00    225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 127  0  0.00    214</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 128  0  0.00    205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 129  0  0.00    196</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 130  0  0.00    187</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 131  0  0.00    178</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 132  0  0.00    170</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 133  0  0.00    162</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 134  0  0.00    155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 135  0  0.00    148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 136  0  0.00    141</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 137  0  0.00    135</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 138  0  0.00    129</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 139  0  0.00    123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 140  1  0.10    118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 141  1  0.77    112</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 142  1  1.39    107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 143  1  1.97    102</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 144  1  2.52     98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 145  1  3.03     93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 146  1  3.51     89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 147  1  3.97     85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 148  1  4.39     81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149  1  4.80     77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150  1  5.18     74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151  1  5.54     71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152  1  5.87     67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153  1  6.20     64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 154  1  6.50     61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155  1  6.79     59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 156  1  7.06     56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 157  1  7.32     53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 158  1  7.56     51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 159  1  7.79     49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 160  1  8.01     47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 161  1  8.21     44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 162  1  8.41     42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 163  1  8.59     41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 164  1  8.77     39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 165  1  8.93     37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 166  1  9.09     35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167  1  9.24     34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 168  1  9.38     32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 169  1  9.51     31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 170  1  9.64     29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 171  1  9.75     28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 172  1  9.86     27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 173  1  9.97     26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 174  1 10.06     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 175  1 10.16     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 176  1 10.24     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 177  1 10.33     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 178  1 10.40     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 179  1 10.47     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 180  1 10.54     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 181  1 10.61     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 182  1 10.66     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 183  1 10.72     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 184  1 10.77     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 185  1 10.82     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 186  1 10.86     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 187  1 10.91     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 188  1 10.95     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 189  2 11.05     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 190  2 11.16     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 191  2 11.25     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 192  2 11.34     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 193  2 11.42     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 194  2 11.50     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 195  2 11.57      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196  2 11.63      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197  2 11.69      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198  2 11.74      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199  2 11.79      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200  2 11.83      7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1557,7 +2930,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  2 18.83     2.8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  2 18.88     2.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.96`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1763,7 +3136,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 15.73   0.012</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 15.74   0.012</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.98`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1969,7 +3342,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 15.73  0.0012</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 15.74  0.0011</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.98`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -2175,7 +3548,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 15.73 0.00025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 15.74 0.00024</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.96`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -2381,7 +3754,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  2 17.54    0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  2 17.58    0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.2`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.230324074074074`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -2587,7 +3960,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  1 3.92 0.0009</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  1 3.94 0.0009</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.32`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.293981481481481`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -2793,7 +4166,7 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 199  2 4.27    0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 200  2 4.33    0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.62`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.377314814814815`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -3008,13 +4381,13 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 33</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> esm_max equal_sens_…     0.506          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> esm_max lpt              0.372          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> esm_max max_fpb          0.555          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> esm_max max_jaccard      0.555          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> esm_max max_sens_sp…     0.555          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> esm_max max_sorensen     0.555          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> esm_max sensitivity      0.562          10         10        1      0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> esm_max equal_sens_…     0.555          10         10        1      0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> esm_max lpt              0.551          10         10        1      0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> esm_max max_fpb          0.551          10         10        1      0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> esm_max max_jaccard      0.551          10         10        1      0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> esm_max max_sens_sp…     0.581          10         10        1      0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> esm_max max_sorensen     0.551          10         10        1      0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> esm_max sensitivity      0.592          10         10        1      0        1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
@@ -3023,20 +4396,20 @@ function will fit model with the specified data (not recommended).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
 <span class="r-in"><span><span class="va">esm_max_t1</span><span class="op">$</span><span class="va">performance_part</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 175 × 21</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 42 × 21</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    model replicates part  threshold thr_value n_presences n_absences   TPR   TNR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> esm_… .part1     1     max_sore…     0.622           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> esm_… .part1     1     max_jacc…     0.622           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> esm_… .part1     1     max_fpb       0.622           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> esm_… .part1     1     max_sens…     0.622           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> esm_… .part1     1     equal_se…     0.622           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> esm_… .part1     1     lpt           0.622           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> esm_… .part1     1     sensitiv…     0.622           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> esm_… .part1     2     max_sore…     0.569           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> esm_… .part1     2     max_jacc…     0.569           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> esm_… .part1     2     max_fpb       0.569           2          2     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 165 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> esm_… .part1     1     max_sore…     0.551           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> esm_… .part1     1     max_jacc…     0.551           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> esm_… .part1     1     max_fpb       0.551           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> esm_… .part1     1     max_sens…     0.551           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> esm_… .part1     1     equal_se…     0.551           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> esm_… .part1     1     lpt           0.551           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> esm_… .part1     1     sensitiv…     0.551           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> esm_… .part1     2     max_sore…     0.715           3          3     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> esm_… .part1     2     max_jacc…     0.715           3          3     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> esm_… .part1     2     max_fpb       0.715           3          3     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 32 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more variables: W_TPR_TNR &lt;dbl&gt;, SORENSEN &lt;dbl&gt;, JACCARD &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FPB &lt;dbl&gt;, OR &lt;dbl&gt;, TSS &lt;dbl&gt;, KAPPA &lt;dbl&gt;, MCC &lt;dbl&gt;, AUC &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE &lt;dbl&gt;, CRPS &lt;dbl&gt;, IMAE &lt;dbl&gt;</span></span>

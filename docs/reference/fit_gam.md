@@ -148,7 +148,7 @@ data("abies")
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 10)
+  method = c(method = "kfold", folds = 3)
 )
 abies2
 #> # A tibble: 1,400 × 14
@@ -179,16 +179,9 @@ gam_t1 <- fit_gam(
 #> Formula used for model fitting:
 #> pr_ab ~ s(aet, k = -1) + s(ppt_jja, k = -1) + s(pH, k = -1) + s(awc, k = -1) + s(depth, k = -1) + landform
 #> Replica number: 1/1
-#> Partition number: 1/10
-#> Partition number: 2/10
-#> Partition number: 3/10
-#> Partition number: 4/10
-#> Partition number: 5/10
-#> Partition number: 6/10
-#> Partition number: 7/10
-#> Partition number: 8/10
-#> Partition number: 9/10
-#> Partition number: 10/10
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 gam_t1$model
 #> 
 #> Family: binomial 
@@ -211,7 +204,7 @@ gam_t1$performance
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 gam   max_sens_spec     0.530         700        700    0.753  0.114     0.76
+#> 1 gam   max_sens_spec     0.530         700        700    0.809 0.0506    0.680
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -220,30 +213,25 @@ gam_t1$performance
 #> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
 #> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 gam_t1$performance_part
-#> # A tibble: 10 × 21
-#>    replica partition model threshold     thr_value n_presences n_absences   TPR
-#>    <chr>   <chr>     <chr> <chr>             <dbl>       <int>      <int> <dbl>
-#>  1 1       1         gam   max_sens_spec     0.507          70         70 0.771
-#>  2 1       2         gam   max_sens_spec     0.702          70         70 0.729
-#>  3 1       3         gam   max_sens_spec     0.584          70         70 0.6  
-#>  4 1       4         gam   max_sens_spec     0.507          70         70 0.814
-#>  5 1       5         gam   max_sens_spec     0.537          70         70 0.729
-#>  6 1       6         gam   max_sens_spec     0.383          70         70 0.943
-#>  7 1       7         gam   max_sens_spec     0.658          70         70 0.557
-#>  8 1       8         gam   max_sens_spec     0.577          70         70 0.757
-#>  9 1       9         gam   max_sens_spec     0.555          70         70 0.757
-#> 10 1       10        gam   max_sens_spec     0.512          70         70 0.871
-#> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
-#> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
-#> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
+#> # A tibble: 3 × 21
+#>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
+#>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
+#> 1 1       1         gam   max_sens…     0.508         234        234 0.782 0.658
+#> 2 1       2         gam   max_sens…     0.457         233        233 0.867 0.614
+#> 3 1       3         gam   max_sens…     0.518         233        233 0.777 0.768
+#> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
+#> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
+#> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 
 # Specifying the formula explicitly
 require(mgcv)
 #> Loading required package: mgcv
+#> Warning: package 'mgcv' was built under R version 4.5.2
 #> Loading required package: nlme
+#> Warning: package 'nlme' was built under R version 4.5.3
 #> 
-#> Attaching package: ‘nlme’
-#> The following object is masked from ‘package:dplyr’:
+#> Attaching package: 'nlme'
+#> The following object is masked from 'package:dplyr':
 #> 
 #>     collapse
 #> This is mgcv 1.9-4. For overview type '?mgcv'.
@@ -262,16 +250,9 @@ gam_t2 <- fit_gam(
 #> Formula used for model fitting:
 #> pr_ab ~ s(aet) + s(ppt_jja) + s(pH) + landform
 #> Replica number: 1/1
-#> Partition number: 1/10
-#> Partition number: 2/10
-#> Partition number: 3/10
-#> Partition number: 4/10
-#> Partition number: 5/10
-#> Partition number: 6/10
-#> Partition number: 7/10
-#> Partition number: 8/10
-#> Partition number: 9/10
-#> Partition number: 10/10
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 gam_t2$model
 #> 
@@ -294,7 +275,7 @@ gam_t2$performance %>% dplyr::select(ends_with("_mean"))
 #> # A tibble: 1 × 14
 #>   TPR_mean TNR_mean W_TPR_TNR_mean SORENSEN_mean JACCARD_mean FPB_mean OR_mean
 #>      <dbl>    <dbl>          <dbl>         <dbl>        <dbl>    <dbl>   <dbl>
-#> 1    0.783    0.703          0.743         0.750        0.602     1.20   0.217
+#> 1    0.669    0.789          0.729         0.711        0.552     1.10   0.331
 #> # ℹ 7 more variables: TSS_mean <dbl>, KAPPA_mean <dbl>, MCC_mean <dbl>,
 #> #   AUC_mean <dbl>, BOYCE_mean <dbl>, CRPS_mean <dbl>, IMAE_mean <dbl>
 
@@ -302,10 +283,10 @@ gam_t2$performance %>% dplyr::select(ends_with("_mean"))
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 5, replicates = 5)
+  method = c(method = "rep_kfold", folds = 3, replicates = 2)
 )
 abies2
-#> # A tibble: 1,400 × 18
+#> # A tibble: 1,400 × 15
 #>       id pr_ab        x        y   aet   cwd  tmin ppt_djf ppt_jja    pH    awc
 #>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl> <dbl>   <dbl>   <dbl> <dbl>  <dbl>
 #>  1   715     0  -95417.  314240.  323.  546.  1.24    62.7   17.8   5.77 0.108 
@@ -319,8 +300,7 @@ abies2
 #>  9  9884     0 -284326.  442136.  377.  446.  3.99   296.    16.8   5.96 0.0900
 #> 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     
 #> # ℹ 1,390 more rows
-#> # ℹ 7 more variables: depth <dbl>, landform <fct>, .part1 <int>, .part2 <int>,
-#> #   .part3 <int>, .part4 <int>, .part5 <int>
+#> # ℹ 4 more variables: depth <dbl>, landform <fct>, .part1 <int>, .part2 <int>
 
 gam_t3 <- fit_gam(
   data = abies2,
@@ -333,36 +313,14 @@ gam_t3 <- fit_gam(
 )
 #> Formula used for model fitting:
 #> pr_ab ~ s(ppt_jja, k = -1) + s(pH, k = -1) + s(awc, k = -1) + landform
-#> Replica number: 1/5
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 2/5
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 3/5
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 4/5
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
-#> Replica number: 5/5
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
+#> Replica number: 1/2
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+#> Replica number: 2/2
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 gam_t3
 #> $model
 #> 
@@ -388,7 +346,7 @@ gam_t3
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 gam   max_sens_spec     0.554         700        700    0.750 0.0927    0.721
+#> 1 gam   max_sens_spec     0.554         700        700    0.711 0.0878    0.747
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -398,39 +356,34 @@ gam_t3
 #> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 #> 
 #> $performance_part
-#> # A tibble: 25 × 21
-#>    replica partition model threshold     thr_value n_presences n_absences   TPR
-#>    <chr>   <chr>     <chr> <chr>             <dbl>       <int>      <int> <dbl>
-#>  1 1       1         gam   max_sens_spec     0.653         140        140 0.586
-#>  2 1       2         gam   max_sens_spec     0.583         140        140 0.657
-#>  3 1       3         gam   max_sens_spec     0.321         140        140 0.957
-#>  4 1       4         gam   max_sens_spec     0.595         140        140 0.721
-#>  5 1       5         gam   max_sens_spec     0.468         140        140 0.779
-#>  6 2       1         gam   max_sens_spec     0.579         140        140 0.743
-#>  7 2       2         gam   max_sens_spec     0.554         140        140 0.679
-#>  8 2       3         gam   max_sens_spec     0.437         140        140 0.857
-#>  9 2       4         gam   max_sens_spec     0.588         140        140 0.664
-#> 10 2       5         gam   max_sens_spec     0.535         140        140 0.779
-#> # ℹ 15 more rows
-#> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
-#> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
-#> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
+#> # A tibble: 6 × 21
+#>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
+#>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
+#> 1 1       1         gam   max_sens…     0.465         234        234 0.816 0.624
+#> 2 1       2         gam   max_sens…     0.669         233        233 0.575 0.837
+#> 3 1       3         gam   max_sens…     0.573         233        233 0.700 0.773
+#> 4 2       1         gam   max_sens…     0.520         234        234 0.731 0.744
+#> 5 2       2         gam   max_sens…     0.571         233        233 0.657 0.764
+#> 6 2       3         gam   max_sens…     0.582         233        233 0.785 0.738
+#> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
+#> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
+#> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 #> 
 #> $data_ens
-#> # A tibble: 6,996 × 5
-#>    rnames replicates part  pr_ab     pred
-#>    <chr>  <chr>      <chr> <dbl>    <dbl>
-#>  1 7      .part1     1         0 0.000597
-#>  2 10     .part1     1         0 0.511   
-#>  3 13     .part1     1         0 0.0585  
-#>  4 15     .part1     1         0 0.585   
-#>  5 22     .part1     1         0 0.130   
-#>  6 33     .part1     1         0 0.0784  
-#>  7 35     .part1     1         0 0.493   
-#>  8 39     .part1     1         0 0.750   
-#>  9 43     .part1     1         0 0.795   
-#> 10 44     .part1     1         0 0.705   
-#> # ℹ 6,986 more rows
+#> # A tibble: 2,800 × 5
+#>    rnames replicates part  pr_ab    pred
+#>    <chr>  <chr>      <chr> <dbl>   <dbl>
+#>  1 1      .part1     1         0 0.634  
+#>  2 3      .part1     1         0 0.205  
+#>  3 4      .part1     1         0 0.00939
+#>  4 5      .part1     1         0 0.260  
+#>  5 11     .part1     1         0 0.508  
+#>  6 13     .part1     1         0 0.0764 
+#>  7 19     .part1     1         0 0.537  
+#>  8 21     .part1     1         0 0.241  
+#>  9 22     .part1     1         0 0.122  
+#> 10 23     .part1     1         0 0.534  
+#> # ℹ 2,790 more rows
 #> 
 # }
 ```

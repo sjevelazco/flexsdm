@@ -184,6 +184,6 @@ abies2
 abies2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
 #> .
 #>       test      train train-test 
-#>        114        672        306 
+#>        132        690        288 
 # }
 ```

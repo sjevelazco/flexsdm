@@ -38,6 +38,53 @@
   sizes (`part_sband`, `part_sblock`, `occfilt_env`, `occfilt_geo`)
   further in the vignettes, by
   [@sjevelazco](https://github.com/sjevelazco)
+- Test and vignette runtimes were cut again after CRAN’s incoming check
+  (tests ~6 min, vignettes ~6 min on win-builder): all but one
+  representative `test_that()` block per test file (or none for the
+  slowest files) now run only when `NOT_CRAN=true`, and vignettes `v01`,
+  `v02`, `v03`, `v05` and `v06` are now precomputed (source in
+  `vignettes/*.Rmd.orig`, excluded from the build), by
+  [@sjevelazco](https://github.com/sjevelazco)
+- Shortened the `\donttest{}` examples of the slowest functions
+  (`sdm_varimp`, `fit_max`, `fit_gau`, `tune_*`, `esm_gam`, `fit_gam`,
+  `occfilt_geo`, `sdm_summarize`, `esm_max`) by using smaller
+  hyperparameter grids, fewer folds/replicates and subsampled datasets
+  (~10 min -\> ~3.5 min locally), by
+  [@sjevelazco](https://github.com/sjevelazco)
+- `fit_raf`: the `ntree` argument was ignored in the no-partition fit
+  and in the cross-validation fits (hardcoded to 500); it is now used
+  everywhere, reported in
+  [\#474](https://github.com/sjevelazco/flexsdm/issues/474), by
+  [@sjevelazco](https://github.com/sjevelazco)
+- `tune_raf`: the final model now uses the tuned `ntree` instead of the
+  `randomForest` default,
+  [\#474](https://github.com/sjevelazco/flexsdm/issues/474), by
+  [@sjevelazco](https://github.com/sjevelazco)
+- `esm_gbm`: `n_trees` and `shrinkage` were hardcoded and are now
+  forwarded to `fit_gbm`; `esm_net`: `size` and `decay` are now
+  forwarded to `fit_net`,
+  [\#474](https://github.com/sjevelazco/flexsdm/issues/474), by
+  [@sjevelazco](https://github.com/sjevelazco)
+- `esm_svm`: `performance_part` was labelled `esm_gau`; now `esm_svm`.
+  `fit_svm` and `fit_max`: partition ids in `performance_part` were
+  wrong (earlier folds were relabelled),
+  [\#474](https://github.com/sjevelazco/flexsdm/issues/474), by
+  [@sjevelazco](https://github.com/sjevelazco)
+- Removed the DeepWiki badge from `README.md`, whose URL returned HTTP
+  429 in CRAN’s URL check, by
+  [@sjevelazco](https://github.com/sjevelazco)
+- `sdm_eval`: fixed a bug in the KAPPA metric calculation, by
+  [@sjevelazco](https://github.com/sjevelazco)
+- `sample_background` and `sample_pseudoabs`: fixed three bugs in
+  categorical `maskval`/k-means handling reported in
+  [\#472](https://github.com/sjevelazco/flexsdm/issues/472): `maskval`
+  on a factor raster was resolved to its row position in the levels
+  table instead of its actual category ID; the k-means branch of
+  `sample_pseudoabs` masked and overwrote the environmental raster with
+  the region raster instead of the other way around; and the internal
+  `kf()` helper could fail with “differing number of rows” when the
+  environmental raster had no NA cells, by
+  [@sjevelazco](https://github.com/sjevelazco)
 
 ## flexsdm 1.4.0
 

@@ -205,15 +205,15 @@ part
 #> # A tibble: 46 × 4
 #>           x        y pr_ab .part
 #>       <dbl>    <dbl> <dbl> <int>
-#>  1  -26331.  209912.     1     1
-#>  2 -134331.  195332.     1     2
-#>  3   68709. -288778.     0     1
-#>  4  -79251.  -54418.     0     2
-#>  5   97869. -307948.     0     1
+#>  1  -26331.  209912.     1     2
+#>  2 -134331.  195332.     1     1
+#>  3   68709. -288778.     0     2
+#>  4  -79251.  -54418.     0     1
+#>  5   97869. -307948.     0     2
 #>  6    4989. -119218.     0     1
-#>  7   30369. -143788.     0     1
-#>  8   91929. -248008.     0     1
-#>  9  -80331.   32792.     0     2
+#>  7   30369. -143788.     0     2
+#>  8   91929. -248008.     0     2
+#>  9  -80331.   32792.     0     1
 #> 10  131079. -140548.     1     1
 #> # ℹ 36 more rows
 #> 
@@ -221,13 +221,13 @@ part
 #> # A tibble: 1 × 6
 #>   n_grid cell_size spa_auto env_sim  sd_p  sd_a
 #>    <int>     <dbl>    <dbl>   <dbl> <dbl> <dbl>
-#> 1      2    50834.    0.145    361.  1.41  9.90
+#> 1      4   242441.    0.126    354.  1.41  2.83
 #> 
 #> $grid
 #> class       : SpatRaster
-#> size        : 23, 17, 1  (nrow, ncol, nlyr)
-#> resolution  : 50834.48, 50834.48  (x, y)
-#> extent      : -424520.3, 439665.9, -655647.8, 513545.3  (xmin, xmax, ymin, ymax)
+#> size        : 6, 5, 1  (nrow, ncol, nlyr)
+#> resolution  : 242441.4, 242441.4  (x, y)
+#> extent      : -616127.2, 596079.7, -847254.7, 607393.6  (xmin, xmax, ymin, ymax)
 #> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
 #> name        : .part
@@ -239,15 +239,15 @@ part$part # database with partition fold (.part)
 #> # A tibble: 46 × 4
 #>           x        y pr_ab .part
 #>       <dbl>    <dbl> <dbl> <int>
-#>  1  -26331.  209912.     1     1
-#>  2 -134331.  195332.     1     2
-#>  3   68709. -288778.     0     1
-#>  4  -79251.  -54418.     0     2
-#>  5   97869. -307948.     0     1
+#>  1  -26331.  209912.     1     2
+#>  2 -134331.  195332.     1     1
+#>  3   68709. -288778.     0     2
+#>  4  -79251.  -54418.     0     1
+#>  5   97869. -307948.     0     2
 #>  6    4989. -119218.     0     1
-#>  7   30369. -143788.     0     1
-#>  8   91929. -248008.     0     1
-#>  9  -80331.   32792.     0     2
+#>  7   30369. -143788.     0     2
+#>  8   91929. -248008.     0     2
+#>  9  -80331.   32792.     0     1
 #> 10  131079. -140548.     1     1
 #> # ℹ 36 more rows
 part$part %>%
@@ -257,20 +257,20 @@ part$part %>%
 #> # Groups:   pr_ab, .part [4]
 #>   pr_ab .part     n
 #>   <dbl> <int> <int>
-#> 1     0     1    24
-#> 2     0     2    10
+#> 1     0     1    15
+#> 2     0     2    19
 #> 3     1     1     5
 #> 4     1     2     7
 part$best_part_info # information of the best partition
 #> # A tibble: 1 × 6
 #>   n_grid cell_size spa_auto env_sim  sd_p  sd_a
 #>    <int>     <dbl>    <dbl>   <dbl> <dbl> <dbl>
-#> 1      2    50834.    0.145    361.  1.41  9.90
+#> 1      4   242441.    0.126    354.  1.41  2.83
 part$grid # raster with folds
 #> class       : SpatRaster
-#> size        : 23, 17, 1  (nrow, ncol, nlyr)
-#> resolution  : 50834.48, 50834.48  (x, y)
-#> extent      : -424520.3, 439665.9, -655647.8, 513545.3  (xmin, xmax, ymin, ymax)
+#> size        : 6, 5, 1  (nrow, ncol, nlyr)
+#> resolution  : 242441.4, 242441.4  (x, y)
+#> extent      : -616127.2, 596079.7, -847254.7, 607393.6  (xmin, xmax, ymin, ymax)
 #> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
 #> name        : .part
@@ -288,7 +288,7 @@ points(part$part[c("x", "y")],
 
 
 terra::res(part$grid)
-#> [1] 50834.48 50834.48
+#> [1] 242441.4 242441.4
 terra::res(somevar)
 #> [1] 1890 1890
 
@@ -389,15 +389,15 @@ part_list$sp3 # For this dataset a suitable partition was not found
 #> # A tibble: 46 × 4
 #>           x        y pr_ab .part
 #>       <dbl>    <dbl> <dbl> <int>
-#>  1  -26331.  209912.     1     1
-#>  2 -134331.  195332.     1     2
+#>  1  -26331.  209912.     1     2
+#>  2 -134331.  195332.     1     1
 #>  3   68709. -288778.     0     1
 #>  4  -79251.  -54418.     0     2
-#>  5   97869. -307948.     0     1
+#>  5   97869. -307948.     0     2
 #>  6    4989. -119218.     0     1
 #>  7   30369. -143788.     0     1
 #>  8   91929. -248008.     0     1
-#>  9  -80331.   32792.     0     2
+#>  9  -80331.   32792.     0     1
 #> 10  131079. -140548.     1     1
 #> # ℹ 36 more rows
 #> 
@@ -405,13 +405,13 @@ part_list$sp3 # For this dataset a suitable partition was not found
 #> # A tibble: 1 × 6
 #>   n_grid cell_size spa_auto env_sim  sd_p  sd_a
 #>    <int>     <dbl>    <dbl>   <dbl> <dbl> <dbl>
-#> 1      2    50834.    0.103    361.  1.41  9.90
+#> 1      5   306310.     0.35    361.     0  2.83
 #> 
 #> $grid
 #> class       : SpatRaster
-#> size        : 23, 17, 1  (nrow, ncol, nlyr)
-#> resolution  : 50834.48, 50834.48  (x, y)
-#> extent      : -424520.3, 439665.9, -655647.8, 513545.3  (xmin, xmax, ymin, ymax)
+#> size        : 5, 4, 1  (nrow, ncol, nlyr)
+#> resolution  : 306310.3, 306310.3  (x, y)
+#> extent      : -679996.2, 545245.2, -911123.7, 620428  (xmin, xmax, ymin, ymax)
 #> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
 #> source(s)   : memory
 #> name        : .part
@@ -505,7 +505,7 @@ part$best_part_info
 #> # A tibble: 1 × 5
 #>   n_grid cell_size spa_auto env_sim  sd_p
 #>    <int>     <dbl>    <dbl>   <dbl> <dbl>
-#> 1     10   306310.    0.493    299.  52.1
+#> 1     10   306310.     0.47    299.  52.1
 part$grid
 #> class       : SpatRaster
 #> size        : 5, 4, 1  (nrow, ncol, nlyr)

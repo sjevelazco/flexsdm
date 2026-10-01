@@ -231,7 +231,7 @@ part_1$best_part_info # information of the best partition
 #> # A tibble: 1 × 6
 #>   n_grid n_bands spa_auto env_sim  sd_p  sd_a
 #>    <int>   <int>    <dbl>   <dbl> <dbl> <dbl>
-#> 1      2       3    0.206    356.  73.5  12.0
+#> 1      2       3    0.191    356.  73.5  12.0
 part_1$grid # raster with folds
 #> class       : SpatRaster
 #> size        : 1, 3, 1  (nrow, ncol, nlyr)
@@ -293,7 +293,7 @@ part_2$best_part_info
 #> # A tibble: 1 × 5
 #>   n_grid n_bands spa_auto env_sim  sd_p
 #>    <int>   <int>    <dbl>   <dbl> <dbl>
-#> 1      6      18    0.636    272.  10.1
+#> 1      6      18    0.632    272.  10.1
 part_2$grid
 #> class       : SpatRaster
 #> size        : 18, 1, 1  (nrow, ncol, nlyr)
