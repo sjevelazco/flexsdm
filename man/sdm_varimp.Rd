@@ -86,19 +86,21 @@ abies
 
 data(backg)
 backg
+set.seed(1)
+backg <- backg[sample(nrow(backg), 1000), ] # subsample to speed up this example
 
 # In this example we will partition the data using the k-fold method
 
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 backg2 <- part_random(
   data = backg,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 max_t1 <- fit_max(
@@ -141,7 +143,7 @@ vip_t <- sdm_varimp(
   clamp = TRUE,
   pred_type = "cloglog",
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
-  n_sim = 50,
+  n_sim = 5,
   n_cores = 2
 )
 
