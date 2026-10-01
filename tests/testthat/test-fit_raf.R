@@ -65,6 +65,7 @@ test_that("test raf", {
 
 
 test_that("test raf with NA, no factor variable and using formula", {
+  skip_on_cran()
   data("abies")
 
   # Using k-fold partition method
@@ -86,4 +87,18 @@ test_that("test raf with NA, no factor variable and using formula", {
   )
 
   expect_equal(class(rf_t1), "list")
+})
+
+test_that("fit_raf uses the ntree argument in all fits", {
+  data("abies")
+  set.seed(1)
+  ab <- part_random(
+    abies[sample(nrow(abies), 200), ],
+    pr_ab = "pr_ab", method = c(method = "kfold", folds = 2)
+  )
+  m <- suppressMessages(fit_raf(
+    data = ab, response = "pr_ab", predictors = c("aet", "cwd", "tmin"),
+    partition = NULL, thr = "max_sens_spec", mtry = 2, ntree = 11
+  ))
+  expect_equal(m$model$ntree, 11)
 })

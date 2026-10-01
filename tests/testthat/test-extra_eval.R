@@ -70,6 +70,7 @@ test_that("extra_eval one and two cores", {
 })
 
 test_that("extra_eval with uni_comb argument", {
+  skip_on_cran()
   # Measure degree of extrapolation based on Mahalanobis
   extr <-
     extra_eval(
@@ -86,6 +87,7 @@ test_that("extra_eval with uni_comb argument", {
 
 
 test_that("extra_eval based on tibble object", {
+  skip_on_cran()
   # Based on euclidean distance and dataframe
   extr <-
     extra_eval(
@@ -99,6 +101,7 @@ test_that("extra_eval based on tibble object", {
 })
 
 test_that("extra_eval based on tibble object with uni_comb argument", {
+  skip_on_cran()
   # Based on euclidean distance and dataframe
   extr <-
     extra_eval(
@@ -115,6 +118,7 @@ test_that("extra_eval based on tibble object with uni_comb argument", {
 
 
 test_that("extra_eval wrong use", {
+  skip_on_cran()
   expect_error(extra_eval(
     training_data = sp_pa_2,
     projection_data = somevar,

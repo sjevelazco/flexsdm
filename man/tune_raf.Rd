@@ -94,12 +94,12 @@ abies
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 tune_grid <- expand.grid(
-  mtry = seq(1, 7, 1),
-  ntree = c(400, 600, 800)
+  mtry = c(2, 4),
+  ntree = c(100, 300)
 )
 
 tune_grid

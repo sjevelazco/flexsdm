@@ -150,6 +150,7 @@ test_that("msdm_posteriori", {
 # })
 
 test_that("missuse of function", {
+  skip_on_cran()
   require(dplyr)
   require(terra)
 

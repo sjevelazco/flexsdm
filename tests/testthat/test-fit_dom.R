@@ -56,6 +56,7 @@ test_that("fit_dom works with k-fold partition and continuous + categorical pred
 
 
 test_that("fit_dom works without predictors_f (continuous predictors only)", {
+  skip_on_cran()
   abies2 <- part_random(
     data = small_abies(),
     pr_ab = "pr_ab",
@@ -147,6 +148,7 @@ test_that("fit_dom uses all default thresholds when thr = NULL", {
 
 
 test_that("fit_dom with partition = NULL returns only the stored presence model", {
+  skip_on_cran()
   abies_small <- small_abies()
 
   dom_t6 <- fit_dom(
@@ -165,6 +167,7 @@ test_that("fit_dom with partition = NULL returns only the stored presence model"
 
 
 test_that("fit_dom removes rows with NAs in predictors and reports it", {
+  skip_on_cran()
   abies2 <- part_random(
     data = small_abies(),
     pr_ab = "pr_ab",
@@ -189,6 +192,7 @@ test_that("fit_dom removes rows with NAs in predictors and reports it", {
 
 
 test_that("fit_dom errors when no predictors are provided", {
+  skip_on_cran()
   abies2 <- part_random(
     data = small_abies(),
     pr_ab = "pr_ab",
@@ -208,6 +212,7 @@ test_that("fit_dom errors when no predictors are provided", {
 
 
 test_that("fit_dom model object can be used by sdm_predict", {
+  skip_on_cran()
   skip_if_not_installed("terra")
   somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
   names(somevar) <- c("aet", "cwd", "tmx", "tmn")

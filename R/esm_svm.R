@@ -301,7 +301,7 @@ esm_svm <- function(
       by = "threshold"
     ) %>%
       dplyr::relocate(model, threshold, thr_value, n_presences, n_absences),
-    performance_part = tibble(model = "esm_gau", eval_esm)
+    performance_part = tibble(model = "esm_svm", eval_esm)
   )
 
   return(result)

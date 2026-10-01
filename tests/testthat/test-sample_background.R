@@ -99,6 +99,7 @@ test_that("sample_background random method", {
 })
 
 test_that("sample_background Thickening method", {
+  skip_on_cran()
   require(dplyr)
   data(spp)
   somevar <- system.file("external/somevar.tif", package = "flexsdm")
@@ -177,6 +178,7 @@ test_that("sample_background Thickening method", {
 
 
 test_that("sample_background biased method", {
+  skip_on_cran()
   require(dplyr)
   require(terra)
   data(spp)
@@ -235,6 +237,7 @@ test_that("sample_background biased method", {
 })
 
 test_that("sample_background misuse of argument", {
+  skip_on_cran()
   require(dplyr)
   require(terra)
   data(spp)
@@ -277,6 +280,7 @@ test_that("sample_background misuse of argument", {
 
 
 test_that("sample_background random method respects maskval on categorical rasters", {
+  skip_on_cran()
   # Regression test for issue #472: maskval on a factor raster was translated
   # to its ROW POSITION in the levels table instead of its actual category ID.
   # Use non-sequential, 0-based IDs (as real landcover rasters commonly have)

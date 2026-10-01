@@ -65,6 +65,7 @@ test_that("Artificial Neural Network", {
 })
 
 test_that("test nnet with NA, no factor variable and using formula", {
+  skip_on_cran()
   data("abies")
 
   # Using k-fold partition method

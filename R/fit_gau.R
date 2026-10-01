@@ -47,6 +47,8 @@
 #' @examples
 #' \donttest{
 #' data("abies")
+#' set.seed(1)
+#' abies <- abies[sample(nrow(abies), 400), ] # subsample to speed up this example
 #'
 #' # Using k-fold partition method
 #' abies2 <- part_random(
@@ -80,7 +82,7 @@
 #' abies2 <- part_random(
 #'   data = abies,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "boot", replicates = 5, proportion = 0.7)
+#'   method = c(method = "boot", replicates = 2, proportion = 0.7)
 #' )
 #' abies2
 #'

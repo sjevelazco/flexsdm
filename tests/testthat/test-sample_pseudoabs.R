@@ -187,6 +187,7 @@ test_that("sample_pseudoabs", {
 
 
 test_that("function misuse", {
+  skip_on_cran()
   data("spp")
   somevar <- system.file("external/somevar.tif", package = "flexsdm")
   somevar <- terra::rast(somevar)
@@ -255,6 +256,7 @@ test_that("function misuse", {
 
 
 test_that("sample_pseudoabs kmeans method works with maskval set", {
+  skip_on_cran()
   # Regression test for issue #472: the kmeans branch masked rlayer using env
   # as the mask and assigned the result back into env (terra::mask(rlayer,
   # env) masks its FIRST argument), corrupting the environmental data handed
@@ -302,6 +304,7 @@ test_that("sample_pseudoabs kmeans method works with maskval set", {
 
 
 test_that("sample_pseudoabs kmeans method works when env raster has no NA cells", {
+  skip_on_cran()
   # Regression test for issue #472: kf() built cell ids from
   # names(km$cluster), but kmeans() receives a matrix produced via
   # dplyr::select(), which drops the data frame's row names, so

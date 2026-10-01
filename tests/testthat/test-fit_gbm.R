@@ -61,6 +61,7 @@ test_that("multiplication works", {
 })
 
 test_that("test gbm with NA, no factor variable and using formula", {
+  skip_on_cran()
   data("abies")
 
   # Using k-fold partition method

@@ -100,7 +100,7 @@
 #' abies2
 #'
 #' set.seed(1)
-#' backg <- dplyr::sample_n(backg, size = 2000, replace = FALSE)
+#' backg <- dplyr::sample_n(backg, size = 500, replace = FALSE)
 #' backg2 <- part_random(
 #'   data = backg,
 #'   pr_ab = "pr_ab",
@@ -111,8 +111,8 @@
 #'
 #' gridtest <-
 #'   expand.grid(
-#'     regmult = seq(0.1, 3, 0.5),
-#'     classes = c("l", "lq", "lqh")
+#'     regmult = c(0.1, 1),
+#'     classes = c("l", "lq")
 #'   )
 #'
 #' max_t1 <- tune_max(

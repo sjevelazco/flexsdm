@@ -47,6 +47,7 @@ test_that("conventional partition situtation", {
 
 
 test_that("only with presences", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
 
@@ -79,6 +80,7 @@ test_that("only with presences", {
 
 
 test_that("tese some errors", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
 

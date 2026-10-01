@@ -73,6 +73,8 @@
 #' \donttest{
 #' data("abies")
 #' data("backg")
+#' set.seed(1)
+#' backg <- backg[sample(nrow(backg), 1000), ] # subsample to speed up this example
 #' abies # environmental conditions of presence-absence data
 #' backg # environmental conditions of background points
 #'
@@ -82,14 +84,14 @@
 #' abies2 <- part_random(
 #'   data = abies,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "kfold", folds = 5)
+#'   method = c(method = "kfold", folds = 3)
 #' )
 #' abies2
 #'
 #' backg2 <- part_random(
 #'   data = backg,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "kfold", folds = 5)
+#'   method = c(method = "kfold", folds = 3)
 #' )
 #' backg2
 #'
@@ -445,7 +447,7 @@ fit_max <- function(
 
           eval_partial[[i]] <- dplyr::tibble(model = "max", eval)
 
-          names(eval_partial) <- i
+          names(eval_partial)[i] <- i
         })
       }
 

@@ -27,6 +27,7 @@ test_that("test with sp > and < 15 occurrences", {
 
 
 test_that("test with dataset  with < 15 occurrences and only presence", {
+  skip_on_cran()
   require(dplyr)
   require(terra)
 
@@ -55,6 +56,7 @@ test_that("test with dataset  with < 15 occurrences and only presence", {
 
 
 test_that("test NA filtering ", {
+  skip_on_cran()
   require(dplyr)
   require(terra)
 
@@ -82,6 +84,7 @@ test_that("test NA filtering ", {
 
 
 test_that("test with occurrences fewer than 6", {
+  skip_on_cran()
   require(dplyr)
   require(terra)
 

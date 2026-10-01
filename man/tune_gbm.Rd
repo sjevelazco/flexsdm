@@ -96,7 +96,7 @@ abies
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 # pr_ab is the name of the column with species presence and absences (i.e. the response variable)
@@ -105,9 +105,9 @@ abies2 <- part_random(
 # Hyper-parameter values for tuning
 tune_grid <-
   expand.grid(
-    n.trees = c(20, 50, 100),
-    shrinkage = c(0.1, 0.5, 1),
-    n.minobsinnode = c(1, 3, 5, 7, 9)
+    n.trees = c(20, 50),
+    shrinkage = c(0.1, 0.5),
+    n.minobsinnode = c(3, 7)
   )
 
 gbm_t <-

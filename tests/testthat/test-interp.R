@@ -24,6 +24,7 @@ test_that("original example 1- path difference 2-unable to find variable terra i
 })
 
 test_that("test save raster", {
+  skip_on_cran()
   require(terra)
   require(dplyr)
 

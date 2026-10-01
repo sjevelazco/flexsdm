@@ -11,6 +11,7 @@ spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 
 
 test_that("occfilt_geo 'moran' method", {
+  skip_on_cran()
   # Using Moran method
   filtered <- occfilt_geo(
     data = spp1,
@@ -24,6 +25,7 @@ test_that("occfilt_geo 'moran' method", {
 })
 
 test_that("occfilt_geo 'cellsize' method for different values", {
+  skip_on_cran()
   # Test for different values
   filtered <- occfilt_geo(
     data = spp1,
@@ -53,6 +55,7 @@ test_that("occfilt_geo 'cellsize' method", {
 })
 
 test_that("occfilt_geo 'cellsize' method for different values", {
+  skip_on_cran()
   filtered <- occfilt_geo(
     data = spp1,
     x = "x",
@@ -67,6 +70,7 @@ test_that("occfilt_geo 'cellsize' method for different values", {
 
 
 test_that("occfilt_geo 'defined' method", {
+  skip_on_cran()
   # Using defined method
   set.seed(1)
   filtered <- occfilt_geo(
@@ -81,6 +85,7 @@ test_that("occfilt_geo 'defined' method", {
 })
 
 test_that("occfilt_geo 'defined' method for different values", {
+  skip_on_cran()
   filtered <- occfilt_geo(
     data = spp1,
     x = "x",

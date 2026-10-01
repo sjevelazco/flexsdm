@@ -114,7 +114,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   env_layer = somevar,
-#'   method = c("cellsize", factor = c(1, 4, 8, 12, 16, 20)),
+#'   method = c("cellsize", factor = c(1, 8, 16)),
 #'   prj = crs(somevar)
 #' )
 #'
@@ -153,7 +153,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   env_layer = somevar,
-#'   method = c("defined", factor = c(5, 10, 15, 30, 35, 40)),
+#'   method = c("defined", factor = c(5, 15, 35)),
 #'   prj = crs(somevar)
 #' )
 #'
@@ -188,7 +188,7 @@
 #'   x = "x",
 #'   y = "y",
 #'   env_layer = somevar,
-#'   method = c("moran", c(0.05, 0.15, 0.2, 0.5, 0.7)),
+#'   method = c("moran", c(0.05, 0.2, 0.5)),
 #'   prj = crs(somevar)
 #' )
 #'

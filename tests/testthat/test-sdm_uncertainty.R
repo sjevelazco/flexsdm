@@ -67,6 +67,7 @@ test_that("test with GAM", {
 })
 
 test_that("test with GLM", {
+  skip_on_cran()
   m <- fit_glm(
     data = some_sp,
     response = "pres_abs",

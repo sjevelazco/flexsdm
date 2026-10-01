@@ -25,7 +25,7 @@ abies
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 # Build a generalized additive model using fit_gam
@@ -60,8 +60,8 @@ glm_t1$performance
 
 tune_grid <-
   expand.grid(
-    mtry = seq(1, 7, 1),
-    ntree = c(300, 500, 700)
+    mtry = c(2, 4),
+    ntree = c(100, 300)
   )
 
 rf_t1 <-

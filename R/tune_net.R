@@ -71,7 +71,7 @@
 #' abies2 <- part_random(
 #'   data = abies,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "kfold", folds = 5)
+#'   method = c(method = "kfold", folds = 3)
 #' )
 #'
 #' # pr_ab columns is species presence and absences (i.e. the response variable)
@@ -80,8 +80,8 @@
 #' # Hyper-parameter values for tuning
 #' tune_grid <-
 #'   expand.grid(
-#'     size = c(2, 4, 6, 8, 10),
-#'     decay = c(0.001, 0.05, 0.1, 1, 3, 4, 5, 10)
+#'     size = c(2, 4),
+#'     decay = c(0.001, 1, 5)
 #'   )
 #'
 #' net_t <-

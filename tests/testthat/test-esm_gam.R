@@ -32,6 +32,7 @@ test_that("ESM generalized linear model ", {
 
 
 test_that("ESM with error: number of data minor than parameters ", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
 

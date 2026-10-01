@@ -7,6 +7,7 @@ test_that("errors when required columns are missing", {
 })
 
 test_that("returns a tibble with the expected column names", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
     x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -20,6 +21,7 @@ test_that("returns a tibble with the expected column names", {
 })
 
 test_that("default pr_ab_name is 'pr_ab' and values are coded 1/0", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
     x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -43,6 +45,7 @@ test_that("default pr_ab_name is 'pr_ab' and values are coded 1/0", {
 })
 
 test_that("custom pr_ab_name is respected (regression test for the dead-argument bug)", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
     x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -58,6 +61,7 @@ test_that("custom pr_ab_name is respected (regression test for the dead-argument
 })
 
 test_that("with target_species = NULL, builds one block per unique species", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
     x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -81,6 +85,7 @@ test_that("with target_species = NULL, builds one block per unique species", {
 })
 
 test_that("target_species restricts output to the requested species only", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
     x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -96,6 +101,7 @@ test_that("target_species restricts output to the requested species only", {
 })
 
 test_that("target_species with multiple species stacks one block per target", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
     x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -109,6 +115,7 @@ test_that("target_species with multiple species stacks one block per target", {
 })
 
 test_that("a target species not present in the data still produces an all-absence block", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp1", "sp1", "sp2", "sp2"),
     x = c(-74.1, -74.2, -73.9, -73.8),
@@ -123,6 +130,7 @@ test_that("a target species not present in the data still produces an all-absenc
 })
 
 test_that("only species, x, y (and pr_ab) columns are retained in output", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp1", "sp2"),
     x = c(-74.1, -73.9),
@@ -139,6 +147,7 @@ test_that("only species, x, y (and pr_ab) columns are retained in output", {
 })
 
 test_that("custom x/y/species column names are respected", {
+  skip_on_cran()
   d <- data.frame(
     sp_name = c("sp1", "sp1", "sp2"),
     lon = c(-74.1, -74.2, -73.9),
@@ -152,6 +161,7 @@ test_that("custom x/y/species column names are respected", {
 })
 
 test_that("works with tibble input, not just data.frame", {
+  skip_on_cran()
   skip_if_not_installed("tibble")
   d <- tibble::tibble(
     species = c("sp1", "sp1", "sp2"),
@@ -166,6 +176,7 @@ test_that("works with tibble input, not just data.frame", {
 })
 
 test_that("unique species are sorted when target_species = NULL", {
+  skip_on_cran()
   d <- data.frame(
     species = c("sp3", "sp1", "sp2"),
     x = c(-74.0, -74.1, -73.9),

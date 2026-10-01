@@ -47,6 +47,7 @@ test_that("test data_bpdp with factor", {
 })
 
 test_that("test data_bpdp", {
+  skip_on_cran()
   df <- data_bpdp(
     model = svm_t1$model,
     predictors = c("aet", "cwd"),
@@ -128,6 +129,7 @@ abies2 <- sdm_extract(abies2,
 
 
 test_that("test psp with gam", {
+  skip_on_cran()
   m_ <- fit_gam(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )
@@ -158,6 +160,7 @@ test_that("test psp with gam", {
 })
 
 test_that("test psp with gau", {
+  skip_on_cran()
   m_ <- fit_gau(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )
@@ -187,6 +190,7 @@ test_that("test psp with gau", {
 })
 
 test_that("test psp with gbm", {
+  skip_on_cran()
   m_ <- fit_gbm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )
@@ -216,6 +220,7 @@ test_that("test psp with gbm", {
 })
 
 test_that("test psp with glm", {
+  skip_on_cran()
   m_ <- fit_glm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )
@@ -245,6 +250,7 @@ test_that("test psp with glm", {
 })
 
 test_that("test psp with max", {
+  skip_on_cran()
   m_ <- fit_max(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )
@@ -274,6 +280,7 @@ test_that("test psp with max", {
 })
 
 test_that("test psp with net", {
+  skip_on_cran()
   m_ <- fit_net(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )
@@ -303,6 +310,7 @@ test_that("test psp with net", {
 })
 
 test_that("test psp with raf", {
+  skip_on_cran()
   m_ <- fit_raf(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )
@@ -332,6 +340,7 @@ test_that("test psp with raf", {
 })
 
 test_that("test psp with svm", {
+  skip_on_cran()
   m_ <- fit_svm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )
@@ -362,6 +371,7 @@ test_that("test psp with svm", {
 
 
 test_that("test psp with factors", {
+  skip_on_cran()
   m_ <- fit_svm(
     data = abies2, response = "pr_ab", predictors = c("aet", "cwd", "tmx", "tmn"), partition = ".part", thr = c("max_sens_spec")
   )

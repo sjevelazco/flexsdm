@@ -61,6 +61,7 @@ test_that("multiplication works", {
 })
 
 test_that("test gam with NA, no factor variable and using formula", {
+  skip_on_cran()
   data("abies")
   abies <- abies %>%
     dplyr::group_by(pr_ab) %>%
@@ -90,6 +91,7 @@ test_that("test gam with NA, no factor variable and using formula", {
 
 
 test_that("fit_gam with error: number of data minor than parameters ", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
 
@@ -122,6 +124,7 @@ test_that("fit_gam with error: number of data minor than parameters ", {
 
 
 test_that("test select_var argument", {
+  skip_on_cran()
   abies2 <- part_random(
     data = abies,
     pr_ab = "pr_ab",

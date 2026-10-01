@@ -99,7 +99,7 @@
 #' abies2 <- part_random(
 #'   data = abies2,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "rep_kfold", folds = 3, replicates = 5)
+#'   method = c(method = "rep_kfold", folds = 3, replicates = 2)
 #' )
 #' abies2
 #'
@@ -121,7 +121,7 @@
 #' abies2 <- part_random(
 #'   data = abies2,
 #'   pr_ab = "pr_ab",
-#'   method = c(method = "boot", replicates = 10, proportion = 0.7)
+#'   method = c(method = "boot", replicates = 3, proportion = 0.7)
 #' )
 #' abies2
 #'

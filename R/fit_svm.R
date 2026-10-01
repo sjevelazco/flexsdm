@@ -279,7 +279,7 @@ fit_svm <- function(
 
           eval_partial[[i]] <- dplyr::tibble(model = "svm", eval)
 
-          names(eval_partial) <- i
+          names(eval_partial)[i] <- i
         })
       }
 

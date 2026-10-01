@@ -80,7 +80,7 @@ data("abies")
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 10)
+  method = c(method = "kfold", folds = 3)
 )
 abies2
 
@@ -121,7 +121,7 @@ gam_t2$performance \%>\% dplyr::select(ends_with("_mean"))
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 5, replicates = 5)
+  method = c(method = "rep_kfold", folds = 3, replicates = 2)
 )
 abies2
 

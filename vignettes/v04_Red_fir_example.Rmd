@@ -141,7 +141,7 @@ occ_part$best_part_info
 
 In this example, we only have species presence data. However, most SDM methods require either pseudo-absence or background data. Here, we will use the spatial block partition we just created to generate pseudo-absence and background points. 
 
-```{r pseudo/absence and background data}
+```{r pseudo-absence and background data}
 # Spatial blocks where species occurs
 # Sample background points throughout study area with random method, allocating 10X the number of presences a background
 set.seed(10)

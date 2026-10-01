@@ -65,6 +65,7 @@ test_that("multiplication works", {
 
 
 test_that("test svm with NA, no factor variable and using formula", {
+  skip_on_cran()
   data("abies")
 
   # Using k-fold partition method
@@ -86,4 +87,18 @@ test_that("test svm with NA, no factor variable and using formula", {
   )
 
   expect_equal(class(svm_t1), "list")
+})
+
+test_that("fit_svm labels partitions in performance_part correctly", {
+  data("abies")
+  set.seed(1)
+  ab <- part_random(
+    abies[sample(nrow(abies), 200), ],
+    pr_ab = "pr_ab", method = c(method = "kfold", folds = 2)
+  )
+  m <- suppressMessages(fit_svm(
+    data = ab, response = "pr_ab", predictors = c("aet", "cwd", "tmin"),
+    partition = ".part", thr = "max_sens_spec"
+  ))
+  expect_equal(unique(m$performance_part$partition), c("1", "2"))
 })
