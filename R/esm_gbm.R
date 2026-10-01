@@ -148,9 +148,9 @@ esm_gbm <- function(
         partition = partition,
         thr = thr,
         fit_formula = NULL,
-        n_trees = 100,
+        n_trees = n_trees,
         n_minobsinnode = n_minobsinnode,
-        shrinkage = 0.1
+        shrinkage = shrinkage
       )
     )
     utils::setTxtProgressBar(pb, which(1:ncol(formula1) == f))

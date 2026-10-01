@@ -447,7 +447,7 @@ fit_max <- function(
 
           eval_partial[[i]] <- dplyr::tibble(model = "max", eval)
 
-          names(eval_partial) <- i
+          names(eval_partial)[i] <- i
         })
       }
 

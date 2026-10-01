@@ -316,7 +316,8 @@ tune_raf <-
       partition = partition,
       thr = thr,
       fit_formula = formula1,
-      mtry = best_tune$mtry
+      mtry = best_tune$mtry,
+      ntree = best_tune$ntree
     )
     pred_test_ens <- mod[["data_ens"]]
 

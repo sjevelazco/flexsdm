@@ -129,7 +129,9 @@ esm_net <- function(
         predictors = unlist(formula1[, f]),
         predictors_f = NULL,
         partition = partition,
-        thr = thr
+        thr = thr,
+        size = size,
+        decay = decay
       )
     )
     utils::setTxtProgressBar(pb, which(1:ncol(formula1) == f))

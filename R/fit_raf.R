@@ -179,7 +179,7 @@ fit_raf <- function(
           formula1,
           data = data,
           mtry = mtry,
-          ntree = 500,
+          ntree = ntree,
           importance = TRUE,
         )
     )
@@ -224,7 +224,7 @@ fit_raf <- function(
               formula1,
               data = train[[i]],
               mtry = mtry,
-              ntree = 500,
+              ntree = ntree,
               importance = FALSE,
             )
 
