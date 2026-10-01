@@ -1,4 +1,5 @@
 test_that("test Gaussian Process model", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
   set.seed(10)

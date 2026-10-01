@@ -4,6 +4,7 @@
 #                                                          #
 ## %######################################################%##
 test_that("class and lenght of svm_t object", {
+  skip_on_cran()
   data(abies)
   abies
 

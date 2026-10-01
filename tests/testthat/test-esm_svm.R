@@ -1,4 +1,5 @@
 test_that("ESM Support Vectro Machine", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
 

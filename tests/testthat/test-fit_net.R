@@ -1,4 +1,5 @@
 test_that("Artificial Neural Network", {
+  skip_on_cran()
   data("abies")
 
   # Using k-fold partition method

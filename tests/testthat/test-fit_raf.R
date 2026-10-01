@@ -1,4 +1,5 @@
 test_that("test raf", {
+  skip_on_cran()
   data("abies")
 
   # Using k-fold partition method
@@ -90,6 +91,7 @@ test_that("test raf with NA, no factor variable and using formula", {
 })
 
 test_that("fit_raf uses the ntree argument in all fits", {
+  skip_on_cran()
   data("abies")
   set.seed(1)
   ab <- part_random(

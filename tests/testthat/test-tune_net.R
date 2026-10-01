@@ -4,6 +4,7 @@
 #                                                          #
 ## %######################################################%##
 test_that("class and lenght of net_t object", {
+  skip_on_cran()
   data(abies)
   abies
 

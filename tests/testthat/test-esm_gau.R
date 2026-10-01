@@ -1,4 +1,5 @@
 test_that("ESM gaussain process", {
+  skip_on_cran()
   data("abies")
 
   require(dplyr)
