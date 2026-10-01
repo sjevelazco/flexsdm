@@ -51,7 +51,7 @@ abies
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 # Build a generalized additive model using fit_gam
@@ -67,19 +67,17 @@ gam_t1 <- fit_gam(
 #> Formula used for model fitting:
 #> pr_ab ~ s(aet, k = -1) + s(ppt_jja, k = -1) + s(pH, k = -1) + s(awc, k = -1) + s(depth, k = -1) + landform
 #> Replica number: 1/1
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 gam_t1$performance
 #> # A tibble: 3 × 33
-#>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
-#>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 gam   equal_sens_sp…     0.540         700        700    0.736 0.0368    0.737
-#> 2 gam   max_sens_spec      0.530         700        700    0.75  0.0460    0.75 
-#> 3 gam   max_sorensen       0.359         700        700    0.864 0.0580    0.61 
+#>   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>   <dbl>    <dbl>
+#> 1 gam   equal_sens_s…     0.540         700        700    0.730 0.00372    0.730
+#> 2 gam   max_sens_spec     0.530         700        700    0.754 0.0121     0.720
+#> 3 gam   max_sorensen      0.359         700        700    0.929 0.0237     0.496
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -103,19 +101,17 @@ glm_t1 <- fit_glm(
 #> Formula used for model fitting:
 #> pr_ab ~ aet + ppt_jja + pH + awc + depth + landform
 #> Replica number: 1/1
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 glm_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 glm   equal_sens_sp…     0.523         700        700    0.663 0.0583    0.663
-#> 2 glm   max_sens_spec      0.463         700        700    0.773 0.103     0.616
-#> 3 glm   max_sorensen       0.356         700        700    0.873 0.0359    0.497
+#> 1 glm   equal_sens_sp…     0.523         700        700    0.659 0.0101    0.659
+#> 2 glm   max_sens_spec      0.463         700        700    0.776 0.0515    0.574
+#> 3 glm   max_sorensen       0.356         700        700    0.894 0.0236    0.437
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -128,8 +124,8 @@ glm_t1$performance
 
 tune_grid <-
   expand.grid(
-    mtry = seq(1, 7, 1),
-    ntree = c(300, 500, 700)
+    mtry = c(2, 4),
+    ntree = c(100, 300)
   )
 
 rf_t1 <-
@@ -153,17 +149,15 @@ rf_t1 <-
 #> Formula used for model fitting:
 #> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform
 #> Replica number: 1/1
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 rf_t1$performance
 #> # A tibble: 1 × 35
 #>    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
 #>   <dbl> <dbl> <chr> <chr>           <dbl>       <int>      <int>    <dbl>  <dbl>
-#> 1     3   300 raf   max_sens_s…     0.606         700        700    0.919 0.0396
+#> 1     4   300 raf   max_sens_s…      0.62         700        700    0.911 0.0245
 #> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
 #> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
 #> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
@@ -178,15 +172,15 @@ merge_df <- sdm_summarize(models = list(gam_t1, glm_t1, rf_t1))
 
 merge_df
 #> # A tibble: 7 × 36
-#>   model_ID model threshold      thr_value n_presences n_absences TPR_mean TPR_sd
-#>      <int> <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>
-#> 1        1 gam   equal_sens_sp…     0.540         700        700    0.736 0.0368
-#> 2        1 gam   max_sens_spec      0.530         700        700    0.75  0.0460
-#> 3        1 gam   max_sorensen       0.359         700        700    0.864 0.0580
-#> 4        2 glm   equal_sens_sp…     0.523         700        700    0.663 0.0583
-#> 5        2 glm   max_sens_spec      0.463         700        700    0.773 0.103 
-#> 6        2 glm   max_sorensen       0.356         700        700    0.873 0.0359
-#> 7        3 raf   max_sens_spec      0.606         700        700    0.919 0.0396
+#>   model_ID model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd
+#>      <int> <chr> <chr>             <dbl>       <int>      <int>    <dbl>   <dbl>
+#> 1        1 gam   equal_sens_s…     0.540         700        700    0.730 0.00372
+#> 2        1 gam   max_sens_spec     0.530         700        700    0.754 0.0121 
+#> 3        1 gam   max_sorensen      0.359         700        700    0.929 0.0237 
+#> 4        2 glm   equal_sens_s…     0.523         700        700    0.659 0.0101 
+#> 5        2 glm   max_sens_spec     0.463         700        700    0.776 0.0515 
+#> 6        2 glm   max_sorensen      0.356         700        700    0.894 0.0236 
+#> 7        3 raf   max_sens_spec     0.62          700        700    0.911 0.0245 
 #> # ℹ 28 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
 #> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
 #> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,

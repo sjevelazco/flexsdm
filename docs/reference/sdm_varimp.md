@@ -123,9 +123,10 @@ the variable importance score.
 # \donttest{
 require(tidyr)
 #> Loading required package: tidyr
+#> Warning: package 'tidyr' was built under R version 4.5.2
 #> 
-#> Attaching package: ‘tidyr’
-#> The following object is masked from ‘package:terra’:
+#> Attaching package: 'tidyr'
+#> The following object is masked from 'package:terra':
 #> 
 #>     extract
 require(dplyr)
@@ -166,19 +167,21 @@ backg
 #> 10     0  104079. -178618.  385.  871.  6.76   147.     7.80 6.10  0.0300   41  
 #> # ℹ 4,990 more rows
 #> # ℹ 2 more variables: percent_clay <dbl>, landform <fct>
+set.seed(1)
+backg <- backg[sample(nrow(backg), 1000), ] # subsample to speed up this example
 
 # In this example we will partition the data using the k-fold method
 
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 backg2 <- part_random(
   data = backg,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 max_t1 <- fit_max(
@@ -197,11 +200,9 @@ max_t1 <- fit_max(
 #> Formula used for model fitting:
 #> ~aet + ppt_jja + pH + awc + depth + I(aet^2) + I(ppt_jja^2) + I(pH^2) + I(awc^2) + I(depth^2) + hinge(aet) + hinge(ppt_jja) + hinge(pH) + hinge(awc) + hinge(depth) + ppt_jja:aet + pH:aet + awc:aet + depth:aet + pH:ppt_jja + awc:ppt_jja + depth:ppt_jja + awc:pH + depth:pH + depth:awc + categorical(landform) - 1
 #> Replica number: 1/1
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 net_t1 <- fit_net(
   data = abies2,
@@ -214,11 +215,9 @@ net_t1 <- fit_net(
 #> Formula used for model fitting:
 #> pr_ab ~ aet + ppt_jja + pH + awc + depth + landform
 #> Replica number: 1/1
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 svm_f1 <- fit_svm(
   data = abies2,
@@ -231,11 +230,9 @@ svm_f1 <- fit_svm(
 #> Formula used for model fitting:
 #> pr_ab ~ aet + ppt_jja + pH + awc + depth + landform
 #> Replica number: 1/1
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 vip_t <- sdm_varimp(
   data = abies2,
@@ -245,25 +242,25 @@ vip_t <- sdm_varimp(
   clamp = TRUE,
   pred_type = "cloglog",
   thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
-  n_sim = 50,
+  n_sim = 5,
   n_cores = 2
 )
 #> Calculating variable importance for a list of individual models
 
 vip_t
 #> # A tibble: 54 × 17
-#>    model threshold  predictors     TPR     TNR W_TPR_TNR SORENSEN JACCARD    FPB
-#>    <chr> <chr>      <chr>        <dbl>   <dbl>     <dbl>    <dbl>   <dbl>  <dbl>
-#>  1 max   equal_sen… aet        4.15e-2 0.0415     0.0415   0.0415  0.0464 0.0927
-#>  2 max   max_sens_… aet        6.64e-2 0.0402     0.0533   0.0495  0.0611 0.122 
-#>  3 max   max_soren… aet        0       0.155      0.0720   0.0399  0.0503 0.101 
-#>  4 max   equal_sen… ppt_jja    1.85e-2 0.0185     0.0185   0.0185  0.0210 0.0419
-#>  5 max   max_sens_… ppt_jja    1.35e-1 0          0.0371   0.0581  0.0712 0.142 
-#>  6 max   max_soren… ppt_jja    8.89e-2 0.01000    0.0495   0.0497  0.0623 0.125 
-#>  7 max   equal_sen… pH         4.31e-2 0.0431     0.0431   0.0431  0.0481 0.0962
-#>  8 max   max_sens_… pH         2.50e-2 0.0546     0.0398   0.0308  0.0386 0.0773
-#>  9 max   max_soren… pH         3.14e-4 0.0936     0.0470   0.0282  0.0359 0.0718
-#> 10 max   equal_sen… awc        7.41e-2 0.0741     0.0741   0.0741  0.0808 0.162 
+#>    model threshold   predictors    TPR     TNR W_TPR_TNR SORENSEN JACCARD    FPB
+#>    <chr> <chr>       <chr>       <dbl>   <dbl>     <dbl>    <dbl>   <dbl>  <dbl>
+#>  1 max   equal_sens… aet        0.0589 0.0589     0.0589   0.0589  0.0637 0.127 
+#>  2 max   max_sens_s… aet        0.1    0.0320     0.0660   0.0624  0.0767 0.153 
+#>  3 max   max_sorens… aet        0      0.165      0.0777   0.0425  0.0531 0.106 
+#>  4 max   equal_sens… ppt_jja    0.0163 0.0163     0.0163   0.0163  0.0182 0.0364
+#>  5 max   max_sens_s… ppt_jja    0.135  0          0.0264   0.0472  0.0587 0.117 
+#>  6 max   max_sorens… ppt_jja    0.0754 0.00143    0.0384   0.0394  0.0493 0.0987
+#>  7 max   equal_sens… pH         0.0369 0.0369     0.0369   0.0369  0.0405 0.0811
+#>  8 max   max_sens_s… pH         0.0603 0          0.0301   0.0313  0.0394 0.0788
+#>  9 max   max_sorens… pH         0.0226 0.0463     0.0344   0.0251  0.0318 0.0636
+#> 10 max   equal_sens… awc        0.0706 0.0706     0.0706   0.0706  0.0757 0.151 
 #> # ℹ 44 more rows
 #> # ℹ 8 more variables: OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>

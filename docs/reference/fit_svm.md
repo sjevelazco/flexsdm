@@ -198,7 +198,7 @@ svm_t1$model
 #> 
 #> Number of Support Vectors : 905 
 #> 
-#> Objective Function Value : -782.6304 
+#> Objective Function Value : -782.6303 
 #> Training error : 0.219286 
 #> Probability model included. 
 svm_t1$predictors
@@ -224,9 +224,9 @@ svm_t1$performance_part
 #> # A tibble: 15 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       5         svm   max_sorensen       0.371         140        140 0.814
-#>  2 1       5         svm   max_sens_spec      0.519         140        140 0.75 
-#>  3 1       5         svm   equal_sens_sp…     0.538         140        140 0.721
+#>  1 1       1         svm   max_sorensen       0.371         140        140 0.814
+#>  2 1       1         svm   max_sens_spec      0.519         140        140 0.75 
+#>  3 1       1         svm   equal_sens_sp…     0.538         140        140 0.721
 #>  4 1       2         svm   max_sorensen       0.277         140        140 0.957
 #>  5 1       2         svm   max_sens_spec      0.657         140        140 0.679
 #>  6 1       2         svm   equal_sens_sp…     0.519         140        140 0.779
@@ -327,7 +327,7 @@ svm_t2
 #> 
 #> Number of Support Vectors : 905 
 #> 
-#> Objective Function Value : -782.6304 
+#> Objective Function Value : -782.6303 
 #> Training error : 0.219286 
 #> Probability model included. 
 #> 

@@ -102,7 +102,7 @@ It calculates the next performance metric:
 | FPB (F-measure on presence-background) | yes | 0 - 2 |
 | OR (Omission Rate) | yes | 0 - 1 |
 | TSS (True Skill Statistic) | yes | -1 - 1 |
-| KAPPA | yes | 0 - 1 |
+| KAPPA | yes | -1 - 1 |
 | MCC (Matthews Correlation Coefficient; Matthews 1975) | yes | -1 - 1 (1 is best) |
 | AUC (Area Under Curve) | no | 0 - 1 |
 | BOYCE (continuous Boyce index)\* | no | -1 - 1 |

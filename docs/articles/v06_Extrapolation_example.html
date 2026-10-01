@@ -159,7 +159,9 @@ observations downloaded from the online database Calflora.</p>
 <span>  scale <span class="op">=</span> <span class="fl">.3</span>,</span>
 <span>  col <span class="op">=</span> <span class="va">cols</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/raw%20data-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-raw_data-1.png" alt="plot of chunk raw data"><div class="figcaption">plot of chunk raw data</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="delimit-calibration-area">Delimit calibration area<a class="anchor" aria-label="anchor" href="#delimit-calibration-area"></a>
@@ -187,7 +189,9 @@ presence points to select our pseudo-absence locations.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/calibration%20area-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-calibration_area-1.png" alt="plot of chunk calibration area"><div class="figcaption">plot of chunk calibration area</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="create-pseudo-absence-data">Create pseudo-absence data<a class="anchor" aria-label="anchor" href="#create-pseudo-absence-data"></a>
@@ -222,27 +226,29 @@ pseudo-absence data that can be used in our SDMs.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.8</span>, pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="co"># Pseudo-absences</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="co"># Presences</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/pseudo-absence%20data-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-pseudo-absence_data-1.png" alt="plot of chunk pseudo-absence data"><div class="figcaption">plot of chunk pseudo-absence data</div>
+</div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span></span>
 <span><span class="co"># Bind a presences and pseudo-absences</span></span>
 <span><span class="va">hespero_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">hespero</span>, <span class="va">psa</span><span class="op">)</span></span>
 <span><span class="va">hespero_pa</span> <span class="co"># Presence-Pseudo-absence database</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 42 × 3</span></span></span>
+<span><span class="co">#&gt; # A tibble: 42 × 3</span></span>
 <span><span class="co">#&gt;          x        y pr_ab</span></span>
-<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> <span style="text-decoration: underline;">316</span>923. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">843.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">317</span>155. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">234.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">316</span>960. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">186.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">314</span>347. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">648.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">317</span>348. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">349.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">316</span>753. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">679.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">316</span>777. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">644.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">317</span>050. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">043.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">316</span>655. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">928.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">316</span>418. -<span style="color: #BB0000; text-decoration: underline;">567</span><span style="color: #BB0000;">439.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 32 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 316923. -557843.     1</span></span>
+<span><span class="co">#&gt;  2 317155. -559234.     1</span></span>
+<span><span class="co">#&gt;  3 316960. -558186.     1</span></span>
+<span><span class="co">#&gt;  4 314347. -559648.     1</span></span>
+<span><span class="co">#&gt;  5 317348. -557349.     1</span></span>
+<span><span class="co">#&gt;  6 316753. -559679.     1</span></span>
+<span><span class="co">#&gt;  7 316777. -558644.     1</span></span>
+<span><span class="co">#&gt;  8 317050. -559043.     1</span></span>
+<span><span class="co">#&gt;  9 316655. -559928.     1</span></span>
+<span><span class="co">#&gt; 10 316418. -567439.     1</span></span>
+<span><span class="co">#&gt; # ℹ 32 more rows</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="partition-data-for-evaluating-models">Partition data for evaluating models<a class="anchor" aria-label="anchor" href="#partition-data-for-evaluating-models"></a>
@@ -331,7 +337,9 @@ species is found!</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">gbm</span>, main <span class="op">=</span> <span class="st">"GBM"</span><span class="op">)</span></span>
 <span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">svm</span>, main <span class="op">=</span> <span class="st">"SVM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/comparison%20maps-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-comparison_maps-1.png" alt="plot of chunk comparison maps"><div class="figcaption">plot of chunk comparison maps</div>
+</div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span></code></pre></div>
 </div>
@@ -363,14 +371,18 @@ hull approach.</p>
 <span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
 <span>  projection_data <span class="op">=</span> <span class="va">somevar</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/glm%20partial%20dependence%20plots-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-glm_partial_dependence_plots-1.png" alt="plot of chunk glm partial dependence plots"><div class="figcaption">plot of chunk glm partial dependence plots</div>
+</div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="va">mglm</span><span class="op">$</span><span class="va">model</span>,</span>
 <span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
 <span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/glm%20partial%20dependence%20plots-2.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-glm_partial_dependence_plots-2.png" alt="plot of chunk glm partial dependence plots"><div class="figcaption">plot of chunk glm partial dependence plots</div>
+</div>
 <p>Uni and bivariate partial dependence plots for the GBM:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/p_pdp.html">p_pdp</a></span><span class="op">(</span></span>
@@ -378,7 +390,9 @@ hull approach.</p>
 <span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
 <span>  projection_data <span class="op">=</span> <span class="va">somevar</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/gbm%20partial%20dependence%20plots-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-gbm_partial_dependence_plots-1.png" alt="plot of chunk gbm partial dependence plots"><div class="figcaption">plot of chunk gbm partial dependence plots</div>
+</div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="va">mgbm</span><span class="op">$</span><span class="va">model</span>,</span>
@@ -386,7 +400,9 @@ hull approach.</p>
 <span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span>,</span>
 <span>  resolution <span class="op">=</span> <span class="fl">100</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/gbm%20partial%20dependence%20plots-2.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-gbm_partial_dependence_plots-2.png" alt="plot of chunk gbm partial dependence plots"><div class="figcaption">plot of chunk gbm partial dependence plots</div>
+</div>
 <p>Uni and bivariate partial dependence plots for the SVM:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/p_pdp.html">p_pdp</a></span><span class="op">(</span></span>
@@ -394,14 +410,18 @@ hull approach.</p>
 <span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
 <span>  projection_data <span class="op">=</span> <span class="va">somevar</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/svm%20partial%20dependence%20plots-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-svm_partial_dependence_plots-1.png" alt="plot of chunk svm partial dependence plots"><div class="figcaption">plot of chunk svm partial dependence plots</div>
+</div>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/p_bpdp.html">p_bpdp</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="va">msvm</span><span class="op">$</span><span class="va">model</span>,</span>
 <span>  training_data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
 <span>  training_boundaries <span class="op">=</span> <span class="st">"convexh"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/svm%20partial%20dependence%20plots-2.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-svm_partial_dependence_plots-2.png" alt="plot of chunk svm partial dependence plots"><div class="figcaption">plot of chunk svm partial dependence plots</div>
+</div>
 <p>These plots show a really interesting story! Most notably, the GLM
 and GBM show consistently high habitat suitability for those areas that
 have much higher actual evapotranspiration than the very narrow range of
@@ -481,7 +501,10 @@ Shape method.</p>
 <span>  main <span class="op">=</span> <span class="st">"Univariate (1) and \n combinatorial (2) extrapolation"</span>,</span>
 <span>  col <span class="op">=</span> <span class="va">cl</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/comparison%20extrapolation%20outputs-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-comparison_extrapolation_outputs-1.png" alt="plot of chunk comparison extrapolation outputs"><div class="figcaption">plot of chunk comparison extrapolation
+outputs</div>
+</div>
 <p>We can also explore extrapolation or suitability patterns in
 environmental and geographic space, using just one function. To do that,
 we will use the <a href="https://sjevelazco.github.io/flexsdm/reference/p_extra.html"><code>p_extra</code></a>
@@ -504,7 +527,10 @@ northwestern portion of the CFP.</p>
 <span>  prop_points <span class="op">=</span> <span class="fl">0.05</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Number of cell used to plot 3642 (5%)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/graphical%20explore%20-%20Mahalanobis-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-graphical_explore_-_Mahalanobis-1.png" alt="plot of chunk graphical explore - Mahalanobis"><div class="figcaption">plot of chunk graphical explore -
+Mahalanobis</div>
+</div>
 <p>Let’s explore univariate and combinatorial extrapolation. The former
 is defined as the projecting data outside range of training conditions,
 while the combinatorial extrapolation area those projecting data within
@@ -524,7 +550,10 @@ the range of training conditions.</p>
 <span>  alpha_p <span class="op">=</span> <span class="fl">0.2</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Number of cell used to plot 3642 (5%)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/graphical%20explore%20-%20uni_comb%20extrapolation-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-graphical_explore_-_uni_comb_extrapolation-1.png" alt="plot of chunk graphical explore - uni_comb extrapolation"><div class="figcaption">plot of chunk graphical explore - uni_comb
+extrapolation</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="truncating-sdms-predictions-based-on-extrapolation-thresholds">Truncating SDMs predictions based on extrapolation thresholds<a class="anchor" aria-label="anchor" href="#truncating-sdms-predictions-based-on-extrapolation-thresholds"></a>
@@ -555,7 +584,10 @@ comparison.</p>
 <span>    subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 50"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Number of cell used to plot 3642 (5%)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-1.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-explore_extrapolation_thresholds-1.png" alt="plot of chunk explore extrapolation thresholds"><div class="figcaption">plot of chunk explore extrapolation
+thresholds</div>
+</div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/p_extra.html">p_extra</a></span><span class="op">(</span></span>
@@ -575,7 +607,10 @@ comparison.</p>
 <span>    subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 100"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Number of cell used to plot 3642 (5%)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-2.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-explore_extrapolation_thresholds-2.png" alt="plot of chunk explore extrapolation thresholds"><div class="figcaption">plot of chunk explore extrapolation
+thresholds</div>
+</div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/p_extra.html">p_extra</a></span><span class="op">(</span></span>
@@ -595,7 +630,10 @@ comparison.</p>
 <span>    subtitle <span class="op">=</span> <span class="st">"Binary extrapolation pattern with using a threshold of 500"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; Number of cell used to plot 3642 (5%)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/explore%20extrapolation%20thresholds-3.png" class="r-plt" alt="" width="672"></p>
+<div class="float">
+<img src="figures/v06-explore_extrapolation_thresholds-3.png" alt="plot of chunk explore extrapolation thresholds"><div class="figcaption">plot of chunk explore extrapolation
+thresholds</div>
+</div>
 <p>Values of 1 (yellow one) depict the environmental and geographical
 regions will constraint our models suitability (truncate). Note that the
 lower the threshold, the more restrictive the environmental and
@@ -642,7 +680,9 @@ reduce suitability.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">svm_trunc</span><span class="op">$</span><span class="va">`50`</span>, main <span class="op">=</span> <span class="st">"SVM; extra threshold = 50"</span>, col <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">svm_trunc</span><span class="op">$</span><span class="va">`100`</span>, main <span class="op">=</span> <span class="st">"SVM; extra threshold = 100"</span>, col <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">svm_trunc</span><span class="op">$</span><span class="va">`500`</span>, main <span class="op">=</span> <span class="st">"SVM; extra threshold = 500"</span>, col <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v06_Extrapolation_example_files/figure-html/comparison%20truncated%20outputs-1.png" class="r-plt" alt="" width="768"></p>
+<div class="float">
+<img src="figures/v06-comparison_truncated_outputs-1.png" alt="plot of chunk comparison truncated outputs"><div class="figcaption">plot of chunk comparison truncated outputs</div>
+</div>
 <p>Based on these maps, you can see that the lower the extrapolation
 threshold, the more restricted the habitat suitability patterns, while
 higher values retain a greater amount of suitable habitat. Selecting the

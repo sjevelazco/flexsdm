@@ -190,10 +190,10 @@ abies2 <- abies %>%
 abies2 <- part_random(
   data = abies2,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 5, replicates = 5)
+  method = c(method = "rep_kfold", folds = 3, replicates = 2)
 )
 abies2
-#> # A tibble: 20 × 18
+#> # A tibble: 20 × 15
 #>       id pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja    pH    awc
 #>    <int> <dbl>    <dbl>    <dbl> <dbl> <dbl>  <dbl>   <dbl>   <dbl> <dbl>  <dbl>
 #>  1 12040     0 -308909.  384248.  573.  332.  4.84     521.   48.8   5.63 0.108 
@@ -216,8 +216,7 @@ abies2
 #> 18  4441     1   49405.  -60502.  362.  582.  2.42     218.    7.84  5.64 0.0786
 #> 19   301     1 -132516.  270845.  367.  196. -2.56     422.   26.3   6.70 0.0300
 #> 20  3162     1   59905.  -53634.  319.  626.  1.99     212.    4.50  4.51 0.0396
-#> # ℹ 7 more variables: depth <dbl>, landform <fct>, .part1 <int>, .part2 <int>,
-#> #   .part3 <int>, .part4 <int>, .part5 <int>
+#> # ℹ 4 more variables: depth <dbl>, landform <fct>, .part1 <int>, .part2 <int>
 
 set.seed(10)
 backg2 <- backg %>%
@@ -229,10 +228,10 @@ backg2 <- backg %>%
 backg2 <- part_random(
   data = backg2,
   pr_ab = "pr_ab",
-  method = c(method = "rep_kfold", folds = 5, replicates = 5)
+  method = c(method = "rep_kfold", folds = 3, replicates = 2)
 )
 backg2
-#> # A tibble: 100 × 18
+#> # A tibble: 100 × 15
 #>    pr_ab        x        y   aet   cwd   tmin ppt_djf ppt_jja     pH      awc
 #>    <dbl>    <dbl>    <dbl> <dbl> <dbl>  <dbl>   <dbl>   <dbl>  <dbl>    <dbl>
 #>  1     0  -23361.  129722.  448.  257.  0.683   285.   19.6   0.0230 0.000356
@@ -246,8 +245,8 @@ backg2
 #>  9     0  311709. -456718.  271.  877.  6.34     83.0   8.45  0      0       
 #> 10     0 -211821.  419972.  369.  633.  3.36     73.2  16.6   6.12   0.158   
 #> # ℹ 90 more rows
-#> # ℹ 8 more variables: depth <dbl>, percent_clay <dbl>, landform <fct>,
-#> #   .part1 <int>, .part2 <int>, .part3 <int>, .part4 <int>, .part5 <int>
+#> # ℹ 5 more variables: depth <dbl>, percent_clay <dbl>, landform <fct>,
+#> #   .part1 <int>, .part2 <int>
 
 # Without threshold specification and with kfold
 esm_max_t1 <- esm_max(
@@ -262,67 +261,411 @@ esm_max_t1 <- esm_max(
   pred_type = "cloglog",
   regmult = 1
 )
-#> 
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |==                                                                    |   4%
-  |                                                                            
-  |=====                                                                 |   7%
-  |                                                                            
-  |========                                                              |  11%
-  |                                                                            
-  |==========                                                            |  14%
-  |                                                                            
-  |============                                                          |  18%
-  |                                                                            
-  |===============                                                       |  21%
-  |                                                                            
-  |==================                                                    |  25%
-  |                                                                            
-  |====================                                                  |  29%
-  |                                                                            
-  |======================                                                |  32%
-  |                                                                            
-  |=========================                                             |  36%
-  |                                                                            
-  |============================                                          |  39%
-  |                                                                            
-  |==============================                                        |  43%
-  |                                                                            
-  |================================                                      |  46%
-  |                                                                            
-  |===================================                                   |  50%
-  |                                                                            
-  |======================================                                |  54%
-  |                                                                            
-  |========================================                              |  57%
-  |                                                                            
-  |==========================================                            |  61%
-  |                                                                            
-  |=============================================                         |  64%
-  |                                                                            
-  |================================================                      |  68%
-  |                                                                            
-  |==================================================                    |  71%
-  |                                                                            
-  |====================================================                  |  75%
-  |                                                                            
-  |=======================================================               |  79%
-  |                                                                            
-  |==========================================================            |  82%
-  |                                                                            
-  |============================================================          |  86%
-  |                                                                            
-  |==============================================================        |  89%
-  |                                                                            
-  |=================================================================     |  93%
-  |                                                                            
-  |====================================================================  |  96%
-  |                                                                            
-  |======================================================================| 100%
+#>   |                                                                              |                                                                      |   0%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |==                                                                    |   4%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |=====                                                                 |   7%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |========                                                              |  11%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |==========                                                            |  14%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |============                                                          |  18%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |===============                                                       |  21%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |==================                                                    |  25%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |====================                                                  |  29%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |======================                                                |  32%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |=========================                                             |  36%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |============================                                          |  39%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |==============================                                        |  43%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |================================                                      |  46%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |===================================                                   |  50%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |======================================                                |  54%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |========================================                              |  57%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |==========================================                            |  61%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |=============================================                         |  64%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |================================================                      |  68%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |==================================================                    |  71%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |====================================================                  |  75%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |=======================================================               |  79%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |==========================================================            |  82%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |============================================================          |  86%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |==============================================================        |  89%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |=================================================================     |  93%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |====================================================================  |  96%
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
+#>   |                                                                              |======================================================================| 100%
 
 esm_max_t1$esm_model # bivariate model
+#> $`0.141203703703704`
+#> 
+#> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
+#> 
+#>     Df  %Dev Lambda
+#> 1    0  0.00  97880
+#> 2    0  0.00  93460
+#> 3    0  0.00  89230
+#> 4    0  0.00  85190
+#> 5    0  0.00  81340
+#> 6    0  0.00  77660
+#> 7    0  0.00  74150
+#> 8    0  0.00  70790
+#> 9    0  0.00  67590
+#> 10   0  0.00  64540
+#> 11   0  0.00  61620
+#> 12   0  0.00  58830
+#> 13   0  0.00  56170
+#> 14   0  0.00  53630
+#> 15   0  0.00  51200
+#> 16   0  0.00  48890
+#> 17   0  0.00  46680
+#> 18   0  0.00  44570
+#> 19   0  0.00  42550
+#> 20   0  0.00  40630
+#> 21   0  0.00  38790
+#> 22   0  0.00  37030
+#> 23   0  0.00  35360
+#> 24   0  0.00  33760
+#> 25   0  0.00  32230
+#> 26   0  0.00  30770
+#> 27   0  0.00  29380
+#> 28   0  0.00  28050
+#> 29   0  0.00  26780
+#> 30   0  0.00  25570
+#> 31   0  0.00  24420
+#> 32   0  0.00  23310
+#> 33   0  0.00  22260
+#> 34   0  0.00  21250
+#> 35   0  0.00  20290
+#> 36   0  0.00  19370
+#> 37   0  0.00  18500
+#> 38   0  0.00  17660
+#> 39   0  0.00  16860
+#> 40   0  0.00  16100
+#> 41   0  0.00  15370
+#> 42   0  0.00  14680
+#> 43   0  0.00  14010
+#> 44   0  0.00  13380
+#> 45   0  0.00  12770
+#> 46   0  0.00  12200
+#> 47   0  0.00  11640
+#> 48   0  0.00  11120
+#> 49   0  0.00  10610
+#> 50   0  0.00  10130
+#> 51   0  0.00   9676
+#> 52   0  0.00   9238
+#> 53   0  0.00   8820
+#> 54   0  0.00   8421
+#> 55   0  0.00   8040
+#> 56   0  0.00   7677
+#> 57   0  0.00   7330
+#> 58   0  0.00   6998
+#> 59   0  0.00   6682
+#> 60   0  0.00   6379
+#> 61   0  0.00   6091
+#> 62   0  0.00   5815
+#> 63   0  0.00   5552
+#> 64   0  0.00   5301
+#> 65   0  0.00   5061
+#> 66   0  0.00   4833
+#> 67   0  0.00   4614
+#> 68   0  0.00   4405
+#> 69   0  0.00   4206
+#> 70   0  0.00   4016
+#> 71   0  0.00   3834
+#> 72   0  0.00   3661
+#> 73   0  0.00   3495
+#> 74   0  0.00   3337
+#> 75   0  0.00   3186
+#> 76   0  0.00   3042
+#> 77   0  0.00   2904
+#> 78   0  0.00   2773
+#> 79   0  0.00   2648
+#> 80   0  0.00   2528
+#> 81   0  0.00   2414
+#> 82   0  0.00   2304
+#> 83   0  0.00   2200
+#> 84   0  0.00   2101
+#> 85   0  0.00   2006
+#> 86   0  0.00   1915
+#> 87   0  0.00   1828
+#> 88   0  0.00   1746
+#> 89   0  0.00   1667
+#> 90   0  0.00   1591
+#> 91   0  0.00   1519
+#> 92   0  0.00   1451
+#> 93   0  0.00   1385
+#> 94   0  0.00   1322
+#> 95   0  0.00   1263
+#> 96   0  0.00   1205
+#> 97   0  0.00   1151
+#> 98   0  0.00   1099
+#> 99   0  0.00   1049
+#> 100  0  0.00   1002
+#> 101  0  0.00    956
+#> 102  0  0.00    913
+#> 103  0  0.00    872
+#> 104  0  0.00    832
+#> 105  0  0.00    795
+#> 106  0  0.00    759
+#> 107  0  0.00    724
+#> 108  0  0.00    692
+#> 109  0  0.00    660
+#> 110  0  0.00    631
+#> 111  0  0.00    602
+#> 112  0  0.00    575
+#> 113  0  0.00    549
+#> 114  0  0.00    524
+#> 115  0  0.00    500
+#> 116  0  0.00    478
+#> 117  0  0.00    456
+#> 118  0  0.00    436
+#> 119  0  0.00    416
+#> 120  0  0.00    397
+#> 121  0  0.00    379
+#> 122  0  0.00    362
+#> 123  0  0.00    346
+#> 124  0  0.00    330
+#> 125  0  0.00    315
+#> 126  0  0.00    301
+#> 127  0  0.00    287
+#> 128  0  0.00    274
+#> 129  0  0.00    262
+#> 130  0  0.00    250
+#> 131  0  0.00    239
+#> 132  0  0.00    228
+#> 133  0  0.00    218
+#> 134  0  0.00    208
+#> 135  0  0.00    198
+#> 136  0  0.00    189
+#> 137  0  0.00    181
+#> 138  0  0.00    173
+#> 139  0  0.00    165
+#> 140  1  0.10    157
+#> 141  1  0.77    150
+#> 142  1  1.39    143
+#> 143  1  1.97    137
+#> 144  1  2.52    131
+#> 145  1  3.03    125
+#> 146  1  3.51    119
+#> 147  1  3.97    114
+#> 148  1  4.39    109
+#> 149  1  4.80    104
+#> 150  1  5.18     99
+#> 151  1  5.54     95
+#> 152  1  5.87     90
+#> 153  1  6.20     86
+#> 154  1  6.50     82
+#> 155  1  6.79     79
+#> 156  1  7.06     75
+#> 157  1  7.32     72
+#> 158  1  7.56     68
+#> 159  1  7.79     65
+#> 160  1  8.01     62
+#> 161  1  8.21     60
+#> 162  1  8.41     57
+#> 163  1  8.59     54
+#> 164  1  8.77     52
+#> 165  1  8.93     49
+#> 166  1  9.09     47
+#> 167  1  9.24     45
+#> 168  1  9.38     43
+#> 169  1  9.51     41
+#> 170  1  9.64     39
+#> 171  1  9.75     37
+#> 172  1  9.86     36
+#> 173  1  9.97     34
+#> 174  1 10.06     33
+#> 175  1 10.16     31
+#> 176  1 10.24     30
+#> 177  1 10.33     28
+#> 178  1 10.40     27
+#> 179  1 10.47     26
+#> 180  1 10.54     25
+#> 181  1 10.61     24
+#> 182  1 10.66     23
+#> 183  1 10.72     22
+#> 184  1 10.77     21
+#> 185  1 10.82     20
+#> 186  1 10.86     19
+#> 187  1 10.91     18
+#> 188  1 10.95     17
+#> 189  1 10.98     16
+#> 190  1 11.02     16
+#> 191  1 11.05     15
+#> 192  2 11.11     14
+#> 193  2 11.18     14
+#> 194  2 11.24     13
+#> 195  2 11.29     12
+#> 196  2 11.34     12
+#> 197  2 11.39     11
+#> 198  2 11.43     11
+#> 199  2 11.47     10
+#> 200  2 11.51     10
+#> 
 #> $`1`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
@@ -529,7 +872,213 @@ esm_max_t1$esm_model # bivariate model
 #> 199  2 17.57      4
 #> 200  2 17.61      3
 #> 
-#> $`0.27`
+#> $`0.0694444444444444`
+#> 
+#> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
+#> 
+#>     Df %Dev Lambda
+#> 1    0 0.00  33490
+#> 2    0 0.00  31980
+#> 3    0 0.00  30530
+#> 4    0 0.00  29150
+#> 5    0 0.00  27830
+#> 6    0 0.00  26570
+#> 7    0 0.00  25370
+#> 8    0 0.00  24220
+#> 9    0 0.00  23130
+#> 10   0 0.00  22080
+#> 11   0 0.00  21080
+#> 12   0 0.00  20130
+#> 13   0 0.00  19220
+#> 14   0 0.00  18350
+#> 15   0 0.00  17520
+#> 16   0 0.00  16730
+#> 17   0 0.00  15970
+#> 18   0 0.00  15250
+#> 19   0 0.00  14560
+#> 20   0 0.00  13900
+#> 21   0 0.00  13270
+#> 22   0 0.00  12670
+#> 23   0 0.00  12100
+#> 24   0 0.00  11550
+#> 25   0 0.00  11030
+#> 26   0 0.00  10530
+#> 27   0 0.00  10050
+#> 28   0 0.00   9598
+#> 29   0 0.00   9164
+#> 30   0 0.00   8750
+#> 31   0 0.00   8354
+#> 32   0 0.00   7976
+#> 33   0 0.00   7616
+#> 34   0 0.00   7271
+#> 35   0 0.00   6942
+#> 36   0 0.00   6628
+#> 37   0 0.00   6328
+#> 38   0 0.00   6042
+#> 39   0 0.00   5769
+#> 40   0 0.00   5508
+#> 41   0 0.00   5259
+#> 42   0 0.00   5021
+#> 43   0 0.00   4794
+#> 44   0 0.00   4577
+#> 45   0 0.00   4370
+#> 46   0 0.00   4172
+#> 47   0 0.00   3984
+#> 48   0 0.00   3804
+#> 49   0 0.00   3632
+#> 50   0 0.00   3467
+#> 51   0 0.00   3310
+#> 52   0 0.00   3161
+#> 53   0 0.00   3018
+#> 54   0 0.00   2881
+#> 55   0 0.00   2751
+#> 56   0 0.00   2627
+#> 57   0 0.00   2508
+#> 58   0 0.00   2394
+#> 59   0 0.00   2286
+#> 60   0 0.00   2183
+#> 61   0 0.00   2084
+#> 62   0 0.00   1990
+#> 63   0 0.00   1900
+#> 64   0 0.00   1814
+#> 65   0 0.00   1732
+#> 66   0 0.00   1653
+#> 67   0 0.00   1579
+#> 68   0 0.00   1507
+#> 69   0 0.00   1439
+#> 70   0 0.00   1374
+#> 71   0 0.00   1312
+#> 72   0 0.00   1253
+#> 73   0 0.00   1196
+#> 74   0 0.00   1142
+#> 75   0 0.00   1090
+#> 76   0 0.00   1041
+#> 77   0 0.00    994
+#> 78   0 0.00    949
+#> 79   0 0.00    906
+#> 80   0 0.00    865
+#> 81   0 0.00    826
+#> 82   0 0.00    788
+#> 83   0 0.00    753
+#> 84   0 0.00    719
+#> 85   0 0.00    686
+#> 86   0 0.00    655
+#> 87   0 0.00    626
+#> 88   0 0.00    597
+#> 89   0 0.00    570
+#> 90   0 0.00    544
+#> 91   0 0.00    520
+#> 92   0 0.00    496
+#> 93   0 0.00    474
+#> 94   0 0.00    452
+#> 95   0 0.00    432
+#> 96   0 0.00    412
+#> 97   0 0.00    394
+#> 98   0 0.00    376
+#> 99   0 0.00    359
+#> 100  0 0.00    343
+#> 101  0 0.00    327
+#> 102  0 0.00    312
+#> 103  0 0.00    298
+#> 104  0 0.00    285
+#> 105  0 0.00    272
+#> 106  0 0.00    260
+#> 107  0 0.00    248
+#> 108  0 0.00    237
+#> 109  0 0.00    226
+#> 110  0 0.00    216
+#> 111  0 0.00    206
+#> 112  0 0.00    197
+#> 113  0 0.00    188
+#> 114  0 0.00    179
+#> 115  0 0.00    171
+#> 116  0 0.00    163
+#> 117  0 0.00    156
+#> 118  0 0.00    149
+#> 119  0 0.00    142
+#> 120  0 0.00    136
+#> 121  0 0.00    130
+#> 122  0 0.00    124
+#> 123  0 0.00    118
+#> 124  0 0.00    113
+#> 125  0 0.00    108
+#> 126  0 0.00    103
+#> 127  0 0.00     98
+#> 128  0 0.00     94
+#> 129  0 0.00     90
+#> 130  0 0.00     86
+#> 131  0 0.00     82
+#> 132  0 0.00     78
+#> 133  0 0.00     74
+#> 134  0 0.00     71
+#> 135  0 0.00     68
+#> 136  0 0.00     65
+#> 137  0 0.00     62
+#> 138  0 0.00     59
+#> 139  0 0.00     56
+#> 140  0 0.00     54
+#> 141  0 0.00     51
+#> 142  0 0.00     49
+#> 143  0 0.00     47
+#> 144  0 0.00     45
+#> 145  0 0.00     43
+#> 146  0 0.00     41
+#> 147  0 0.00     39
+#> 148  0 0.00     37
+#> 149  0 0.00     35
+#> 150  0 0.00     34
+#> 151  0 0.00     32
+#> 152  0 0.00     31
+#> 153  0 0.00     29
+#> 154  0 0.00     28
+#> 155  0 0.00     27
+#> 156  0 0.00     26
+#> 157  0 0.00     24
+#> 158  0 0.00     23
+#> 159  0 0.00     22
+#> 160  0 0.00     21
+#> 161  0 0.00     20
+#> 162  0 0.00     19
+#> 163  0 0.00     19
+#> 164  0 0.00     18
+#> 165  0 0.00     17
+#> 166  0 0.00     16
+#> 167  0 0.00     15
+#> 168  0 0.00     15
+#> 169  0 0.00     14
+#> 170  0 0.00     13
+#> 171  0 0.00     13
+#> 172  0 0.00     12
+#> 173  0 0.00     12
+#> 174  0 0.00     11
+#> 175  0 0.00     11
+#> 176  0 0.00     10
+#> 177  1 0.09     10
+#> 178  1 0.27      9
+#> 179  1 0.43      9
+#> 180  1 0.57      8
+#> 181  1 0.70      8
+#> 182  1 0.82      8
+#> 183  1 0.92      7
+#> 184  1 1.02      7
+#> 185  1 1.10      7
+#> 186  1 1.18      6
+#> 187  1 1.25      6
+#> 188  1 1.31      6
+#> 189  1 1.37      6
+#> 190  1 1.42      5
+#> 191  1 1.47      5
+#> 192  1 1.51      5
+#> 193  1 1.55      5
+#> 194  1 1.59      4
+#> 195  1 1.62      4
+#> 196  1 1.65      4
+#> 197  1 1.67      4
+#> 198  1 1.70      4
+#> 199  1 1.72      4
+#> 200  1 1.74      3
+#> 
+#> $`0.251157407407407`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -735,7 +1284,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  1 3.72      4
 #> 200  1 3.74      3
 #> 
-#> $`0.62`
+#> $`0.497685185185185`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -941,7 +1490,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  1 1.38      4
 #> 200  1 1.41      4
 #> 
-#> $`0.96`
+#> $`1`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -1147,7 +1696,625 @@ esm_max_t1$esm_model # bivariate model
 #> 199  2 16.51      7
 #> 200  2 16.53      6
 #> 
-#> $`0.1`
+#> $`0.0578703703703702`
+#> 
+#> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
+#> 
+#>     Df  %Dev Lambda
+#> 1    0  0.00  90880
+#> 2    0  0.00  86770
+#> 3    0  0.00  82840
+#> 4    0  0.00  79100
+#> 5    0  0.00  75520
+#> 6    0  0.00  72100
+#> 7    0  0.00  68840
+#> 8    0  0.00  65730
+#> 9    0  0.00  62760
+#> 10   0  0.00  59920
+#> 11   0  0.00  57210
+#> 12   0  0.00  54620
+#> 13   0  0.00  52150
+#> 14   0  0.00  49790
+#> 15   0  0.00  47540
+#> 16   0  0.00  45390
+#> 17   0  0.00  43340
+#> 18   0  0.00  41380
+#> 19   0  0.00  39500
+#> 20   0  0.00  37720
+#> 21   0  0.00  36010
+#> 22   0  0.00  34380
+#> 23   0  0.00  32830
+#> 24   0  0.00  31340
+#> 25   0  0.00  29930
+#> 26   0  0.00  28570
+#> 27   0  0.00  27280
+#> 28   0  0.00  26050
+#> 29   0  0.00  24870
+#> 30   0  0.00  23740
+#> 31   0  0.00  22670
+#> 32   0  0.00  21640
+#> 33   0  0.00  20670
+#> 34   0  0.00  19730
+#> 35   0  0.00  18840
+#> 36   0  0.00  17990
+#> 37   0  0.00  17170
+#> 38   0  0.00  16400
+#> 39   0  0.00  15650
+#> 40   0  0.00  14950
+#> 41   0  0.00  14270
+#> 42   0  0.00  13620
+#> 43   0  0.00  13010
+#> 44   0  0.00  12420
+#> 45   0  0.00  11860
+#> 46   0  0.00  11320
+#> 47   0  0.00  10810
+#> 48   0  0.00  10320
+#> 49   0  0.00   9854
+#> 50   0  0.00   9409
+#> 51   0  0.00   8983
+#> 52   0  0.00   8577
+#> 53   0  0.00   8189
+#> 54   0  0.00   7819
+#> 55   0  0.00   7465
+#> 56   0  0.00   7127
+#> 57   0  0.00   6805
+#> 58   0  0.00   6497
+#> 59   0  0.00   6203
+#> 60   0  0.00   5923
+#> 61   0  0.00   5655
+#> 62   0  0.00   5399
+#> 63   0  0.00   5155
+#> 64   0  0.00   4922
+#> 65   0  0.00   4699
+#> 66   0  0.00   4487
+#> 67   0  0.00   4284
+#> 68   0  0.00   4090
+#> 69   0  0.00   3905
+#> 70   0  0.00   3728
+#> 71   0  0.00   3560
+#> 72   0  0.00   3399
+#> 73   0  0.00   3245
+#> 74   0  0.00   3098
+#> 75   0  0.00   2958
+#> 76   0  0.00   2824
+#> 77   0  0.00   2697
+#> 78   0  0.00   2575
+#> 79   0  0.00   2458
+#> 80   0  0.00   2347
+#> 81   0  0.00   2241
+#> 82   0  0.00   2140
+#> 83   0  0.00   2043
+#> 84   0  0.00   1950
+#> 85   0  0.00   1862
+#> 86   0  0.00   1778
+#> 87   0  0.00   1698
+#> 88   0  0.00   1621
+#> 89   0  0.00   1547
+#> 90   0  0.00   1477
+#> 91   0  0.00   1411
+#> 92   0  0.00   1347
+#> 93   0  0.00   1286
+#> 94   0  0.00   1228
+#> 95   0  0.00   1172
+#> 96   0  0.00   1119
+#> 97   0  0.00   1069
+#> 98   0  0.00   1020
+#> 99   0  0.00    974
+#> 100  0  0.00    930
+#> 101  0  0.00    888
+#> 102  0  0.00    848
+#> 103  0  0.00    810
+#> 104  0  0.00    773
+#> 105  0  0.00    738
+#> 106  0  0.00    704
+#> 107  0  0.00    673
+#> 108  0  0.00    642
+#> 109  0  0.00    613
+#> 110  0  0.00    586
+#> 111  0  0.00    559
+#> 112  0  0.00    534
+#> 113  0  0.00    510
+#> 114  0  0.00    486
+#> 115  0  0.00    464
+#> 116  0  0.00    444
+#> 117  0  0.00    423
+#> 118  0  0.00    404
+#> 119  0  0.00    386
+#> 120  0  0.00    368
+#> 121  0  0.00    352
+#> 122  0  0.00    336
+#> 123  0  0.00    321
+#> 124  0  0.00    306
+#> 125  0  0.00    292
+#> 126  0  0.00    279
+#> 127  0  0.00    267
+#> 128  0  0.00    254
+#> 129  0  0.00    243
+#> 130  0  0.00    232
+#> 131  0  0.00    222
+#> 132  0  0.00    212
+#> 133  0  0.00    202
+#> 134  0  0.00    193
+#> 135  0  0.00    184
+#> 136  0  0.00    176
+#> 137  0  0.00    168
+#> 138  0  0.00    160
+#> 139  0  0.00    153
+#> 140  1  0.10    146
+#> 141  1  0.77    139
+#> 142  1  1.39    133
+#> 143  1  1.97    127
+#> 144  1  2.52    121
+#> 145  1  3.03    116
+#> 146  1  3.51    111
+#> 147  1  3.97    106
+#> 148  1  4.39    101
+#> 149  1  4.80     96
+#> 150  1  5.18     92
+#> 151  1  5.54     88
+#> 152  1  5.87     84
+#> 153  1  6.20     80
+#> 154  1  6.50     76
+#> 155  1  6.79     73
+#> 156  1  7.06     70
+#> 157  1  7.32     66
+#> 158  1  7.56     63
+#> 159  1  7.79     61
+#> 160  1  8.01     58
+#> 161  1  8.21     55
+#> 162  1  8.41     53
+#> 163  1  8.59     50
+#> 164  1  8.77     48
+#> 165  1  8.93     46
+#> 166  1  9.09     44
+#> 167  1  9.24     42
+#> 168  1  9.38     40
+#> 169  1  9.51     38
+#> 170  1  9.64     36
+#> 171  1  9.75     35
+#> 172  1  9.86     33
+#> 173  1  9.97     32
+#> 174  1 10.06     30
+#> 175  1 10.16     29
+#> 176  1 10.24     28
+#> 177  1 10.33     26
+#> 178  1 10.40     25
+#> 179  1 10.47     24
+#> 180  1 10.54     23
+#> 181  1 10.61     22
+#> 182  1 10.66     21
+#> 183  1 10.72     20
+#> 184  1 10.77     19
+#> 185  1 10.82     18
+#> 186  1 10.86     17
+#> 187  1 10.91     17
+#> 188  1 10.95     16
+#> 189  1 10.98     15
+#> 190  1 11.02     14
+#> 191  1 11.05     14
+#> 192  1 11.08     13
+#> 193  1 11.10     13
+#> 194  1 11.13     12
+#> 195  1 11.15     11
+#> 196  1 11.17     11
+#> 197  1 11.19     10
+#> 198  1 11.21     10
+#> 199  1 11.23     10
+#> 200  1 11.25      9
+#> 
+#> $`0.0578703703703702`
+#> 
+#> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
+#> 
+#>     Df  %Dev Lambda
+#> 1    0  0.00  64520
+#> 2    0  0.00  61600
+#> 3    0  0.00  58810
+#> 4    0  0.00  56150
+#> 5    0  0.00  53610
+#> 6    0  0.00  51190
+#> 7    0  0.00  48870
+#> 8    0  0.00  46660
+#> 9    0  0.00  44550
+#> 10   0  0.00  42540
+#> 11   0  0.00  40610
+#> 12   0  0.00  38780
+#> 13   0  0.00  37020
+#> 14   0  0.00  35350
+#> 15   0  0.00  33750
+#> 16   0  0.00  32220
+#> 17   0  0.00  30770
+#> 18   0  0.00  29370
+#> 19   0  0.00  28050
+#> 20   0  0.00  26780
+#> 21   0  0.00  25570
+#> 22   0  0.00  24410
+#> 23   0  0.00  23310
+#> 24   0  0.00  22250
+#> 25   0  0.00  21250
+#> 26   0  0.00  20280
+#> 27   0  0.00  19370
+#> 28   0  0.00  18490
+#> 29   0  0.00  17650
+#> 30   0  0.00  16860
+#> 31   0  0.00  16090
+#> 32   0  0.00  15370
+#> 33   0  0.00  14670
+#> 34   0  0.00  14010
+#> 35   0  0.00  13370
+#> 36   0  0.00  12770
+#> 37   0  0.00  12190
+#> 38   0  0.00  11640
+#> 39   0  0.00  11110
+#> 40   0  0.00  10610
+#> 41   0  0.00  10130
+#> 42   0  0.00   9673
+#> 43   0  0.00   9235
+#> 44   0  0.00   8818
+#> 45   0  0.00   8419
+#> 46   0  0.00   8038
+#> 47   0  0.00   7674
+#> 48   0  0.00   7327
+#> 49   0  0.00   6996
+#> 50   0  0.00   6680
+#> 51   0  0.00   6377
+#> 52   0  0.00   6089
+#> 53   0  0.00   5814
+#> 54   0  0.00   5551
+#> 55   0  0.00   5300
+#> 56   0  0.00   5060
+#> 57   0  0.00   4831
+#> 58   0  0.00   4613
+#> 59   0  0.00   4404
+#> 60   0  0.00   4205
+#> 61   0  0.00   4015
+#> 62   0  0.00   3833
+#> 63   0  0.00   3660
+#> 64   0  0.00   3494
+#> 65   0  0.00   3336
+#> 66   0  0.00   3185
+#> 67   0  0.00   3041
+#> 68   0  0.00   2904
+#> 69   0  0.00   2772
+#> 70   0  0.00   2647
+#> 71   0  0.00   2527
+#> 72   0  0.00   2413
+#> 73   0  0.00   2304
+#> 74   0  0.00   2200
+#> 75   0  0.00   2100
+#> 76   0  0.00   2005
+#> 77   0  0.00   1914
+#> 78   0  0.00   1828
+#> 79   0  0.00   1745
+#> 80   0  0.00   1666
+#> 81   0  0.00   1591
+#> 82   0  0.00   1519
+#> 83   0  0.00   1450
+#> 84   0  0.00   1385
+#> 85   0  0.00   1322
+#> 86   0  0.00   1262
+#> 87   0  0.00   1205
+#> 88   0  0.00   1151
+#> 89   0  0.00   1099
+#> 90   0  0.00   1049
+#> 91   0  0.00   1001
+#> 92   0  0.00    956
+#> 93   0  0.00    913
+#> 94   0  0.00    872
+#> 95   0  0.00    832
+#> 96   0  0.00    795
+#> 97   0  0.00    759
+#> 98   0  0.00    724
+#> 99   0  0.00    692
+#> 100  0  0.00    660
+#> 101  0  0.00    630
+#> 102  0  0.00    602
+#> 103  0  0.00    575
+#> 104  0  0.00    549
+#> 105  0  0.00    524
+#> 106  0  0.00    500
+#> 107  0  0.00    478
+#> 108  0  0.00    456
+#> 109  0  0.00    435
+#> 110  0  0.00    416
+#> 111  0  0.00    397
+#> 112  0  0.00    379
+#> 113  0  0.00    362
+#> 114  0  0.00    345
+#> 115  0  0.00    330
+#> 116  0  0.00    315
+#> 117  0  0.00    301
+#> 118  0  0.00    287
+#> 119  0  0.00    274
+#> 120  0  0.00    262
+#> 121  0  0.00    250
+#> 122  0  0.00    238
+#> 123  0  0.00    228
+#> 124  0  0.00    217
+#> 125  0  0.00    208
+#> 126  0  0.00    198
+#> 127  0  0.00    189
+#> 128  0  0.00    181
+#> 129  0  0.00    172
+#> 130  0  0.00    165
+#> 131  0  0.00    157
+#> 132  0  0.00    150
+#> 133  0  0.00    143
+#> 134  0  0.00    137
+#> 135  0  0.00    131
+#> 136  0  0.00    125
+#> 137  0  0.00    119
+#> 138  0  0.00    114
+#> 139  0  0.00    109
+#> 140  1  0.10    104
+#> 141  1  0.77     99
+#> 142  1  1.39     95
+#> 143  1  1.97     90
+#> 144  1  2.52     86
+#> 145  1  3.03     82
+#> 146  1  3.51     79
+#> 147  1  3.97     75
+#> 148  1  4.39     72
+#> 149  1  4.80     68
+#> 150  1  5.18     65
+#> 151  1  5.54     62
+#> 152  1  5.87     60
+#> 153  1  6.20     57
+#> 154  1  6.50     54
+#> 155  1  6.79     52
+#> 156  1  7.06     49
+#> 157  1  7.32     47
+#> 158  1  7.56     45
+#> 159  1  7.79     43
+#> 160  1  8.01     41
+#> 161  1  8.21     39
+#> 162  1  8.41     37
+#> 163  1  8.59     36
+#> 164  1  8.77     34
+#> 165  1  8.93     33
+#> 166  1  9.09     31
+#> 167  1  9.24     30
+#> 168  1  9.38     28
+#> 169  1  9.51     27
+#> 170  1  9.64     26
+#> 171  1  9.75     25
+#> 172  1  9.86     24
+#> 173  1  9.97     23
+#> 174  1 10.06     21
+#> 175  1 10.16     21
+#> 176  1 10.24     20
+#> 177  1 10.33     19
+#> 178  1 10.40     18
+#> 179  1 10.47     17
+#> 180  1 10.54     16
+#> 181  1 10.61     16
+#> 182  1 10.66     15
+#> 183  1 10.72     14
+#> 184  1 10.77     14
+#> 185  1 10.82     13
+#> 186  1 10.86     12
+#> 187  1 10.91     12
+#> 188  1 10.95     11
+#> 189  1 10.98     11
+#> 190  1 11.02     10
+#> 191  1 11.05     10
+#> 192  1 11.08      9
+#> 193  1 11.10      9
+#> 194  1 11.13      9
+#> 195  1 11.15      8
+#> 196  1 11.17      8
+#> 197  1 11.19      7
+#> 198  1 11.21      7
+#> 199  1 11.23      7
+#> 200  1 11.25      6
+#> 
+#> $`0.0208333333333333`
+#> 
+#> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
+#> 
+#>     Df  %Dev Lambda
+#> 1    0  0.00  64410
+#> 2    0  0.00  61500
+#> 3    0  0.00  58720
+#> 4    0  0.00  56060
+#> 5    0  0.00  53520
+#> 6    0  0.00  51100
+#> 7    0  0.00  48790
+#> 8    0  0.00  46590
+#> 9    0  0.00  44480
+#> 10   0  0.00  42470
+#> 11   0  0.00  40550
+#> 12   0  0.00  38710
+#> 13   0  0.00  36960
+#> 14   0  0.00  35290
+#> 15   0  0.00  33690
+#> 16   0  0.00  32170
+#> 17   0  0.00  30710
+#> 18   0  0.00  29330
+#> 19   0  0.00  28000
+#> 20   0  0.00  26730
+#> 21   0  0.00  25520
+#> 22   0  0.00  24370
+#> 23   0  0.00  23270
+#> 24   0  0.00  22210
+#> 25   0  0.00  21210
+#> 26   0  0.00  20250
+#> 27   0  0.00  19330
+#> 28   0  0.00  18460
+#> 29   0  0.00  17630
+#> 30   0  0.00  16830
+#> 31   0  0.00  16070
+#> 32   0  0.00  15340
+#> 33   0  0.00  14650
+#> 34   0  0.00  13980
+#> 35   0  0.00  13350
+#> 36   0  0.00  12750
+#> 37   0  0.00  12170
+#> 38   0  0.00  11620
+#> 39   0  0.00  11100
+#> 40   0  0.00  10590
+#> 41   0  0.00  10110
+#> 42   0  0.00   9657
+#> 43   0  0.00   9220
+#> 44   0  0.00   8803
+#> 45   0  0.00   8405
+#> 46   0  0.00   8025
+#> 47   0  0.00   7662
+#> 48   0  0.00   7315
+#> 49   0  0.00   6984
+#> 50   0  0.00   6669
+#> 51   0  0.00   6367
+#> 52   0  0.00   6079
+#> 53   0  0.00   5804
+#> 54   0  0.00   5542
+#> 55   0  0.00   5291
+#> 56   0  0.00   5052
+#> 57   0  0.00   4823
+#> 58   0  0.00   4605
+#> 59   0  0.00   4397
+#> 60   0  0.00   4198
+#> 61   0  0.00   4008
+#> 62   0  0.00   3827
+#> 63   0  0.00   3654
+#> 64   0  0.00   3488
+#> 65   0  0.00   3331
+#> 66   0  0.00   3180
+#> 67   0  0.00   3036
+#> 68   0  0.00   2899
+#> 69   0  0.00   2768
+#> 70   0  0.00   2643
+#> 71   0  0.00   2523
+#> 72   0  0.00   2409
+#> 73   0  0.00   2300
+#> 74   0  0.00   2196
+#> 75   0  0.00   2097
+#> 76   0  0.00   2002
+#> 77   0  0.00   1911
+#> 78   0  0.00   1825
+#> 79   0  0.00   1742
+#> 80   0  0.00   1663
+#> 81   0  0.00   1588
+#> 82   0  0.00   1516
+#> 83   0  0.00   1448
+#> 84   0  0.00   1382
+#> 85   0  0.00   1320
+#> 86   0  0.00   1260
+#> 87   0  0.00   1203
+#> 88   0  0.00   1149
+#> 89   0  0.00   1097
+#> 90   0  0.00   1047
+#> 91   0  0.00   1000
+#> 92   0  0.00    955
+#> 93   0  0.00    911
+#> 94   0  0.00    870
+#> 95   0  0.00    831
+#> 96   0  0.00    793
+#> 97   0  0.00    757
+#> 98   0  0.00    723
+#> 99   0  0.00    690
+#> 100  0  0.00    659
+#> 101  0  0.00    629
+#> 102  0  0.00    601
+#> 103  0  0.00    574
+#> 104  0  0.00    548
+#> 105  0  0.00    523
+#> 106  0  0.00    499
+#> 107  0  0.00    477
+#> 108  0  0.00    455
+#> 109  0  0.00    435
+#> 110  0  0.00    415
+#> 111  0  0.00    396
+#> 112  0  0.00    378
+#> 113  0  0.00    361
+#> 114  0  0.00    345
+#> 115  0  0.00    329
+#> 116  0  0.00    314
+#> 117  0  0.00    300
+#> 118  0  0.00    286
+#> 119  0  0.00    274
+#> 120  0  0.00    261
+#> 121  0  0.00    249
+#> 122  0  0.00    238
+#> 123  0  0.00    227
+#> 124  0  0.00    217
+#> 125  0  0.00    207
+#> 126  0  0.00    198
+#> 127  0  0.00    189
+#> 128  0  0.00    180
+#> 129  0  0.00    172
+#> 130  0  0.00    164
+#> 131  0  0.00    157
+#> 132  0  0.00    150
+#> 133  0  0.00    143
+#> 134  0  0.00    137
+#> 135  0  0.00    130
+#> 136  0  0.00    125
+#> 137  0  0.00    119
+#> 138  0  0.00    114
+#> 139  0  0.00    108
+#> 140  1  0.10    104
+#> 141  1  0.77     99
+#> 142  1  1.39     94
+#> 143  1  1.97     90
+#> 144  1  2.52     86
+#> 145  1  3.03     82
+#> 146  1  3.51     78
+#> 147  1  3.97     75
+#> 148  1  4.39     71
+#> 149  1  4.80     68
+#> 150  1  5.18     65
+#> 151  1  5.54     62
+#> 152  1  5.87     59
+#> 153  1  6.20     57
+#> 154  1  6.50     54
+#> 155  1  6.79     52
+#> 156  1  7.06     49
+#> 157  1  7.32     47
+#> 158  1  7.56     45
+#> 159  1  7.79     43
+#> 160  1  8.01     41
+#> 161  1  8.21     39
+#> 162  1  8.41     37
+#> 163  1  8.59     36
+#> 164  1  8.77     34
+#> 165  1  8.93     33
+#> 166  1  9.09     31
+#> 167  1  9.24     30
+#> 168  1  9.38     28
+#> 169  1  9.51     27
+#> 170  1  9.64     26
+#> 171  1  9.75     25
+#> 172  1  9.86     24
+#> 173  1  9.97     22
+#> 174  1 10.06     21
+#> 175  1 10.16     20
+#> 176  1 10.24     20
+#> 177  1 10.33     19
+#> 178  1 10.40     18
+#> 179  1 10.47     17
+#> 180  1 10.54     16
+#> 181  1 10.61     16
+#> 182  1 10.66     15
+#> 183  1 10.72     14
+#> 184  1 10.77     14
+#> 185  1 10.82     13
+#> 186  1 10.86     12
+#> 187  1 10.91     12
+#> 188  1 10.95     11
+#> 189  1 10.98     11
+#> 190  1 11.02     10
+#> 191  1 11.05     10
+#> 192  1 11.08      9
+#> 193  1 11.10      9
+#> 194  1 11.13      9
+#> 195  1 11.15      8
+#> 196  1 11.17      8
+#> 197  1 11.19      7
+#> 198  1 11.21      7
+#> 199  1 11.23      7
+#> 200  1 11.25      6
+#> 
+#> $`0.141203703703704`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -1352,6 +2519,212 @@ esm_max_t1$esm_model # bivariate model
 #> 198  2 11.52      7
 #> 199  2 11.54      7
 #> 200  2 11.57      6
+#> 
+#> $`0.141203703703704`
+#> 
+#> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
+#> 
+#>     Df  %Dev Lambda
+#> 1    0  0.00  73100
+#> 2    0  0.00  69790
+#> 3    0  0.00  66640
+#> 4    0  0.00  63620
+#> 5    0  0.00  60740
+#> 6    0  0.00  58000
+#> 7    0  0.00  55370
+#> 8    0  0.00  52870
+#> 9    0  0.00  50480
+#> 10   0  0.00  48190
+#> 11   0  0.00  46020
+#> 12   0  0.00  43930
+#> 13   0  0.00  41950
+#> 14   0  0.00  40050
+#> 15   0  0.00  38240
+#> 16   0  0.00  36510
+#> 17   0  0.00  34860
+#> 18   0  0.00  33280
+#> 19   0  0.00  31780
+#> 20   0  0.00  30340
+#> 21   0  0.00  28970
+#> 22   0  0.00  27660
+#> 23   0  0.00  26410
+#> 24   0  0.00  25210
+#> 25   0  0.00  24070
+#> 26   0  0.00  22980
+#> 27   0  0.00  21940
+#> 28   0  0.00  20950
+#> 29   0  0.00  20000
+#> 30   0  0.00  19100
+#> 31   0  0.00  18230
+#> 32   0  0.00  17410
+#> 33   0  0.00  16620
+#> 34   0  0.00  15870
+#> 35   0  0.00  15150
+#> 36   0  0.00  14470
+#> 37   0  0.00  13810
+#> 38   0  0.00  13190
+#> 39   0  0.00  12590
+#> 40   0  0.00  12020
+#> 41   0  0.00  11480
+#> 42   0  0.00  10960
+#> 43   0  0.00  10460
+#> 44   0  0.00   9990
+#> 45   0  0.00   9539
+#> 46   0  0.00   9107
+#> 47   0  0.00   8695
+#> 48   0  0.00   8302
+#> 49   0  0.00   7926
+#> 50   0  0.00   7568
+#> 51   0  0.00   7226
+#> 52   0  0.00   6899
+#> 53   0  0.00   6587
+#> 54   0  0.00   6289
+#> 55   0  0.00   6005
+#> 56   0  0.00   5733
+#> 57   0  0.00   5474
+#> 58   0  0.00   5226
+#> 59   0  0.00   4990
+#> 60   0  0.00   4764
+#> 61   0  0.00   4549
+#> 62   0  0.00   4343
+#> 63   0  0.00   4146
+#> 64   0  0.00   3959
+#> 65   0  0.00   3780
+#> 66   0  0.00   3609
+#> 67   0  0.00   3446
+#> 68   0  0.00   3290
+#> 69   0  0.00   3141
+#> 70   0  0.00   2999
+#> 71   0  0.00   2863
+#> 72   0  0.00   2734
+#> 73   0  0.00   2610
+#> 74   0  0.00   2492
+#> 75   0  0.00   2379
+#> 76   0  0.00   2272
+#> 77   0  0.00   2169
+#> 78   0  0.00   2071
+#> 79   0  0.00   1977
+#> 80   0  0.00   1888
+#> 81   0  0.00   1802
+#> 82   0  0.00   1721
+#> 83   0  0.00   1643
+#> 84   0  0.00   1569
+#> 85   0  0.00   1498
+#> 86   0  0.00   1430
+#> 87   0  0.00   1365
+#> 88   0  0.00   1304
+#> 89   0  0.00   1245
+#> 90   0  0.00   1188
+#> 91   0  0.00   1135
+#> 92   0  0.00   1083
+#> 93   0  0.00   1034
+#> 94   0  0.00    988
+#> 95   0  0.00    943
+#> 96   0  0.00    900
+#> 97   0  0.00    860
+#> 98   0  0.00    821
+#> 99   0  0.00    784
+#> 100  0  0.00    748
+#> 101  0  0.00    714
+#> 102  0  0.00    682
+#> 103  0  0.00    651
+#> 104  0  0.00    622
+#> 105  0  0.00    594
+#> 106  0  0.00    567
+#> 107  0  0.00    541
+#> 108  0  0.00    517
+#> 109  0  0.00    493
+#> 110  0  0.00    471
+#> 111  0  0.00    450
+#> 112  0  0.00    429
+#> 113  0  0.00    410
+#> 114  0  0.00    391
+#> 115  0  0.00    374
+#> 116  0  0.00    357
+#> 117  0  0.00    341
+#> 118  0  0.00    325
+#> 119  0  0.00    310
+#> 120  0  0.00    296
+#> 121  0  0.00    283
+#> 122  0  0.00    270
+#> 123  0  0.00    258
+#> 124  0  0.00    246
+#> 125  0  0.00    235
+#> 126  0  0.00    225
+#> 127  0  0.00    214
+#> 128  0  0.00    205
+#> 129  0  0.00    196
+#> 130  0  0.00    187
+#> 131  0  0.00    178
+#> 132  0  0.00    170
+#> 133  0  0.00    162
+#> 134  0  0.00    155
+#> 135  0  0.00    148
+#> 136  0  0.00    141
+#> 137  0  0.00    135
+#> 138  0  0.00    129
+#> 139  0  0.00    123
+#> 140  1  0.10    118
+#> 141  1  0.77    112
+#> 142  1  1.39    107
+#> 143  1  1.97    102
+#> 144  1  2.52     98
+#> 145  1  3.03     93
+#> 146  1  3.51     89
+#> 147  1  3.97     85
+#> 148  1  4.39     81
+#> 149  1  4.80     77
+#> 150  1  5.18     74
+#> 151  1  5.54     71
+#> 152  1  5.87     67
+#> 153  1  6.20     64
+#> 154  1  6.50     61
+#> 155  1  6.79     59
+#> 156  1  7.06     56
+#> 157  1  7.32     53
+#> 158  1  7.56     51
+#> 159  1  7.79     49
+#> 160  1  8.01     47
+#> 161  1  8.21     44
+#> 162  1  8.41     42
+#> 163  1  8.59     41
+#> 164  1  8.77     39
+#> 165  1  8.93     37
+#> 166  1  9.09     35
+#> 167  1  9.24     34
+#> 168  1  9.38     32
+#> 169  1  9.51     31
+#> 170  1  9.64     29
+#> 171  1  9.75     28
+#> 172  1  9.86     27
+#> 173  1  9.97     26
+#> 174  1 10.06     24
+#> 175  1 10.16     23
+#> 176  1 10.24     22
+#> 177  1 10.33     21
+#> 178  1 10.40     20
+#> 179  1 10.47     19
+#> 180  1 10.54     18
+#> 181  1 10.61     18
+#> 182  1 10.66     17
+#> 183  1 10.72     16
+#> 184  1 10.77     15
+#> 185  1 10.82     15
+#> 186  1 10.86     14
+#> 187  1 10.91     13
+#> 188  1 10.95     13
+#> 189  2 11.05     12
+#> 190  2 11.16     12
+#> 191  2 11.25     11
+#> 192  2 11.34     11
+#> 193  2 11.42     10
+#> 194  2 11.50     10
+#> 195  2 11.57      9
+#> 196  2 11.63      9
+#> 197  2 11.69      8
+#> 198  2 11.74      8
+#> 199  2 11.79      8
+#> 200  2 11.83      7
 #> 
 #> $`1`
 #> 
@@ -1559,7 +2932,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  2 18.83     2.8
 #> 200  2 18.88     2.6
 #> 
-#> $`0.96`
+#> $`1`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -1765,7 +3138,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  1 15.73   0.012
 #> 200  1 15.74   0.012
 #> 
-#> $`0.98`
+#> $`1`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -1971,7 +3344,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  1 15.73  0.0012
 #> 200  1 15.74  0.0011
 #> 
-#> $`0.98`
+#> $`1`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -2177,7 +3550,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  1 15.73 0.00025
 #> 200  1 15.74 0.00024
 #> 
-#> $`0.96`
+#> $`1`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -2383,7 +3756,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  2 17.54    0.9
 #> 200  2 17.58    0.9
 #> 
-#> $`0.2`
+#> $`0.230324074074074`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -2589,7 +3962,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  1 3.92 0.0009
 #> 200  1 3.94 0.0009
 #> 
-#> $`0.32`
+#> $`0.293981481481481`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -2795,7 +4168,7 @@ esm_max_t1$esm_model # bivariate model
 #> 199  2 4.27    0.9
 #> 200  2 4.33    0.9
 #> 
-#> $`0.62`
+#> $`0.377314814814815`
 #> 
 #> Call:  glmnet::glmnet(x = mm, y = as.factor(p), family = "binomial",      weights = weights, lambda = 10^(seq(4, 0, length.out = 200)) *          sum(reg)/length(reg) * sum(p)/sum(weights), standardize = F,      penalty.factor = reg) 
 #> 
@@ -3010,13 +4383,13 @@ esm_max_t1$performance
 #> # A tibble: 7 × 33
 #>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 esm_max equal_sens_…     0.506          10         10        1      0        1
-#> 2 esm_max lpt              0.372          10         10        1      0        1
-#> 3 esm_max max_fpb          0.555          10         10        1      0        1
-#> 4 esm_max max_jaccard      0.555          10         10        1      0        1
-#> 5 esm_max max_sens_sp…     0.555          10         10        1      0        1
-#> 6 esm_max max_sorensen     0.555          10         10        1      0        1
-#> 7 esm_max sensitivity      0.562          10         10        1      0        1
+#> 1 esm_max equal_sens_…     0.555          10         10        1      0        1
+#> 2 esm_max lpt              0.551          10         10        1      0        1
+#> 3 esm_max max_fpb          0.551          10         10        1      0        1
+#> 4 esm_max max_jaccard      0.551          10         10        1      0        1
+#> 5 esm_max max_sens_sp…     0.581          10         10        1      0        1
+#> 6 esm_max max_sorensen     0.551          10         10        1      0        1
+#> 7 esm_max sensitivity      0.592          10         10        1      0        1
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -3025,20 +4398,20 @@ esm_max_t1$performance
 #> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
 #> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 esm_max_t1$performance_part
-#> # A tibble: 175 × 21
+#> # A tibble: 42 × 21
 #>    model replicates part  threshold thr_value n_presences n_absences   TPR   TNR
 #>    <chr> <chr>      <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#>  1 esm_… .part1     1     max_sore…     0.622           2          2     1     1
-#>  2 esm_… .part1     1     max_jacc…     0.622           2          2     1     1
-#>  3 esm_… .part1     1     max_fpb       0.622           2          2     1     1
-#>  4 esm_… .part1     1     max_sens…     0.622           2          2     1     1
-#>  5 esm_… .part1     1     equal_se…     0.622           2          2     1     1
-#>  6 esm_… .part1     1     lpt           0.622           2          2     1     1
-#>  7 esm_… .part1     1     sensitiv…     0.622           2          2     1     1
-#>  8 esm_… .part1     2     max_sore…     0.569           2          2     1     1
-#>  9 esm_… .part1     2     max_jacc…     0.569           2          2     1     1
-#> 10 esm_… .part1     2     max_fpb       0.569           2          2     1     1
-#> # ℹ 165 more rows
+#>  1 esm_… .part1     1     max_sore…     0.551           4          4     1     1
+#>  2 esm_… .part1     1     max_jacc…     0.551           4          4     1     1
+#>  3 esm_… .part1     1     max_fpb       0.551           4          4     1     1
+#>  4 esm_… .part1     1     max_sens…     0.551           4          4     1     1
+#>  5 esm_… .part1     1     equal_se…     0.551           4          4     1     1
+#>  6 esm_… .part1     1     lpt           0.551           4          4     1     1
+#>  7 esm_… .part1     1     sensitiv…     0.551           4          4     1     1
+#>  8 esm_… .part1     2     max_sore…     0.715           3          3     1     1
+#>  9 esm_… .part1     2     max_jacc…     0.715           3          3     1     1
+#> 10 esm_… .part1     2     max_fpb       0.715           3          3     1     1
+#> # ℹ 32 more rows
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>

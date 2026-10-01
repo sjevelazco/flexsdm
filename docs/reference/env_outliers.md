@@ -100,6 +100,7 @@ require(dplyr)
 require(terra)
 require(ggplot2)
 #> Loading required package: ggplot2
+#> Warning: package 'ggplot2' was built under R version 4.5.3
 
 # Environmental variables
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
@@ -158,9 +159,9 @@ outs_1 %>%
 #> # Groups:   .out_sum [5]
 #>   .out_sum     n
 #>      <dbl> <int>
-#> 1        0   900
-#> 2        1    37
-#> 3        2     6
+#> 1        0   903
+#> 2        1    31
+#> 3        2     9
 #> 4        3     2
 #> 5       NA    55
 

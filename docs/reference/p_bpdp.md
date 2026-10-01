@@ -126,7 +126,7 @@ abies2 <- sdm_extract(abies2,
   y = "y",
   env_layer = somevar
 )
-#> 26 rows were excluded from database because NAs were found
+#> 25 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
@@ -218,7 +218,7 @@ abies2 <- sdm_extract(
   y = "y",
   env_layer = somevar
 )
-#> 31 rows were excluded from database because NAs were found
+#> 30 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)

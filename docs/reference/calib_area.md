@@ -71,10 +71,11 @@ A SpatVector
 # \donttest{
 require(terra)
 #> Loading required package: terra
-#> terra 1.9.46
+#> Warning: package 'terra' was built under R version 4.5.3
+#> terra 1.9.50
 #> 
-#> Attaching package: ‘terra’
-#> The following objects are masked from ‘package:testthat’:
+#> Attaching package: 'terra'
+#> The following objects are masked from 'package:testthat':
 #> 
 #>     compare, describe
 require(dplyr)

@@ -165,7 +165,7 @@ abies
 abies2 <- part_random(
   data = abies,
   pr_ab = "pr_ab",
-  method = c(method = "kfold", folds = 5)
+  method = c(method = "kfold", folds = 3)
 )
 
 # pr_ab columns is species presence and absences (i.e. the response variable)
@@ -174,8 +174,8 @@ abies2 <- part_random(
 # Hyper-parameter values for tuning
 tune_grid <-
   expand.grid(
-    size = c(2, 4, 6, 8, 10),
-    decay = c(0.001, 0.05, 0.1, 1, 3, 4, 5, 10)
+    size = c(2, 4),
+    decay = c(0.001, 1, 5)
   )
 
 net_t <-
@@ -200,15 +200,13 @@ net_t <-
 #> Formula used for model fitting:
 #> pr_ab ~ aet + cwd + tmin + ppt_djf + ppt_jja + pH + awc + depth + landform
 #> Replica number: 1/1
-#> Partition number: 1/5
-#> Partition number: 2/5
-#> Partition number: 3/5
-#> Partition number: 4/5
-#> Partition number: 5/5
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
 
 # Outputs
 net_t$model
-#> a 22-8-1 network with 193 weights
+#> a 22-4-1 network with 97 weights
 #> inputs: aet cwd tmin ppt_djf ppt_jja pH awc depth landform2 landform3 landform4 landform5 landform6 landform7 landform8 landform9 landform10 landform11 landform12 landform13 landform14 landform15 
 #> output(s): pr_ab 
 #> options were - entropy fitting  decay=1
@@ -221,7 +219,7 @@ net_t$performance
 #> # A tibble: 1 × 35
 #>    size decay model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
 #>   <dbl> <dbl> <chr> <chr>           <dbl>       <int>      <int>    <dbl>  <dbl>
-#> 1     8     1 net   max_sens_s…     0.457         700        700    0.904 0.0297
+#> 1     4     1 net   max_sens_s…     0.477         700        700    0.899 0.0496
 #> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
 #> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
 #> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
@@ -230,32 +228,25 @@ net_t$performance
 #> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
 #> #   IMAE_mean <dbl>, IMAE_sd <dbl>
 net_t$performance_part
-#> # A tibble: 5 × 21
+#> # A tibble: 3 × 21
 #>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
 #>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#> 1 1       1         net   max_sens…     0.590         140        140 0.893 0.886
-#> 2 1       2         net   max_sens…     0.385         140        140 0.943 0.864
-#> 3 1       3         net   max_sens…     0.535         140        140 0.929 0.871
-#> 4 1       4         net   max_sens…     0.643         140        140 0.879 0.864
-#> 5 1       5         net   max_sens…     0.645         140        140 0.879 0.807
+#> 1 1       1         net   max_sens…     0.431         234        234 0.927 0.816
+#> 2 1       2         net   max_sens…     0.541         233        233 0.841 0.858
+#> 3 1       3         net   max_sens…     0.395         233        233 0.927 0.858
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 net_t$hyper_performance
-#> # A tibble: 40 × 32
-#>     size  decay model threshold   TPR_mean TPR_sd TNR_mean TNR_sd W_TPR_TNR_mean
-#>    <dbl>  <dbl> <chr> <chr>          <dbl>  <dbl>    <dbl>  <dbl>          <dbl>
-#>  1     2  0.001 net   max_sens_s…    1     0         0     0               0.5  
-#>  2     2  0.05  net   max_sens_s…    0.881 0.0854    0.779 0.124           0.83 
-#>  3     2  0.1   net   max_sens_s…    0.883 0.0697    0.833 0.0499          0.858
-#>  4     2  1     net   max_sens_s…    0.887 0.0561    0.81  0.0465          0.849
-#>  5     2  3     net   max_sens_s…    0.893 0.0368    0.826 0.0439          0.859
-#>  6     2  4     net   max_sens_s…    0.84  0.0894    0.811 0.0963          0.826
-#>  7     2  5     net   max_sens_s…    0.913 0.0653    0.731 0.112           0.822
-#>  8     2 10     net   max_sens_s…    0.919 0.0383    0.736 0.0991          0.827
-#>  9     4  0.001 net   max_sens_s…    0.804 0.132     0.693 0.236           0.749
-#> 10     4  0.05  net   max_sens_s…    0.883 0.0318    0.834 0.0348          0.859
-#> # ℹ 30 more rows
+#> # A tibble: 6 × 32
+#>    size decay model threshold     TPR_mean TPR_sd TNR_mean TNR_sd W_TPR_TNR_mean
+#>   <dbl> <dbl> <chr> <chr>            <dbl>  <dbl>    <dbl>  <dbl>          <dbl>
+#> 1     2 0.001 net   max_sens_spec    0.896 0.180     0.140 0.242           0.518
+#> 2     2 1     net   max_sens_spec    0.880 0.109     0.750 0.0937          0.815
+#> 3     2 5     net   max_sens_spec    0.860 0.0622    0.786 0.0433          0.823
+#> 4     4 0.001 net   max_sens_spec    0.904 0.0925    0.481 0.433           0.692
+#> 5     4 1     net   max_sens_spec    0.899 0.0496    0.844 0.0243          0.871
+#> 6     4 5     net   max_sens_spec    0.886 0.0218    0.817 0.0518          0.851
 #> # ℹ 23 more variables: W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>,
 #> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
 #> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
@@ -264,18 +255,18 @@ net_t$hyper_performance
 #> #   CRPS_mean <dbl>, CRPS_sd <dbl>, IMAE_mean <dbl>, IMAE_sd <dbl>
 net_t$data_ens
 #> # A tibble: 1,400 × 5
-#>    rnames replicates part  pr_ab    pred
-#>    <chr>  <chr>      <chr> <fct>   <dbl>
-#>  1 3      .part      1     0     0.168  
-#>  2 5      .part      1     0     0.393  
-#>  3 7      .part      1     0     0.0542 
-#>  4 20     .part      1     0     0.209  
-#>  5 22     .part      1     0     0.0881 
-#>  6 26     .part      1     0     0.756  
-#>  7 29     .part      1     0     0.00417
-#>  8 30     .part      1     0     0.00420
-#>  9 51     .part      1     0     0.0783 
-#> 10 62     .part      1     0     0.209  
+#>    rnames replicates part  pr_ab   pred
+#>    <chr>  <chr>      <chr> <fct>  <dbl>
+#>  1 1      .part      1     0     0.0436
+#>  2 2      .part      1     0     0.0135
+#>  3 5      .part      1     0     0.404 
+#>  4 8      .part      1     0     0.0145
+#>  5 9      .part      1     0     0.132 
+#>  6 13     .part      1     0     0.0137
+#>  7 15     .part      1     0     0.277 
+#>  8 17     .part      1     0     0.109 
+#>  9 18     .part      1     0     0.0136
+#> 10 21     .part      1     0     0.0771
 #> # ℹ 1,390 more rows
 # }
 ```

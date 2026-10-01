@@ -158,7 +158,9 @@ observations downloaded from the online database Calflora.</p>
 <span>  scale <span class="op">=</span> <span class="fl">.3</span>,</span>
 <span>  col <span class="op">=</span> <span class="va">cols</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="v05_Rare_species_example_files/figure-html/raw%20data-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v05-raw_data-1.png" alt="plot of chunk raw data"><div class="figcaption">plot of chunk raw data</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="delimit-calibration-area">Delimit calibration area<a class="anchor" aria-label="anchor" href="#delimit-calibration-area"></a>
@@ -186,7 +188,9 @@ presence points to select our pseudo-absence locations.</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"black"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v05_Rare_species_example_files/figure-html/calibration%20area-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v05-calibration_area-1.png" alt="plot of chunk calibration area"><div class="figcaption">plot of chunk calibration area</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="create-pseudo-absence-data">Create pseudo-absence data<a class="anchor" aria-label="anchor" href="#create-pseudo-absence-data"></a>
@@ -221,27 +225,29 @@ pseudo-absence data that can be used in our SDMs.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">psa</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, cex <span class="op">=</span> <span class="fl">0.8</span>, pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="co"># Pseudo-absences</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">hespero</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span>, col <span class="op">=</span> <span class="st">"yellow"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="co"># Presences</span></span></code></pre></div>
-<p><img src="v05_Rare_species_example_files/figure-html/pseudo-absence%20data-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v05-pseudo-absence_data-1.png" alt="plot of chunk pseudo-absence data"><div class="figcaption">plot of chunk pseudo-absence data</div>
+</div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span></span>
 <span><span class="co"># Bind a presences and pseudo-absences</span></span>
 <span><span class="va">hespero_pa</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">hespero</span>, <span class="va">psa</span><span class="op">)</span></span>
 <span><span class="va">hespero_pa</span> <span class="co"># Presence-Pseudo-absence database</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 42 × 3</span></span></span>
+<span><span class="co">#&gt; # A tibble: 42 × 3</span></span>
 <span><span class="co">#&gt;          x        y pr_ab</span></span>
-<span><span class="co">#&gt;      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> <span style="text-decoration: underline;">316</span>923. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">843.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">317</span>155. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">234.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">316</span>960. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">186.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">314</span>347. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">648.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> <span style="text-decoration: underline;">317</span>348. -<span style="color: #BB0000; text-decoration: underline;">557</span><span style="color: #BB0000;">349.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">316</span>753. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">679.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">316</span>777. -<span style="color: #BB0000; text-decoration: underline;">558</span><span style="color: #BB0000;">644.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">317</span>050. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">043.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">316</span>655. -<span style="color: #BB0000; text-decoration: underline;">559</span><span style="color: #BB0000;">928.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">316</span>418. -<span style="color: #BB0000; text-decoration: underline;">567</span><span style="color: #BB0000;">439.</span>     1</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 32 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 316923. -557843.     1</span></span>
+<span><span class="co">#&gt;  2 317155. -559234.     1</span></span>
+<span><span class="co">#&gt;  3 316960. -558186.     1</span></span>
+<span><span class="co">#&gt;  4 314347. -559648.     1</span></span>
+<span><span class="co">#&gt;  5 317348. -557349.     1</span></span>
+<span><span class="co">#&gt;  6 316753. -559679.     1</span></span>
+<span><span class="co">#&gt;  7 316777. -558644.     1</span></span>
+<span><span class="co">#&gt;  8 317050. -559043.     1</span></span>
+<span><span class="co">#&gt;  9 316655. -559928.     1</span></span>
+<span><span class="co">#&gt; 10 316418. -567439.     1</span></span>
+<span><span class="co">#&gt; # ℹ 32 more rows</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="partition-data-for-evaluating-models">Partition data for evaluating models<a class="anchor" aria-label="anchor" href="#partition-data-for-evaluating-models"></a>
@@ -512,59 +518,100 @@ case, we use our calibration area for making our predictions.</p>
 <p>Now let’s try each of these algorithms with the ESM approach. Note
 that when predicting an ESM, it is possible to only process one at a
 time.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eglm</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/esm_glm.html">esm_glm</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>    response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span>    predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
-<span>    partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span>    thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</span></span>
-<span></span>
-<span><span class="va">egbm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_gbm.html">esm_gbm</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
-<span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</span></span>
-<span></span>
-<span><span class="va">esvm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/esm_svm.html">esm_svm</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">hespero_pa3</span>,</span>
-<span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span>
-<span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span><span class="op">)</span>,</span>
-<span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span>
-<span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</span></span>
-<span></span>
-<span></span>
-<span><span class="va">eglm_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span></span>
-<span>  models <span class="op">=</span> <span class="va">eglm</span>,</span>
-<span>  pred <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span>  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  predict_area <span class="op">=</span> <span class="va">ca</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Predicting ensemble of small models</span></span>
-<span></span>
-<span><span class="va">egbm_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span></span>
-<span>  models <span class="op">=</span> <span class="va">egbm</span>,</span>
-<span>  pred <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span>  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  predict_area <span class="op">=</span> <span class="va">ca</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Predicting ensemble of small models</span></span>
-<span></span>
-<span><span class="va">esvm_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sdm_predict.html">sdm_predict</a></span><span class="op">(</span></span>
-<span>  models <span class="op">=</span> <span class="va">esvm</span>,</span>
-<span>  pred <span class="op">=</span> <span class="va">somevar</span>,</span>
-<span>  con_thr <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  predict_area <span class="op">=</span> <span class="va">ca</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; Predicting ensemble of small models</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>eglm <span class="ot">&lt;-</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="fu">esm_glm</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    <span class="at">data =</span> hespero_pa3,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="at">partition =</span> <span class="st">".part"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    <span class="at">thr =</span> <span class="st">"max_sens_spec"</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  )</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>egbm <span class="ot">&lt;-</span> <span class="fu">esm_gbm</span>(</span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>  <span class="at">data =</span> hespero_pa3,</span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span>),</span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">".part"</span>,</span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>  <span class="at">thr =</span> <span class="st">"max_sens_spec"</span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>)</span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a></span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a>esvm <span class="ot">&lt;-</span> <span class="fu">esm_svm</span>(</span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a>  <span class="at">data =</span> hespero_pa3,</span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a>  <span class="at">response =</span> <span class="st">"pr_ab"</span>,</span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a>  <span class="at">predictors =</span> <span class="fu">c</span>(<span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmx"</span>, <span class="st">"tmn"</span>),</span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a>  <span class="at">partition =</span> <span class="st">".part"</span>,</span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a>  <span class="at">thr =</span> <span class="st">"max_sens_spec"</span></span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a>)</span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a>  <span class="er">|</span>                                                                      <span class="er">|</span>   <span class="dv">0</span>%</span>
+<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a>  <span class="er">|============</span>                                                          <span class="er">|</span>  <span class="dv">17</span>%</span>
+<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a>  <span class="er">|=======================</span>                                               <span class="er">|</span>  <span class="dv">33</span>%</span>
+<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a>  <span class="er">|===================================</span>                                   <span class="er">|</span>  <span class="dv">50</span>%</span>
+<span id="cb8-64"><a href="#cb8-64" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-65"><a href="#cb8-65" tabindex="-1"></a>  <span class="er">|===============================================</span>                       <span class="er">|</span>  <span class="dv">67</span>%</span>
+<span id="cb8-66"><a href="#cb8-66" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-67"><a href="#cb8-67" tabindex="-1"></a>  <span class="er">|==========================================================</span>            <span class="er">|</span>  <span class="dv">83</span>%</span>
+<span id="cb8-68"><a href="#cb8-68" tabindex="-1"></a>  <span class="sc">|</span>                                                                            </span>
+<span id="cb8-69"><a href="#cb8-69" tabindex="-1"></a>  <span class="er">|======================================================================|</span> <span class="dv">100</span>%</span>
+<span id="cb8-70"><a href="#cb8-70" tabindex="-1"></a></span>
+<span id="cb8-71"><a href="#cb8-71" tabindex="-1"></a></span>
+<span id="cb8-72"><a href="#cb8-72" tabindex="-1"></a>eglm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
+<span id="cb8-73"><a href="#cb8-73" tabindex="-1"></a>  <span class="at">models =</span> eglm,</span>
+<span id="cb8-74"><a href="#cb8-74" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
+<span id="cb8-75"><a href="#cb8-75" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-76"><a href="#cb8-76" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
+<span id="cb8-77"><a href="#cb8-77" tabindex="-1"></a>)</span>
+<span id="cb8-78"><a href="#cb8-78" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span>
+<span id="cb8-79"><a href="#cb8-79" tabindex="-1"></a></span>
+<span id="cb8-80"><a href="#cb8-80" tabindex="-1"></a>egbm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
+<span id="cb8-81"><a href="#cb8-81" tabindex="-1"></a>  <span class="at">models =</span> egbm,</span>
+<span id="cb8-82"><a href="#cb8-82" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
+<span id="cb8-83"><a href="#cb8-83" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-84"><a href="#cb8-84" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
+<span id="cb8-85"><a href="#cb8-85" tabindex="-1"></a>)</span>
+<span id="cb8-86"><a href="#cb8-86" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span>
+<span id="cb8-87"><a href="#cb8-87" tabindex="-1"></a></span>
+<span id="cb8-88"><a href="#cb8-88" tabindex="-1"></a>esvm_pred <span class="ot">&lt;-</span> <span class="fu">sdm_predict</span>(</span>
+<span id="cb8-89"><a href="#cb8-89" tabindex="-1"></a>  <span class="at">models =</span> esvm,</span>
+<span id="cb8-90"><a href="#cb8-90" tabindex="-1"></a>  <span class="at">pred =</span> somevar,</span>
+<span id="cb8-91"><a href="#cb8-91" tabindex="-1"></a>  <span class="at">con_thr =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-92"><a href="#cb8-92" tabindex="-1"></a>  <span class="at">predict_area =</span> ca</span>
+<span id="cb8-93"><a href="#cb8-93" tabindex="-1"></a>)</span>
+<span id="cb8-94"><a href="#cb8-94" tabindex="-1"></a><span class="co">#&gt; Predicting ensemble of small models</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -586,7 +633,9 @@ broader areas with high suitability values that the ESMs.</p>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mpred</span><span class="op">$</span><span class="va">svm</span>, main <span class="op">=</span> <span class="st">"Standard SVM"</span><span class="op">)</span></span>
 <span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">esvm_pred</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"ESM SVM"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v05_Rare_species_example_files/figure-html/comparison%20maps-1.png" class="r-plt" alt="" width="576"></p>
+<div class="float">
+<img src="figures/v05-comparison_maps-1.png" alt="plot of chunk comparison maps"><div class="figcaption">plot of chunk comparison maps</div>
+</div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># points(hespero$x, hespero$y, pch = 19)</span></span></code></pre></div>
 <p>Next, we look at some performance metrics for our models, which are
@@ -634,7 +683,7 @@ for the standard models.</p>
 <td align="right">0.802</td>
 <td align="right">0.8219524</td>
 <td align="right">NA</td>
-<td align="right">0.7459401</td>
+<td align="right">0.7456810</td>
 </tr>
 <tr class="odd">
 <td align="left">svm</td>
@@ -642,7 +691,7 @@ for the standard models.</p>
 <td align="right">0.862</td>
 <td align="right">0.8756667</td>
 <td align="right">NA</td>
-<td align="right">0.7214851</td>
+<td align="right">0.7214870</td>
 </tr>
 <tr class="even">
 <td align="left">esm_glm</td>
@@ -658,7 +707,7 @@ for the standard models.</p>
 <td align="right">0.846</td>
 <td align="right">0.8550000</td>
 <td align="right">NA</td>
-<td align="right">0.7461444</td>
+<td align="right">0.7462015</td>
 </tr>
 <tr class="even">
 <td align="left">esm_svm</td>
@@ -666,7 +715,7 @@ for the standard models.</p>
 <td align="right">0.876</td>
 <td align="right">0.8879524</td>
 <td align="right">NA</td>
-<td align="right">0.7131784</td>
+<td align="right">0.7131791</td>
 </tr>
 </tbody>
 </table>

@@ -8,8 +8,6 @@
 coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://app.codecov.io/gh/sjevelazco/flexsdm)
 [![DOI](https://zenodo.org/badge/354032642.svg)](https://zenodo.org/badge/latestdoi/354032642)
 [![DOI](https://img.shields.io/badge/DOI-10.1111%2F2041--210X.13874-orange)](https://doi.org/10.1111/2041-210X.13874)
-[![Ask
-DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sjevelazco/flexsdm)
 
 ------------------------------------------------------------------------
 
@@ -226,14 +224,16 @@ predictions, model extrapolation, and partial dependence plots.
 You can install the development version of **flexsdm** from
 [github](https://github.com/sjevelazco/flexsdm)
 
-\
-`# install.packages("remotes")`\
-\
-`# For Windows and Mac OS operating systems`\
-`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"sjevelazco/flexsdm"``)`\
-\
-`# For Linux operating system`\
-`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"sjevelazco/flexsdm@HEAD"``)`
+``` r
+
+# install.packages("remotes")
+
+# For Windows and Mac OS operating systems
+remotes::install_github("sjevelazco/flexsdm")
+
+# For Linux operating system
+remotes::install_github("sjevelazco/flexsdm@HEAD")
+```
 
 ⚠️ NOTE: If you have the following error
 

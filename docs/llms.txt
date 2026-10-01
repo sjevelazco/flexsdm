@@ -8,8 +8,6 @@
 coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://app.codecov.io/gh/sjevelazco/flexsdm)
 [![DOI](https://zenodo.org/badge/354032642.svg)](https://zenodo.org/badge/latestdoi/354032642)
 [![DOI](https://img.shields.io/badge/DOI-10.1111%2F2041--210X.13874-orange)](https://doi.org/10.1111/2041-210X.13874)
-[![Ask
-DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/sjevelazco/flexsdm)
 
 ------------------------------------------------------------------------
 
@@ -226,14 +224,16 @@ predictions, model extrapolation, and partial dependence plots.
 You can install the development version of **flexsdm** from
 [github](https://github.com/sjevelazco/flexsdm)
 
-\
-`# install.packages("remotes")`\
-\
-`# For Windows and Mac OS operating systems`\
-`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"sjevelazco/flexsdm"``)`\
-\
-`# For Linux operating system`\
-`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"sjevelazco/flexsdm@HEAD"``)`
+``` r
+
+# install.packages("remotes")
+
+# For Windows and Mac OS operating systems
+remotes::install_github("sjevelazco/flexsdm")
+
+# For Linux operating system
+remotes::install_github("sjevelazco/flexsdm@HEAD")
+```
 
 ⚠️ NOTE: If you have the following error
 
@@ -346,21 +346,14 @@ Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
 - [`msdm_priori()`](https://sjevelazco.github.io/flexsdm/reference/msdm_priori.md)
   : Create spatial predictor variables to reduce overprediction of
   species distribution models
-- [`occ_reproj()`](https://sjevelazco.github.io/flexsdm/reference/occ_reproj.md)
-  : Reproject location coordinates to a new coordinate reference system
 - [`occfilt_env()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_env.md)
   : Perform environmental filtering on species occurrences
 - [`occfilt_geo()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_geo.md)
   : Perform geographical filtering on species occurrences
 - [`occfilt_select()`](https://sjevelazco.github.io/flexsdm/reference/occfilt_select.md)
   : Select filtered occurrences
-- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
-  : Bivariate partial dependence plot
-- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
-  : Graphical exploration of extrapolation or suitability pattern in the
-  environmental and geographical space
-- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
-  Partial Dependent Plot
+- [`occ_reproj()`](https://sjevelazco.github.io/flexsdm/reference/occ_reproj.md)
+  : Reproject location coordinates to a new coordinate reference system
 - [`palms`](https://sjevelazco.github.io/flexsdm/reference/palms.md) : A
   data set containing presences of palms species from Southern Brazil
 - [`part_random()`](https://sjevelazco.github.io/flexsdm/reference/part_random.md)
@@ -373,6 +366,13 @@ Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
   : Environmental and spatial cross-validation
 - [`plot_res()`](https://sjevelazco.github.io/flexsdm/reference/plot_res.md)
   : Plot different resolutions to be used in part_sblock
+- [`p_bpdp()`](https://sjevelazco.github.io/flexsdm/reference/p_bpdp.md)
+  : Bivariate partial dependence plot
+- [`p_extra()`](https://sjevelazco.github.io/flexsdm/reference/p_extra.md)
+  : Graphical exploration of extrapolation or suitability pattern in the
+  environmental and geographical space
+- [`p_pdp()`](https://sjevelazco.github.io/flexsdm/reference/p_pdp.md) :
+  Partial Dependent Plot
 - [`sample_background()`](https://sjevelazco.github.io/flexsdm/reference/sample_background.md)
   : Sample background points
 - [`sample_pseudoabs()`](https://sjevelazco.github.io/flexsdm/reference/sample_pseudoabs.md)
