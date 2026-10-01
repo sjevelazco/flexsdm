@@ -1,4 +1,5 @@
 test_that("multiplication works", {
+  skip_on_cran()
   data("abies")
 
   # Using k-fold partition method

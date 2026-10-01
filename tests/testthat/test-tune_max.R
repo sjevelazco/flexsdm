@@ -5,6 +5,7 @@
 ## %######################################################%##
 
 test_that("test example tune_max", {
+  skip_on_cran()
   require(maxnet)
   require(dplyr)
 

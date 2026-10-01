@@ -1,4 +1,5 @@
 test_that("ESM Artificial Neural Networks", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
 

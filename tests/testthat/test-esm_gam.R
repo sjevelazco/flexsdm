@@ -1,4 +1,5 @@
 test_that("ESM generalized linear model ", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
 

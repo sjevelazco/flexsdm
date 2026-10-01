@@ -5,6 +5,7 @@
 ## %######################################################%##
 
 test_that("class and lenght of gbm_t object", {
+  skip_on_cran()
   data(abies)
   abies
 

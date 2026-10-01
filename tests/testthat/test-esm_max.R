@@ -1,4 +1,5 @@
 test_that("ESM maximum entropy", {
+  skip_on_cran()
   data("abies")
   data("backg")
   require(dplyr)

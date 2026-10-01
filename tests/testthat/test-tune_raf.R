@@ -15,6 +15,7 @@ abies2 <- part_random(
 
 
 test_that("tuen", {
+  skip_on_cran()
   # Hyper-parameter values for tuning
   tune_grid <-
     expand.grid(

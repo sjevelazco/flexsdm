@@ -1,4 +1,5 @@
 test_that("ESM Generalized Boosted Regression", {
+  skip_on_cran()
   data("abies")
   require(dplyr)
 

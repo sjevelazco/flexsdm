@@ -51,6 +51,7 @@ suppressMessages(
 
 
 test_that("sdm_varimp", {
+  skip_on_cran()
   v_ip <-
     sdm_varimp(
       data = abies2,
