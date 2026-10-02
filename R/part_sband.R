@@ -482,7 +482,7 @@ unique list values in pr_ab column are: ",
       }
 
       if (nrow(data) < 3) {
-        imoran_bands_c[c] <- NA
+        imoran_grid_c[c] <- NA
       } else {
         im <- sapply(
           data[filt, names(env_layer)],

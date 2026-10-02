@@ -1,3 +1,14 @@
+# flexsdm 1.4.2 (prerelease)
+- `tune_max`: a grid combination whose fits all failed was assigned the previous combination's model/performance (stale `mod`); now initialised to `NULL` and checked with `is.null()` (#478)
+- `fit_max`: the final refit fallback used the CV loop index in its check and could discard a successful fit; it now uses `is.null(mod)` and falls back on presences + background (`data_2`) (#478)
+- `tune_svm`: removed `na.omit()` on partition performance so all combinations are compared across the same partitions (#478)
+- `fit_gbm`: final model now uses `bag.fraction = 0.9`, consistent with the CV models; `tune_gbm` validity guard also uses 0.9 (#478)
+- `occfilt_geo`: moran method no longer collapses to one record (`Inf` distance) when no Moran's I falls in the selection window; the closest value is used, and the threshold comparison is now numeric (#479)
+- `sample_pseudoabs`: factor `maskval` now matches raster category IDs in the kmeans, env_const, env_clust and env_kmeans methods (#479)
+- `get_absences`: NA in the species column no longer creates phantom NA rows (#479)
+- `calib_area`: mcp/bmcp with three or more groups no longer errors (#479)
+- `part_sband`: fixed uninitialised `imoran_bands_c` assignment (#479)
+
 # flexsdm 1.4.1 
 -  `get_absences`: Function to build a presence-absence database from multi-species occurrence data, by @sjevelazco
 -  `occ_reproject`: Function to reproject occurrence coordinates to a new coordinate reference system, by @sjevelazco

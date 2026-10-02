@@ -295,6 +295,7 @@ tune_max <-
           tryCatch(
             {
               sampleback <- TRUE
+              mod <- NULL
               try(mod <- maxnet::maxnet(
                 p = train[[i]][, response],
                 data = train[[i]][predictors],
@@ -305,7 +306,7 @@ tune_max <-
                 regmult = grid$regmult[ii],
                 addsamplestobackground = sampleback
               ))
-              if (!exists("mod")) {
+              if (is.null(mod)) {
                 sampleback <- FALSE
                 try(mod <- maxnet::maxnet(
                   p = train[[i]][, response],

@@ -289,7 +289,7 @@ tune_svm <-
       names(eval_partial) <- 1:np2
       eval_partial <- eval_partial[sapply(eval_partial, function(x) !is.null(dim(x)))] %>%
         dplyr::bind_rows(., .id = "partition")
-      eval_partial_list[[h]] <- na.omit(eval_partial)
+      eval_partial_list[[h]] <- eval_partial
     }
 
     eval_partial <- eval_partial_list %>%

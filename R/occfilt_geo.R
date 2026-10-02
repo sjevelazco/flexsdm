@@ -290,9 +290,11 @@ occfilt_geo <- function(
       }
 
       # Select threshold
-      if (any(mor <= method[2])) {
-        mor_thr <- as.numeric(method[-1])
+      mor_thr <- as.numeric(method[2])
+      if (any(mor <= mor_thr)) {
         pos <- which(mor <= mor_thr & mor > mor_thr - 0.005)
+        # If no value falls in the selection window use the closest one
+        if (length(pos) == 0) pos <- which.min(abs(mor - mor_thr))
         # Filter distance and imoran values
         br <- br[pos]
         mor <- mor[pos]

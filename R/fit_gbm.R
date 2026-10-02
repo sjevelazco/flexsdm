@@ -327,7 +327,8 @@ fit_gbm <- function(
           distribution = "bernoulli",
           n.trees = n_trees,
           n.minobsinnode = n_minobsinnode,
-          shrinkage = shrinkage
+          shrinkage = shrinkage,
+          bag.fraction = 0.9
         )
     )
 

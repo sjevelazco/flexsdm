@@ -252,7 +252,7 @@ tune_gbm <-
 
           # Check if n.minobsinnode is too large for the training data
           nTrain <- nrow(train[[i]])
-          bag.fraction <- 0.5 # gbm default
+          bag.fraction <- 0.9 # same value used in the fits below
           if (nTrain * bag.fraction <= 2 * n_minobsinnode_val + 1) {
             # Adjust n.minobsinnode to be valid
             n_minobsinnode_val <- floor((nTrain * bag.fraction - 1) / 2)

@@ -48,6 +48,27 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.4.2" id="flexsdm-142-prerelease">flexsdm 1.4.2 (prerelease)<a class="anchor" aria-label="anchor" href="#flexsdm-142-prerelease"></a></h2>
+<ul><li>
+<code>tune_max</code>: a grid combination whose fits all failed was assigned the previous combination’s model/performance (stale <code>mod</code>); now initialised to <code>NULL</code> and checked with <code><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null()</a></code> (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
+<li>
+<code>fit_max</code>: the final refit fallback used the CV loop index in its check and could discard a successful fit; it now uses <code>is.null(mod)</code> and falls back on presences + background (<code>data_2</code>) (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
+<li>
+<code>tune_svm</code>: removed <code><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit()</a></code> on partition performance so all combinations are compared across the same partitions (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
+<li>
+<code>fit_gbm</code>: final model now uses <code>bag.fraction = 0.9</code>, consistent with the CV models; <code>tune_gbm</code> validity guard also uses 0.9 (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
+<li>
+<code>occfilt_geo</code>: moran method no longer collapses to one record (<code>Inf</code> distance) when no Moran’s I falls in the selection window; the closest value is used, and the threshold comparison is now numeric (<a href="https://github.com/sjevelazco/flexsdm/issues/479" class="external-link">#479</a>)</li>
+<li>
+<code>sample_pseudoabs</code>: factor <code>maskval</code> now matches raster category IDs in the kmeans, env_const, env_clust and env_kmeans methods (<a href="https://github.com/sjevelazco/flexsdm/issues/479" class="external-link">#479</a>)</li>
+<li>
+<code>get_absences</code>: NA in the species column no longer creates phantom NA rows (<a href="https://github.com/sjevelazco/flexsdm/issues/479" class="external-link">#479</a>)</li>
+<li>
+<code>calib_area</code>: mcp/bmcp with three or more groups no longer errors (<a href="https://github.com/sjevelazco/flexsdm/issues/479" class="external-link">#479</a>)</li>
+<li>
+<code>part_sband</code>: fixed uninitialised <code>imoran_bands_c</code> assignment (<a href="https://github.com/sjevelazco/flexsdm/issues/479" class="external-link">#479</a>)</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.1" id="flexsdm-141">flexsdm 1.4.1<a class="anchor" aria-label="anchor" href="#flexsdm-141"></a></h2>
 <ul><li>
 <code>get_absences</code>: Function to build a presence-absence database from multi-species occurrence data, by <a href="https://github.com/sjevelazco" class="external-link">@sjevelazco</a></li>

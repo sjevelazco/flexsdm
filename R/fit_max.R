@@ -507,15 +507,15 @@ fit_max <- function(
         )
     ))
 
-    if (length(mod) < i) {
+    if (is.null(mod)) {
       message("Refit with addsamplestobackground = FALSE")
       sampleback <- FALSE
       try(
         mod <-
           suppressMessages(
             maxnet::maxnet(
-              p = data[, response],
-              data = data[predictors],
+              p = data_2[, response],
+              data = data_2[predictors],
               f = formula1,
               regmult = regmult,
               addsamplestobackground = sampleback

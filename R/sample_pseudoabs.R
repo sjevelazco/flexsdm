@@ -279,9 +279,9 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
 
     # Restriction for a given region
     if (!is.null(maskval)) {
-      if (is.factor(maskval)) {
-        maskval <-
-          which(levels(maskval) %in% as.character(maskval))
+      if (is.factor(rlayer)) {
+        lv <- terra::levels(rlayer)[[1]]
+        maskval <- lv[, 1][lv[, 2] %in% as.character(maskval)]
         rlayer <- rlayer * 1
       }
       filt <- terra::match(rlayer, maskval)
@@ -341,9 +341,9 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp <- terra::mask(rlayer, envp)
 
     if (!is.null(maskval)) {
-      if (is.factor(maskval)) {
-        maskval <-
-          which(levels(maskval) %in% as.character(maskval))
+      if (is.factor(rlayer)) {
+        lv <- terra::levels(rlayer)[[1]]
+        maskval <- lv[, 1][lv[, 2] %in% as.character(maskval)]
         rlayer <- rlayer * 1
       }
       filt <- terra::match(rlayer, maskval)
@@ -389,9 +389,9 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     envp <- inv_geo(e = rlayer, p = data[, c(x, y)], d = as.numeric(method["width"]))
 
     if (!is.null(maskval)) {
-      if (is.factor(maskval)) {
-        maskval <-
-          which(levels(maskval) %in% as.character(maskval))
+      if (is.factor(rlayer)) {
+        lv <- terra::levels(rlayer)[[1]]
+        maskval <- lv[, 1][lv[, 2] %in% as.character(maskval)]
         rlayer <- rlayer * 1
       }
       filt <- terra::match(rlayer, maskval)
@@ -459,9 +459,9 @@ sample_pseudoabs <- function(data, x, y, n, method, rlayer, maskval = NULL, cali
     rm(envp2)
 
     if (!is.null(maskval)) {
-      if (is.factor(maskval)) {
-        maskval <-
-          which(levels(maskval) %in% as.character(maskval))
+      if (is.factor(rlayer)) {
+        lv <- terra::levels(rlayer)[[1]]
+        maskval <- lv[, 1][lv[, 2] %in% as.character(maskval)]
         rlayer <- rlayer * 1
       }
       filt <- terra::match(rlayer, maskval)
