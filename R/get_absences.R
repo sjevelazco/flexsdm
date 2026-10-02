@@ -96,8 +96,8 @@ get_absences <- function(data, x = "x", y = "y", species = "species",
 
   data_new <- vector("list", length(sp))
   for (i in seq_along(sp)) {
-    pr <- data[data[[species]] == sp[i], ]
-    ab <- data[data[[species]] != sp[i], ]
+    pr <- data[which(data[[species]] == sp[i]), ]
+    ab <- data[which(data[[species]] != sp[i]), ]
     ab[[pr_ab_name]] <- 0
     ab[[species]] <- sp[i]
     data_new[[i]] <- dplyr::bind_rows(pr, ab)

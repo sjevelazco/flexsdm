@@ -206,7 +206,7 @@ calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
     })
 
     result <- if (length(result_list) > 1) {
-      do.call(terra::union, result_list)
+      Reduce(terra::union, result_list)
     } else {
       result_list[[1]]
     }
