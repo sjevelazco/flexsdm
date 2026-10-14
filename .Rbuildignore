@@ -10,3 +10,4 @@ docs
 ^\.claude$
 ^cran-comments\.md$
 ^vignettes/.*\.orig$
+Rplots\.pdf$
