@@ -8,7 +8,7 @@ outputs.
 
 ``` r
 sdm_directory(
-  main_dir = NULL,
+  main_dir,
   projections = NULL,
   calibration_area = TRUE,
   algorithm = NULL,
@@ -23,9 +23,10 @@ sdm_directory(
 - main_dir:
 
   character. Directory path containing main folder for saving model
-  inputs and outputs. If NULL function assumes as directory path the
-  current working R session and creates a sub-folder with the name of
-  'flexsdm_results'. Default NULL
+  inputs and outputs. There is no default: the path must be provided by
+  the user (e.g., in examples use a sub-folder of
+  [`tempdir()`](https://rdrr.io/r/base/tempfile.html)). The folder is
+  created if it does not exist.
 
 - projections:
 
@@ -84,13 +85,12 @@ results from any modeling and ensemble technique presented in flexsdm
 ## Examples
 
 ``` r
-# \donttest{
-require(dplyr)
-# require(sf)
-
-# Implement sdm_directory without specific path and project name
+# Folders are created in a temporary directory; in a real analysis use
+# the path of your own project folder
+my_project <- file.path(tempdir(), "my_project_name")
+# my_project <- file.path(getwd(), "flexsdm_results") # create folders in the working directory
 dirs_1 <- sdm_directory(
-  main_dir = NULL,
+  main_dir = my_project,
   projections = NULL,
   calibration_area = TRUE,
   algorithm = c("gam", "tune_max"),
@@ -99,170 +99,42 @@ dirs_1 <- sdm_directory(
   return_vector = TRUE
 )
 #> Directories were created in:
-#> C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name
 dirs_1
-#>  [1] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results"                                       
-#>  [2] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs"                              
-#>  [3] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/1_Occurrences"                
-#>  [4] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/2_Predictors"                 
-#>  [5] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/2_Predictors/1_Current"       
-#>  [6] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/1_Inputs/3_Calibration_area"           
-#>  [7] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs"                             
-#>  [8] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/0_Model_performance"         
-#>  [9] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current"                   
-#> [10] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm"         
-#> [11] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm/gam"     
-#> [12] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Algorithm/tune_max"
-#> [13] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble"          
-#> [14] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble/mean"     
-#> [15] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results/2_Outputs/1_Current/Ensemble/meanthr"  
-dirs_1[1] %>% fs::dir_tree(., recurse = TRUE)
-#> C:/Users/svelazco/Documents/GitHub/flexsdm/docs/reference/flexsdm_results
-#> ├── 1_Inputs
-#> │   ├── 1_Occurrences
-#> │   ├── 2_Predictors
-#> │   │   └── 1_Current
-#> │   └── 3_Calibration_area
-#> └── 2_Outputs
-#>     ├── 0_Model_performance
-#>     └── 1_Current
-#>         ├── Algorithm
-#>         │   ├── gam
-#>         │   └── tune_max
-#>         └── Ensemble
-#>             ├── mean
-#>             └── meanthr
+#>  [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name"                                       
+#>  [2] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs"                              
+#>  [3] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs/1_Occurrences"                
+#>  [4] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs/2_Predictors"                 
+#>  [5] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs/2_Predictors/1_Current"       
+#>  [6] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs/3_Calibration_area"           
+#>  [7] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs"                             
+#>  [8] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs/0_Model_performance"         
+#>  [9] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs/1_Current"                   
+#> [10] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs/1_Current/Algorithm"         
+#> [11] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs/1_Current/Algorithm/gam"     
+#> [12] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs/1_Current/Algorithm/tune_max"
+#> [13] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs/1_Current/Ensemble"          
+#> [14] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs/1_Current/Ensemble/mean"     
+#> [15] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/2_Outputs/1_Current/Ensemble/meanthr"  
+unlink(my_project, recursive = TRUE) # remove the folders created in this example
 
-unlink(dirs_1[1], recursive = TRUE) # this directory and sub-folder will be removed
-
-# Implement sdm_directory with specific path and project name
-getwd() %>% dirname()
-#> [1] "C:/Users/svelazco/Documents/GitHub/flexsdm/docs"
-
+# With folders for model projections and for thresholded outputs
 dirs_2 <- sdm_directory(
-  main_dir = getwd() %>% dirname() %>% file.path(., "my_project_name"),
-  projections = c(
-    "cnrm_rpc8.5_2050",
-    "cnrm_rpc4.5_2050"
-  ),
+  main_dir = my_project,
+  projections = c("cnrm_rpc8.5_2050", "cnrm_rpc4.5_2050"),
   calibration_area = TRUE,
   algorithm = "all",
   ensemble = c("mean", "meanthr"),
   threshold = TRUE
 )
 #> Directories were created in:
-#> C:/Users/svelazco/Documents/GitHub/flexsdm/docs/my_project_name
-dirs_2[1] %>% fs::dir_tree(., recurse = TRUE)
-#> C:/Users/svelazco/Documents/GitHub/flexsdm/docs/my_project_name
-#> ├── 1_Inputs
-#> │   ├── 1_Occurrences
-#> │   ├── 2_Predictors
-#> │   │   ├── 1_Current
-#> │   │   └── 2_Projection
-#> │   │       ├── cnrm_rpc4.5_2050
-#> │   │       └── cnrm_rpc8.5_2050
-#> │   └── 3_Calibration_area
-#> └── 2_Outputs
-#>     ├── 0_Model_performance
-#>     ├── 1_Current
-#>     │   ├── Algorithm
-#>     │   │   ├── gam
-#>     │   │   │   ├── 1_con
-#>     │   │   │   └── 2_bin
-#>     │   │   ├── gau
-#>     │   │   │   ├── 1_con
-#>     │   │   │   └── 2_bin
-#>     │   │   ├── gbm
-#>     │   │   │   ├── 1_con
-#>     │   │   │   └── 2_bin
-#>     │   │   ├── glm
-#>     │   │   │   ├── 1_con
-#>     │   │   │   └── 2_bin
-#>     │   │   ├── max
-#>     │   │   │   ├── 1_con
-#>     │   │   │   └── 2_bin
-#>     │   │   ├── net
-#>     │   │   │   ├── 1_con
-#>     │   │   │   └── 2_bin
-#>     │   │   ├── raf
-#>     │   │   │   ├── 1_con
-#>     │   │   │   └── 2_bin
-#>     │   │   └── svm
-#>     │   │       ├── 1_con
-#>     │   │       └── 2_bin
-#>     │   └── Ensemble
-#>     │       ├── mean
-#>     │       │   ├── 1_con
-#>     │       │   └── 2_bin
-#>     │       └── meanthr
-#>     │           ├── 1_con
-#>     │           └── 2_bin
-#>     └── 2_Projection
-#>         ├── cnrm_rpc4.5_2050
-#>         │   ├── Algorithm
-#>         │   │   ├── gam
-#>         │   │   │   ├── 1_con
-#>         │   │   │   └── 2_bin
-#>         │   │   ├── gau
-#>         │   │   │   ├── 1_con
-#>         │   │   │   └── 2_bin
-#>         │   │   ├── gbm
-#>         │   │   │   ├── 1_con
-#>         │   │   │   └── 2_bin
-#>         │   │   ├── glm
-#>         │   │   │   ├── 1_con
-#>         │   │   │   └── 2_bin
-#>         │   │   ├── max
-#>         │   │   │   ├── 1_con
-#>         │   │   │   └── 2_bin
-#>         │   │   ├── net
-#>         │   │   │   ├── 1_con
-#>         │   │   │   └── 2_bin
-#>         │   │   ├── raf
-#>         │   │   │   ├── 1_con
-#>         │   │   │   └── 2_bin
-#>         │   │   └── svm
-#>         │   │       ├── 1_con
-#>         │   │       └── 2_bin
-#>         │   └── Ensemble
-#>         │       ├── mean
-#>         │       │   ├── 1_con
-#>         │       │   └── 2_bin
-#>         │       └── meanthr
-#>         │           ├── 1_con
-#>         │           └── 2_bin
-#>         └── cnrm_rpc8.5_2050
-#>             ├── Algorithm
-#>             │   ├── gam
-#>             │   │   ├── 1_con
-#>             │   │   └── 2_bin
-#>             │   ├── gau
-#>             │   │   ├── 1_con
-#>             │   │   └── 2_bin
-#>             │   ├── gbm
-#>             │   │   ├── 1_con
-#>             │   │   └── 2_bin
-#>             │   ├── glm
-#>             │   │   ├── 1_con
-#>             │   │   └── 2_bin
-#>             │   ├── max
-#>             │   │   ├── 1_con
-#>             │   │   └── 2_bin
-#>             │   ├── net
-#>             │   │   ├── 1_con
-#>             │   │   └── 2_bin
-#>             │   ├── raf
-#>             │   │   ├── 1_con
-#>             │   │   └── 2_bin
-#>             │   └── svm
-#>             │       ├── 1_con
-#>             │       └── 2_bin
-#>             └── Ensemble
-#>                 ├── mean
-#>                 │   ├── 1_con
-#>                 │   └── 2_bin
-#>                 └── meanthr
-#>                     ├── 1_con
-#>                     └── 2_bin
-# }
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name
+head(dirs_2)
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name"                                   
+#> [2] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs"                          
+#> [3] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs/1_Occurrences"            
+#> [4] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs/2_Predictors"             
+#> [5] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs/2_Predictors/1_Current"   
+#> [6] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpV0aSbk/my_project_name/1_Inputs/2_Predictors/2_Projection"
+unlink(my_project, recursive = TRUE)
 ```

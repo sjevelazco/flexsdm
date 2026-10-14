@@ -174,6 +174,59 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+# Use the same records as background points (toy example only)
+backg_toy <- abies_toy
+backg_toy$pr_ab <- 0
+
+esm_toy <- esm_max(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = NULL,
+  background = backg_toy,
+  clamp = TRUE,
+  classes = "lq",
+  pred_type = "cloglog",
+  regmult = 1
+)
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |======================================================================| 100%
+esm_toy$performance
+#> # A tibble: 7 × 33
+#>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 esm_max equal_sens_…     0.502          30         30    0.9    0.1      0.9  
+#> 2 esm_max lpt              0.362          30         30    1      0        0.867
+#> 3 esm_max max_fpb          0.362          30         30    1      0        0.867
+#> 4 esm_max max_jaccard      0.362          30         30    1      0        0.867
+#> 5 esm_max max_sens_sp…     0.569          30         30    0.933  0.115    0.933
+#> 6 esm_max max_sorensen     0.362          30         30    1      0        0.867
+#> 7 esm_max sensitivity      0.472          30         30    0.9    0        0.9  
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 data("abies")
 data("backg")
@@ -261,203 +314,261 @@ esm_max_t1 <- esm_max(
   pred_type = "cloglog",
   regmult = 1
 )
-#>   |                                                                              |                                                                      |   0%
+#> 
+  |                                                                            
+  |                                                                      |   0%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |==                                                                    |   4%
+#> 
+  |                                                                            
+  |==                                                                    |   4%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |=====                                                                 |   7%
+#> 
+  |                                                                            
+  |=====                                                                 |   7%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |========                                                              |  11%
+#> 
+  |                                                                            
+  |========                                                              |  11%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |==========                                                            |  14%
+#> 
+  |                                                                            
+  |==========                                                            |  14%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |============                                                          |  18%
+#> 
+  |                                                                            
+  |============                                                          |  18%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |===============                                                       |  21%
+#> 
+  |                                                                            
+  |===============                                                       |  21%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |==================                                                    |  25%
+#> 
+  |                                                                            
+  |==================                                                    |  25%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |====================                                                  |  29%
+#> 
+  |                                                                            
+  |====================                                                  |  29%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |======================                                                |  32%
+#> 
+  |                                                                            
+  |======================                                                |  32%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |=========================                                             |  36%
+#> 
+  |                                                                            
+  |=========================                                             |  36%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |============================                                          |  39%
+#> 
+  |                                                                            
+  |============================                                          |  39%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |==============================                                        |  43%
+#> 
+  |                                                                            
+  |==============================                                        |  43%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |================================                                      |  46%
+#> 
+  |                                                                            
+  |================================                                      |  46%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |===================================                                   |  50%
+#> 
+  |                                                                            
+  |===================================                                   |  50%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |======================================                                |  54%
+#> 
+  |                                                                            
+  |======================================                                |  54%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |========================================                              |  57%
+#> 
+  |                                                                            
+  |========================================                              |  57%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |==========================================                            |  61%
+#> 
+  |                                                                            
+  |==========================================                            |  61%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |=============================================                         |  64%
+#> 
+  |                                                                            
+  |=============================================                         |  64%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |================================================                      |  68%
+#> 
+  |                                                                            
+  |================================================                      |  68%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |==================================================                    |  71%
+#> 
+  |                                                                            
+  |==================================================                    |  71%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |====================================================                  |  75%
+#> 
+  |                                                                            
+  |====================================================                  |  75%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |=======================================================               |  79%
+#> 
+  |                                                                            
+  |=======================================================               |  79%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |==========================================================            |  82%
+#> 
+  |                                                                            
+  |==========================================================            |  82%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |============================================================          |  86%
+#> 
+  |                                                                            
+  |============================================================          |  86%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |==============================================================        |  89%
+#> 
+  |                                                                            
+  |==============================================================        |  89%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |=================================================================     |  93%
+#> 
+  |                                                                            
+  |=================================================================     |  93%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |====================================================================  |  96%
+#> 
+  |                                                                            
+  |====================================================================  |  96%
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
 #> Warning: one multinomial or binomial class has fewer than 8  observations; dangerous ground
-#>   |                                                                              |======================================================================| 100%
+#> 
+  |                                                                            
+  |======================================================================| 100%
 
 esm_max_t1$esm_model # bivariate model
 #> $`0.141203703703704`

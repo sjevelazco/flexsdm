@@ -142,6 +142,48 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+tune_toy <- tune_raf(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  grid = expand.grid(mtry = c(1, 2), ntree = c(50, 100)),
+  thr = "max_sens_spec",
+  metric = "TSS",
+  n_cores = 1
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Tuning model...
+#> Replica number: 1/1
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+tune_toy$performance
+#> # A tibble: 1 × 35
+#>    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
+#>   <dbl> <dbl> <chr> <chr>           <dbl>       <int>      <int>    <dbl>  <dbl>
+#> 1     1    50 raf   max_sens_s…      0.72          30         30    0.967 0.0577
+#> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
+#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
+#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
+#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,
+#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 data(abies)
 abies
@@ -213,14 +255,14 @@ rf_t$model
 #> Call:
 #>  randomForest(formula = formula1, data = data, mtry = mtry, ntree = ntree,      importance = TRUE, ) 
 #>                Type of random forest: classification
-#>                      Number of trees: 100
+#>                      Number of trees: 300
 #> No. of variables tried at each split: 2
 #> 
-#>         OOB estimate of  error rate: 11.29%
+#>         OOB estimate of  error rate: 11.21%
 #> Confusion matrix:
 #>     0   1 class.error
-#> 0 604  96  0.13714286
-#> 1  62 638  0.08857143
+#> 0 602  98  0.14000000
+#> 1  59 641  0.08428571
 rf_t$predictors
 #> # A tibble: 1 × 9
 #>   c1    c2    c3    c4      c5      c6    c7    c8    f       
@@ -230,9 +272,9 @@ rf_t$performance_part
 #> # A tibble: 3 × 21
 #>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
 #>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#> 1 1       1         raf   max_sens…      0.48         234        234 0.932 0.893
-#> 2 1       2         raf   max_sens…      0.52         233        233 0.927 0.845
-#> 3 1       3         raf   max_sens…      0.48         233        233 0.944 0.798
+#> 1 1       1         raf   max_sens…     0.53          234        234 0.902 0.876
+#> 2 1       2         raf   max_sens…     0.647         233        233 0.906 0.906
+#> 3 1       3         raf   max_sens…     0.613         233        233 0.858 0.888
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
@@ -240,10 +282,10 @@ rf_t$hyper_performance
 #> # A tibble: 4 × 32
 #>    mtry ntree model threshold    TPR_mean  TPR_sd TNR_mean TNR_sd W_TPR_TNR_mean
 #>   <dbl> <dbl> <chr> <chr>           <dbl>   <dbl>    <dbl>  <dbl>          <dbl>
-#> 1     2   100 raf   max_sens_sp…    0.934 0.00889    0.846 0.0474          0.890
-#> 2     2   300 raf   max_sens_sp…    0.936 0.0237     0.834 0.0532          0.885
-#> 3     4   100 raf   max_sens_sp…    0.904 0.00673    0.866 0.0275          0.885
-#> 4     4   300 raf   max_sens_sp…    0.896 0.0258     0.877 0.0391          0.886
+#> 1     2   100 raf   max_sens_sp…    0.893 0.0188     0.880 0.0113          0.886
+#> 2     2   300 raf   max_sens_sp…    0.887 0.0179     0.890 0.0220          0.889
+#> 3     4   100 raf   max_sens_sp…    0.900 0.0126     0.871 0.0334          0.886
+#> 4     4   300 raf   max_sens_sp…    0.897 0.00430    0.877 0.0322          0.887
 #> # ℹ 23 more variables: W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>,
 #> #   SORENSEN_sd <dbl>, JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>,
 #> #   FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>,
@@ -252,18 +294,18 @@ rf_t$hyper_performance
 #> #   CRPS_mean <dbl>, CRPS_sd <dbl>, IMAE_mean <dbl>, IMAE_sd <dbl>
 rf_t$data_ens
 #> # A tibble: 1,400 × 5
-#>    rnames replicates part  pr_ab  pred
-#>    <chr>  <chr>      <chr> <fct> <dbl>
-#>  1 3      .part      1     0      0.01
-#>  2 6      .part      1     0      0.24
-#>  3 9      .part      1     0      0.34
-#>  4 11     .part      1     0      0.15
-#>  5 14     .part      1     0      0.06
-#>  6 16     .part      1     0      0.01
-#>  7 17     .part      1     0      0.11
-#>  8 18     .part      1     0      0.01
-#>  9 25     .part      1     0      0.15
-#> 10 29     .part      1     0      0.01
+#>    rnames replicates part  pr_ab    pred
+#>    <chr>  <chr>      <chr> <fct>   <dbl>
+#>  1 2      .part      1     0     0.0167 
+#>  2 4      .part      1     0     0.00333
+#>  3 8      .part      1     0     0.107  
+#>  4 10     .part      1     0     0.18   
+#>  5 15     .part      1     0     0.0233 
+#>  6 16     .part      1     0     0.0467 
+#>  7 24     .part      1     0     0.9    
+#>  8 27     .part      1     0     0.22   
+#>  9 29     .part      1     0     0.00333
+#> 10 30     .part      1     0     0.0467 
 #> # ℹ 1,390 more rows
 # }
 ```

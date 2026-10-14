@@ -61,7 +61,12 @@ correct_colinvar(
 
 - save_proj:
 
-  character. Directory to save PCA projection. Default NULL.
+  character. Directory to save PCA projection. If NULL (default), the
+  projections are saved in a folder named 'Projection_PCA' within the
+  temporary directory of the R session (see
+  [`tempdir`](https://rdrr.io/r/base/tempfile.html)); use this argument
+  to keep them in a folder of your choice. The path is returned in the
+  'proj' element of the output.
 
 - restric_to_region:
 
@@ -179,9 +184,11 @@ C:/Users/my_pc/projections/\
 \`– var3.tif
 
 If pca method is run with time projections, correct_colinvar function
-will create the Projection_PCA (the exact path is in the path object
-returned by the function) with the same system of sub-folders and
-multiband raster with the principal components (pcs.tif)
+will create the Projection_PCA folder (in the folder given in the
+save_proj argument, or in the temporary directory if save_proj is NULL;
+the exact path is in the proj element returned by the function) with the
+same system of sub-folders and multiband raster with the principal
+components (pcs.tif)
 
 C:/Users/my_pc/Projection_PCA/\
 \|– MRIESM_2050_ssp126\
@@ -204,6 +211,42 @@ points).
 ## Examples
 
 ``` r
+# Toy raster: coarser resolution to keep this example fast
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6)
+
+# Perform Pearson collinearity control
+var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"))
+var$cor_table
+#>           CFP_1     CFP_2     CFP_3     CFP_4
+#> CFP_1 0.0000000 0.7561269 0.8540406 0.8093741
+#> CFP_2 0.7561269 0.0000000 0.5022392 0.6029957
+#> CFP_3 0.8540406 0.5022392 0.0000000 0.7792649
+#> CFP_4 0.8093741 0.6029957 0.7792649 0.0000000
+var$cor_variables
+#> $CFP_1
+#> [1] "CFP_2" "CFP_3" "CFP_4"
+#> 
+#> $CFP_2
+#> [1] "CFP_1"
+#> 
+#> $CFP_3
+#> [1] "CFP_1" "CFP_4"
+#> 
+#> $CFP_4
+#> [1] "CFP_1" "CFP_3"
+#> 
+
+# Perform VIF collinearity control
+var <- correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))
+var$vif_table
+#> # A tibble: 3 × 2
+#>   Variables   VIF
+#>   <chr>     <dbl>
+#> 1 CFP_2      1.58
+#> 2 CFP_3      2.56
+#> 3 CFP_4      3.00
+
 # \donttest{
 require(terra)
 require(dplyr)
@@ -237,10 +280,10 @@ var$cor_variables
 var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"), maxcell = 10000)
 var$cor_table
 #>           CFP_1     CFP_2     CFP_3     CFP_4
-#> CFP_1 0.0000000 0.7653187 0.7945362 0.7855346
-#> CFP_2 0.7653187 0.0000000 0.4155557 0.5885450
-#> CFP_3 0.7945362 0.4155557 0.0000000 0.7303327
-#> CFP_4 0.7855346 0.5885450 0.7303327 0.0000000
+#> CFP_1 0.0000000 0.7619283 0.7907868 0.7759095
+#> CFP_2 0.7619283 0.0000000 0.4058082 0.5656382
+#> CFP_3 0.7907868 0.4058082 0.0000000 0.7396789
+#> CFP_4 0.7759095 0.5656382 0.7396789 0.0000000
 var$cor_variables
 #> $CFP_1
 #> [1] "CFP_2" "CFP_3" "CFP_4"
@@ -317,10 +360,10 @@ dir_sc <- file.path(tempdir(), "projections")
 dir.create(dir_sc)
 dir_sc <- file.path(dir_sc, c("scenario_1", "scenario_2"))
 sapply(dir_sc, dir.create)
-#> C:\\Users\\svelazco\\AppData\\Local\\Temp\\Rtmpg78lxG/projections/scenario_1 
-#>                                                                         TRUE 
-#> C:\\Users\\svelazco\\AppData\\Local\\Temp\\Rtmpg78lxG/projections/scenario_2 
-#>                                                                         TRUE 
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/projections/scenario_1 
+#>                                                                                TRUE 
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/projections/scenario_2 
+#>                                                                                TRUE 
 
 somevar <-
   system.file("external/somevar.tif", package = "flexsdm")
@@ -332,8 +375,10 @@ terra::writeRaster(somevar, file.path(dir_sc[2], "somevar.tif"), overwrite = TRU
 ## Perform pca with projections
 dir_w_proj <- dirname(dir_sc[1])
 dir_w_proj
-#> [1] "C:/Users/svelazco/AppData/Local/Temp/Rtmpg78lxG/projections"
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/projections"
 var <- correct_colinvar(env_layer = somevar, method = "pca", proj = dir_w_proj)
+#> 'save_proj' was not provided; PCA projections were saved in a temporary folder: /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/Projection_PCA
+#> Use the 'save_proj' argument to save them in a folder of your choice
 var$env_layer
 #> class       : SpatRaster
 #> size        : 558, 394, 3  (nrow, ncol, nlyr)
@@ -361,7 +406,7 @@ var$cumulative_variance
 #> 3     3 0.979
 #> 4     4 1    
 var$proj
-#> [1] "C:/Users/svelazco/AppData/Local/Temp/Rtmpg78lxG/Projection_PCA"
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/Projection_PCA"
 
 
 # Perform fa colinearity control

@@ -32,16 +32,14 @@ A tibble object with 5000 rows and 10 variables:
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 #> Loading required package: dplyr
-#> Warning: package 'dplyr' was built under R version 4.5.3
 #> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
+#> Attaching package: ‘dplyr’
+#> The following objects are masked from ‘package:stats’:
 #> 
 #>     filter, lag
-#> The following objects are masked from 'package:base':
+#> The following objects are masked from ‘package:base’:
 #> 
 #>     intersect, setdiff, setequal, union
 data("abies")
@@ -61,5 +59,4 @@ abies
 #> 10  8651     0  137640. -110538.  215.  265. -4.62   180.     9.57  0    0     
 #> # ℹ 1,390 more rows
 #> # ℹ 2 more variables: depth <dbl>, landform <fct>
-# }
 ```

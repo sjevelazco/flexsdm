@@ -140,6 +140,53 @@ A list object with:
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+tune_toy <- tune_gbm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  grid = expand.grid(
+    n.trees = c(20, 40),
+    shrinkage = 0.1,
+    n.minobsinnode = 3
+  ),
+  thr = "max_sens_spec",
+  metric = "TSS",
+  n_cores = 1
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Tuning model...
+#> Replica number: 1/1
+#> Fitting final model with best hyper-parameters...
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+tune_toy$performance
+#> # A tibble: 1 × 36
+#>   n.trees shrinkage n.minobsinnode model threshold     thr_value n_presences
+#>     <dbl>     <dbl>          <dbl> <chr> <chr>             <dbl>       <int>
+#> 1      20       0.1              3 gbm   max_sens_spec     0.754          30
+#> # ℹ 29 more variables: n_absences <int>, TPR_mean <dbl>, TPR_sd <dbl>,
+#> #   TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>, …
+
 # \donttest{
 data(abies)
 abies
@@ -208,7 +255,8 @@ gbm_t <-
 # Outputs
 gbm_t$model
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 50 iterations were performed.
 #> There were 9 predictors of which 9 had non-zero influence.
@@ -221,7 +269,7 @@ gbm_t$performance
 #> # A tibble: 1 × 36
 #>   n.trees shrinkage n.minobsinnode model threshold     thr_value n_presences
 #>     <dbl>     <dbl>          <dbl> <chr> <chr>             <dbl>       <int>
-#> 1      50       0.5              3 gbm   max_sens_spec     0.444         700
+#> 1      50       0.5              3 gbm   max_sens_spec     0.622         700
 #> # ℹ 29 more variables: n_absences <int>, TPR_mean <dbl>, TPR_sd <dbl>,
 #> #   TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
@@ -233,24 +281,24 @@ gbm_t$performance_part
 #> # A tibble: 3 × 21
 #>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
 #>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#> 1 1       1         gbm   max_sens…     0.473         234        234 0.902 0.863
-#> 2 1       2         gbm   max_sens…     0.564         233        233 0.880 0.837
-#> 3 1       3         gbm   max_sens…     0.569         233        233 0.876 0.858
+#> 1 1       1         gbm   max_sens…     0.667         234        234 0.863 0.868
+#> 2 1       2         gbm   max_sens…     0.306         233        233 0.940 0.768
+#> 3 1       3         gbm   max_sens…     0.603         233        233 0.867 0.897
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 gbm_t$hyper_performance
 #> # A tibble: 8 × 33
-#>   n.trees shrinkage n.minobsinnode model threshold     TPR_mean TPR_sd TNR_mean
-#>     <dbl>     <dbl>          <dbl> <chr> <chr>            <dbl>  <dbl>    <dbl>
-#> 1      20       0.1              3 gbm   max_sens_spec    0.899 0.0213    0.744
-#> 2      20       0.1              7 gbm   max_sens_spec    0.899 0.0213    0.744
-#> 3      20       0.5              3 gbm   max_sens_spec    0.900 0.0366    0.807
-#> 4      20       0.5              7 gbm   max_sens_spec    0.900 0.0366    0.807
-#> 5      50       0.1              3 gbm   max_sens_spec    0.893 0.0336    0.783
-#> 6      50       0.1              7 gbm   max_sens_spec    0.893 0.0336    0.783
-#> 7      50       0.5              3 gbm   max_sens_spec    0.886 0.0140    0.853
-#> 8      50       0.5              7 gbm   max_sens_spec    0.899 0.0361    0.839
+#>   n.trees shrinkage n.minobsinnode model threshold     TPR_mean  TPR_sd TNR_mean
+#>     <dbl>     <dbl>          <dbl> <chr> <chr>            <dbl>   <dbl>    <dbl>
+#> 1      20       0.1              3 gbm   max_sens_spec    0.893 0.0194     0.756
+#> 2      20       0.1              7 gbm   max_sens_spec    0.886 0.0246     0.757
+#> 3      20       0.5              3 gbm   max_sens_spec    0.909 0.0235     0.796
+#> 4      20       0.5              7 gbm   max_sens_spec    0.926 0.00880    0.787
+#> 5      50       0.1              3 gbm   max_sens_spec    0.900 0.0344     0.773
+#> 6      50       0.1              7 gbm   max_sens_spec    0.882 0.0512     0.793
+#> 7      50       0.5              3 gbm   max_sens_spec    0.881 0.00633    0.853
+#> 8      50       0.5              7 gbm   max_sens_spec    0.903 0.0260     0.829
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -262,16 +310,16 @@ gbm_t$data_ens
 #> # A tibble: 1,400 × 5
 #>    rnames replicates part  pr_ab    pred
 #>    <chr>  <chr>      <chr> <dbl>   <dbl>
-#>  1 1      .part      1         0 0.216  
-#>  2 4      .part      1         0 0.00795
-#>  3 5      .part      1         0 0.197  
-#>  4 7      .part      1         0 0.0358 
-#>  5 8      .part      1         0 0.00448
-#>  6 10     .part      1         0 0.112  
-#>  7 12     .part      1         0 0.288  
-#>  8 19     .part      1         0 0.0728 
-#>  9 21     .part      1         0 0.159  
-#> 10 23     .part      1         0 0.0717 
+#>  1 3      .part      1         0 0.0311 
+#>  2 4      .part      1         0 0.00478
+#>  3 6      .part      1         0 0.0603 
+#>  4 8      .part      1         0 0.00724
+#>  5 9      .part      1         0 0.453  
+#>  6 10     .part      1         0 0.0998 
+#>  7 18     .part      1         0 0.0147 
+#>  8 19     .part      1         0 0.0670 
+#>  9 20     .part      1         0 0.219  
+#> 10 25     .part      1         0 0.161  
 #> # ℹ 1,390 more rows
 
 # Graphical exploration of performance of each hyper-parameter setting

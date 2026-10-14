@@ -127,6 +127,33 @@ records and spatial autocorrelation.
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sp3[sp3$pr_ab == 1, ]
+
+# Geographic filtering based on a coarser resolution (cell size method)
+filtered_occ <- occfilt_geo(
+  data = sp3,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("cellsize", factor = "3"),
+  prj = terra::crs(somevar)
+)
+#> Extracting values from raster ... 
+#> 7 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 6
+#> Factor: x3
+#> Distance threshold (km): 27.739
+#> Number of filtered records: 6
+nrow(sp3)
+#> [1] 13
+nrow(filtered_occ)
+#> [1] 6
+
 # \donttest{
 require(terra)
 require(dplyr)
@@ -229,34 +256,34 @@ filtered_occ # Note that several values are provided for any filtering method
 #> 
 #> $`8`
 #> # A tibble: 156 × 4
-#>    species        x        y pr_ab
-#>    <chr>      <dbl>    <dbl> <dbl>
-#>  1 sp1     -269871.   69512.     1
-#>  2 sp1     -149991.  267962.     1
-#>  3 sp1       91659. -156748.     1
-#>  4 sp1     -210471.  326282.     1
-#>  5 sp1     -140541.  284972.     1
-#>  6 sp1     -217491.   65732.     1
-#>  7 sp1      -92481.  155642.     1
-#>  8 sp1     -367611.  266072.     1
-#>  9 sp1     -184551.  425372.     1
-#> 10 sp1     -260151.   57632.     1
+#>    species        x       y pr_ab
+#>    <chr>      <dbl>   <dbl> <dbl>
+#>  1 sp1     -269871.  69512.     1
+#>  2 sp1     -149991. 267962.     1
+#>  3 sp1     -126231. 196142.     1
+#>  4 sp1     -210471. 326282.     1
+#>  5 sp1     -140541. 284972.     1
+#>  6 sp1     -217491.  65732.     1
+#>  7 sp1     -367611. 266072.     1
+#>  8 sp1     -109491.  46292.     1
+#>  9 sp1     -260151.  57632.     1
+#> 10 sp1     -313611. 400802.     1
 #> # ℹ 146 more rows
 #> 
 #> $`16`
 #> # A tibble: 96 × 4
 #>    species        x        y pr_ab
 #>    <chr>      <dbl>    <dbl> <dbl>
-#>  1 sp1     -210471.  326282.     1
-#>  2 sp1     -313611.  400802.     1
-#>  3 sp1     -202911.  -64138.     1
-#>  4 sp1      -34431.  212072.     1
-#>  5 sp1     -172941. -113008.     1
-#>  6 sp1      -60351. -307138.     1
-#>  7 sp1     -304971.  219632.     1
-#>  8 sp1     -195351.   85982.     1
-#>  9 sp1      -23091.   56012.     1
-#> 10 sp1     -114621.   54122.     1
+#>  1 sp1     -269871.   69512.     1
+#>  2 sp1     -210471.  326282.     1
+#>  3 sp1      -92481.  155642.     1
+#>  4 sp1     -313611.  400802.     1
+#>  5 sp1      -34431.  212072.     1
+#>  6 sp1     -331701.  304412.     1
+#>  7 sp1     -215871.  -51178.     1
+#>  8 sp1     -172941. -113008.     1
+#>  9 sp1      -60351. -307138.     1
+#> 10 sp1     -304971.  219632.     1
 #> # ℹ 86 more rows
 #> 
 # fuction will return a list of tibbles with the results.
@@ -287,7 +314,7 @@ filtered_occ <- occfilt_geo(
 #> 16 records were removed because they have NAs for some variables
 #> Number of unfiltered records: 234
 #> Distance threshold (km): 30
-#> Number of filtered records: 78
+#> Number of filtered records: 79
 
 somevar[[1]] %>% plot(col = gray.colors(10))
 points(spp1 %>% select(x, y)) # raw data
@@ -311,7 +338,7 @@ filtered_occ <- occfilt_geo(
 #> Distance threshold (km): 15
 #> Number of filtered records: 141
 #> Distance threshold (km): 35
-#> Number of filtered records: 70
+#> Number of filtered records: 71
 
 bind_rows(filtered_occ, .id = "cellSize") %>%
   dplyr::mutate(cellSize = as.numeric(cellSize)) %>%
@@ -392,25 +419,25 @@ occ_selected
 #> # A tibble: 13 × 4
 #>    species        x        y pr_ab
 #>    <chr>      <dbl>    <dbl> <dbl>
-#>  1 sp1     -221001.   53042.     1
-#>  2 sp1      -19581.   98942.     1
-#>  3 sp1     -337911.  417272.     1
-#>  4 sp1     -176991.  409172.     1
-#>  5 sp1     -164571. -114088.     1
-#>  6 sp1       39549.  -87898.     1
+#>  1 sp1     -184551.  425372.     1
+#>  2 sp1     -172941. -113008.     1
+#>  3 sp1      -39291.   76532.     1
+#>  4 sp1     -325761.  236642.     1
+#>  5 sp1       39549.  -87898.     1
+#>  6 sp1     -328191.  401072.     1
 #>  7 sp1     -126231.  225032.     1
 #>  8 sp1      183999. -414598.     1
-#>  9 sp1      295779. -526648.     1
-#> 10 sp1      -98961. -268258.     1
+#>  9 sp1      121899. -205078.     1
+#> 10 sp1      295779. -526648.     1
 #> 11 sp1        3369. -377608.     1
-#> 12 sp1      121359. -220198.     1
-#> 13 sp1     -299301.  233672.     1
+#> 12 sp1     -235851.   44402.     1
+#> 13 sp1      -98961. -262318.     1
 #> 
 #> $filter_prop
-#>   filt_value mean_autocorr n_records     CFP_1      CFP_2      CFP_3     CFP_4
-#> 1       0.05    0.18044575         4 0.1051283 0.29585163 0.14455848 0.1762446
-#> 2        0.2    0.18600777         5 0.1652801 0.27779062 0.08027048 0.2206899
-#> 3      * 0.5    0.09863698        13 0.1849470 0.04271891 0.01368967 0.1531924
+#>   filt_value mean_autocorr n_records      CFP_1      CFP_2      CFP_3     CFP_4
+#> 1       0.05     0.2385213         4 0.10551036 0.43978912 0.14218717 0.2665986
+#> 2        0.2     0.1437060         5 0.01922148 0.21124099 0.18861842 0.1557429
+#> 3      * 0.5     0.1335411        13 0.30189606 0.03771277 0.03328747 0.1612683
 #> 
 # }
 ```

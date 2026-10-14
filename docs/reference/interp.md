@@ -74,7 +74,6 @@ Conlisk et al., 2013; Syphard et al., 2013).
 ## Examples
 
 ``` r
-# \donttest{
 require(terra)
 require(dplyr)
 
@@ -108,5 +107,4 @@ int
 #> names       : Abies_2010, Abies_2011, Abies_2012, Abies_2013, Abies_2014, Abies_2015, ...
 #> min values  :          0,          0,          0,          0,          0,          0, ...
 #> max values  :   0.975611,   0.960608,   0.950461,   0.944007,   0.944294,   0.946355, ...
-# }
 ```

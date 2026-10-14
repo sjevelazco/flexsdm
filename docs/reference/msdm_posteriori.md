@@ -205,7 +205,6 @@ If using one these constraining methods, cite Mendes et al (2020).
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 require(terra)
 
@@ -340,5 +339,4 @@ m_obr <- msdm_posteriori(
 
 plot(m_obr)
 
-# }
 ```

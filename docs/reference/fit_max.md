@@ -172,6 +172,50 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+# Use the same records as background points (toy example only)
+backg_toy <- abies_toy
+backg_toy$pr_ab <- 0
+
+max_toy <- fit_max(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  background = backg_toy,
+  thr = "max_sens_spec",
+  clamp = TRUE,
+  classes = "lq",
+  pred_type = "cloglog",
+  regmult = 1
+)
+#> Formula used for model fitting:
+#> ~aet + cwd + tmin + I(aet^2) + I(cwd^2) + I(tmin^2) - 1
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+max_toy$performance
+#> # A tibble: 1 × 33
+#>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 max   max_sens_spec     0.392          30         30      0.9    0.1      0.9
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 data("abies")
 data("backg")

@@ -140,6 +140,42 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+gam_toy <- fit_gam(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec",
+  k = 3
+)
+#> Formula used for model fitting:
+#> pr_ab ~ s(aet, k = 3) + s(cwd, k = 3) + s(tmin, k = 3)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+gam_toy$performance
+#> # A tibble: 1 × 33
+#>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 gam   max_sens_spec     0.403          30         30      0.8  0.173    0.967
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 require(dplyr)
 data("abies")
@@ -204,7 +240,7 @@ gam_t1$performance
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 gam   max_sens_spec     0.530         700        700    0.809 0.0506    0.680
+#> 1 gam   max_sens_spec     0.530         700        700    0.767  0.108    0.730
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -216,9 +252,9 @@ gam_t1$performance_part
 #> # A tibble: 3 × 21
 #>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
 #>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#> 1 1       1         gam   max_sens…     0.508         234        234 0.782 0.658
-#> 2 1       2         gam   max_sens…     0.457         233        233 0.867 0.614
-#> 3 1       3         gam   max_sens…     0.518         233        233 0.777 0.768
+#> 1 1       1         gam   max_sens…     0.619         234        234 0.645 0.799
+#> 2 1       2         gam   max_sens…     0.401         233        233 0.850 0.652
+#> 3 1       3         gam   max_sens…     0.527         233        233 0.807 0.738
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
@@ -226,12 +262,10 @@ gam_t1$performance_part
 # Specifying the formula explicitly
 require(mgcv)
 #> Loading required package: mgcv
-#> Warning: package 'mgcv' was built under R version 4.5.2
 #> Loading required package: nlme
-#> Warning: package 'nlme' was built under R version 4.5.3
 #> 
-#> Attaching package: 'nlme'
-#> The following object is masked from 'package:dplyr':
+#> Attaching package: ‘nlme’
+#> The following object is masked from ‘package:dplyr’:
 #> 
 #>     collapse
 #> This is mgcv 1.9-4. For overview type '?mgcv'.
@@ -275,7 +309,7 @@ gam_t2$performance %>% dplyr::select(ends_with("_mean"))
 #> # A tibble: 1 × 14
 #>   TPR_mean TNR_mean W_TPR_TNR_mean SORENSEN_mean JACCARD_mean FPB_mean OR_mean
 #>      <dbl>    <dbl>          <dbl>         <dbl>        <dbl>    <dbl>   <dbl>
-#> 1    0.669    0.789          0.729         0.711        0.552     1.10   0.331
+#> 1    0.768    0.684          0.726         0.737        0.583     1.17   0.232
 #> # ℹ 7 more variables: TSS_mean <dbl>, KAPPA_mean <dbl>, MCC_mean <dbl>,
 #> #   AUC_mean <dbl>, BOYCE_mean <dbl>, CRPS_mean <dbl>, IMAE_mean <dbl>
 
@@ -346,7 +380,7 @@ gam_t3
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 gam   max_sens_spec     0.554         700        700    0.711 0.0878    0.747
+#> 1 gam   max_sens_spec     0.554         700        700    0.739 0.0226    0.718
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -359,30 +393,30 @@ gam_t3
 #> # A tibble: 6 × 21
 #>   replica partition model threshold thr_value n_presences n_absences   TPR   TNR
 #>   <chr>   <chr>     <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#> 1 1       1         gam   max_sens…     0.465         234        234 0.816 0.624
-#> 2 1       2         gam   max_sens…     0.669         233        233 0.575 0.837
-#> 3 1       3         gam   max_sens…     0.573         233        233 0.700 0.773
-#> 4 2       1         gam   max_sens…     0.520         234        234 0.731 0.744
-#> 5 2       2         gam   max_sens…     0.571         233        233 0.657 0.764
-#> 6 2       3         gam   max_sens…     0.582         233        233 0.785 0.738
+#> 1 1       1         gam   max_sens…     0.516         234        234 0.769 0.671
+#> 2 1       2         gam   max_sens…     0.541         233        233 0.717 0.742
+#> 3 1       3         gam   max_sens…     0.517         233        233 0.747 0.734
+#> 4 2       1         gam   max_sens…     0.562         234        234 0.726 0.739
+#> 5 2       2         gam   max_sens…     0.520         233        233 0.760 0.665
+#> 6 2       3         gam   max_sens…     0.543         233        233 0.717 0.755
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 #> 
 #> $data_ens
 #> # A tibble: 2,800 × 5
-#>    rnames replicates part  pr_ab    pred
-#>    <chr>  <chr>      <chr> <dbl>   <dbl>
-#>  1 1      .part1     1         0 0.634  
-#>  2 3      .part1     1         0 0.205  
-#>  3 4      .part1     1         0 0.00939
-#>  4 5      .part1     1         0 0.260  
-#>  5 11     .part1     1         0 0.508  
-#>  6 13     .part1     1         0 0.0764 
-#>  7 19     .part1     1         0 0.537  
-#>  8 21     .part1     1         0 0.241  
-#>  9 22     .part1     1         0 0.122  
-#> 10 23     .part1     1         0 0.534  
+#>    rnames replicates part  pr_ab      pred
+#>    <chr>  <chr>      <chr> <dbl>     <dbl>
+#>  1 3      .part1     1         0 0.160    
+#>  2 6      .part1     1         0 0.367    
+#>  3 8      .part1     1         0 0.382    
+#>  4 9      .part1     1         0 0.432    
+#>  5 12     .part1     1         0 0.172    
+#>  6 14     .part1     1         0 0.161    
+#>  7 15     .part1     1         0 0.557    
+#>  8 16     .part1     1         0 0.0000751
+#>  9 19     .part1     1         0 0.494    
+#> 10 22     .part1     1         0 0.144    
 #> # ℹ 2,790 more rows
 #> 
 # }

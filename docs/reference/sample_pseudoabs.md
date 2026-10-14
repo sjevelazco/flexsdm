@@ -128,6 +128,37 @@ and
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sp3[sp3$pr_ab == 1, ] # presences only
+
+ps <- sample_pseudoabs(
+  data = sp3,
+  x = "x",
+  y = "y",
+  n = 50,
+  method = "random",
+  rlayer = somevar[[1]]
+)
+ps
+#> # A tibble: 50 × 3
+#>           x        y pr_ab
+#>       <dbl>    <dbl> <dbl>
+#>  1 -209256.  183317.     0
+#>  2 -288636.  319397.     0
+#>  3 -118536.  228677.     0
+#>  4 -186576.   92597.     0
+#>  5 -186576.  285377.     0
+#>  6 -163896.   35897.     0
+#>  7 -243276.  160637.     0
+#>  8 -288636.  103937.     0
+#>  9  289704. -519763.     0
+#> 10 -152556.  296717.     0
+#> # ℹ 40 more rows
+
 # \donttest{
 require(terra)
 require(dplyr)

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -156,7 +156,34 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Toy data: small raster and records of one species to keep this example fast</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">somevar</span>, fact <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="co"># coarser resolution</span></span></span>
+<span class="r-in"><span><span class="va">sp3</span> <span class="op">&lt;-</span> <span class="va">spp</span><span class="op">[</span><span class="va">spp</span><span class="op">$</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp3"</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">sp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sp3</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 20 rows were excluded from database because NAs were found</span>
+<span class="r-in"><span><span class="va">extr</span> <span class="op">&lt;-</span> <span class="fu"><a href="extra_eval.html">extra_eval</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp3</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  metric <span class="op">=</span> <span class="st">"mahalanobis"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp3</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  extra_suit_data <span class="op">=</span> <span class="va">extr</span>,</span></span>
+<span class="r-in"><span>  projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  geo_space <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.5</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 746 (50%)</span>
+<span class="r-plt img"><img src="p_extra-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
@@ -182,7 +209,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_extra-1.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sampling pseudo-absences</span></span></span>
@@ -245,7 +272,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>    aggreg_factor <span class="op">=</span> <span class="fl">1</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_extra-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">####            Explore extrapolation in the            ####</span></span></span>
@@ -263,7 +290,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
@@ -277,7 +304,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
@@ -297,7 +324,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp_pa_2</span>,</span></span>
@@ -315,7 +342,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-6.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Explore extrapolation only in the environmental space</span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
@@ -332,7 +359,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-7.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
@@ -350,7 +377,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_extra-8.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-9.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
@@ -365,7 +392,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  color_gradient <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B3DC2B"</span>, <span class="st">"#25818E"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-9.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
 <span class="r-in"><span><span class="co">####           With p_extra also is possible            ####</span></span></span>
@@ -397,7 +424,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span><span class="va">suit</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_predict.html">sdm_predict</a></span><span class="op">(</span>models <span class="op">=</span> <span class="va">rf_m1</span>, pred <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Predicting individual models</span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">suit</span><span class="op">$</span><span class="va">raf</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_extra-10.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">suit</span> <span class="op">&lt;-</span> <span class="va">suit</span><span class="op">$</span><span class="va">raf</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Pasterns of suitability in geographical and environmental space</span></span></span>
@@ -412,7 +439,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-11.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-12.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Pasterns of suitability plotting as points only presences</span></span></span>
 <span class="r-in"><span><span class="fu">p_extra</span><span class="op">(</span></span></span>
@@ -427,7 +454,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-12.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-13.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Pasterns of suitability in the environmental space only</span></span></span>
 <span class="r-in"><span><span class="co"># and plotting as points only presences</span></span></span>
@@ -443,7 +470,7 @@ Lower values corresponding to more transparent colors. Default 0.5</p></dd>
 <span class="r-in"><span>  prop_points <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of cell used to plot 3642 (5%)</span>
-<span class="r-plt img"><img src="p_extra-13.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_extra-14.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

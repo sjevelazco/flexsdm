@@ -121,7 +121,6 @@ If used one these constraining method cite Mendes et al 2020.
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 require(terra)
 
@@ -189,5 +188,4 @@ m_ker <- msdm_priori(
 plot(m_ker)
 points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
 
-# }
 ```

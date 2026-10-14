@@ -149,9 +149,65 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+esm_toy <- esm_gbm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = NULL,
+  n_trees = 20,
+  n_minobsinnode = 3,
+  shrinkage = 0.1
+)
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |======================================================================| 100%
+esm_toy$performance
+#> # A tibble: 7 × 33
+#>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 esm_gbm equal_sens_…     0.712          30         30    0.7   0.173     0.7  
+#> 2 esm_gbm lpt              0.371          30         30    1     0         0.667
+#> 3 esm_gbm max_fpb          0.371          30         30    1     0         0.667
+#> 4 esm_gbm max_jaccard      0.371          30         30    1     0         0.667
+#> 5 esm_gbm max_sens_sp…     0.371          30         30    1     0         0.667
+#> 6 esm_gbm max_sorensen     0.371          30         30    1     0         0.667
+#> 7 esm_gbm sensitivity      0.593          30         30    0.933 0.0577    0.667
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 data("abies")
 require(dplyr)
+#> Loading required package: dplyr
+#> 
+#> Attaching package: ‘dplyr’
+#> The following objects are masked from ‘package:stats’:
+#> 
+#>     filter, lag
+#> The following objects are masked from ‘package:base’:
+#> 
+#>     intersect, setdiff, setequal, union
 
 # Using k-fold partition method
 set.seed(10)
@@ -204,159 +260,223 @@ esm_gbm_t1 <- esm_gbm(
   n_minobsinnode = NULL,
   shrinkage = 0.1
 )
-#>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |==                                                                    |   4%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |============================                                          |  39%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |==========================================================            |  82%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |====================================================================  |  96%
+  |                                                                            
+  |======================================================================| 100%
 
 esm_gbm_t1$esm_model # bivariate model
-#> $`0.328240740740741`
+#> $`0.29537037037037`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
 #> $`0.992592592592593`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 1 had non-zero influence.
+#> 
+#> $`0.247685185185185`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.287037037037037`
+#> $`0.115740740740741`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.0240740740740741`
+#> $`0.643518518518519`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
-#> A gradient boosted model with bernoulli loss function.
-#> 100 iterations were performed.
-#> There were 2 predictors of which 2 had non-zero influence.
-#> 
-#> $`0.103240740740741`
-#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
-#> A gradient boosted model with bernoulli loss function.
-#> 100 iterations were performed.
-#> There were 2 predictors of which 2 had non-zero influence.
-#> 
-#> $`0.658333333333333`
-#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
 #> $`0.985185185185185`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.353703703703704`
+#> $`0.363888888888889`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.375925925925926`
+#> $`0.382407407407407`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.600462962962963`
+#> $`0.586574074074074`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
-#> A gradient boosted model with bernoulli loss function.
-#> 100 iterations were performed.
-#> There were 2 predictors of which 2 had non-zero influence.
-#> 
-#> $`0.992592592592593`
-#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
-#> A gradient boosted model with bernoulli loss function.
-#> 100 iterations were performed.
-#> There were 2 predictors of which 2 had non-zero influence.
-#> 
-#> $`1`
-#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
-#> A gradient boosted model with bernoulli loss function.
-#> 100 iterations were performed.
-#> There were 2 predictors of which 2 had non-zero influence.
-#> 
-#> $`1`
-#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
 #> $`0.992592592592593`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
-#> There were 2 predictors of which 2 had non-zero influence.
+#> There were 2 predictors of which 1 had non-zero influence.
+#> 
+#> $`0.992592592592593`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 1 had non-zero influence.
 #> 
 #> $`1`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 1 had non-zero influence.
+#> 
+#> $`0.992592592592593`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 1 had non-zero influence.
+#> 
+#> $`0.991666666666667`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
+#> A gradient boosted model with bernoulli loss function.
+#> 100 iterations were performed.
+#> There were 2 predictors of which 1 had non-zero influence.
+#> 
+#> $`0.0578703703703705`
+#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.0958333333333334`
+#> $`0.180555555555556`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.0273148148148148`
+#> $`0.607407407407407`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.19537037037037`
+#> $`0.54212962962963`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.622222222222222`
+#> $`0.458796296296296`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
 #> 
-#> $`0.53287037037037`
+#> $`0.593055555555555`
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
-#> A gradient boosted model with bernoulli loss function.
-#> 100 iterations were performed.
-#> There were 2 predictors of which 2 had non-zero influence.
-#> 
-#> $`0.548148148148148`
-#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
-#> A gradient boosted model with bernoulli loss function.
-#> 100 iterations were performed.
-#> There were 2 predictors of which 2 had non-zero influence.
-#> 
-#> $`0.593981481481481`
-#> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 2 predictors of which 2 had non-zero influence.
@@ -370,13 +490,13 @@ esm_gbm_t1$performance
 #> # A tibble: 7 × 33
 #>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 esm_gbm equal_sens_…     0.586          10         10    0.944  0.116    0.944
-#> 2 esm_gbm lpt              0.292          10         10    1      0        0.944
-#> 3 esm_gbm max_fpb          0.310          10         10    1      0        0.944
-#> 4 esm_gbm max_jaccard      0.310          10         10    1      0        0.944
-#> 5 esm_gbm max_sens_sp…     0.370          10         10    0.944  0.116    1    
-#> 6 esm_gbm max_sorensen     0.310          10         10    1      0        0.944
-#> 7 esm_gbm sensitivity      0.590          10         10    1      0        0.944
+#> 1 esm_gbm equal_sens_…     0.595          10         10    0.944  0.116    0.944
+#> 2 esm_gbm lpt              0.283          10         10    1      0        0.944
+#> 3 esm_gbm max_fpb          0.359          10         10    1      0        0.944
+#> 4 esm_gbm max_jaccard      0.359          10         10    1      0        0.944
+#> 5 esm_gbm max_sens_sp…     0.359          10         10    0.944  0.116    1    
+#> 6 esm_gbm max_sorensen     0.359          10         10    1      0        0.944
+#> 7 esm_gbm sensitivity      0.602          10         10    1      0        0.944
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -388,16 +508,16 @@ esm_gbm_t1$performance_part
 #> # A tibble: 105 × 21
 #>    model replicates part  threshold thr_value n_presences n_absences   TPR   TNR
 #>    <chr> <chr>      <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#>  1 esm_… .part1     1     max_sore…     0.310           4          4  1    0.75 
-#>  2 esm_… .part1     1     max_jacc…     0.310           4          4  1    0.75 
-#>  3 esm_… .part1     1     max_fpb       0.310           4          4  1    0.75 
-#>  4 esm_… .part1     1     max_sens…     0.622           4          4  0.75 1    
-#>  5 esm_… .part1     1     equal_se…     0.332           4          4  0.75 0.75 
-#>  6 esm_… .part1     1     lpt           0.310           4          4  1    0.75 
-#>  7 esm_… .part1     1     sensitiv…     0.310           4          4  1    0.75 
-#>  8 esm_… .part1     2     max_sore…     0.587           3          3  1    0.667
-#>  9 esm_… .part1     2     max_jacc…     0.587           3          3  1    0.667
-#> 10 esm_… .part1     2     max_fpb       0.587           3          3  1    0.667
+#>  1 esm_… .part1     1     max_sore…     0.305           4          4  1    0.75 
+#>  2 esm_… .part1     1     max_jacc…     0.305           4          4  1    0.75 
+#>  3 esm_… .part1     1     max_fpb       0.305           4          4  1    0.75 
+#>  4 esm_… .part1     1     max_sens…     0.632           4          4  0.75 1    
+#>  5 esm_… .part1     1     equal_se…     0.325           4          4  0.75 0.75 
+#>  6 esm_… .part1     1     lpt           0.305           4          4  1    0.75 
+#>  7 esm_… .part1     1     sensitiv…     0.305           4          4  1    0.75 
+#>  8 esm_… .part1     2     max_sore…     0.602           3          3  1    0.667
+#>  9 esm_… .part1     2     max_jacc…     0.602           3          3  1    0.667
+#> 10 esm_… .part1     2     max_fpb       0.602           3          3  1    0.667
 #> # ℹ 95 more rows
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,

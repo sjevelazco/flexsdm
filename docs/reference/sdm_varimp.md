@@ -120,13 +120,55 @@ the variable importance score.
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + I(aet^2) + I(cwd^2) + I(tmin^2)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+
+# Permutation-based variable importance (few simulations to keep it fast)
+sdm_varimp(
+  models = glm_toy,
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  n_sim = 2,
+  n_cores = 1,
+  thr = "max_sens_spec"
+)
+#> Calculating variable importance for individual models
+#> # A tibble: 3 × 17
+#>   model threshold     predictors    TPR   TNR W_TPR_TNR SORENSEN JACCARD   FPB
+#>   <chr> <chr>         <chr>       <dbl> <dbl>     <dbl>    <dbl>   <dbl> <dbl>
+#> 1 glm   max_sens_spec aet        0.0167   0      0        0       0      0    
+#> 2 glm   max_sens_spec cwd        0.1      0      0.0250   0.0322  0.0523 0.105
+#> 3 glm   max_sens_spec tmin       0.3      0.3    0.3      0.291   0.381  0.762
+#> # ℹ 8 more variables: OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
+#> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
+
 # \donttest{
 require(tidyr)
 #> Loading required package: tidyr
-#> Warning: package 'tidyr' was built under R version 4.5.2
 #> 
-#> Attaching package: 'tidyr'
-#> The following object is masked from 'package:terra':
+#> Attaching package: ‘tidyr’
+#> The following object is masked from ‘package:terra’:
 #> 
 #>     extract
 require(dplyr)
@@ -249,18 +291,18 @@ vip_t <- sdm_varimp(
 
 vip_t
 #> # A tibble: 54 × 17
-#>    model threshold   predictors    TPR     TNR W_TPR_TNR SORENSEN JACCARD    FPB
-#>    <chr> <chr>       <chr>       <dbl>   <dbl>     <dbl>    <dbl>   <dbl>  <dbl>
-#>  1 max   equal_sens… aet        0.0589 0.0589     0.0589   0.0589  0.0637 0.127 
-#>  2 max   max_sens_s… aet        0.1    0.0320     0.0660   0.0624  0.0767 0.153 
-#>  3 max   max_sorens… aet        0      0.165      0.0777   0.0425  0.0531 0.106 
-#>  4 max   equal_sens… ppt_jja    0.0163 0.0163     0.0163   0.0163  0.0182 0.0364
-#>  5 max   max_sens_s… ppt_jja    0.135  0          0.0264   0.0472  0.0587 0.117 
-#>  6 max   max_sorens… ppt_jja    0.0754 0.00143    0.0384   0.0394  0.0493 0.0987
-#>  7 max   equal_sens… pH         0.0369 0.0369     0.0369   0.0369  0.0405 0.0811
-#>  8 max   max_sens_s… pH         0.0603 0          0.0301   0.0313  0.0394 0.0788
-#>  9 max   max_sorens… pH         0.0226 0.0463     0.0344   0.0251  0.0318 0.0636
-#> 10 max   equal_sens… awc        0.0706 0.0706     0.0706   0.0706  0.0757 0.151 
+#>    model threshold    predictors    TPR    TNR W_TPR_TNR SORENSEN JACCARD    FPB
+#>    <chr> <chr>        <chr>       <dbl>  <dbl>     <dbl>    <dbl>   <dbl>  <dbl>
+#>  1 max   equal_sens_… aet        0.0546 0.0546    0.0546   0.0546  0.0593 0.119 
+#>  2 max   max_sens_sp… aet        0.12   0.0180    0.0690   0.0721  0.0869 0.174 
+#>  3 max   max_sorensen aet        0      0.174     0.0800   0.0427  0.0534 0.107 
+#>  4 max   equal_sens_… ppt_jja    0.0174 0.0174    0.0174   0.0174  0.0194 0.0388
+#>  5 max   max_sens_sp… ppt_jja    0.155  0         0.0287   0.0538  0.0665 0.133 
+#>  6 max   max_sorensen ppt_jja    0.09   0         0.0379   0.0425  0.0530 0.106 
+#>  7 max   equal_sens_… pH         0.0366 0.0366    0.0366   0.0366  0.0402 0.0803
+#>  8 max   max_sens_sp… pH         0.0754 0         0.0321   0.0362  0.0453 0.0905
+#>  9 max   max_sorensen pH         0.0334 0.0394    0.0364   0.0285  0.0360 0.0721
+#> 10 max   equal_sens_… awc        0.0683 0.0683    0.0683   0.0683  0.0734 0.147 
 #> # ℹ 44 more rows
 #> # ℹ 8 more variables: OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>

@@ -106,6 +106,37 @@ conditions used to train the model (convex hull polygon).
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd"),
+  partition = ".part",
+  thr = "max_sens_spec",
+  poly = 2
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + I(aet^2) + I(cwd^2)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+
+p_bpdp(
+  model = glm_toy$model,
+  training_data = abies_toy,
+  resolution = 20
+)
+
+
 # \donttest{
 library(terra)
 library(dplyr)
@@ -126,7 +157,7 @@ abies2 <- sdm_extract(abies2,
   y = "y",
   env_layer = somevar
 )
-#> 25 rows were excluded from database because NAs were found
+#> 34 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
@@ -218,7 +249,7 @@ abies2 <- sdm_extract(
   y = "y",
   env_layer = somevar
 )
-#> 30 rows were excluded from database because NAs were found
+#> 31 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)

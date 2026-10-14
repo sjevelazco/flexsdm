@@ -31,7 +31,6 @@ A tibble with 1150 rows and 3 variables:
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 data("spp")
 spp
@@ -49,5 +48,4 @@ spp
 #>  9 sp1        -951. -277978.     0
 #> 10 sp1      145929. -271498.     0
 #> # ℹ 1,140 more rows
-# }
 ```

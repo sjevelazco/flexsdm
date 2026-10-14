@@ -9,7 +9,7 @@ Ensembles of Small Models (ESM) approach (Breiner et al., 2015, 2018)."><meta na
 
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,14 +133,60 @@ Breiner et al. (2015, 2018).</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Toy data: a small subset of 'abies' to keep this example fast</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies_toy</span> <span class="op">&lt;-</span> <span class="va">abies</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="fl">701</span><span class="op">:</span><span class="fl">730</span><span class="op">)</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">abies_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies_toy</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">esm_toy</span> <span class="op">&lt;-</span> <span class="fu">esm_net</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies_toy</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  size <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>  decay <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |======================================================================| 100%</span>
+<span class="r-in"><span><span class="va">esm_toy</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 33</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> esm_net equal_sens_…     0.550          30         30    0.733 0.057<span style="text-decoration: underline;">7</span>    0.733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> esm_net lpt              0.422          30         30    1     0         0.7  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> esm_net max_fpb          0.470          30         30    1     0         0.7  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> esm_net max_jaccard      0.470          30         30    1     0         0.7  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> esm_net max_sens_sp…     0.470          30         30    0.967 0.057<span style="text-decoration: underline;">7</span>    0.733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> esm_net max_sorensen     0.470          30         30    1     0         0.7  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> esm_net sensitivity      0.474          30         30    0.9   0         0.733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;, KAPPA_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using k-fold partition method</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="va">abies</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rspatial.github.io/terra/reference/na.omit.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">pr_ab</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="op">)</span></span></span>
@@ -185,82 +231,134 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
 <span class="r-in"><span>  thr <span class="op">=</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |==                                                                    |   4%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |============================                                          |  39%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |==========================================================            |  82%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |====================================================================  |  96%
+  |                                                                            
+  |======================================================================| 100%</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">esm_net_t1</span><span class="op">$</span><span class="va">esm_model</span> <span class="co"># bivariate model</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.855555555555556`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0425925925925925`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: aet cwd </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.276388888888889`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: aet tmin </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0629629629629629`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: aet ppt_jja </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.175`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.087037037037037`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: aet pH </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.190740740740741`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: aet awc </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.322222222222222`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.248148148148148`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: aet depth </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.610185185185185`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.307407407407407`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: cwd tmin </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0703703703703704`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.104166666666667`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: cwd ppt_jja </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: cwd ppt_djf </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0722222222222222`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0083333333333333`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: cwd pH </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.00694444444444442`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0273148148148148`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: cwd awc </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.374537037037037`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.168055555555556`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: cwd depth </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.468981481481481`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.709722222222222`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: tmin ppt_djf </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.791203703703704`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.991666666666667`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: tmin ppt_jja </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.946296296296296`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.926388888888889`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: tmin pH </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
@@ -272,49 +370,37 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.363425925925926`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.477777777777778`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: tmin depth </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0967592592592592`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: ppt_djf ppt_jja </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0157407407407408`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: ppt_djf awc </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.519444444444444`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.131944444444444`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: ppt_djf depth </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0300925925925926`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.0268518518518519`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: ppt_jja pH </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> inputs: ppt_jja awc </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.369907407407407`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.375`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: ppt_jja depth </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.23287037037037`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.366203703703704`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: pH depth </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> options were - entropy fitting </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.209722222222222`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`0.404166666666667`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> a 2-2-1 network with 9 weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> inputs: awc depth </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> output(s): pr_ab </span>
@@ -329,13 +415,13 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 7 × 33</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> esm_net equal_sens_…     0.536          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> esm_net lpt              0.496          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> esm_net max_fpb          0.574          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> esm_net max_jaccard      0.574          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> esm_net max_sens_sp…     0.574          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> esm_net max_sorensen     0.574          10         10        1      0        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> esm_net sensitivity      0.593          10         10        1      0        1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> esm_net equal_sens_…     0.536          10         10    0.983 0.064<span style="text-decoration: underline;">5</span>    0.983</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> esm_net lpt              0.356          10         10    1     0         0.983</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> esm_net max_fpb          0.508          10         10    1     0         0.983</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> esm_net max_jaccard      0.508          10         10    1     0         0.983</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> esm_net max_sens_sp…     0.508          10         10    0.983 0.064<span style="text-decoration: underline;">5</span>    1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> esm_net max_sorensen     0.508          10         10    1     0         0.983</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> esm_net sensitivity      0.606          10         10    1     0         0.983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
@@ -347,16 +433,16 @@ Breiner et al. (2015, 2018).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 105 × 21</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    model replicates part  threshold thr_value n_presences n_absences   TPR   TNR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> esm_… .part1     1     max_sore…     0.496           4          4     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> esm_… .part1     1     max_jacc…     0.496           4          4     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> esm_… .part1     1     max_fpb       0.496           4          4     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> esm_… .part1     1     max_sens…     0.496           4          4     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> esm_… .part1     1     equal_se…     0.496           4          4     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> esm_… .part1     1     lpt           0.496           4          4     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> esm_… .part1     1     sensitiv…     0.496           4          4     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> esm_… .part1     2     max_sore…     0.681           3          3     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> esm_… .part1     2     max_jacc…     0.681           3          3     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> esm_… .part1     2     max_fpb       0.681           3          3     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> esm_… .part1     1     max_sore…     0.632           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> esm_… .part1     1     max_jacc…     0.632           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> esm_… .part1     1     max_fpb       0.632           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> esm_… .part1     1     max_sens…     0.632           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> esm_… .part1     1     equal_se…     0.632           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> esm_… .part1     1     lpt           0.632           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> esm_… .part1     1     sensitiv…     0.632           4          4     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> esm_… .part1     2     max_sore…     0.563           3          3     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> esm_… .part1     2     max_jacc…     0.563           3          3     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> esm_… .part1     2     max_fpb       0.563           3          3     1     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 95 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 12 more variables: W_TPR_TNR &lt;dbl&gt;, SORENSEN &lt;dbl&gt;, JACCARD &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   FPB &lt;dbl&gt;, OR &lt;dbl&gt;, TSS &lt;dbl&gt;, KAPPA &lt;dbl&gt;, MCC &lt;dbl&gt;, AUC &lt;dbl&gt;,</span></span>

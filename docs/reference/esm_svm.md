@@ -140,6 +140,52 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+esm_toy <- esm_svm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = NULL,
+  sigma = 0.1,
+  C = 2
+)
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |======================================================================| 100%
+esm_toy$performance
+#> # A tibble: 7 × 33
+#>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 esm_svm equal_sens_…     0.619          30         30    0.767 0.115     0.767
+#> 2 esm_svm lpt              0.322          30         30    1     0         0.733
+#> 3 esm_svm max_fpb          0.435          30         30    1     0         0.733
+#> 4 esm_svm max_jaccard      0.435          30         30    1     0         0.733
+#> 5 esm_svm max_sens_sp…     0.535          30         30    0.967 0.0577    0.767
+#> 6 esm_svm max_sorensen     0.435          30         30    1     0         0.733
+#> 7 esm_svm sensitivity      0.535          30         30    0.9   0         0.767
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 data("abies")
 require(dplyr)
@@ -195,277 +241,320 @@ esm_svm_t1 <- esm_svm(
   partition = ".part",
   thr = NULL
 )
-#>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |==                                                                    |   4%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |============================                                          |  39%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |==========================================================            |  82%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |====================================================================  |  96%
+  |                                                                            
+  |======================================================================| 100%
 
 esm_svm_t1$esm_model # bivariate model
-#> $`0.867592592592593`
+#> $`0.900925925925926`
 #> Support Vector Machine object of class "ksvm" 
 #> 
 #> SV type: C-svc  (classification) 
 #>  parameter : cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  3.21964131577722 
+#>  Hyperparameter : sigma =  0.581571974281925 
+#> 
+#> Number of Support Vectors : 14 
+#> 
+#> Objective Function Value : -7.095 
+#> Training error : 0.05 
+#> Probability model included. 
+#> 
+#> $`0.102777777777778`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.618015650283496 
 #> 
 #> Number of Support Vectors : 19 
 #> 
-#> Objective Function Value : -7.6598 
-#> Training error : 0.05 
+#> Objective Function Value : -15.2562 
+#> Training error : 0.3 
 #> Probability model included. 
 #> 
-#> $`0.74537037037037`
+#> $`0.588888888888889`
 #> Support Vector Machine object of class "ksvm" 
 #> 
 #> SV type: C-svc  (classification) 
 #>  parameter : cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  2.36704511225715 
-#> 
-#> Number of Support Vectors : 17 
-#> 
-#> Objective Function Value : -7.5493 
-#> Training error : 0.05 
-#> Probability model included. 
-#> 
-#> $`0.863888888888889`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  1.10350006711814 
-#> 
-#> Number of Support Vectors : 16 
-#> 
-#> Objective Function Value : -7.8686 
-#> Training error : 0.05 
-#> Probability model included. 
-#> 
-#> $`0.219907407407407`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  3.15364895100329 
-#> 
-#> Number of Support Vectors : 19 
-#> 
-#> Objective Function Value : -14.3366 
-#> Training error : 0.15 
-#> Probability model included. 
-#> 
-#> $`0.303703703703704`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  1.9059427923859 
-#> 
-#> Number of Support Vectors : 20 
-#> 
-#> Objective Function Value : -14.2805 
-#> Training error : 0.2 
-#> Probability model included. 
-#> 
-#> $`0.436111111111111`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  0.890015879420413 
-#> 
-#> Number of Support Vectors : 16 
-#> 
-#> Objective Function Value : -8.9456 
-#> Training error : 0.1 
-#> Probability model included. 
-#> 
-#> $`0.928703703703704`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  1.21113352969592 
+#>  Hyperparameter : sigma =  0.483234002443092 
 #> 
 #> Number of Support Vectors : 15 
 #> 
-#> Objective Function Value : -7.2926 
-#> Training error : 0.05 
-#> Probability model included. 
-#> 
-#> $`0.968518518518519`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  6.69160658225889 
-#> 
-#> Number of Support Vectors : 20 
-#> 
-#> Objective Function Value : -8.2629 
-#> Training error : 0 
-#> Probability model included. 
-#> 
-#> $`0.878240740740741`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  24.6256479156547 
-#> 
-#> Number of Support Vectors : 20 
-#> 
-#> Objective Function Value : -7.7436 
-#> Training error : 0 
-#> Probability model included. 
-#> 
-#> $`0.874074074074074`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  2.76404088910699 
-#> 
-#> Number of Support Vectors : 17 
-#> 
-#> Objective Function Value : -8.1925 
-#> Training error : 0 
-#> Probability model included. 
-#> 
-#> $`1`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  10.1022680516999 
-#> 
-#> Number of Support Vectors : 20 
-#> 
-#> Objective Function Value : -7.4825 
-#> Training error : 0 
-#> Probability model included. 
-#> 
-#> $`0.169444444444445`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  1.14332635493013 
-#> 
-#> Number of Support Vectors : 16 
-#> 
-#> Objective Function Value : -9.7946 
-#> Training error : 0.15 
-#> Probability model included. 
-#> 
-#> $`0.239351851851852`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  6.48807292162547 
-#> 
-#> Number of Support Vectors : 20 
-#> 
-#> Objective Function Value : -15.1365 
-#> Training error : 0.15 
-#> Probability model included. 
-#> 
-#> $`0.0092592592592593`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  32.0153706984081 
-#> 
-#> Number of Support Vectors : 20 
-#> 
-#> Objective Function Value : -12.1117 
-#> Training error : 0.05 
-#> Probability model included. 
-#> 
-#> $`0.381481481481482`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  0.495342417602049 
-#> 
-#> Number of Support Vectors : 15 
-#> 
-#> Objective Function Value : -10.3477 
-#> Training error : 0.15 
-#> Probability model included. 
-#> 
-#> $`0.24212962962963`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  17.2551055210103 
-#> 
-#> Number of Support Vectors : 20 
-#> 
-#> Objective Function Value : -15.1682 
-#> Training error : 0.2 
-#> Probability model included. 
-#> 
-#> $`0.379166666666667`
-#> Support Vector Machine object of class "ksvm" 
-#> 
-#> SV type: C-svc  (classification) 
-#>  parameter : cost C = 1 
-#> 
-#> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  9.36572774490608 
-#> 
-#> Number of Support Vectors : 19 
-#> 
-#> Objective Function Value : -9.8635 
+#> Objective Function Value : -8.6921 
 #> Training error : 0.1 
 #> Probability model included. 
 #> 
-#> $`0.529166666666667`
+#> $`0.842592592592593`
 #> Support Vector Machine object of class "ksvm" 
 #> 
 #> SV type: C-svc  (classification) 
 #>  parameter : cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  3.23120038498244 
+#>  Hyperparameter : sigma =  0.755572533715632 
 #> 
-#> Number of Support Vectors : 19 
+#> Number of Support Vectors : 15 
 #> 
-#> Objective Function Value : -8.8474 
+#> Objective Function Value : -7.8561 
 #> Training error : 0.05 
+#> Probability model included. 
+#> 
+#> $`0.312037037037037`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.735542936920515 
+#> 
+#> Number of Support Vectors : 20 
+#> 
+#> Objective Function Value : -16.281 
+#> Training error : 0.35 
+#> Probability model included. 
+#> 
+#> $`0.605555555555556`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.590538615844488 
+#> 
+#> Number of Support Vectors : 16 
+#> 
+#> Objective Function Value : -9.8937 
+#> Training error : 0.15 
+#> Probability model included. 
+#> 
+#> $`0.922222222222222`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  1.70565296641887 
+#> 
+#> Number of Support Vectors : 16 
+#> 
+#> Objective Function Value : -7.3272 
+#> Training error : 0.05 
+#> Probability model included. 
+#> 
+#> $`0.949537037037037`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  2.47053332313218 
+#> 
+#> Number of Support Vectors : 18 
+#> 
+#> Objective Function Value : -7.0485 
+#> Training error : 0 
+#> Probability model included. 
+#> 
+#> $`0.919444444444445`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  1.71336755496289 
+#> 
+#> Number of Support Vectors : 14 
+#> 
+#> Objective Function Value : -7.1022 
+#> Training error : 0.1 
+#> Probability model included. 
+#> 
+#> $`0.960185185185185`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.976252697881758 
+#> 
+#> Number of Support Vectors : 16 
+#> 
+#> Objective Function Value : -7.7476 
+#> Training error : 0.05 
+#> Probability model included. 
+#> 
+#> $`0.991666666666667`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.770621061994329 
+#> 
+#> Number of Support Vectors : 12 
+#> 
+#> Objective Function Value : -4.9218 
+#> Training error : 0 
+#> Probability model included. 
+#> 
+#> $`0.301851851851852`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.582954666866708 
+#> 
+#> Number of Support Vectors : 17 
+#> 
+#> Objective Function Value : -10.3733 
+#> Training error : 0.15 
+#> Probability model included. 
+#> 
+#> $`0.243055555555556`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.842003732915743 
+#> 
+#> Number of Support Vectors : 20 
+#> 
+#> Objective Function Value : -16.7249 
+#> Training error : 0.4 
+#> Probability model included. 
+#> 
+#> $`0.373148148148148`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.3921601341134 
+#> 
+#> Number of Support Vectors : 15 
+#> 
+#> Objective Function Value : -10.6701 
+#> Training error : 0.15 
+#> Probability model included. 
+#> 
+#> $`0.203240740740741`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  3.28854376725859 
+#> 
+#> Number of Support Vectors : 20 
+#> 
+#> Objective Function Value : -16.0146 
+#> Training error : 0.25 
+#> Probability model included. 
+#> 
+#> $`0.389351851851852`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  2.82772585814935 
+#> 
+#> Number of Support Vectors : 17 
+#> 
+#> Objective Function Value : -9.5949 
+#> Training error : 0.15 
+#> Probability model included. 
+#> 
+#> $`0.471759259259259`
+#> Support Vector Machine object of class "ksvm" 
+#> 
+#> SV type: C-svc  (classification) 
+#>  parameter : cost C = 1 
+#> 
+#> Gaussian Radial Basis kernel function. 
+#>  Hyperparameter : sigma =  0.242610174436222 
+#> 
+#> Number of Support Vectors : 15 
+#> 
+#> Objective Function Value : -10.5229 
+#> Training error : 0.15 
 #> Probability model included. 
 #> 
 esm_svm_t1$predictors
@@ -477,13 +566,13 @@ esm_svm_t1$performance
 #> # A tibble: 7 × 33
 #>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 esm_svm equal_sens_…     0.564          10         10    0.978 0.0861    0.978
-#> 2 esm_svm lpt              0.504          10         10    1     0         0.978
-#> 3 esm_svm max_fpb          0.557          10         10    1     0         0.978
-#> 4 esm_svm max_jaccard      0.557          10         10    1     0         0.978
-#> 5 esm_svm max_sens_sp…     0.565          10         10    0.978 0.0861    1    
-#> 6 esm_svm max_sorensen     0.557          10         10    1     0         0.978
-#> 7 esm_svm sensitivity      0.588          10         10    1     0         0.978
+#> 1 esm_svm equal_sens_…     0.545          10         10    0.978 0.0861    0.978
+#> 2 esm_svm lpt              0.480          10         10    1     0         0.978
+#> 3 esm_svm max_fpb          0.573          10         10    1     0         0.978
+#> 4 esm_svm max_jaccard      0.573          10         10    1     0         0.978
+#> 5 esm_svm max_sens_sp…     0.573          10         10    0.978 0.0861    1    
+#> 6 esm_svm max_sorensen     0.573          10         10    1     0         0.978
+#> 7 esm_svm sensitivity      0.575          10         10    1     0         0.978
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -495,16 +584,16 @@ esm_svm_t1$performance_part
 #> # A tibble: 105 × 21
 #>    model replicates part  threshold thr_value n_presences n_absences   TPR   TNR
 #>    <chr> <chr>      <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#>  1 esm_… .part1     1     max_sore…     0.573           4          4     1     1
-#>  2 esm_… .part1     1     max_jacc…     0.573           4          4     1     1
-#>  3 esm_… .part1     1     max_fpb       0.573           4          4     1     1
-#>  4 esm_… .part1     1     max_sens…     0.573           4          4     1     1
-#>  5 esm_… .part1     1     equal_se…     0.573           4          4     1     1
-#>  6 esm_… .part1     1     lpt           0.573           4          4     1     1
-#>  7 esm_… .part1     1     sensitiv…     0.573           4          4     1     1
-#>  8 esm_… .part1     2     max_sore…     0.712           3          3     1     1
-#>  9 esm_… .part1     2     max_jacc…     0.712           3          3     1     1
-#> 10 esm_… .part1     2     max_fpb       0.712           3          3     1     1
+#>  1 esm_… .part1     1     max_sore…     0.526           4          4     1     1
+#>  2 esm_… .part1     1     max_jacc…     0.526           4          4     1     1
+#>  3 esm_… .part1     1     max_fpb       0.526           4          4     1     1
+#>  4 esm_… .part1     1     max_sens…     0.526           4          4     1     1
+#>  5 esm_… .part1     1     equal_se…     0.526           4          4     1     1
+#>  6 esm_… .part1     1     lpt           0.526           4          4     1     1
+#>  7 esm_… .part1     1     sensitiv…     0.526           4          4     1     1
+#>  8 esm_… .part1     2     max_sore…     0.644           3          3     1     1
+#>  9 esm_… .part1     2     max_jacc…     0.644           3          3     1     1
+#> 10 esm_… .part1     2     max_fpb       0.644           3          3     1     1
 #> # ℹ 95 more rows
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,

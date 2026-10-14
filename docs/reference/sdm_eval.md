@@ -198,7 +198,6 @@ The formulas are:
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 
 set.seed(0)
@@ -293,5 +292,4 @@ sdm_eval(p, bg_vals, thr = "max_sens_spec")
 #> 1 max_sens_spec     0.421          50       1000  0.86 0.537     0.845    0.155
 #> # ℹ 10 more variables: JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>,
 #> #   KAPPA <dbl>, MCC <dbl>, AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
-# }
 ```

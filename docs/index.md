@@ -224,16 +224,14 @@ predictions, model extrapolation, and partial dependence plots.
 You can install the development version of **flexsdm** from
 [github](https://github.com/sjevelazco/flexsdm)
 
-``` r
-
-# install.packages("remotes")
-
-# For Windows and Mac OS operating systems
-remotes::install_github("sjevelazco/flexsdm")
-
-# For Linux operating system
-remotes::install_github("sjevelazco/flexsdm@HEAD")
-```
+\
+`# install.packages("remotes")`\
+\
+`# For Windows and Mac OS operating systems`\
+`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"sjevelazco/flexsdm"``)`\
+\
+`# For Linux operating system`\
+`remotes``::`[`install_github`](https://remotes.r-lib.org/reference/install_github.html)`(``"sjevelazco/flexsdm@HEAD"``)`
 
 ⚠️ NOTE: If you have the following error
 

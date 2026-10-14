@@ -81,7 +81,6 @@ A list with two tibbles "pdpdata" and "resid".
 ## Examples
 
 ``` r
-# \donttest{
 library(terra)
 library(dplyr)
 
@@ -135,32 +134,32 @@ df
 #> # A tibble: 102 × 3
 #>      aet Suitability Type      
 #>    <dbl>       <dbl> <chr>     
-#>  1   0         0.284 Projection
-#>  2  13.7       0.306 Projection
-#>  3  27.4       0.330 Projection
-#>  4  41.1       0.356 Projection
-#>  5  54.9       0.383 Projection
-#>  6  68.6       0.412 Projection
-#>  7  82.3       0.441 Projection
-#>  8  96.0       0.471 Projection
-#>  9 110.        0.500 Projection
-#> 10 117.        0.517 Training  
+#>  1   0         0.253 Projection
+#>  2  13.7       0.271 Projection
+#>  3  27.4       0.291 Projection
+#>  4  41.1       0.314 Projection
+#>  5  54.9       0.340 Projection
+#>  6  68.6       0.367 Projection
+#>  7  82.3       0.397 Projection
+#>  8  96.0       0.428 Projection
+#>  9 110.        0.460 Projection
+#> 10 117.        0.479 Training  
 #> # ℹ 92 more rows
 #> 
 #> $resid
 #> # A tibble: 1,340 × 2
 #>      aet Suitability
 #>    <dbl>       <dbl>
-#>  1  610.     0.00569
-#>  2  781.     0.0483 
-#>  3  237.     0.0213 
-#>  4  949.     0.0915 
-#>  5  338.     0.336  
-#>  6  510.     0.0404 
-#>  7  309.     0.0986 
-#>  8  634.     0.106  
-#>  9  497.     0.0884 
-#> 10  261.     0.0884 
+#>  1  610.     0.00694
+#>  2  781.     0.0635 
+#>  3  237.     0.0185 
+#>  4  949.     0.0830 
+#>  5  338.     0.338  
+#>  6  510.     0.0429 
+#>  7  309.     0.0884 
+#>  8  634.     0.0910 
+#>  9  497.     0.0845 
+#> 10  261.     0.0705 
 #> # ℹ 1,330 more rows
 #> 
 names(df)
@@ -169,31 +168,31 @@ df$pdpdata
 #> # A tibble: 102 × 3
 #>      aet Suitability Type      
 #>    <dbl>       <dbl> <chr>     
-#>  1   0         0.284 Projection
-#>  2  13.7       0.306 Projection
-#>  3  27.4       0.330 Projection
-#>  4  41.1       0.356 Projection
-#>  5  54.9       0.383 Projection
-#>  6  68.6       0.412 Projection
-#>  7  82.3       0.441 Projection
-#>  8  96.0       0.471 Projection
-#>  9 110.        0.500 Projection
-#> 10 117.        0.517 Training  
+#>  1   0         0.253 Projection
+#>  2  13.7       0.271 Projection
+#>  3  27.4       0.291 Projection
+#>  4  41.1       0.314 Projection
+#>  5  54.9       0.340 Projection
+#>  6  68.6       0.367 Projection
+#>  7  82.3       0.397 Projection
+#>  8  96.0       0.428 Projection
+#>  9 110.        0.460 Projection
+#> 10 117.        0.479 Training  
 #> # ℹ 92 more rows
 df$resid
 #> # A tibble: 1,340 × 2
 #>      aet Suitability
 #>    <dbl>       <dbl>
-#>  1  610.     0.00569
-#>  2  781.     0.0483 
-#>  3  237.     0.0213 
-#>  4  949.     0.0915 
-#>  5  338.     0.336  
-#>  6  510.     0.0404 
-#>  7  309.     0.0986 
-#>  8  634.     0.106  
-#>  9  497.     0.0884 
-#> 10  261.     0.0884 
+#>  1  610.     0.00694
+#>  2  781.     0.0635 
+#>  3  237.     0.0185 
+#>  4  949.     0.0830 
+#>  5  338.     0.338  
+#>  6  510.     0.0429 
+#>  7  309.     0.0884 
+#>  8  634.     0.0910 
+#>  9  497.     0.0845 
+#> 10  261.     0.0705 
 #> # ℹ 1,330 more rows
 
 plot(df$pdpdata[1:2], type = "l")
@@ -201,5 +200,4 @@ points(df$resid[1:2], cex = 0.5)
 
 
 # see p_pdp to construct partial dependence plot with ggplot2
-# }
 ```

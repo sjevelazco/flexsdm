@@ -103,7 +103,6 @@ it is implemented in
 ## Examples
 
 ``` r
-# \donttest{
 require(terra)
 require(dplyr)
 require(ggplot2)
@@ -262,5 +261,4 @@ occ_selected
 #> 5         12     0.3148755       173 0.3303609 0.1954697 0.3341799 0.3994914
 #> 6         14     0.3164815       188 0.3356296 0.2041360 0.3261358 0.4000245
 #> 
-# }
 ```

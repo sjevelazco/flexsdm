@@ -109,6 +109,56 @@ A list of SpatRaster with continuous and/or binary predictions
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sdm_extract(data = sp3, x = "x", y = "y", env_layer = somevar)
+#> 20 rows were excluded from database because NAs were found
+sp3 <- part_random(
+  data = sp3,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = sp3,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Formula used for model fitting:
+#> pr_ab ~ CFP_1 + CFP_2 + CFP_3 + CFP_4 + I(CFP_1^2) + I(CFP_2^2) + I(CFP_3^2) + I(CFP_4^2)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+
+pred <- sdm_predict(
+  models = glm_toy,
+  pred = somevar,
+  thr = "max_sens_spec",
+  con_thr = FALSE,
+  predict_area = NULL
+)
+#> Predicting individual models
+pred
+#> $glm
+#> class       : SpatRaster
+#> size        : 93, 66, 2  (nrow, ncol, nlyr)
+#> resolution  : 11340, 11340  (x, y)
+#> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> names       : glm, max_sens_spec
+#> min values  :   0,             0
+#> max values  :   1,             1
+#> 
+terra::plot(pred$glm)
+
+
 # \donttest{
 require(dplyr)
 require(terra)
@@ -238,7 +288,11 @@ mensemble <- fit_ensemble(
   thr_model = "max_sens_spec",
   metric = "TSS"
 )
-#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |======================================================================| 100%
 
 # Fit a model with the Ensembles of Small Models approach
 # Without threshold specification and with kfold
@@ -249,7 +303,21 @@ msmall <- esm_gam(
   partition = ".part",
   thr = NULL
 )
-#>   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |======================================================================| 100%
 
 
 ## %######################################################%##

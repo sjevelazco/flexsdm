@@ -35,7 +35,6 @@ variables
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 require(terra)
 data(spp)
@@ -89,6 +88,4 @@ part$grid
 plot(part$grid)
 
 plot(grid_env)
-
-# }
 ```
