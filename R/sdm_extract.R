@@ -24,7 +24,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' require(terra)
 #'
 #' # Load datasets
@@ -56,7 +55,6 @@
 #'
 #' ex_spp
 #' ex_spp2
-#' }
 sdm_extract <-
   function(data,
            x,

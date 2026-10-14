@@ -100,6 +100,27 @@ and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-abse
 spatial partition groups
 }
 \examples{
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+
+sp_part <- part_sblock(
+  env_layer = somevar,
+  data = sp3,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  min_res_mult = 10,
+  max_res_mult = 40,
+  num_grids = 3,
+  n_part = 2,
+  min_occ = 2,
+  prop = 0.5
+)
+sp_part$best_part_info
+
 \donttest{
 require(terra)
 require(dplyr)

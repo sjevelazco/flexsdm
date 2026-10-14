@@ -95,12 +95,44 @@ and Velazco et al. (2022).
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3$idd <- seq_len(nrow(sp3)) # unique id for each record
+
+outs <- env_outliers(
+  data = sp3,
+  pr_ab = "pr_ab",
+  x = "x",
+  y = "y",
+  id = "idd",
+  env_layer = somevar
+)
+#> 20 rows were excluded from database because NAs were found
+outs
+#> # A tibble: 50 × 11
+#>    species        x        y pr_ab   idd .out_bxpt .out_jack .out_svm .out_rf
+#>    <chr>      <dbl>    <dbl> <dbl> <int>     <dbl>     <dbl>    <dbl>   <dbl>
+#>  1 sp3      -26331.  209912.     1     1        NA        NA       NA      NA
+#>  2 sp3      -83841.   21182.     0     2        NA        NA       NA      NA
+#>  3 sp3     -134331.  195332.     1     3        NA        NA       NA      NA
+#>  4 sp3       68709. -288778.     0     4         0         0        0       0
+#>  5 sp3      -79251.  -54418.     0     5         0         0        0       0
+#>  6 sp3       97869. -307948.     0     6         0         0        0       0
+#>  7 sp3        4989. -119218.     0     7         0         0        0       0
+#>  8 sp3       30369. -143788.     0     8         0         0        0       0
+#>  9 sp3       91929. -248008.     0     9         0         0        0       0
+#> 10 sp3      -80331.   32792.     0    10         0         0        0       0
+#> # ℹ 40 more rows
+#> # ℹ 2 more variables: .out_rfout <dbl>, .out_sum <dbl>
+
 # \donttest{
 require(dplyr)
 require(terra)
 require(ggplot2)
 #> Loading required package: ggplot2
-#> Warning: package 'ggplot2' was built under R version 4.5.3
 
 # Environmental variables
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
@@ -159,9 +191,9 @@ outs_1 %>%
 #> # Groups:   .out_sum [5]
 #>   .out_sum     n
 #>      <dbl> <int>
-#> 1        0   903
-#> 2        1    31
-#> 3        2     9
+#> 1        0   901
+#> 2        1    35
+#> 3        2     7
 #> 4        3     2
 #> 5       NA    55
 

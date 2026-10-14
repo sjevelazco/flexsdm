@@ -94,7 +94,6 @@ and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-abse
 spatial partition groups
 }
 \examples{
-\donttest{
 require(terra)
 require(ggplot2)
 require(dplyr)
@@ -130,7 +129,6 @@ ggplot(part1$part, aes(x, y, col = factor(.part))) +
 ggplot(part1$part, aes(x, y, col = factor(.part))) +
   geom_point(aes(shape = factor(pr_ab))) +
   facet_wrap(. ~ pr_ab)
-}
 }
 \references{
 \itemize{

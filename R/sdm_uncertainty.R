@@ -19,6 +19,37 @@
 #' @seealso \code{\link{sdm_predict}}
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' sp3 <- sdm_extract(data = sp3, x = "x", y = "y", env_layer = somevar)
+#' sp3 <- part_random(
+#'   data = sp3,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 3)
+#' )
+#'
+#' glm_toy <- fit_glm(
+#'   data = sp3,
+#'   response = "pr_ab",
+#'   predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+#'   partition = ".part",
+#'   thr = "max_sens_spec"
+#' )
+#'
+#' # Few bootstrap iterations to keep this example fast
+#' unc <- sdm_uncertainty(
+#'   models = glm_toy,
+#'   training_data = sp3,
+#'   response = "pr_ab",
+#'   projection_data = somevar,
+#'   iteration = 2,
+#'   n_cores = 1
+#' )
+#' terra::plot(unc)
+#'
 #' \donttest{
 #' require(terra)
 #' require(dplyr)
@@ -106,7 +137,6 @@ sdm_uncertainty <- function(
   if (clss == "domain") {
     r_list <- NULL
     for (ii in 1:iteration) {
-      set.seed(ii)
       db <- part_random(
         data = training_data,
         pr_ab = response,
@@ -121,8 +151,16 @@ sdm_uncertainty <- function(
       )
     }
   } else {
-    my_cluster <- makeCluster(n_cores)
-    registerDoParallel(my_cluster)
+    # seeds drawn from the caller's RNG so results follow set.seed() set by the user
+    seeds <- sample.int(.Machine$integer.max, iteration)
+    if (n_cores > 1) {
+      my_cluster <- makeCluster(n_cores)
+      registerDoParallel(my_cluster)
+    } else {
+      # a single core: run sequentially, without starting a cluster
+      my_cluster <- NULL
+      foreach::registerDoSEQ()
+    }
 
     r_list <- foreach::foreach(
       ii = 1:iteration,
@@ -130,7 +168,7 @@ sdm_uncertainty <- function(
       .export = c("part_random", "predict.graf", "predict_maxnet", "extract.maxnet.classes", "fit_gam", "fit_gau", "fit_glm", "fit_gbm", "fit_dom", "fit_max", "fit_net", "fit_raf", "fit_svm", "map_env_dist"),
       .errorhandling = "pass" #
     ) %dopar% {
-      set.seed(ii)
+      if (n_cores > 1) set.seed(seeds[ii])
       db <- part_random(
         data = training_data,
         pr_ab = response,
@@ -170,7 +208,7 @@ sdm_uncertainty <- function(
 
       result
     }
-    stopCluster(my_cluster)
+    if (!is.null(my_cluster)) stopCluster(my_cluster)
   }
 
   names(r_list) <- 1:length(r_list)

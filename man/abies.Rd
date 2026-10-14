@@ -21,10 +21,8 @@ abies
 A data set containing localities and environmental condition of an Abies (fir tree) species in California, USA
 }
 \examples{
-\donttest{
 require(dplyr)
 data("abies")
 abies
-}
 }
 \keyword{datasets}

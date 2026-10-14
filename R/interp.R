@@ -43,7 +43,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #'
@@ -61,7 +60,6 @@
 #' )
 #'
 #' int
-#' }
 interp <- function(r1, r2, y1, y2, rastername = NULL, dir_save = NULL) {
   annual <- (r1 - r2) / (y2 - y1)
 

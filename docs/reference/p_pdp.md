@@ -115,7 +115,6 @@ the environmental conditions used to train the model.
 ## Examples
 
 ``` r
-# \donttest{
 library(terra)
 library(dplyr)
 
@@ -135,7 +134,7 @@ abies2 <- sdm_extract(abies2,
   y = "y",
   env_layer = somevar
 )
-#> 31 rows were excluded from database because NAs were found
+#> 34 rows were excluded from database because NAs were found
 abies2 <- part_random(abies2,
   pr_ab = "pr_ab",
   method = c(method = "kfold", folds = 5)
@@ -199,6 +198,4 @@ p_pdp(
   colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
   theme = ggplot2::theme_dark()
 )
-
-# }
 ```

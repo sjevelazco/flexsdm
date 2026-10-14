@@ -11,13 +11,11 @@
 #' @importFrom terra res plot as.polygons
 #'
 #' @examples
-#' \donttest{
 #' f <- system.file("external/somevar.tif", package = "flexsdm")
 #' r <- terra::rast(f)
 #' r <- r$CFP_1
 #' plot_res(r, res_mult = 100)
 #' plot_res(r, res_mult = 200)
-#' }
 plot_res <- function(r, res_mult) {
   r0 <- r[[1]]
   r0[!is.na(r0)] <- 1

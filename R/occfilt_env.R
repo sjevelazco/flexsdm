@@ -59,7 +59,6 @@
 #' @importFrom terra extract nlyr levels classify
 #'
 #' @examples
-#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #' require(ggplot2)
@@ -152,7 +151,6 @@
 #' )
 #'
 #' occ_selected
-#' }
 #'
 #' @seealso \code{\link{occfilt_geo}}, \code{\link{occfilt_select}}
 #'

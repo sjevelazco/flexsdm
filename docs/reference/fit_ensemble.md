@@ -118,7 +118,6 @@ A list object with:
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 require(terra)
 
@@ -195,7 +194,11 @@ mensemble <- fit_ensemble(
   thr_model = "max_sens_spec",
   metric = "TSS"
 )
-#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |======================================================================| 100%
 
 mensemble
 #> $models
@@ -253,13 +256,13 @@ mensemble
 #> # A tibble: 7 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 raf   equal_sens_sp…     0.684          25         69    0.843 0.0561    0.826
-#> 2 raf   lpt                0.684          25         69    1     0         0.725
-#> 3 raf   max_fpb            0.684          25         69    0.806 0.120     0.928
-#> 4 raf   max_jaccard        0.684          25         69    0.806 0.120     0.928
-#> 5 raf   max_sens_spec      0.684          25         69    0.884 0.111     0.870
-#> 6 raf   max_sorensen       0.684          25         69    0.806 0.120     0.928
-#> 7 raf   sensitivity        0.698          25         69    1     0         0.725
+#> 1 raf   equal_sens_sp…     0.646          25         69    0.843 0.0561    0.841
+#> 2 raf   lpt                0.646          25         69    1     0         0.739
+#> 3 raf   max_fpb            0.646          25         69    0.843 0.0561    0.913
+#> 4 raf   max_jaccard        0.646          25         69    0.843 0.0561    0.913
+#> 5 raf   max_sens_spec      0.646          25         69    0.884 0.111     0.884
+#> 6 raf   max_sorensen       0.646          25         69    0.843 0.0561    0.913
+#> 7 raf   sensitivity        0.694          25         69    1     0         0.739
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -272,7 +275,8 @@ mensemble
 #> $models$m_3
 #> $models$m_3$model
 #> gbm::gbm(formula = formula1, distribution = "bernoulli", data = data, 
-#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage)
+#>     n.trees = n_trees, n.minobsinnode = n_minobsinnode, shrinkage = shrinkage, 
+#>     bag.fraction = 0.9)
 #> A gradient boosted model with bernoulli loss function.
 #> 100 iterations were performed.
 #> There were 4 predictors of which 4 had non-zero influence.
@@ -281,13 +285,13 @@ mensemble
 #> # A tibble: 7 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 gbm   equal_sens_sp…     0.600          25         69    0.843 0.0561    0.855
-#> 2 gbm   lpt                0.232          25         69    1     0         0.826
-#> 3 gbm   max_fpb            0.671          25         69    0.926 0.128     0.899
-#> 4 gbm   max_jaccard        0.671          25         69    0.926 0.128     0.899
-#> 5 gbm   max_sens_spec      0.232          25         69    1     0         0.826
-#> 6 gbm   max_sorensen       0.671          25         69    0.926 0.128     0.899
-#> 7 gbm   sensitivity        0.319          25         69    1     0         0.826
+#> 1 gbm   equal_sens_sp…     0.325          25         69    0.843 0.0561    0.870
+#> 2 gbm   lpt                0.213          25         69    1     0         0.783
+#> 3 gbm   max_fpb            0.590          25         69    0.884 0.111     0.913
+#> 4 gbm   max_jaccard        0.590          25         69    0.884 0.111     0.913
+#> 5 gbm   max_sens_spec      0.213          25         69    0.884 0.111     0.913
+#> 6 gbm   max_sorensen       0.590          25         69    0.884 0.111     0.913
+#> 7 gbm   sensitivity        0.325          25         69    1     0         0.783
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -313,13 +317,13 @@ mensemble
 #> # A tibble: 7 × 33
 #>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 meansup equal_sens_…     0.347          25         69    0.843 0.0561    0.855
-#> 2 meansup lpt              0.131          25         69    1     0         0.826
-#> 3 meansup max_fpb          0.518          25         69    0.926 0.128     0.899
-#> 4 meansup max_jaccard      0.518          25         69    0.926 0.128     0.899
-#> 5 meansup max_sens_sp…     0.518          25         69    1     0         0.826
-#> 6 meansup max_sorensen     0.518          25         69    0.926 0.128     0.899
-#> 7 meansup sensitivity      0.271          25         69    1     0         0.826
+#> 1 meansup equal_sens_…    0.441           25         69    0.843 0.0561    0.870
+#> 2 meansup lpt             0.0934          25         69    1     0         0.783
+#> 3 meansup max_fpb         0.487           25         69    0.884 0.111     0.913
+#> 4 meansup max_jaccard     0.487           25         69    0.884 0.111     0.913
+#> 5 meansup max_sens_sp…    0.487           25         69    0.884 0.111     0.913
+#> 6 meansup max_sorensen    0.487           25         69    0.884 0.111     0.913
+#> 7 meansup sensitivity     0.291           25         69    1     0         0.783
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -332,20 +336,19 @@ mensemble
 #> # A tibble: 21 × 21
 #>    model   replica partition threshold    thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>   <chr>     <chr>            <dbl>       <int>      <int> <dbl>
-#>  1 meansup 1       1         max_sorensen     0.518           9         23 0.778
-#>  2 meansup 1       1         max_jaccard      0.518           9         23 0.778
-#>  3 meansup 1       1         max_fpb          0.518           9         23 0.778
-#>  4 meansup 1       1         max_sens_sp…     0.186           9         23 1    
-#>  5 meansup 1       1         equal_sens_…     0.314           9         23 0.778
-#>  6 meansup 1       1         lpt              0.186           9         23 1    
-#>  7 meansup 1       1         sensitivity      0.186           9         23 1    
-#>  8 meansup 1       2         max_sorensen     0.131           8         23 1    
-#>  9 meansup 1       2         max_jaccard      0.131           8         23 1    
-#> 10 meansup 1       2         max_fpb          0.131           8         23 1    
+#>  1 meansup 1       1         max_sorensen     0.634           9         23 0.778
+#>  2 meansup 1       1         max_jaccard      0.634           9         23 0.778
+#>  3 meansup 1       1         max_fpb          0.634           9         23 0.778
+#>  4 meansup 1       1         max_sens_sp…     0.634           9         23 0.778
+#>  5 meansup 1       1         equal_sens_…     0.441           9         23 0.778
+#>  6 meansup 1       1         lpt              0.112           9         23 1    
+#>  7 meansup 1       1         sensitivity      0.112           9         23 1    
+#>  8 meansup 1       2         max_sorensen     0.487           8         23 0.875
+#>  9 meansup 1       2         max_jaccard      0.487           8         23 0.875
+#> 10 meansup 1       2         max_fpb          0.487           8         23 0.875
 #> # ℹ 11 more rows
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
 #> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 #> 
-# }
 ```

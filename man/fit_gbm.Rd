@@ -79,7 +79,6 @@ Threshold dependent metrics are calculated based on the threshold specified in t
 Fit and validate Generalized Boosted Regression models
 }
 \examples{
-\donttest{
 data("abies")
 
 # Using k-fold partition method
@@ -121,7 +120,6 @@ gbm_t2 <- fit_gbm(
   thr = "max_sens_spec"
 )
 gbm_t2
-}
 }
 \seealso{
 \code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_glm}},

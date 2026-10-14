@@ -73,6 +73,25 @@ Threshold dependent metric are calculated based on the threshold specified in th
 Fit and validate Generalized Linear Models
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec",
+  poly = 1
+)
+glm_toy$performance
+
 \donttest{
 data("abies")
 abies

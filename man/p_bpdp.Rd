@@ -68,6 +68,30 @@ Partial dependence surface plot could be used to interpret a model or to explore
 extrapolate outside the environmental conditions used to train the model (convex hull polygon).
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd"),
+  partition = ".part",
+  thr = "max_sens_spec",
+  poly = 2
+)
+
+p_bpdp(
+  model = glm_toy$model,
+  training_data = abies_toy,
+  resolution = 20
+)
+
 \donttest{
 library(terra)
 library(dplyr)

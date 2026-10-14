@@ -72,7 +72,6 @@ could be used to interpret a model or to explore how a model may extrapolate out
 used to train the model.
 }
 \examples{
-\donttest{
 library(terra)
 library(dplyr)
 
@@ -136,7 +135,6 @@ p_pdp(
   colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
   theme = ggplot2::theme_dark()
 )
-}
 }
 \seealso{
 \code{\link{data_pdp}}, \code{\link{data_bpdp}}, \code{\link{p_bpdp}},

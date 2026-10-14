@@ -52,7 +52,6 @@
 #' @importFrom dplyr bind_rows as_tibble
 #'
 #' @examples
-#' \donttest{
 #' data <- data.frame(
 #'   species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
 #'   x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -77,7 +76,6 @@
 #'   x = "x", y = "y", species = "species",
 #'   target_species = c("sp1", "sp2"), pr_ab_name = "occ"
 #' )
-#' }
 get_absences <- function(data, x = "x", y = "y", species = "species",
                          target_species = NULL, pr_ab_name = "pr_ab") {
   if (!all(c(x, y, species) %in% names(data))) {

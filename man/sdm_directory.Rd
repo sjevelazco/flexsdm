@@ -5,7 +5,7 @@
 \title{Create directories for saving the outputs of the flexsdm}
 \usage{
 sdm_directory(
-  main_dir = NULL,
+  main_dir,
   projections = NULL,
   calibration_area = TRUE,
   algorithm = NULL,
@@ -16,8 +16,8 @@ sdm_directory(
 }
 \arguments{
 \item{main_dir}{character. Directory path containing main folder for saving model inputs and
-outputs. If NULL function assumes as directory path the current working R session and creates
-a sub-folder with the name of 'flexsdm_results'. Default NULL}
+outputs. There is no default: the path must be provided by the user (e.g., in examples use
+a sub-folder of \code{tempdir()}). The folder is created if it does not exist.}
 
 \item{projections}{vector. Vector of folder names for future scenarios/different regions/time
 periods to save model projections output.}
@@ -63,13 +63,12 @@ flexibility in saving their modeling outputs, giving them offers users the
 option to save results from any modeling and ensemble technique presented in flexsdm
 }
 \examples{
-\donttest{
-require(dplyr)
-# require(sf)
-
-# Implement sdm_directory without specific path and project name
+# Folders are created in a temporary directory; in a real analysis use
+# the path of your own project folder
+my_project <- file.path(tempdir(), "my_project_name")
+# my_project <- file.path(getwd(), "flexsdm_results") # create folders in the working directory
 dirs_1 <- sdm_directory(
-  main_dir = NULL,
+  main_dir = my_project,
   projections = NULL,
   calibration_area = TRUE,
   algorithm = c("gam", "tune_max"),
@@ -78,24 +77,17 @@ dirs_1 <- sdm_directory(
   return_vector = TRUE
 )
 dirs_1
-dirs_1[1] \%>\% fs::dir_tree(., recurse = TRUE)
+unlink(my_project, recursive = TRUE) # remove the folders created in this example
 
-unlink(dirs_1[1], recursive = TRUE) # this directory and sub-folder will be removed
-
-# Implement sdm_directory with specific path and project name
-getwd() \%>\% dirname()
-
+# With folders for model projections and for thresholded outputs
 dirs_2 <- sdm_directory(
-  main_dir = getwd() \%>\% dirname() \%>\% file.path(., "my_project_name"),
-  projections = c(
-    "cnrm_rpc8.5_2050",
-    "cnrm_rpc4.5_2050"
-  ),
+  main_dir = my_project,
+  projections = c("cnrm_rpc8.5_2050", "cnrm_rpc4.5_2050"),
   calibration_area = TRUE,
   algorithm = "all",
   ensemble = c("mean", "meanthr"),
   threshold = TRUE
 )
-dirs_2[1] \%>\% fs::dir_tree(., recurse = TRUE)
-}
+head(dirs_2)
+unlink(my_project, recursive = TRUE)
 }

@@ -83,6 +83,27 @@ the hyper-parameters.
 Fit and validate Neural Networks models with exploration of hyper-parameters
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+tune_toy <- tune_net(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  grid = expand.grid(size = c(2, 3), decay = c(0.1, 1)),
+  thr = "max_sens_spec",
+  metric = "TSS",
+  n_cores = 1
+)
+tune_toy$performance
+
 \donttest{
 data(abies)
 abies

@@ -27,6 +27,58 @@ tune will include model performance for the best hyperparameters.
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + I(aet^2) + I(cwd^2) + I(tmin^2)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+gam_toy <- fit_gam(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec",
+  k = 3
+)
+#> Formula used for model fitting:
+#> pr_ab ~ s(aet, k = 3) + s(cwd, k = 3) + s(tmin, k = 3)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+
+# Merge the performance tables of several models
+sdm_summarize(models = list(glm_toy, gam_toy))
+#> # A tibble: 2 × 34
+#>   model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd
+#>      <int> <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>
+#> 1        1 glm   max_sens_spec     0.428          30         30    0.967 0.0577
+#> 2        2 gam   max_sens_spec     0.403          30         30    0.967 0.0577
+#> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
+#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
+#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
+#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,
+#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 data(abies)
 abies
@@ -75,9 +127,9 @@ gam_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>   <dbl>    <dbl>
-#> 1 gam   equal_sens_s…     0.540         700        700    0.730 0.00372    0.730
-#> 2 gam   max_sens_spec     0.530         700        700    0.754 0.0121     0.720
-#> 3 gam   max_sorensen      0.359         700        700    0.929 0.0237     0.496
+#> 1 gam   equal_sens_s…     0.540         700        700    0.733 0.00286    0.733
+#> 2 gam   max_sens_spec     0.530         700        700    0.779 0.0595     0.711
+#> 3 gam   max_sorensen      0.359         700        700    0.879 0.0377     0.572
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -107,11 +159,11 @@ glm_t1 <- fit_glm(
 
 glm_t1$performance
 #> # A tibble: 3 × 33
-#>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
-#>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 glm   equal_sens_sp…     0.523         700        700    0.659 0.0101    0.659
-#> 2 glm   max_sens_spec      0.463         700        700    0.776 0.0515    0.574
-#> 3 glm   max_sorensen       0.356         700        700    0.894 0.0236    0.437
+#>   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>   <dbl>    <dbl>
+#> 1 glm   equal_sens_s…     0.523         700        700    0.659 0.00951    0.659
+#> 2 glm   max_sens_spec     0.463         700        700    0.803 0.0838     0.567
+#> 3 glm   max_sorensen      0.356         700        700    0.897 0.0260     0.453
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -157,7 +209,7 @@ rf_t1$performance
 #> # A tibble: 1 × 35
 #>    mtry ntree model threshold   thr_value n_presences n_absences TPR_mean TPR_sd
 #>   <dbl> <dbl> <chr> <chr>           <dbl>       <int>      <int>    <dbl>  <dbl>
-#> 1     4   300 raf   max_sens_s…      0.62         700        700    0.911 0.0245
+#> 1     2   300 raf   max_sens_s…     0.493         700        700    0.910 0.0236
 #> # ℹ 26 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
 #> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
 #> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,
@@ -174,13 +226,13 @@ merge_df
 #> # A tibble: 7 × 36
 #>   model_ID model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd
 #>      <int> <chr> <chr>             <dbl>       <int>      <int>    <dbl>   <dbl>
-#> 1        1 gam   equal_sens_s…     0.540         700        700    0.730 0.00372
-#> 2        1 gam   max_sens_spec     0.530         700        700    0.754 0.0121 
-#> 3        1 gam   max_sorensen      0.359         700        700    0.929 0.0237 
-#> 4        2 glm   equal_sens_s…     0.523         700        700    0.659 0.0101 
-#> 5        2 glm   max_sens_spec     0.463         700        700    0.776 0.0515 
-#> 6        2 glm   max_sorensen      0.356         700        700    0.894 0.0236 
-#> 7        3 raf   max_sens_spec     0.62          700        700    0.911 0.0245 
+#> 1        1 gam   equal_sens_s…     0.540         700        700    0.733 0.00286
+#> 2        1 gam   max_sens_spec     0.530         700        700    0.779 0.0595 
+#> 3        1 gam   max_sorensen      0.359         700        700    0.879 0.0377 
+#> 4        2 glm   equal_sens_s…     0.523         700        700    0.659 0.00951
+#> 5        2 glm   max_sens_spec     0.463         700        700    0.803 0.0838 
+#> 6        2 glm   max_sorensen      0.356         700        700    0.897 0.0260 
+#> 7        3 raf   max_sens_spec     0.493         700        700    0.910 0.0236 
 #> # ℹ 28 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,
 #> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,
 #> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,

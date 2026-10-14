@@ -171,6 +171,36 @@ and
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+
+sp_part <- part_sband(
+  env_layer = somevar,
+  data = sp3,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  type = "lon",
+  min_bands = 2,
+  max_bands = 4,
+  n_part = 2,
+  min_occ = 2,
+  prop = 0.5
+)
+#> 20 rows were excluded from database because NAs were found
+#> The following number of bands will be tested:
+#> 2 | 3 | 4
+#> Creating basic raster mask...
+#> Searching for the optimal number of bands...
+sp_part$best_part_info
+#> # A tibble: 1 × 6
+#>   n_grid n_bands spa_auto env_sim  sd_p  sd_a
+#>    <int>   <int>    <dbl>   <dbl> <dbl> <dbl>
+#> 1      1       2    0.163    381.  1.41  1.41
+
 # \donttest{
 require(terra)
 require(dplyr)
@@ -231,7 +261,7 @@ part_1$best_part_info # information of the best partition
 #> # A tibble: 1 × 6
 #>   n_grid n_bands spa_auto env_sim  sd_p  sd_a
 #>    <int>   <int>    <dbl>   <dbl> <dbl> <dbl>
-#> 1      2       3    0.191    356.  73.5  12.0
+#> 1      2       3    0.208    356.  73.5  12.0
 part_1$grid # raster with folds
 #> class       : SpatRaster
 #> size        : 1, 3, 1  (nrow, ncol, nlyr)
@@ -293,7 +323,7 @@ part_2$best_part_info
 #> # A tibble: 1 × 5
 #>   n_grid n_bands spa_auto env_sim  sd_p
 #>    <int>   <int>    <dbl>   <dbl> <dbl>
-#> 1      6      18    0.632    272.  10.1
+#> 1      6      18    0.642    272.  10.1
 part_2$grid
 #> class       : SpatRaster
 #> size        : 18, 1, 1  (nrow, ncol, nlyr)

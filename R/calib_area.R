@@ -25,7 +25,6 @@
 #' @importFrom terra vect buffer aggregate union crs extract is.related
 #'
 #' @examples
-#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #' data("spp")
@@ -121,7 +120,6 @@
 #' )
 #' plot(ca_3.1)
 #' points(single_spp[, 2:3], pch = 19, cex = 0.5, col = "red")
-#' }
 calib_area <- function(data, x, y, method, groups = NULL, crs = NULL) {
   . <- NULL
   m_type <- method[1]

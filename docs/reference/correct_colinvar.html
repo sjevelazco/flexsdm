@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,7 +98,9 @@ scenarios. Variables names must have the same names as in the raster used in env
 
 
 <dt id="arg-save-proj">save_proj<a class="anchor" aria-label="anchor" href="#arg-save-proj"></a></dt>
-<dd><p>character. Directory to save PCA projection. Default NULL.</p></dd>
+<dd><p>character. Directory to save PCA projection. If NULL (default), the projections are saved
+in a folder named 'Projection_PCA' within the temporary directory of the R session (see <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></code>);
+use this argument to keep them in a folder of your choice. The path is returned in the 'proj' element of the output.</p></dd>
 
 
 <dt id="arg-restric-to-region">restric_to_region<a class="anchor" aria-label="anchor" href="#arg-restric-to-region"></a></dt>
@@ -175,7 +177,8 @@ single or multiband rasters with the environmental variables.</p>
         |– var2.tif<br>
         `– var3.tif</p>
 <p>If pca method is run with time projections, correct_colinvar function will create the
-Projection_PCA (the exact path is in the path object returned by the function) with the same
+Projection_PCA folder (in the folder given in the save_proj argument, or in the temporary directory if
+save_proj is NULL; the exact path is in the proj element returned by the function) with the same
 system of sub-folders and multiband raster with the principal components (pcs.tif)</p>
 <p>C:/Users/my_pc/Projection_PCA/<br>
       |– MRIESM_2050_ssp126<br>
@@ -195,7 +198,43 @@ recommended to use all the point data used for modeling
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Toy raster: coarser resolution to keep this example fast</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">somevar</span>, fact <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Perform Pearson collinearity control</span></span></span>
+<span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th <span class="op">=</span> <span class="st">"0.7"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cor_table</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           CFP_1     CFP_2     CFP_3     CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_1 0.0000000 0.7561269 0.8540406 0.8093741</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_2 0.7561269 0.0000000 0.5022392 0.6029957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_3 0.8540406 0.5022392 0.0000000 0.7792649</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_4 0.8093741 0.6029957 0.7792649 0.0000000</span>
+<span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cor_variables</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_2" "CFP_3" "CFP_4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1" "CFP_4"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_1" "CFP_3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Perform VIF collinearity control</span></span></span>
+<span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vif"</span>, th <span class="op">=</span> <span class="st">"8"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">vif_table</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variables   VIF</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> CFP_2      1.58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> CFP_3      2.56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> CFP_4      3.00</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -228,10 +267,10 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pearson"</span>, th <span class="op">=</span> <span class="st">"0.7"</span><span class="op">)</span>, maxcell <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cor_table</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           CFP_1     CFP_2     CFP_3     CFP_4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_1 0.0000000 0.7653187 0.7945362 0.7855346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_2 0.7653187 0.0000000 0.4155557 0.5885450</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_3 0.7945362 0.4155557 0.0000000 0.7303327</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_4 0.7855346 0.5885450 0.7303327 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_1 0.0000000 0.7619283 0.7907868 0.7759095</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_2 0.7619283 0.0000000 0.4058082 0.5656382</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_3 0.7907868 0.4058082 0.0000000 0.7396789</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CFP_4 0.7759095 0.5656382 0.7396789 0.0000000</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">cor_variables</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $CFP_1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CFP_2" "CFP_3" "CFP_4"</span>
@@ -308,10 +347,10 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dir_sc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">dir_sc</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"scenario_1"</span>, <span class="st">"scenario_2"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">dir_sc</span>, <span class="va">dir.create</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C:\\Users\\svelazco\\AppData\\Local\\Temp\\Rtmpg78lxG/projections/scenario_1 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                         TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C:\\Users\\svelazco\\AppData\\Local\\Temp\\Rtmpg78lxG/projections/scenario_2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                         TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/projections/scenario_1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/projections/scenario_2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                TRUE </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
@@ -323,8 +362,10 @@ recommended to use all the point data used for modeling
 <span class="r-in"><span><span class="co">## Perform pca with projections</span></span></span>
 <span class="r-in"><span><span class="va">dir_w_proj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">dir_sc</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dir_w_proj</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:/Users/svelazco/AppData/Local/Temp/Rtmpg78lxG/projections"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/projections"</span>
 <span class="r-in"><span><span class="va">var</span> <span class="op">&lt;-</span> <span class="fu">correct_colinvar</span><span class="op">(</span>env_layer <span class="op">=</span> <span class="va">somevar</span>, method <span class="op">=</span> <span class="st">"pca"</span>, proj <span class="op">=</span> <span class="va">dir_w_proj</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'save_proj' was not provided; PCA projections were saved in a temporary folder: /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/Projection_PCA</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Use the 'save_proj' argument to save them in a folder of your choice</span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">env_layer</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> size        : 558, 394, 3  (nrow, ncol, nlyr)</span>
@@ -352,7 +393,7 @@ recommended to use all the point data used for modeling
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 0.979</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 1    </span>
 <span class="r-in"><span><span class="va">var</span><span class="op">$</span><span class="va">proj</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C:/Users/svelazco/AppData/Local/Temp/Rtmpg78lxG/Projection_PCA"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpFb9GT9/Projection_PCA"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Perform fa colinearity control</span></span></span>

@@ -138,6 +138,41 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+dom_toy <- fit_dom(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+dom_toy$performance
+#> # A tibble: 1 × 33
+#>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 dom   max_sens_spec     0.996          30         30    0.833  0.208    0.733
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 require(dplyr)
 require(terra)
@@ -245,7 +280,7 @@ mdom
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 dom   max_sens_spec     0.973          25         69    0.926  0.103    0.843
+#> 1 dom   max_sens_spec     0.973          25         69    0.895  0.102    0.855
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -258,39 +293,39 @@ mdom
 #> # A tibble: 15 × 21
 #>    replica partition model threshold     thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>             <dbl>       <int>      <int> <dbl>
-#>  1 1       1         dom   max_sens_spec     0.767           9         23 1    
-#>  2 1       2         dom   max_sens_spec     0.837           8         23 1    
-#>  3 1       3         dom   max_sens_spec     0.935           8         23 0.875
-#>  4 2       1         dom   max_sens_spec     0.920           9         23 0.889
-#>  5 2       2         dom   max_sens_spec     0.751           8         23 1    
-#>  6 2       3         dom   max_sens_spec     0.862           8         23 1    
-#>  7 3       1         dom   max_sens_spec     0.861           9         23 1    
-#>  8 3       2         dom   max_sens_spec     0.826           8         23 1    
-#>  9 3       3         dom   max_sens_spec     0.931           8         23 0.75 
+#>  1 1       1         dom   max_sens_spec     0.906           9         23 0.889
+#>  2 1       2         dom   max_sens_spec     0.748           8         23 0.875
+#>  3 1       3         dom   max_sens_spec     0.934           8         23 0.75 
+#>  4 2       1         dom   max_sens_spec     0.745           9         23 0.889
+#>  5 2       2         dom   max_sens_spec     0.829           8         23 1    
+#>  6 2       3         dom   max_sens_spec     0.841           8         23 1    
+#>  7 3       1         dom   max_sens_spec     0.879           9         23 1    
+#>  8 3       2         dom   max_sens_spec     0.793           8         23 1    
+#>  9 3       3         dom   max_sens_spec     0.871           8         23 0.75 
 #> 10 4       1         dom   max_sens_spec     0.841           9         23 1    
-#> 11 4       2         dom   max_sens_spec     0.926           8         23 0.875
-#> 12 4       3         dom   max_sens_spec     0.748           8         23 1    
-#> 13 5       1         dom   max_sens_spec     0.838           9         23 1    
-#> 14 5       2         dom   max_sens_spec     0.914           8         23 0.75 
-#> 15 5       3         dom   max_sens_spec     0.934           8         23 0.75 
+#> 11 4       2         dom   max_sens_spec     0.831           8         23 0.875
+#> 12 4       3         dom   max_sens_spec     0.927           8         23 0.875
+#> 13 5       1         dom   max_sens_spec     0.913           9         23 0.778
+#> 14 5       2         dom   max_sens_spec     0.757           8         23 1    
+#> 15 5       3         dom   max_sens_spec     0.932           8         23 0.75 
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
 #> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 #> 
 #> $data_ens
 #> # A tibble: 470 × 5
-#>    rnames replicates part  pr_ab   pred
-#>    <chr>  <chr>      <chr> <dbl>  <dbl>
-#>  1 6      .part1     1         1 0.898 
-#>  2 8      .part1     1         0 0.910 
-#>  3 10     .part1     1         0 0.920 
-#>  4 15     .part1     1         0 0.0115
-#>  5 21     .part1     1         0 0.890 
-#>  6 22     .part1     1         1 0.767 
-#>  7 23     .part1     1         0 0.611 
-#>  8 25     .part1     1         0 0     
-#>  9 40     .part1     1         0 0     
-#> 10 42     .part1     1         0 0.769 
+#>    rnames replicates part  pr_ab  pred
+#>    <chr>  <chr>      <chr> <dbl> <dbl>
+#>  1 4      .part1     1         0 0.867
+#>  2 5      .part1     1         0 0    
+#>  3 6      .part1     1         1 0.906
+#>  4 7      .part1     1         0 0.833
+#>  5 8      .part1     1         0 0.913
+#>  6 18     .part1     1         1 0.965
+#>  7 20     .part1     1         1 0.934
+#>  8 24     .part1     1         1 0.946
+#>  9 26     .part1     1         0 0    
+#> 10 28     .part1     1         1 0.961
 #> # ℹ 460 more rows
 #> 
 

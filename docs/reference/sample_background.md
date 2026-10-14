@@ -120,6 +120,37 @@ and
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sp3[sp3$pr_ab == 1, ] # presences only
+
+bg <- sample_background(
+  data = sp3,
+  x = "x",
+  y = "y",
+  n = 100,
+  method = "random",
+  rlayer = somevar[[1]]
+)
+bg
+#> # A tibble: 100 × 3
+#>           x        y pr_ab
+#>       <dbl>    <dbl> <dbl>
+#>  1  142284. -281623.     0
+#>  2    6204.   92597.     0
+#>  3  301044. -508423.     0
+#>  4  -16476. -202243.     0
+#>  5   17544. -236263.     0
+#>  6 -186576.   81257.     0
+#>  7  -50496. -213583.     0
+#>  8  108264. -372343.     0
+#>  9  -39156.    1877.     0
+#> 10 -152556.  262697.     0
+#> # ℹ 90 more rows
+
 # \donttest{
 require(terra)
 require(dplyr)
@@ -176,16 +207,16 @@ bg
 #> # A tibble: 1,000 × 4
 #>    sp           x        y pr_ab
 #>    <chr>    <dbl>    <dbl> <dbl>
-#>  1 sp3     26049. -222088.     0
-#>  2 sp3     65739.  -36868.     0
-#>  3 sp3   -123261. -133258.     0
-#>  4 sp3      5259.  -38758.     0
-#>  5 sp3   -202641.   -2848.     0
-#>  6 sp3    141339. -395968.     0
-#>  7 sp3   -238551.   89762.     0
-#>  8 sp3   -204531.  433742.     0
-#>  9 sp3     61959. -309028.     0
-#> 10 sp3    128109. -269338.     0
+#>  1 sp3    -21201.   76532.     0
+#>  2 sp3    -47661.  240962.     0
+#>  3 sp3   -238551.  148352.     0
+#>  4 sp3   -117591. -252328.     0
+#>  5 sp3    152679. -152158.     0
+#>  6 sp3   -104361.  -19858.     0
+#>  7 sp3    -96801. -227758.     0
+#>  8 sp3     48729. -343048.     0
+#>  9 sp3    -38211. -237208.     0
+#> 10 sp3   -278241.  354362.     0
 #> # ℹ 990 more rows
 plot(grid_env)
 points(bg[-1])

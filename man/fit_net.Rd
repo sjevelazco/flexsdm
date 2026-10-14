@@ -68,7 +68,6 @@ Threshold dependent metric are calculated based on the threshold specified in th
 Fit and validate Neural Networks models
 }
 \examples{
-\donttest{
 data("abies")
 
 # Using k-fold partition method
@@ -114,7 +113,6 @@ nnet_t2 <- fit_net(
   fit_formula = NULL
 )
 nnet_t2
-}
 }
 \seealso{
 \code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},

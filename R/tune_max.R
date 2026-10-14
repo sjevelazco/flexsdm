@@ -83,6 +83,34 @@
 #' @export
 #'
 #' @examples
+#' # Toy data: a small subset of 'abies' to keep this example fast
+#' data("abies")
+#' abies_toy <- abies[c(1:30, 701:730), ]
+#' abies_toy <- part_random(
+#'   data = abies_toy,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 3)
+#' )
+#'
+#' # Use the same records as background points (toy example only)
+#' backg_toy <- abies_toy
+#' backg_toy$pr_ab <- 0
+#'
+#' tune_toy <- tune_max(
+#'   data = abies_toy,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "cwd", "tmin"),
+#'   background = backg_toy,
+#'   partition = ".part",
+#'   grid = expand.grid(regmult = c(0.5, 1), classes = c("l", "lq")),
+#'   thr = "max_sens_spec",
+#'   metric = "TSS",
+#'   clamp = TRUE,
+#'   pred_type = "cloglog",
+#'   n_cores = 1
+#' )
+#' tune_toy$performance
+#'
 #' \donttest{
 #' data("abies")
 #' data("backg")
@@ -188,7 +216,6 @@ tune_max <-
     if (!is.null(background)) {
       if (!all(table(c(names(background), names(data))) == 2)) {
         stop("Column names of database used in 'data' and 'background' arguments do not match")
-        print(table(c(names(background), names(data))))
       }
     }
 
@@ -264,8 +291,14 @@ tune_max <-
       predictors <- c(predictors, predictors_f)
     }
 
-    cl <- parallel::makeCluster(n_cores)
-    doParallel::registerDoParallel(cl)
+    if (n_cores > 1) {
+      cl <- parallel::makeCluster(n_cores)
+      doParallel::registerDoParallel(cl)
+    } else {
+      # a single core: run sequentially, without starting a cluster
+      cl <- NULL
+      foreach::registerDoSEQ()
+    }
 
     message("Tuning model...")
     for (h in 1:np) {
@@ -410,12 +443,12 @@ tune_max <-
       {
         tryCatch(
           {
-            parallel::stopCluster(cl)
+            if (!is.null(cl)) parallel::stopCluster(cl)
           },
           error = function(e) {}
         )
       },
-      add = T
+      add = TRUE
     )
 
     # Create final database with parameter performance 2

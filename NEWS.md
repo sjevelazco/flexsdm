@@ -1,4 +1,4 @@
-# flexsdm 1.4.2 (prerelease)
+# flexsdm 1.4.2
 - `tune_max`: a grid combination whose fits all failed was assigned the previous combination's model/performance (stale `mod`); now initialised to `NULL` and checked with `is.null()` (#478)
 - `fit_max`: the final refit fallback used the CV loop index in its check and could discard a successful fit; it now uses `is.null(mod)` and falls back on presences + background (`data_2`) (#478)
 - `tune_svm`: removed `na.omit()` on partition performance so all combinations are compared across the same partitions (#478)
@@ -8,6 +8,12 @@
 - `get_absences`: NA in the species column no longer creates phantom NA rows (#479)
 - `calib_area`: mcp/bmcp with three or more groups no longer errors (#479)
 - `part_sband`: fixed uninitialised `imoran_bands_c` assignment (#479)
+- CRAN review: every exported function now has a small, fast example that is executed on CRAN (the longer examples remain inside `\donttest{}`); examples of `sdm_directory()` and `homogenize_na()` / `extra_eval()` no longer leave files in the working directory or alter `par()`
+- `sdm_directory`: `main_dir` no longer defaults to a sub-folder of the working directory and must be provided by the user
+- Functions no longer call `set.seed()` with a fixed number (`fit_*`, `occfilt_geo`, `correct_colinvar`, `p_extra`, ...). Results can be reproduced by calling `set.seed()` before running them; `tune_*`, `sdm_varimp` and `sdm_uncertainty` draw the seeds used by parallel workers from the caller's random-number stream
+- `tune_gbm`, `tune_max`, `tune_net`, `tune_raf`, `tune_svm`, `sdm_varimp` and `sdm_uncertainty`: no cluster is started when `n_cores = 1`, the computation runs sequentially in the current session
+- `occfilt_geo`: the `warn` option is restored when the function exits
+- Gaussian process code used by `fit_gau()` and `esm_gau()`, `fit_max()` and `tune_max()`: `print()` and `cat()` calls replaced by `message()` or `warning()` (or removed)
 
 # flexsdm 1.4.1 
 -  `get_absences`: Function to build a presence-absence database from multi-species occurrence data, by @sjevelazco

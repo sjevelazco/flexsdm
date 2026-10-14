@@ -111,7 +111,6 @@
 #' @importFrom stats quantile
 #'
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #'
 #' set.seed(0)
@@ -146,7 +145,6 @@
 #' # If background will be used to calculate all other metrics
 #' # background values can be used in "a" argument
 #' sdm_eval(p, bg_vals, thr = "max_sens_spec")
-#' }
 sdm_eval <- function(p, a, bg = NULL, thr = NULL) {
   TPR <- TNR <- JACCARD <- SORENSEN <- threshold <- FPB <- TSS <- NULL
 

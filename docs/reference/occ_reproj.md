@@ -87,7 +87,6 @@ modeling workflow.
 ## Examples
 
 ``` r
-# \donttest{
 data <- data.frame(
   species = c("sp1", "sp2", "sp3"),
   x = c(-74.1, -73.9, -74.0),
@@ -114,5 +113,4 @@ occ_reproj(
 #> 1     sp1 599831.1 508512.1
 #> 2     sp2 622001.1 519598.9
 #> 3     sp3 610916.7 514054.5
-# }
 ```

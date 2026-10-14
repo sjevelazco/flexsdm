@@ -85,6 +85,27 @@ database is used in \code{\link{fit_ensemble}}
 Fit and validate Random Forest models with exploration of hyper-parameters that optimize performance
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+tune_toy <- tune_raf(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  grid = expand.grid(mtry = c(1, 2), ntree = c(50, 100)),
+  thr = "max_sens_spec",
+  metric = "TSS",
+  n_cores = 1
+)
+tune_toy$performance
+
 \donttest{
 data(abies)
 abies

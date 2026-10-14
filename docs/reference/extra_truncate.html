@@ -9,7 +9,7 @@ extrapolative."><meta name="google-site-verification" content="gcou8tqRTwNjZ_Mf1
 
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,9 +107,38 @@ for further details about Shape metric, model truncation, and tools to explore m
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="co"># see examples in extra_eval function</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Toy data: small raster and records of one species to keep this example fast</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">somevar</span>, fact <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="co"># coarser resolution</span></span></span>
+<span class="r-in"><span><span class="va">sp3</span> <span class="op">&lt;-</span> <span class="va">spp</span><span class="op">[</span><span class="va">spp</span><span class="op">$</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp3"</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">sp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sp3</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 20 rows were excluded from database because NAs were found</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Extrapolation (Shape metric) in the projection area</span></span></span>
+<span class="r-in"><span><span class="va">extr</span> <span class="op">&lt;-</span> <span class="fu"><a href="extra_eval.html">extra_eval</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">sp3</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
+<span class="r-in"><span>  metric <span class="op">=</span> <span class="st">"mahalanobis"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Any suitability layer can be truncated; here, a toy layer rescaled to 0-1</span></span></span>
+<span class="r-in"><span><span class="va">suit</span> <span class="op">&lt;-</span> <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">suit</span> <span class="op">&lt;-</span> <span class="va">suit</span> <span class="op">/</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html" class="external-link">global</a></span><span class="op">(</span><span class="va">suit</span>, <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">suit</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"suit"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Suitability is set to 0 where extrapolation is higher than the threshold</span></span></span>
+<span class="r-in"><span><span class="va">suit_trunc</span> <span class="op">&lt;-</span> <span class="fu">extra_truncate</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  suit <span class="op">=</span> <span class="va">suit</span>,</span></span>
+<span class="r-in"><span>  extra <span class="op">=</span> <span class="va">extr</span>,</span></span>
+<span class="r-in"><span>  threshold <span class="op">=</span> <span class="fl">50</span>,</span></span>
+<span class="r-in"><span>  trunc_value <span class="op">=</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">suit_trunc</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="co"># one raster for each threshold value</span></span></span>
+<span class="r-plt img"><img src="extra_truncate-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># see more examples in extra_eval function</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

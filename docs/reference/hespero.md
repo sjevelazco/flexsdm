@@ -28,7 +28,6 @@ A tibble object with 14 rows and 4 variables:
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 data("hespero")
 hespero
@@ -46,5 +45,4 @@ hespero
 #>  9     9 316655. -559928.     1
 #> 10    10 316418. -567439.     1
 #> # ℹ 11 more rows
-# }
 ```

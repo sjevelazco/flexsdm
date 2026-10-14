@@ -56,7 +56,6 @@
 #' @importFrom stats formula sd
 #'
 #' @examples
-#' \donttest{
 #' data("abies")
 #'
 #' # Using k-fold partition method
@@ -103,7 +102,6 @@
 #'   fit_formula = NULL
 #' )
 #' svm_t2
-#' }
 fit_svm <- function(
   data,
   response,
@@ -243,7 +241,6 @@ fit_svm <- function(
             kpar_ <- list(sigma = sigma)
           }
 
-          set.seed(1)
           mod[[i]] <-
             suppressMessages(
               kernlab::ksvm(
@@ -323,7 +320,6 @@ fit_svm <- function(
     i <- 0
     while (pm > 2) {
       i <- i + 1
-      set.seed(i)
       suppressMessages(
         mod <-
           kernlab::ksvm(

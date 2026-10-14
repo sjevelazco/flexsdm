@@ -11,11 +11,9 @@
 #'   ...
 #' }
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' data("spp")
 #' spp
-#' }
 "spp"
 
 #' A data set containing environmental conditions of background points
@@ -28,11 +26,9 @@
 #'   ...
 #' }
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' data("backg")
 #' backg
-#' }
 "backg"
 
 #' A data set containing localities and environmental condition of an Abies (fir tree) species in California, USA
@@ -46,11 +42,9 @@
 #'   ...
 #' }
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' data("abies")
 #' abies
-#' }
 "abies"
 
 #' A data set containing localities of Hesperocyparis stephensonii species in California, USA
@@ -63,11 +57,9 @@
 #'   ...
 #' }
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' data("hespero")
 #' hespero
-#' }
 "hespero"
 
 #' A data set containing presences of palms species from Southern Brazil
@@ -87,8 +79,6 @@
 #' Calambás-Trochez, L.F., Velazco, S.J.E., Hoffmann, P.M., Brum, F.T., Carlucci, M.B., 2021. Climate and land-use changes coupled with low coverage of protected areas threaten palm species in South Brazilian grasslands. Perspectives in Ecology and Conservation 9. https://doi.org/10.1016/j.pecon.2021.03.010
 #'
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' data("palms")
-#' }
 "palms"

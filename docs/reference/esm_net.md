@@ -128,6 +128,52 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+esm_toy <- esm_net(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = NULL,
+  size = 2,
+  decay = 1
+)
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |======================================================================| 100%
+esm_toy$performance
+#> # A tibble: 7 × 33
+#>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 esm_net equal_sens_…     0.550          30         30    0.733 0.0577    0.733
+#> 2 esm_net lpt              0.422          30         30    1     0         0.7  
+#> 3 esm_net max_fpb          0.470          30         30    1     0         0.7  
+#> 4 esm_net max_jaccard      0.470          30         30    1     0         0.7  
+#> 5 esm_net max_sens_sp…     0.470          30         30    0.967 0.0577    0.733
+#> 6 esm_net max_sorensen     0.470          30         30    1     0         0.7  
+#> 7 esm_net sensitivity      0.474          30         30    0.9   0         0.733
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
 # \donttest{
 data("abies")
 require(dplyr)
@@ -180,82 +226,134 @@ esm_net_t1 <- esm_net(
   partition = ".part",
   thr = NULL
 )
-#>   |                                                                              |                                                                      |   0%  |                                                                              |==                                                                    |   4%  |                                                                              |=====                                                                 |   7%  |                                                                              |========                                                              |  11%  |                                                                              |==========                                                            |  14%  |                                                                              |============                                                          |  18%  |                                                                              |===============                                                       |  21%  |                                                                              |==================                                                    |  25%  |                                                                              |====================                                                  |  29%  |                                                                              |======================                                                |  32%  |                                                                              |=========================                                             |  36%  |                                                                              |============================                                          |  39%  |                                                                              |==============================                                        |  43%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  57%  |                                                                              |==========================================                            |  61%  |                                                                              |=============================================                         |  64%  |                                                                              |================================================                      |  68%  |                                                                              |==================================================                    |  71%  |                                                                              |====================================================                  |  75%  |                                                                              |=======================================================               |  79%  |                                                                              |==========================================================            |  82%  |                                                                              |============================================================          |  86%  |                                                                              |==============================================================        |  89%  |                                                                              |=================================================================     |  93%  |                                                                              |====================================================================  |  96%  |                                                                              |======================================================================| 100%
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |==                                                                    |   4%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |============================                                          |  39%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |==========================================                            |  61%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |==========================================================            |  82%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |==============================================================        |  89%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |====================================================================  |  96%
+  |                                                                            
+  |======================================================================| 100%
 
 esm_net_t1$esm_model # bivariate model
-#> $`0.855555555555556`
+#> $`0.0425925925925925`
+#> a 2-2-1 network with 9 weights
+#> inputs: aet cwd 
+#> output(s): pr_ab 
+#> options were - entropy fitting 
+#> 
+#> $`0.276388888888889`
 #> a 2-2-1 network with 9 weights
 #> inputs: aet tmin 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.0629629629629629`
-#> a 2-2-1 network with 9 weights
-#> inputs: aet ppt_jja 
-#> output(s): pr_ab 
-#> options were - entropy fitting 
-#> 
-#> $`0.175`
+#> $`0.087037037037037`
 #> a 2-2-1 network with 9 weights
 #> inputs: aet pH 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.190740740740741`
-#> a 2-2-1 network with 9 weights
-#> inputs: aet awc 
-#> output(s): pr_ab 
-#> options were - entropy fitting 
-#> 
-#> $`0.322222222222222`
+#> $`0.248148148148148`
 #> a 2-2-1 network with 9 weights
 #> inputs: aet depth 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.610185185185185`
+#> $`0.307407407407407`
 #> a 2-2-1 network with 9 weights
 #> inputs: cwd tmin 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.0703703703703704`
+#> $`0.104166666666667`
 #> a 2-2-1 network with 9 weights
-#> inputs: cwd ppt_jja 
+#> inputs: cwd ppt_djf 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.0722222222222222`
+#> $`0.0083333333333333`
 #> a 2-2-1 network with 9 weights
 #> inputs: cwd pH 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.00694444444444442`
+#> $`0.0273148148148148`
 #> a 2-2-1 network with 9 weights
 #> inputs: cwd awc 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.374537037037037`
+#> $`0.168055555555556`
 #> a 2-2-1 network with 9 weights
 #> inputs: cwd depth 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.468981481481481`
+#> $`0.709722222222222`
 #> a 2-2-1 network with 9 weights
 #> inputs: tmin ppt_djf 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.791203703703704`
+#> $`0.991666666666667`
 #> a 2-2-1 network with 9 weights
 #> inputs: tmin ppt_jja 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.946296296296296`
+#> $`0.926388888888889`
 #> a 2-2-1 network with 9 weights
 #> inputs: tmin pH 
 #> output(s): pr_ab 
@@ -267,49 +365,37 @@ esm_net_t1$esm_model # bivariate model
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.363425925925926`
+#> $`0.477777777777778`
 #> a 2-2-1 network with 9 weights
 #> inputs: tmin depth 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.0967592592592592`
-#> a 2-2-1 network with 9 weights
-#> inputs: ppt_djf ppt_jja 
-#> output(s): pr_ab 
-#> options were - entropy fitting 
-#> 
-#> $`0.0157407407407408`
-#> a 2-2-1 network with 9 weights
-#> inputs: ppt_djf awc 
-#> output(s): pr_ab 
-#> options were - entropy fitting 
-#> 
-#> $`0.519444444444444`
+#> $`0.131944444444444`
 #> a 2-2-1 network with 9 weights
 #> inputs: ppt_djf depth 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.0300925925925926`
+#> $`0.0268518518518519`
 #> a 2-2-1 network with 9 weights
-#> inputs: ppt_jja pH 
+#> inputs: ppt_jja awc 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.369907407407407`
+#> $`0.375`
 #> a 2-2-1 network with 9 weights
 #> inputs: ppt_jja depth 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.23287037037037`
+#> $`0.366203703703704`
 #> a 2-2-1 network with 9 weights
 #> inputs: pH depth 
 #> output(s): pr_ab 
 #> options were - entropy fitting 
 #> 
-#> $`0.209722222222222`
+#> $`0.404166666666667`
 #> a 2-2-1 network with 9 weights
 #> inputs: awc depth 
 #> output(s): pr_ab 
@@ -324,13 +410,13 @@ esm_net_t1$performance
 #> # A tibble: 7 × 33
 #>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 esm_net equal_sens_…     0.536          10         10        1      0        1
-#> 2 esm_net lpt              0.496          10         10        1      0        1
-#> 3 esm_net max_fpb          0.574          10         10        1      0        1
-#> 4 esm_net max_jaccard      0.574          10         10        1      0        1
-#> 5 esm_net max_sens_sp…     0.574          10         10        1      0        1
-#> 6 esm_net max_sorensen     0.574          10         10        1      0        1
-#> 7 esm_net sensitivity      0.593          10         10        1      0        1
+#> 1 esm_net equal_sens_…     0.536          10         10    0.983 0.0645    0.983
+#> 2 esm_net lpt              0.356          10         10    1     0         0.983
+#> 3 esm_net max_fpb          0.508          10         10    1     0         0.983
+#> 4 esm_net max_jaccard      0.508          10         10    1     0         0.983
+#> 5 esm_net max_sens_sp…     0.508          10         10    0.983 0.0645    1    
+#> 6 esm_net max_sorensen     0.508          10         10    1     0         0.983
+#> 7 esm_net sensitivity      0.606          10         10    1     0         0.983
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -342,16 +428,16 @@ esm_net_t1$performance_part
 #> # A tibble: 105 × 21
 #>    model replicates part  threshold thr_value n_presences n_absences   TPR   TNR
 #>    <chr> <chr>      <chr> <chr>         <dbl>       <int>      <int> <dbl> <dbl>
-#>  1 esm_… .part1     1     max_sore…     0.496           4          4     1     1
-#>  2 esm_… .part1     1     max_jacc…     0.496           4          4     1     1
-#>  3 esm_… .part1     1     max_fpb       0.496           4          4     1     1
-#>  4 esm_… .part1     1     max_sens…     0.496           4          4     1     1
-#>  5 esm_… .part1     1     equal_se…     0.496           4          4     1     1
-#>  6 esm_… .part1     1     lpt           0.496           4          4     1     1
-#>  7 esm_… .part1     1     sensitiv…     0.496           4          4     1     1
-#>  8 esm_… .part1     2     max_sore…     0.681           3          3     1     1
-#>  9 esm_… .part1     2     max_jacc…     0.681           3          3     1     1
-#> 10 esm_… .part1     2     max_fpb       0.681           3          3     1     1
+#>  1 esm_… .part1     1     max_sore…     0.632           4          4     1     1
+#>  2 esm_… .part1     1     max_jacc…     0.632           4          4     1     1
+#>  3 esm_… .part1     1     max_fpb       0.632           4          4     1     1
+#>  4 esm_… .part1     1     max_sens…     0.632           4          4     1     1
+#>  5 esm_… .part1     1     equal_se…     0.632           4          4     1     1
+#>  6 esm_… .part1     1     lpt           0.632           4          4     1     1
+#>  7 esm_… .part1     1     sensitiv…     0.632           4          4     1     1
+#>  8 esm_… .part1     2     max_sore…     0.563           3          3     1     1
+#>  9 esm_… .part1     2     max_jacc…     0.563           3          3     1     1
+#> 10 esm_… .part1     2     max_fpb       0.563           3          3     1     1
 #> # ℹ 95 more rows
 #> # ℹ 12 more variables: W_TPR_TNR <dbl>, SORENSEN <dbl>, JACCARD <dbl>,
 #> #   FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,

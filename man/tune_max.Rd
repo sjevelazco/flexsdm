@@ -102,6 +102,34 @@ background data. If only presence-absences are used in data argument and without
 function will fit model with the specified data (not recommended).
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+# Use the same records as background points (toy example only)
+backg_toy <- abies_toy
+backg_toy$pr_ab <- 0
+
+tune_toy <- tune_max(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  background = backg_toy,
+  partition = ".part",
+  grid = expand.grid(regmult = c(0.5, 1), classes = c("l", "lq")),
+  thr = "max_sens_spec",
+  metric = "TSS",
+  clamp = TRUE,
+  pred_type = "cloglog",
+  n_cores = 1
+)
+tune_toy$performance
+
 \donttest{
 data("abies")
 data("backg")

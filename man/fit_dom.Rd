@@ -66,6 +66,24 @@ This function fit and validate Domain models. The Domain model is a simple model
 the similarity between the presences training and presence-absences test data.
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+dom_toy <- fit_dom(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+dom_toy$performance
+
 \donttest{
 require(dplyr)
 require(terra)

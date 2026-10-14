@@ -56,7 +56,6 @@ Those metrics that are threshold-dependent are calculated based on the threshold
 Ensemble model fitting and validation
 }
 \examples{
-\donttest{
 require(dplyr)
 require(terra)
 
@@ -116,5 +115,4 @@ mensemble <- fit_ensemble(
 )
 
 mensemble
-}
 }

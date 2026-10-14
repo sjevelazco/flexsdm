@@ -1,7 +1,7 @@
 Package: flexsdm
 Type: Package
-Title: Tools for Species Distribution Modeling
-Version: 1.4.1
+Title: Flexible Species Distribution Modeling Workflow
+Version: 1.4.2
 Authors@R: c(person(given = "Santiago J.E.", family = "Velazco", role = c("aut", "cre"),
            email = "sjevelazco@gmail.com",
            comment = c(ORCID = "0000-0002-7527-0967")),
@@ -39,9 +39,20 @@ Imports:
     ggplot2,
     patchwork,
     Rcpp
-Description: Assist in the construction of flexible species distribution workflow
-    by incorporating comprehensive tools for data preparation, model fitting,
-    prediction, evaluation, and model post-processing.
+Description: Provides a flexible and comprehensive workflow for species
+    distribution modeling, from data preparation (occurrence filtering,
+    calibration areas, pseudo-absence and background sampling, data
+    partitioning, and collinearity reduction) to model fitting, tuning,
+    evaluation, prediction, ensembling, and post-processing. The package is
+    described in Velazco et al. (2022) <doi:10.1111/2041-210X.13874>.
+    Implemented methods include the Shape metric to measure model
+    extrapolation of Velazco et al. (2023) <doi:10.1111/ecog.06992>,
+    ensembles of small models of Breiner et al. (2015)
+    <doi:10.1111/2041-210X.12403> and Breiner et al. (2018)
+    <doi:10.1111/2041-210X.12957>, Gaussian process models of Golding and
+    Purse (2016) <doi:10.1111/2041-210X.12523>, and occurrence-based
+    constraints for post-processing predictions of Mendes et al. (2020)
+    <doi:10.1016/j.ecolmodel.2020.109180>.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true

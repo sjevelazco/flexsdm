@@ -64,6 +64,34 @@
 #' @export
 #'
 #' @examples
+#' # Toy data: a small subset of 'abies' to keep this example fast
+#' data("abies")
+#' abies_toy <- abies[c(1:30, 701:730), ]
+#' abies_toy <- part_random(
+#'   data = abies_toy,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 3)
+#' )
+#'
+#' glm_toy <- fit_glm(
+#'   data = abies_toy,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "cwd", "tmin"),
+#'   partition = ".part",
+#'   thr = "max_sens_spec"
+#' )
+#'
+#' # Permutation-based variable importance (few simulations to keep it fast)
+#' sdm_varimp(
+#'   models = glm_toy,
+#'   data = abies_toy,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "cwd", "tmin"),
+#'   n_sim = 2,
+#'   n_cores = 1,
+#'   thr = "max_sens_spec"
+#' )
+#'
 #' \donttest{
 #' require(tidyr)
 #' require(dplyr)
@@ -283,8 +311,14 @@ sdm_varimp <- function(models,
 
   var_i <- list()
 
-  cl <- parallel::makeCluster(n_cores)
-  doParallel::registerDoParallel(cl)
+  if (n_cores > 1) {
+    cl <- parallel::makeCluster(n_cores)
+    doParallel::registerDoParallel(cl)
+  } else {
+    # a single core: run sequentially, without starting a cluster
+    cl <- NULL
+    foreach::registerDoSEQ()
+  }
 
   wm <- which(clss == "gam")
   if (length(wm) > 0) {
@@ -707,7 +741,7 @@ sdm_varimp <- function(models,
     }
   }
 
-  parallel::stopCluster(cl)
+  if (!is.null(cl)) parallel::stopCluster(cl)
 
   df <- data.frame(
     alg = c(

@@ -20,10 +20,8 @@ hespero
 A data set containing localities of Hesperocyparis stephensonii species in California, USA
 }
 \examples{
-\donttest{
 require(dplyr)
 data("hespero")
 hespero
-}
 }
 \keyword{datasets}

@@ -60,7 +60,6 @@
 #' @importFrom stats formula sd
 #'
 #' @examples
-#' \donttest{
 #' data("abies")
 #'
 #' # Using k-fold partition method
@@ -102,7 +101,6 @@
 #'   thr = "max_sens_spec"
 #' )
 #' gbm_t2
-#' }
 fit_gbm <- function(
   data,
   response,
@@ -247,7 +245,6 @@ fit_gbm <- function(
         }
         tryCatch({
           message("Partition number: ", i, "/", np2)
-          set.seed(1)
           mod[[i]] <-
             suppressMessages(
               gbm::gbm(
@@ -318,7 +315,6 @@ fit_gbm <- function(
       dplyr::relocate(rnames)
 
     # Fit final models with best settings
-    set.seed(1)
     suppressMessages(
       mod <-
         gbm::gbm(

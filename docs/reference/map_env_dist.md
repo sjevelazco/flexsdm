@@ -66,10 +66,10 @@ and values close to 0 represent low similarity (high distance).
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 require(terra)
 require(ggplot2)
+#> Loading required package: ggplot2
 data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
@@ -187,6 +187,4 @@ p_extra(
 ) +
   labs(title = "Mahalanobis")
 #> Number of cell used to plot 58242 (80%)
-
-# }
 ```

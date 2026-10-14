@@ -88,7 +88,6 @@
 #' @seealso \code{\link{part_random}}, \code{\link{part_sblock}}, and \code{\link{part_sband}}
 #'
 #' @examples
-#' \donttest{
 #' require(terra)
 #' require(ggplot2)
 #' require(dplyr)
@@ -124,7 +123,6 @@
 #' ggplot(part1$part, aes(x, y, col = factor(.part))) +
 #'   geom_point(aes(shape = factor(pr_ab))) +
 #'   facet_wrap(. ~ pr_ab)
-#' }
 part_senv <- function(
   env_layer,
   data,

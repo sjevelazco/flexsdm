@@ -70,6 +70,25 @@
 #' @importFrom utils capture.output
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' sp3 <- sp3[sp3$pr_ab == 1, ]
+#'
+#' # Geographic filtering based on a coarser resolution (cell size method)
+#' filtered_occ <- occfilt_geo(
+#'   data = sp3,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar,
+#'   method = c("cellsize", factor = "3"),
+#'   prj = terra::crs(somevar)
+#' )
+#' nrow(sp3)
+#' nrow(filtered_occ)
+#'
 #' \donttest{
 #' require(terra)
 #' require(dplyr)
@@ -312,11 +331,11 @@ occfilt_geo <- function(
         d <- br[pos]
       }
 
-      options(warn = 1)
+      op <- options(warn = 1)
+      on.exit(options(op), add = TRUE)
 
       # Thinning
       da$.spp <- "sp"
-      set.seed(1)
       invisible(utils::capture.output(
         occT <-
           spThin::thin(
@@ -364,7 +383,6 @@ occfilt_geo <- function(
 
       # Thinning
       da$.spp <- "sp"
-      set.seed(1)
       invisible(utils::capture.output(
         occT <-
           spThin::thin(
@@ -401,7 +419,6 @@ occfilt_geo <- function(
     if ("defined" %in% method) {
       # Thinning
       da$.spp <- "sp"
-      set.seed(1)
       invisible(utils::capture.output(
         occT <-
           spThin::thin(

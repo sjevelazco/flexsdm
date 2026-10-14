@@ -27,7 +27,6 @@ A tibble object with 5000 rows and 10 variables:
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 data("backg")
 backg
@@ -46,5 +45,4 @@ backg
 #> 10     0  104079. -178618.  385.  871.  6.76   147.     7.80 6.10  0.0300   41  
 #> # ℹ 4,990 more rows
 #> # ℹ 2 more variables: percent_clay <dbl>, landform <fct>
-# }
 ```

@@ -33,6 +33,30 @@
 #' @importFrom utils combn
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' sp3 <- sdm_extract(data = sp3, x = "x", y = "y", env_layer = somevar)
+#' extr <- extra_eval(
+#'   training_data = sp3,
+#'   pr_ab = "pr_ab",
+#'   projection_data = somevar,
+#'   metric = "mahalanobis"
+#' )
+#'
+#' p_extra(
+#'   training_data = sp3,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   extra_suit_data = extr,
+#'   projection_data = somevar,
+#'   geo_space = TRUE,
+#'   prop_points = 0.5
+#' )
+#'
 #' \donttest{
 #'
 #' require(dplyr)
@@ -317,7 +341,6 @@ p_extra <- function(training_data,
       unique()
     dfplot2 <- dfplot2[c(which.min(dfplot2[[3]]), which.max(dfplot2[[3]])), ]
 
-    set.seed(10)
     dfplot <- terra::as.data.frame(env_extra[[c(xenv, yenv, "val")]]) %>%
       unique() %>%
       dplyr::slice_sample(prop = prop_points)

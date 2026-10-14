@@ -21,7 +21,6 @@ Transform a spatial partition layer to the same spatial properties as environmen
 Transform a layer originating from the function block_partition or band_partition to the same spatial properties as the environmental variables
 }
 \examples{
-\donttest{
 require(dplyr)
 require(terra)
 data(spp)
@@ -50,5 +49,4 @@ part$grid
 
 plot(part$grid)
 plot(grid_env)
-}
 }

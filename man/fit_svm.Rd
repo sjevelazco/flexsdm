@@ -74,7 +74,6 @@ This function constructs 'C-svc' classification type and uses
 Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[kernlab]{ksvm}.
 }
 \examples{
-\donttest{
 data("abies")
 
 # Using k-fold partition method
@@ -121,7 +120,6 @@ svm_t2 <- fit_svm(
   fit_formula = NULL
 )
 svm_t2
-}
 }
 \seealso{
 \code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},

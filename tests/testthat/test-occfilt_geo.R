@@ -11,6 +11,7 @@ spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 
 
 test_that("occfilt_geo 'moran' method", {
+  set.seed(1) # thinning is random; the function does not set a seed
   skip_on_cran()
   # Using Moran method
   filtered <- occfilt_geo(
@@ -70,6 +71,7 @@ test_that("occfilt_geo 'cellsize' method for different values", {
 
 
 test_that("occfilt_geo 'defined' method", {
+  set.seed(1) # thinning is random; the function does not set a seed
   skip_on_cran()
   # Using defined method
   set.seed(1)

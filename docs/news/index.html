@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">flexsdm</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,13 +48,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.4.2" id="flexsdm-142-prerelease">flexsdm 1.4.2 (prerelease)<a class="anchor" aria-label="anchor" href="#flexsdm-142-prerelease"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.4.2" id="flexsdm-142">flexsdm 1.4.2<a class="anchor" aria-label="anchor" href="#flexsdm-142"></a></h2>
 <ul><li>
 <code>tune_max</code>: a grid combination whose fits all failed was assigned the previous combination’s model/performance (stale <code>mod</code>); now initialised to <code>NULL</code> and checked with <code><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null()</a></code> (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
 <li>
 <code>fit_max</code>: the final refit fallback used the CV loop index in its check and could discard a successful fit; it now uses <code>is.null(mod)</code> and falls back on presences + background (<code>data_2</code>) (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
 <li>
-<code>tune_svm</code>: removed <code><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit()</a></code> on partition performance so all combinations are compared across the same partitions (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
+<code>tune_svm</code>: removed <code><a href="https://rspatial.github.io/terra/reference/na.omit.html" class="external-link">na.omit()</a></code> on partition performance so all combinations are compared across the same partitions (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
 <li>
 <code>fit_gbm</code>: final model now uses <code>bag.fraction = 0.9</code>, consistent with the CV models; <code>tune_gbm</code> validity guard also uses 0.9 (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
 <li>
@@ -67,6 +67,16 @@
 <code>calib_area</code>: mcp/bmcp with three or more groups no longer errors (<a href="https://github.com/sjevelazco/flexsdm/issues/479" class="external-link">#479</a>)</li>
 <li>
 <code>part_sband</code>: fixed uninitialised <code>imoran_bands_c</code> assignment (<a href="https://github.com/sjevelazco/flexsdm/issues/479" class="external-link">#479</a>)</li>
+<li>CRAN review: every exported function now has a small, fast example that is executed on CRAN (the longer examples remain inside <code>\donttest{}</code>); examples of <code><a href="../reference/sdm_directory.html">sdm_directory()</a></code> and <code><a href="../reference/homogenize_na.html">homogenize_na()</a></code> / <code><a href="../reference/extra_eval.html">extra_eval()</a></code> no longer leave files in the working directory or alter <code><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par()</a></code>
+</li>
+<li>
+<code>sdm_directory</code>: <code>main_dir</code> no longer defaults to a sub-folder of the working directory and must be provided by the user</li>
+<li>Functions no longer call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> with a fixed number (<code>fit_*</code>, <code>occfilt_geo</code>, <code>correct_colinvar</code>, <code>p_extra</code>, …). Results can be reproduced by calling <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before running them; <code>tune_*</code>, <code>sdm_varimp</code> and <code>sdm_uncertainty</code> draw the seeds used by parallel workers from the caller’s random-number stream</li>
+<li>
+<code>tune_gbm</code>, <code>tune_max</code>, <code>tune_net</code>, <code>tune_raf</code>, <code>tune_svm</code>, <code>sdm_varimp</code> and <code>sdm_uncertainty</code>: no cluster is started when <code>n_cores = 1</code>, the computation runs sequentially in the current session</li>
+<li>
+<code>occfilt_geo</code>: the <code>warn</code> option is restored when the function exits</li>
+<li>Gaussian process code used by <code><a href="../reference/fit_gau.html">fit_gau()</a></code> and <code><a href="../reference/esm_gau.html">esm_gau()</a></code>, <code><a href="../reference/fit_max.html">fit_max()</a></code> and <code><a href="../reference/tune_max.html">tune_max()</a></code>: <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code> calls replaced by <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> or <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> (or removed)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.1" id="flexsdm-141">flexsdm 1.4.1<a class="anchor" aria-label="anchor" href="#flexsdm-141"></a></h2>

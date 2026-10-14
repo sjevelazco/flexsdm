@@ -140,7 +140,6 @@ and
 ## Examples
 
 ``` r
-# \donttest{
 data("abies")
 
 # Using k-fold partition method
@@ -194,12 +193,12 @@ svm_t1$model
 #>  parameter : cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  0.175858876660103 
+#>  Hyperparameter : sigma =  0.201598132358874 
 #> 
-#> Number of Support Vectors : 905 
+#> Number of Support Vectors : 899 
 #> 
-#> Objective Function Value : -782.6303 
-#> Training error : 0.219286 
+#> Objective Function Value : -767.6206 
+#> Training error : 0.211429 
 #> Probability model included. 
 svm_t1$predictors
 #> # A tibble: 1 × 6
@@ -210,9 +209,9 @@ svm_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 svm   equal_sens_sp…     0.546         700        700    0.737 0.0351    0.737
-#> 2 svm   max_sens_spec      0.553         700        700    0.781 0.0817    0.743
-#> 3 svm   max_sorensen       0.313         700        700    0.894 0.0528    0.594
+#> 1 svm   equal_sens_sp…     0.541         700        700    0.739 0.0377    0.739
+#> 2 svm   max_sens_spec      0.541         700        700    0.8   0.0787    0.717
+#> 3 svm   max_sorensen       0.296         700        700    0.88  0.0526    0.613
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -224,21 +223,21 @@ svm_t1$performance_part
 #> # A tibble: 15 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         svm   max_sorensen       0.371         140        140 0.814
-#>  2 1       1         svm   max_sens_spec      0.519         140        140 0.75 
-#>  3 1       1         svm   equal_sens_sp…     0.538         140        140 0.721
-#>  4 1       2         svm   max_sorensen       0.277         140        140 0.957
-#>  5 1       2         svm   max_sens_spec      0.657         140        140 0.679
-#>  6 1       2         svm   equal_sens_sp…     0.519         140        140 0.779
-#>  7 1       3         svm   max_sorensen       0.387         140        140 0.907
-#>  8 1       3         svm   max_sens_spec      0.559         140        140 0.75 
-#>  9 1       3         svm   equal_sens_sp…     0.545         140        140 0.75 
-#> 10 1       4         svm   max_sorensen       0.339         140        140 0.914
-#> 11 1       4         svm   max_sens_spec      0.444         140        140 0.85 
-#> 12 1       4         svm   equal_sens_sp…     0.540         140        140 0.75 
-#> 13 1       5         svm   max_sorensen       0.366         140        140 0.879
-#> 14 1       5         svm   max_sens_spec      0.366         140        140 0.879
-#> 15 1       5         svm   equal_sens_sp…     0.574         140        140 0.686
+#>  1 1       1         svm   max_sorensen       0.511         140        140 0.793
+#>  2 1       1         svm   max_sens_spec      0.607         140        140 0.707
+#>  3 1       1         svm   equal_sens_sp…     0.557         140        140 0.757
+#>  4 1       2         svm   max_sorensen       0.306         140        140 0.921
+#>  5 1       2         svm   max_sens_spec      0.598         140        140 0.771
+#>  6 1       2         svm   equal_sens_sp…     0.603         140        140 0.757
+#>  7 1       3         svm   max_sorensen       0.313         140        140 0.886
+#>  8 1       3         svm   max_sens_spec      0.313         140        140 0.886
+#>  9 1       3         svm   equal_sens_sp…     0.520         140        140 0.671
+#> 10 1       4         svm   max_sorensen       0.309         140        140 0.921
+#> 11 1       4         svm   max_sens_spec      0.504         140        140 0.757
+#> 12 1       4         svm   equal_sens_sp…     0.495         140        140 0.757
+#> 13 1       5         svm   max_sorensen       0.434         140        140 0.879
+#> 14 1       5         svm   max_sens_spec      0.434         140        140 0.879
+#> 15 1       5         svm   equal_sens_sp…     0.573         140        140 0.75 
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
 #> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
@@ -246,16 +245,16 @@ svm_t1$data_ens
 #> # A tibble: 1,400 × 5
 #>    rnames replicates part  pr_ab   pred
 #>    <chr>  <chr>      <chr> <fct>  <dbl>
-#>  1 2      .part      1     0     0.0898
-#>  2 7      .part      1     0     0.0756
-#>  3 10     .part      1     0     0.254 
-#>  4 14     .part      1     0     0.177 
-#>  5 21     .part      1     0     0.147 
-#>  6 25     .part      1     0     0.560 
-#>  7 27     .part      1     0     0.105 
-#>  8 30     .part      1     0     0.516 
-#>  9 31     .part      1     0     0.454 
-#> 10 43     .part      1     0     0.887 
+#>  1 1      .part      1     0     0.709 
+#>  2 5      .part      1     0     0.199 
+#>  3 7      .part      1     0     0.0895
+#>  4 9      .part      1     0     0.587 
+#>  5 17     .part      1     0     0.561 
+#>  6 20     .part      1     0     0.214 
+#>  7 33     .part      1     0     0.153 
+#>  8 41     .part      1     0     0.134 
+#>  9 44     .part      1     0     0.478 
+#> 10 45     .part      1     0     0.179 
 #> # ℹ 1,390 more rows
 
 # Using bootstrap partition method and only with presence-absence
@@ -323,12 +322,12 @@ svm_t2
 #>  parameter : cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  0.175858876660103 
+#>  Hyperparameter : sigma =  0.191996666477365 
 #> 
-#> Number of Support Vectors : 905 
+#> Number of Support Vectors : 904 
 #> 
-#> Objective Function Value : -782.6303 
-#> Training error : 0.219286 
+#> Objective Function Value : -773.0579 
+#> Training error : 0.214286 
 #> Probability model included. 
 #> 
 #> $predictors
@@ -341,9 +340,9 @@ svm_t2
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 svm   equal_sens_sp…     0.546         700        700    0.765 0.0167    0.765
-#> 2 svm   max_sens_spec      0.553         700        700    0.766 0.0603    0.785
-#> 3 svm   max_sorensen       0.313         700        700    0.871 0.0520    0.665
+#> 1 svm   equal_sens_sp…     0.536         700        700    0.766 0.0156    0.766
+#> 2 svm   max_sens_spec      0.544         700        700    0.834 0.0612    0.731
+#> 3 svm   max_sorensen       0.286         700        700    0.890 0.0231    0.671
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -356,16 +355,16 @@ svm_t2
 #> # A tibble: 30 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         svm   max_sorensen       0.312         210        210 0.914
-#>  2 1       1         svm   max_sens_spec      0.607         210        210 0.710
-#>  3 1       1         svm   equal_sens_sp…     0.543         210        210 0.757
-#>  4 2       1         svm   max_sorensen       0.419         210        210 0.852
-#>  5 2       1         svm   max_sens_spec      0.643         210        210 0.676
-#>  6 2       1         svm   equal_sens_sp…     0.553         210        210 0.748
-#>  7 3       1         svm   max_sorensen       0.504         210        210 0.833
-#>  8 3       1         svm   max_sens_spec      0.504         210        210 0.833
-#>  9 3       1         svm   equal_sens_sp…     0.554         210        210 0.767
-#> 10 4       1         svm   max_sorensen       0.362         210        210 0.890
+#>  1 1       1         svm   max_sorensen       0.417         210        210 0.886
+#>  2 1       1         svm   max_sens_spec      0.417         210        210 0.886
+#>  3 1       1         svm   equal_sens_sp…     0.576         210        210 0.752
+#>  4 2       1         svm   max_sorensen       0.344         210        210 0.938
+#>  5 2       1         svm   max_sens_spec      0.555         210        210 0.748
+#>  6 2       1         svm   equal_sens_sp…     0.512         210        210 0.776
+#>  7 3       1         svm   max_sorensen       0.445         210        210 0.9  
+#>  8 3       1         svm   max_sens_spec      0.445         210        210 0.9  
+#>  9 3       1         svm   equal_sens_sp…     0.604         210        210 0.752
+#> 10 4       1         svm   max_sorensen       0.353         210        210 0.890
 #> # ℹ 20 more rows
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
@@ -375,17 +374,16 @@ svm_t2
 #> # A tibble: 4,200 × 5
 #>    rnames replicates part  pr_ab   pred
 #>    <chr>  <chr>      <chr> <fct>  <dbl>
-#>  1 1      .part1     1     0     0.699 
-#>  2 7      .part1     1     0     0.0909
-#>  3 15     .part1     1     0     0.463 
-#>  4 16     .part1     1     0     0.136 
-#>  5 17     .part1     1     0     0.539 
-#>  6 18     .part1     1     0     0.0947
-#>  7 19     .part1     1     0     0.647 
-#>  8 20     .part1     1     0     0.229 
-#>  9 21     .part1     1     0     0.234 
-#> 10 25     .part1     1     0     0.593 
+#>  1 6      .part1     1     0     0.544 
+#>  2 7      .part1     1     0     0.0617
+#>  3 8      .part1     1     0     0.314 
+#>  4 10     .part1     1     0     0.320 
+#>  5 17     .part1     1     0     0.586 
+#>  6 19     .part1     1     0     0.716 
+#>  7 20     .part1     1     0     0.175 
+#>  8 22     .part1     1     0     0.103 
+#>  9 24     .part1     1     0     0.792 
+#> 10 27     .part1     1     0     0.133 
 #> # ℹ 4,190 more rows
 #> 
-# }
 ```

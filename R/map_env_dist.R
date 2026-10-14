@@ -26,7 +26,6 @@
 #' }
 #'
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #' require(ggplot2)
@@ -124,7 +123,6 @@
 #'   color_gradient = clrs
 #' ) +
 #'   labs(title = "Mahalanobis")
-#' }
 map_env_dist <- function(
   training_data,
   projection_data,

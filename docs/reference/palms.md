@@ -36,8 +36,6 @@ https://doi.org/10.1016/j.pecon.2021.03.010
 ## Examples
 
 ``` r
-# \donttest{
 require(dplyr)
 data("palms")
-# }
 ```

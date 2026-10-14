@@ -20,7 +20,9 @@
 #' @param restric_pca_proj logical. Area used to restrict geographically PCA projection within SpatVector used in restric_to_region. Only use for PCA analysis. Default: FALSE.
 #' @param proj character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
 #' scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)
-#' @param save_proj character. Directory to save PCA projection. Default NULL.
+#' @param save_proj character. Directory to save PCA projection. If NULL (default), the projections are saved
+#' in a folder named 'Projection_PCA' within the temporary directory of the R session (see \code{\link[base]{tempdir}});
+#' use this argument to keep them in a folder of your choice. The path is returned in the 'proj' element of the output.
 #' @param maxcell numeric. Number of raster cells to be randomly sampled. Taking a sample could be
 #' useful to reduce memory usage for large rasters. If NULL, the function will use all
 #' raster cells. Default NULL. Usage maxcell = 50000.
@@ -88,7 +90,8 @@
 #'         `-- var3.tif
 #'
 #' If pca method is run with time projections, correct_colinvar function will create the
-#' Projection_PCA (the exact path is in the path object returned by the function) with the same
+#' Projection_PCA folder (in the folder given in the save_proj argument, or in the temporary directory if
+#' save_proj is NULL; the exact path is in the proj element returned by the function) with the same
 #' system of sub-folders and multiband raster with the principal components (pcs.tif)
 #'
 #' C:/Users/my_pc/Projection_PCA/\cr
@@ -114,6 +117,19 @@
 #' @importFrom terra rast as.data.frame subset predict scale writeRaster global
 #'
 #' @examples
+#' # Toy raster: coarser resolution to keep this example fast
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6)
+#'
+#' # Perform Pearson collinearity control
+#' var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"))
+#' var$cor_table
+#' var$cor_variables
+#'
+#' # Perform VIF collinearity control
+#' var <- correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))
+#' var$vif_table
+#'
 #' \donttest{
 #' require(terra)
 #' require(dplyr)
@@ -348,7 +364,6 @@ correct_colinvar <- function(
         h <- terra::as.data.frame(env_layer) %>% stats::na.omit()
       } else {
         # Raster random sample
-        set.seed(10)
         h <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
           sample(., size = maxcell, replace = FALSE) %>%
           sort()
@@ -387,7 +402,6 @@ correct_colinvar <- function(
         x <- terra::as.data.frame(env_layer)
       } else {
         # Raster random sample
-        set.seed(10)
         x <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
           sample(., size = maxcell, replace = FALSE) %>%
           sort()
@@ -485,7 +499,6 @@ correct_colinvar <- function(
         p0 <- terra::as.data.frame(env_layer, xy = FALSE, na.rm = TRUE)
       } else {
         # Raster random sample
-        set.seed(10)
         p0 <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
           sample(., size = maxcell, replace = FALSE) %>%
           sort()
@@ -546,12 +559,16 @@ correct_colinvar <- function(
 
     if (!is.null(proj)) {
       if (is.null(save_proj)) {
-        dpca <- file.path(dirname(proj), "Projection_PCA")
-        dir.create(dpca)
+        # no default path in the user's file space: use the temporary directory
+        dpca <- file.path(tempdir(), "Projection_PCA")
+        message(
+          "'save_proj' was not provided; PCA projections were saved in a temporary folder: ",
+          dpca, "\nUse the 'save_proj' argument to save them in a folder of your choice"
+        )
       } else {
         dpca <- save_proj
-        dir.create(dpca)
       }
+      dir.create(dpca, showWarnings = FALSE, recursive = TRUE)
       subfold <- list.files(proj)
       subfold <- as.list(file.path(dpca, subfold))
       sapply(subfold, function(x) {
@@ -597,7 +614,6 @@ correct_colinvar <- function(
         p <- terra::as.data.frame(p, xy = FALSE, na.rm = TRUE)
       } else {
         # Raster random sample
-        set.seed(10)
         p <- terra::as.data.frame(env_layer[[1]], cells = TRUE)[, 1] %>%
           sample(., size = maxcell, replace = FALSE) %>%
           sort()

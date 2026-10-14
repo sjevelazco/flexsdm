@@ -66,6 +66,23 @@ This function provide several methods for sampling pseudo-absences, for instance
 totally random sampling method, with the options of using different environmental and or geographical constraints.
 }
 \examples{
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sp3[sp3$pr_ab == 1, ] # presences only
+
+ps <- sample_pseudoabs(
+  data = sp3,
+  x = "x",
+  y = "y",
+  n = 50,
+  method = "random",
+  rlayer = somevar[[1]]
+)
+ps
+
 \donttest{
 require(terra)
 require(dplyr)

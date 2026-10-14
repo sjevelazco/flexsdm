@@ -78,7 +78,6 @@ the input will produce duplicate absence coordinates in the output.
 ## Examples
 
 ``` r
-# \donttest{
 data <- data.frame(
   species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
   x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -142,5 +141,4 @@ get_absences(data,
 #>  8 sp2     -74.1  4.6      0
 #>  9 sp2     -74.2  4.65     0
 #> 10 sp2     -74    4.68     0
-# }
 ```

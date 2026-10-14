@@ -49,7 +49,6 @@ SpatRaster object used in 'env_layer'
 ## Examples
 
 ``` r
-# \donttest{
 require(terra)
 
 # Load datasets
@@ -110,5 +109,4 @@ ex_spp2
 #>  9 sp1        -951. -277978.     0  47.4  0.875
 #> 10 sp1      145929. -271498.     0  68.1  4.22 
 #> # ℹ 1,075 more rows
-# }
 ```
