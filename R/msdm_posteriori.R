@@ -128,7 +128,6 @@
 #' @importFrom terra rast extract vect rasterize crs buffer patches match mask unique as.polygons distance convHull
 #'
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'
@@ -242,7 +241,6 @@
 #' )
 #'
 #' plot(m_obr)
-#' }
 #'
 #' @seealso \code{\link{msdm_priori}}
 msdm_posteriori <- function(

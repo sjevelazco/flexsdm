@@ -1,11 +1,9 @@
 test_that("sdm_directory", {
-  require(dplyr)
-  # require(sf)
-
-  # Implement sdm_directory without specific path and project name
+  # All folders are created inside tempdir() (never in the working directory)
+  main_dir_1 <- file.path(tempdir(), "flexsdm_results_test")
 
   dirs_1 <- sdm_directory(
-    main_dir = NULL,
+    main_dir = main_dir_1,
     projections = NULL,
     calibration_area = TRUE,
     algorithm = c("gam", "tune_max"),
@@ -15,11 +13,12 @@ test_that("sdm_directory", {
   )
   expect_equal(class(dirs_1), "character")
   expect_equal(length(dirs_1), 15)
-  unlink(file.path(getwd(), "flexsdm_results"), recursive = TRUE)
+  expect_true(all(dir.exists(dirs_1)))
+  unlink(main_dir_1, recursive = TRUE)
 
-  # Implement sdm_directory without specific path and project name
+  main_dir_2 <- file.path(tempdir(), "my_project_name")
   dirs_2 <- sdm_directory(
-    main_dir = tempdir() %>% file.path(., "my_project_name"),
+    main_dir = main_dir_2,
     projections = c(
       "cnrm_rpc8.5_2050",
       "cnrm_rpc4.5_2050"
@@ -31,5 +30,12 @@ test_that("sdm_directory", {
   )
   expect_equal(class(dirs_2), "character")
   expect_equal(length(dirs_2), 111)
-  unlink(tempdir() %>% file.path(., "my_project_name"), recursive = TRUE)
+  unlink(main_dir_2, recursive = TRUE)
+})
+
+
+test_that("sdm_directory requires an explicit main_dir", {
+  # the function must never fall back to writing in the working directory
+  expect_error(sdm_directory(), "main_dir")
+  expect_error(sdm_directory(main_dir = NULL), "main_dir")
 })

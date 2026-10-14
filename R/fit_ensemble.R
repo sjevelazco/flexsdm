@@ -45,7 +45,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'
@@ -105,7 +104,6 @@
 #' )
 #'
 #' mensemble
-#' }
 fit_ensemble <-
   function(
     models,

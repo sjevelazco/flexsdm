@@ -112,7 +112,6 @@ The formulas are:
 }
 }
 \examples{
-\donttest{
 require(dplyr)
 
 set.seed(0)
@@ -147,7 +146,6 @@ sdm_eval(p, a, thr = c("max_sens_spec"), bg = bg_vals)
 # If background will be used to calculate all other metrics
 # background values can be used in "a" argument
 sdm_eval(p, bg_vals, thr = "max_sens_spec")
-}
 }
 \references{
 \itemize{

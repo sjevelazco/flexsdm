@@ -554,10 +554,10 @@ graf.fit.laplace <-
     }
 
     if (verbose) {
-      cat(paste("  ", it, "Laplace iterations\n"))
+      message("  ", it, " Laplace iterations")
     }
     if (it == itmax) {
-      print("timed out, don't trust the inference!")
+      warning("timed out, don't trust the inference!", call. = FALSE)
     }
     return(list(
       y = y,

@@ -67,7 +67,6 @@ species' occurrence records, duplicate x/y coordinates across species
 in the input will produce duplicate absence coordinates in the output.
 }
 \examples{
-\donttest{
 data <- data.frame(
   species = c("sp1", "sp1", "sp2", "sp2", "sp3"),
   x = c(-74.1, -74.2, -73.9, -73.8, -74.0),
@@ -92,5 +91,4 @@ get_absences(data,
   x = "x", y = "y", species = "species",
   target_species = c("sp1", "sp2"), pr_ab_name = "occ"
 )
-}
 }

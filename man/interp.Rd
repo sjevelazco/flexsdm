@@ -37,7 +37,6 @@ disaggregated in time periods, such as population dynamics
 (Keith et al., 2008; Conlisk et al., 2013; Syphard et al., 2013).
 }
 \examples{
-\donttest{
 require(terra)
 require(dplyr)
 
@@ -55,7 +54,6 @@ int <- interp(
 )
 
 int
-}
 }
 \references{
 \itemize{

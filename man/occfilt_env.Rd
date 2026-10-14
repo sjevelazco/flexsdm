@@ -51,7 +51,6 @@ This function uses an approach adapted from the approach proposed by Varela et a
  of bins was used by Velazco et al. (2020) and it is implemented in \code{\link{occfilt_select}}.
 }
 \examples{
-\donttest{
 require(terra)
 require(dplyr)
 require(ggplot2)
@@ -144,7 +143,6 @@ occ_selected <- occfilt_select(
 )
 
 occ_selected
-}
 
 }
 \references{

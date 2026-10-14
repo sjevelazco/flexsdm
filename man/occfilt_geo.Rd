@@ -76,6 +76,25 @@ use \code{\link{occfilt_select}} function to automatically select a filtered dat
 number of records and spatial autocorrelation.
 }
 \examples{
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sp3[sp3$pr_ab == 1, ]
+
+# Geographic filtering based on a coarser resolution (cell size method)
+filtered_occ <- occfilt_geo(
+  data = sp3,
+  x = "x",
+  y = "y",
+  env_layer = somevar,
+  method = c("cellsize", factor = "3"),
+  prj = terra::crs(somevar)
+)
+nrow(sp3)
+nrow(filtered_occ)
+
 \donttest{
 require(terra)
 require(dplyr)

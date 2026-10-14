@@ -66,6 +66,21 @@
 #' @importFrom terra mask aggregate as.data.frame resample
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' sp3 <- sdm_extract(data = sp3, x = "x", y = "y", env_layer = somevar)
+#'
+#' extr <- extra_eval(
+#'   training_data = sp3,
+#'   pr_ab = "pr_ab",
+#'   projection_data = somevar,
+#'   metric = "mahalanobis"
+#' )
+#' terra::plot(extr)
+#'
 #' \donttest{
 #' require(dplyr)
 #' require(terra)
@@ -156,10 +171,10 @@
 #'
 #' # Truncate a model based on a given value of extrapolation
 #' # using 'extra_truncate' function
-#' par(mfrow = c(1, 2))
+#' oldpar <- par(mfrow = c(1, 2))
 #' plot(extr, main = "Extrapolation")
 #' plot(predsuit[[1]][[1]], main = "Suitability")
-#' par(mfrow = c(1, 1))
+#' par(oldpar) # restore graphical parameters
 #'
 #' predsuit_2 <- extra_truncate(
 #'   suit = predsuit[[1]],

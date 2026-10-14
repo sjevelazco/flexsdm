@@ -57,6 +57,23 @@
 #' @importFrom terra extract
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' sp3$idd <- seq_len(nrow(sp3)) # unique id for each record
+#'
+#' outs <- env_outliers(
+#'   data = sp3,
+#'   pr_ab = "pr_ab",
+#'   x = "x",
+#'   y = "y",
+#'   id = "idd",
+#'   env_layer = somevar
+#' )
+#' outs
+#'
 #' \donttest{
 #' require(dplyr)
 #' require(terra)

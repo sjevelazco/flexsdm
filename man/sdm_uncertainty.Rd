@@ -44,6 +44,37 @@ It refits the model multiple times on resampled data and then calculates the sta
 all iterations.
 }
 \examples{
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sdm_extract(data = sp3, x = "x", y = "y", env_layer = somevar)
+sp3 <- part_random(
+  data = sp3,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = sp3,
+  response = "pr_ab",
+  predictors = c("CFP_1", "CFP_2", "CFP_3", "CFP_4"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+
+# Few bootstrap iterations to keep this example fast
+unc <- sdm_uncertainty(
+  models = glm_toy,
+  training_data = sp3,
+  response = "pr_ab",
+  projection_data = somevar,
+  iteration = 2,
+  n_cores = 1
+)
+terra::plot(unc)
+
 \donttest{
 require(terra)
 require(dplyr)

@@ -46,7 +46,6 @@
 #' @export
 #'
 #' @examples
-#' \donttest{
 #' library(terra)
 #' library(dplyr)
 #'
@@ -110,7 +109,6 @@
 #'   colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
 #'   theme = ggplot2::theme_dark()
 #' )
-#' }
 p_pdp <-
   function(model,
            predictors = NULL,

@@ -39,7 +39,9 @@ provide a vector for this argument. The next methods are implemented:
 \item{proj}{character. Only used for pca method. Path to a folder that contains sub-folders for the different projection
 scenarios. Variables names must have the same names as in the raster used in env_layer argument. Usage proj = "C:/User/Desktop/Projections" (see in Details more about the use of this argument)}
 
-\item{save_proj}{character. Directory to save PCA projection. Default NULL.}
+\item{save_proj}{character. Directory to save PCA projection. If NULL (default), the projections are saved
+in a folder named 'Projection_PCA' within the temporary directory of the R session (see \code{\link[base]{tempdir}});
+use this argument to keep them in a folder of your choice. The path is returned in the 'proj' element of the output.}
 
 \item{restric_to_region}{SpatVector. Area used to restrict cells of env_layer at moment to perform collinearity reduction. Default: NULL.}
 
@@ -120,7 +122,8 @@ C:/Users/my_pc/projections/ \cr
         `-- var3.tif
 
 If pca method is run with time projections, correct_colinvar function will create the
-Projection_PCA (the exact path is in the path object returned by the function) with the same
+Projection_PCA folder (in the folder given in the save_proj argument, or in the temporary directory if
+save_proj is NULL; the exact path is in the proj element returned by the function) with the same
 system of sub-folders and multiband raster with the principal components (pcs.tif)
 
 C:/Users/my_pc/Projection_PCA/\cr
@@ -141,6 +144,19 @@ recommended to use all the point data used for modeling
 (i.e., presence + absence or presence + pseudo-absence/background points).
 }
 \examples{
+# Toy raster: coarser resolution to keep this example fast
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6)
+
+# Perform Pearson collinearity control
+var <- correct_colinvar(env_layer = somevar, method = c("pearson", th = "0.7"))
+var$cor_table
+var$cor_variables
+
+# Perform VIF collinearity control
+var <- correct_colinvar(env_layer = somevar, method = c("vif", th = "8"))
+var$vif_table
+
 \donttest{
 require(terra)
 require(dplyr)

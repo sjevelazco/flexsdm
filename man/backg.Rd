@@ -20,10 +20,8 @@ backg
 A data set containing environmental conditions of background points
 }
 \examples{
-\donttest{
 require(dplyr)
 data("backg")
 backg
-}
 }
 \keyword{datasets}

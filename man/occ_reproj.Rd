@@ -63,7 +63,6 @@ calculations or to match the CRS of environmental raster layers used
 elsewhere in a species distribution modeling workflow.
 }
 \examples{
-\donttest{
 data <- data.frame(
   species = c("sp1", "sp2", "sp3"),
   x = c(-74.1, -73.9, -74.0),
@@ -80,7 +79,6 @@ occ_reproj(
   from = "EPSG:4326", to = "EPSG:32618",
   replace_cols = TRUE
 )
-}
 }
 \seealso{
 \code{\link[terra]{project}}, \code{\link[terra]{vect}}

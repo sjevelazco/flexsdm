@@ -51,7 +51,6 @@ variable, the second column with predicted suitability, and the third
 Calculate data to construct partial dependence plots for a given predictor
 }
 \examples{
-\donttest{
 library(terra)
 library(dplyr)
 
@@ -100,7 +99,6 @@ plot(df$pdpdata[1:2], type = "l")
 points(df$resid[1:2], cex = 0.5)
 
 # see p_pdp to construct partial dependence plot with ggplot2
-}
 }
 \seealso{
 {\code{\link{data_bpdp}}, \code{\link{p_bpdp}}, \link{p_pdp}}

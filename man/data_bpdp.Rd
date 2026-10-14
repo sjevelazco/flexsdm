@@ -52,7 +52,6 @@ values of the selected environmental variables, the third column with predicted 
 Calculate data to construct Partial dependence surface plot (i.e., bivariate dependence plot) for two predictor set
 }
 \examples{
-\donttest{
 library(terra)
 library(dplyr)
 
@@ -98,7 +97,6 @@ df$pspdata
 df$training_boundaries
 
 # see p_bpdp to construct partial dependence plot with ggplot2
-}
 }
 \seealso{
 \code{\link{data_pdp},  \link{p_bpdp}, \link{p_pdp}}

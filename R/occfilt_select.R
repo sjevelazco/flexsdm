@@ -49,7 +49,6 @@
 #' @seealso \code{\link{occfilt_env}}, \code{\link{occfilt_geo}}
 #'
 #' @examples
-#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #'
@@ -100,7 +99,6 @@
 #' occ_selected$occ
 #'
 #' occ_selected$filter_prop
-#' }
 occfilt_select <- function(occ_list, x, y, env_layer, filter_prop = FALSE) {
   mean_autocorr <- n_records <- filt_value <- NULL
 

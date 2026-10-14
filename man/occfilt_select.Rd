@@ -51,7 +51,6 @@ the highest number occurrences.
 If use occfilt_select cite Velazco et al. (2020) as reference.
 }
 \examples{
-\donttest{
 require(terra)
 require(dplyr)
 
@@ -102,7 +101,6 @@ occ_selected <- occfilt_select(
 occ_selected$occ
 
 occ_selected$filter_prop
-}
 }
 \references{
 \itemize{

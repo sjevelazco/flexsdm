@@ -12,7 +12,6 @@
 #' @importFrom terra as.data.frame extract
 #'
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #' data(spp)
@@ -41,7 +40,6 @@
 #'
 #' plot(part$grid)
 #' plot(grid_env)
-#' }
 get_block <- function(env_layer, best_grid) {
   maskr <- env_layer[[!is.factor(env_layer)]][[1]]
   rdf <- terra::as.data.frame(maskr, xy = TRUE)

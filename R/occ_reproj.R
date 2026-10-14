@@ -51,7 +51,6 @@
 #' @importFrom dplyr select as_tibble
 #'
 #' @examples
-#' \donttest{
 #' data <- data.frame(
 #'   species = c("sp1", "sp2", "sp3"),
 #'   x = c(-74.1, -73.9, -74.0),
@@ -68,7 +67,6 @@
 #'   from = "EPSG:4326", to = "EPSG:32618",
 #'   replace_cols = TRUE
 #' )
-#' }
 occ_reproj <- function(data, x = "x", y = "y", from = "EPSG:4326", to = NULL, replace_cols = FALSE) {
   if (is.null(to)) {
     stop("A projection must be specified in 'to' argument")

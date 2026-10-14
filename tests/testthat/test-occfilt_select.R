@@ -13,15 +13,21 @@ spp1 <- spp %>% dplyr::filter(species == "sp1", pr_ab == 1)
 ## %######################################################%##
 ####                  Cellsize method                   ####
 ## %######################################################%##
-# Using cellsize method
-filtered_occ <- occfilt_geo(
-  data = spp1,
-  x = "x",
-  y = "y",
-  env_layer = somevar,
-  method = c("cellsize", factor = c(1, 4, 8, 12, 16, 20)),
-  prj = crs(somevar)
-)
+# Using cellsize method with several factors. Thinning is random and occfilt_geo()
+# does not set a seed, so each factor is run with the same seed to get reproducible results
+cellsize_factors <- c(1, 4, 8, 12, 16, 20)
+filtered_occ <- lapply(cellsize_factors, function(f) {
+  set.seed(1)
+  occfilt_geo(
+    data = spp1,
+    x = "x",
+    y = "y",
+    env_layer = somevar,
+    method = c("cellsize", factor = f),
+    prj = crs(somevar)
+  )
+})
+names(filtered_occ) <- cellsize_factors
 
 
 # Select filtered occurrences based on

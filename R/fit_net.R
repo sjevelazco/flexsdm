@@ -50,7 +50,6 @@
 #' @importFrom stats formula sd
 #'
 #' @examples
-#' \donttest{
 #' data("abies")
 #'
 #' # Using k-fold partition method
@@ -96,7 +95,6 @@
 #'   fit_formula = NULL
 #' )
 #' nnet_t2
-#' }
 fit_net <- function(
   data,
   response,
@@ -223,7 +221,6 @@ fit_net <- function(
       for (i in 1:np2) {
         message("Partition number: ", i, "/", np2)
         tryCatch({
-          set.seed(1)
           mod[[i]] <-
             nnet::nnet(
               formula1,
@@ -290,7 +287,6 @@ fit_net <- function(
       dplyr::relocate(rnames)
 
     # Fit final models with best settings
-    set.seed(1)
     suppressMessages(
       mod <-
         nnet::nnet(

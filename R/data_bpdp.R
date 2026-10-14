@@ -41,7 +41,6 @@
 #' @importFrom terra minmax
 #'
 #' @examples
-#' \donttest{
 #' library(terra)
 #' library(dplyr)
 #'
@@ -87,7 +86,6 @@
 #' df$training_boundaries
 #'
 #' # see p_bpdp to construct partial dependence plot with ggplot2
-#' }
 data_bpdp <-
   function(
     model,

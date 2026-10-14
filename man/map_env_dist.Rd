@@ -33,7 +33,6 @@ For Euclidean and Mahalanobis distances, the result is a similarity value rangin
 Calculate environmental distance between presences and projection data
 }
 \examples{
-\donttest{
 require(dplyr)
 require(terra)
 require(ggplot2)
@@ -131,7 +130,6 @@ p_extra(
   color_gradient = clrs
 ) +
   labs(title = "Mahalanobis")
-}
 }
 \references{
 \itemize{

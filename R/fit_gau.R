@@ -45,7 +45,6 @@
 #' @importFrom stats sd dist dnorm pnorm qnorm
 #'
 #' @examples
-#' \donttest{
 #' data("abies")
 #' set.seed(1)
 #' abies <- abies[sample(nrow(abies), 400), ] # subsample to speed up this example
@@ -95,7 +94,6 @@
 #'   thr = c(type = c("lpt", "max_sens_spec", "sensitivity"), sens = "0.8")
 #' )
 #' gaup_t2
-#' }
 fit_gau <- function(
   data,
   response,
@@ -286,7 +284,6 @@ fit_gau <- function(
       for (i in 1:np2) {
         tryCatch({
           message("Partition number: ", i, "/", np2)
-          set.seed(1)
           mod[[i]] <-
             graf(
               y = train[[i]][, response],
@@ -395,7 +392,6 @@ fit_gau <- function(
       dplyr::relocate(rnames)
 
     # Fit final models with best settings
-    set.seed(1)
     suppressMessages(
       mod <-
         graf(

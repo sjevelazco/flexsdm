@@ -39,7 +39,6 @@
 #' @importFrom terra minmax
 #'
 #' @examples
-#' \donttest{
 #' library(terra)
 #' library(dplyr)
 #'
@@ -88,7 +87,6 @@
 #' points(df$resid[1:2], cex = 0.5)
 #'
 #' # see p_pdp to construct partial dependence plot with ggplot2
-#' }
 data_pdp <-
   function(
     model,

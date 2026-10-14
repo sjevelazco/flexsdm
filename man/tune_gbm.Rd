@@ -87,6 +87,31 @@ different hyper-parameter combinations to find the one that optimizes model perf
 It is a tune version of [fit_gbm()].
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+tune_toy <- tune_gbm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  grid = expand.grid(
+    n.trees = c(20, 40),
+    shrinkage = 0.1,
+    n.minobsinnode = 3
+  ),
+  thr = "max_sens_spec",
+  metric = "TSS",
+  n_cores = 1
+)
+tune_toy$performance
+
 \donttest{
 data(abies)
 abies

@@ -47,7 +47,6 @@
 #' @seealso \code{\link{part_sblock}}, \code{\link{part_senv}}, \code{\link{sample_pseudoabs}}, \code{\link{sample_background}}
 #'
 #' @examples
-#' \donttest{
 #' require(dplyr)
 #' data("abies")
 #' abies$partition <- NULL
@@ -85,7 +84,6 @@
 #' )
 #' abies2
 #' abies2$.part1 %>% table() # Note that for this method .partX columns have train and test words.
-#' }
 #'
 part_random <- function(data, pr_ab, method = NULL) {
   if (!method[1] %in% c("kfold", "rep_kfold", "loocv", "boot")) {

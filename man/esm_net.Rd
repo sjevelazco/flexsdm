@@ -57,6 +57,26 @@ could be problematic when using with few occurrences. Further detail see
 Breiner et al. (2015, 2018).
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+esm_toy <- esm_net(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = NULL,
+  size = 2,
+  decay = 1
+)
+esm_toy$performance
+
 \donttest{
 data("abies")
 require(dplyr)

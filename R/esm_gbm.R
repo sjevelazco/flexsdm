@@ -67,6 +67,27 @@
 #' @importFrom utils combn txtProgressBar setTxtProgressBar
 #'
 #' @examples
+#' # Toy data: a small subset of 'abies' to keep this example fast
+#' data("abies")
+#' abies_toy <- abies[c(1:30, 701:730), ]
+#' abies_toy <- part_random(
+#'   data = abies_toy,
+#'   pr_ab = "pr_ab",
+#'   method = c(method = "kfold", folds = 3)
+#' )
+#'
+#' esm_toy <- esm_gbm(
+#'   data = abies_toy,
+#'   response = "pr_ab",
+#'   predictors = c("aet", "cwd", "tmin"),
+#'   partition = ".part",
+#'   thr = NULL,
+#'   n_trees = 20,
+#'   n_minobsinnode = 3,
+#'   shrinkage = 0.1
+#' )
+#' esm_toy$performance
+#'
 #' \donttest{
 #' data("abies")
 #' require(dplyr)
