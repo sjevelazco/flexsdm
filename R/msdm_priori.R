@@ -72,6 +72,24 @@
 #' }
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' occ <- sp3[sp3$pr_ab == 1, ]
+#'
+#' # Spatial constraint based on the coordinates of the records
+#' m_xy <- msdm_priori(
+#'   data = occ,
+#'   x = "x",
+#'   y = "y",
+#'   method = "xy",
+#'   env_layer = somevar[[1]]
+#' )
+#' m_xy
+#'
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'
@@ -134,6 +152,7 @@
 #'
 #' plot(m_ker)
 #' points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
+#' }
 #'
 #' @seealso \code{\link{msdm_posteriori}}
 #'

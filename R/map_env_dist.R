@@ -26,6 +26,24 @@
 #' }
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' somevar <- somevar[[1:2]] # two variables
+#' names(somevar) <- c("aet", "cwd")
+#' sp3 <- sdm_extract(data = sp3[sp3$pr_ab == 1, ], x = "x", y = "y", env_layer = somevar)
+#'
+#' # Environmental distance between presences and the projection data
+#' envdist <- map_env_dist(
+#'   training_data = sp3,
+#'   projection_data = somevar,
+#'   metric = "euclidean"
+#' )
+#' envdist
+#'
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #' require(ggplot2)
@@ -123,6 +141,7 @@
 #'   color_gradient = clrs
 #' ) +
 #'   labs(title = "Mahalanobis")
+#' }
 map_env_dist <- function(
   training_data,
   projection_data,

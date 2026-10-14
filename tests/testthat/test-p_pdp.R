@@ -1,3 +1,5 @@
+skip_on_cran() # slow tests; they run when NOT_CRAN=true
+
 library(terra)
 library(dplyr)
 

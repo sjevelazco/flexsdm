@@ -94,6 +94,27 @@ and \code{\link{sample_pseudoabs}} for sampling background points or pseudo-abse
 spatial partition groups
 }
 \examples{
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp1 <- spp[spp$species == "sp1", ][1:300, ]
+
+part_toy <- part_senv(
+  env_layer = somevar,
+  data = sp1,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  min_n_groups = 2,
+  max_n_groups = 3,
+  min_occ = 5,
+  prop = 0.2
+)
+part_toy$best_part_info
+
+\donttest{
 require(terra)
 require(ggplot2)
 require(dplyr)
@@ -129,6 +150,7 @@ ggplot(part1$part, aes(x, y, col = factor(.part))) +
 ggplot(part1$part, aes(x, y, col = factor(.part))) +
   geom_point(aes(shape = factor(pr_ab))) +
   facet_wrap(. ~ pr_ab)
+}
 }
 \references{
 \itemize{

@@ -128,6 +128,31 @@
 #' @importFrom terra rast extract vect rasterize crs buffer patches match mask unique as.polygons distance convHull
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' sp3 <- sdm_extract(data = sp3, x = "x", y = "y", env_layer = somevar)
+#'
+#' # Toy continuous suitability layer (rescaled to 0-1)
+#' cont_suit <- somevar[[1]] / terra::global(somevar[[1]], "max", na.rm = TRUE)[[1]]
+#' names(cont_suit) <- "suit"
+#'
+#' # Constrain the suitability with the minimum convex polygon of the presences
+#' m_mcp <- msdm_posteriori(
+#'   records = sp3,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   method = "mcp",
+#'   cont_suit = cont_suit,
+#'   thr = "equal_sens_spec",
+#'   buffer = NULL
+#' )
+#' m_mcp
+#'
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #'
@@ -241,6 +266,7 @@
 #' )
 #'
 #' plot(m_obr)
+#' }
 #'
 #' @seealso \code{\link{msdm_priori}}
 msdm_posteriori <- function(

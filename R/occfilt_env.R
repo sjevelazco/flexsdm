@@ -59,6 +59,27 @@
 #' @importFrom terra extract nlyr levels classify
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#' sp3 <- sp3[sp3$pr_ab == 1, ]
+#' sp3$idd <- seq_len(nrow(sp3)) # unique id of each record
+#'
+#' # Filter records using 5 bins in the environmental space
+#' filtered <- occfilt_env(
+#'   data = sp3,
+#'   x = "x",
+#'   y = "y",
+#'   id = "idd",
+#'   env_layer = somevar,
+#'   nbins = 5
+#' )
+#' nrow(sp3)
+#' nrow(filtered)
+#'
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #' require(ggplot2)
@@ -151,6 +172,7 @@
 #' )
 #'
 #' occ_selected
+#' }
 #'
 #' @seealso \code{\link{occfilt_geo}}, \code{\link{occfilt_select}}
 #'

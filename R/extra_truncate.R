@@ -62,7 +62,7 @@
 #'   threshold = 50,
 #'   trunc_value = 0
 #' )
-#' terra::plot(suit_trunc[[1]]) # one raster for each threshold value
+#' suit_trunc # one raster for each threshold value
 #'
 #' # see more examples in extra_eval function
 extra_truncate <- function(suit, extra, threshold = 50, trunc_value = 0) {

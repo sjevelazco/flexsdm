@@ -12,6 +12,31 @@
 #' @importFrom terra as.data.frame extract
 #'
 #' @examples
+#' # Toy data: small raster and records of one species to keep this example fast
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+#' sp3 <- spp[spp$species == "sp3", ]
+#'
+#' sp_part <- part_sblock(
+#'   env_layer = somevar,
+#'   data = sp3,
+#'   x = "x",
+#'   y = "y",
+#'   pr_ab = "pr_ab",
+#'   min_res_mult = 10,
+#'   max_res_mult = 40,
+#'   num_grids = 3,
+#'   n_part = 2,
+#'   min_occ = 2,
+#'   prop = 0.5
+#' )
+#'
+#' # Block layer with the same properties as the environmental variables
+#' block_layer <- get_block(env_layer = somevar, best_grid = sp_part$grid)
+#' block_layer
+#'
+#' \donttest{
 #' require(dplyr)
 #' require(terra)
 #' data(spp)
@@ -40,6 +65,7 @@
 #'
 #' plot(part$grid)
 #' plot(grid_env)
+#' }
 get_block <- function(env_layer, best_grid) {
   maskr <- env_layer[[!is.factor(env_layer)]][[1]]
   rdf <- terra::as.data.frame(maskr, xy = TRUE)

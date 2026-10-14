@@ -33,6 +33,21 @@ A SpatVector
 This function offers different methods to define the calibration area. The output could be used with other flexsdm functions like sample_backgroud, sample_pseudoabs, and sdm_predict, among others
 }
 \examples{
+data("spp")
+sp1 <- spp[spp$species == "sp1" & spp$pr_ab == 1, ]
+clusters <- terra::vect(system.file("external/clusters.shp", package = "flexsdm"))
+
+# Calibration area: buffer of 40 km around the records
+ca_toy <- calib_area(
+  data = sp1,
+  x = "x",
+  y = "y",
+  method = c("buffer", width = 40000),
+  crs = terra::crs(clusters)
+)
+ca_toy
+
+\donttest{
 require(terra)
 require(dplyr)
 data("spp")
@@ -128,4 +143,5 @@ ca_3.1 <- calib_area(
 )
 plot(ca_3.1)
 points(single_spp[, 2:3], pch = 19, cex = 0.5, col = "red")
+}
 }

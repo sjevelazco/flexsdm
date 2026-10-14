@@ -49,6 +49,31 @@
 #' @seealso \code{\link{occfilt_env}}, \code{\link{occfilt_geo}}
 #'
 #' @examples
+#' data("spp")
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' sp1 <- spp[spp$species == "sp1" & spp$pr_ab == 1, ]
+#'
+#' # Filter records with several coarser resolutions (cell size method)
+#' filtered_occ <- occfilt_geo(
+#'   data = sp1,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar,
+#'   method = c("cellsize", factor = c(4, 8, 12)),
+#'   prj = terra::crs(somevar)
+#' )
+#'
+#' # Select the filtered data based on number of records and spatial autocorrelation
+#' occ_selected <- occfilt_select(
+#'   occ_list = filtered_occ,
+#'   x = "x",
+#'   y = "y",
+#'   env_layer = somevar,
+#'   filter_prop = FALSE
+#' )
+#' nrow(occ_selected)
+#'
+#' \donttest{
 #' require(terra)
 #' require(dplyr)
 #'
@@ -99,6 +124,7 @@
 #' occ_selected$occ
 #'
 #' occ_selected$filter_prop
+#' }
 occfilt_select <- function(occ_list, x, y, env_layer, filter_prop = FALSE) {
   mean_autocorr <- n_records <- filt_value <- NULL
 
