@@ -94,7 +94,6 @@ pred <- sdm_predict(
   predict_area = NULL
 )
 pred
-terra::plot(pred$glm)
 
 \donttest{
 require(dplyr)

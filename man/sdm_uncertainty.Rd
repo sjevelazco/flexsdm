@@ -73,7 +73,7 @@ unc <- sdm_uncertainty(
   iteration = 2,
   n_cores = 1
 )
-terra::plot(unc)
+unc
 
 \donttest{
 require(terra)

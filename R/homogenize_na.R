@@ -10,6 +10,15 @@
 #' @importFrom terra mask
 #'
 #' @examples
+#' somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+#' somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution to keep this example fast
+#'
+#' somevar2 <- homogenize_na(somevar)
+#'
+#' # In somevar2 all layers have the same cells with NAs
+#' terra::global(somevar2, "notNA")
+#'
+#' \donttest{
 #' require(terra)
 #'
 #' somevar <- system.file("external/somevar.tif", package = "flexsdm")
@@ -22,6 +31,7 @@
 #' par(oldpar) # restore graphical parameters
 #'
 #' # In somevar2 all layers have the same cells with NAs
+#' }
 homogenize_na <- function(x) {
   x2 <- sum(is.na(x)) == 0
   x <- terra::mask(x, x2, maskvalues = 0)

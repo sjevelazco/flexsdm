@@ -74,6 +74,25 @@ This function constructs 'C-svc' classification type and uses
 Radial Basis kernel "Gaussian" function (rbfdot). See details details in \link[kernlab]{ksvm}.
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+svm_toy <- fit_svm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+svm_toy$performance
+
+\donttest{
 data("abies")
 
 # Using k-fold partition method
@@ -120,6 +139,7 @@ svm_t2 <- fit_svm(
   fit_formula = NULL
 )
 svm_t2
+}
 }
 \seealso{
 \code{\link{fit_gam}}, \code{\link{fit_gau}}, \code{\link{fit_gbm}},

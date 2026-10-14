@@ -28,6 +28,14 @@ This is a resubmission. In response to the reviewer's comments:
 * Functions that used a cluster (`tune_*()`, `sdm_varimp()`, `sdm_uncertainty()`)
   now run sequentially, without starting a cluster, when `n_cores = 1`.
 
+In response to the last automatic pre-test ("Overall checktime 12 min > 10 min" and
+examples taking > 10 s on Windows): the examples that are run on CRAN are now very
+small and do not draw plots (the complete examples remain inside `\donttest{}`), the
+slow test files are skipped as a whole on CRAN with `skip_on_cran()`, and the last
+vignette that was executed at build time (`v04`) is now precomputed. The remaining
+NOTE about "possibly misspelled words in DESCRIPTION" lists author names and
+"et al." from the references.
+
 The previous resubmission addressed the incoming check "Overall checktime
 > 10 min": most model fitting/tuning tests are skipped on CRAN with
 `skip_on_cran()` (they still run when `NOT_CRAN=true`), vignettes `v01`, `v02`,

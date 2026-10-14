@@ -80,7 +80,7 @@ extr <- extra_eval(
   projection_data = somevar,
   metric = "mahalanobis"
 )
-terra::plot(extr)
+extr
 
 \donttest{
 require(dplyr)

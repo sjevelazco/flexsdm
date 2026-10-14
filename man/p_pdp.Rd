@@ -72,6 +72,32 @@ could be used to interpret a model or to explore how a model may extrapolate out
 used to train the model.
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+
+# Partial dependence plot (one predictor, low resolution to keep it fast)
+p_pdp(
+  model = glm_toy$model,
+  training_data = abies_toy,
+  predictors = "aet",
+  resolution = 20
+)
+
+\donttest{
 library(terra)
 library(dplyr)
 
@@ -135,6 +161,7 @@ p_pdp(
   colorl = c("#CC00FF", "#CCFF00"), resid = TRUE, colorp = "gray", rug = TRUE,
   theme = ggplot2::theme_dark()
 )
+}
 }
 \seealso{
 \code{\link{data_pdp}}, \code{\link{data_bpdp}}, \code{\link{p_bpdp}},

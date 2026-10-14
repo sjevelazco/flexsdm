@@ -45,6 +45,18 @@ This function provides different conventional (randomized, non-spatial) partitio
 methods based on cross validation folds (kfold, rep_kfold, and loocv), as well as bootstrap (boot)
 }
 \examples{
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ] # small subset to keep this example fast
+
+# k-fold partition
+abies_part <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+table(abies_part$.part)
+
+\donttest{
 require(dplyr)
 data("abies")
 abies$partition <- NULL
@@ -82,6 +94,7 @@ abies2 <- part_random(
 )
 abies2
 abies2$.part1 \%>\% table() # Note that for this method .partX columns have train and test words.
+}
 
 }
 \references{

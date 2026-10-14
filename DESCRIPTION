@@ -43,7 +43,7 @@ Description: Provides a flexible and comprehensive workflow for species
     distribution modeling, from data preparation (occurrence filtering,
     calibration areas, pseudo-absence and background sampling, data
     partitioning, and collinearity reduction) to model fitting, tuning,
-    evaluation, prediction, ensembling, and post-processing. The package is
+    evaluation, prediction, ensemble modeling, and post-processing. The package is
     described in Velazco et al. (2022) <doi:10.1111/2041-210X.13874>.
     Implemented methods include the Shape metric to measure model
     extrapolation of Velazco et al. (2023) <doi:10.1111/ecog.06992>,

@@ -60,6 +60,25 @@ Threshold dependent metrics are calculated based on the threshold criteria speci
 Fit and validate Gaussian Process models
 }
 \examples{
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+gau_toy <- fit_gau(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+gau_toy$performance
+
+\donttest{
 data("abies")
 set.seed(1)
 abies <- abies[sample(nrow(abies), 400), ] # subsample to speed up this example
@@ -109,6 +128,7 @@ gaup_t2 <- fit_gau(
   thr = c(type = c("lpt", "max_sens_spec", "sensitivity"), sens = "0.8")
 )
 gaup_t2
+}
 }
 \seealso{
 \code{\link{fit_gam}}, \code{\link{fit_glm}}, \code{\link{fit_gbm}},

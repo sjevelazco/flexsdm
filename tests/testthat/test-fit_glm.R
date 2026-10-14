@@ -1,3 +1,5 @@
+skip_on_cran() # slow tests; they run when NOT_CRAN=true
+
 test_that("multiplication works", {
   data("abies")
   abies <- abies %>% dplyr::group_by(pr_ab) %>% dplyr::slice_sample(prop = .2) %>% dplyr::ungroup()

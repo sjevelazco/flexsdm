@@ -1,3 +1,5 @@
+skip_on_cran() # slow tests; they run when NOT_CRAN=true
+
 test_that("test for fit_ function family", {
   skip_on_cran()
   require(dplyr)

@@ -19,6 +19,15 @@ Homogenize cells with NAs across all layers
 Homogenize cells with NAs across all layers in a SpatRaster so that in the resulting SpatRaster all layers have the same cells with NAa
 }
 \examples{
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution to keep this example fast
+
+somevar2 <- homogenize_na(somevar)
+
+# In somevar2 all layers have the same cells with NAs
+terra::global(somevar2, "notNA")
+
+\donttest{
 require(terra)
 
 somevar <- system.file("external/somevar.tif", package = "flexsdm")
@@ -31,4 +40,5 @@ plot(somevar2$CFP_4)
 par(oldpar) # restore graphical parameters
 
 # In somevar2 all layers have the same cells with NAs
+}
 }

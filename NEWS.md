@@ -14,6 +14,8 @@
 - `tune_gbm`, `tune_max`, `tune_net`, `tune_raf`, `tune_svm`, `sdm_varimp` and `sdm_uncertainty`: no cluster is started when `n_cores = 1`, the computation runs sequentially in the current session
 - `occfilt_geo`: the `warn` option is restored when the function exits
 - Gaussian process code used by `fit_gau()` and `esm_gau()`, `fit_max()` and `tune_max()`: `print()` and `cat()` calls replaced by `message()` or `warning()` (or removed)
+- Check time after the last CRAN incoming check (examples took 161 s and tests 104 s on win-builder): the examples executed on CRAN are now tiny toy examples without plotting (the full examples, with their plots, are inside `\donttest{}`), test files that take more than a fraction of a second are skipped as a whole on CRAN with `skip_on_cran()` (they run when `NOT_CRAN=true`), and vignette `v04` is now precomputed (source in `vignettes/v04_Red_fir_example.Rmd.orig`)
+- `DESCRIPTION`: reworded "ensembling" in the Description field
 
 # flexsdm 1.4.1 
 -  `get_absences`: Function to build a presence-absence database from multi-species occurrence data, by @sjevelazco
