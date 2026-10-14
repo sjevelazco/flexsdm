@@ -145,6 +145,44 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+gbm_toy <- fit_gbm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec",
+  n_trees = 20,
+  n_minobsinnode = 3
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+gbm_toy$performance
+#> # A tibble: 1 × 33
+#>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 gbm   max_sens_spec     0.754          30         30      0.9    0.1    0.833
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
+# \donttest{
 data("abies")
 
 # Using k-fold partition method
@@ -207,9 +245,9 @@ gbm_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 gbm   equal_sens_sp…     0.510         700        700    0.689 0.0403    0.691
-#> 2 gbm   max_sens_spec      0.466         700        700    0.73  0.117     0.713
-#> 3 gbm   max_sorensen       0.404         700        700    0.877 0.0548    0.531
+#> 1 gbm   equal_sens_sp…     0.512         700        700    0.691 0.0370    0.691
+#> 2 gbm   max_sens_spec      0.479         700        700    0.733 0.162     0.709
+#> 3 gbm   max_sorensen       0.408         700        700    0.85  0.0806    0.583
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -221,16 +259,16 @@ gbm_t1$performance_part
 #> # A tibble: 30 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         gbm   max_sorensen       0.380          70         70 0.929
-#>  2 1       1         gbm   max_sens_spec      0.515          70         70 0.786
-#>  3 1       1         gbm   equal_sens_sp…     0.526          70         70 0.714
-#>  4 1       2         gbm   max_sorensen       0.467          70         70 0.814
-#>  5 1       2         gbm   max_sens_spec      0.467          70         70 0.814
-#>  6 1       2         gbm   equal_sens_sp…     0.495          70         70 0.686
-#>  7 1       3         gbm   max_sorensen       0.363          70         70 0.871
-#>  8 1       3         gbm   max_sens_spec      0.647          70         70 0.457
-#>  9 1       3         gbm   equal_sens_sp…     0.480          70         70 0.671
-#> 10 1       4         gbm   max_sorensen       0.458          70         70 0.886
+#>  1 1       1         gbm   max_sorensen       0.406          70         70 0.871
+#>  2 1       1         gbm   max_sens_spec      0.638          70         70 0.5  
+#>  3 1       1         gbm   equal_sens_sp…     0.531          70         70 0.671
+#>  4 1       2         gbm   max_sorensen       0.339          70         70 0.943
+#>  5 1       2         gbm   max_sens_spec      0.646          70         70 0.414
+#>  6 1       2         gbm   equal_sens_sp…     0.528          70         70 0.643
+#>  7 1       3         gbm   max_sorensen       0.525          70         70 0.686
+#>  8 1       3         gbm   max_sens_spec      0.525          70         70 0.686
+#>  9 1       3         gbm   equal_sens_sp…     0.488          70         70 0.714
+#> 10 1       4         gbm   max_sorensen       0.428          70         70 0.857
 #> # ℹ 20 more rows
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
@@ -239,16 +277,16 @@ gbm_t1$data_ens
 #> # A tibble: 1,400 × 5
 #>    rnames replicates part  pr_ab  pred
 #>    <chr>  <chr>      <chr> <dbl> <dbl>
-#>  1 9      .part      1         0 0.546
-#>  2 20     .part      1         0 0.267
-#>  3 30     .part      1         0 0.479
-#>  4 36     .part      1         0 0.153
-#>  5 44     .part      1         0 0.479
-#>  6 57     .part      1         0 0.323
-#>  7 84     .part      1         0 0.699
-#>  8 90     .part      1         0 0.181
-#>  9 98     .part      1         0 0.328
-#> 10 133    .part      1         0 0.501
+#>  1 10     .part      1         0 0.581
+#>  2 12     .part      1         0 0.434
+#>  3 31     .part      1         0 0.397
+#>  4 42     .part      1         0 0.264
+#>  5 43     .part      1         0 0.617
+#>  6 48     .part      1         0 0.359
+#>  7 68     .part      1         0 0.605
+#>  8 79     .part      1         0 0.302
+#>  9 86     .part      1         0 0.199
+#> 10 89     .part      1         0 0.292
 #> # ℹ 1,390 more rows
 
 # Using bootstrap partition method
@@ -325,7 +363,7 @@ gbm_t2
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 gbm   max_sens_spec     0.540         700        700    0.656 0.0509     0.73
+#> 1 gbm   max_sens_spec     0.548         700        700    0.651 0.0603    0.732
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -338,16 +376,16 @@ gbm_t2
 #> # A tibble: 10 × 21
 #>    replica partition model threshold     thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>             <dbl>       <int>      <int> <dbl>
-#>  1 1       1         gbm   max_sens_spec     0.513         210        210 0.671
-#>  2 2       1         gbm   max_sens_spec     0.562         210        210 0.605
-#>  3 3       1         gbm   max_sens_spec     0.437         210        210 0.719
-#>  4 4       1         gbm   max_sens_spec     0.517         210        210 0.652
-#>  5 5       1         gbm   max_sens_spec     0.538         210        210 0.638
-#>  6 6       1         gbm   max_sens_spec     0.520         210        210 0.629
-#>  7 7       1         gbm   max_sens_spec     0.550         210        210 0.586
-#>  8 8       1         gbm   max_sens_spec     0.496         210        210 0.705
-#>  9 9       1         gbm   max_sens_spec     0.484         210        210 0.738
-#> 10 10      1         gbm   max_sens_spec     0.546         210        210 0.619
+#>  1 1       1         gbm   max_sens_spec     0.515         210        210 0.652
+#>  2 2       1         gbm   max_sens_spec     0.522         210        210 0.676
+#>  3 3       1         gbm   max_sens_spec     0.515         210        210 0.648
+#>  4 4       1         gbm   max_sens_spec     0.559         210        210 0.586
+#>  5 5       1         gbm   max_sens_spec     0.495         210        210 0.652
+#>  6 6       1         gbm   max_sens_spec     0.531         210        210 0.595
+#>  7 7       1         gbm   max_sens_spec     0.573         210        210 0.624
+#>  8 8       1         gbm   max_sens_spec     0.494         210        210 0.714
+#>  9 9       1         gbm   max_sens_spec     0.553         210        210 0.586
+#> 10 10      1         gbm   max_sens_spec     0.448         210        210 0.776
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
 #> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
@@ -356,16 +394,17 @@ gbm_t2
 #> # A tibble: 4,200 × 5
 #>    rnames replicates part  pr_ab  pred
 #>    <chr>  <chr>      <chr> <dbl> <dbl>
-#>  1 3      .part1     1         0 0.460
-#>  2 4      .part1     1         0 0.200
-#>  3 5      .part1     1         0 0.419
-#>  4 13     .part1     1         0 0.286
-#>  5 15     .part1     1         0 0.599
-#>  6 16     .part1     1         0 0.447
-#>  7 21     .part1     1         0 0.229
-#>  8 26     .part1     1         0 0.492
-#>  9 29     .part1     1         0 0.365
-#> 10 35     .part1     1         0 0.292
+#>  1 2      .part1     1         0 0.427
+#>  2 8      .part1     1         0 0.426
+#>  3 12     .part1     1         0 0.424
+#>  4 21     .part1     1         0 0.194
+#>  5 23     .part1     1         0 0.325
+#>  6 30     .part1     1         0 0.413
+#>  7 38     .part1     1         0 0.555
+#>  8 42     .part1     1         0 0.424
+#>  9 43     .part1     1         0 0.628
+#> 10 47     .part1     1         0 0.702
 #> # ℹ 4,190 more rows
 #> 
+# }
 ```

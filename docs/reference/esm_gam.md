@@ -159,13 +159,13 @@ esm_toy$performance
 #> # A tibble: 7 × 33
 #>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 esm_gam equal_sens_…     0.558          30         30    0.867 0.0577    0.867
-#> 2 esm_gam lpt              0.396          30         30    1     0         0.8  
-#> 3 esm_gam max_fpb          0.396          30         30    1     0         0.8  
-#> 4 esm_gam max_jaccard      0.396          30         30    1     0         0.8  
-#> 5 esm_gam max_sens_sp…     0.460          30         30    0.9   0.1       0.9  
-#> 6 esm_gam max_sorensen     0.396          30         30    1     0         0.8  
-#> 7 esm_gam sensitivity      0.467          30         30    0.9   0         0.867
+#> 1 esm_gam equal_sens_…     0.528          30         30    0.867 0.0577    0.867
+#> 2 esm_gam lpt              0.222          30         30    1     0         0.767
+#> 3 esm_gam max_fpb          0.323          30         30    0.933 0.0577    0.9  
+#> 4 esm_gam max_jaccard      0.323          30         30    0.933 0.0577    0.9  
+#> 5 esm_gam max_sens_sp…     0.323          30         30    0.933 0.0577    0.9  
+#> 6 esm_gam max_sorensen     0.323          30         30    0.933 0.0577    0.9  
+#> 7 esm_gam sensitivity      0.454          30         30    0.9   0         0.9  
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,

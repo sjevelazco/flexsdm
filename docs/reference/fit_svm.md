@@ -140,6 +140,42 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+svm_toy <- fit_svm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+svm_toy$performance
+#> # A tibble: 1 × 33
+#>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 svm   max_sens_spec     0.700          30         30      0.8  0.265    0.833
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
+# \donttest{
 data("abies")
 
 # Using k-fold partition method
@@ -193,12 +229,12 @@ svm_t1$model
 #>  parameter : cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  0.201598132358874 
+#>  Hyperparameter : sigma =  0.187560315237384 
 #> 
-#> Number of Support Vectors : 899 
+#> Number of Support Vectors : 905 
 #> 
-#> Objective Function Value : -767.6206 
-#> Training error : 0.211429 
+#> Objective Function Value : -775.6347 
+#> Training error : 0.215714 
 #> Probability model included. 
 svm_t1$predictors
 #> # A tibble: 1 × 6
@@ -209,9 +245,9 @@ svm_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 svm   equal_sens_sp…     0.541         700        700    0.739 0.0377    0.739
-#> 2 svm   max_sens_spec      0.541         700        700    0.8   0.0787    0.717
-#> 3 svm   max_sorensen       0.296         700        700    0.88  0.0526    0.613
+#> 1 svm   equal_sens_sp…     0.546         700        700    0.744 0.0366    0.744
+#> 2 svm   max_sens_spec      0.550         700        700    0.787 0.0926    0.736
+#> 3 svm   max_sorensen       0.307         700        700    0.881 0.0330    0.624
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -223,21 +259,21 @@ svm_t1$performance_part
 #> # A tibble: 15 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         svm   max_sorensen       0.511         140        140 0.793
-#>  2 1       1         svm   max_sens_spec      0.607         140        140 0.707
-#>  3 1       1         svm   equal_sens_sp…     0.557         140        140 0.757
-#>  4 1       2         svm   max_sorensen       0.306         140        140 0.921
-#>  5 1       2         svm   max_sens_spec      0.598         140        140 0.771
-#>  6 1       2         svm   equal_sens_sp…     0.603         140        140 0.757
-#>  7 1       3         svm   max_sorensen       0.313         140        140 0.886
-#>  8 1       3         svm   max_sens_spec      0.313         140        140 0.886
-#>  9 1       3         svm   equal_sens_sp…     0.520         140        140 0.671
-#> 10 1       4         svm   max_sorensen       0.309         140        140 0.921
-#> 11 1       4         svm   max_sens_spec      0.504         140        140 0.757
-#> 12 1       4         svm   equal_sens_sp…     0.495         140        140 0.757
-#> 13 1       5         svm   max_sorensen       0.434         140        140 0.879
-#> 14 1       5         svm   max_sens_spec      0.434         140        140 0.879
-#> 15 1       5         svm   equal_sens_sp…     0.573         140        140 0.75 
+#>  1 1       1         svm   max_sorensen       0.467         140        140 0.907
+#>  2 1       1         svm   max_sens_spec      0.488         140        140 0.879
+#>  3 1       1         svm   equal_sens_sp…     0.559         140        140 0.771
+#>  4 1       2         svm   max_sorensen       0.365         140        140 0.907
+#>  5 1       2         svm   max_sens_spec      0.531         140        140 0.786
+#>  6 1       2         svm   equal_sens_sp…     0.539         140        140 0.779
+#>  7 1       3         svm   max_sorensen       0.291         140        140 0.893
+#>  8 1       3         svm   max_sens_spec      0.527         140        140 0.743
+#>  9 1       3         svm   equal_sens_sp…     0.523         140        140 0.743
+#> 10 1       4         svm   max_sorensen       0.369         140        140 0.871
+#> 11 1       4         svm   max_sens_spec      0.369         140        140 0.871
+#> 12 1       4         svm   equal_sens_sp…     0.576         140        140 0.686
+#> 13 1       5         svm   max_sorensen       0.395         140        140 0.829
+#> 14 1       5         svm   max_sens_spec      0.631         140        140 0.657
+#> 15 1       5         svm   equal_sens_sp…     0.503         140        140 0.743
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
 #> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
@@ -245,16 +281,16 @@ svm_t1$data_ens
 #> # A tibble: 1,400 × 5
 #>    rnames replicates part  pr_ab   pred
 #>    <chr>  <chr>      <chr> <fct>  <dbl>
-#>  1 1      .part      1     0     0.709 
-#>  2 5      .part      1     0     0.199 
-#>  3 7      .part      1     0     0.0895
-#>  4 9      .part      1     0     0.587 
-#>  5 17     .part      1     0     0.561 
-#>  6 20     .part      1     0     0.214 
-#>  7 33     .part      1     0     0.153 
-#>  8 41     .part      1     0     0.134 
-#>  9 44     .part      1     0     0.478 
-#> 10 45     .part      1     0     0.179 
+#>  1 2      .part      1     0     0.138 
+#>  2 3      .part      1     0     0.146 
+#>  3 13     .part      1     0     0.526 
+#>  4 18     .part      1     0     0.0961
+#>  5 21     .part      1     0     0.181 
+#>  6 24     .part      1     0     0.827 
+#>  7 29     .part      1     0     0.0584
+#>  8 39     .part      1     0     0.838 
+#>  9 42     .part      1     0     0.191 
+#> 10 50     .part      1     0     0.0667
 #> # ℹ 1,390 more rows
 
 # Using bootstrap partition method and only with presence-absence
@@ -314,6 +350,7 @@ svm_t2 <- fit_svm(
 #> Partition number: 1/1
 #> Replica number: 10/10
 #> Partition number: 1/1
+#> line search fails -1.347888 0.1516195 1.093732e-05 -5.313894e-06 -6.990186e-08 3.298222e-08 -9.398032e-13
 svm_t2
 #> $model
 #> Support Vector Machine object of class "ksvm" 
@@ -322,12 +359,12 @@ svm_t2
 #>  parameter : cost C = 1 
 #> 
 #> Gaussian Radial Basis kernel function. 
-#>  Hyperparameter : sigma =  0.191996666477365 
+#>  Hyperparameter : sigma =  0.19552750209237 
 #> 
 #> Number of Support Vectors : 904 
 #> 
-#> Objective Function Value : -773.0579 
-#> Training error : 0.214286 
+#> Objective Function Value : -771.0377 
+#> Training error : 0.213571 
 #> Probability model included. 
 #> 
 #> $predictors
@@ -340,9 +377,9 @@ svm_t2
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 svm   equal_sens_sp…     0.536         700        700    0.766 0.0156    0.766
-#> 2 svm   max_sens_spec      0.544         700        700    0.834 0.0612    0.731
-#> 3 svm   max_sorensen       0.286         700        700    0.890 0.0231    0.671
+#> 1 svm   equal_sens_sp…     0.537         700        700    0.770 0.0243    0.770
+#> 2 svm   max_sens_spec      0.563         700        700    0.803 0.0639    0.769
+#> 3 svm   max_sorensen       0.305         700        700    0.898 0.0409    0.654
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -355,16 +392,16 @@ svm_t2
 #> # A tibble: 30 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         svm   max_sorensen       0.417         210        210 0.886
-#>  2 1       1         svm   max_sens_spec      0.417         210        210 0.886
-#>  3 1       1         svm   equal_sens_sp…     0.576         210        210 0.752
-#>  4 2       1         svm   max_sorensen       0.344         210        210 0.938
-#>  5 2       1         svm   max_sens_spec      0.555         210        210 0.748
-#>  6 2       1         svm   equal_sens_sp…     0.512         210        210 0.776
-#>  7 3       1         svm   max_sorensen       0.445         210        210 0.9  
-#>  8 3       1         svm   max_sens_spec      0.445         210        210 0.9  
-#>  9 3       1         svm   equal_sens_sp…     0.604         210        210 0.752
-#> 10 4       1         svm   max_sorensen       0.353         210        210 0.890
+#>  1 1       1         svm   max_sorensen       0.410         210        210 0.867
+#>  2 1       1         svm   max_sens_spec      0.475         210        210 0.829
+#>  3 1       1         svm   equal_sens_sp…     0.541         210        210 0.776
+#>  4 2       1         svm   max_sorensen       0.454         210        210 0.886
+#>  5 2       1         svm   max_sens_spec      0.558         210        210 0.795
+#>  6 2       1         svm   equal_sens_sp…     0.536         210        210 0.810
+#>  7 3       1         svm   max_sorensen       0.372         210        210 0.924
+#>  8 3       1         svm   max_sens_spec      0.442         210        210 0.862
+#>  9 3       1         svm   equal_sens_sp…     0.545         210        210 0.781
+#> 10 4       1         svm   max_sorensen       0.411         210        210 0.857
 #> # ℹ 20 more rows
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
@@ -372,18 +409,19 @@ svm_t2
 #> 
 #> $data_ens
 #> # A tibble: 4,200 × 5
-#>    rnames replicates part  pr_ab   pred
-#>    <chr>  <chr>      <chr> <fct>  <dbl>
-#>  1 6      .part1     1     0     0.544 
-#>  2 7      .part1     1     0     0.0617
-#>  3 8      .part1     1     0     0.314 
-#>  4 10     .part1     1     0     0.320 
-#>  5 17     .part1     1     0     0.586 
-#>  6 19     .part1     1     0     0.716 
-#>  7 20     .part1     1     0     0.175 
-#>  8 22     .part1     1     0     0.103 
-#>  9 24     .part1     1     0     0.792 
-#> 10 27     .part1     1     0     0.133 
+#>    rnames replicates part  pr_ab  pred
+#>    <chr>  <chr>      <chr> <fct> <dbl>
+#>  1 2      .part1     1     0     0.109
+#>  2 5      .part1     1     0     0.217
+#>  3 8      .part1     1     0     0.428
+#>  4 10     .part1     1     0     0.252
+#>  5 11     .part1     1     0     0.278
+#>  6 12     .part1     1     0     0.348
+#>  7 13     .part1     1     0     0.366
+#>  8 17     .part1     1     0     0.572
+#>  9 20     .part1     1     0     0.193
+#> 10 23     .part1     1     0     0.267
 #> # ℹ 4,190 more rows
 #> 
+# }
 ```

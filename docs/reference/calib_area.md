@@ -68,6 +68,26 @@ A SpatVector
 ## Examples
 
 ``` r
+data("spp")
+sp1 <- spp[spp$species == "sp1" & spp$pr_ab == 1, ]
+clusters <- terra::vect(system.file("external/clusters.shp", package = "flexsdm"))
+
+# Calibration area: buffer of 40 km around the records
+ca_toy <- calib_area(
+  data = sp1,
+  x = "x",
+  y = "y",
+  method = c("buffer", width = 40000),
+  crs = terra::crs(clusters)
+)
+ca_toy
+#> class       : SpatVector
+#> geometry    : polygons
+#> dimensions  : 1, 0  (geometries, attributes)
+#> extent      : -407610.8, 337129.2, -566648.3, 532871.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : NAD83 / California Albers (EPSG:3310)
+
+# \donttest{
 require(terra)
 #> Loading required package: terra
 #> terra 1.9.50
@@ -180,4 +200,6 @@ ca_3.1 <- calib_area(
 )
 plot(ca_3.1)
 points(single_spp[, 2:3], pch = 19, cex = 0.5, col = "red")
+
+# }
 ```

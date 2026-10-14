@@ -156,8 +156,6 @@ pred
 #> min values  :   0,             0
 #> max values  :   1,             1
 #> 
-terra::plot(pred$glm)
-
 
 # \donttest{
 require(dplyr)

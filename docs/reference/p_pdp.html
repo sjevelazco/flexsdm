@@ -158,7 +158,40 @@ used to train the model.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Toy data: a small subset of 'abies' to keep this example fast</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies_toy</span> <span class="op">&lt;-</span> <span class="va">abies</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="fl">701</span><span class="op">:</span><span class="fl">730</span><span class="op">)</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">abies_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies_toy</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">glm_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_glm.html">fit_glm</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies_toy</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ aet + cwd + tmin + I(aet^2) + I(cwd^2) + I(tmin^2)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Partial dependence plot (one predictor, low resolution to keep it fast)</span></span></span>
+<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">glm_toy</span><span class="op">$</span><span class="va">model</span>,</span></span>
+<span class="r-in"><span>  training_data <span class="op">=</span> <span class="va">abies_toy</span>,</span></span>
+<span class="r-in"><span>  predictors <span class="op">=</span> <span class="st">"aet"</span>,</span></span>
+<span class="r-in"><span>  resolution <span class="op">=</span> <span class="fl">20</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_pdp-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
@@ -177,7 +210,7 @@ used to train the model.</p>
 <span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
 <span class="r-in"><span>  env_layer <span class="op">=</span> <span class="va">somevar</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 34 rows were excluded from database because NAs were found</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 35 rows were excluded from database because NAs were found</span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span><span class="va">abies2</span>,</span></span>
 <span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
 <span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
@@ -201,47 +234,48 @@ used to train the model.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Partial depence plot</span></span></span>
 <span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_pdp-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="p_pdp-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="p_pdp-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="p_pdp-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resid <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resolution <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="p_pdp-5.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resid <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_pdp-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resid <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  colorl <span class="op">=</span> <span class="st">"black"</span>, colorp <span class="op">=</span> <span class="st">"red"</span>, alpha <span class="op">=</span> <span class="fl">0.1</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_pdp-6.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_pdp-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, resid <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  colorl <span class="op">=</span> <span class="st">"black"</span>, colorp <span class="op">=</span> <span class="st">"red"</span>, alpha <span class="op">=</span> <span class="fl">0.1</span>, rug <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_pdp-7.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_pdp-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Partial depence plot for training and projection condition found in a projection area</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"Projection area"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_pdp-8.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, projection_data <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="p_pdp-9.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span>model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, projection_data <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="p_pdp-10.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
 <span class="r-in"><span>  colorl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#CC00FF"</span>, <span class="st">"#CCFF00"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_pdp-10.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_pdp-11.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
 <span class="r-in"><span>  colorl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#CC00FF"</span>, <span class="st">"#CCFF00"</span><span class="op">)</span>, resid <span class="op">=</span> <span class="cn">TRUE</span>, colorp <span class="op">=</span> <span class="st">"gray"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_pdp-11.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_pdp-12.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">p_pdp</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="va">svm_t1</span><span class="op">$</span><span class="va">model</span>, training_data <span class="op">=</span> <span class="va">abies2</span>, projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
 <span class="r-in"><span>  colorl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#CC00FF"</span>, <span class="st">"#CCFF00"</span><span class="op">)</span>, resid <span class="op">=</span> <span class="cn">TRUE</span>, colorp <span class="op">=</span> <span class="st">"gray"</span>, rug <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  theme <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_dark</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="p_pdp-12.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="p_pdp-13.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -120,6 +120,40 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+gau_toy <- fit_gau(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+gau_toy$performance
+#> # A tibble: 1 × 33
+#>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 gau   max_sens_spec     0.566          30         30      0.9    0.1    0.833
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
+# \donttest{
 data("abies")
 set.seed(1)
 abies <- abies[sample(nrow(abies), 400), ] # subsample to speed up this example
@@ -41965,8 +41999,8 @@ gaup_t1$model
 #> 
 #> $mnfun
 #> function(x) rep(exp.prev, nrow(x))
-#> <bytecode: 0xa113124a0>
-#> <environment: 0xa09c03dc8>
+#> <bytecode: 0x9783439d8>
+#> <environment: 0x977a12a18>
 #> 
 #> $facs
 #> landform 
@@ -83471,8 +83505,8 @@ gaup_t2
 #> 
 #> $mnfun
 #> function(x) rep(exp.prev, nrow(x))
-#> <bytecode: 0xa113124a0>
-#> <environment: 0xa09dcf348>
+#> <bytecode: 0x9783439d8>
+#> <environment: 0x9763f17a8>
 #> 
 #> $facs
 #> landform 
@@ -83544,4 +83578,5 @@ gaup_t2
 #> 10 38     .part1     1         1 0.682
 #> # ℹ 228 more rows
 #> 
+# }
 ```

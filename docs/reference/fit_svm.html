@@ -146,7 +146,43 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Toy data: a small subset of 'abies' to keep this example fast</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abies_toy</span> <span class="op">&lt;-</span> <span class="va">abies</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, <span class="fl">701</span><span class="op">:</span><span class="fl">730</span><span class="op">)</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">abies_toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies_toy</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"kfold"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">svm_toy</span> <span class="op">&lt;-</span> <span class="fu">fit_svm</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">abies_toy</span>,</span></span>
+<span class="r-in"><span>  response <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aet"</span>, <span class="st">"cwd"</span>, <span class="st">"tmin"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  partition <span class="op">=</span> <span class="st">".part"</span>,</span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="st">"max_sens_spec"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Formula used for model fitting:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> pr_ab ~ aet + cwd + tmin</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 1/1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 2/3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 3/3</span>
+<span class="r-in"><span><span class="va">svm_toy</span><span class="op">$</span><span class="va">performance</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 33</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> svm   max_sens_spec     0.700          30         30      0.8  0.265    0.833</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   TSS_mean &lt;dbl&gt;, TSS_sd &lt;dbl&gt;, KAPPA_mean &lt;dbl&gt;, KAPPA_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   MCC_mean &lt;dbl&gt;, MCC_sd &lt;dbl&gt;, AUC_mean &lt;dbl&gt;, AUC_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   BOYCE_mean &lt;dbl&gt;, BOYCE_sd &lt;dbl&gt;, CRPS_mean &lt;dbl&gt;, CRPS_sd &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   IMAE_mean &lt;dbl&gt;, IMAE_sd &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"abies"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using k-fold partition method</span></span></span>
 <span class="r-in"><span><span class="va">abies2</span> <span class="op">&lt;-</span> <span class="fu"><a href="part_random.html">part_random</a></span><span class="op">(</span></span></span>
@@ -199,12 +235,12 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-out co"><span class="r-pr">#&gt;</span>  parameter : cost C = 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Gaussian Radial Basis kernel function. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hyperparameter : sigma =  0.201598132358874 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hyperparameter : sigma =  0.187560315237384 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Support Vectors : 899 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Support Vectors : 905 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Objective Function Value : -767.6206 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Training error : 0.211429 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Objective Function Value : -775.6347 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Training error : 0.215714 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Probability model included. </span>
 <span class="r-in"><span><span class="va">svm_t1</span><span class="op">$</span><span class="va">predictors</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 6</span></span>
@@ -215,9 +251,9 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 33</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> svm   equal_sens_sp…     0.541         700        700    0.739 0.037<span style="text-decoration: underline;">7</span>    0.739</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> svm   max_sens_spec      0.541         700        700    0.8   0.078<span style="text-decoration: underline;">7</span>    0.717</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> svm   max_sorensen       0.296         700        700    0.88  0.052<span style="text-decoration: underline;">6</span>    0.613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> svm   equal_sens_sp…     0.546         700        700    0.744 0.036<span style="text-decoration: underline;">6</span>    0.744</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> svm   max_sens_spec      0.550         700        700    0.787 0.092<span style="text-decoration: underline;">6</span>    0.736</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> svm   max_sorensen       0.307         700        700    0.881 0.033<span style="text-decoration: underline;">0</span>    0.624</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
@@ -229,21 +265,21 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 15 × 21</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    replica partition model threshold      thr_value n_presences n_absences   TPR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       1         svm   max_sorensen       0.511         140        140 0.793</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       1         svm   max_sens_spec      0.607         140        140 0.707</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       1         svm   equal_sens_sp…     0.557         140        140 0.757</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1       2         svm   max_sorensen       0.306         140        140 0.921</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1       2         svm   max_sens_spec      0.598         140        140 0.771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1       2         svm   equal_sens_sp…     0.603         140        140 0.757</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1       3         svm   max_sorensen       0.313         140        140 0.886</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1       3         svm   max_sens_spec      0.313         140        140 0.886</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 1       3         svm   equal_sens_sp…     0.520         140        140 0.671</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 1       4         svm   max_sorensen       0.309         140        140 0.921</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 1       4         svm   max_sens_spec      0.504         140        140 0.757</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 1       4         svm   equal_sens_sp…     0.495         140        140 0.757</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 1       5         svm   max_sorensen       0.434         140        140 0.879</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 1       5         svm   max_sens_spec      0.434         140        140 0.879</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 1       5         svm   equal_sens_sp…     0.573         140        140 0.75 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       1         svm   max_sorensen       0.467         140        140 0.907</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       1         svm   max_sens_spec      0.488         140        140 0.879</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       1         svm   equal_sens_sp…     0.559         140        140 0.771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1       2         svm   max_sorensen       0.365         140        140 0.907</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1       2         svm   max_sens_spec      0.531         140        140 0.786</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1       2         svm   equal_sens_sp…     0.539         140        140 0.779</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1       3         svm   max_sorensen       0.291         140        140 0.893</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1       3         svm   max_sens_spec      0.527         140        140 0.743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 1       3         svm   equal_sens_sp…     0.523         140        140 0.743</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 1       4         svm   max_sorensen       0.369         140        140 0.871</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> 1       4         svm   max_sens_spec      0.369         140        140 0.871</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> 1       4         svm   equal_sens_sp…     0.576         140        140 0.686</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 1       5         svm   max_sorensen       0.395         140        140 0.829</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 1       5         svm   max_sens_spec      0.631         140        140 0.657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 1       5         svm   equal_sens_sp…     0.503         140        140 0.743</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13 more variables: TNR &lt;dbl&gt;, W_TPR_TNR &lt;dbl&gt;, SORENSEN &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD &lt;dbl&gt;, FPB &lt;dbl&gt;, OR &lt;dbl&gt;, TSS &lt;dbl&gt;, KAPPA &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   AUC &lt;dbl&gt;, BOYCE &lt;dbl&gt;, CRPS &lt;dbl&gt;, IMAE &lt;dbl&gt;</span></span>
@@ -251,16 +287,16 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,400 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    rnames replicates part  pr_ab   pred</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1      .part      1     0     0.709 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5      .part      1     0     0.199 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 7      .part      1     0     0.089<span style="text-decoration: underline;">5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 9      .part      1     0     0.587 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 17     .part      1     0     0.561 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 20     .part      1     0     0.214 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 33     .part      1     0     0.153 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 41     .part      1     0     0.134 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 44     .part      1     0     0.478 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 45     .part      1     0     0.179 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2      .part      1     0     0.138 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 3      .part      1     0     0.146 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 13     .part      1     0     0.526 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 18     .part      1     0     0.096<span style="text-decoration: underline;">1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 21     .part      1     0     0.181 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 24     .part      1     0     0.827 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 29     .part      1     0     0.058<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 39     .part      1     0     0.838 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 42     .part      1     0     0.191 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 50     .part      1     0     0.066<span style="text-decoration: underline;">7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,390 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using bootstrap partition method and only with presence-absence</span></span></span>
@@ -320,6 +356,7 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Replica number: 10/10</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Partition number: 1/1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> line search fails -1.347888 0.1516195 1.093732e-05 -5.313894e-06 -6.990186e-08 3.298222e-08 -9.398032e-13</span>
 <span class="r-in"><span><span class="va">svm_t2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Support Vector Machine object of class "ksvm" </span>
@@ -328,12 +365,12 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-out co"><span class="r-pr">#&gt;</span>  parameter : cost C = 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Gaussian Radial Basis kernel function. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hyperparameter : sigma =  0.191996666477365 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hyperparameter : sigma =  0.19552750209237 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of Support Vectors : 904 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Objective Function Value : -773.0579 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Training error : 0.214286 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Objective Function Value : -771.0377 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Training error : 0.213571 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Probability model included. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $predictors</span>
@@ -346,9 +383,9 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 33</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> svm   equal_sens_sp…     0.536         700        700    0.766 0.015<span style="text-decoration: underline;">6</span>    0.766</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> svm   max_sens_spec      0.544         700        700    0.834 0.061<span style="text-decoration: underline;">2</span>    0.731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> svm   max_sorensen       0.286         700        700    0.890 0.023<span style="text-decoration: underline;">1</span>    0.671</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> svm   equal_sens_sp…     0.537         700        700    0.770 0.024<span style="text-decoration: underline;">3</span>    0.770</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> svm   max_sens_spec      0.563         700        700    0.803 0.063<span style="text-decoration: underline;">9</span>    0.769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> svm   max_sorensen       0.305         700        700    0.898 0.040<span style="text-decoration: underline;">9</span>    0.654</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 25 more variables: TNR_sd &lt;dbl&gt;, W_TPR_TNR_mean &lt;dbl&gt;, W_TPR_TNR_sd &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   SORENSEN_mean &lt;dbl&gt;, SORENSEN_sd &lt;dbl&gt;, JACCARD_mean &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD_sd &lt;dbl&gt;, FPB_mean &lt;dbl&gt;, FPB_sd &lt;dbl&gt;, OR_mean &lt;dbl&gt;, OR_sd &lt;dbl&gt;,</span></span>
@@ -361,16 +398,16 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 30 × 21</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    replica partition model threshold      thr_value n_presences n_absences   TPR</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       1         svm   max_sorensen       0.417         210        210 0.886</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       1         svm   max_sens_spec      0.417         210        210 0.886</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       1         svm   equal_sens_sp…     0.576         210        210 0.752</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2       1         svm   max_sorensen       0.344         210        210 0.938</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2       1         svm   max_sens_spec      0.555         210        210 0.748</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2       1         svm   equal_sens_sp…     0.512         210        210 0.776</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 3       1         svm   max_sorensen       0.445         210        210 0.9  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 3       1         svm   max_sens_spec      0.445         210        210 0.9  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 3       1         svm   equal_sens_sp…     0.604         210        210 0.752</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 4       1         svm   max_sorensen       0.353         210        210 0.890</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1       1         svm   max_sorensen       0.410         210        210 0.867</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1       1         svm   max_sens_spec      0.475         210        210 0.829</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1       1         svm   equal_sens_sp…     0.541         210        210 0.776</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2       1         svm   max_sorensen       0.454         210        210 0.886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2       1         svm   max_sens_spec      0.558         210        210 0.795</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2       1         svm   equal_sens_sp…     0.536         210        210 0.810</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 3       1         svm   max_sorensen       0.372         210        210 0.924</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 3       1         svm   max_sens_spec      0.442         210        210 0.862</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 3       1         svm   equal_sens_sp…     0.545         210        210 0.781</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 4       1         svm   max_sorensen       0.411         210        210 0.857</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 20 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13 more variables: TNR &lt;dbl&gt;, W_TPR_TNR &lt;dbl&gt;, SORENSEN &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   JACCARD &lt;dbl&gt;, FPB &lt;dbl&gt;, OR &lt;dbl&gt;, TSS &lt;dbl&gt;, KAPPA &lt;dbl&gt;, MCC &lt;dbl&gt;,</span></span>
@@ -378,20 +415,21 @@ Radial Basis kernel "Gaussian" function (rbfdot). See details details in <a href
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data_ens</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4,200 × 5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    rnames replicates part  pr_ab   pred</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 6      .part1     1     0     0.544 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 7      .part1     1     0     0.061<span style="text-decoration: underline;">7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 8      .part1     1     0     0.314 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 10     .part1     1     0     0.320 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 17     .part1     1     0     0.586 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 19     .part1     1     0     0.716 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 20     .part1     1     0     0.175 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 22     .part1     1     0     0.103 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 24     .part1     1     0     0.792 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 27     .part1     1     0     0.133 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    rnames replicates part  pr_ab  pred</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2      .part1     1     0     0.109</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 5      .part1     1     0     0.217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 8      .part1     1     0     0.428</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 10     .part1     1     0     0.252</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 11     .part1     1     0     0.278</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 12     .part1     1     0     0.348</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 13     .part1     1     0     0.366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 17     .part1     1     0     0.572</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 20     .part1     1     0     0.193</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 23     .part1     1     0     0.267</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4,190 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

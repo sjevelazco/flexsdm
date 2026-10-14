@@ -181,13 +181,13 @@ esm_toy$performance
 #> # A tibble: 7 × 33
 #>   model   threshold    thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr>   <chr>            <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 esm_gbm equal_sens_…     0.712          30         30    0.7   0.173     0.7  
-#> 2 esm_gbm lpt              0.371          30         30    1     0         0.667
-#> 3 esm_gbm max_fpb          0.371          30         30    1     0         0.667
-#> 4 esm_gbm max_jaccard      0.371          30         30    1     0         0.667
-#> 5 esm_gbm max_sens_sp…     0.371          30         30    1     0         0.667
-#> 6 esm_gbm max_sorensen     0.371          30         30    1     0         0.667
-#> 7 esm_gbm sensitivity      0.593          30         30    0.933 0.0577    0.667
+#> 1 esm_gbm equal_sens_…     0.706          30         30    0.833 0.153     0.833
+#> 2 esm_gbm lpt              0.324          30         30    1     0         0.833
+#> 3 esm_gbm max_fpb          0.324          30         30    1     0         0.833
+#> 4 esm_gbm max_jaccard      0.324          30         30    1     0         0.833
+#> 5 esm_gbm max_sens_sp…     0.324          30         30    1     0         0.833
+#> 6 esm_gbm max_sorensen     0.324          30         30    1     0         0.833
+#> 7 esm_gbm sensitivity      0.442          30         30    0.967 0.0577    0.833
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -199,15 +199,6 @@ esm_toy$performance
 # \donttest{
 data("abies")
 require(dplyr)
-#> Loading required package: dplyr
-#> 
-#> Attaching package: ‘dplyr’
-#> The following objects are masked from ‘package:stats’:
-#> 
-#>     filter, lag
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     intersect, setdiff, setequal, union
 
 # Using k-fold partition method
 set.seed(10)

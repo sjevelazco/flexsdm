@@ -168,7 +168,7 @@ glm_toy$performance
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 glm   max_sens_spec     0.493          30         30    0.867  0.153    0.733
+#> 1 glm   max_sens_spec     0.493          30         30      0.9      0    0.567
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -264,9 +264,9 @@ glm_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 glm   equal_sens_sp…     0.523         700        700    0.673 0.0155    0.673
-#> 2 glm   max_sens_spec      0.463         700        700    0.77  0.0702    0.617
-#> 3 glm   max_sorensen       0.356         700        700    0.921 0.0220    0.426
+#> 1 glm   equal_sens_sp…     0.523         700        700    0.671 0.0432    0.671
+#> 2 glm   max_sens_spec      0.463         700        700    0.756 0.0648    0.63 
+#> 3 glm   max_sorensen       0.356         700        700    0.904 0.0156    0.446
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -278,38 +278,38 @@ glm_t1$performance_part
 #> # A tibble: 15 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         glm   max_sorensen       0.256         140        140 0.95 
-#>  2 1       1         glm   max_sens_spec      0.516         140        140 0.693
-#>  3 1       1         glm   equal_sens_sp…     0.537         140        140 0.65 
-#>  4 1       2         glm   max_sorensen       0.357         140        140 0.929
-#>  5 1       2         glm   max_sens_spec      0.537         140        140 0.707
-#>  6 1       2         glm   equal_sens_sp…     0.546         140        140 0.679
-#>  7 1       3         glm   max_sorensen       0.395         140        140 0.907
-#>  8 1       3         glm   max_sens_spec      0.482         140        140 0.771
-#>  9 1       3         glm   equal_sens_sp…     0.530         140        140 0.671
-#> 10 1       4         glm   max_sorensen       0.288         140        140 0.929
-#> 11 1       4         glm   max_sens_spec      0.421         140        140 0.829
-#> 12 1       4         glm   equal_sens_sp…     0.483         140        140 0.693
-#> 13 1       5         glm   max_sorensen       0.337         140        140 0.893
-#> 14 1       5         glm   max_sens_spec      0.388         140        140 0.85 
-#> 15 1       5         glm   equal_sens_sp…     0.512         140        140 0.671
+#>  1 1       1         glm   max_sorensen       0.345         140        140 0.9  
+#>  2 1       1         glm   max_sens_spec      0.482         140        140 0.743
+#>  3 1       1         glm   equal_sens_sp…     0.505         140        140 0.707
+#>  4 1       2         glm   max_sorensen       0.390         140        140 0.879
+#>  5 1       2         glm   max_sens_spec      0.544         140        140 0.714
+#>  6 1       2         glm   equal_sens_sp…     0.540         140        140 0.714
+#>  7 1       3         glm   max_sorensen       0.364         140        140 0.914
+#>  8 1       3         glm   max_sens_spec      0.516         140        140 0.757
+#>  9 1       3         glm   equal_sens_sp…     0.568         140        140 0.671
+#> 10 1       4         glm   max_sorensen       0.322         140        140 0.914
+#> 11 1       4         glm   max_sens_spec      0.481         140        140 0.7  
+#> 12 1       4         glm   equal_sens_sp…     0.492         140        140 0.657
+#> 13 1       5         glm   max_sorensen       0.317         140        140 0.914
+#> 14 1       5         glm   max_sens_spec      0.376         140        140 0.864
+#> 15 1       5         glm   equal_sens_sp…     0.530         140        140 0.607
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
 #> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 glm_t1$data_ens
 #> # A tibble: 1,400 × 5
-#>    rnames replicates part  pr_ab  pred
-#>    <chr>  <chr>      <chr> <dbl> <dbl>
-#>  1 4      .part      1         0 0.271
-#>  2 6      .part      1         0 0.219
-#>  3 7      .part      1         0 0.170
-#>  4 10     .part      1         0 0.582
-#>  5 16     .part      1         0 0.247
-#>  6 29     .part      1         0 0.641
-#>  7 30     .part      1         0 0.602
-#>  8 31     .part      1         0 0.408
-#>  9 39     .part      1         0 0.787
-#> 10 40     .part      1         0 0.675
+#>    rnames replicates part  pr_ab   pred
+#>    <chr>  <chr>      <chr> <dbl>  <dbl>
+#>  1 14     .part      1         0 0.0613
+#>  2 16     .part      1         0 0.293 
+#>  3 22     .part      1         0 0.133 
+#>  4 27     .part      1         0 0.183 
+#>  5 30     .part      1         0 0.523 
+#>  6 33     .part      1         0 0.593 
+#>  7 34     .part      1         0 0.293 
+#>  8 41     .part      1         0 0.244 
+#>  9 48     .part      1         0 0.163 
+#> 10 50     .part      1         0 0.327 
 #> # ℹ 1,390 more rows
 
 # Using second order polynomial terms and first-order interaction terms

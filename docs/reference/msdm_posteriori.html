@@ -217,7 +217,42 @@ Taxa in Madagascar with High-Resolution Planning Tools. Science, 320(5873),
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Toy data: small raster and records of one species to keep this example fast</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">somevar</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">somevar</span>, fact <span class="op">=</span> <span class="fl">6</span><span class="op">)</span> <span class="co"># coarser resolution</span></span></span>
+<span class="r-in"><span><span class="va">sp3</span> <span class="op">&lt;-</span> <span class="va">spp</span><span class="op">[</span><span class="va">spp</span><span class="op">$</span><span class="va">species</span> <span class="op">==</span> <span class="st">"sp3"</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">sp3</span> <span class="op">&lt;-</span> <span class="fu"><a href="sdm_extract.html">sdm_extract</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sp3</span>, x <span class="op">=</span> <span class="st">"x"</span>, y <span class="op">=</span> <span class="st">"y"</span>, env_layer <span class="op">=</span> <span class="va">somevar</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 20 rows were excluded from database because NAs were found</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Toy continuous suitability layer (rescaled to 0-1)</span></span></span>
+<span class="r-in"><span><span class="va">cont_suit</span> <span class="op">&lt;-</span> <span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">/</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/global.html" class="external-link">global</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="st">"max"</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cont_suit</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"suit"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Constrain the suitability with the minimum convex polygon of the presences</span></span></span>
+<span class="r-in"><span><span class="va">m_mcp</span> <span class="op">&lt;-</span> <span class="fu">msdm_posteriori</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  records <span class="op">=</span> <span class="va">sp3</span>,</span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"x"</span>,</span></span>
+<span class="r-in"><span>  y <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  pr_ab <span class="op">=</span> <span class="st">"pr_ab"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"mcp"</span>,</span></span>
+<span class="r-in"><span>  cont_suit <span class="op">=</span> <span class="va">cont_suit</span>,</span></span>
+<span class="r-in"><span>  thr <span class="op">=</span> <span class="st">"equal_sens_spec"</span>,</span></span>
+<span class="r-in"><span>  buffer <span class="op">=</span> <span class="cn">NULL</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m_mcp</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 93, 66, 2  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 11340, 11340  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       : msdm_cont, equal_sens_spec</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  :         0,           FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  :  0.484426,           FALSE</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spp"</span><span class="op">)</span></span></span>
@@ -351,6 +386,7 @@ Taxa in Madagascar with High-Resolution Planning Tools. Science, 320(5873),
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">m_obr</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="msdm_posteriori-6.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

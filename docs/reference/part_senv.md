@@ -161,6 +161,35 @@ and
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp1 <- spp[spp$species == "sp1", ][1:300, ]
+
+part_toy <- part_senv(
+  env_layer = somevar,
+  data = sp1,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  min_n_groups = 2,
+  max_n_groups = 3,
+  min_occ = 5,
+  prop = 0.2
+)
+#> 97 rows were excluded from database because NAs were found
+#> The following grid cell sizes will be tested:
+#> 2 | 3
+#> Searching best partition...
+part_toy$best_part_info
+#> # A tibble: 1 × 6
+#>   n_parition n_groups  sd_p  sd_a spa_auto env_sim
+#>        <int> <chr>    <dbl> <dbl>    <dbl>   <dbl>
+#> 1          1 2         12.7  47.4     0.26    486.
+
+# \donttest{
 require(terra)
 require(ggplot2)
 require(dplyr)
@@ -193,23 +222,23 @@ part1
 #> # A tibble: 945 × 4
 #>           x        y pr_ab .part
 #>       <dbl>    <dbl> <dbl> <int>
-#>  1   -5541. -145138.     0     5
-#>  2  -51981.   16322.     0     1
-#>  3 -269871.   69512.     1     2
-#>  4  -96261.  -32008.     0     1
-#>  5  269589. -566338.     0     5
-#>  6   29829. -328468.     0     5
-#>  7 -152691.  393782.     0     2
-#>  8 -195081.  253652.     0     2
-#>  9    -951. -277978.     0     5
-#> 10  145929. -271498.     0     5
+#>  1   -5541. -145138.     0     3
+#>  2  -51981.   16322.     0     4
+#>  3 -269871.   69512.     1     1
+#>  4  -96261.  -32008.     0     4
+#>  5  269589. -566338.     0     3
+#>  6   29829. -328468.     0     3
+#>  7 -152691.  393782.     0     1
+#>  8 -195081.  253652.     0     4
+#>  9    -951. -277978.     0     3
+#> 10  145929. -271498.     0     3
 #> # ℹ 935 more rows
 #> 
 #> $best_part_info
 #> # A tibble: 1 × 6
 #>   n_parition n_groups  sd_p  sd_a spa_auto env_sim
 #>        <int> <chr>    <dbl> <dbl>    <dbl>   <dbl>
-#> 1          4 5         32.7  83.7     0.58    403.
+#> 1          3 4         51.0  74.1    0.504    402.
 #> 
 
 ggplot(part1$part, aes(x, y, col = factor(.part))) +
@@ -224,4 +253,6 @@ ggplot(part1$part, aes(x, y, col = factor(.part))) +
 ggplot(part1$part, aes(x, y, col = factor(.part))) +
   geom_point(aes(shape = factor(pr_ab))) +
   facet_wrap(. ~ pr_ab)
+
+# }
 ```

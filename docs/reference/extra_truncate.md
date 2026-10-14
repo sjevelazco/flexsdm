@@ -95,8 +95,18 @@ suit_trunc <- extra_truncate(
   threshold = 50,
   trunc_value = 0
 )
-terra::plot(suit_trunc[[1]]) # one raster for each threshold value
-
+suit_trunc # one raster for each threshold value
+#> $`50`
+#> class       : SpatRaster
+#> size        : 93, 66, 1  (nrow, ncol, nlyr)
+#> resolution  : 11340, 11340  (x, y)
+#> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> name        : suit
+#> min value   :    0
+#> max value   :    1
+#> 
 
 # see more examples in extra_eval function
 ```

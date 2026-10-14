@@ -67,6 +67,15 @@
   [`cat()`](https://rdrr.io/r/base/cat.html) calls replaced by
   [`message()`](https://rdrr.io/r/base/message.html) or
   [`warning()`](https://rdrr.io/r/base/warning.html) (or removed)
+- Check time after the last CRAN incoming check (examples took 161 s and
+  tests 104 s on win-builder): the examples executed on CRAN are now
+  tiny toy examples without plotting (the full examples, with their
+  plots, are inside `\donttest{}`), test files that take more than a
+  fraction of a second are skipped as a whole on CRAN with
+  `skip_on_cran()` (they run when `NOT_CRAN=true`), and vignette `v04`
+  is now precomputed (source in
+  `vignettes/v04_Red_fir_example.Rmd.orig`)
+- `DESCRIPTION`: reworded “ensembling” in the Description field
 
 ## flexsdm 1.4.1
 

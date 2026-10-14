@@ -66,10 +66,37 @@ and values close to 0 represent low similarity (high distance).
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+somevar <- somevar[[1:2]] # two variables
+names(somevar) <- c("aet", "cwd")
+sp3 <- sdm_extract(data = sp3[sp3$pr_ab == 1, ], x = "x", y = "y", env_layer = somevar)
+#> 7 rows were excluded from database because NAs were found
+
+# Environmental distance between presences and the projection data
+envdist <- map_env_dist(
+  training_data = sp3,
+  projection_data = somevar,
+  metric = "euclidean"
+)
+envdist
+#> class       : SpatRaster
+#> size        : 93, 66, 1  (nrow, ncol, nlyr)
+#> resolution  : 11340, 11340  (x, y)
+#> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> name        : euclidean
+#> min value   :         0
+#> max value   :         1
+
+# \donttest{
 require(dplyr)
 require(terra)
 require(ggplot2)
-#> Loading required package: ggplot2
 data(spp)
 f <- system.file("external/somevar.tif", package = "flexsdm")
 somevar <- terra::rast(f)
@@ -187,4 +214,6 @@ p_extra(
 ) +
   labs(title = "Mahalanobis")
 #> Number of cell used to plot 58242 (80%)
+
+# }
 ```

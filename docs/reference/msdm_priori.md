@@ -121,6 +121,33 @@ If used one these constraining method cite Mendes et al 2020.
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+occ <- sp3[sp3$pr_ab == 1, ]
+
+# Spatial constraint based on the coordinates of the records
+m_xy <- msdm_priori(
+  data = occ,
+  x = "x",
+  y = "y",
+  method = "xy",
+  env_layer = somevar[[1]]
+)
+m_xy
+#> class       : SpatRaster
+#> size        : 93, 66, 2  (nrow, ncol, nlyr)
+#> resolution  : 11340, 11340  (x, y)
+#> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> names       :       msdm_lon,       msdm_lat
+#> min values  : -356675.836354, -587803.334189
+#> max values  :  335064.163646,  432796.665811
+
+# \donttest{
 require(dplyr)
 require(terra)
 
@@ -188,4 +215,5 @@ m_ker <- msdm_priori(
 plot(m_ker)
 points(occ %>% dplyr::select(x, y), col = "red", pch = 16)
 
+# }
 ```

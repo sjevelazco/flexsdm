@@ -63,7 +63,9 @@ buffer around presences (shown in the figure below).
 [`plot`](https://rspatial.github.io/terra/reference/plot.html)`(`[`crop`](https://rspatial.github.io/terra/reference/crop.html)`(``ca``, ``layer1``)``, add ``=`` ``TRUE``)`\
 [`points`](https://rspatial.github.io/terra/reference/lines.html)`(``abies_p``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"#00000480"``)`
 
-![](v04_Red_fir_example_files/figure-html/raw%20data-1.png)
+![plot_of_chunk_raw_data](figures/v04-raw_data-1.png)
+
+plot_of_chunk_raw_data
 
 ### Occurrence filtering
 
@@ -101,7 +103,9 @@ display the resulting filtered occurrence data
 [`points`](https://rspatial.github.io/terra/reference/lines.html)`(``abies_p``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"#00000480"``)`\
 [`points`](https://rspatial.github.io/terra/reference/lines.html)`(``abies_pf``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``"#5DC86180"``)`
 
-![](v04_Red_fir_example_files/figure-html/occurrence%20filtering-1.png)
+![plot_of_chunk_occurrence_filtering](figures/v04-occurrence_filtering-1.png)
+
+plot_of_chunk_occurrence_filtering
 
 ### Block partition with 4 folds
 
@@ -149,7 +153,9 @@ partitions using the spatial block method.
 [`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``block_layer``, col ``=`` ``cl``, legend ``=`` ``FALSE``, axes ``=`` ``FALSE``)`\
 [`points`](https://rspatial.github.io/terra/reference/lines.html)`(``abies_pf``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``)`
 
-![](v04_Red_fir_example_files/figure-html/block%20partition-1.png)
+![plot_of_chunk_block_partition](figures/v04-block_partition-1.png)
+
+plot_of_chunk_block_partition
 
 \
 \
@@ -158,20 +164,20 @@ partitions using the spatial block method.
 `abies_pf`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
 `  ``dplyr``::`[`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)`(``.part``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
 `  ``dplyr``::`[`count`](https://dplyr.tidyverse.org/reference/count.html)`(``)`\
-`#> ``# A tibble: 4 × 2`\
-`#> ``# Groups:   .part [4]`\
+`#> # A tibble: 4 × 2`\
+`#> # Groups:   .part [4]`\
 `#>   .part     n`\
-`#>   ``<int>`` ``<int>`\
-`#> ``1``     1    32`\
-`#> ``2``     2    13`\
-`#> ``3``     3    35`\
-`#> ``4``     4    14`\
+`#>   <int> <int>`\
+`#> 1     1    32`\
+`#> 2     2    13`\
+`#> 3     3    35`\
+`#> 4     4    14`\
 `# Additional information of the best block`\
 `occ_part``$``best_part_info`\
-`#> ``# A tibble: 1 × 5`\
+`#> # A tibble: 1 × 5`\
 `#>   n_grid cell_size spa_auto env_sim  sd_p`\
-`#>    ``<int>``     ``<dbl>``    ``<dbl>``   ``<dbl>`` ``<dbl>`\
-`#> ``1``      7    ``295``260    0.409    188.  11.6`
+`#>    <int>     <dbl>    <dbl>   <dbl> <dbl>`\
+`#> 1      7    295260    0.409    188.  11.6`
 
 ### Pseudo-absence/background points (using partition previously created as a mask)
 
@@ -221,42 +227,44 @@ pseudo-absence and background points.
 [`points`](https://rspatial.github.io/terra/reference/lines.html)`(``bg``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, col ``=`` ``cl``[``bg``$``.part``]``, cex ``=`` ``0.8``)`` ``# Background points`\
 [`points`](https://rspatial.github.io/terra/reference/lines.html)`(``psa``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``]``, bg ``=`` ``cl``[``psa``$``.part``]``, cex ``=`` ``0.8``, pch ``=`` ``21``)`` ``# Pseudo-absences`
 
-![](v04_Red_fir_example_files/figure-html/pseudo-absence%20and%20background%20data-1.png)
+![plot_of_chunk_pseudo-absence_and_background_data](figures/v04-pseudo-absence_and_background_data-1.png)
+
+plot_of_chunk_pseudo-absence_and_background_data
 
 \
 \
 `# Bind a presences and pseudo-absences`\
 `abies_pa`` ``<-`` `[`bind_rows`](https://dplyr.tidyverse.org/reference/bind_rows.html)`(``abies_pf``, ``psa``)`\
 `abies_pa`` ``# Presence-Pseudo-absence database`\
-`#> ``# A tibble: 188 × 4`\
+`#> # A tibble: 188 × 4`\
 `#>           x        y pr_ab .part`\
-`#>       ``<dbl>``    ``<dbl>`` ``<dbl>`` ``<dbl>`\
-`#> `` 1``  -``12``558.``   ``68``530.     1     3`\
-`#> `` 2``  ``115``217. -``145``937.``     1     1`\
-`#> `` 3``    ``3``634.   ``22``501.     1     3`\
-`#> `` 4``   ``44``972.  -``60``781.``     1     1`\
-`#> `` 5``  -``34``463.``  ``160``313.     1     3`\
-`#> `` 6``   ``83``108.  -``27``300.``     1     1`\
-`#> `` 7``  ``118``707. -``179``991.``     1     1`\
-`#> `` 8``  -``49``722.``  ``141``124.     1     3`\
-`#> `` 9``   ``46``612.  -``59``242.``     1     1`\
-`#> ``10`` -``119``068.``  ``279``241.     1     2`\
-`#> ``# ℹ 178 more rows`\
+`#>       <dbl>    <dbl> <dbl> <dbl>`\
+`#>  1  -12558.   68530.     1     3`\
+`#>  2  115217. -145937.     1     1`\
+`#>  3    3634.   22501.     1     3`\
+`#>  4   44972.  -60781.     1     1`\
+`#>  5  -34463.  160313.     1     3`\
+`#>  6   83108.  -27300.     1     1`\
+`#>  7  118707. -179991.     1     1`\
+`#>  8  -49722.  141124.     1     3`\
+`#>  9   46612.  -59242.     1     1`\
+`#> 10 -119068.  279241.     1     2`\
+`#> # ℹ 178 more rows`\
 `bg`` ``# Background points`\
-`#> ``# A tibble: 940 × 4`\
+`#> # A tibble: 940 × 4`\
 `#>          x        y pr_ab .part`\
-`#>      ``<dbl>``    ``<dbl>`` ``<dbl>`` ``<dbl>`\
-`#> `` 1``  ``46``839.  -``23``638.``     0     1`\
-`#> `` 2`` -``34``431.``  -``89``788.``     0     1`\
-`#> `` 3``  ``92``199. -``256``108.``     0     1`\
-`#> `` 4`` ``118``659. -``282``568.``     0     1`\
-`#> `` 5`` ``122``439. -``123``808.``     0     1`\
-`#> `` 6`` -``60``891.``  -``50``098.``     0     1`\
-`#> `` 7``  ``20``379.  -``46``318.``     0     1`\
-`#> `` 8`` ``158``349. -``165``388.``     0     1`\
-`#> `` 9`` ``133``779. -``259``888.``     0     1`\
-`#> ``10``  ``50``619. -``218``308.``     0     1`\
-`#> ``# ℹ 930 more rows`
+`#>      <dbl>    <dbl> <dbl> <dbl>`\
+`#>  1  46839.  -23638.     0     1`\
+`#>  2 -34431.  -89788.     0     1`\
+`#>  3  92199. -256108.     0     1`\
+`#>  4 118659. -282568.     0     1`\
+`#>  5 122439. -123808.     0     1`\
+`#>  6 -60891.  -50098.     0     1`\
+`#>  7  20379.  -46318.     0     1`\
+`#>  8 158349. -165388.     0     1`\
+`#>  9 133779. -259888.     0     1`\
+`#> 10  50619. -218308.     0     1`\
+`#> # ℹ 930 more rows`
 
 Extract environmental data for the presence-absence and background data
 . View the distributions of present points, pseudo-absence points, and
@@ -367,29 +375,34 @@ the weighted average of the three individual models. We used the same
 threshold values and performance metric that were implemented in the
 individual models.
 
-\
-`ens_m`` ``<-`` `[`fit_ensemble`](https://sjevelazco.github.io/flexsdm/reference/fit_ensemble.md)`(`\
-`  models ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``t_max``, ``f_gau``, ``f_glm``)``,`\
-`  ens_method ``=`` ``"meanw"``,`\
-`  thr ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"max_sens_spec"``, ``"equal_sens_spec"``, ``"max_sorensen"``)``,`\
-`  thr_model ``=`` ``"max_sens_spec"``,`\
-`  metric ``=`` ``"TSS"`\
-`)`\
-`#>   |                                                                              |                                                                      |   0%  |                                                                              |======================================================================| 100%`\
-`ens_m``$``performance`\
-`#> ``# A tibble: 3 × 33`\
-`#>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean`\
-`#>   ``<chr>`` ``<chr>``              ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>``    ``<dbl>`\
-`#> ``1`` meanw equal_sens_sp…     0.483          94         94    0.777 0.113     0.777`\
-`#> ``2`` meanw max_sens_spec      0.204          94         94    0.848 0.069``9``    0.764`\
-`#> ``3`` meanw max_sorensen       0.204          94         94    0.977 0.029``7``    0.594`\
-`#> ``# ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,`\
-`#> ``#   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,`\
-`#> ``#   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,`\
-`#> ``#   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,`\
-`#> ``#   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,`\
-`#> ``#   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,`\
-`#> ``#   IMAE_mean <dbl>, IMAE_sd <dbl>`
+``` r
+ens_m <- fit_ensemble(
+  models = list(t_max, f_gau, f_glm),
+  ens_method = "meanw",
+  thr = c("max_sens_spec", "equal_sens_spec", "max_sorensen"),
+  thr_model = "max_sens_spec",
+  metric = "TSS"
+)
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |======================================================================| 100%
+ens_m$performance
+#> # A tibble: 3 × 33
+#>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 meanw equal_sens_sp…     0.483          94         94    0.777 0.113     0.777
+#> 2 meanw max_sens_spec      0.204          94         94    0.848 0.0699    0.764
+#> 3 meanw max_sorensen       0.204          94         94    0.977 0.0297    0.594
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+```
 
 The output of *flexsdm* model objects allows you to easily compare
 metrics across models, such as AUC or TSS. For example, we can use the
@@ -398,26 +411,26 @@ sdm_summarize() function to merge model performance tables.
 \
 `model_perf`` ``<-`` `[`sdm_summarize`](https://sjevelazco.github.io/flexsdm/reference/sdm_summarize.md)`(`[`list`](https://rdrr.io/r/base/list.html)`(``t_max``, ``f_gau``, ``f_glm``, ``ens_m``)``)`\
 `model_perf`\
-`#> ``# A tibble: 10 × 36`\
+`#> # A tibble: 10 × 36`\
 `#>    model_ID model threshold     thr_value n_presences n_absences TPR_mean TPR_sd`\
-`#>       ``<int>`` ``<chr>`` ``<chr>``             ``<dbl>``       ``<int>``      ``<int>``    ``<dbl>``  ``<dbl>`\
-`#> `` 1``        1 max   max_sens_spec     0.408          94         94    0.884 0.104 `\
-`#> `` 2``        2 gau   equal_sens_s…     0.589          94         94    0.754 0.092``8`\
-`#> `` 3``        2 gau   max_sens_spec     0.553          94         94    0.848 0.069``9`\
-`#> `` 4``        2 gau   max_sorensen      0.553          94         94    0.906 0.077``9`\
-`#> `` 5``        3 glm   equal_sens_s…     0.595          94         94    0.724 0.103 `\
-`#> `` 6``        3 glm   max_sens_spec     0.578          94         94    0.818 0.159 `\
-`#> `` 7``        3 glm   max_sorensen      0.334          94         94    0.975 0.033``8`\
-`#> `` 8``        4 meanw equal_sens_s…     0.483          94         94    0.777 0.113 `\
-`#> `` 9``        4 meanw max_sens_spec     0.204          94         94    0.848 0.069``9`\
-`#> ``10``        4 meanw max_sorensen      0.204          94         94    0.977 0.029``7`\
-`#> ``# ℹ 28 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,`\
-`#> ``#   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,`\
-`#> ``#   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,`\
-`#> ``#   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,`\
-`#> ``#   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,`\
-`#> ``#   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,`\
-`#> ``#   IMAE_mean <dbl>, IMAE_sd <dbl>, regmult <dbl>, classes <fct>`
+`#>       <int> <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>`\
+`#>  1        1 max   max_sens_spec     0.408          94         94    0.884 0.104 `\
+`#>  2        2 gau   equal_sens_s…     0.589          94         94    0.754 0.0928`\
+`#>  3        2 gau   max_sens_spec     0.553          94         94    0.848 0.0699`\
+`#>  4        2 gau   max_sorensen      0.553          94         94    0.906 0.0779`\
+`#>  5        3 glm   equal_sens_s…     0.595          94         94    0.724 0.103 `\
+`#>  6        3 glm   max_sens_spec     0.578          94         94    0.818 0.159 `\
+`#>  7        3 glm   max_sorensen      0.334          94         94    0.975 0.0338`\
+`#>  8        4 meanw equal_sens_s…     0.483          94         94    0.777 0.113 `\
+`#>  9        4 meanw max_sens_spec     0.204          94         94    0.848 0.0699`\
+`#> 10        4 meanw max_sorensen      0.204          94         94    0.977 0.0297`\
+`#> # ℹ 28 more variables: TNR_mean <dbl>, TNR_sd <dbl>, W_TPR_TNR_mean <dbl>,`\
+`#> #   W_TPR_TNR_sd <dbl>, SORENSEN_mean <dbl>, SORENSEN_sd <dbl>,`\
+`#> #   JACCARD_mean <dbl>, JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>,`\
+`#> #   OR_mean <dbl>, OR_sd <dbl>, TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>,`\
+`#> #   KAPPA_sd <dbl>, MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,`\
+`#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,`\
+`#> #   IMAE_mean <dbl>, IMAE_sd <dbl>, regmult <dbl>, classes <fct>`
 
 ### Project the ensemble model
 
@@ -458,7 +471,9 @@ return a SpatRast with continuous suitability values above the threshold
 `)`\
 [`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``unconstrained``, col ``=`` ``cl``, legend ``=`` ``FALSE``, axes ``=`` ``FALSE``)`
 
-![](v04_Red_fir_example_files/figure-html/predict%20models-1.png)
+![plot_of_chunk_predict_models](figures/v04-predict_models-1.png)
+
+plot_of_chunk_predict_models
 
 ### Constrain the model with msdm_posterior
 
@@ -503,4 +518,6 @@ function are based on Mendes et al. (2020).
 `)`\
 [`plot`](https://rspatial.github.io/terra/reference/plot.html)`(``m_pres``[[``1``]``]``, col ``=`` ``cl``, legend ``=`` ``FALSE``, axes ``=`` ``FALSE``)`
 
-![](v04_Red_fir_example_files/figure-html/constrain%20with%20msdm-1.png)
+![plot_of_chunk_constrain_with_msdm](figures/v04-constrain_with_msdm-1.png)
+
+plot_of_chunk_constrain_with_msdm

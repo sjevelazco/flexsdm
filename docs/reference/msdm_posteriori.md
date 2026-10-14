@@ -205,6 +205,41 @@ If using one these constraining methods, cite Mendes et al (2020).
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sdm_extract(data = sp3, x = "x", y = "y", env_layer = somevar)
+#> 20 rows were excluded from database because NAs were found
+
+# Toy continuous suitability layer (rescaled to 0-1)
+cont_suit <- somevar[[1]] / terra::global(somevar[[1]], "max", na.rm = TRUE)[[1]]
+names(cont_suit) <- "suit"
+
+# Constrain the suitability with the minimum convex polygon of the presences
+m_mcp <- msdm_posteriori(
+  records = sp3,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  method = "mcp",
+  cont_suit = cont_suit,
+  thr = "equal_sens_spec",
+  buffer = NULL
+)
+m_mcp
+#> class       : SpatRaster
+#> size        : 93, 66, 2  (nrow, ncol, nlyr)
+#> resolution  : 11340, 11340  (x, y)
+#> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> names       : msdm_cont, equal_sens_spec
+#> min values  :         0,           FALSE
+#> max values  :  0.484426,           FALSE
+
+# \donttest{
 require(dplyr)
 require(terra)
 
@@ -339,4 +374,5 @@ m_obr <- msdm_posteriori(
 
 plot(m_obr)
 
+# }
 ```

@@ -207,7 +207,7 @@ max_toy$performance
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 max   max_sens_spec     0.392          30         30      0.9    0.1      0.9
+#> 1 max   max_sens_spec     0.392          30         30    0.867  0.115      0.9
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,

@@ -135,8 +135,18 @@ for further details about Shape metric, model truncation, and tools to explore m
 <span class="r-in"><span>  threshold <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>  trunc_value <span class="op">=</span> <span class="fl">0</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">suit_trunc</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="co"># one raster for each threshold value</span></span></span>
-<span class="r-plt img"><img src="extra_truncate-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">suit_trunc</span> <span class="co"># one raster for each threshold value</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`50`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 93, 66, 1  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 11340, 11340  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> name        : suit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min value   :    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max value   :    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># see more examples in extra_eval function</span></span></span>
 </code></pre></div>

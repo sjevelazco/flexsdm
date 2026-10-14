@@ -77,6 +77,9 @@
 <li>
 <code>occfilt_geo</code>: the <code>warn</code> option is restored when the function exits</li>
 <li>Gaussian process code used by <code><a href="../reference/fit_gau.html">fit_gau()</a></code> and <code><a href="../reference/esm_gau.html">esm_gau()</a></code>, <code><a href="../reference/fit_max.html">fit_max()</a></code> and <code><a href="../reference/tune_max.html">tune_max()</a></code>: <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code> calls replaced by <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> or <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> (or removed)</li>
+<li>Check time after the last CRAN incoming check (examples took 161 s and tests 104 s on win-builder): the examples executed on CRAN are now tiny toy examples without plotting (the full examples, with their plots, are inside <code>\donttest{}</code>), test files that take more than a fraction of a second are skipped as a whole on CRAN with <code>skip_on_cran()</code> (they run when <code>NOT_CRAN=true</code>), and vignette <code>v04</code> is now precomputed (source in <code>vignettes/v04_Red_fir_example.Rmd.orig</code>)</li>
+<li>
+<code>DESCRIPTION</code>: reworded “ensembling” in the Description field</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.4.1" id="flexsdm-141">flexsdm 1.4.1<a class="anchor" aria-label="anchor" href="#flexsdm-141"></a></h2>

@@ -160,7 +160,7 @@ raf_toy$performance
 #> # A tibble: 1 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 raf   max_sens_spec      0.66          30         30    0.933 0.0577      0.8
+#> 1 raf   max_sens_spec       0.7          30         30        1      0      0.8
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -226,10 +226,10 @@ rf_t1$model
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 2
 #> 
-#>         OOB estimate of  error rate: 17.43%
+#>         OOB estimate of  error rate: 17.57%
 #> Confusion matrix:
 #>     0   1 class.error
-#> 0 564 136   0.1942857
+#> 0 562 138   0.1971429
 #> 1 108 592   0.1542857
 rf_t1$predictors
 #> # A tibble: 1 × 6
@@ -240,9 +240,9 @@ rf_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 raf   equal_sens_sp…     0.438         700        700    0.834 0.0245    0.833
-#> 2 raf   max_sens_spec      0.462         700        700    0.866 0.0477    0.834
-#> 3 raf   max_sorensen       0.462         700        700    0.894 0.0376    0.799
+#> 1 raf   equal_sens_sp…     0.434         700        700    0.826 0.0268    0.827
+#> 2 raf   max_sens_spec      0.464         700        700    0.866 0.0458    0.821
+#> 3 raf   max_sorensen       0.464         700        700    0.901 0.0365    0.781
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -254,16 +254,16 @@ rf_t1$performance_part
 #> # A tibble: 30 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         raf   max_sorensen       0.48           70         70 0.871
-#>  2 1       1         raf   max_sens_spec      0.48           70         70 0.871
-#>  3 1       1         raf   equal_sens_sp…     0.502          70         70 0.829
-#>  4 1       2         raf   max_sorensen       0.322          70         70 0.914
-#>  5 1       2         raf   max_sens_spec      0.462          70         70 0.871
-#>  6 1       2         raf   equal_sens_sp…     0.544          70         70 0.814
-#>  7 1       3         raf   max_sorensen       0.374          70         70 0.914
-#>  8 1       3         raf   max_sens_spec      0.578          70         70 0.8  
-#>  9 1       3         raf   equal_sens_sp…     0.554          70         70 0.814
-#> 10 1       4         raf   max_sorensen       0.49           70         70 0.914
+#>  1 1       1         raf   max_sorensen       0.42           70         70 0.9  
+#>  2 1       1         raf   max_sens_spec      0.42           70         70 0.9  
+#>  3 1       1         raf   equal_sens_sp…     0.546          70         70 0.771
+#>  4 1       2         raf   max_sorensen       0.47           70         70 0.929
+#>  5 1       2         raf   max_sens_spec      0.558          70         70 0.829
+#>  6 1       2         raf   equal_sens_sp…     0.55           70         70 0.843
+#>  7 1       3         raf   max_sorensen       0.414          70         70 0.886
+#>  8 1       3         raf   max_sens_spec      0.47           70         70 0.829
+#>  9 1       3         raf   equal_sens_sp…     0.51           70         70 0.786
+#> 10 1       4         raf   max_sorensen       0.388          70         70 0.929
 #> # ℹ 20 more rows
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
@@ -272,16 +272,16 @@ rf_t1$data_ens
 #> # A tibble: 1,400 × 5
 #>    rnames replicates part  pr_ab  pred
 #>    <chr>  <chr>      <chr> <fct> <dbl>
-#>  1 2      .part      1     0     0.04 
-#>  2 6      .part      1     0     0.566
-#>  3 10     .part      1     0     0.186
-#>  4 12     .part      1     0     0.264
-#>  5 30     .part      1     0     0.206
-#>  6 35     .part      1     0     0.408
-#>  7 39     .part      1     0     0.812
-#>  8 47     .part      1     0     0.282
-#>  9 73     .part      1     0     0.17 
-#> 10 78     .part      1     0     0.666
+#>  1 1      .part      1     0     0.772
+#>  2 27     .part      1     0     0.184
+#>  3 56     .part      1     0     0.028
+#>  4 64     .part      1     0     0.648
+#>  5 71     .part      1     0     0.85 
+#>  6 82     .part      1     0     0.164
+#>  7 88     .part      1     0     0.206
+#>  8 91     .part      1     0     0.082
+#>  9 96     .part      1     0     0.314
+#> 10 97     .part      1     0     0.082
 #> # ℹ 1,390 more rows
 
 # Using bootstrap partition method and only with presence-absence
@@ -352,11 +352,11 @@ rf_t2
 #>                      Number of trees: 500
 #> No. of variables tried at each split: 2
 #> 
-#>         OOB estimate of  error rate: 17.79%
+#>         OOB estimate of  error rate: 17.29%
 #> Confusion matrix:
 #>     0   1 class.error
-#> 0 559 141   0.2014286
-#> 1 108 592   0.1542857
+#> 0 561 139   0.1985714
+#> 1 103 597   0.1471429
 #> 
 #> $predictors
 #> # A tibble: 1 × 6
@@ -368,9 +368,9 @@ rf_t2
 #> # A tibble: 3 × 33
 #>   model threshold     thr_value n_presences n_absences TPR_mean  TPR_sd TNR_mean
 #>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>   <dbl>    <dbl>
-#> 1 raf   equal_sens_s…     0.448         700        700    0.934 0.00541    0.934
-#> 2 raf   max_sens_spec     0.536         700        700    0.946 0.0266     0.939
-#> 3 raf   max_sorensen      0.438         700        700    0.955 0.0227     0.930
+#> 1 raf   equal_sens_s…     0.452         700        700    0.934 0.00627    0.936
+#> 2 raf   max_sens_spec     0.548         700        700    0.948 0.0208     0.935
+#> 3 raf   max_sorensen      0.49          700        700    0.957 0.0201     0.926
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -383,16 +383,16 @@ rf_t2
 #> # A tibble: 30 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         raf   max_sorensen       0.564         210        210 0.924
-#>  2 1       1         raf   max_sens_spec      0.58          210        210 0.919
-#>  3 1       1         raf   equal_sens_sp…     0.512         210        210 0.933
-#>  4 2       1         raf   max_sorensen       0.522         210        210 0.933
-#>  5 2       1         raf   max_sens_spec      0.522         210        210 0.933
-#>  6 2       1         raf   equal_sens_sp…     0.504         210        210 0.933
-#>  7 3       1         raf   max_sorensen       0.492         210        210 0.967
-#>  8 3       1         raf   max_sens_spec      0.492         210        210 0.967
-#>  9 3       1         raf   equal_sens_sp…     0.544         210        210 0.938
-#> 10 4       1         raf   max_sorensen       0.486         210        210 0.981
+#>  1 1       1         raf   max_sorensen       0.454         210        210 0.929
+#>  2 1       1         raf   max_sens_spec      0.454         210        210 0.929
+#>  3 1       1         raf   equal_sens_sp…     0.454         210        210 0.929
+#>  4 2       1         raf   max_sorensen       0.416         210        210 0.952
+#>  5 2       1         raf   max_sens_spec      0.456         210        210 0.948
+#>  6 2       1         raf   equal_sens_sp…     0.46          210        210 0.938
+#>  7 3       1         raf   max_sorensen       0.418         210        210 0.976
+#>  8 3       1         raf   max_sens_spec      0.508         210        210 0.962
+#>  9 3       1         raf   equal_sens_sp…     0.56          210        210 0.948
+#> 10 4       1         raf   max_sorensen       0.376         210        210 0.981
 #> # ℹ 20 more rows
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
@@ -403,15 +403,15 @@ rf_t2
 #>    rnames replicates part  pr_ab  pred
 #>    <chr>  <chr>      <chr> <fct> <dbl>
 #>  1 2      .part1     1     0     0.02 
-#>  2 3      .part1     1     0     0.018
-#>  3 4      .part1     1     0     0.046
-#>  4 15     .part1     1     0     0.102
-#>  5 17     .part1     1     0     0.182
-#>  6 18     .part1     1     0     0.01 
-#>  7 20     .part1     1     0     0.154
-#>  8 28     .part1     1     0     0.392
-#>  9 32     .part1     1     0     0.04 
-#> 10 39     .part1     1     0     0.314
+#>  2 8      .part1     1     0     0.176
+#>  3 11     .part1     1     0     0.398
+#>  4 17     .part1     1     0     0.134
+#>  5 20     .part1     1     0     0.142
+#>  6 22     .part1     1     0     0.022
+#>  7 25     .part1     1     0     0.142
+#>  8 27     .part1     1     0     0.034
+#>  9 30     .part1     1     0     0.11 
+#> 10 31     .part1     1     0     0.196
 #> # ℹ 4,190 more rows
 #> 
 # }

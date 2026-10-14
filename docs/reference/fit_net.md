@@ -134,6 +134,44 @@ and
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+net_toy <- fit_net(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec",
+  size = 2,
+  decay = 1
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+net_toy$performance
+#> # A tibble: 1 × 33
+#>   model threshold     thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>             <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 net   max_sens_spec     0.515          30         30      0.3    0.1    0.933
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
+# \donttest{
 data("abies")
 
 # Using k-fold partition method
@@ -196,9 +234,9 @@ nnet_t1$performance
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 net   equal_sens_sp…     0.505         700        700    0.671 0.0243    0.671
-#> 2 net   max_sens_spec      0.518         700        700    0.813 0.0951    0.591
-#> 3 net   max_sorensen       0.438         700        700    0.919 0.0700    0.449
+#> 1 net   equal_sens_sp…     0.541         700        700    0.664 0.0814    0.664
+#> 2 net   max_sens_spec      0.587         700        700    0.787 0.110     0.634
+#> 3 net   max_sorensen       0.322         700        700    0.883 0.0652    0.517
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -210,34 +248,34 @@ nnet_t1$performance_part
 #> # A tibble: 30 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         net   max_sorensen       0.309          70         70 0.943
-#>  2 1       1         net   max_sens_spec      0.481          70         70 0.729
-#>  3 1       1         net   equal_sens_sp…     0.511          70         70 0.657
-#>  4 1       2         net   max_sorensen       0.325          70         70 0.929
-#>  5 1       2         net   max_sens_spec      0.371          70         70 0.886
-#>  6 1       2         net   equal_sens_sp…     0.531          70         70 0.657
-#>  7 1       3         net   max_sorensen       0.251          70         70 0.914
-#>  8 1       3         net   max_sens_spec      0.387          70         70 0.8  
-#>  9 1       3         net   equal_sens_sp…     0.529          70         70 0.643
-#> 10 1       4         net   max_sorensen       0.392          70         70 0.943
+#>  1 1       1         net   max_sorensen       0.348          70         70 0.9  
+#>  2 1       1         net   max_sens_spec      0.504          70         70 0.743
+#>  3 1       1         net   equal_sens_sp…     0.519          70         70 0.729
+#>  4 1       2         net   max_sorensen       0.288          70         70 0.943
+#>  5 1       2         net   max_sens_spec      0.561          70         70 0.757
+#>  6 1       2         net   equal_sens_sp…     0.626          70         70 0.629
+#>  7 1       3         net   max_sorensen       0.334          70         70 0.957
+#>  8 1       3         net   max_sens_spec      0.334          70         70 0.957
+#>  9 1       3         net   equal_sens_sp…     0.485          70         70 0.657
+#> 10 1       4         net   max_sorensen       0.508          70         70 0.8  
 #> # ℹ 20 more rows
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
 #> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 nnet_t1$data_ens
 #> # A tibble: 1,400 × 5
-#>    rnames replicates part  pr_ab   pred
-#>    <chr>  <chr>      <chr> <fct>  <dbl>
-#>  1 8      .part      1     0     0.137 
-#>  2 9      .part      1     0     0.478 
-#>  3 15     .part      1     0     0.540 
-#>  4 18     .part      1     0     0.415 
-#>  5 20     .part      1     0     0.188 
-#>  6 23     .part      1     0     0.410 
-#>  7 33     .part      1     0     0.553 
-#>  8 40     .part      1     0     0.627 
-#>  9 64     .part      1     0     0.835 
-#> 10 69     .part      1     0     0.0782
+#>    rnames replicates part  pr_ab  pred
+#>    <chr>  <chr>      <chr> <fct> <dbl>
+#>  1 31     .part      1     0     0.504
+#>  2 40     .part      1     0     0.676
+#>  3 53     .part      1     0     0.761
+#>  4 62     .part      1     0     0.246
+#>  5 77     .part      1     0     0.177
+#>  6 93     .part      1     0     0.333
+#>  7 103    .part      1     0     0.467
+#>  8 106    .part      1     0     0.440
+#>  9 116    .part      1     0     0.300
+#> 10 117    .part      1     0     0.105
 #> # ℹ 1,390 more rows
 
 # Using bootstrap partition method and only with presence-absence
@@ -314,9 +352,9 @@ nnet_t2
 #> # A tibble: 3 × 33
 #>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
 #>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
-#> 1 net   equal_sens_sp…     0.502         700        700    0.688 0.0867    0.688
-#> 2 net   max_sens_spec      0.507         700        700    0.721 0.127     0.709
-#> 3 net   max_sorensen       0.451         700        700    0.891 0.0530    0.498
+#> 1 net   equal_sens_sp…     0.505         700        700    0.674 0.100     0.674
+#> 2 net   max_sens_spec      0.525         700        700    0.817 0.0783    0.594
+#> 3 net   max_sorensen       0.439         700        700    0.904 0.0597    0.475
 #> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
 #> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
 #> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
@@ -329,16 +367,16 @@ nnet_t2
 #> # A tibble: 30 × 21
 #>    replica partition model threshold      thr_value n_presences n_absences   TPR
 #>    <chr>   <chr>     <chr> <chr>              <dbl>       <int>      <int> <dbl>
-#>  1 1       1         net   max_sorensen       0.458         210        210 0.814
-#>  2 1       1         net   max_sens_spec      0.458         210        210 0.814
-#>  3 1       1         net   equal_sens_sp…     0.504         210        210 0.776
-#>  4 2       1         net   max_sorensen       0.333         210        210 0.890
-#>  5 2       1         net   max_sens_spec      0.602         210        210 0.705
-#>  6 2       1         net   equal_sens_sp…     0.567         210        210 0.729
-#>  7 3       1         net   max_sorensen       0.360         210        210 0.905
-#>  8 3       1         net   max_sens_spec      0.497         210        210 0.795
-#>  9 3       1         net   equal_sens_sp…     0.547         210        210 0.690
-#> 10 4       1         net   max_sorensen       0.311         210        210 0.952
+#>  1 1       1         net   max_sorensen       0.435         210        210 0.857
+#>  2 1       1         net   max_sens_spec      0.453         210        210 0.838
+#>  3 1       1         net   equal_sens_sp…     0.521         210        210 0.762
+#>  4 2       1         net   max_sorensen       0.419         210        210 0.938
+#>  5 2       1         net   max_sens_spec      0.445         210        210 0.924
+#>  6 2       1         net   equal_sens_sp…     0.520         210        210 0.495
+#>  7 3       1         net   max_sorensen       0.364         210        210 0.924
+#>  8 3       1         net   max_sens_spec      0.481         210        210 0.795
+#>  9 3       1         net   equal_sens_sp…     0.530         210        210 0.681
+#> 10 4       1         net   max_sorensen       0.461         210        210 0.843
 #> # ℹ 20 more rows
 #> # ℹ 13 more variables: TNR <dbl>, W_TPR_TNR <dbl>, SORENSEN <dbl>,
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
@@ -348,16 +386,17 @@ nnet_t2
 #> # A tibble: 4,200 × 5
 #>    rnames replicates part  pr_ab   pred
 #>    <chr>  <chr>      <chr> <fct>  <dbl>
-#>  1 5      .part1     1     0     0.0907
-#>  2 13     .part1     1     0     0.773 
-#>  3 16     .part1     1     0     0.0630
-#>  4 18     .part1     1     0     0.149 
-#>  5 21     .part1     1     0     0.135 
-#>  6 28     .part1     1     0     0.432 
-#>  7 34     .part1     1     0     0.456 
-#>  8 41     .part1     1     0     0.0711
-#>  9 47     .part1     1     0     0.469 
-#> 10 48     .part1     1     0     0.230 
+#>  1 6      .part1     1     0     0.172 
+#>  2 15     .part1     1     0     0.355 
+#>  3 16     .part1     1     0     0.0538
+#>  4 20     .part1     1     0     0.0531
+#>  5 21     .part1     1     0     0.139 
+#>  6 28     .part1     1     0     0.457 
+#>  7 44     .part1     1     0     0.546 
+#>  8 47     .part1     1     0     0.375 
+#>  9 48     .part1     1     0     0.230 
+#> 10 52     .part1     1     0     0.756 
 #> # ℹ 4,190 more rows
 #> 
+# }
 ```

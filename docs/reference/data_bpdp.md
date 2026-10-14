@@ -77,6 +77,55 @@ A list with two tibbles "pdpdata" and "resid".
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + I(aet^2) + I(cwd^2) + I(tmin^2)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+
+bpdp_toy <- data_bpdp(
+  model = glm_toy$model,
+  predictors = c("aet", "cwd"),
+  resolution = 10,
+  training_boundaries = "rectangle",
+  training_data = abies_toy
+)
+names(bpdp_toy)
+#> [1] "pspdata"             "training_boundaries"
+bpdp_toy$pspdata
+#> # A tibble: 100 × 3
+#>      aet   cwd Suitability
+#>    <dbl> <dbl>       <dbl>
+#>  1  164.  170.       0.985
+#>  2  210.  170.       0.979
+#>  3  257.  170.       0.973
+#>  4  303.  170.       0.967
+#>  5  349.  170.       0.962
+#>  6  395.  170.       0.959
+#>  7  441.  170.       0.958
+#>  8  487.  170.       0.959
+#>  9  533.  170.       0.962
+#> 10  579.  170.       0.967
+#> # ℹ 90 more rows
+
+# \donttest{
 library(terra)
 library(dplyr)
 
@@ -130,16 +179,16 @@ df
 #> # A tibble: 2,500 × 3
 #>      aet   cwd Suitability
 #>    <dbl> <dbl>       <dbl>
-#>  1   0   -9.39      0.155 
-#>  2  27.7 -9.39      0.148 
-#>  3  55.4 -9.39      0.136 
-#>  4  83.1 -9.39      0.119 
-#>  5 111.  -9.39      0.0994
-#>  6 139.  -9.39      0.0787
-#>  7 166.  -9.39      0.0601
-#>  8 194.  -9.39      0.0453
-#>  9 222.  -9.39      0.0347
-#> 10 249.  -9.39      0.0280
+#>  1   0   -9.39      0.157 
+#>  2  27.7 -9.39      0.151 
+#>  3  55.4 -9.39      0.140 
+#>  4  83.1 -9.39      0.124 
+#>  5 111.  -9.39      0.105 
+#>  6 139.  -9.39      0.0841
+#>  7 166.  -9.39      0.0650
+#>  8 194.  -9.39      0.0495
+#>  9 222.  -9.39      0.0382
+#> 10 249.  -9.39      0.0309
 #> # ℹ 2,490 more rows
 #> 
 #> $training_boundaries
@@ -157,16 +206,16 @@ df$pspdata
 #> # A tibble: 2,500 × 3
 #>      aet   cwd Suitability
 #>    <dbl> <dbl>       <dbl>
-#>  1   0   -9.39      0.155 
-#>  2  27.7 -9.39      0.148 
-#>  3  55.4 -9.39      0.136 
-#>  4  83.1 -9.39      0.119 
-#>  5 111.  -9.39      0.0994
-#>  6 139.  -9.39      0.0787
-#>  7 166.  -9.39      0.0601
-#>  8 194.  -9.39      0.0453
-#>  9 222.  -9.39      0.0347
-#> 10 249.  -9.39      0.0280
+#>  1   0   -9.39      0.157 
+#>  2  27.7 -9.39      0.151 
+#>  3  55.4 -9.39      0.140 
+#>  4  83.1 -9.39      0.124 
+#>  5 111.  -9.39      0.105 
+#>  6 139.  -9.39      0.0841
+#>  7 166.  -9.39      0.0650
+#>  8 194.  -9.39      0.0495
+#>  9 222.  -9.39      0.0382
+#> 10 249.  -9.39      0.0309
 #> # ℹ 2,490 more rows
 df$training_boundaries
 #> # A tibble: 4 × 2
@@ -178,4 +227,5 @@ df$training_boundaries
 #> 4 1201. 10.5 
 
 # see p_bpdp to construct partial dependence plot with ggplot2
+# }
 ```

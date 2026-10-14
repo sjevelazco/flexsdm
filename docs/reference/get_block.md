@@ -35,6 +35,45 @@ variables
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+
+sp_part <- part_sblock(
+  env_layer = somevar,
+  data = sp3,
+  x = "x",
+  y = "y",
+  pr_ab = "pr_ab",
+  min_res_mult = 10,
+  max_res_mult = 40,
+  num_grids = 3,
+  n_part = 2,
+  min_occ = 2,
+  prop = 0.5
+)
+#> 20 rows were excluded from database because NAs were found
+#> The following grid cell sizes will be tested:
+#> 113400 | 283500 | 453600
+#> Creating basic raster mask...
+#> Searching for the optimal grid size...
+
+# Block layer with the same properties as the environmental variables
+block_layer <- get_block(env_layer = somevar, best_grid = sp_part$grid)
+block_layer
+#> class       : SpatRaster
+#> size        : 93, 66, 1  (nrow, ncol, nlyr)
+#> resolution  : 11340, 11340  (x, y)
+#> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)
+#> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs
+#> source(s)   : memory
+#> name        : .part
+#> min value   :     1
+#> max value   :     2
+
+# \donttest{
 require(dplyr)
 require(terra)
 data(spp)
@@ -88,4 +127,6 @@ part$grid
 plot(part$grid)
 
 plot(grid_env)
+
+# }
 ```

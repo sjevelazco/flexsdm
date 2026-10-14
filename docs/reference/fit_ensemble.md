@@ -118,6 +118,74 @@ A list object with:
 ## Examples
 
 ``` r
+# Toy data: a small subset of 'abies' to keep this example fast
+data("abies")
+abies_toy <- abies[c(1:30, 701:730), ]
+abies_toy <- part_random(
+  data = abies_toy,
+  pr_ab = "pr_ab",
+  method = c(method = "kfold", folds = 3)
+)
+
+glm_toy <- fit_glm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin + I(aet^2) + I(cwd^2) + I(tmin^2)
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+svm_toy <- fit_svm(
+  data = abies_toy,
+  response = "pr_ab",
+  predictors = c("aet", "cwd", "tmin"),
+  partition = ".part",
+  thr = "max_sens_spec"
+)
+#> Formula used for model fitting:
+#> pr_ab ~ aet + cwd + tmin
+#> Replica number: 1/1
+#> Partition number: 1/3
+#> Partition number: 2/3
+#> Partition number: 3/3
+
+ens_toy <- fit_ensemble(
+  models = list(glm_toy, svm_toy),
+  ens_method = "mean",
+  thr = NULL,
+  thr_model = "max_sens_spec",
+  metric = "TSS"
+)
+#> 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |======================================================================| 100%
+ens_toy$performance
+#> # A tibble: 7 × 33
+#>   model threshold      thr_value n_presences n_absences TPR_mean TPR_sd TNR_mean
+#>   <chr> <chr>              <dbl>       <int>      <int>    <dbl>  <dbl>    <dbl>
+#> 1 mean  equal_sens_sp…     0.601          30         30    0.8   0.2       0.8  
+#> 2 mean  lpt                0.204          30         30    1     0         0.667
+#> 3 mean  max_fpb            0.335          30         30    0.933 0.0577    0.8  
+#> 4 mean  max_jaccard        0.335          30         30    0.933 0.0577    0.8  
+#> 5 mean  max_sens_spec      0.335          30         30    0.933 0.0577    0.8  
+#> 6 mean  max_sorensen       0.335          30         30    0.933 0.0577    0.8  
+#> 7 mean  sensitivity        0.439          30         30    0.9   0         0.8  
+#> # ℹ 25 more variables: TNR_sd <dbl>, W_TPR_TNR_mean <dbl>, W_TPR_TNR_sd <dbl>,
+#> #   SORENSEN_mean <dbl>, SORENSEN_sd <dbl>, JACCARD_mean <dbl>,
+#> #   JACCARD_sd <dbl>, FPB_mean <dbl>, FPB_sd <dbl>, OR_mean <dbl>, OR_sd <dbl>,
+#> #   TSS_mean <dbl>, TSS_sd <dbl>, KAPPA_mean <dbl>, KAPPA_sd <dbl>,
+#> #   MCC_mean <dbl>, MCC_sd <dbl>, AUC_mean <dbl>, AUC_sd <dbl>,
+#> #   BOYCE_mean <dbl>, BOYCE_sd <dbl>, CRPS_mean <dbl>, CRPS_sd <dbl>,
+#> #   IMAE_mean <dbl>, IMAE_sd <dbl>
+
+# \donttest{
 require(dplyr)
 require(terra)
 
@@ -351,4 +419,5 @@ mensemble
 #> #   JACCARD <dbl>, FPB <dbl>, OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>,
 #> #   AUC <dbl>, BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
 #> 
+# }
 ```

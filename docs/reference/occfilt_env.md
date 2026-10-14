@@ -103,6 +103,33 @@ it is implemented in
 ## Examples
 
 ``` r
+# Toy data: small raster and records of one species to keep this example fast
+data("spp")
+somevar <- terra::rast(system.file("external/somevar.tif", package = "flexsdm"))
+somevar <- terra::aggregate(somevar, fact = 6) # coarser resolution
+sp3 <- spp[spp$species == "sp3", ]
+sp3 <- sp3[sp3$pr_ab == 1, ]
+sp3$idd <- seq_len(nrow(sp3)) # unique id of each record
+
+# Filter records using 5 bins in the environmental space
+filtered <- occfilt_env(
+  data = sp3,
+  x = "x",
+  y = "y",
+  id = "idd",
+  env_layer = somevar,
+  nbins = 5
+)
+#> Extracting values from raster ...
+#> 7 records were removed because they have NAs for some variables
+#> Number of unfiltered records: 6
+#> Number of filtered records: 6
+nrow(sp3)
+#> [1] 13
+nrow(filtered)
+#> [1] 6
+
+# \donttest{
 require(terra)
 require(dplyr)
 require(ggplot2)
@@ -261,4 +288,5 @@ occ_selected
 #> 5         12     0.3148755       173 0.3303609 0.1954697 0.3341799 0.3994914
 #> 6         14     0.3164815       188 0.3356296 0.2041360 0.3261358 0.4000245
 #> 
+# }
 ```

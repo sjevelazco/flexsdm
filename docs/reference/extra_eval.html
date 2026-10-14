@@ -164,19 +164,20 @@ Ecography: e06992. <a href="https://doi.org/10.1111/ecog.06992" class="external-
 <span class="r-in"><span>  projection_data <span class="op">=</span> <span class="va">somevar</span>,</span></span>
 <span class="r-in"><span>  metric <span class="op">=</span> <span class="st">"mahalanobis"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="extra_eval-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="va">extr</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 93, 66, 1  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 11340, 11340  (x, y)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> extent      : -373685.8, 374754.2, -604813.3, 449806.7  (xmin, xmax, ymin, ymax)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : +proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +datum=NAD83 +units=m +no_defs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> name        : extrapolation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min value   :             0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max value   :    873.865195</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: terra</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> terra 1.9.50</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘terra’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:testthat’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     compare, describe</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"external/somevar.tif"</span>, package <span class="op">=</span> <span class="st">"flexsdm"</span><span class="op">)</span></span></span>
@@ -200,7 +201,7 @@ Ecography: e06992. <a href="https://doi.org/10.1111/ecog.06992" class="external-
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">somevar</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/lines.html" class="external-link">points</a></span><span class="op">(</span><span class="va">sp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ca</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="extra_eval-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="extra_eval-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Sampling pseudo-absences</span></span></span>
@@ -268,7 +269,7 @@ Ecography: e06992. <a href="https://doi.org/10.1111/ecog.06992" class="external-
 <span class="r-in"><span>    metric <span class="op">=</span> <span class="st">"mahalanobis"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span>, main <span class="op">=</span> <span class="st">"Extrapolation pattern"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="extra_eval-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="extra_eval-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Let's fit, predict and truncate a model with extra_truncate</span></span></span>
@@ -315,14 +316,14 @@ Ecography: e06992. <a href="https://doi.org/10.1111/ecog.06992" class="external-
 <span class="r-out co"><span class="r-pr">#&gt;</span> max values  :        1,            1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="extra_eval-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="extra_eval-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Truncate a model based on a given value of extrapolation</span></span></span>
 <span class="r-in"><span><span class="co"># using 'extra_truncate' function</span></span></span>
 <span class="r-in"><span><span class="va">oldpar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span>, main <span class="op">=</span> <span class="st">"Extrapolation"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main <span class="op">=</span> <span class="st">"Suitability"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="extra_eval-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="extra_eval-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">oldpar</span><span class="op">)</span> <span class="co"># restore graphical parameters</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">predsuit_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="extra_truncate.html">extra_truncate</a></span><span class="op">(</span></span></span>
@@ -373,11 +374,11 @@ Ecography: e06992. <a href="https://doi.org/10.1111/ecog.06992" class="external-
 <span class="r-in"><span><span class="co"># different truncated at different extrapolation thresholds</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit_2</span><span class="op">$</span><span class="va">`50`</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="extra_eval-6.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="extra_eval-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit_2</span><span class="op">$</span><span class="va">`100`</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="extra_eval-7.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="extra_eval-6.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">predsuit_2</span><span class="op">$</span><span class="va">`200`</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="extra_eval-8.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="extra_eval-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## %######################################################%##</span></span></span>
@@ -438,7 +439,7 @@ Ecography: e06992. <a href="https://doi.org/10.1111/ecog.06992" class="external-
 <span class="r-out co"><span class="r-pr">#&gt;</span> min values  :             0,        1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> max values  :    961.063937,        2</span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">extr</span><span class="op">)</span> <span class="co"># In the second layer, values equal to 1 and 2</span></span></span>
-<span class="r-plt img"><img src="extra_eval-9.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="extra_eval-8.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="co"># depict univariate and combinatorial extrapolation, respectively</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
