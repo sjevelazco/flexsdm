@@ -33,189 +33,223 @@ Evolution, 13(8) 1661–1669. <https://doi.org/10.1111/2041-210X.13874>
 
 ------------------------------------------------------------------------
 
-*List updated automatically on 2026-09-23 (152 publications; source:
+*List updated automatically on 2026-10-28 (162 publications; source:
 OpenAlex).*
 
-## 2026 (n = 42)
+## 2026 (n = 50)
 
 1.  Anselmo, L., Caprio, E., Regaiolo, I., et al. (2026). From research
     to conservation: Site selection for habitat restoration of a
     narrowly distributed and critically endangered butterfly.
     *Conservation Science and Practice*, 8(8).
     <https://doi.org/10.1111/csp2.70343>
-2.  Barbosa, R.V., Schuster, J., Godwin, S., et al. (2026). Substrate
-    limitation and environmental heterogeneity shape kelp habitat
-    distribution in a complex coastal landscape. *Marine Ecology
+2.  Backus, G.A., Rose, M.B., Velazco, S.J., et al. (2026). Substitute
+    oaks: Modeling human-assisted dispersal of climate-threatened
+    foundation species. *Biological Conservation*, 324, 112150.
+    <https://doi.org/10.1016/j.biocon.2026.112150>
+3.  Barbosa, R.V., Schuster, J.M., Godwin, S.C., et al. (2026).
+    Substrate limitation and environmental heterogeneity shape kelp
+    habitat distribution in a complex coastal landscape. *Marine Ecology
     Progress Series*, 793, 1–21. <https://doi.org/10.3354/meps15224>
-3.  Bedrij, N.A., Montti, L.F., Keller, H.A., et al. (2026). Beyond
+4.  Bedrij, N.A., Montti, L.F., Keller, H.A., et al. (2026). Beyond
     protected areas: The synergistic role of forest territorial planning
     in safeguarding tree diversity. *Biological Conservation*,
     321, 111982. <https://doi.org/10.1016/j.biocon.2026.111982>
-4.  Bomfim, F.D.S., Diele‐Viegas, L.M., Almeida, T.S., et al. (2026).
+5.  Bomfim, F.D.S., Diele‐Viegas, L.M., Almeida, T.S., et al. (2026).
     Predicting the future of the Caatinga endemic Melocactus
     pachyacanthus under climate and anthropogenic landscape changes.
     *Discover Ecology*, 2(1).
     <https://doi.org/10.1007/s44396-026-00042-z>
-5.  Buck, R.C., Butterfield, H.S., Hiroyasu, E.H.T., et al. (2026).
+6.  Buck, R.C., Butterfield, H.S., Hiroyasu, E.H.T., et al. (2026).
     Applying Both Landscape Genomic and Ecological Niche Model
     Predictions to Inform Conservation Strategies of a California
     Foundational Oak Species. *Molecular Ecology*, 35(7), e70322.
     <https://doi.org/10.1111/mec.70322>
-6.  Carvalho, R.G.G.D., Fraga, C.N., Moura, M.R., et al. (2026).
+7.  Carvalho, R.G.G.D., Fraga, C.N.D., Moura, M.R., et al. (2026).
     Environmental variation is related to morphotype differentiation in
     a Brunfelsia (Solanaceae) complex. *Annals of Botany*.
     <https://doi.org/10.1093/aob/mcag271>
-7.  Chávez-Hernández, M.G., Barreiro, P.G., White, J.D., et al. (2026).
+8.  Chávez-Hernández, M.G., Barreiro, P.G., White, J.D., et al. (2026).
     Prioritising native flora and geographic areas for ex situ
-    conservation in the Sonoran Desert. *Botanical Sciences*.
-    <https://doi.org/10.17129/botsci.3874>
-8.  Coelho, F.D.A., Amaro, G.C., Batista, A.C., et al. (2026).
+    conservation in the Sonoran Desert. *Botanical Sciences*, 104(4),
+    977–993. <https://doi.org/10.17129/botsci.3874>
+9.  Coelho, F.D.A., Amaro, G.C., Batista, A.C., et al. (2026).
     Predicting global habitat suitability and invasion risks of the red
     gum lerp psyllid Glycaspis brimblecombei under current and future
     climates. *Agricultural and Forest Entomology*.
     <https://doi.org/10.1111/afe.70076>
-9.  Copoț, O., Lõhmus, A. (2026). Assessment of multiple outcomes of
+10. Copoț, O., Lõhmus, A. (2026). Assessment of multiple outcomes of
     habitat models can significantly affect conservation decisions for
     threatened species. *Scientific Reports*, 16(1), 5860.
     <https://doi.org/10.1038/s41598-026-35987-4>
-10. Dajil, J.E., Block, C., Vega, L.E., et al. (2026). Vulnerability of
+11. Copoț, O., Runnel, K., Lõhmus, A. (2026). Where to improve the
+    European protected areas network to represent threatened fungi?
+    *iScience*, 29(11), 117758.
+    <https://doi.org/10.1016/j.isci.2026.117758>
+12. Dajil, J.E., Block, C., Vega, L.E., et al. (2026). Vulnerability of
     Pampean Coastal Lizards to Global Change: Divergent Responses of
     Endemic Specialists and Widespread Generalists. *Biology*,
     15(14), 1152. <https://doi.org/10.3390/biology15141152>
-11. Demır, M.A., Kabalak, M. (2026). Predicting habitat suitability of
+13. Demır, M.A., Kabalak, M. (2026). Predicting habitat suitability of
     selected Meloidae species and future potential refugia: A case study
     from inner Western Anatolia. *Insect Conservation and Diversity*,
     19(5), 1185–1202. <https://doi.org/10.1111/icad.70092>
-12. Eisawi, K.A.E., Rija, A.A. (2026). The influence of climate change
+14. Eisawi, K.A.E., Rija, A.A. (2026). The influence of climate change
     on bird distribution patterns and conservation priorities.
     *Environmental Research*, 308(Pt 1), 125552.
     <https://doi.org/10.1016/j.envres.2026.125552>
-13. Faggion, S., Marco, P.D., Machado-Filho, C., et al. (2026).
+15. Faggion, S., Júnior, P.D.M., Machado-Filho, C.H.G., et al. (2026).
     Protected areas may fail in maintaining suitable ranges of
     threatened species: A habitat-association approach for Brazilian
     Savanna bird species. *Basic and Applied Ecology*, 94, 34–43.
     <https://doi.org/10.1016/j.baae.2026.05.007>
-14. Ferreira, M.L., Oliveira, G.S.D., Andrade, A.M.D., et al. (2026).
+16. Ferreira, M.L., Oliveira, G.S.D., Andrade, A.M.D., et al. (2026).
     Modeling the current and future potential distribution of
     Leptoglossus zonatus (Hemiptera: Coreidae) under climate change
     scenarios. *International Journal of Tropical Insect Science*.
     <https://doi.org/10.1007/s42690-026-01997-y>
-15. Ferreiro, A.M., Poljak, S., Plum, L., et al. (2026). At the edge of
+17. Ferreiro, A.M., Poljak, S., Plum, L., et al. (2026). At the edge of
     the burrow: The mitochondrial genetic structure and range dynamics
     of the yellow armadillo Euphractus sexcinctus in southern South
     America. *Journal of Mammalian Evolution*, 33(1).
     <https://doi.org/10.1007/s10914-026-09812-8>
-16. Giri, S., Pradhan, P. (2026). Beyond the obvious: insights into the
+18. Fourcade, Y., Gabriac, Q., Dupont, L., et al. (2026). Niche overlap
+    between native and introduced earthworms in the tropical island of
+    Martinique. *Biodiversity and Conservation*, 35(12).
+    <https://doi.org/10.1007/s10531-026-03472-z>
+19. Giri, S., Pradhan, P. (2026). Beyond the obvious: insights into the
     diversity and ecological niche of the Myxomycetes in temperate
     forests of Eastern Himalaya. *Studies in Fungi*, 11(1), 0.
     <https://doi.org/10.48130/sif-0026-0007>
-17. hesabi, A., Alavi, S.J., Esmailzadeh, O. (2026). Machine learning
+20. Gordon, D., Lewison, R.L., Botta, R., et al. (2026). Sympatry
+    Increases Predation Risk for an Endangered Ungulate. *Ecology and
+    Evolution*, 16(8), e74160. <https://doi.org/10.1002/ece3.74160>
+21. hesabi, A., Alavi, S.J., Esmailzadeh, O. (2026). Machine learning
     meets ecology: XGBoost-based prediction of endangered species
     habitats using multi-source environmental data. *Environmental
     Monitoring and Assessment*, 198(8).
     <https://doi.org/10.1007/s10661-026-15694-3>
-18. Holcomb, K.M., Dunford, J.C., Connelly, C.R. (2026). Estimated
+22. Holcomb, K.M., Dunford, J.C., Connelly, C.R. (2026). Estimated
     suitability distribution for Culicoides (Haematomyidium) paraensis
     (Diptera: Ceratopogonidae) in the contiguous United States and
     associated Caribbean territories. *Journal of Medical Entomology*,
     63(2). <https://doi.org/10.1093/jme/tjag038>
-19. Huber, B.A., Meng, G., Král, J., et al. (2026). Ninetine spiders in
+23. Huber, B.A., Meng, G., Král, J., et al. (2026). Ninetine spiders in
     Brazilian Caatinga and Cerrado: revision of Kambiwa and description
     of Sertana gen. nov. (Araneae, Pholcidae), with analyses of
     predicted range shifts due to climate change. *European Journal of
     Taxonomy*, 1054. <https://doi.org/10.5852/ejt.2026.1054.3276>
-20. Issaly, E.A., Ferreiro, A.M., Baranzelli, M.C., et al. (2026).
+24. Issaly, A.E., Ferreiro, A.M., Baranzelli, M.C., et al. (2026).
     Climate-driven potential distribution of the invasive tree tobacco
     and its overlap with biodiversity conservation areas worldwide.
     *Perspectives in Ecology and Conservation*, 24(2), 175–181.
     <https://doi.org/10.1016/j.pecon.2026.02.002>
-21. Lima, M.D.C., Peres, C.A., Araujo, H.F.P. (2026). Endemic bird
+25. Lima, M.D.C., Peres, C.A., Araújo, H.F.P.D. (2026). Endemic bird
     species are far more threatened than previously thought across the
     semiarid Caatinga dry forest domain. *Biological Conservation*,
     315, 111690. <https://doi.org/10.1016/j.biocon.2025.111690>
-22. Liu, X., Jiang, X., Chen, C., et al. (2026). The invasive woodwasp
+26. Liu, X., Jiang, X., Chen, C., et al. (2026). The invasive woodwasp
     Sirex noctilio Fabricius threatens pine forest carbon storage in
     China under climate change. *Trees Forests and People*, 26, 101337.
     <https://doi.org/10.1016/j.tfp.2026.101337>
-23. Madhavan, A., Bhat, K., Kasinathan, S., et al. (2026). Distribution
-    models predict climate-related range alteration or extinction of
-    eleven threatened tropical rainforest trees in the Western Ghats.
-    *Journal of Biosciences*, 51(4).
+27. Madhavan, A.P., Bhat, K., Kasinathan, S., et al. (2026).
+    Distribution models predict climate-related range alteration or
+    extinction of eleven threatened tropical rainforest trees in the
+    Western Ghats. *Journal of Biosciences*, 51(4).
     <https://doi.org/10.1007/s12038-026-00622-x>
-24. Magee, C., Rose, M.B., Franklin, J., et al. (2026). Supporting
+28. Magee, C., Rose, M.B., Franklin, J., et al. (2026). Supporting
     Tribal resilience in Southern California through plant vulnerability
     assessment. *Earth stewardship.*, 3(2).
     <https://doi.org/10.1002/eas2.70044>
-25. Marques, T.M.S., Freitas‐Oliveira, R., Jardim, L.L.C.Z., et
+29. Marques, T.M.S., Freitas-Oliveira, R., Jardim, L.L.C.Z., et
     al. (2026). Regions of Climatic Stability for Neotropical Primates.
     *Mammal Review*, 56(1). <https://doi.org/10.1111/mam.70025>
-26. Omer, A., Dullinger, S., Wessely, J., et al. (2026). The global
+30. Munguía-Prieto, S., Valenzuela‐Quiñonez, F., Pliego-Cárdenas, R., et
+    al. (2026). Projected habitat suitability shifts and ecological
+    vulnerability of Octopus mimus (Gould, 1852) under climate change
+    scenarios in the Eastern Pacific. *Regional Studies in Marine
+    Science*, 103, 105559. <https://doi.org/10.1016/j.rsma.2026.105559>
+31. Omer, A., Dullinger, S., Wessely, J., et al. (2026). The global
     geography of plant invasion risk under future climate and land-use
     changes. *Nature Ecology & Evolution*, 10(5), 952–960.
     <https://doi.org/10.1038/s41559-026-03040-2>
-27. Pasipanodya, E.V., Zvidzai, M., Mawere, K.K., et al. (2026).
+32. Pasipanodya, E.V., Zvidzai, M., Mawere, K.K., et al. (2026).
     Spatio-temporal variation in habitat suitability of Southern giraffe
     (Giraffa giraffa) under long-term environmental change in Hwange
     National Park, Zimbabwe. *Environmental Monitoring and Assessment*,
     198(2), 116. <https://doi.org/10.1007/s10661-025-14938-y>
-28. Rahimi, E., Jung, C. (2026). How can we incorporate species
+33. Rahimi, E., Jung, C. (2026). How can we incorporate species
     interactions into SDM-based climate change modelling? *Community
     Ecology*. <https://doi.org/10.1007/s42974-026-00330-4>
-29. Rahimi, E., Jung, C. (2026). Climate Change May Expand Geographic
+34. Rahimi, E., Jung, C. (2026). Climate Change May Expand Geographic
     Distribution of Asian Butterflies Despite Climatic Niche
     Contraction. *Insects*, 17(7), 683.
     <https://doi.org/10.3390/insects17070683>
-30. Rahimi, E. (2026). What are the key bioclimatic variables shaping
+35. Rahimi, E. (2026). What are the key bioclimatic variables shaping
     bees’ distribution globally? *Community Ecology*.
     <https://doi.org/10.1007/s42974-026-00343-z>
-31. Rangel, C.B.A., Weber, M.M. (2026). Improving the Prediction of
-    Treefrog Species Vulnerability to Climate Change: The Role of
-    Abundance. *Journal of Biogeography*, 53(7).
+36. Rangel, C., Weber, M.M. (2026). Improving the Prediction of Treefrog
+    Species Vulnerability to Climate Change: The Role of Abundance.
+    *Journal of Biogeography*, 53(7).
     <https://doi.org/10.1111/jbi.70289>
-32. Romera-Romera, D., Berjano, R., Estrella, M.D.L., et al. (2026).
+37. Reatini, B., Torres, M.D.L., Vision, T. (2026). Local exclusion and
+    regional decline of an endemic Galápagos tree species ( Psidium
+    galapageium Hook.) by an invasive relative ( P. guajava L.).
+    *Biological Journal of the Linnean Society*, 149(2).
+    <https://doi.org/10.1093/biolinnean/blag070>
+38. Romera‐Romera, D., Berjano, R., Estrella, M.D.L., et al. (2026).
     Ecological differentiation in Pinus nigra subspecies predicts
     differential responses to climate change. *European Journal of
     Forest Research*, 145(2).
     <https://doi.org/10.1007/s10342-025-01868-0>
-33. Rose, M.B., Velazco, S.J.E., Regan, H.M., et al. (2026).
+39. Rose, M.B., Velazco, S.J.E., Regan, H.M., et al. (2026).
     Species‐Specific Responses to Multiple Climatic Variables Predict
     Diverging Locations of Future Climate Change Refugia. *Diversity and
     Distributions*, 32(2). <https://doi.org/10.1111/ddi.70158>
-34. Salariato, D.L., Zuloaga, F.O. (2026). Uneven impacts of climate
+40. Salariato, D.L., Zuloaga, F.O. (2026). Uneven impacts of climate
     change on angiosperm diversity across the South American Temperate
     Grasslands biome. *Perspectives in Plant Ecology Evolution and
     Systematics*, 71, 125935.
     <https://doi.org/10.1016/j.ppees.2026.125935>
-35. Santos, A., Payne, R., Branco, M., et al. (2026). Differing effects
+41. Santos, A., Payne, R., Branco, M., et al. (2026). Differing effects
     of climate change on wild bee nesting groups across Europe.
     *Ecological Informatics*, 97, 103902.
     <https://doi.org/10.1016/j.ecoinf.2026.103902>
-36. Soni, P., Hendy, A., Bottjer, D.J. (2026). ‘EcoCleanR’: enhancing
+42. Soilhi, Z., Fredj, S.B., Mekki, M. (2026). Abundance-based species
+    distribution models inform management strategies of the invasive
+    plant species Solanum elaeagnifolium Cav. in Tunisia. *European
+    Journal of Agronomy*, 182, 128381.
+    <https://doi.org/10.1016/j.eja.2026.128381>
+43. Soni, P., Hendy, A., Bottjer, D.J. (2026). ‘EcoCleanR’: enhancing
     data quality of biogeographic ranges with application for marine
     invertebrates. *Ecography*, 2026(3).
     <https://doi.org/10.1002/ecog.08203>
-37. Sorboni, S.G., Ghahremaninejad, F., Sunway, M.H., et al. (2026).
+44. Sorboni, S.G., Ghahremaninejad, F., Sunway, M.H., et al. (2026).
     Projecting future climatic refugia for Fagus orientalis in the
     Hyrcanian ecoregion. *Journal for Nature Conservation*, 95, 127444.
     <https://doi.org/10.1016/j.jnc.2026.127444>
-38. Syphard, A.D., Rustigian-Romsos, H., Franco, D., et al. (2026).
+45. Stefanidis, A., Kougioumoutzis, K., Kati, V.I. (2026). High
+    extinction risk for range-restricted Orthoptera in Mediterranean
+    mountains under climate and land-use change. *Journal of Insect
+    Conservation*, 30(6). <https://doi.org/10.1007/s10841-026-00842-4>
+46. Syphard, A.D., Rustigian‐Romsos, H., Franco, D.F.D., et al. (2026).
     Lessons learned using species’ distribution models for conservation
     planning in the Golden Gate Biosphere reserve. *PLoS ONE*, 21(3),
     e0343037. <https://doi.org/10.1371/journal.pone.0343037>
-39. Szinwelski, N., Prasniewski, V.M., Vendruscolo, L.S.N., et
+47. Szinwelski, N., Prasniewski, V.M., Vendruscolo, L.S.N., et
     al. (2026). Spatial distribution, habitat suitability, and threat
     status of Diponthus crassus (Orthoptera: Romaleidae: Romaleini).
     *Journal of Insect Conservation*, 30(4).
     <https://doi.org/10.1007/s10841-026-00790-z>
-40. Tytar, V. (2026). Range expansion of the golden jackal (Canis
+48. Tytar, V. (2026). Range expansion of the golden jackal (Canis
     aureus) in Europe. *Theriologia Ukrainica*, 31, 143–156.
     <https://doi.org/10.53452/tu3112>
-41. WANG, Z., WANG, Q., ZHOU, Y., et al. (2026). Identification and
+49. WANG, Z., WANG, Q., ZHOU, Y., et al. (2026). Identification and
     Prioritization of Climate-Adaptive Types for Territorial Ecological
     Restoration Zone in the Chengdu-Chongqing Urban Agglomeration.
     *Landscape Architecture*, 33(3), 12–22.
     <https://doi.org/10.3724/j.fjyl.la20250650>
-42. Westphalen, M.C., Martins-Cunha, K., Alves-Silva, G., et al. (2026).
+50. Westphalen, M.C., Martins-Cunha, K., Alves-Silva, G., et al. (2026).
     An announced tragedy: climate-driven habitat loss for the critically
     endangered Wrightoporia araucariae (Basidiomycota, Russulales).
     *Fungal ecology*, 82, 101515.
@@ -227,15 +261,15 @@ OpenAlex).*
     Hot to Cold Spots: Climate Change is Projected to Modify Diversity
     Patterns of Small Mammals in a Biodiversity Hotspot. *Diversity and
     Distributions*, 31(5). <https://doi.org/10.1111/ddi.70026>
-2.  Amaro, G.C., Aidoo, O.F., Souza, P.G.C., et al. (2025). Global
-    Climate Suitability and Economic Risks of the Fall Armyworm
-    Spodoptera frugiperda to Key Crops in Brazil. *Food and Energy
-    Security*, 14(5). <https://doi.org/10.1002/fes3.70120>
-3.  Amaro, G.C., Marchioro, C.A., Silva, R.S.D., et al. (2025). Current
+2.  Amaro, G.C., Marchioro, C.A., Silva, R.S.D., et al. (2025). Current
     and future global distribution of the peach twig borer, Anarsia
     lineatella Zeller (Lepidoptera: Gelechiidae). *Agricultural and
     Forest Entomology*, 28(1), 94–107.
     <https://doi.org/10.1111/afe.70012>
+3.  Amaro, G.C., Aidoo, O.F., Souza, P.G.C., et al. (2025). Global
+    Climate Suitability and Economic Risks of the Fall Armyworm
+    Spodoptera frugiperda to Key Crops in Brazil. *Food and Energy
+    Security*, 14(5). <https://doi.org/10.1002/fes3.70120>
 4.  Anselmo, L., Caprio, E., Baruzzi, A., et al. (2025). Where and how
     to conserve butterflies amid climate change: a model-based approach
     on Papilio alexanor. *Biodiversity and Conservation*, 34(12),
@@ -273,15 +307,15 @@ OpenAlex).*
     sumatrensis across land-use types under climate change. *Global
     Ecology and Conservation*, 61, e03657.
     <https://doi.org/10.1016/j.gecco.2025.e03657>
-12. Croft, S., Warren, D., Blanco‐Aguiar, J., et al. (2025). Predicting
-    the distribution of common wild mammal species across Europe - are
-    there sufficient occurrence data? *European Journal of Wildlife
-    Research*, 71(6). <https://doi.org/10.1007/s10344-025-02014-2>
+12. Croft, S., Warren, D., Blanco, J., et al. (2025). Predicting the
+    distribution of common wild mammal species across Europe - are there
+    sufficient occurrence data? *European Journal of Wildlife Research*,
+    71(6). <https://doi.org/10.1007/s10344-025-02014-2>
 13. Duyar, A., Demır, M.A., Kabalak, M. (2025). Prediction of Current
     and Future Distributions of Chalcophora detrita (Coleoptera:
     Buprestidae) Under Climate Change Scenarios. *Ecology and
     Evolution*, 15(1), e70693. <https://doi.org/10.1002/ece3.70693>
-14. Ferreiro, A.M., Romero‐Muñoz, A., Issaly, E.A., et al. (2025).
+14. Ferreiro, A.M., Romero‐Muñoz, A., Issaly, A.E., et al. (2025).
     Habitat Loss and Overexploitation Subordinate Climate Change as the
     Main Threats to the Southern Three‐Banded Armadillo in the
     Threatened South American Chaco. *Animal Conservation*, 29(3),
@@ -312,17 +346,17 @@ OpenAlex).*
     pathogenic avian influenza clade 2.3.4.4b in wild birds across
     Europe. *Scientific Reports*, 16(1), 997.
     <https://doi.org/10.1038/s41598-025-30651-9>
-21. Holcomb, K.M., Foster, E., Eisen, R.J. (2025). Estimating the
+21. Holcomb, K.M., Foster, E.S., Eisen, R.J. (2025). Estimating the
     density of questing Ixodes scapularis nymphs in the eastern United
     States using climate and land cover data. *Ticks and Tick-borne
     Diseases*, 16(2), 102446.
     <https://doi.org/10.1016/j.ttbdis.2025.102446>
-22. Holcomb, K.M., Foster, E., Maes, S.E., et al. (2025). Estimated
+22. Holcomb, K.M., Foster, E.S., Maes, S.E., et al. (2025). Estimated
     density of Borrelia burgdorferi sensu stricto-infected Ixodes
     scapularis nymphs in the eastern United States. *Parasites &
     Vectors*, 18(1), 350. <https://doi.org/10.1186/s13071-025-06937-2>
-23. Hubbard, J.A.G., Drake, D., Mandrak, N.E. (2025). ‘Euclimatch’: an R
-    package for climate matching with Euclidean distance metrics.
+23. Hubbard, J.A.G., Drake, D.A.R., Mandrak, N.E. (2025). ‘Euclimatch’:
+    an R package for climate matching with Euclidean distance metrics.
     *Ecography*, 2025(4). <https://doi.org/10.1111/ecog.07614>
 24. Klichowska, E., Wróbel, A.M., Nowak, A.S., et al. (2025).
     Eco‐Evolutionary Genomics Reveal Mountain Range‐Specific Adaptation
@@ -379,12 +413,12 @@ OpenAlex).*
     Exploring their contribution to Colombian snakes. *Perspectives in
     Ecology and Conservation*, 23(2), 110–120.
     <https://doi.org/10.1016/j.pecon.2025.04.002>
-36. Rahimi, E., Jung, C. (2025). Exploring Climate-Driven Mismatches
-    Between Pollinator-Dependent Crops and Honeybees in Asia. *Biology*,
-    14(3), 234. <https://doi.org/10.3390/biology14030234>
-37. Rahimi, E., Jung, C. (2025). Investigating the Spatial Biases and
+36. Rahimi, E., Jung, C. (2025). Investigating the Spatial Biases and
     Temporal Trends in Insect Pollinator Occurrence Data on GBIF.
     *Insects*, 16(8), 769. <https://doi.org/10.3390/insects16080769>
+37. Rahimi, E., Jung, C. (2025). Exploring Climate-Driven Mismatches
+    Between Pollinator-Dependent Crops and Honeybees in Asia. *Biology*,
+    14(3), 234. <https://doi.org/10.3390/biology14030234>
 38. Rahimi, E., Jung, C. (2025). Mapping co-occurrence dynamics between
     crops and honeybees under climate change in North America.
     *Community Ecology*, 26(3), 489–499.
@@ -490,13 +524,13 @@ OpenAlex).*
     <https://doi.org/10.1016/j.ecolind.2024.112353>
 14. Kass, J.M., Smith, A.B., Warren, D.L., et al. (2024). Achieving
     higher standards in species distribution modeling by leveraging the
-    diversity of available software. *Ecography*, 2025(2).
+    diversity of available software. *Ecography*, 2025(2), e07346.
     <https://doi.org/10.1111/ecog.07346>
 15. Kougioumoutzis, K., Tsakiri, M., Kokkoris, I., et al. (2024).
     Assessing the Vulnerability of Medicinal and Aromatic Plants to
     Climate and Land-Use Changes in a Mediterranean Biodiversity
     Hotspot. *Land*, 13(2), 133. <https://doi.org/10.3390/land13020133>
-16. Kougioumoutzis, K., Constantinou, I.P., Panitsa, M. (2024). Rising
+16. Kougioumoutzis, K., Constantinou, I., Panitsa, M. (2024). Rising
     Temperatures, Falling Leaves: Predicting the Fate of Cyprus’s
     Endemic Oak under Climate and Land Use Change. *Plants*,
     13(8), 1109. <https://doi.org/10.3390/plants13081109>
@@ -521,16 +555,17 @@ OpenAlex).*
     Predicted future range expansion of a small carnivore: swift fox in
     North America. *Landscape Ecology*, 39(9).
     <https://doi.org/10.1007/s10980-024-01962-5>
-22. Nieto‐Lugilde, M., Nieto‐Lugilde, D., Piatkowski, B., et al. (2024).
-    Ecological differentiation and sympatry of cryptic species in the
-    Sphagnum magellanicum complex (Bryophyta). *American Journal of
-    Botany*, 111(9), e16401. <https://doi.org/10.1002/ajb2.16401>
+22. Nieto‐Lugilde, M., Nieto‐Lugilde, D., Piatkowski, B.T., et
+    al. (2024). Ecological differentiation and sympatry of cryptic
+    species in the Sphagnum magellanicum complex (Bryophyta). *American
+    Journal of Botany*, 111(9), e16401.
+    <https://doi.org/10.1002/ajb2.16401>
 23. Ninsin, K.D., Souza, P.G.C., Amaro, G.C., et al. (2024). Risk of
     spread of the Asian citrus psyllid Diaphorina citri Kuwayama
     (Hemiptera: Liviidae) in Ghana. *Bulletin of Entomological
     Research*, 114(3), 327–346.
     <https://doi.org/10.1017/s0007485324000105>
-24. Noel, A.R., Schlaepfer, D.R., Butterfield, B.J., et al. (2024). Most
+24. Noel, A., Schlaepfer, D.R., Butterfield, B.J., et al. (2024). Most
     Pinyon–Juniper Woodland Species Distributions Are Projected to
     Shrink Rather Than Shift Under Climate Change. *Rangeland Ecology &
     Management*, 98, 454–466.
@@ -601,11 +636,10 @@ OpenAlex).*
     relict? An attempt at verification by species distribution modeling.
     *Ecological Research*, 40(4), 475–490.
     <https://doi.org/10.1111/1440-1703.12541>
-41. Somerville, R.M., MacNeil, C., Lee, F. (2024). Habitat suitability
-    of Aotearoa New Zealand for the recently invaded gold clam (
-    Corbicula fluminea ). *New Zealand Journal of Marine and Freshwater
-    Research*, 59(4), 762–779.
-    <https://doi.org/10.1080/00288330.2024.2368856>
+41. Somerville, R., MacNeil, C., Lee, F. (2024). Habitat suitability of
+    Aotearoa New Zealand for the recently invaded gold clam ( Corbicula
+    fluminea ). *New Zealand Journal of Marine and Freshwater Research*,
+    59(4), 762–779. <https://doi.org/10.1080/00288330.2024.2368856>
 42. Stefanidis, A., Kougioumoutzis, K., Zografou, K., et al. (2024).
     Mitigating the extinction risk of globally threatened and endemic
     mountainous Orthoptera species: Parnassiana parnassica and
@@ -625,8 +659,8 @@ OpenAlex).*
     (Borneo) based on remotely sensed high-resolution global cloud
     dynamics. *Theriologia Ukrainica*, 2024(27).
     <https://doi.org/10.53452/tu2711>
-46. Urban, D.L. (2024). Species Distribution Modeling. *Landscape
-    Ecology*, 29–79. <https://doi.org/10.1007/978-3-031-72251-6_2>
+46. Urban, D.L. (2024). Species Distribution Modeling. *Springer
+    eBooks*, 29–79. <https://doi.org/10.1007/978-3-031-72251-6_2>
 47. Vélez, D., Vivallo, F. (2024). Key areas for conserving and
     sustainably using oil-collecting bees (Apidae: Centridini,
     Tapinotaspidini, Tetrapediini) in the Americas. *Journal of Insect
@@ -648,7 +682,7 @@ OpenAlex).*
     study with models for Raoiella indica Hirst (Acari: Tenuipalpidae).
     *Ecological Modelling*, 483, 110454.
     <https://doi.org/10.1016/j.ecolmodel.2023.110454>
-2.  Du, Y., Jueterbock, A.O., Firdaus, M., et al. (2023). Niche
+2.  Du, Y., Jueterbock, A., Firdaus, M.D.K., et al. (2023). Niche
     comparison and range shifts for two Kappaphycus species in the
     Indo-Pacific Ocean under climate change. *Ecological Indicators*,
     154, 110900. <https://doi.org/10.1016/j.ecolind.2023.110900>
@@ -701,13 +735,22 @@ OpenAlex).*
     geographic similarity. *Frontiers in Ecology and Evolution*, 11.
     <https://doi.org/10.3389/fevo.2023.1193602>
 
-## 2022 (n = 2)
+## 2022 (n = 4)
 
-1.  Rose, M.B., Velazco, S.J.E., Regan, H.M., et al. (2022). Rarity,
+1.  Chen, W., Jing, C., Xu, L., et al. (2022). Spatial Potential of
+    Recreational Services in Western Hubei Region in Light of the
+    “All-for-One Tourism” Development—A Machine Learning Approach Based
+    on Ensemble Model. *Landscape Architecture Frontiers*, 10(5), 8.
+    <https://doi.org/10.15302/j-laf-1-020073>
+2.  Rose, M.B., Velazco, S.J.E., Regan, H.M., et al. (2022). Rarity,
     geography, and plant exposure to global change in the California
     Floristic Province. *Global Ecology and Biogeography*, 32(2),
     218–232. <https://doi.org/10.1111/geb.13618>
-2.  Zhang, X., Huang, Q., Liu, P., et al. (2022). Geography, ecology,
+3.  Sillero, N., Campos, J.C., Arenas‐Castro, S., et al. (2022). A
+    curated list of R packages for ecological niche modelling.
+    *Ecological Modelling*, 476, 110242.
+    <https://doi.org/10.1016/j.ecolmodel.2022.110242>
+4.  Zhang, X., Huang, Q., Liu, P., et al. (2022). Geography, ecology,
     and history synergistically shape across-range genetic variation in
     a calanoid copepod endemic to the north-eastern Oriental.
     *Evolution*, 77(2), 422–436.

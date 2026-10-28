@@ -2,6 +2,8 @@
 
 ## flexsdm 1.4.2
 
+CRAN release: 2026-10-24
+
 - `tune_max`: a grid combination whose fits all failed was assigned the
   previous combination’s model/performance (stale `mod`); now
   initialised to `NULL` and checked with
@@ -12,10 +14,9 @@
   and falls back on presences + background (`data_2`)
   ([\#478](https://github.com/sjevelazco/flexsdm/issues/478))
 - `tune_svm`: removed
-  [`na.omit()`](https://rspatial.github.io/terra/reference/na.omit.html)
-  on partition performance so all combinations are compared across the
-  same partitions
-  ([\#478](https://github.com/sjevelazco/flexsdm/issues/478))
+  [`na.omit()`](https://rdrr.io/r/stats/na.fail.html) on partition
+  performance so all combinations are compared across the same
+  partitions ([\#478](https://github.com/sjevelazco/flexsdm/issues/478))
 - `fit_gbm`: final model now uses `bag.fraction = 0.9`, consistent with
   the CV models; `tune_gbm` validity guard also uses 0.9
   ([\#478](https://github.com/sjevelazco/flexsdm/issues/478))

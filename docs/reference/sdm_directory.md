@@ -99,23 +99,23 @@ dirs_1 <- sdm_directory(
   return_vector = TRUE
 )
 #> Directories were created in:
-#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name
 dirs_1
-#>  [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name"                                       
-#>  [2] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs"                              
-#>  [3] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs/1_Occurrences"                
-#>  [4] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs/2_Predictors"                 
-#>  [5] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs/2_Predictors/1_Current"       
-#>  [6] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs/3_Calibration_area"           
-#>  [7] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs"                             
-#>  [8] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs/0_Model_performance"         
-#>  [9] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs/1_Current"                   
-#> [10] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs/1_Current/Algorithm"         
-#> [11] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs/1_Current/Algorithm/gam"     
-#> [12] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs/1_Current/Algorithm/tune_max"
-#> [13] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs/1_Current/Ensemble"          
-#> [14] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs/1_Current/Ensemble/mean"     
-#> [15] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/2_Outputs/1_Current/Ensemble/meanthr"  
+#>  [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name"                                       
+#>  [2] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs"                              
+#>  [3] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs/1_Occurrences"                
+#>  [4] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs/2_Predictors"                 
+#>  [5] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs/2_Predictors/1_Current"       
+#>  [6] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs/3_Calibration_area"           
+#>  [7] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs"                             
+#>  [8] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs/0_Model_performance"         
+#>  [9] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs/1_Current"                   
+#> [10] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs/1_Current/Algorithm"         
+#> [11] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs/1_Current/Algorithm/gam"     
+#> [12] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs/1_Current/Algorithm/tune_max"
+#> [13] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs/1_Current/Ensemble"          
+#> [14] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs/1_Current/Ensemble/mean"     
+#> [15] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/2_Outputs/1_Current/Ensemble/meanthr"  
 unlink(my_project, recursive = TRUE) # remove the folders created in this example
 
 # With folders for model projections and for thresholded outputs
@@ -128,13 +128,13 @@ dirs_2 <- sdm_directory(
   threshold = TRUE
 )
 #> Directories were created in:
-#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name
+#> /var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name
 head(dirs_2)
-#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name"                                   
-#> [2] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs"                          
-#> [3] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs/1_Occurrences"            
-#> [4] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs/2_Predictors"             
-#> [5] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs/2_Predictors/1_Current"   
-#> [6] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpvQZYhH/my_project_name/1_Inputs/2_Predictors/2_Projection"
+#> [1] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name"                                   
+#> [2] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs"                          
+#> [3] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs/1_Occurrences"            
+#> [4] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs/2_Predictors"             
+#> [5] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs/2_Predictors/1_Current"   
+#> [6] "/var/folders/0q/hy7d1sjn455f1kdjtvcpjg7h0000gn/T//RtmpmTJzCf/my_project_name/1_Inputs/2_Predictors/2_Projection"
 unlink(my_project, recursive = TRUE)
 ```

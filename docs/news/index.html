@@ -48,13 +48,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.4.2" id="flexsdm-142">flexsdm 1.4.2<a class="anchor" aria-label="anchor" href="#flexsdm-142"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.4.2" id="flexsdm-142">flexsdm 1.4.2<a class="anchor" aria-label="anchor" href="#flexsdm-142"></a></h2><p class="text-muted">CRAN release: 2026-10-24</p>
 <ul><li>
 <code>tune_max</code>: a grid combination whose fits all failed was assigned the previous combination’s model/performance (stale <code>mod</code>); now initialised to <code>NULL</code> and checked with <code><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null()</a></code> (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
 <li>
 <code>fit_max</code>: the final refit fallback used the CV loop index in its check and could discard a successful fit; it now uses <code>is.null(mod)</code> and falls back on presences + background (<code>data_2</code>) (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
 <li>
-<code>tune_svm</code>: removed <code><a href="https://rspatial.github.io/terra/reference/na.omit.html" class="external-link">na.omit()</a></code> on partition performance so all combinations are compared across the same partitions (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
+<code>tune_svm</code>: removed <code><a href="https://rdrr.io/r/stats/na.fail.html" class="external-link">na.omit()</a></code> on partition performance so all combinations are compared across the same partitions (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
 <li>
 <code>fit_gbm</code>: final model now uses <code>bag.fraction = 0.9</code>, consistent with the CV models; <code>tune_gbm</code> validity guard also uses 0.9 (<a href="https://github.com/sjevelazco/flexsdm/issues/478" class="external-link">#478</a>)</li>
 <li>

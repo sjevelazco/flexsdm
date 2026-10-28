@@ -1,13 +1,15 @@
 # flexsdm <a href='https://sjevelazco.github.io/flexsdm/'><img src="man/figures/flexsdm_logo.svg" align="right" height="138"/></a>
 
-[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html) [![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml) [![Codecov test coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://app.codecov.io/gh/sjevelazco/flexsdm) [![DOI](https://zenodo.org/badge/354032642.svg)](https://zenodo.org/badge/latestdoi/354032642) [![DOI](https://img.shields.io/badge/DOI-10.1111%2F2041--210X.13874-orange)](https://doi.org/10.1111/2041-210X.13874)
+[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%203%29-lightgrey.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.html) [![](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/sjevelazco/flexsdm/actions/workflows/R-CMD-check.yaml) [![Codecov test coverage](https://codecov.io/gh/sjevelazco/flexsdm/branch/main/graph/badge.svg?token=UT1UB0TWSV)](https://app.codecov.io/gh/sjevelazco/flexsdm) [![DOI](https://zenodo.org/badge/354032642.svg)](https://zenodo.org/badge/latestdoi/354032642) [![DOI](https://img.shields.io/badge/DOI-10.1111%2F2041--210X.13874-orange)](https://doi.org/10.1111/2041-210X.13874) [![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/flexsdm)](https://CRAN.R-project.org/package=flexsdm)
 
 ----
 
 ### *flexsdm* - email list
 Dear flexsdm user, if you are interested in receiving email notifications about modifications made to the package (e.g., new functions, arguments, or vignettes), please [**fill out this form**](https://forms.gle/neJweyd2hSxVVdUE6) so we can keep you updated on what is new in flexsdm.
 
-Explore our new R package [**adm**](https://sjevelazco.github.io/adm/) to construct abundance-based species distribution models.
+### News
+* *flexsdm* is now on [**CRAN**](https://cran.r-project.org/web/packages/flexsdm/index.html). 
+* Explore our new R package [**adm**](https://sjevelazco.github.io/adm/) to construct abundance-based species distribution models.
 
 ### Overview
 
@@ -111,6 +113,10 @@ Useful tools to visually explore models’ geographical and environmental predic
 -   `data_bpdp()` Calculate data to construct partial dependence surface plots
 
 ### Installation
+
+``` r
+install.packages("flexsdm")
+```
 
 You can install the development version of **flexsdm** from [github](https://github.com/sjevelazco/flexsdm)
 

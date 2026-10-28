@@ -293,16 +293,16 @@ vip_t
 #> # A tibble: 54 × 17
 #>    model threshold    predictors    TPR    TNR W_TPR_TNR SORENSEN JACCARD    FPB
 #>    <chr> <chr>        <chr>       <dbl>  <dbl>     <dbl>    <dbl>   <dbl>  <dbl>
-#>  1 max   equal_sens_… aet        0.0566 0.0566    0.0566   0.0566  0.0612 0.122 
-#>  2 max   max_sens_sp… aet        0.0923 0.0354    0.0639   0.0588  0.0725 0.145 
-#>  3 max   max_sorensen aet        0      0.167     0.0783   0.0425  0.0531 0.106 
-#>  4 max   equal_sens_… ppt_jja    0.0146 0.0146    0.0146   0.0146  0.0162 0.0324
-#>  5 max   max_sens_sp… ppt_jja    0.183  0         0.0303   0.0632  0.0776 0.155 
-#>  6 max   max_sorensen ppt_jja    0.0874 0         0.0420   0.0443  0.0553 0.111 
-#>  7 max   equal_sens_… pH         0.0291 0.0291    0.0291   0.0291  0.0322 0.0643
-#>  8 max   max_sens_sp… pH         0.0743 0         0.0286   0.0339  0.0425 0.0850
-#>  9 max   max_sorensen pH         0.0143 0.062     0.0381   0.0255  0.0323 0.0647
-#> 10 max   equal_sens_… awc        0.0631 0.0631    0.0631   0.0631  0.0681 0.136 
+#>  1 max   equal_sens_… aet        0.0606 0.0606    0.0606   0.0606  0.0655 0.131 
+#>  2 max   max_sens_sp… aet        0.0934 0.0360    0.0647   0.0600  0.0738 0.148 
+#>  3 max   max_sorensen aet        0      0.175     0.0823   0.0446  0.0556 0.111 
+#>  4 max   equal_sens_… ppt_jja    0.0137 0.0137    0.0137   0.0137  0.0153 0.0306
+#>  5 max   max_sens_sp… ppt_jja    0.179  0         0.0323   0.0637  0.0780 0.156 
+#>  6 max   max_sorensen ppt_jja    0.0717 0.0206    0.0461   0.0430  0.0537 0.107 
+#>  7 max   equal_sens_… pH         0.0249 0.0249    0.0249   0.0249  0.0276 0.0551
+#>  8 max   max_sens_sp… pH         0.103  0         0.0307   0.0426  0.0530 0.106 
+#>  9 max   max_sorensen pH         0.0331 0.0414    0.0373   0.0291  0.0368 0.0736
+#> 10 max   equal_sens_… awc        0.0611 0.0611    0.0611   0.0611  0.0660 0.132 
 #> # ℹ 44 more rows
 #> # ℹ 8 more variables: OR <dbl>, TSS <dbl>, KAPPA <dbl>, MCC <dbl>, AUC <dbl>,
 #> #   BOYCE <dbl>, CRPS <dbl>, IMAE <dbl>
